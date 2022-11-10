@@ -1,0 +1,5 @@
+.header{
+    .head{
+        @apply naxatw-text-[50px] naxatw-text-primarycolor
+    }
+}

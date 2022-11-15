@@ -3,22 +3,22 @@
 @tailwind utilities;
 
 @layer base {
-    h1 {
-      @apply naxatw-text-[3.75rem] naxatw-font-normal naxatw-leading-[1.167] naxatw-tracking-normal;
-    }
-    h2 {
-      @apply naxatw-text-[3rem] naxatw-font-bold naxatw-leading-[1.167] naxatw-tracking-normal;
-    }
-    h3 {
-      @apply naxatw-text-[2.125rem] naxatw-font-normal naxatw-leading-[1.235] naxatw-tracking-normal;
-    }
-    h4 {
-      @apply naxatw-text-[1.625rem] naxatw-font-bold naxatw-leading-[1.15] naxatw-tracking-normal;
-    }
-    h5 {
-      @apply naxatw-text-[1.25rem] naxatw-font-bold naxatw-leading-[1.3] naxatw-tracking-normal;
-    }
-    h6 {
-      @apply naxatw-text-[1rem] naxatw-font-bold naxatw-leading-[1.25] naxatw-tracking-normal;
-    }
+  h1 {
+    @apply naxatw-font-primary naxatw-text-grey-800 naxatw-text-[4rem] naxatw-font-bold naxatw-leading-[4.5rem] naxatw-tracking-normal;
   }
+  h2 {
+    @apply naxatw-font-primary naxatw-text-grey-800 naxatw-text-[2.75rem] naxatw-font-bold naxatw-leading-[3.125rem] naxatw-tracking-normal;
+  }
+  h3 {
+    @apply naxatw-font-primary naxatw-text-grey-800 naxatw-text-[2rem] naxatw-font-normal naxatw-leading-[2.5rem] naxatw-tracking-normal;
+  }
+  h4 {
+    @apply naxatw-font-primary naxatw-text-grey-900 naxatw-text-[1.5rem] naxatw-font-bold naxatw-leading-[1.875rem] naxatw-tracking-normal;
+  }
+  h5 {
+    @apply naxatw-font-primary naxatw-text-grey-900 naxatw-text-[1.125rem] naxatw-font-bold naxatw-leading-[1.625] naxatw-tracking-normal;
+  }
+  h6 {
+    @apply naxatw-font-primary naxatw-text-grey-900 naxatw-text-[1rem] naxatw-font-bold naxatw-leading-[1.25] naxatw-tracking-normal;
+  }
+}

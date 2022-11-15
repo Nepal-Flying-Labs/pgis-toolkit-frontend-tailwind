@@ -17,11 +17,11 @@ const usePagination = (data, itemsPerPage) => {
   const currentList = currentData();
 
   function next() {
-    setCurrentPage((current) => Math.min(current + 1, maxPage));
+    setCurrentPage(current => Math.min(current + 1, maxPage));
   }
 
   function prev() {
-    setCurrentPage((current) => Math.max(current - 1, 1));
+    setCurrentPage(current => Math.max(current - 1, 1));
   }
 
   function jump(page) {
@@ -33,7 +33,7 @@ const usePagination = (data, itemsPerPage) => {
     setAllData(data);
   }, [data]);
 
-  const handleSorting = (title) => {
+  const handleSorting = title => {
     let newList = [];
     if (title === headerToSort) {
       if (sortAssending) {
@@ -43,7 +43,7 @@ const usePagination = (data, itemsPerPage) => {
         newList = sortByKey(data, title, 'ascending');
         setAllData(newList);
       }
-      setSortAssending((prevState) => !prevState);
+      setSortAssending(prevState => !prevState);
     } else {
       newList = sortByKey(data, title, 'ascending');
       setAllData(newList);

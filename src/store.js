@@ -15,13 +15,18 @@ export default function configureStore() {
   let composeEnhancers = compose;
 
   if (ENV !== 'production') {
-    const composeWithDevToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+    const composeWithDevToolsExtension =
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
     if (typeof composeWithDevToolsExtension === 'function') {
       composeEnhancers = composeWithDevToolsExtension;
     }
   }
 
-  const store = createStore(reducers, initialState, composeEnhancers(applyMiddleware(...middlewares)));
+  const store = createStore(
+    reducers,
+    initialState,
+    composeEnhancers(applyMiddleware(...middlewares)),
+  );
 
   sagaMiddleware.run(rootSaga);
 

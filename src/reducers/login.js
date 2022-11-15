@@ -7,13 +7,15 @@ const initialState = {
   user: {},
 };
 
-const loginRequest = (state) => ({ ...state, loading: true });
+const loginRequest = state => ({ ...state, loading: true });
 
-const loginSuccess = (state, action) => {
-  return { ...state, loading: false, user: action.payload.data };
-};
+const loginSuccess = (state, action) => ({
+  ...state,
+  loading: false,
+  user: action.payload.data,
+});
 
-const loginFailure = (state) => ({
+const loginFailure = state => ({
   ...state,
   loading: false,
 });

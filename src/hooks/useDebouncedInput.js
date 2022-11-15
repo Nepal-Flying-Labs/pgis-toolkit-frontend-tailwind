@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 function debounce(func, timeout = 300) {
   let timer;
-  return (arg) => {
+  return arg => {
     clearTimeout(timer);
     timer = setTimeout(() => {
       func(arg);
@@ -35,10 +35,12 @@ const useDebouncedInput = ({ ms = 200, init, onChange = () => {} }) => {
   const debounceEvent = useCallback(debounce(onChange, ms), []);
 
   const handleChange = useCallback(
-    (event) => {
+    event => {
       event.persist();
       const { name, value } = event.target;
-      setInput((prev) => (typeof init === 'object' ? { ...prev, [name]: value } : value));
+      setInput(prev =>
+        typeof init === 'object' ? { ...prev, [name]: value } : value,
+      );
       debounceEvent(event);
     },
     [debounceEvent, init],

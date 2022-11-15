@@ -1,11 +1,8 @@
 import { all } from 'redux-saga/effects';
 import loginWatcher from './login';
-import registerWatcher from './register';
-import topicWatcher from './topic';
-import loadesampleWatcher from './loadersample';
 
 function* rootSaga() {
-  yield all([loginWatcher(), registerWatcher(), topicWatcher(), loadesampleWatcher()]);
+  yield all([loginWatcher()]);
 }
 
 export default rootSaga;

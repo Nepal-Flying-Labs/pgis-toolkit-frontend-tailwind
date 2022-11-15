@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 /* eslint-disable react/no-unused-prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { Component, Children } from 'react';
@@ -31,11 +32,23 @@ export default class Table extends Component {
     } = this;
     const numberOfChildren = Children.count(children);
     if (numberOfChildren > 0) {
-      const isSubheaderCollection = Children.map(children, (child) => child.props.isSubHeader);
-      const containSubHeaderCollection = Children.map(children, (child) => child.props.containSubHeader);
-      const fields = Children.map(children, (child) => child.props.dataField);
-      const rowColSpanValue = Children.map(children, (child) => child.props.rowcolSpan);
-      const headClassName = Children.map(children, (child) => child.props.headerClassName);
+      const isSubheaderCollection = Children.map(
+        children,
+        child => child.props.isSubHeader,
+      );
+      const containSubHeaderCollection = Children.map(
+        children,
+        child => child.props.containSubHeader,
+      );
+      const fields = Children.map(children, child => child.props.dataField);
+      const rowColSpanValue = Children.map(
+        children,
+        child => child.props.rowcolSpan,
+      );
+      const headClassName = Children.map(
+        children,
+        child => child.props.headerClassName,
+      );
 
       return {
         fields,
@@ -48,7 +61,7 @@ export default class Table extends Component {
     return data[0] ? Object.keys(data[0]) : [];
   };
 
-  getHeaderData = (field) => {
+  getHeaderData = field => {
     const {
       props: { children },
     } = this;
@@ -56,7 +69,8 @@ export default class Table extends Component {
     if (numberOfChildren > 0) {
       const tableChildren = Children.toArray(children);
       const tableChildWithSameFieldAndDataHeader = tableChildren.find(
-        (child) => child.props.dataField === field && child.props.dataHeader !== null,
+        child =>
+          child.props.dataField === field && child.props.dataHeader !== null,
       );
 
       if (tableChildWithSameFieldAndDataHeader) {
@@ -79,11 +93,16 @@ export default class Table extends Component {
     if (numberOfChildren > 0) {
       const tableChildren = Children.toArray(children);
       const tableChildWithSameFieldAndDataFormat = tableChildren.find(
-        (child) => child.props.dataField === field && child.props.dataFormat !== null,
+        child =>
+          child.props.dataField === field && child.props.dataFormat !== null,
       );
 
       if (tableChildWithSameFieldAndDataFormat) {
-        return tableChildWithSameFieldAndDataFormat.props.dataFormat(row, row[field], index);
+        return tableChildWithSameFieldAndDataFormat.props.dataFormat(
+          row,
+          row[field],
+          index,
+        );
       }
 
       return row[field];
@@ -95,7 +114,8 @@ export default class Table extends Component {
   };
 
   renderHeader = () => {
-    const { fields, rowColSpanValue, headClassName, isSubheaderCollection } = this.getFields();
+    const { fields, rowColSpanValue, headClassName, isSubheaderCollection } =
+      this.getFields();
     const { headerWidths, data } = this.props;
     return fields?.map((field, index) => {
       const isSubHeader = isSubheaderCollection[index];
@@ -131,7 +151,8 @@ export default class Table extends Component {
           <th
             key={field}
             {...{ className: headClassName[index] }}
-            {...(headerWidths[index] && data.length > 0 && { style: { width: headerWidths[index] } })}
+            {...(headerWidths[index] &&
+              data.length > 0 && { style: { width: headerWidths[index] } })}
           >
             {this.getHeaderData(field)}
           </th>
@@ -154,33 +175,30 @@ export default class Table extends Component {
       );
     }
 
-    return data?.map((row, index) => {
-      return (
-        // eslint-disable-next-line
-        <tr
-          key={`tr_${row.id}`}
-          {...(onRowClick && {
-            onClick: () => onRowClick(row),
-            style: { cursor: 'pointer' },
-          })}
-        >
-          {fields?.map((field, ind) => {
-            return (
-              !containSubHeaderCollection[ind] && (
-                <td
-                  // eslint-disable-next-line
-                  key={`${field}_${row[field] || ind}_${
-                    row[uniqueKey] || ind
-                  }`.replace(/ /g, '_')}
-                >
-                  {this.getBodyCellData(row, field, index)}
-                </td>
-              )
-            );
-          })}
-        </tr>
-      );
-    });
+    return data?.map((row, index) => (
+      // eslint-disable-next-line
+      <tr
+        key={`tr_${row.id}`}
+        {...(onRowClick && {
+          onClick: () => onRowClick(row),
+          style: { cursor: 'pointer' },
+        })}
+      >
+        {fields?.map(
+          (field, ind) =>
+            !containSubHeaderCollection[ind] && (
+              <td
+                // eslint-disable-next-line
+                key={`${field}_${row[field] || ind}_${
+                  row[uniqueKey] || ind
+                }`.replace(/ /g, '_')}
+              >
+                {this.getBodyCellData(row, field, index)}
+              </td>
+            ),
+        )}
+      </tr>
+    ));
   };
 
   render() {

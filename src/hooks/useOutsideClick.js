@@ -15,7 +15,7 @@ const useOutsideClick = () => {
   const ref = useRef();
   const [toggle, setToggle] = useState(false);
 
-  const onOutsideClick = useCallback((e) => {
+  const onOutsideClick = useCallback(e => {
     if (!ref.current.contains(e.target)) {
       setToggle(false);
     }
@@ -33,7 +33,7 @@ const useOutsideClick = () => {
     };
   }, [toggle, onOutsideClick]);
 
-  const handleToggle = () => setToggle((prev) => !prev);
+  const handleToggle = () => setToggle(prev => !prev);
 
   return [ref, toggle, handleToggle];
 };

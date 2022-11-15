@@ -19,7 +19,7 @@ function Toast({ type, message, clearToast }) {
   return null;
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const {
     toast: { type, message },
   } = state;
@@ -29,7 +29,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   clearToast: () => dispatch(toastActions.clear()),
 });
 

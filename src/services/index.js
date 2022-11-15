@@ -1,5 +1,6 @@
 import axios from 'axios';
-const { BASE_URL }= process.env;
+
+const { BASE_URL } = process.env;
 export const api = axios.create({
   baseURL: `${BASE_URL}`,
   timeout: 50000,
@@ -9,7 +10,7 @@ export const api = axios.create({
   },
 });
 
-export const authenticated = (apiInstance) => {
+export const authenticated = apiInstance => {
   const token = localStorage.getItem('token');
   // eslint-disable-next-line no-param-reassign
   apiInstance.defaults.headers.common.Authorization = `Token ${token}`;

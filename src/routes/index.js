@@ -1,8 +1,8 @@
-import Login from '../views/Login';
+import Authentication from '../views/Authentication';
 import Home from '../views/Home';
 
 const indexRoutes = [
-  { path: '/login', name: 'Login', component: Login },
+  { path: '/login', name: 'Authentication', component: Authentication },
   {
     path: '/',
     name: 'Home',

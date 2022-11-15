@@ -1,10 +1,25 @@
 import React from 'react';
+import { useLocation } from 'react-router';
 import LoginImg from '@Assets/image/main-header-img.jpg';
 import LoginLogo from '@Assets/image/login-logo.png';
 import Button from '@Components/common/Button';
-import { Avatar } from '@src/constants/svgIcons';
+import SignIn from '@Components/Authentication/SignIn';
+import ForgotPassword from '@Components/Authentication/ForgotPassword';
 
 export default function Authentication() {
+  const { pathname } = useLocation();
+
+  const getContent = () => {
+    switch (pathname) {
+      case '/login':
+        return <SignIn />;
+      case '/forgot-password':
+        return <ForgotPassword />;
+      default:
+        return <SignIn />;
+    }
+  };
+
   return (
     <main className="naxatw-h-screen naxatw-p-8 naxatw-font-primary">
       <div className="naxatw-h-full naxatw-px-6">
@@ -65,63 +80,7 @@ export default function Authentication() {
               </Button>
             </div>
             <div className="naxatw-mx-auto naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-center naxatw-text-center naxatw-w-[54rem] naxatw-p-16">
-              <div className="">
-                <figure>{Avatar}</figure>
-                <h3 className="naxatw-font-bold naxatw-mt-6 naxatw-tracking-wide">
-                  Sign in
-                </h3>
-              </div>
-              <div className="naxatw-w-full">
-                <Button className="naxatw-border-2 naxatw-border-grey-400 naxatw-px-10 naxatw-py-3 naxatw-w-full naxatw-rounded-xl naxatw-mt-12">
-                  <p className="naxatw-font-bold">Sign in with Google</p>
-                </Button>
-
-                <hr className="naxatw-my-8 naxatw-h-px naxatw-bg-gray-200 naxatw-border-0 naxatw-dark:bg-gray-700" />
-
-                <div className="mb-6 naxatw-space-y-8">
-                  <div className="">
-                    <label className="naxatw-w-full naxatw-text-left">
-                      Email address
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control block w-full px-4 py-2 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                      placeholder="Email address"
-                    />
-                  </div>
-                  <div className="">
-                    <label className="naxatw-w-full naxatw-text-left">
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      className="form-control block w-full px-4 py-2 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                      placeholder="Password"
-                    />
-                  </div>
-
-                  <div className="naxatw-flex naxatw-items-start naxatw-mb-6 naxatw-justify-between">
-                    <div className="naxatw-flex naxatw-items-center h-5">
-                      <input
-                        id="keep-me"
-                        type="checkbox"
-                        value=""
-                        className="naxatw-w-4 naxatw-h-4 naxatw-bg-gray-50 naxatw-rounded naxatw-border naxatw-border-gray-300 naxatw-focus:ring-3 naxatw-focus:ring-blue-300 naxatw-dark:bg-gray-700 naxatw-dark:border-gray-600 naxatw-dark:focus:ring-blue-600 naxatw-dark:ring-offset-gray-800"
-                        required
-                      />
-                      <label htmlFor="keep-me" className="">
-                        Keep Me Signed In
-                      </label>
-                    </div>
-                    <div>
-                      <Button>Forgot your password?</Button>
-                    </div>
-                  </div>
-                </div>
-                <Button className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold naxatw-w-full naxatw-mt-12">
-                  Sign In
-                </Button>
-              </div>
+              {getContent()}
             </div>
           </div>
         </div>

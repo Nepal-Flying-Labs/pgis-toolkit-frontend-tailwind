@@ -1,8 +1,12 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Creators from '@Actions/authentication';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import { Avatar } from '@src/constants/svgIcons';
+
+const { loginRequest } = Creators;
 
 const initialState = {
   username: '',
@@ -10,12 +14,12 @@ const initialState = {
 };
 
 export default function SignIn() {
+  const dispatch = useDispatch();
   const { values, meta, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: initialState,
     required: ['username', 'password'],
     onSubmit: data => {
-      console.log(data, 'datax');
-      // dispatch(getAuthTokenRequest({ data, routeTo: '/profile' }));
+      dispatch(loginRequest(data));
     },
   });
 

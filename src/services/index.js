@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const { BASE_URL } = process.env;
+const { API_URL } = process.env;
 export const api = axios.create({
-  baseURL: `${BASE_URL}`,
+  baseURL: `${API_URL}`,
   timeout: 50000,
   headers: {
     Accept: 'application/json',

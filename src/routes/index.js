@@ -1,8 +1,15 @@
-import Login from '../views/Login';
+import Authentication from '../views/Authentication';
 import Home from '../views/Home';
+import Organizations from '../views/Organizations';
 
 const indexRoutes = [
-  { path: '/login', name: 'Login', component: Login },
+  { path: '/organizations', name: 'Organizations', component: Organizations },
+  { path: '/login', name: 'Authentication', component: Authentication },
+  {
+    path: '/forgot-password',
+    name: 'Forgot Password',
+    component: Authentication,
+  },
   {
     path: '/',
     name: 'Home',

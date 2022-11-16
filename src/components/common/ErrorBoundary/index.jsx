@@ -1,5 +1,5 @@
 import React from 'react';
-import Oops from '@src/assets/image/error1.jpg';
+import Oops from '@src/assets/images/error1.jpg';
 
 const style = {
   display: 'block',

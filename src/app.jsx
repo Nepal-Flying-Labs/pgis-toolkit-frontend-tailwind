@@ -41,10 +41,10 @@ function generateRoutes(routes) {
 
 function App() {
   return (
-    <div className="container">
+    <>
       <Toast />
       {generateRoutes(indexRoutes)}
-    </div>
+    </>
   );
 }
 

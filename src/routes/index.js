@@ -1,7 +1,9 @@
 import Authentication from '../views/Authentication';
 import Home from '../views/Home';
+import Organizations from '../views/Organizations';
 
 const indexRoutes = [
+  { path: '/organizations', name: 'Organizations', component: Organizations },
   { path: '/login', name: 'Authentication', component: Authentication },
   {
     path: '/forgot-password',

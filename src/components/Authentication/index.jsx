@@ -1,6 +1,6 @@
 import React from 'react';
-import LoginImg from '@Assets/image/main-header-img.jpg';
-import LoginLogo from '@Assets/image/login-logo.png';
+import LoginImg from '@Assets/images/main-header-img.jpg';
+import LoginLogo from '@Assets/images/login-logo.png';
 import Button from '@Components/common/Button';
 import { Avatar } from '@src/constants/svgIcons';
 

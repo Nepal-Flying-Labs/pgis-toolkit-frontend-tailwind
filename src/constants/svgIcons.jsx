@@ -27,3 +27,5 @@ export const Avatar = (
     </g>
   </svg>
 );
+
+export const nothing = '';

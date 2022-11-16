@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router';
-import LoginImg from '@Assets/image/main-header-img.jpg';
-import LoginLogo from '@Assets/image/login-logo.png';
+import LoginImg from '@Assets/images/main-header-img.jpg';
+import LoginLogo from '@Assets/images/login-logo.png';
 import Button from '@Components/common/Button';
 import SignIn from '@Components/Authentication/SignIn';
 import ForgotPassword from '@Components/Authentication/ForgotPassword';

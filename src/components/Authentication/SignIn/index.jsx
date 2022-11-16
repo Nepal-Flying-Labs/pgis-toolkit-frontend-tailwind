@@ -1,9 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@Components/common/Button';
+import useForm from '@Hooks/useForm';
 import { Avatar } from '@src/constants/svgIcons';
 
+const initialState = {
+  username: '',
+  password: '',
+};
+
 export default function SignIn() {
+  const { values, meta, inputProps, handleChange, handleSubmit } = useForm({
+    initialValues: initialState,
+    required: ['username', 'password'],
+    onSubmit: data => {
+      console.log(data, 'datax');
+      // dispatch(getAuthTokenRequest({ data, routeTo: '/profile' }));
+    },
+  });
+
   return (
     <>
       <div className="">
@@ -27,7 +42,11 @@ export default function SignIn() {
             <input
               type="text"
               className="form-control block w-full px-4 py-2 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              name="username"
               placeholder="Email address"
+              value={values.username}
+              onChange={handleChange}
+              {...inputProps}
             />
           </div>
           <div className="">
@@ -35,7 +54,11 @@ export default function SignIn() {
             <input
               type="password"
               className="form-control block w-full px-4 py-2 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              name="password"
               placeholder="Password"
+              value={values.password}
+              onChange={handleChange}
+              {...inputProps}
             />
           </div>
 
@@ -63,7 +86,10 @@ export default function SignIn() {
             </div>
           </div>
         </div>
-        <Button className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold naxatw-w-full naxatw-mt-12">
+        <Button
+          className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold naxatw-w-full naxatw-mt-12"
+          onClick={handleSubmit}
+        >
           Sign In
         </Button>
       </div>

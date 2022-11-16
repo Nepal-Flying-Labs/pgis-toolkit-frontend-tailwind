@@ -1,19 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Creators from '@Actions/organizations';
+import usePagination from '@Hooks/usePagination';
 import Header from '@Components/common/Header';
 import Button from '@Components/common/Button';
 import Table, { TableHeader } from '@Components/common/Table/Table';
+import SortingContainer from '@Components/common/SortingContainer';
+import Pagination from '@Components/common/Pagination';
+import { getSelectedItemRange } from '@Components/common/Pagination/getSelectedItem';
+import { userRowsOption } from '@src/constants/paginationRowOptions';
 
 const { getOrganizationsRequest } = Creators;
 
-const currentPage = 1;
 const dataPerPage = 10;
 
 export default function Organizations() {
   const organizationData = useSelector(
     state => state.organizations.organizationData,
   );
+  const {
+    next,
+    prev,
+    jump,
+    handleSorting,
+    currentList,
+    currentPage,
+    begin,
+    end,
+  } = usePagination(organizationData?.results, 10);
+  const [rowPerPage, setRowPerPage] = useState(userRowsOption);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -78,7 +93,7 @@ export default function Organizations() {
               dataField="SN"
               headerClassName="naxatw-py-4 naxatw-px-6"
               rowcolSpan="rowspan_2"
-              // dataHeader={<SortingContainer name="S.N" />}
+              dataHeader={<SortingContainer name="S.N" />}
               dataFormat={(row, _, index) => {
                 // return <span>{(currentPage - 1) * dataPerPage + (index + 1)}</span>;
                 return (
@@ -90,7 +105,7 @@ export default function Organizations() {
               dataField="Name"
               headerClassName="naxatw-py-4 naxatw-px-6"
               rowcolSpan="rowspan_2"
-              // dataHeader={<SortingContainer name="S.N" />}
+              dataHeader={<SortingContainer name="Name" />}
               dataFormat={row => {
                 return <span>{row.name}</span>;
               }}
@@ -108,12 +123,27 @@ export default function Organizations() {
               dataField="Projects"
               headerClassName="naxatw-py-4 naxatw-px-6"
               rowcolSpan="rowspan_2"
-              // dataHeader={<SortingContainer name="S.N" />}
+              dataHeader={<SortingContainer name="Projects" />}
               dataFormat={row => {
                 return <span>{row.projects}</span>;
               }}
             />
           </Table>
+
+          <Pagination
+            nextPage={next}
+            previousPage={prev}
+            currentPage={currentPage}
+            rowPerPage={rowPerPage}
+            jumpTo={jump}
+            setRowPerPage={setRowPerPage}
+            paginatedCounts={getSelectedItemRange(
+              begin,
+              end,
+              organizationData?.results || 10,
+            )}
+            paginatedCountsTotal={organizationData?.results?.length || 0}
+          />
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ const initialState = {
 const loginSuccess = (state, action) => ({
   ...state,
   loading: false,
-  user: action.payload.data,
+  user: action.payload,
 });
 
 const authenticationReducer = createReducer(initialState, {

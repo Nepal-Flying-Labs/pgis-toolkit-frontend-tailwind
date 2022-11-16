@@ -1,25 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Creators from '@Actions/organizations';
 import Header from '@Components/common/Header';
 import Button from '@Components/common/Button';
+import Table, { TableHeader } from '@Components/common/Table/Table';
 
-const tableData = [
-  {
-    id: 1,
-    name: 'World Bicycle Relief',
-    admin: 'admin@worldbicyclerelief.org',
-    projects: 12,
-  },
-  { id: 2, name: 'EPFL', admin: 'admin@epfl.org', projects: 1 },
-  {
-    id: 3,
-    name: 'Nepal Flying Lab',
-    admin: 'admin@flyinglabs.org',
-    projects: 4,
-  },
-  { id: 4, name: 'Naxa Pvt Ltd', admin: 'admin@naxa.org', projects: 8 },
-];
+const { getOrganizationsRequest } = Creators;
+
+const currentPage = 1;
+const dataPerPage = 10;
 
 export default function Organizations() {
+  const organizationData = useSelector(
+    state => state.organizations.organizationData,
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getOrganizationsRequest());
+  }, []);
+
   return (
     <div>
       <Header />
@@ -65,48 +65,55 @@ export default function Organizations() {
         </div>
 
         <div className="naxatw-overflow-x-auto naxatw-relative naxatw-mt-8">
-          <table className="naxatw-w-full naxatw-text-lg naxatw-text-left naxatw-text-grey-500 naxatw-dark:text-grey-400">
-            <thead className="naxatw-text-lg naxatw-text-grey-700 naxatw-uppercase naxatw-bg-grey-50 naxatw-dark:bg-grey-700 naxatw-dark:text-grey-400">
-              <tr>
-                <th scope="col" className="naxatw-py-3 naxatw-px-6">
-                  SN
-                </th>
-                <th scope="col" className="naxatw-py-3 naxatw-px-6">
-                  Name
-                </th>
-                <th scope="col" className="naxatw-py-3 naxatw-px-6">
-                  Admin
-                </th>
-                <th scope="col" className="naxatw-py-3 naxatw-px-6">
-                  Projects
-                </th>
-                <th scope="col" className="naxatw-py-3 naxatw-px-6" />
-              </tr>
-            </thead>
-            <tbody>
-              {tableData.map(({ id, name, admin, projects }, idx) => (
-                <tr
-                  key={id}
-                  className="naxatw-bg-white naxatw-border-b naxatw-dark:bg-grey-800 naxatw-dark:border-grey-700"
-                >
-                  <th
-                    scope="row"
-                    className="naxatw-py-4 naxatw-px-6 naxatw-font-medium  naxatw-whitespace-nowrap naxatw-dark:text-white"
-                  >
-                    {idx + 1}
-                  </th>
-                  <th
-                    scope="row"
-                    className="naxatw-py-4 naxatw-px-6 naxatw-font-medium naxatw-text-grey-900 naxatw-whitespace-nowrap naxatw-dark:text-white"
-                  >
-                    {name}
-                  </th>
-                  <td className="naxatw-py-4 naxatw-px-6">{admin}</td>
-                  <td className="naxatw-py-4 naxatw-px-6">{projects}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table
+            data={organizationData?.results}
+            className="naxatw-w-full naxatw-text-lg naxatw-text-left naxatw-text-grey-500 naxatw-dark:text-grey-400"
+            headerClassName="naxatw-py-4 naxatw-px-6"
+            headerWidths={['50px', '200px', '150px', '150px']}
+            onRowClick={row => {
+              // history.push(`/`);
+            }}
+          >
+            <TableHeader
+              dataField="SN"
+              headerClassName="naxatw-py-4 naxatw-px-6"
+              rowcolSpan="rowspan_2"
+              // dataHeader={<SortingContainer name="S.N" />}
+              dataFormat={(row, _, index) => {
+                // return <span>{(currentPage - 1) * dataPerPage + (index + 1)}</span>;
+                return (
+                  <span>{(currentPage - 1) * dataPerPage + (index + 1)}</span>
+                );
+              }}
+            />
+            <TableHeader
+              dataField="Name"
+              headerClassName="naxatw-py-4 naxatw-px-6"
+              rowcolSpan="rowspan_2"
+              // dataHeader={<SortingContainer name="S.N" />}
+              dataFormat={row => {
+                return <span>{row.name}</span>;
+              }}
+            />
+            <TableHeader
+              dataField="Email"
+              headerClassName="naxatw-py-4 naxatw-px-6"
+              rowcolSpan="rowspan_2"
+              // dataHeader={<SortingContainer name="S.N" />}
+              dataFormat={row => {
+                return <span>{row.email}</span>;
+              }}
+            />
+            <TableHeader
+              dataField="Projects"
+              headerClassName="naxatw-py-4 naxatw-px-6"
+              rowcolSpan="rowspan_2"
+              // dataHeader={<SortingContainer name="S.N" />}
+              dataFormat={row => {
+                return <span>{row.projects}</span>;
+              }}
+            />
+          </Table>
         </div>
       </div>
     </div>

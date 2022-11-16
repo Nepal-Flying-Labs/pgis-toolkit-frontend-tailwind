@@ -124,6 +124,8 @@ export default class Table extends Component {
         !isSubHeader && (
           <th
             key={field}
+            scope="row"
+            className="naxatw-py-4 naxatw-px-6 naxatw-font-medium  naxatw-whitespace-nowrap"
             {...{ [rowCol[0]]: rowCol[1] }}
             {...{ className: headClassName[index] }}
             {...(headerWidths[index] &&
@@ -179,6 +181,7 @@ export default class Table extends Component {
       // eslint-disable-next-line
       <tr
         key={`tr_${row.id}`}
+        className="naxatw-bg-white naxatw-border-b naxatw-border-grey-300 naxatw-text-grey-800 naxatw-text-2xl"
         {...(onRowClick && {
           onClick: () => onRowClick(row),
           style: { cursor: 'pointer' },
@@ -192,6 +195,7 @@ export default class Table extends Component {
                 key={`${field}_${row[field] || ind}_${
                   row[uniqueKey] || ind
                 }`.replace(/ /g, '_')}
+                className="naxatw-py-4 naxatw-px-6"
               >
                 {this.getBodyCellData(row, field, index)}
               </td>
@@ -205,12 +209,12 @@ export default class Table extends Component {
     const { showHeader, className, style, tableClassName } = this.props;
 
     return (
-      <div className={`naxa-table is-overflow ${tableClassName}`} style={style}>
-        <table className={`table ${className}`}>
+      <div className={`${tableClassName}`} style={style}>
+        <table className={`${className}`}>
           {showHeader && (
-            <thead>
-              <tr>{this.renderHeader()}</tr>
-              <tr>{this.renderSubHeader()}</tr>
+            <thead className="naxatw-border-b naxatw-border-grey-300 naxatw-text-lg naxatw-text-grey-500 naxatw-uppercase">
+              <tr scope="col">{this.renderHeader()}</tr>
+              <tr scope="col">{this.renderSubHeader()}</tr>
             </thead>
           )}
           <tbody>{this.renderRow()}</tbody>

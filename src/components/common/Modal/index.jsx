@@ -8,7 +8,7 @@ export default function Modal({ title, show, onClose, children }) {
       aria-hidden="true"
       className={`${
         show ? '' : 'hidden'
-      } naxatw-fixed naxatw-top-0 naxatw-left-0 naxatw-h-screen naxatw-w-screen naxatw-overflow-y-auto naxatw-overflow-x-hidden naxatw-z-50 naxatw-p-4 naxatw-md:inset-0 naxatw-h-modal naxatw-md:h-full naxatw-flex naxatw-justify-center naxatw-bg-grey-500/50`}
+      } naxatw-fixed naxatw-top-0 naxatw-left-0 naxatw-h-screen naxatw-w-screen naxatw-overflow-y-auto naxatw-overflow-x-hidden naxatw-z-[11111] naxatw-p-4 naxatw-md:inset-0 naxatw-h-modal naxatw-md:h-full naxatw-flex naxatw-justify-center naxatw-bg-grey-500/50`}
     >
       <div className="naxatw-relative naxatw-flex naxatw-flex-col naxatw-justify-center naxatw-items-center naxatw-w-full naxatw-max-w-2xl naxatw-h-full naxatw-md:h-auto">
         <div className="naxatw-relative naxatw-bg-white naxatw-rounded-3xl naxatw-shadow naxatw-p-4">

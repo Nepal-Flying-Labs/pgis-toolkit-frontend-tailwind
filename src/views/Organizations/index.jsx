@@ -11,6 +11,7 @@ import { getSelectedItemRange } from '@Components/common/Pagination/getSelectedI
 import { userRowsOption } from '@src/constants/paginationRowOptions';
 import Modal from '@Components/common/Modal';
 import CreateAnOrganization from '@Components/ModalContent/CreateAnOrganization';
+import CreateOrganizationSuccess from '@Components/ModalContent/CreateOrganizationSuccess';
 
 const { getOrganizationsRequest, toggleModal } = Creators;
 
@@ -21,6 +22,9 @@ export default function Organizations() {
     state => state.organizations.organizationData,
   );
   const showModal = useSelector(state => state.organizations.showModal);
+  const createOrganizationDetail = useSelector(
+    state => state.organizations.createOrganizationDetail,
+  );
   const {
     next,
     prev,
@@ -44,12 +48,16 @@ export default function Organizations() {
 
       <Modal
         show={showModal}
-        title="Create an Organization"
+        title={createOrganizationDetail ? '' : 'Create an Organization'}
         onClose={() => {
           dispatch(toggleModal(false));
         }}
       >
-        <CreateAnOrganization />
+        {createOrganizationDetail ? (
+          <CreateOrganizationSuccess />
+        ) : (
+          <CreateAnOrganization />
+        )}
       </Modal>
 
       <div className="naxatw-mt-28 naxatw-px-16 naxatw-py-10">

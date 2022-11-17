@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import Creators from '@Actions/organizations';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button';
+
+const { createOrganizationRequest } = Creators;
 
 const initialState = {
   organizationName: '',
@@ -18,13 +21,16 @@ export default function CreateAnOrganization() {
     initialValues: initialState,
     required: ['organizationName'],
     onSubmit: data => {
-      console.log(data, 'datax');
-      // dispatch(loginRequest(data));
+      const payload = {
+        organization_name: data.organizationName,
+        email: emailList,
+      };
+      dispatch(createOrganizationRequest(payload));
     },
   });
 
   return (
-    <div className="naxatw-w-[50rem]">
+    <div className="naxatw-w-[64rem]">
       <div className="naxatw-mb-10 naxatw-space-y-8">
         <div className="">
           <label className="naxatw-w-full naxatw-text-left">

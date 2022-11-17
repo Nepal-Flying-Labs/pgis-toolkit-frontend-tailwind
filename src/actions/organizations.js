@@ -6,6 +6,10 @@ export const { Types, Creators } = createActions(
     getOrganizationsSuccess: ['payload'],
     getOrganizationsFailure: null,
 
+    createOrganizationRequest: ['payload'],
+    createOrganizationSuccess: ['payload'],
+    createOrganizationFailure: null,
+
     toggleModal: ['payload'],
   },
   { prefix: '/organizations' },

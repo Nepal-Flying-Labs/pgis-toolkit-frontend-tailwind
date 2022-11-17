@@ -9,8 +9,10 @@ import SortingContainer from '@Components/common/SortingContainer';
 import Pagination from '@Components/common/Pagination';
 import { getSelectedItemRange } from '@Components/common/Pagination/getSelectedItem';
 import { userRowsOption } from '@src/constants/paginationRowOptions';
+import Modal from '@Components/common/Modal';
+import CreateAnOrganization from '@Components/ModalContent/CreateAnOrganization';
 
-const { getOrganizationsRequest } = Creators;
+const { getOrganizationsRequest, toggleModal } = Creators;
 
 const dataPerPage = 10;
 
@@ -18,6 +20,7 @@ export default function Organizations() {
   const organizationData = useSelector(
     state => state.organizations.organizationData,
   );
+  const showModal = useSelector(state => state.organizations.showModal);
   const {
     next,
     prev,
@@ -39,12 +42,25 @@ export default function Organizations() {
     <div>
       <Header />
 
+      <Modal
+        show={showModal}
+        title="Create an Organization"
+        onClose={() => {
+          dispatch(toggleModal(false));
+        }}
+      >
+        <CreateAnOrganization />
+      </Modal>
+
       <div className="naxatw-mt-28 naxatw-px-16 naxatw-py-10">
         <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
           <h3 className="naxatw-font-bold naxatw-text-4xl naxatw-tracking-wide">
             Organizations
           </h3>
-          <Button className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold">
+          <Button
+            className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold"
+            onClick={() => dispatch(toggleModal(true))}
+          >
             Create New
           </Button>
         </div>

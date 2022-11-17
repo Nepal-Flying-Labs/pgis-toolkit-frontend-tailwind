@@ -3,6 +3,14 @@ import { Types } from '@Actions/organizations';
 
 const initialState = {
   organizationData: {},
+  showModal: false,
+};
+
+const toggleModal = (state, action) => {
+  return {
+    ...state,
+    showModal: !!action.payload,
+  };
 };
 
 const getOrganizationsSuccess = (state, action) => {
@@ -14,6 +22,7 @@ const getOrganizationsSuccess = (state, action) => {
 
 const organizationsReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATIONS_SUCCESS]: getOrganizationsSuccess,
+  [Types.TOGGLE_MODAL]: toggleModal,
 });
 
 export default organizationsReducer;

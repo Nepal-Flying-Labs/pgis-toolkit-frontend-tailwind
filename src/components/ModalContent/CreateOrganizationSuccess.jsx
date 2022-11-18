@@ -12,15 +12,15 @@ export default function CreateOrganizationSuccess() {
   const dispatch = useDispatch();
 
   return (
-    <div className="naxatw-w-[64rem]">
+    <div className="">
       <div className="naxatw-mb-10 naxatw-space-y-8">
-        <h2 className="naxatw-font-light">
+        <h4 className="naxatw-font-light">
           Organization successfully created.
-        </h2>
+        </h4>
         <p>Invite email has been sent to the following email addresses:</p>
         <div>
-          {createOrganizationDetail?.email.map(item => (
-            <p>{item}</p>
+          {createOrganizationDetail?.email?.map(item => (
+            <p key={item}>{item}</p>
           ))}
         </div>
         <p>

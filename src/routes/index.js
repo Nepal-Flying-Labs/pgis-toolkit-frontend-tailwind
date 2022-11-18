@@ -5,6 +5,7 @@ import VerifyUser from '@Components/Authentication/VerifyUser';
 
 const indexRoutes = [
   { path: '/organizations', name: 'Organizations', component: Organizations },
+  { path: '/sign-up', name: 'SignUp', component: Authentication },
   { path: '/login', name: 'Login', component: Authentication },
   { path: '/verify-user', name: 'VerifyUser', component: VerifyUser },
   {

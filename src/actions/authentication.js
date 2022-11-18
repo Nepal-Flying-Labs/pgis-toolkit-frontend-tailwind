@@ -3,11 +3,15 @@ import { createActions } from 'reduxsauce';
 export const { Types, Creators } = createActions({
   loginRequest: ['payload'],
   loginSuccess: ['payload'],
-  loginFailure: ['payload'],
+  loginFailure: null,
 
   verifyUserRequest: ['params'],
   verifyUserSuccess: ['payload'],
   verifyUserFailure: null,
+
+  signUpRequest: ['payload'],
+  signUpSuccess: ['payload'],
+  signUpFailure: null,
 
   logoutRequest: null,
   logoutSuccess: null,

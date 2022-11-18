@@ -1,11 +1,11 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Creators from '@Actions/authentication';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import { Avatar } from '@src/constants/svgIcons';
 
-const { loginRequest } = Creators;
+const { signUpRequest } = Creators;
 
 const initialState = {
   fullname: '',
@@ -17,9 +17,10 @@ const initialState = {
 };
 
 export default function SignUp() {
+  const userDetail = useSelector(state => state.authentication.userDetail);
   const dispatch = useDispatch();
   const { values, meta, inputProps, handleChange, handleSubmit } = useForm({
-    initialValues: initialState,
+    initialValues: { ...initialState, email: userDetail?.email || '' },
     required: [
       'fullname',
       'email',
@@ -29,8 +30,19 @@ export default function SignUp() {
       'phoneNumber',
     ],
     onSubmit: data => {
-      console.log(data, 'datax');
-      // dispatch(loginRequest(data));
+      const payloadData = {
+        full_name: data.fullname,
+        email: data.email,
+        username: data.username,
+        password: data.password,
+        address: data.address,
+        phone_no: data.phoneNumber,
+        email_verification_token: userDetail.email_verification_token,
+        organization: userDetail.organization || '',
+        project: userDetail.project || '',
+        group: userDetail.group,
+      };
+      dispatch(signUpRequest(payloadData));
     },
   });
 

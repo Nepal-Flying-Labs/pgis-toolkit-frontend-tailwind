@@ -43,13 +43,13 @@ export default function SignIn() {
         <div className="mb-6 naxatw-space-y-[1.125rem]">
           <div className="naxatw-space-y-2">
             <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
-              Email address
+              Username
             </label>
             <input
               type="text"
               className="naxatw-block naxatw-w-full naxatw-px-4 naxatw-py-2 naxatw-font-normal naxatw-text-gray-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gray-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
               name="username"
-              placeholder="Email address"
+              placeholder="Username"
               value={values.username}
               onChange={handleChange}
               {...inputProps}

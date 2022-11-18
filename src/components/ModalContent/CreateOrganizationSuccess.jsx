@@ -20,7 +20,7 @@ export default function CreateOrganizationSuccess() {
         <p>Invite email has been sent to the following email addresses:</p>
         <div>
           {createOrganizationDetail?.email?.map(item => (
-            <p>{item}</p>
+            <p key={item}>{item}</p>
           ))}
         </div>
         <p>

@@ -4,6 +4,7 @@ import LoginImg from '@Assets/images/main-header-img.jpg';
 import LoginLogo from '@Assets/images/login-logo.png';
 import Button from '@Components/common/Button';
 import SignIn from '@Components/Authentication/SignIn';
+import SignUp from '@Components/Authentication/SignUp';
 import ForgotPassword from '@Components/Authentication/ForgotPassword';
 
 export default function Authentication() {
@@ -13,6 +14,8 @@ export default function Authentication() {
     switch (pathname) {
       case '/login':
         return <SignIn />;
+      case '/sign-up':
+        return <SignUp />;
       case '/forgot-password':
         return <ForgotPassword />;
       default:

@@ -30,15 +30,15 @@ export default function CreateAnOrganization() {
   });
 
   return (
-    <div className="naxatw-w-[64rem]">
-      <div className="naxatw-mb-10 naxatw-space-y-8">
-        <div className="">
-          <label className="naxatw-w-full naxatw-text-left">
+    <div className="">
+      <div className="naxatw-p-4 naxatw-space-y-7">
+        <div className="naxatw-space-y-2">
+          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
             Name of Organization
           </label>
           <input
             type="text"
-            className="form-control block w-full px-4 py-2 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-px-3 naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-gray-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gray-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
             name="organizationName"
             placeholder="Enter name of organization"
             value={values.organizationName}
@@ -47,11 +47,13 @@ export default function CreateAnOrganization() {
           />
         </div>
 
-        <div className="">
-          <label className="naxatw-w-full naxatw-text-left">Website</label>
+        <div className="naxatw-space-y-2">
+          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+            Website
+          </label>
           <input
             type="text"
-            className="form-control block w-full px-4 py-2 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-px-3 naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-gray-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gray-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
             name="website"
             placeholder="example.com"
             value={values.website}
@@ -60,11 +62,13 @@ export default function CreateAnOrganization() {
           />
         </div>
 
-        <div className="">
-          <label className="naxatw-w-full naxatw-text-left">About</label>
+        <div className="naxatw-space-y-2">
+          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+            About
+          </label>
           <textarea
             type="text"
-            className="form-control block w-full px-4 py-2 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            className="naxatw-block naxatw-w-full naxatw-px-3 naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-gray-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gray-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
             name="about"
             placeholder="About the organization"
             value={values.about}
@@ -72,13 +76,14 @@ export default function CreateAnOrganization() {
             {...inputProps}
           />
         </div>
-        <div className="">
-          <label className="naxatw-w-full naxatw-text-left">
+
+        <div className="naxatw-space-y-2">
+          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
             Thematic Area
           </label>
           <input
             type="text"
-            className="form-control block w-full px-4 py-2 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-px-3 naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-gray-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gray-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
             name="thematicArea"
             placeholder="Choose"
             value={values.thematicArea}
@@ -86,12 +91,15 @@ export default function CreateAnOrganization() {
             {...inputProps}
           />
         </div>
-        <div className="">
-          <label className="naxatw-w-full naxatw-text-left">Email Invite</label>
+
+        <div className="naxatw-space-y-2">
+          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+            Email Invite
+          </label>
           <div className="naxatw-flex naxatw-items-center">
             <input
               type="text"
-              className="form-control block w-full px-4 py-2 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-px-3 naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-gray-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gray-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
               name="email"
               placeholder="Enter email address to invite organization admin"
               value={values.email}
@@ -116,9 +124,9 @@ export default function CreateAnOrganization() {
         </div>
       </div>
 
-      <div className=" naxatw-mt-4 naxatw-flex naxatw-items-center naxatw-justify-center">
+      <div className=" naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
         <Button
-          className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold naxatw-mt-12"
+          className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold"
           onClick={handleSubmit}
         >
           Invite & Save

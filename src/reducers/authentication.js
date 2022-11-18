@@ -4,6 +4,7 @@ import persist from '../utils/persist';
 
 const initialState = {
   user: {},
+  userDetail: {},
 };
 
 const loginSuccess = (state, action) => ({
@@ -14,6 +15,7 @@ const loginSuccess = (state, action) => ({
 const verifyUserSuccess = (state, action) => {
   return {
     ...state,
+    userDetail: action.payload,
   };
 };
 

@@ -60,9 +60,9 @@ export default function Organizations() {
         )}
       </Modal>
 
-      <div className="naxatw-mt-28 naxatw-px-16 naxatw-py-10">
+      <div className="naxatw-mt-24 naxatw-px-10">
         <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
-          <h3 className="naxatw-font-bold naxatw-text-4xl naxatw-tracking-wide">
+          <h3 className="naxatw-font-bold naxatw-tracking-wider">
             Organizations
           </h3>
           <Button
@@ -73,7 +73,7 @@ export default function Organizations() {
           </Button>
         </div>
 
-        <div className="naxatw-flex naxatw-items-center naxatw-w-96 naxatw-mt-8">
+        <div className="naxatw-flex naxatw-items-center naxatw-w-60 naxatw-mt-4 naxatw-h-12">
           <label htmlFor="simple-search" className="naxatw-sr-only">
             Search
           </label>
@@ -81,7 +81,7 @@ export default function Organizations() {
             <div className="naxatw-absolute naxatw-inset-y-0 naxatw-left-0 naxatw-flex naxatw-items-center naxatw-pl-3 naxatw-pointer-events-none">
               <svg
                 aria-hidden="true"
-                className="naxatw-w-5 naxatw-h-5 naxatw-text-grey-500 naxatw-dark:text-grey-400"
+                className="naxatw-w-5 naxatw-h-5 naxatw-text-grey-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -96,18 +96,18 @@ export default function Organizations() {
             <input
               type="text"
               id="simple-search"
-              className="naxatw-h-16 naxatw-bg-grey-100 naxatw-border naxatw-border-grey-300 naxatw-text-grey-900 naxatw-text-lg naxatw-rounded-full naxatw-focus:ring-blue-500 naxatw-focus:border-blue-500 naxatw-block naxatw-w-full naxatw-pl-10 naxatw-p-2.5  naxatw-dark:bg-grey-700 naxatw-dark:border-grey-600 naxatw-dark:placeholder-grey-400 naxatw-dark:text-white naxatw-dark:focus:ring-blue-500 naxatw-dark:focus:border-blue-500"
+              className="naxatw-bg-grey-100 naxatw-border naxatw-border-grey-300 naxatw-text-grey-900 naxatw-rounded-full naxatw-focus:ring-blue-500 naxatw-focus:border-blue-500 naxatw-block naxatw-w-full naxatw-pl-10 naxatw-p-2.5"
               placeholder="Search"
               required
             />
           </div>
         </div>
 
-        <div className="naxatw-overflow-x-auto naxatw-relative naxatw-mt-8">
+        <div className="naxatw-overflow-x-auto naxatw-relative naxatw-mt-[1.875rem]">
           <Table
             data={organizationData?.results}
-            className="naxatw-w-full naxatw-text-lg naxatw-text-left naxatw-text-grey-500 naxatw-dark:text-grey-400"
-            headerClassName="naxatw-py-4 naxatw-px-6"
+            className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
+            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
             headerWidths={['50px', '200px', '150px', '150px']}
             onRowClick={row => {
               // history.push(`/`);
@@ -115,41 +115,43 @@ export default function Organizations() {
           >
             <TableHeader
               dataField="SN"
-              headerClassName="naxatw-py-4 naxatw-px-6"
+              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowspan_2"
               dataHeader={<SortingContainer name="S.N" />}
               dataFormat={(row, _, index) => {
                 // return <span>{(currentPage - 1) * dataPerPage + (index + 1)}</span>;
                 return (
-                  <span>{(currentPage - 1) * dataPerPage + (index + 1)}</span>
+                  <span className="naxatw-text-base">
+                    {(currentPage - 1) * dataPerPage + (index + 1)}
+                  </span>
                 );
               }}
             />
             <TableHeader
               dataField="Name"
-              headerClassName="naxatw-py-4 naxatw-px-6"
+              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowspan_2"
               dataHeader={<SortingContainer name="Name" />}
               dataFormat={row => {
-                return <span>{row.name}</span>;
+                return <span className="naxatw-text-base">{row.name}</span>;
               }}
             />
             <TableHeader
               dataField="Email"
-              headerClassName="naxatw-py-4 naxatw-px-6"
+              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowspan_2"
               // dataHeader={<SortingContainer name="S.N" />}
               dataFormat={row => {
-                return <span>{row.email}</span>;
+                return <span className="naxatw-text-base">{row.email}</span>;
               }}
             />
             <TableHeader
               dataField="Projects"
-              headerClassName="naxatw-py-4 naxatw-px-6"
+              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowspan_2"
               dataHeader={<SortingContainer name="Projects" />}
               dataFormat={row => {
-                return <span>{row.projects}</span>;
+                return <span className="naxatw-text-base">{row.projects}</span>;
               }}
             />
           </Table>

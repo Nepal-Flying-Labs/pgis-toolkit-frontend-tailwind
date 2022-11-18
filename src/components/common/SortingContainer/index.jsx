@@ -9,7 +9,9 @@ export default function SortingContainer({ name, handleSort }) {
   };
   return (
     <div className="naxatw-flex naxatw-items-center">
-      <span>{name}</span>
+      <span className="naxatw-font-bold naxatw-text-grey-500 naxatw-text-sm">
+        {name}
+      </span>
       <span className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-center">
         <i
           role="button"

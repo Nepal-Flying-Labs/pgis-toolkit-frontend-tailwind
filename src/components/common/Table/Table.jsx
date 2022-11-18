@@ -125,7 +125,7 @@ export default class Table extends Component {
           <th
             key={field}
             scope="row"
-            className="naxatw-py-4 naxatw-px-6 naxatw-font-medium  naxatw-whitespace-nowrap"
+            className="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-whitespace-nowrap naxatw-text-sm"
             {...{ [rowCol[0]]: rowCol[1] }}
             {...{ className: headClassName[index] }}
             {...(headerWidths[index] &&
@@ -155,6 +155,7 @@ export default class Table extends Component {
             {...{ className: headClassName[index] }}
             {...(headerWidths[index] &&
               data.length > 0 && { style: { width: headerWidths[index] } })}
+            className="naxatw-text-sm"
           >
             {this.getHeaderData(field)}
           </th>
@@ -181,7 +182,7 @@ export default class Table extends Component {
       // eslint-disable-next-line
       <tr
         key={`tr_${row.id}`}
-        className="naxatw-bg-white naxatw-border-b naxatw-border-grey-300 naxatw-text-grey-800 naxatw-text-2xl"
+        className="naxatw-bg-white naxatw-border-b naxatw-border-grey-300 naxatw-text-grey-800"
         {...(onRowClick && {
           onClick: () => onRowClick(row),
           style: { cursor: 'pointer' },
@@ -195,7 +196,7 @@ export default class Table extends Component {
                 key={`${field}_${row[field] || ind}_${
                   row[uniqueKey] || ind
                 }`.replace(/ /g, '_')}
-                className="naxatw-py-4 naxatw-px-6"
+                className="naxatw-py-[0.8125rem] naxatw-px-3"
               >
                 {this.getBodyCellData(row, field, index)}
               </td>
@@ -212,7 +213,7 @@ export default class Table extends Component {
       <div className={`${tableClassName}`} style={style}>
         <table className={`${className}`}>
           {showHeader && (
-            <thead className="naxatw-border-b naxatw-border-grey-300 naxatw-text-lg naxatw-text-grey-500 naxatw-uppercase">
+            <thead className="naxatw-border-b naxatw-border-grey-300 naxatw-text-grey-500 naxatw-uppercase">
               <tr scope="col">{this.renderHeader()}</tr>
               <tr scope="col">{this.renderSubHeader()}</tr>
             </thead>

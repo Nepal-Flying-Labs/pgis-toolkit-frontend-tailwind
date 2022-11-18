@@ -41,10 +41,10 @@ function generateRoutes(routes) {
 
 function App() {
   return (
-    <>
+    <div className="naxatw-font-primary">
       <Toast />
       {generateRoutes(indexRoutes)}
-    </>
+    </div>
   );
 }
 

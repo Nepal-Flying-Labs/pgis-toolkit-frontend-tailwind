@@ -69,14 +69,6 @@ module.exports = {
             letterSpacing: '0',
           },
         ],
-        button: [
-          '0.875rem',
-          {
-            lineHeight: '1.375',
-            fontWeight: '700',
-            letterSpacing: '0',
-          },
-        ],
       },
     },
   },

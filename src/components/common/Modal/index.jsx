@@ -23,7 +23,9 @@ export default function Modal({ title, show, onClose, children }) {
               <span className="naxatw-sr-only">Close modal</span>
             </button>
           </div>
-          <div className="naxatw-p-6 naxatw-space-y-6">{children}</div>
+          <div className="naxatw-p-1 naxatw-mt-5 naxatw-space-y-6">
+            {children}
+          </div>
         </div>
       </div>
     </div>

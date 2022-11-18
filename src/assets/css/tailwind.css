@@ -21,6 +21,15 @@
   h6 {
     @apply naxatw-font-primary naxatw-text-grey-900 naxatw-text-[1rem] naxatw-font-bold naxatw-leading-[1.25] naxatw-tracking-normal;
   }
+  p {
+    @apply naxatw-text-grey-800;
+  }
+  span {
+    @apply naxatw-text-grey-800 naxatw-text-body-md;
+  }
+  button {
+    @apply naxatw-font-bold naxatw-text-[0.9357rem] naxatw-tracking-wider;
+  }
 }
 
 @layer components {

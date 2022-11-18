@@ -1,10 +1,12 @@
 import Authentication from '../views/Authentication';
 import Home from '../views/Home';
 import Organizations from '../views/Organizations';
+import VerifyUser from '@Components/Authentication/VerifyUser';
 
 const indexRoutes = [
   { path: '/organizations', name: 'Organizations', component: Organizations },
-  { path: '/login', name: 'Authentication', component: Authentication },
+  { path: '/login', name: 'Login', component: Authentication },
+  { path: '/verify-user', name: 'VerifyUser', component: VerifyUser },
   {
     path: '/forgot-password',
     name: 'Forgot Password',

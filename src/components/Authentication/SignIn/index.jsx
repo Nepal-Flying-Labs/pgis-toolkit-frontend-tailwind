@@ -26,7 +26,7 @@ export default function SignIn() {
   return (
     <>
       <div className="">
-        <figure>{Avatar}</figure>
+        <figure className="naxatw-flex naxatw-justify-center">{Avatar}</figure>
         <h3 className="naxatw-font-bold naxatw-mt-3 naxatw-tracking-wide">
           Sign in
         </h3>

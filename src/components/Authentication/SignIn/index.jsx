@@ -5,6 +5,7 @@ import Creators from '@Actions/authentication';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import { Avatar } from '@src/constants/svgIcons';
+import './styles.css';
 
 const { loginRequest } = Creators;
 
@@ -32,10 +33,8 @@ export default function SignIn() {
         </h3>
       </div>
       <div className="naxatw-w-full">
-        <Button className="naxatw-border naxatw-border-grey-800 naxatw-px-5 naxatw-py-3 naxatw-w-full naxatw-rounded-xl naxatw-mt-[3.125rem]">
-          <p className="naxatw-font-bold naxatw-text-[0.9357rem]">
-            Sign in with Google
-          </p>
+        <Button className="naxatw-btn-secondary naxatw-w-full naxatw-mt-[3.125rem]">
+          <p>Sign in with Google</p>
         </Button>
 
         <hr className="naxatw-my-9 naxatw-h-px naxatw-bg-gray-200 naxatw-border-0 naxatw-dark:bg-gray-700" />
@@ -47,7 +46,7 @@ export default function SignIn() {
             </label>
             <input
               type="text"
-              className="naxatw-block naxatw-w-full naxatw-px-4 naxatw-py-2 naxatw-font-normal naxatw-text-gray-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gray-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
+              className="username"
               name="username"
               placeholder="Username"
               value={values.username}
@@ -98,7 +97,7 @@ export default function SignIn() {
           </div>
         </div>
         <Button
-          className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-text-[0.9357rem] naxatw-font-bold naxatw-w-full naxatw-mt-12"
+          className="naxatw-btn-primary naxatw-mt-12 naxatw-w-full"
           onClick={handleSubmit}
         >
           Sign In

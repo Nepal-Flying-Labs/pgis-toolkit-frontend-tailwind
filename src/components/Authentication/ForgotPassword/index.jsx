@@ -27,7 +27,7 @@ export default function ForgotPassword() {
           />
         </div>
       </div>
-      <Button className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold naxatw-w-full naxatw-mt-7">
+      <Button className="naxatw-btn-primary naxatw-w-full naxatw-mt-7">
         Reset password
       </Button>
       <Link

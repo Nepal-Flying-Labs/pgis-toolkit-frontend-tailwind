@@ -74,9 +74,7 @@ export default function Authentication() {
           <div className="naxatw-grow naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-center naxatw-relative">
             <div className="naxatw-absolute naxatw-right-0 naxatw-top-0 naxatw-flex naxatw-gap-4 naxatw-items-center">
               <p className="naxatw-text-body-lg">Don&apos;t have an account?</p>
-              <Button className="naxatw-border naxatw-border-grey-800 naxatw-px-5 naxatw-py-3 naxatw-rounded-xl naxatw-text-secondary-400 naxatw-text-[0.9357rem] naxatw-font-bold">
-                Get Started
-              </Button>
+              <Button className="naxatw-btn-secondary">Get Started</Button>
             </div>
             <div className="naxatw-mx-auto naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-center naxatw-text-center naxatw-w-[27.5rem]">
               {getContent()}

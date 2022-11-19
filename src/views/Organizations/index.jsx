@@ -66,7 +66,8 @@ export default function Organizations() {
             Organizations
           </h3>
           <Button
-            className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold"
+            className="naxatw-btn-primary"
+            iconLeft="add_circle_outline"
             onClick={() => dispatch(toggleModal(true))}
           >
             Create New

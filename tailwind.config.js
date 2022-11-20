@@ -70,6 +70,9 @@ module.exports = {
           },
         ],
       },
+      boxShadow: {
+        '3xl': '0px 2px 20px 4px rgba(0, 0, 0, 0.12)',
+      },
     },
   },
   plugins: [],

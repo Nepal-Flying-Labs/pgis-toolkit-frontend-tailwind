@@ -12,6 +12,7 @@ import { userRowsOption } from '@src/constants/paginationRowOptions';
 import Modal from '@Components/common/Modal';
 import CreateAnOrganization from '@Components/ModalContent/CreateAnOrganization';
 import CreateOrganizationSuccess from '@Components/ModalContent/CreateOrganizationSuccess';
+import DropdownOptions from '@Components/common/DropdownOptions/index';
 
 const { getOrganizationsRequest, toggleModal } = Creators;
 
@@ -41,6 +42,28 @@ export default function Organizations() {
   useEffect(() => {
     dispatch(getOrganizationsRequest());
   }, []);
+
+  const dropdownOptions = [
+    {
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">edit</i>
+          <p className="naxatw-text-body-lg">Edit</p>
+        </span>
+      ),
+      onClick: data => {},
+    },
+    ,
+    {
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+        </span>
+      ),
+      onClick: data => {},
+    },
+  ];
 
   return (
     <div>
@@ -109,7 +132,7 @@ export default function Organizations() {
             data={organizationData?.results}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            headerWidths={['50px', '200px', '150px', '150px']}
+            headerWidths={['50px', '200px', '150px', '150px', '50px']}
             onRowClick={row => {
               // history.push(`/`);
             }}
@@ -153,6 +176,14 @@ export default function Organizations() {
               dataHeader={<SortingContainer name="Projects" />}
               dataFormat={row => {
                 return <span className="naxatw-text-base">{row.projects}</span>;
+              }}
+            />
+            <TableHeader
+              dataField=""
+              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
+              rowcolSpan="rowspan_3"
+              dataFormat={row => {
+                return <DropdownOptions options={dropdownOptions} data={row} />;
               }}
             />
           </Table>

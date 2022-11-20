@@ -1,6 +1,6 @@
-import Creators from '@Actions/authentication';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { Creators } from '@Actions/authentication';
 
 const { verifyUserRequest } = Creators;
 
@@ -11,7 +11,7 @@ export default function VerifyUser() {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     dispatch(verifyUserRequest({ token }));
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="">

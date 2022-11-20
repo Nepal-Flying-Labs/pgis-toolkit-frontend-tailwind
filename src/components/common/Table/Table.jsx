@@ -214,8 +214,8 @@ export default class Table extends Component {
         <table className={`${className}`}>
           {showHeader && (
             <thead className="naxatw-border-b naxatw-border-grey-300 naxatw-text-grey-500 naxatw-uppercase">
-              <tr scope="col">{this.renderHeader()}</tr>
-              <tr scope="col">{this.renderSubHeader()}</tr>
+              <tr>{this.renderHeader()}</tr>
+              <tr>{this.renderSubHeader()}</tr>
             </thead>
           )}
           <tbody>{this.renderRow()}</tbody>

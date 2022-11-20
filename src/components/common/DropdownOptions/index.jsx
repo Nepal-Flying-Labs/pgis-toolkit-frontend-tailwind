@@ -6,11 +6,11 @@ export default function DropdownOptions({ options, data }) {
   const [toggleRef, toggle, handleToggle] = useOutsideClick();
 
   return (
-    <div className="naxatw-relative naxatw-w-10">
+    <div className="naxatw-relative naxatw-w-10 naxatw-flex">
       <a
         ref={toggleRef}
         href={() => {}}
-        className="naxatw-inline-flex naxatw-items-center naxatw-p-2 naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-gray-900 naxatw-bg-white naxatw-rounded-lg hover:naxatw-bg-gray-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-gray-50"
+        className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-gray-900 naxatw-bg-white naxatw-rounded-lg hover:naxatw-bg-gray-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-gray-50 naxatw-select-none"
         onClick={handleToggle}
       >
         <i className="material-icons">more_vert</i>

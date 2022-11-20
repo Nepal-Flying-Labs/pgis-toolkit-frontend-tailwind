@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Creators from '@Actions/authentication';
+import { Creators } from '@Actions/authentication';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import { Avatar } from '@src/constants/svgIcons';
@@ -16,7 +16,7 @@ const initialState = {
 
 export default function SignIn() {
   const dispatch = useDispatch();
-  const { values, meta, inputProps, handleChange, handleSubmit } = useForm({
+  const { values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: initialState,
     required: ['username', 'password'],
     onSubmit: data => {
@@ -37,7 +37,7 @@ export default function SignIn() {
           <p>Sign in with Google</p>
         </Button>
 
-        <hr className="naxatw-my-9 naxatw-h-px naxatw-bg-gray-200 naxatw-border-0 naxatw-dark:bg-gray-700" />
+        <hr className="naxatw-my-9 naxatw-h-px naxatw-bg-gray-200 naxatw-border-0" />
 
         <div className="mb-6 naxatw-space-y-[1.125rem]">
           <div className="naxatw-space-y-2">
@@ -75,7 +75,7 @@ export default function SignIn() {
                 id="keep-me"
                 type="checkbox"
                 value=""
-                // className="naxatw-w-4 naxatw-h-4 naxatw-bg-gray-50 naxatw-rounded naxatw-border naxatw-border-gray-300 naxatw-focus:ring-3 naxatw-focus:ring-blue-300 naxatw-dark:bg-gray-700 naxatw-dark:border-gray-600 naxatw-dark:focus:ring-blue-600 naxatw-dark:ring-offset-gray-800"
+                // className="naxatw-w-4 naxatw-h-4 naxatw-bg-gray-50 naxatw-rounded naxatw-border naxatw-border-gray-300 naxatw-focus:ring-3 naxatw-focus:ring-blue-300"
                 className="naxatw-w-4 naxatw-h-4"
                 required
               />

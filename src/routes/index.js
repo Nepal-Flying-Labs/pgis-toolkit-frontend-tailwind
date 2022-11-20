@@ -1,7 +1,7 @@
+import VerifyUser from '@Components/Authentication/VerifyUser';
 import Authentication from '../views/Authentication';
 import Home from '../views/Home';
 import Organizations from '../views/Organizations';
-import VerifyUser from '@Components/Authentication/VerifyUser';
 
 const indexRoutes = [
   { path: '/organizations', name: 'Organizations', component: Organizations },

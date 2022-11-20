@@ -77,7 +77,7 @@ export default function Authentication() {
                   <p className="naxatw-font-bold">Sign in with Google</p>
                 </Button>
 
-                <hr className="naxatw-my-8 naxatw-h-px naxatw-bg-gray-200 naxatw-border-0 naxatw-dark:bg-gray-700" />
+                <hr className="naxatw-my-8 naxatw-h-px naxatw-bg-gray-200 naxatw-border-0" />
 
                 <div className="mb-6 naxatw-space-y-8">
                   <div className="">
@@ -107,7 +107,7 @@ export default function Authentication() {
                         id="keep-me"
                         type="checkbox"
                         value=""
-                        className="naxatw-w-4 naxatw-h-4 naxatw-bg-gray-50 naxatw-rounded naxatw-border naxatw-border-gray-300 naxatw-focus:ring-3 naxatw-focus:ring-blue-300 naxatw-dark:bg-gray-700 naxatw-dark:border-gray-600 naxatw-dark:focus:ring-blue-600 naxatw-dark:ring-offset-gray-800"
+                        className="naxatw-w-4 naxatw-h-4 naxatw-bg-gray-50 naxatw-rounded naxatw-border naxatw-border-gray-300 naxatw-focus:ring-3 naxatw-focus:ring-blue-300"
                         required
                       />
                       <label htmlFor="keep-me" className="">

@@ -7,8 +7,5 @@ function getSelectedItem(option) {
 
 export default getSelectedItem;
 
-export const getSelectedItemRange = (begin, end, data) => {
-  return data.length > end
-    ? `${begin + 1}-${end}`
-    : `${begin + 1}-${data.length}`;
-};
+export const getSelectedItemRange = (begin, end, data) =>
+  data.length > end ? `${begin + 1}-${end}` : `${begin + 1}-${data.length}`;

@@ -23,11 +23,10 @@ const useForm = ({
   const [inputs, setInputs] = useState(initialValues);
   const [meta, setMeta] = useState(getMetaState(initialValues, required));
 
-  const isValid = (name, value) => {
-    return Object.prototype.hasOwnProperty.call(validationSchema, name)
+  const isValid = (name, value) =>
+    Object.prototype.hasOwnProperty.call(validationSchema, name)
       ? validationSchema[name](value)
       : { error: !value, message: 'Required' };
-  };
 
   const handleChange = e => {
     const { name, value } = e.target;

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 // import DropdownSelect from '../DropdownSelect/DropdownSelect';
 
 export default function Pagination({
-  rowPerPage,
-  setRowPerPage,
+  // rowPerPage,
+  // setRowPerPage,
   paginatedCounts,
   paginatedCountsTotal,
   nextPage,
@@ -16,7 +16,7 @@ export default function Pagination({
     <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-mt-8">
       <div className="naxatw-flex naxatw-items-start">
         <span className="row-text">Row per page</span>
-        {/*<DropdownSelect
+        {/* <DropdownSelect
           isNotForm
           arrayList={rowPerPage}
           setArrayList={setRowPerPage}
@@ -66,8 +66,8 @@ export default function Pagination({
 }
 
 Pagination.propTypes = {
-  rowPerPage: PropTypes.array.isRequired,
-  setRowPerPage: PropTypes.func.isRequired,
+  // rowPerPage: PropTypes.array.isRequired,
+  // setRowPerPage: PropTypes.func.isRequired,
   paginatedCounts: PropTypes.string.isRequired,
   paginatedCountsTotal: PropTypes.number.isRequired,
   nextPage: PropTypes.func.isRequired,

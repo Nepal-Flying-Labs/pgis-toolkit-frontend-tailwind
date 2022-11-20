@@ -15,13 +15,17 @@ export default function Button({
       className={`naxatw-btn ${className}`}
       onClick={onClick}
     >
-      <i className="material-icons naxatw-mr-2 naxatw-text-[22px]">
-        {iconLeft}
-      </i>
+      {iconLeft && (
+        <i className="material-icons naxatw-mr-2 naxatw-text-[22px]">
+          {iconLeft}
+        </i>
+      )}
       {children}
-      <i className="material-icons naxatw-mr-2 naxatw-text-[22px]">
-        {iconRight}
-      </i>
+      {iconRight && (
+        <i className="material-icons naxatw-mr-2 naxatw-text-[22px]">
+          {iconRight}
+        </i>
+      )}
     </button>
   );
 }
@@ -29,6 +33,8 @@ export default function Button({
 Button.defaultProps = {
   children: '',
   className: '',
+  iconLeft: null,
+  iconRight: null,
   onClick: () => {},
 };
 
@@ -36,4 +42,6 @@ Button.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   onClick: PropTypes.func,
+  iconLeft: PropTypes.string,
+  iconRight: PropTypes.string,
 };

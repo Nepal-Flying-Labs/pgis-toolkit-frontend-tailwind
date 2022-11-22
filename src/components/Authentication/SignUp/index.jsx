@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Creators from '@Actions/authentication';
+import { Creators } from '@Actions/authentication';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import { Avatar } from '@src/constants/svgIcons';
@@ -19,7 +19,7 @@ const initialState = {
 export default function SignUp() {
   const userDetail = useSelector(state => state.authentication.userDetail);
   const dispatch = useDispatch();
-  const { values, meta, inputProps, handleChange, handleSubmit } = useForm({
+  const { values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: { ...initialState, email: userDetail?.email || '' },
     required: [
       'fullname',

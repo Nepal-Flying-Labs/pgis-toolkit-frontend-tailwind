@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import Creators from '@Actions/organizations';
+import { Creators } from '@Actions/organizations';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button';
 
@@ -17,7 +17,7 @@ const initialState = {
 export default function CreateAnOrganization() {
   const dispatch = useDispatch();
   const [emailList, setEmailList] = useState([]);
-  const { values, meta, inputProps, handleChange, handleSubmit } = useForm({
+  const { values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: initialState,
     required: ['organizationName'],
     onSubmit: data => {
@@ -108,7 +108,7 @@ export default function CreateAnOrganization() {
             />
             <a
               type="submit"
-              class="naxatw-text-2xl naxatw-ml-2 naxatw-cursor-pointer naxatw-select-none"
+              className="naxatw-text-2xl naxatw-ml-2 naxatw-cursor-pointer naxatw-select-none"
               onClick={() => {
                 setEmailList(prev => [...prev, values.email]);
               }}

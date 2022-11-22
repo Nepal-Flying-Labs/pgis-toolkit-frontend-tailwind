@@ -7,26 +7,20 @@ const initialState = {
   createOrganizationDetail: null,
 };
 
-const toggleModal = (state, action) => {
-  return {
-    ...state,
-    showModal: !!action.payload,
-  };
-};
+const toggleModal = (state, action) => ({
+  ...state,
+  showModal: !!action.payload,
+});
 
-const getOrganizationsSuccess = (state, action) => {
-  return {
-    ...state,
-    organizationData: action.payload,
-  };
-};
+const getOrganizationsSuccess = (state, action) => ({
+  ...state,
+  organizationData: action.payload,
+});
 
-const createOrganizationSuccess = (state, action) => {
-  return {
-    ...state,
-    createOrganizationDetail: action.payload,
-  };
-};
+const createOrganizationSuccess = (state, action) => ({
+  ...state,
+  createOrganizationDetail: action.payload,
+});
 
 const organizationsReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATIONS_SUCCESS]: getOrganizationsSuccess,

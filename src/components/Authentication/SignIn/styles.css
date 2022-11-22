@@ -1,0 +1,3 @@
+.username {
+  @apply naxatw-block naxatw-w-full naxatw-px-4 naxatw-py-2 naxatw-font-normal naxatw-text-gray-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 focus:naxatw-text-gray-700 focus:naxatw-bg-white focus:naxatw-border-blue-600 focus:naxatw-outline-none;
+}

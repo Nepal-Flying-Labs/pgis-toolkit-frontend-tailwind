@@ -1,10 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import useOutsideClick from '@Hooks/useOutsideClick';
+import { Creators } from '@Actions/authentication';
 import LoginLogo from '@Assets/images/logo.png';
 import AvatarIcon from '@Assets/images/icons/avatar-icon.svg';
 import NotificationIcon from '@Assets/images/icons/notification-icon.svg';
 
+const { logoutRequest } = Creators;
+
 export default function Header() {
+  const dispatch = useDispatch();
+  const [ref, toggle, handleToggle] = useOutsideClick();
   return (
     <header className="naxatw-fixed naxatw-w-full naxatw-h-[4.5rem] naxatw-z-[999] naxatw-top-0 naxatw-border-b naxatw-border-grey-300 naxatw-bg-white">
       <div className="naxatw-flex naxatw-justify-between naxatw-px-8 naxatw-py-3 naxatw-h-full">
@@ -32,10 +39,65 @@ export default function Header() {
               alt="avatar-placeholder"
             />
           </figure>
+          <div className="naxatw-relative" ref={ref}>
+            <div onClick={() => handleToggle(!toggle)}>
+              <figure className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-cursor-pointer naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
+                <img src={AvatarIcon} alt="avatar-placeholder" />
+              </figure>
+            </div>
 
-          <figure className="naxatw-bg-primary-50 naxatw-border naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
-            <img src={AvatarIcon} alt="avatar-placeholder" />
-          </figure>
+            {toggle && (
+              <div className="naxatw-h-[14.625rem] naxatw-w-[22.5rem] naxatw-bg-white  naxatw-absolute naxatw-right-0 naxatw-top-10 naxatw-rounded-lg naxatw-shadow-lg naxatw-divide-y-2">
+                <div className="naxatw-h-[7.625rem] naxatw-w-full  naxatw-mt-2 naxatw-p-3">
+                  <div className="naxatw-h-[2.875rem] naxatw-flex naxatw-mb-3 naxatw-gap-x-3 naxatw-items-center">
+                    <figure className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
+                      <img src={AvatarIcon} alt="avatar-placeholder" />
+                    </figure>
+                    <div>
+                      <h5>San Shree</h5>
+                      <span className="naxatw-text-body-md">Super Admin</span>
+                    </div>
+                  </div>
+                  <div className="naxatw-h-[2.5rem] naxatw-flex naxatw-items-center naxatw-cursor-pointer naxatw-gap-x-3 hover:naxatw-bg-gray-200">
+                    <span className="material-icons naxatw-text-[#00A699]">
+                      info
+                    </span>
+                    <h5 className="naxatw-text-[#00A699]">
+                      Your access to functionality
+                    </h5>
+                    <span className="material-icons naxatw-text-[#00A699]">
+                      chevron_right
+                    </span>
+                  </div>
+                </div>
+                <ul className="">
+                  <li className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-p-3 hover:naxatw-bg-gray-200 naxatw-cursor-pointer">
+                    <span className="material-icons naxatw-text-[#484848]">
+                      settings
+                    </span>
+
+                    <span className="naxatw-text-body-lg">
+                      Account Settings
+                    </span>
+                  </li>
+
+                  <li
+                    role="presentation"
+                    onClick={() => dispatch(logoutRequest())}
+                    className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-p-3 hover:naxatw-bg-gray-200 naxatw-cursor-pointer"
+                  >
+                    <span className="material-icons naxatw-text-[#FF0F0F]">
+                      logout
+                    </span>
+
+                    <span className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">
+                      Sign Out
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>

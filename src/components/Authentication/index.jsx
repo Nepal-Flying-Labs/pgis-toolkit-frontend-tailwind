@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginImg from '@Assets/images/main-header-img.jpg';
 import LoginLogo from '@Assets/images/login-logo.png';
+import GoogleIcon from '@Assets/images/icons/google-icon.svg';
 import Button from '@Components/common/Button';
 import { Avatar } from '@src/constants/svgIcons';
 
@@ -68,12 +69,16 @@ export default function Authentication() {
             <div className="naxatw-mx-auto naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-center naxatw-text-center naxatw-w-[54rem] naxatw-p-16">
               <div className="">
                 <figure>{Avatar}</figure>
-                <h3 className="naxatw-font-bold naxatw-mt-6 naxatw-tracking-wide">
-                  Sign in
-                </h3>
+                <h3 className="naxatw-font-bold naxatw-mt-6">Sign in</h3>
               </div>
               <div className="naxatw-w-full">
                 <Button className="naxatw-border-2 naxatw-border-grey-400 naxatw-px-10 naxatw-py-3 naxatw-w-full naxatw-rounded-xl naxatw-mt-12">
+                  <img
+                    width={10}
+                    height={10}
+                    src={GoogleIcon}
+                    alt="google-icon"
+                  />
                   <p className="naxatw-font-bold">Sign in with Google</p>
                 </Button>
 

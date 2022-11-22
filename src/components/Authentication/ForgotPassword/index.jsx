@@ -26,7 +26,7 @@ export default function ForgotPassword() {
 
       <div className="naxatw-w-full naxatw-mt-10">
         <div className="naxatw-space-y-2">
-          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
             Email address
           </label>
           <input

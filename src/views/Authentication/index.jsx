@@ -50,7 +50,7 @@ export default function Authentication() {
                   <p className="naxatw-text-white naxatw-text-lg naxatw-mb-10">
                     Piloting the tool for Transport Mobility Assessment
                   </p>
-                  <Button className="naxatw-px-5 naxatw-py-3 naxatw-bg-white naxatw-rounded-lg naxatw-text-primary-400 naxatw-font-bold">
+                  <Button className="naxatw-px-5 naxatw-py-3 naxatw-bg-white naxatw-rounded-lg naxatw-text-primary-400 naxatw-font-bold hover:naxatw-text-white hover:naxatw-bg-primary-700">
                     Request for Demo
                   </Button>
                 </div>

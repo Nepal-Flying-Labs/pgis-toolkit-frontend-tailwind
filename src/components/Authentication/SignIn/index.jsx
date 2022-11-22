@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Creators, Types } from '@Actions/authentication';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
+import GoogleIcon from '@Assets/images/icons/google-icon.svg';
 import { Avatar } from '@src/constants/svgIcons';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import './styles.css';
@@ -38,6 +39,7 @@ export default function SignIn() {
       </div>
       <div className="naxatw-w-full">
         <Button className="naxatw-btn-secondary naxatw-w-full naxatw-mt-[3.125rem]">
+          <img className="naxatw-mr-3" src={GoogleIcon} alt="google-icon" />
           <p>Sign in with Google</p>
         </Button>
 
@@ -45,7 +47,7 @@ export default function SignIn() {
 
         <div className="mb-6 naxatw-space-y-[1.125rem]">
           <div className="naxatw-space-y-2">
-            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
               Username
             </label>
             <input
@@ -59,7 +61,7 @@ export default function SignIn() {
             />
           </div>
           <div className="naxatw-space-y-2">
-            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
               Password
             </label>
             <input
@@ -73,7 +75,7 @@ export default function SignIn() {
             />
           </div>
 
-          <div className="naxatw-flex naxatw-items-start naxatw-mb-6 naxatw-justify-between">
+          <div className="naxatw-flex naxatw-items-center naxatw-mb-6 naxatw-justify-between">
             <div className="naxatw-flex naxatw-items-start naxatw-gap-3">
               <input
                 id="keep-me"
@@ -93,7 +95,7 @@ export default function SignIn() {
             <div>
               <Link
                 to="/forgot-password"
-                className="naxatw-text-secondary-400 naxatw-font-bold naxatw-tracking-wide naxatw-text-[0.9357rem]"
+                className="naxatw-text-secondary-400 naxatw-font-bold naxatw-tracking-wide naxatw-text-[15px]"
               >
                 Forgot your password?
               </Link>
@@ -101,7 +103,7 @@ export default function SignIn() {
           </div>
         </div>
         <Button
-          className="naxatw-btn-primary naxatw-mt-12 naxatw-w-full"
+          className="naxatw-btn-primary naxatw-mt-[2.375rem] naxatw-w-full"
           isLoading={loading}
           loaderClassName="naxatw-fill-secondary-400"
           onClick={handleSubmit}

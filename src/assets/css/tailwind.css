@@ -31,7 +31,7 @@
 
 @layer components {
   .naxatw-btn {
-    @apply naxatw-px-5 naxatw-py-3 naxatw-font-bold naxatw-rounded-lg naxatw-text-[0.9357rem] naxatw-tracking-wider naxatw-flex naxatw-items-start naxatw-justify-center;
+    @apply naxatw-px-5 naxatw-py-3 naxatw-font-bold naxatw-rounded-lg naxatw-text-[15px] naxatw-flex naxatw-items-start naxatw-justify-center;
   }
   .naxatw-btn-sm {
     @apply naxatw-px-4 naxatw-py-2;

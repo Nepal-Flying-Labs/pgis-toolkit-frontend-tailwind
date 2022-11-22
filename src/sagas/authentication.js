@@ -44,11 +44,25 @@ export function* signUpRequest({ payload }) {
     yield put(toastActions.error({ message: error?.response?.data?.message }));
   }
 }
+function* logoutRequest() {
+  try {
+    localStorage.clear();
+    yield put(authActions.logoutSuccess());
+    yield put(push('/login'));
+    yield put(
+      toastActions.success({ message: 'You logged out successfully.' }),
+    );
+  } catch (error) {
+    yield put(authActions.logoutFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
 
 function* authenticationWatcher() {
   yield takeLatest(Types.LOGIN_REQUEST, withLoader(loginRequest));
   yield takeLatest(Types.SIGN_UP_REQUEST, withLoader(signUpRequest));
   yield takeLatest(Types.VERIFY_USER_REQUEST, withLoader(verifyUserRequest));
+  yield takeLatest(Types.LOGOUT_REQUEST, withLoader(logoutRequest));
 }
 
 export default authenticationWatcher;

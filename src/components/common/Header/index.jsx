@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import useOutsideClick from '@Hooks/useOutsideClick';
-import loginActions from '@Actions/login';
+import { Creators } from '@Actions/authentication';
 import LoginLogo from '@Assets/images/logo.png';
 import AvatarIcon from '@Assets/images/icons/avatar-icon.svg';
 import NotificationIcon from '@Assets/images/icons/notification-icon.svg';
+
+const { logoutRequest } = Creators;
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -38,12 +40,12 @@ export default function Header() {
             />
           </figure>
           <div className="naxatw-relative" ref={ref}>
-            <figure
-              onClick={() => handleToggle(!toggle)}
-              className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-cursor-pointer naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center"
-            >
-              <img src={AvatarIcon} alt="avatar-placeholder" />
-            </figure>
+            <div onClick={() => handleToggle(!toggle)}>
+              <figure className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-cursor-pointer naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
+                <img src={AvatarIcon} alt="avatar-placeholder" />
+              </figure>
+            </div>
+
             {toggle && (
               <div className="naxatw-h-[14.625rem] naxatw-w-[22.5rem] naxatw-bg-white  naxatw-absolute naxatw-right-0 naxatw-top-10 naxatw-rounded-lg naxatw-shadow-lg naxatw-divide-y-2">
                 <div className="naxatw-h-[7.625rem] naxatw-w-full  naxatw-mt-2 naxatw-p-3">
@@ -80,7 +82,8 @@ export default function Header() {
                   </li>
 
                   <li
-                    onClick={() => dispatch(loginActions.logoutRequest())}
+                    role="presentation"
+                    onClick={() => dispatch(logoutRequest())}
                     className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-p-3 hover:naxatw-bg-gray-200 naxatw-cursor-pointer"
                   >
                     <span className="material-icons naxatw-text-[#FF0F0F]">

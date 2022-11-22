@@ -8,3 +8,6 @@ export const verifyUser = params =>
 export const createUser = data => authenticated(api).get(`/users/user/`, data);
 
 export const signUpUser = data => authenticated(api).post(`/users/user/`, data);
+
+export const forgotPassword = payload =>
+  api.post(`/users/forgot_password_email/`, payload);

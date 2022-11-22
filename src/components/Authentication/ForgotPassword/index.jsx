@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Creators } from '@Actions/authentication';
 import { Link } from 'react-router-dom';
 import Button from '@Components/common/Button';
+
+const { forgotPasswordRequest } = Creators;
 
 export default function ForgotPassword() {
   const dispatch = useDispatch();
@@ -10,8 +13,9 @@ export default function ForgotPassword() {
     setEmail(e.target.value);
   };
 
-  const handleSubmit = () => {
-    dispatch();
+  const handleSubmit = e => {
+    e.preventDefault();
+    dispatch(forgotPasswordRequest({ username_or_email: email }));
   };
   return (
     <>
@@ -40,7 +44,7 @@ export default function ForgotPassword() {
         </div>
       </div>
       <Button
-        onClick={handleSubmit}
+        onClick={e => handleSubmit(e)}
         className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold naxatw-w-full naxatw-mt-7"
       >
         Reset password

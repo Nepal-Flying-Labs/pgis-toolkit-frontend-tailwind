@@ -1,6 +1,11 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
-import { loginUser, signUpUser, verifyUser } from '@Services/authentication';
+import {
+  loginUser,
+  signUpUser,
+  verifyUser,
+  forgotPassword,
+} from '@Services/authentication';
 import authActions, { Types } from '@Actions/authentication';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
@@ -57,12 +62,33 @@ function* logoutRequest() {
     yield put(toastActions.error({ message: error?.response?.data?.message }));
   }
 }
+function* forgotPasswordRequest({ payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(forgotPassword, formdata);
+    yield put(authActions.forgotPasswordSuccess());
+    console.log(response);
+    // yield put(push('/login'));
+    yield put(
+      toastActions.success({
+        message: 'A reset link has been sent to your email.',
+      }),
+    );
+  } catch (error) {
+    yield put(authActions.forgotPasswordFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
 
 function* authenticationWatcher() {
   yield takeLatest(Types.LOGIN_REQUEST, withLoader(loginRequest));
   yield takeLatest(Types.SIGN_UP_REQUEST, withLoader(signUpRequest));
   yield takeLatest(Types.VERIFY_USER_REQUEST, withLoader(verifyUserRequest));
   yield takeLatest(Types.LOGOUT_REQUEST, withLoader(logoutRequest));
+  yield takeLatest(
+    Types.FORGOT_PASSWORD_REQUEST,
+    withLoader(forgotPasswordRequest),
+  );
 }
 
 export default authenticationWatcher;

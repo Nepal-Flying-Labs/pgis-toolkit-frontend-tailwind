@@ -16,6 +16,7 @@ const indexRoutes = [
   {
     path: '/forgot-password',
     name: 'Forgot Password',
+    component: Authentication,
   },
   {
     path: '/',

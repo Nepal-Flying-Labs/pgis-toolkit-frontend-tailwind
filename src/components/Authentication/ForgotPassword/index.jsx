@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Button from '@Components/common/Button';
 
 export default function ForgotPassword() {
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState('');
+  const handleChange = e => {
+    setEmail(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    dispatch();
+  };
   return (
     <>
       <div className="">
@@ -24,10 +34,15 @@ export default function ForgotPassword() {
             className="naxatw-block naxatw-w-full naxatw-px-4 naxatw-py-2 naxatw-font-normal naxatw-text-gray-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gray-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
             name="email"
             placeholder="Email address"
+            value={email}
+            onChange={e => handleChange(e)}
           />
         </div>
       </div>
-      <Button className="naxatw-btn-primary naxatw-w-full naxatw-mt-7">
+      <Button
+        onClick={handleSubmit}
+        className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold naxatw-w-full naxatw-mt-7"
+      >
         Reset password
       </Button>
       <Link

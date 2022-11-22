@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Creators, Types } from '@Actions/authentication';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import GoogleIcon from '@Assets/images/icons/google-icon.svg';
 import { Avatar } from '@src/constants/svgIcons';
+import ButtonLink from '@Components/common/ButtonLink';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import './styles.css';
 
@@ -81,7 +81,6 @@ export default function SignIn() {
                 id="keep-me"
                 type="checkbox"
                 value=""
-                // className="naxatw-w-4 naxatw-h-4 naxatw-bg-gray-50 naxatw-rounded naxatw-border naxatw-border-gray-300 naxatw-focus:ring-3 naxatw-focus:ring-blue-300"
                 className="naxatw-w-4 naxatw-h-4"
                 required
               />
@@ -93,12 +92,9 @@ export default function SignIn() {
               </label>
             </div>
             <div>
-              <Link
-                to="/forgot-password"
-                className="naxatw-text-secondary-400 naxatw-font-bold naxatw-tracking-wide naxatw-text-[15px]"
-              >
+              <ButtonLink to="/forgot-password">
                 Forgot your password?
-              </Link>
+              </ButtonLink>
             </div>
           </div>
         </div>

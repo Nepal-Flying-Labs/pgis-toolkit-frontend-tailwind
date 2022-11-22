@@ -28,8 +28,6 @@ export default function SignIn() {
     },
   });
 
-  console.log(loading, 'loadingx');
-
   return (
     <>
       <div className="">
@@ -104,6 +102,8 @@ export default function SignIn() {
         </div>
         <Button
           className="naxatw-btn-primary naxatw-mt-12 naxatw-w-full"
+          isLoading={loading}
+          loaderClassName="naxatw-fill-secondary-400"
           onClick={handleSubmit}
         >
           Sign In

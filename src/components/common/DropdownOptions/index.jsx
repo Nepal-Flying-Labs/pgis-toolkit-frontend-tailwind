@@ -25,9 +25,9 @@ export default function DropdownOptions({ options, data }) {
           className="naxatw-py-2 naxatw-text-sm naxatw-text-gray-700"
           aria-labelledby="dropdownMenuIconButton"
         >
-          {options.map(({ label, onClick }) => (
+          {options.map(({ id, label, onClick }) => (
             <li
-              key={label}
+              key={id}
               className="naxatw-block naxatw-py-[13px] naxatw-px-3 hover:naxatw-bg-gray-100"
             >
               <a href={() => {}} onClick={() => onClick(data)}>

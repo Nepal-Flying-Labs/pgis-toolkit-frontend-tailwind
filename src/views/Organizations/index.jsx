@@ -46,6 +46,7 @@ export default function Organizations() {
 
   const dropdownOptions = [
     {
+      id: 1,
       label: (
         <span className="naxatw-flex naxatw-items-center">
           <i className="material-icons naxatw-mr-2">edit</i>
@@ -55,6 +56,7 @@ export default function Organizations() {
       onClick: () => {},
     },
     {
+      id: 2,
       label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>

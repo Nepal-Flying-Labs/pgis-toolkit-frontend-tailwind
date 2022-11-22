@@ -1,10 +1,11 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Creators } from '@Actions/authentication';
+import { Creators, Types } from '@Actions/authentication';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import { Avatar } from '@src/constants/svgIcons';
+import { checkIfLoading } from '@Utils/loaderSelector';
 import './styles.css';
 
 const { loginRequest } = Creators;
@@ -15,6 +16,9 @@ const initialState = {
 };
 
 export default function SignIn() {
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.LOGIN_REQUEST]),
+  );
   const dispatch = useDispatch();
   const { values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: initialState,
@@ -23,6 +27,8 @@ export default function SignIn() {
       dispatch(loginRequest(data));
     },
   });
+
+  console.log(loading, 'loadingx');
 
   return (
     <>

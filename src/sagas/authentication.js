@@ -1,10 +1,10 @@
-/* eslint-disable no-unused-vars */
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import { loginUser, signUpUser, verifyUser } from '@Services/authentication';
 import authActions, { Types } from '@Actions/authentication';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
+import { withLoader } from '@Utils/sagaUtils';
 
 export function* loginRequest({ payload }) {
   try {
@@ -46,9 +46,9 @@ export function* signUpRequest({ payload }) {
 }
 
 function* authenticationWatcher() {
-  yield takeLatest(Types.LOGIN_REQUEST, loginRequest);
-  yield takeLatest(Types.SIGN_UP_REQUEST, signUpRequest);
-  yield takeLatest(Types.VERIFY_USER_REQUEST, verifyUserRequest);
+  yield takeLatest(Types.LOGIN_REQUEST, withLoader(loginRequest));
+  yield takeLatest(Types.SIGN_UP_REQUEST, withLoader(signUpRequest));
+  yield takeLatest(Types.VERIFY_USER_REQUEST, withLoader(verifyUserRequest));
 }
 
 export default authenticationWatcher;

@@ -1,6 +1,7 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Creators from '@Actions/organizations';
+import { Creators } from '@Actions/organizations';
 import usePagination from '@Hooks/usePagination';
 import Header from '@Components/common/Header';
 import Button from '@Components/common/Button';
@@ -12,6 +13,7 @@ import { userRowsOption } from '@src/constants/paginationRowOptions';
 import Modal from '@Components/common/Modal';
 import CreateAnOrganization from '@Components/ModalContent/CreateAnOrganization';
 import CreateOrganizationSuccess from '@Components/ModalContent/CreateOrganizationSuccess';
+import DropdownOptions from '@Components/common/DropdownOptions/index';
 
 const { getOrganizationsRequest, toggleModal } = Creators;
 
@@ -29,8 +31,8 @@ export default function Organizations() {
     next,
     prev,
     jump,
-    handleSorting,
-    currentList,
+    // handleSorting,
+    // currentList,
     currentPage,
     begin,
     end,
@@ -40,7 +42,30 @@ export default function Organizations() {
 
   useEffect(() => {
     dispatch(getOrganizationsRequest());
-  }, []);
+  }, [dispatch]);
+
+  const dropdownOptions = [
+    {
+      id: 1,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">edit</i>
+          <p className="naxatw-text-body-lg">Edit</p>
+        </span>
+      ),
+      onClick: () => {},
+    },
+    {
+      id: 2,
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+        </span>
+      ),
+      onClick: () => {},
+    },
+  ];
 
   return (
     <div>
@@ -66,7 +91,8 @@ export default function Organizations() {
             Organizations
           </h3>
           <Button
-            className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold"
+            className="naxatw-btn-primary"
+            iconLeft="add_circle_outline"
             onClick={() => dispatch(toggleModal(true))}
           >
             Create New
@@ -108,7 +134,8 @@ export default function Organizations() {
             data={organizationData?.results}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            headerWidths={['50px', '200px', '150px', '150px']}
+            headerWidths={['50px', '200px', '150px', '150px', '50px']}
+            // eslint-disable-next-line
             onRowClick={row => {
               // history.push(`/`);
             }}
@@ -118,41 +145,46 @@ export default function Organizations() {
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowspan_2"
               dataHeader={<SortingContainer name="S.N" />}
-              dataFormat={(row, _, index) => {
-                // return <span>{(currentPage - 1) * dataPerPage + (index + 1)}</span>;
-                return (
-                  <span className="naxatw-text-base">
-                    {(currentPage - 1) * dataPerPage + (index + 1)}
-                  </span>
-                );
-              }}
+              dataFormat={(row, _, index) => (
+                <span className="naxatw-text-base">
+                  {(currentPage - 1) * dataPerPage + (index + 1)}
+                </span>
+              )}
             />
             <TableHeader
               dataField="Name"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowspan_2"
               dataHeader={<SortingContainer name="Name" />}
-              dataFormat={row => {
-                return <span className="naxatw-text-base">{row.name}</span>;
-              }}
+              dataFormat={row => (
+                <span className="naxatw-text-base">{row.name}</span>
+              )}
             />
             <TableHeader
               dataField="Email"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowspan_2"
               // dataHeader={<SortingContainer name="S.N" />}
-              dataFormat={row => {
-                return <span className="naxatw-text-base">{row.email}</span>;
-              }}
+              dataFormat={row => (
+                <span className="naxatw-text-base">{row.email}</span>
+              )}
             />
             <TableHeader
               dataField="Projects"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowspan_2"
               dataHeader={<SortingContainer name="Projects" />}
-              dataFormat={row => {
-                return <span className="naxatw-text-base">{row.projects}</span>;
-              }}
+              dataFormat={row => (
+                <span className="naxatw-text-base">{row.projects}</span>
+              )}
+            />
+            <TableHeader
+              dataField=""
+              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
+              rowcolSpan="rowspan_3"
+              dataFormat={row => (
+                <DropdownOptions options={dropdownOptions} data={row} />
+              )}
             />
           </Table>
 

@@ -12,12 +12,10 @@ const loginSuccess = (state, action) => ({
   user: action.payload,
 });
 
-const verifyUserSuccess = (state, action) => {
-  return {
-    ...state,
-    userDetail: action.payload,
-  };
-};
+const verifyUserSuccess = (state, action) => ({
+  ...state,
+  userDetail: action.payload,
+});
 
 const authenticationReducer = createReducer(initialState, {
   [Types.LOGIN_SUCCESS]: loginSuccess,

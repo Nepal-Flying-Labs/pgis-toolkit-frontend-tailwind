@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 export default function PrivateRoute({ path, component: Component }) {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('userToken');
   return (
     <Route
       path={path}

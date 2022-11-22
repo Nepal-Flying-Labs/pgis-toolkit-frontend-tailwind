@@ -32,7 +32,7 @@ export default function CreateOrganizationSuccess() {
       <div className=" naxatw-mt-4 naxatw-flex naxatw-items-center naxatw-justify-center">
         <Button
           className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold naxatw-mt-12"
-          onClick={() => dispatch(toggleModal(false))}
+          onClick={() => dispatch(toggleModal())}
         >
           Done
         </Button>

@@ -19,14 +19,34 @@ const { getOrganizationsRequest, toggleModal } = Creators;
 
 const dataPerPage = 10;
 
+function getModalTitle(content) {
+  switch (content) {
+    case 'create-organization':
+      return 'Create an Organization';
+    case 'create-organization-success':
+      return '';
+    default:
+      return '';
+  }
+}
+
+function getModalContent(content) {
+  switch (content) {
+    case 'create-organization':
+      return <CreateAnOrganization />;
+    case 'create-organization-success':
+      return <CreateOrganizationSuccess />;
+    default:
+      return '';
+  }
+}
+
 export default function Organizations() {
   const organizationData = useSelector(
     state => state.organizations.organizationData,
   );
-  const showModal = useSelector(state => state.organizations.showModal);
-  const createOrganizationDetail = useSelector(
-    state => state.organizations.createOrganizationDetail,
-  );
+  const modalContent = useSelector(state => state.organizations.modalContent);
+
   const {
     next,
     prev,
@@ -72,17 +92,13 @@ export default function Organizations() {
       <Header />
 
       <Modal
-        show={showModal}
-        title={createOrganizationDetail ? '' : 'Create an Organization'}
+        show={!!modalContent}
+        title={getModalTitle(modalContent)}
         onClose={() => {
-          dispatch(toggleModal(false));
+          dispatch(toggleModal());
         }}
       >
-        {createOrganizationDetail ? (
-          <CreateOrganizationSuccess />
-        ) : (
-          <CreateAnOrganization />
-        )}
+        {getModalContent(modalContent)}
       </Modal>
 
       <div className="naxatw-mt-24 naxatw-px-10">
@@ -93,7 +109,7 @@ export default function Organizations() {
           <Button
             className="naxatw-btn-primary"
             iconLeft="add_circle_outline"
-            onClick={() => dispatch(toggleModal(true))}
+            onClick={() => dispatch(toggleModal('create-organization'))}
           >
             Create New
           </Button>

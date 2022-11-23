@@ -23,8 +23,9 @@ export default function Button({
       {isLoading ? (
         <div role="status">
           <svg
+            key={loaderClassName}
             aria-hidden="true"
-            className={`naxatw-mr-2 naxatw-w-[22px] naxatw-h-[22px] naxatw-text-gray-200 naxatw-animate-spin naxatw-fill-blue-600 ${loaderClassName}`}
+            className={`naxatw-mr-2 naxatw-w-[22px] naxatw-h-[22px] naxatw-text-gray-200 naxatw-animate-spin ${loaderClassName}`}
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +63,7 @@ Button.defaultProps = {
   iconRight: null,
   onClick: () => {},
   isLoading: false,
-  loaderClassName: '',
+  loaderClassName: 'naxatw-fill-blue-600',
 };
 
 Button.propTypes = {

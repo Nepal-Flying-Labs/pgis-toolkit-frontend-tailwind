@@ -1,7 +1,8 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators } from '@Actions/organizations';
+import { Creators as AuthCreators } from '@Actions/authentication';
+import { Creators as OrganizationsCreators } from '@Actions/organizations';
 import usePagination from '@Hooks/usePagination';
 import Header from '@Components/common/Header';
 import Button from '@Components/common/Button';
@@ -16,7 +17,8 @@ import CreateOrganizationSuccess from '@Components/ModalContent/CreateOrganizati
 import AccessToFunctionalities from '@Components/ModalContent/AccessToFunctionalities';
 import DropdownOptions from '@Components/common/DropdownOptions/index';
 
-const { getOrganizationsRequest, toggleModal } = Creators;
+const { getOrganizationsRequest, toggleModal } = OrganizationsCreators;
+const { getUserPermissionsRequest } = AuthCreators;
 
 const dataPerPage = 10;
 
@@ -48,6 +50,9 @@ export default function Organizations() {
   const organizationData = useSelector(
     state => state.organizations.organizationData,
   );
+  const userPermissions = useSelector(
+    state => state.authentication.userPermissions,
+  );
   const modalContent = useSelector(state => state.organizations.modalContent);
 
   const {
@@ -64,6 +69,7 @@ export default function Organizations() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getUserPermissionsRequest());
     dispatch(getOrganizationsRequest());
   }, [dispatch]);
 
@@ -109,13 +115,15 @@ export default function Organizations() {
           <h3 className="naxatw-font-bold naxatw-tracking-wider">
             Organizations
           </h3>
-          <Button
-            className="naxatw-btn-primary"
-            iconLeft="add_circle_outline"
-            onClick={() => dispatch(toggleModal('create-organization'))}
-          >
-            Create New
-          </Button>
+          {userPermissions?.includes('add_organization') && (
+            <Button
+              className="naxatw-btn-primary"
+              iconLeft="add_circle_outline"
+              onClick={() => dispatch(toggleModal('create-organization'))}
+            >
+              Create New
+            </Button>
+          )}
         </div>
 
         <div className="naxatw-flex naxatw-items-center naxatw-w-60 naxatw-mt-4 naxatw-h-12">

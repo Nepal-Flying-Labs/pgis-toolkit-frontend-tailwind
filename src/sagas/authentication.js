@@ -6,6 +6,7 @@ import {
   verifyUser,
   forgotPassword,
   resetPassword,
+  getUserPermissions,
 } from '@Services/authentication';
 import authActions, { Types } from '@Actions/authentication';
 import organizationsActions from '@Actions/organizations';
@@ -100,6 +101,16 @@ function* resetPasswordRequest({ params, payload }) {
   }
 }
 
+function* getUserPermissionsRequest({ params }) {
+  try {
+    const response = yield call(getUserPermissions, params);
+    yield put(authActions.getUserPermissionsSuccess(response.data));
+  } catch (error) {
+    yield put(authActions.getUserPermissionsFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
+
 function* authenticationWatcher() {
   yield takeLatest(Types.LOGIN_REQUEST, withLoader(loginRequest));
   yield takeLatest(Types.SIGN_UP_REQUEST, withLoader(signUpRequest));
@@ -112,6 +123,10 @@ function* authenticationWatcher() {
   yield takeLatest(
     Types.RESET_PASSWORD_REQUEST,
     withLoader(resetPasswordRequest),
+  );
+  yield takeLatest(
+    Types.GET_USER_PERMISSIONS_REQUEST,
+    withLoader(getUserPermissionsRequest),
   );
 }
 

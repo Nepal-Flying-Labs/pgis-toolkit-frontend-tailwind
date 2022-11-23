@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import { Creators as AuthCreators } from '@Actions/authentication';
 import { Creators as OrganizationsCreators } from '@Actions/organizations';
 import usePagination from '@Hooks/usePagination';
@@ -54,6 +55,7 @@ export default function Organizations() {
     state => state.authentication.userPermissions,
   );
   const modalContent = useSelector(state => state.organizations.modalContent);
+  const history = useHistory();
 
   const {
     next,
@@ -164,7 +166,7 @@ export default function Organizations() {
             headerWidths={['50px', '200px', '150px', '150px', '50px']}
             // eslint-disable-next-line
             onRowClick={row => {
-              // history.push(`/`);
+              history.push(`/organizations/${row.id}`);
             }}
           >
             <TableHeader

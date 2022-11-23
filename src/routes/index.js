@@ -1,4 +1,5 @@
 import VerifyUser from '@Components/Authentication/VerifyUser';
+import ResetPassword from '@Components/Authentication/ResetPassword';
 import Authentication from '../views/Authentication';
 import Home from '../views/Home';
 import Organizations from '../views/Organizations';
@@ -17,6 +18,11 @@ const indexRoutes = [
     path: '/forgot-password',
     name: 'Forgot Password',
     component: Authentication,
+  },
+  {
+    path: '/reset-password',
+    name: 'Reset Password',
+    component: ResetPassword,
   },
   {
     path: '/',

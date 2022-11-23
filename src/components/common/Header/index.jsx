@@ -14,6 +14,7 @@ const { toggleModal } = OrganizationsCreators;
 export default function Header() {
   const dispatch = useDispatch();
   const [ref, toggle, handleToggle] = useOutsideClick();
+
   return (
     <header className="naxatw-fixed naxatw-w-full naxatw-h-[4.5rem] naxatw-z-[999] naxatw-top-0 naxatw-border-b naxatw-border-grey-300 naxatw-bg-white">
       <div className="naxatw-flex naxatw-justify-between naxatw-px-8 naxatw-py-3 naxatw-h-full">

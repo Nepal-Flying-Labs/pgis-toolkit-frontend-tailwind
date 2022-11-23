@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router';
-import LoginImg from '@Assets/images/main-header-img.jpg';
+import LoginImg from '@Assets/images/sign-in-img.jpg';
 import LoginLogo from '@Assets/images/login-logo.png';
 import Button from '@Components/common/Button';
 import SignIn from '@Components/Authentication/SignIn';
@@ -27,26 +27,13 @@ export default function Authentication() {
     <main className="naxatw-h-screen naxatw-p-6 naxatw-font-primary">
       <div className="naxatw-h-full naxatw-px-4">
         <div className="naxatw-flex naxatw-h-full naxatw-flex-wrap">
-          <div
-            style={{
-              position: 'absolute',
-              width: '27.5rem',
-              height: '28rem',
-              bottom: '1.5rem',
-              backgroundPosition: 'center',
-              backgroundSize: 'cover',
-              backgroundImage: `url(${LoginImg})`,
-              mixBlendMode: 'multiply',
-              borderBottomRightRadius: '2.5rem',
-              borderBottomLeftRadius: '2.5rem',
-            }}
-          />
           <div className="sm:naxatw-h-full">
             <div
               className="naxatw-h-full naxatw-w-[27.5rem] naxatw-rounded-[2.5rem] naxatw-p-10 naxatw-flex naxatw-min-h-full"
               style={{
-                background:
-                  'linear-gradient(180deg, #FF5A5F 15.13%, #A41D55 100%)',
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+                backgroundImage: `url(${LoginImg})`,
               }}
             >
               <div className="">
@@ -63,7 +50,7 @@ export default function Authentication() {
                   <p className="naxatw-text-white naxatw-text-lg naxatw-mb-10">
                     Piloting the tool for Transport Mobility Assessment
                   </p>
-                  <Button className="naxatw-px-5 naxatw-py-3 naxatw-bg-white naxatw-rounded-lg naxatw-text-primary-400 naxatw-font-bold">
+                  <Button className="naxatw-px-5 naxatw-py-3 naxatw-bg-white naxatw-rounded-lg naxatw-text-primary-400 naxatw-font-bold hover:naxatw-text-white hover:naxatw-bg-primary-700">
                     Request for Demo
                   </Button>
                 </div>

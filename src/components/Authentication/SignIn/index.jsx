@@ -42,10 +42,11 @@ export default function SignIn() {
       </div>
       <div className="naxatw-w-full">
         {infoDialogContent ? (
-          <InfoDialog className="naxatw-bg-secondary-50" status="check">
-            {infoDialogContent === 'forgot-password'
-              ? "If you have an account, we'll mail you a reset link."
-              : 'Your password was successfully updated.'}
+          <InfoDialog
+            className="naxatw-bg-secondary-50"
+            status={infoDialogContent.status}
+          >
+            {infoDialogContent.message}
           </InfoDialog>
         ) : (
           ''

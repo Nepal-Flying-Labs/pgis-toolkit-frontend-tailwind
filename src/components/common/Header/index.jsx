@@ -49,14 +49,16 @@ export default function Header() {
             </div>
 
             {toggle && (
-              <div className="naxatw-h-[14.625rem] naxatw-w-[22.5rem] naxatw-bg-white  naxatw-absolute naxatw-right-0 naxatw-top-10 naxatw-rounded-lg naxatw-shadow-lg naxatw-divide-y-2">
+              <div className="naxatw-h-[14.625rem] naxatw-w-[22.5rem] naxatw-bg-white  naxatw-absolute naxatw-right-0 naxatw-top-12 naxatw-rounded-lg naxatw-shadow-3xl naxatw-divide-y-2">
                 <div className="naxatw-h-[7.625rem] naxatw-w-full  naxatw-mt-2 naxatw-p-3">
                   <div className="naxatw-h-[2.875rem] naxatw-flex naxatw-mb-3 naxatw-gap-x-3 naxatw-items-center">
                     <figure className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
                       <img src={AvatarIcon} alt="avatar-placeholder" />
                     </figure>
                     <div>
-                      <h5>San Shree</h5>
+                      <p className="naxatw-text-[0.938rem] naxatw-font-bold naxatw-leading-[1.375rem]">
+                        San Shree
+                      </p>
                       <span className="naxatw-text-body-md">Super Admin</span>
                     </div>
                   </div>
@@ -64,21 +66,21 @@ export default function Header() {
                     onClick={() =>
                       dispatch(toggleModal('access-to-functionalities'))
                     }
-                    className="naxatw-h-[2.5rem] naxatw-flex naxatw-items-center naxatw-cursor-pointer naxatw-gap-x-3 hover:naxatw-bg-gray-200"
+                    className="naxatw-h-[2.5rem] naxatw-flex naxatw-items-center naxatw-cursor-pointer naxatw-gap-x-3 hover:naxatw-bg-gray-100"
                   >
-                    <span className="material-icons naxatw-text-[#00A699]">
+                    <span className="material-icons naxatw-text-[#00A699] naxatw-ml-[1.375rem] ">
                       info
                     </span>
-                    <h5 className="naxatw-text-[#00A699]">
+                    <a className="naxatw-text-[0.938rem] naxatw-text-[#00A699] naxatw-font-bold naxatw-leading-6">
                       Your access to functionality
-                    </h5>
+                    </a>
                     <span className="material-icons naxatw-text-[#00A699]">
                       chevron_right
                     </span>
                   </div>
                 </div>
                 <ul className="">
-                  <li className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-p-3 hover:naxatw-bg-gray-200 naxatw-cursor-pointer">
+                  <li className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-p-3 hover:naxatw-bg-gray-100 naxatw-cursor-pointer">
                     <span className="material-icons naxatw-text-[#484848]">
                       settings
                     </span>
@@ -91,7 +93,7 @@ export default function Header() {
                   <li
                     role="presentation"
                     onClick={() => dispatch(logoutRequest())}
-                    className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-p-3 hover:naxatw-bg-gray-200 naxatw-cursor-pointer"
+                    className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-p-3 hover:naxatw-bg-gray-100 naxatw-cursor-pointer"
                   >
                     <span className="material-icons naxatw-text-[#FF0F0F]">
                       logout

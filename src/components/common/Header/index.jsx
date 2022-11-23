@@ -1,14 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import organizationsActions from '@Actions/organizations';
 import useOutsideClick from '@Hooks/useOutsideClick';
-import { Creators } from '@Actions/authentication';
+import { Creators as AuthCreators } from '@Actions/authentication';
+import { Creators as OrganizationsCreators } from '@Actions/organizations';
 import LoginLogo from '@Assets/images/logo.png';
 import AvatarIcon from '@Assets/images/icons/avatar-icon.svg';
 import NotificationIcon from '@Assets/images/icons/notification-icon.svg';
 
-const { logoutRequest } = Creators;
+const { logoutRequest } = AuthCreators;
+const { toggleModal } = OrganizationsCreators;
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -61,11 +62,7 @@ export default function Header() {
                   </div>
                   <div
                     onClick={() =>
-                      dispatch(
-                        organizationsActions.toggleModal(
-                          'access-to-functionalities',
-                        ),
-                      )
+                      dispatch(toggleModal('access-to-functionalities'))
                     }
                     className="naxatw-h-[2.5rem] naxatw-flex naxatw-items-center naxatw-cursor-pointer naxatw-gap-x-3 hover:naxatw-bg-gray-200"
                   >

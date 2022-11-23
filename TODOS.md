@@ -7,8 +7,9 @@
 - [x] implement account popup
 - [x] implement logout feature
 - [x] implement forgot password
-- [] accessibility modal
+- [x] accessibility modal
 - [] implement password visibility toggle
+- [] implement loader
 - [] implement keep me signed in
 - [] info dialog in login
 - [] implement change password

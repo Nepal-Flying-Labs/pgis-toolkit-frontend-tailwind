@@ -44,7 +44,6 @@ export default function Organizations() {
     state => state.authentication.userPermissions,
   );
   const modalContent = useSelector(state => state.organizations.modalContent);
-
   const dispatch = useDispatch();
 
   useEffect(() => {

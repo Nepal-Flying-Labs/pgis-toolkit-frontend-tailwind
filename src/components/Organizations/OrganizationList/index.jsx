@@ -92,7 +92,7 @@ export default function OrganizationList() {
           headerWidths={['50px', '200px', '150px', '150px', '50px']}
           // eslint-disable-next-line
           onRowClick={row => {
-            history.push(`/organizations/${row.id}`);
+            history.push(`/organizations/${row.id}/home`);
           }}
         >
           <TableHeader

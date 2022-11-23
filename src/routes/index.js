@@ -3,13 +3,13 @@ import ResetPassword from '@Components/Authentication/ResetPassword';
 import Authentication from '../views/Authentication';
 import Home from '../views/Home';
 import Organizations from '../views/Organizations';
-import IndividualOrganization from '../views/IndividualOrganization';
+import OrganizationDashboard from '../views/OrganizationDashboard';
 
 const indexRoutes = [
   {
-    path: '/organizations/:organizationId',
-    name: 'Individual Organization',
-    component: IndividualOrganization,
+    path: '/organizations/:organizationId/:tabname',
+    name: 'Organization Dashboard',
+    component: OrganizationDashboard,
     authenticated: true,
   },
   {

@@ -13,4 +13,4 @@ export const forgotPassword = payload =>
   api.post(`/users/forgot_password_email/`, payload);
 
 export const resetPassword = (params, payload) =>
-  api.post(`/users/reset_password/`, { params }, payload);
+  api.post(`/users/reset_password/`, payload, { params });

@@ -6,6 +6,7 @@ const initialState = {
   user: {},
   userDetail: {},
   infoDialogContent: null,
+  userPermissions: null,
 };
 
 const loginSuccess = (state, action) => ({
@@ -23,10 +24,16 @@ const setInfoDialogContent = (state, action) => ({
   infoDialogContent: action.payload,
 });
 
+const getUserPermissionsSuccess = (state, action) => ({
+  ...state,
+  userPermissions: action.payload.permissions,
+});
+
 const authenticationReducer = createReducer(initialState, {
   [Types.LOGIN_SUCCESS]: loginSuccess,
   [Types.VERIFY_USER_SUCCESS]: verifyUserSuccess,
   [Types.SET_INFO_DIALOG_CONTENT]: setInfoDialogContent,
+  [Types.GET_USER_PERMISSIONS_SUCCESS]: getUserPermissionsSuccess,
 });
 
 export default persist('user', ['user'], authenticationReducer);

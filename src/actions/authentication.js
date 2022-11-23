@@ -26,6 +26,10 @@ export const { Types, Creators } = createActions({
   resetPasswordFailure: null,
 
   setInfoDialogContent: ['payload'],
+
+  getUserPermissionsRequest: ['params'],
+  getUserPermissionsSuccess: ['payload'],
+  getUserPermissionsFailure: null,
 });
 
 export default Creators;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/authentication';
 import Button from '@Components/common/Button';
@@ -17,6 +17,7 @@ const initialState = {
 };
 
 export default function SignIn() {
+  const [isVisible, setIsVisible] = useState(false);
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.LOGIN_REQUEST]),
   );
@@ -60,17 +61,23 @@ export default function SignIn() {
               {...inputProps}
             />
           </div>
-          <div className="naxatw-space-y-2">
+          <div className="naxatw-space-y-2 naxatw-relative">
             <label className="naxatw-label">Password</label>
             <input
-              type="password"
-              className="naxatw-input"
+              type={!isVisible ? 'password' : 'text'}
+              className="naxatw-input "
               name="password"
               placeholder="**********"
               value={values.password}
               onChange={handleChange}
               {...inputProps}
             />
+            <span
+              onClick={() => setIsVisible(!isVisible)}
+              className="material-icons naxatw-absolute naxatw-right-3 naxatw-top-9 naxatw-cursor-pointer"
+            >
+              {!isVisible ? 'visibility' : 'visibility_off'}
+            </span>
           </div>
 
           <div className="naxatw-flex naxatw-items-center naxatw-mb-6 naxatw-justify-between">

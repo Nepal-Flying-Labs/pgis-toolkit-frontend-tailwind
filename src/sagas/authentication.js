@@ -24,7 +24,12 @@ export function* loginRequest({ payload }) {
     yield put(push('/organizations'));
   } catch (error) {
     yield put(authActions.loginFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(
+      authActions.setInfoDialogContent({
+        message: error?.response?.data?.message,
+        status: 'error',
+      }),
+    );
   }
 }
 
@@ -74,13 +79,19 @@ function* forgotPasswordRequest({ payload }) {
     yield put(authActions.setInfoDialogContent('forgot-password'));
     yield put(push('/login'));
     yield put(
-      toastActions.success({
+      authActions.setInfoDialogContent({
         message: 'A reset link has been sent to your email.',
+        status: 'success',
       }),
     );
   } catch (error) {
     yield put(authActions.forgotPasswordFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(
+      authActions.setInfoDialogContent({
+        message: error?.response?.data?.message,
+        status: 'error',
+      }),
+    );
   }
 }
 

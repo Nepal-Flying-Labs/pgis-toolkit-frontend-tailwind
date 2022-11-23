@@ -5,8 +5,10 @@ const getStatus = status => {
   switch (status) {
     case 'info':
       return 'info';
-    case 'check':
+    case 'success':
       return 'check_circle';
+    case 'error':
+      return 'cancel';
     default:
       return 'info';
   }

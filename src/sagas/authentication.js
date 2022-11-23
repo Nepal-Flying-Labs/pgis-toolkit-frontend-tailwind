@@ -5,6 +5,7 @@ import {
   signUpUser,
   verifyUser,
   forgotPassword,
+  resetPassword,
 } from '@Services/authentication';
 import authActions, { Types } from '@Actions/authentication';
 import toastActions from '@Actions/toast';
@@ -66,8 +67,8 @@ function* forgotPasswordRequest({ payload }) {
   try {
     const formdata = prepareFormData(payload);
     const response = yield call(forgotPassword, formdata);
-    yield put(authActions.forgotPasswordSuccess());
-    console.log(response);
+    yield put(authActions.forgotPasswordSuccess(response));
+    // console.log(response);
     // yield put(push('/login'));
     yield put(
       toastActions.success({
@@ -80,6 +81,23 @@ function* forgotPasswordRequest({ payload }) {
   }
 }
 
+function* resetPasswordRequest({ params, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(resetPassword, formdata, params);
+    yield put(authActions.resetPasswordSuccess(response));
+    yield put(push('/login'));
+    yield put(
+      toastActions.success({
+        message: 'Your password has been reset successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(authActions.resetPasswordFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
+
 function* authenticationWatcher() {
   yield takeLatest(Types.LOGIN_REQUEST, withLoader(loginRequest));
   yield takeLatest(Types.SIGN_UP_REQUEST, withLoader(signUpRequest));
@@ -88,6 +106,10 @@ function* authenticationWatcher() {
   yield takeLatest(
     Types.FORGOT_PASSWORD_REQUEST,
     withLoader(forgotPasswordRequest),
+  );
+  yield takeLatest(
+    Types.RESET_PASSWORD_REQUEST,
+    withLoader(resetPasswordRequest),
   );
 }
 

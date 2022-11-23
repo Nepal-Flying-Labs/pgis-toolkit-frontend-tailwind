@@ -11,3 +11,6 @@ export const signUpUser = data => authenticated(api).post(`/users/user/`, data);
 
 export const forgotPassword = payload =>
   api.post(`/users/forgot_password_email/`, payload);
+
+export const resetPassword = (params, payload) =>
+  api.post(`/users/reset_password/`, { params }, payload);

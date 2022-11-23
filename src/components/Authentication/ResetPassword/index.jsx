@@ -1,31 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button';
 import { Link } from 'react-router-dom';
+import { Creators } from '@Actions/authentication';
 
-// import { Creators } from '@Actions/authentication';
-
-// const { verifyUserRequest } = Creators;
+const { resetPasswordRequest } = Creators;
 
 export default function ResetPassword() {
+  const [token, setToken] = useState(null);
   const dispatch = useDispatch();
   const initialState = {
-    password: '',
-    confirmPassword: '',
+    new_password1: '',
+    new_password2: '',
   };
   const { values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: initialState,
-    required: ['password', 'confirmPassword'],
+    required: ['new_password1', 'new_password2'],
     onSubmit: data => {
-      console.log(data);
+      dispatch(resetPasswordRequest({ token }, data));
     },
   });
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
-    console.log(token);
+    const urlToken = urlParams.get('token');
+    setToken(urlToken);
     // dispatch(verifyUserRequest({ token }));
   }, [dispatch]);
 
@@ -51,9 +51,9 @@ export default function ResetPassword() {
             <input
               type="password"
               className="username"
-              name="password"
+              name="new_password1"
               placeholder="8+ characters"
-              value={values.password}
+              value={values.new_password1}
               onChange={handleChange}
               {...inputProps}
             />
@@ -65,8 +65,8 @@ export default function ResetPassword() {
             <input
               type="password"
               className="naxatw-block naxatw-w-full naxatw-px-4 naxatw-py-2 naxatw-font-normal naxatw-text-gray-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gray-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
-              name="confirmPassword"
-              value={values.confirmPassword}
+              name="new_password2"
+              value={values.new_password2}
               onChange={handleChange}
               {...inputProps}
             />

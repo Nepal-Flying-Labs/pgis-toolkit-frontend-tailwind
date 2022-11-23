@@ -20,6 +20,10 @@ export const { Types, Creators } = createActions({
   forgotPasswordRequest: ['payload'],
   forgotPasswordSuccess: null,
   forgotPasswordFailure: null,
+
+  resetPasswordRequest: ['params', 'payload'],
+  resetPasswordSuccess: null,
+  resetPasswordFailure: null,
 });
 
 export default Creators;

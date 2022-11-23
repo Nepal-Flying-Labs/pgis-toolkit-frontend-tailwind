@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button';
+import InfoDialog from '@Components/common/InfoDialog';
 import { Link } from 'react-router-dom';
 import { Creators, Types } from '@Actions/authentication';
 import { checkIfLoading } from '@Utils/loaderSelector';
@@ -40,12 +41,9 @@ export default function ResetPassword() {
           Please Enter New Pasword
         </h3>
       </div>
-      <div className="naxatw-bg-[#E1EDFB] naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-rounded-md naxatw-p-3 naxatw-mb-10">
-        <span className="material-icons">info</span>
-        <span className="naxatw-text-body-lg">
-          Please make sure your Password add at least 8 characters.
-        </span>
-      </div>
+      <InfoDialog status="info">
+        Please make sure your Password add at least 8 characters.
+      </InfoDialog>
       <div className="">
         <div className="mb-6 naxatw-space-y-[1.25rem]">
           <div className="naxatw-space-y-2">

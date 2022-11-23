@@ -70,7 +70,7 @@ function* forgotPasswordRequest({ payload }) {
     const formdata = prepareFormData(payload);
     yield call(forgotPassword, formdata);
     yield put(authActions.forgotPasswordSuccess());
-    // console.log(response);
+    yield put(authActions.setInfoDialogContent('forgot-password'));
     yield put(push('/login'));
     yield put(
       toastActions.success({
@@ -86,8 +86,9 @@ function* forgotPasswordRequest({ payload }) {
 function* resetPasswordRequest({ params, payload }) {
   try {
     const formdata = prepareFormData(payload);
-    yield call(resetPassword, formdata, params);
+    yield call(resetPassword, params, formdata);
     yield put(authActions.resetPasswordSuccess());
+    yield put(authActions.setInfoDialogContent('reset-password'));
     yield put(push('/login'));
     yield put(
       toastActions.success({

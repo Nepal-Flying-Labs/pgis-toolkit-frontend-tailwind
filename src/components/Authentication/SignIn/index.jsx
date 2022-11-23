@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/authentication';
+import InfoDialog from '@Components/common/InfoDialog';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import GoogleIcon from '@Assets/images/icons/google-icon.svg';
@@ -21,6 +22,9 @@ export default function SignIn() {
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.LOGIN_REQUEST]),
   );
+  const infoDialogContent = useSelector(
+    state => state.authentication.infoDialogContent,
+  );
   const dispatch = useDispatch();
   const { values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: initialState,
@@ -32,12 +36,21 @@ export default function SignIn() {
 
   return (
     <>
-      <div className="">
+      <div className="naxatw-mb-[3.125rem]">
         <figure className="naxatw-flex naxatw-justify-center">{Avatar}</figure>
         <h3 className="naxatw-font-bold naxatw-mt-3">Sign in</h3>
       </div>
       <div className="naxatw-w-full">
-        <Button className="naxatw-btn-secondary naxatw-w-full naxatw-mt-[3.125rem]">
+        {infoDialogContent ? (
+          <InfoDialog className="naxatw-bg-secondary-50" status="check">
+            {infoDialogContent === 'forgot-password'
+              ? "If you have an account, we'll mail you a reset link."
+              : 'Your password was successfully updated.'}
+          </InfoDialog>
+        ) : (
+          ''
+        )}
+        <Button className="naxatw-btn-secondary naxatw-w-full ">
           <img className="naxatw-mr-3" src={GoogleIcon} alt="google-icon" />
           <p>Sign in with Google</p>
         </Button>

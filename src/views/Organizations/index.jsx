@@ -13,6 +13,7 @@ import { userRowsOption } from '@src/constants/paginationRowOptions';
 import Modal from '@Components/common/Modal';
 import CreateAnOrganization from '@Components/ModalContent/CreateAnOrganization';
 import CreateOrganizationSuccess from '@Components/ModalContent/CreateOrganizationSuccess';
+import AccessToFunctionalities from '@Components/ModalContent/AccessToFunctionalities';
 import DropdownOptions from '@Components/common/DropdownOptions/index';
 
 const { getOrganizationsRequest, toggleModal } = Creators;
@@ -36,6 +37,8 @@ function getModalContent(content) {
       return <CreateAnOrganization />;
     case 'create-organization-success':
       return <CreateOrganizationSuccess />;
+    case 'access-to-functionalities':
+      return <AccessToFunctionalities />;
     default:
       return '';
   }

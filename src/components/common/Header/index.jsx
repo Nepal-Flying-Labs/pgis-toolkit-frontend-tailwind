@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import organizationsActions from '@Actions/organizations';
 import useOutsideClick from '@Hooks/useOutsideClick';
 import { Creators } from '@Actions/authentication';
 import LoginLogo from '@Assets/images/logo.png';
@@ -58,7 +59,16 @@ export default function Header() {
                       <span className="naxatw-text-body-md">Super Admin</span>
                     </div>
                   </div>
-                  <div className="naxatw-h-[2.5rem] naxatw-flex naxatw-items-center naxatw-cursor-pointer naxatw-gap-x-3 hover:naxatw-bg-gray-200">
+                  <div
+                    onClick={() =>
+                      dispatch(
+                        organizationsActions.toggleModal(
+                          'access-to-functionalities',
+                        ),
+                      )
+                    }
+                    className="naxatw-h-[2.5rem] naxatw-flex naxatw-items-center naxatw-cursor-pointer naxatw-gap-x-3 hover:naxatw-bg-gray-200"
+                  >
                     <span className="material-icons naxatw-text-[#00A699]">
                       info
                     </span>

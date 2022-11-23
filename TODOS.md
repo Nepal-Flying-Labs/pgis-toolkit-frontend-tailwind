@@ -7,7 +7,7 @@
 - [x] implement password visibility toggle
 - [x] implement loader
 - [x] info dialog in login
-- [] implement toast design
+- [x] implement toast design
 - [] implement info dialog instead of toast in login page
 - [] implement design template email
 - [] implement change password

@@ -33,9 +33,7 @@ export default function SignIn() {
     <>
       <div className="">
         <figure className="naxatw-flex naxatw-justify-center">{Avatar}</figure>
-        <h3 className="naxatw-font-bold naxatw-mt-3 naxatw-tracking-wide">
-          Sign in
-        </h3>
+        <h3 className="naxatw-font-bold naxatw-mt-3">Sign in</h3>
       </div>
       <div className="naxatw-w-full">
         <Button className="naxatw-btn-secondary naxatw-w-full naxatw-mt-[3.125rem]">
@@ -43,16 +41,18 @@ export default function SignIn() {
           <p>Sign in with Google</p>
         </Button>
 
-        <hr className="naxatw-my-9 naxatw-h-px naxatw-bg-gray-200 naxatw-border-0" />
+        <div className="naxatw-my-[28px] naxatw-flex naxatw-items-center">
+          <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
+          <p className="naxatw-mx-3 naxatw-text-sm">or</p>
+          <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
+        </div>
 
         <div className="mb-6 naxatw-space-y-[1.125rem]">
           <div className="naxatw-space-y-2">
-            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
-              Username
-            </label>
+            <label className="naxatw-label">Username</label>
             <input
               type="text"
-              className="username"
+              className="naxatw-input"
               name="username"
               placeholder="Username"
               value={values.username}
@@ -61,12 +61,10 @@ export default function SignIn() {
             />
           </div>
           <div className="naxatw-space-y-2">
-            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
-              Password
-            </label>
+            <label className="naxatw-label">Password</label>
             <input
               type="password"
-              className="naxatw-block naxatw-w-full naxatw-px-4 naxatw-py-2 naxatw-font-normal naxatw-text-gray-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gray-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
+              className="naxatw-input"
               name="password"
               placeholder="**********"
               value={values.password}
@@ -99,7 +97,7 @@ export default function SignIn() {
           </div>
         </div>
         <Button
-          className="naxatw-btn-primary naxatw-mt-[2.375rem] naxatw-w-full"
+          className="naxatw-btn-primary naxatw-mt-[1.625rem] naxatw-w-full"
           isLoading={loading}
           loaderClassName="naxatw-fill-secondary-400"
           onClick={handleSubmit}

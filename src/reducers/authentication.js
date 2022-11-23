@@ -5,6 +5,7 @@ import persist from '../utils/persist';
 const initialState = {
   user: {},
   userDetail: {},
+  infoDialogContent: null,
   userPermissions: null,
 };
 
@@ -18,6 +19,11 @@ const verifyUserSuccess = (state, action) => ({
   userDetail: action.payload,
 });
 
+const setInfoDialogContent = (state, action) => ({
+  ...state,
+  infoDialogContent: action.payload,
+});
+
 const getUserPermissionsSuccess = (state, action) => ({
   ...state,
   userPermissions: action.payload.permissions,
@@ -26,6 +32,7 @@ const getUserPermissionsSuccess = (state, action) => ({
 const authenticationReducer = createReducer(initialState, {
   [Types.LOGIN_SUCCESS]: loginSuccess,
   [Types.VERIFY_USER_SUCCESS]: verifyUserSuccess,
+  [Types.SET_INFO_DIALOG_CONTENT]: setInfoDialogContent,
   [Types.GET_USER_PERMISSIONS_SUCCESS]: getUserPermissionsSuccess,
 });
 

@@ -69,10 +69,10 @@ function* logoutRequest() {
 function* forgotPasswordRequest({ payload }) {
   try {
     const formdata = prepareFormData(payload);
-    const response = yield call(forgotPassword, formdata);
-    yield put(authActions.forgotPasswordSuccess(response));
-    // console.log(response);
-    // yield put(push('/login'));
+    yield call(forgotPassword, formdata);
+    yield put(authActions.forgotPasswordSuccess());
+    yield put(authActions.setInfoDialogContent('forgot-password'));
+    yield put(push('/login'));
     yield put(
       toastActions.success({
         message: 'A reset link has been sent to your email.',
@@ -87,8 +87,9 @@ function* forgotPasswordRequest({ payload }) {
 function* resetPasswordRequest({ params, payload }) {
   try {
     const formdata = prepareFormData(payload);
-    const response = yield call(resetPassword, formdata, params);
-    yield put(authActions.resetPasswordSuccess(response));
+    yield call(resetPassword, params, formdata);
+    yield put(authActions.resetPasswordSuccess());
+    yield put(authActions.setInfoDialogContent('reset-password'));
     yield put(push('/login'));
     yield put(
       toastActions.success({

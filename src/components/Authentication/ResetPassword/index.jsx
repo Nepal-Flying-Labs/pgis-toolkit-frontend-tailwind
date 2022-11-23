@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button';
+import InfoDialog from '@Components/common/InfoDialog';
 import { Link } from 'react-router-dom';
-import { Creators } from '@Actions/authentication';
+import { Creators, Types } from '@Actions/authentication';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { resetPasswordRequest } = Creators;
 
 export default function ResetPassword() {
   const [token, setToken] = useState(null);
   const dispatch = useDispatch();
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.RESET_PASSWORD_REQUEST]),
+  );
   const initialState = {
     new_password1: '',
     new_password2: '',
@@ -36,21 +41,16 @@ export default function ResetPassword() {
           Please Enter New Pasword
         </h3>
       </div>
-      <div className="naxatw-bg-[#E1EDFB] naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-rounded-md naxatw-p-3 naxatw-mb-10">
-        <span className="material-icons">info</span>
-        <span className="naxatw-text-body-lg">
-          Please make sure your Password add at least 8 characters.
-        </span>
-      </div>
+      <InfoDialog status="info">
+        Please make sure your Password add at least 8 characters.
+      </InfoDialog>
       <div className="">
         <div className="mb-6 naxatw-space-y-[1.25rem]">
           <div className="naxatw-space-y-2">
-            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
-              Password
-            </label>
+            <label className="naxatw-label">Password</label>
             <input
               type="password"
-              className="username"
+              className="naxatw-input"
               name="new_password1"
               placeholder="8+ characters"
               value={values.new_password1}
@@ -59,12 +59,10 @@ export default function ResetPassword() {
             />
           </div>
           <div className="naxatw-space-y-2">
-            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
-              Confirm Password
-            </label>
+            <label className="naxatw-label">Confirm Password</label>
             <input
               type="password"
-              className="naxatw-block naxatw-w-full naxatw-px-4 naxatw-py-2 naxatw-font-normal naxatw-text-gray-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gray-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
+              className="naxatw-input"
               name="new_password2"
               value={values.new_password2}
               onChange={handleChange}
@@ -74,6 +72,7 @@ export default function ResetPassword() {
         </div>
         <Button
           className="naxatw-btn-primary naxatw-mt-7 naxatw-w-full"
+          isLoading={loading}
           loaderClassName="naxatw-fill-secondary-400"
           onClick={handleSubmit}
         >

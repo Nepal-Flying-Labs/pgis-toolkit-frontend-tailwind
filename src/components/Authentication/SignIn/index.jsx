@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/authentication';
+import InfoDialog from '@Components/common/InfoDialog';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import GoogleIcon from '@Assets/images/icons/google-icon.svg';
@@ -17,8 +18,12 @@ const initialState = {
 };
 
 export default function SignIn() {
+  const [isVisible, setIsVisible] = useState(false);
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.LOGIN_REQUEST]),
+  );
+  const infoDialogContent = useSelector(
+    state => state.authentication.infoDialogContent,
   );
   const dispatch = useDispatch();
   const { values, inputProps, handleChange, handleSubmit } = useForm({
@@ -31,12 +36,21 @@ export default function SignIn() {
 
   return (
     <>
-      <div className="">
+      <div className="naxatw-mb-[3.125rem]">
         <figure className="naxatw-flex naxatw-justify-center">{Avatar}</figure>
         <h3 className="naxatw-font-bold naxatw-mt-3">Sign in</h3>
       </div>
       <div className="naxatw-w-full">
-        <Button className="naxatw-btn-secondary naxatw-w-full naxatw-mt-[3.125rem]">
+        {infoDialogContent ? (
+          <InfoDialog className="naxatw-bg-secondary-50" status="check">
+            {infoDialogContent === 'forgot-password'
+              ? "If you have an account, we'll mail you a reset link."
+              : 'Your password was successfully updated.'}
+          </InfoDialog>
+        ) : (
+          ''
+        )}
+        <Button className="naxatw-btn-secondary naxatw-w-full ">
           <img className="naxatw-mr-3" src={GoogleIcon} alt="google-icon" />
           <p>Sign in with Google</p>
         </Button>
@@ -60,17 +74,23 @@ export default function SignIn() {
               {...inputProps}
             />
           </div>
-          <div className="naxatw-space-y-2">
+          <div className="naxatw-space-y-2 naxatw-relative">
             <label className="naxatw-label">Password</label>
             <input
-              type="password"
-              className="naxatw-input"
+              type={!isVisible ? 'password' : 'text'}
+              className="naxatw-input "
               name="password"
               placeholder="**********"
               value={values.password}
               onChange={handleChange}
               {...inputProps}
             />
+            <span
+              onClick={() => setIsVisible(!isVisible)}
+              className="material-icons naxatw-absolute naxatw-right-3 naxatw-top-9 naxatw-cursor-pointer"
+            >
+              {!isVisible ? 'visibility' : 'visibility_off'}
+            </span>
           </div>
 
           <div className="naxatw-flex naxatw-items-center naxatw-mb-6 naxatw-justify-between">

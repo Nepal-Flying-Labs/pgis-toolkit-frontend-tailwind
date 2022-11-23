@@ -9,6 +9,7 @@ import {
   getUserPermissions,
 } from '@Services/authentication';
 import authActions, { Types } from '@Actions/authentication';
+import organizationsActions from '@Actions/organizations';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
 import { withLoader } from '@Utils/sagaUtils';
@@ -19,6 +20,7 @@ export function* loginRequest({ payload }) {
     localStorage.setItem('refreshToken', response.data.refresh);
     localStorage.setItem('userToken', response.data.access);
     yield put(authActions.loginSuccess(response.data));
+    yield put(organizationsActions.toggleModal('access-to-functionalities'));
     yield put(push('/organizations'));
   } catch (error) {
     yield put(authActions.loginFailure());

@@ -1,10 +1,14 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Creators from '@Actions/authentication';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Creators, Types } from '@Actions/authentication';
+import InfoDialog from '@Components/common/InfoDialog';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
+import GoogleIcon from '@Assets/images/icons/google-icon.svg';
 import { Avatar } from '@src/constants/svgIcons';
+import ButtonLink from '@Components/common/ButtonLink';
+import { checkIfLoading } from '@Utils/loaderSelector';
+import './styles.css';
 
 const { loginRequest } = Creators;
 
@@ -14,8 +18,15 @@ const initialState = {
 };
 
 export default function SignIn() {
+  const [isVisible, setIsVisible] = useState(false);
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.LOGIN_REQUEST]),
+  );
+  const infoDialogContent = useSelector(
+    state => state.authentication.infoDialogContent,
+  );
   const dispatch = useDispatch();
-  const { values, meta, inputProps, handleChange, handleSubmit } = useForm({
+  const { values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: initialState,
     required: ['username', 'password'],
     onSubmit: data => {
@@ -25,29 +36,38 @@ export default function SignIn() {
 
   return (
     <>
-      <div className="">
+      <div className="naxatw-mb-[3.125rem]">
         <figure className="naxatw-flex naxatw-justify-center">{Avatar}</figure>
-        <h3 className="naxatw-font-bold naxatw-mt-3 naxatw-tracking-wide">
-          Sign in
-        </h3>
+        <h3 className="naxatw-font-bold naxatw-mt-3">Sign in</h3>
       </div>
       <div className="naxatw-w-full">
-        <Button className="naxatw-border naxatw-border-grey-800 naxatw-px-5 naxatw-py-3 naxatw-w-full naxatw-rounded-xl naxatw-mt-[3.125rem]">
-          <p className="naxatw-font-bold naxatw-text-[0.9357rem]">
-            Sign in with Google
-          </p>
+        {infoDialogContent ? (
+          <InfoDialog
+            className="naxatw-bg-secondary-50"
+            status={infoDialogContent.status}
+          >
+            {infoDialogContent.message}
+          </InfoDialog>
+        ) : (
+          ''
+        )}
+        <Button className="naxatw-btn-secondary naxatw-w-full ">
+          <img className="naxatw-mr-3" src={GoogleIcon} alt="google-icon" />
+          <p>Sign in with Google</p>
         </Button>
 
-        <hr className="naxatw-my-9 naxatw-h-px naxatw-bg-gray-200 naxatw-border-0 naxatw-dark:bg-gray-700" />
+        <div className="naxatw-my-[28px] naxatw-flex naxatw-items-center">
+          <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
+          <p className="naxatw-mx-3 naxatw-text-sm">or</p>
+          <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
+        </div>
 
         <div className="mb-6 naxatw-space-y-[1.125rem]">
           <div className="naxatw-space-y-2">
-            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
-              Username
-            </label>
+            <label className="naxatw-label">Username</label>
             <input
               type="text"
-              className="naxatw-block naxatw-w-full naxatw-px-4 naxatw-py-2 naxatw-font-normal naxatw-text-gray-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gray-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
+              className="naxatw-input"
               name="username"
               placeholder="Username"
               value={values.username}
@@ -55,28 +75,31 @@ export default function SignIn() {
               {...inputProps}
             />
           </div>
-          <div className="naxatw-space-y-2">
-            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
-              Password
-            </label>
+          <div className="naxatw-space-y-2 naxatw-relative">
+            <label className="naxatw-label">Password</label>
             <input
-              type="password"
-              className="naxatw-block naxatw-w-full naxatw-px-4 naxatw-py-2 naxatw-font-normal naxatw-text-gray-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gray-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
+              type={!isVisible ? 'password' : 'text'}
+              className="naxatw-input "
               name="password"
               placeholder="**********"
               value={values.password}
               onChange={handleChange}
               {...inputProps}
             />
+            <span
+              onClick={() => setIsVisible(!isVisible)}
+              className="material-icons naxatw-absolute naxatw-right-3 naxatw-top-9 naxatw-cursor-pointer"
+            >
+              {!isVisible ? 'visibility' : 'visibility_off'}
+            </span>
           </div>
 
-          <div className="naxatw-flex naxatw-items-start naxatw-mb-6 naxatw-justify-between">
+          <div className="naxatw-flex naxatw-items-center naxatw-mb-6 naxatw-justify-between">
             <div className="naxatw-flex naxatw-items-start naxatw-gap-3">
               <input
                 id="keep-me"
                 type="checkbox"
                 value=""
-                // className="naxatw-w-4 naxatw-h-4 naxatw-bg-gray-50 naxatw-rounded naxatw-border naxatw-border-gray-300 naxatw-focus:ring-3 naxatw-focus:ring-blue-300 naxatw-dark:bg-gray-700 naxatw-dark:border-gray-600 naxatw-dark:focus:ring-blue-600 naxatw-dark:ring-offset-gray-800"
                 className="naxatw-w-4 naxatw-h-4"
                 required
               />
@@ -88,17 +111,16 @@ export default function SignIn() {
               </label>
             </div>
             <div>
-              <Link
-                to="/forgot-password"
-                className="naxatw-text-secondary-400 naxatw-font-bold naxatw-tracking-wide naxatw-text-[0.9357rem]"
-              >
+              <ButtonLink to="/forgot-password">
                 Forgot your password?
-              </Link>
+              </ButtonLink>
             </div>
           </div>
         </div>
         <Button
-          className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-text-[0.9357rem] naxatw-font-bold naxatw-w-full naxatw-mt-12"
+          className="naxatw-btn-primary naxatw-mt-[1.625rem] naxatw-w-full"
+          isLoading={loading}
+          loaderClassName="naxatw-fill-secondary-400"
           onClick={handleSubmit}
         >
           Sign In

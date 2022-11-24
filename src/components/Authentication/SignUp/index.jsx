@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Creators from '@Actions/authentication';
+import { Creators } from '@Actions/authentication';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import { Avatar } from '@src/constants/svgIcons';
@@ -19,7 +19,7 @@ const initialState = {
 export default function SignUp() {
   const userDetail = useSelector(state => state.authentication.userDetail);
   const dispatch = useDispatch();
-  const { values, meta, inputProps, handleChange, handleSubmit } = useForm({
+  const { values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: { ...initialState, email: userDetail?.email || '' },
     required: [
       'fullname',
@@ -57,7 +57,7 @@ export default function SignUp() {
       <div className="naxatw-w-full naxatw-mt-[3.125rem]">
         <div className="mb-6 naxatw-space-y-[1.125rem]">
           <div className="naxatw-space-y-2">
-            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
               Full Name
             </label>
             <input
@@ -71,7 +71,7 @@ export default function SignUp() {
             />
           </div>
           <div className="naxatw-space-y-2">
-            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
               Email address
             </label>
             <input
@@ -88,7 +88,7 @@ export default function SignUp() {
 
           <div className="naxatw-flex naxatw-gap-1.5">
             <div className="naxatw-space-y-2">
-              <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+              <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
                 Username
               </label>
               <input
@@ -102,7 +102,7 @@ export default function SignUp() {
               />
             </div>
             <div className="naxatw-space-y-2">
-              <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+              <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
                 Password
               </label>
               <input
@@ -119,7 +119,7 @@ export default function SignUp() {
 
           <div className="naxatw-flex naxatw-gap-1.5">
             <div className="naxatw-space-y-2">
-              <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+              <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
                 Address
               </label>
               <input
@@ -133,7 +133,7 @@ export default function SignUp() {
               />
             </div>
             <div className="naxatw-space-y-2">
-              <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+              <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
                 Phone Number
               </label>
               <input
@@ -149,7 +149,7 @@ export default function SignUp() {
           </div>
         </div>
         <Button
-          className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-text-[0.9357rem] naxatw-font-bold naxatw-w-full naxatw-mt-12"
+          className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-text-[15px] naxatw-font-bold naxatw-w-full naxatw-mt-12"
           onClick={handleSubmit}
         >
           Sign Up

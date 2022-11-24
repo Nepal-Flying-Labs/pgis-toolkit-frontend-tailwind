@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import Creators from '@Actions/organizations';
+import { Creators } from '@Actions/organizations';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button';
 
@@ -17,7 +17,7 @@ const initialState = {
 export default function CreateAnOrganization() {
   const dispatch = useDispatch();
   const [emailList, setEmailList] = useState([]);
-  const { values, meta, inputProps, handleChange, handleSubmit } = useForm({
+  const { values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: initialState,
     required: ['organizationName'],
     onSubmit: data => {
@@ -33,7 +33,7 @@ export default function CreateAnOrganization() {
     <div className="">
       <div className="naxatw-p-4 naxatw-space-y-7">
         <div className="naxatw-space-y-2">
-          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
             Name of Organization
           </label>
           <input
@@ -48,7 +48,7 @@ export default function CreateAnOrganization() {
         </div>
 
         <div className="naxatw-space-y-2">
-          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
             Website
           </label>
           <input
@@ -63,7 +63,7 @@ export default function CreateAnOrganization() {
         </div>
 
         <div className="naxatw-space-y-2">
-          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
             About
           </label>
           <textarea
@@ -78,7 +78,7 @@ export default function CreateAnOrganization() {
         </div>
 
         <div className="naxatw-space-y-2">
-          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
             Thematic Area
           </label>
           <input
@@ -93,7 +93,7 @@ export default function CreateAnOrganization() {
         </div>
 
         <div className="naxatw-space-y-2">
-          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[0.9357rem]">
+          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
             Email Invite
           </label>
           <div className="naxatw-flex naxatw-items-center">
@@ -108,7 +108,7 @@ export default function CreateAnOrganization() {
             />
             <a
               type="submit"
-              class="naxatw-text-2xl naxatw-ml-2 naxatw-cursor-pointer naxatw-select-none"
+              className="naxatw-text-2xl naxatw-ml-2 naxatw-cursor-pointer naxatw-select-none"
               onClick={() => {
                 setEmailList(prev => [...prev, values.email]);
               }}

@@ -13,13 +13,13 @@
     @apply naxatw-font-primary naxatw-text-grey-800 naxatw-text-[2rem] naxatw-font-normal naxatw-leading-[2.5rem] naxatw-tracking-normal;
   }
   h4 {
-    @apply naxatw-font-primary naxatw-text-grey-900 naxatw-text-[1.5rem] naxatw-font-bold naxatw-leading-[1.875rem] naxatw-tracking-normal;
+    @apply naxatw-font-primary naxatw-text-grey-900 naxatw-text-[1.5rem] naxatw-leading-[1.875rem] naxatw-tracking-normal;
   }
   h5 {
-    @apply naxatw-font-primary naxatw-text-grey-900 naxatw-text-[1.125rem] naxatw-font-bold naxatw-leading-[1.625] naxatw-tracking-normal;
+    @apply naxatw-font-primary naxatw-text-grey-900 naxatw-text-[1.125rem] naxatw-leading-[1.625] naxatw-tracking-normal;
   }
   h6 {
-    @apply naxatw-font-primary naxatw-text-grey-900 naxatw-text-[1rem] naxatw-font-bold naxatw-leading-[1.25] naxatw-tracking-normal;
+    @apply naxatw-font-primary naxatw-text-grey-900 naxatw-text-[1rem] naxatw-leading-[1.25] naxatw-tracking-normal;
   }
   p {
     @apply naxatw-text-grey-800;
@@ -27,19 +27,13 @@
   span {
     @apply naxatw-text-grey-800 naxatw-text-body-md;
   }
-  button {
-    @apply naxatw-font-bold naxatw-text-[0.9357rem] naxatw-tracking-wider;
-  }
 }
 
 @layer components {
-  .btn {
-    @apply inline-block px-5 py-3 rounded-lg focus:outline-none focus:ring focus:ring-offset-2 uppercase tracking-wider font-semibold text-sm sm:text-base;
+  .naxatw-input {
+    @apply naxatw-block naxatw-w-full naxatw-px-3 naxatw-py-[13px] naxatw-font-normal naxatw-text-gray-900 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded-lg naxatw-transition naxatw-ease-in-out naxatw-m-0 focus:naxatw-text-gray-700 focus:naxatw-bg-white focus:naxatw-border-grey-800 focus:naxatw-outline-none;
   }
-  .btn-primary {
-    @apply bg-indigo-500 text-white hover:bg-indigo-400 focus:ring-indigo-500 focus:ring-opacity-50 active:bg-indigo-600;
-  }
-  .btn-secondary {
-    @apply bg-gray-300 text-gray-800 hover:bg-gray-200 focus:ring-gray-300 focus:ring-opacity-50 active:bg-gray-400;
+  .naxatw-label {
+    @apply naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px];
   }
 }

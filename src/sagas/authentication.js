@@ -1,10 +1,18 @@
-/* eslint-disable no-unused-vars */
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
-import { loginUser, signUpUser, verifyUser } from '@Services/authentication';
+import {
+  loginUser,
+  signUpUser,
+  verifyUser,
+  forgotPassword,
+  resetPassword,
+  getUserPermissions,
+} from '@Services/authentication';
 import authActions, { Types } from '@Actions/authentication';
+import organizationsActions from '@Actions/organizations';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
+import { withLoader } from '@Utils/sagaUtils';
 
 export function* loginRequest({ payload }) {
   try {
@@ -12,10 +20,16 @@ export function* loginRequest({ payload }) {
     localStorage.setItem('refreshToken', response.data.refresh);
     localStorage.setItem('userToken', response.data.access);
     yield put(authActions.loginSuccess(response.data));
+    yield put(organizationsActions.toggleModal('access-to-functionalities'));
     yield put(push('/organizations'));
   } catch (error) {
     yield put(authActions.loginFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(
+      authActions.setInfoDialogContent({
+        message: error?.response?.data?.message,
+        status: 'error',
+      }),
+    );
   }
 }
 
@@ -44,11 +58,88 @@ export function* signUpRequest({ payload }) {
     yield put(toastActions.error({ message: error?.response?.data?.message }));
   }
 }
+function* logoutRequest() {
+  try {
+    localStorage.clear();
+    yield put(authActions.logoutSuccess());
+    yield put(push('/login'));
+    yield put(
+      toastActions.success({ message: 'You logged out successfully.' }),
+    );
+  } catch (error) {
+    yield put(authActions.logoutFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
+function* forgotPasswordRequest({ payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    yield call(forgotPassword, formdata);
+    yield put(authActions.forgotPasswordSuccess());
+    yield put(authActions.setInfoDialogContent('forgot-password'));
+    yield put(push('/login'));
+    yield put(
+      authActions.setInfoDialogContent({
+        message: 'A reset link has been sent to your email.',
+        status: 'success',
+      }),
+    );
+  } catch (error) {
+    yield put(authActions.forgotPasswordFailure());
+    yield put(
+      authActions.setInfoDialogContent({
+        message: error?.response?.data?.message,
+        status: 'error',
+      }),
+    );
+  }
+}
+
+function* resetPasswordRequest({ params, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    yield call(resetPassword, params, formdata);
+    yield put(authActions.resetPasswordSuccess());
+    yield put(authActions.setInfoDialogContent('reset-password'));
+    yield put(push('/login'));
+    yield put(
+      toastActions.success({
+        message: 'Your password has been reset successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(authActions.resetPasswordFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
+
+function* getUserPermissionsRequest({ params }) {
+  try {
+    const response = yield call(getUserPermissions, params);
+    yield put(authActions.getUserPermissionsSuccess(response.data));
+  } catch (error) {
+    yield put(authActions.getUserPermissionsFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
 
 function* authenticationWatcher() {
-  yield takeLatest(Types.LOGIN_REQUEST, loginRequest);
-  yield takeLatest(Types.SIGN_UP_REQUEST, signUpRequest);
-  yield takeLatest(Types.VERIFY_USER_REQUEST, verifyUserRequest);
+  yield takeLatest(Types.LOGIN_REQUEST, withLoader(loginRequest));
+  yield takeLatest(Types.SIGN_UP_REQUEST, withLoader(signUpRequest));
+  yield takeLatest(Types.VERIFY_USER_REQUEST, withLoader(verifyUserRequest));
+  yield takeLatest(Types.LOGOUT_REQUEST, withLoader(logoutRequest));
+  yield takeLatest(
+    Types.FORGOT_PASSWORD_REQUEST,
+    withLoader(forgotPasswordRequest),
+  );
+  yield takeLatest(
+    Types.RESET_PASSWORD_REQUEST,
+    withLoader(resetPasswordRequest),
+  );
+  yield takeLatest(
+    Types.GET_USER_PERMISSIONS_REQUEST,
+    withLoader(getUserPermissionsRequest),
+  );
 }
 
 export default authenticationWatcher;

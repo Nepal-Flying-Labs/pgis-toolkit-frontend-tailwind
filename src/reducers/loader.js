@@ -20,7 +20,7 @@ const stopAction = (state, { payload }) => ({
   loader: {
     ...state.loader,
     actions: state.loader.actions.filter(
-      action => JSON.stringify(action) !== JSON.stringify(payload.action),
+      action => JSON.stringify(action) !== JSON.stringify(payload),
     ),
   },
 });

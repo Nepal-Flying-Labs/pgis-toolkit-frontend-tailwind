@@ -1,12 +1,25 @@
-### preliminary user get
-  "email": "royalsilwal@gmail.com",
-  "email_verification_token": "08e89fe9-72cd-486a-ae24-be010527876b",
-  "organization": 12,
-  "project": null,
-  "group": 2,
+### AUthentication
 
-=> create/patch user => use above fields plus form data => for sign up => redirect to login
-=> user_created = true => redirect to login
+- [x] implement account popup
+- [x] implement logout feature
+- [x] implement forgot password
+- [x] accessibility modal
+- [x] implement password visibility toggle
+- [x] implement loader
+- [x] info dialog in login
+- [x] implement toast design
+- [] implement info dialog instead of toast in login page
+- [] implement design template email
+- [] implement change password
+- [] implement keep me signed in
 
 ### Organization
+
 - [] implement user role
+- [] integrate search api
+- [] integrate pagination api
+- [] implement permission in organization page
+
+### DESIGN
+
+- [] input field design

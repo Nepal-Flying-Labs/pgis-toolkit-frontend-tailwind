@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LoginLogo from '@Assets/images/logo.png';
-import AvatarIcon from '@Assets/images/icons/avatar-icon.svg';
-import NotificationIcon from '@Assets/images/icons/notification-icon.svg';
+import HeaderProfile from './HeaderProfile';
+import HeaderNotification from './HeaderNotification';
 
 export default function Header() {
   return (
@@ -22,20 +22,9 @@ export default function Header() {
           </ul>
         </nav>
         <div className="naxatw-flex naxatw-gap-4 naxatw-items-center">
-          <figure className="naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center naxatw-relative">
-            <span className="naxatw-bg-[#FF0F0F] naxatw-rounded-full naxatw-w-[0.875rem] naxatw-h-[0.875rem] naxatw-text-white naxatw-text-xs naxatw-font-bold naxatw-absolute naxatw-top-0 naxatw-right-0 naxatw-flex naxatw-items-center naxatw-justify-center">
-              3
-            </span>
-            <img
-              className="naxatw-h-6"
-              src={NotificationIcon}
-              alt="avatar-placeholder"
-            />
-          </figure>
+          <HeaderNotification />
 
-          <figure className="naxatw-bg-primary-50 naxatw-border naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
-            <img src={AvatarIcon} alt="avatar-placeholder" />
-          </figure>
+          <HeaderProfile />
         </div>
       </div>
     </header>

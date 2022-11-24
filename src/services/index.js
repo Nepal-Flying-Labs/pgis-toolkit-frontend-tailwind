@@ -56,14 +56,14 @@ api.interceptors.response.use(
         });
     }
 
-    if (
-      !localStorage.getItem('refreshToken') &&
-      error.response.status === 401
-      // error.response.statusText === 'Unauthorized'
-    ) {
-      // send login page
-      window.location.href = '/login';
-    }
+    // if (
+    //   !localStorage.getItem('refreshToken') &&
+    //   error.response.status === 401
+    //   // error.response.statusText === 'Unauthorized'
+    // ) {
+    //   // send login page
+    //   window.location.href = '/login';
+    // }
 
     // window.location.href = '/login';
     // specific error handling done elsewhere

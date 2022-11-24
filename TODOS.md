@@ -8,7 +8,7 @@
 - [x] implement loader
 - [x] info dialog in login
 - [x] implement toast design
-- [] implement info dialog instead of toast in login page
+- [x] implement info dialog instead of toast in login page
 - [] implement design template email
 - [] implement change password
 - [] implement keep me signed in

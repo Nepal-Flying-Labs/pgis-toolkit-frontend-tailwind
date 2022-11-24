@@ -1,18 +1,23 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import usePagination from '@Hooks/usePagination';
 import { getSelectedItemRange } from '@Components/common/Pagination/getSelectedItem';
 import { userRowsOption } from '@src/constants/paginationRowOptions';
+import useDebouncedInput from '@Hooks/useDebouncedInput';
+import { Creators } from '@Actions/organizations';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 import SortingContainer from '@Components/common/SortingContainer';
 import Pagination from '@Components/common/Pagination';
 import DropdownOptions from '@Components/common/DropdownOptions';
 
+const { setSearchText } = Creators;
 const dataPerPage = 10;
 
 export default function OrganizationList() {
+  const dispatch = useDispatch();
+  const searchText = useSelector(state => state.organizations.searchText);
   const organizationData = useSelector(
     state => state.organizations.organizationData,
   );
@@ -52,6 +57,14 @@ export default function OrganizationList() {
     },
   ];
 
+  const [value, handleSearch] = useDebouncedInput({
+    ms: 300,
+    init: searchText,
+    onChange: debouncedEvent => {
+      dispatch(setSearchText(debouncedEvent.target.value));
+    },
+  });
+
   return (
     <>
       <div className="naxatw-flex naxatw-items-center naxatw-w-60 naxatw-mt-4 naxatw-h-12">
@@ -76,6 +89,8 @@ export default function OrganizationList() {
           </div>
           <input
             type="text"
+            value={value}
+            onChange={handleSearch}
             id="simple-search"
             className="naxatw-bg-grey-100 naxatw-border naxatw-border-grey-300 naxatw-text-grey-900 naxatw-rounded-full naxatw-focus:ring-blue-500 naxatw-focus:border-blue-500 naxatw-block naxatw-w-full naxatw-pl-10 naxatw-p-2.5"
             placeholder="Search"

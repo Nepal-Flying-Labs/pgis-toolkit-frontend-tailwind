@@ -44,11 +44,15 @@ export default function Organizations() {
     state => state.authentication.userPermissions,
   );
   const modalContent = useSelector(state => state.organizations.modalContent);
+  const searchText = useSelector(state => state.organizations.searchText);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getOrganizationsRequest({ search: searchText }));
+  }, [dispatch, searchText]);
+
+  useEffect(() => {
     dispatch(getUserPermissionsRequest());
-    dispatch(getOrganizationsRequest());
   }, [dispatch]);
 
   return (

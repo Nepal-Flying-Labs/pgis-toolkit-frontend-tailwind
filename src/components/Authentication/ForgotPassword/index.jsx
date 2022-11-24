@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/authentication';
 import Button from '@Components/common/Button';
+import InfoDialog from '@Components/common/InfoDialog';
 import ButtonLink from '@Components/common/ButtonLink';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
-const { forgotPasswordRequest } = Creators;
+const { forgotPasswordRequest, setInfoDialogContent } = Creators;
 
 export default function ForgotPassword() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
+  const infoDialogContent = useSelector(
+    state => state.authentication.infoDialogContent,
+  );
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.FORGOT_PASSWORD_REQUEST]),
   );
@@ -31,6 +35,16 @@ export default function ForgotPassword() {
       </div>
 
       <div className="naxatw-w-full naxatw-mt-10">
+        {infoDialogContent ? (
+          <InfoDialog
+            className="naxatw-bg-secondary-50"
+            status={infoDialogContent.status}
+          >
+            {infoDialogContent.message}
+          </InfoDialog>
+        ) : (
+          ''
+        )}
         <div className="naxatw-space-y-2">
           <label className="naxatw-label">Email address</label>
           <input
@@ -51,7 +65,12 @@ export default function ForgotPassword() {
       >
         Reset password
       </Button>
-      <ButtonLink to="/login">Back</ButtonLink>
+      <ButtonLink
+        to="/login"
+        onClick={() => dispatch(setInfoDialogContent(''))}
+      >
+        Back
+      </ButtonLink>
     </>
   );
 }

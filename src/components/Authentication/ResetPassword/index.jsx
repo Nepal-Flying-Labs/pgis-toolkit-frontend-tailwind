@@ -3,15 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button';
 import InfoDialog from '@Components/common/InfoDialog';
-import { Link } from 'react-router-dom';
+import ButtonLink from '@Components/common/ButtonLink/index';
 import { Creators, Types } from '@Actions/authentication';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
-const { resetPasswordRequest } = Creators;
+const { resetPasswordRequest, setInfoDialogContent } = Creators;
 
 export default function ResetPassword() {
   const [token, setToken] = useState(null);
   const dispatch = useDispatch();
+  const infoDialogContent = useSelector(
+    state => state.authentication.infoDialogContent,
+  );
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.RESET_PASSWORD_REQUEST]),
   );
@@ -31,6 +34,12 @@ export default function ResetPassword() {
     const urlParams = new URLSearchParams(window.location.search);
     const urlToken = urlParams.get('token');
     setToken(urlToken);
+    dispatch(
+      setInfoDialogContent({
+        message: 'Please make sure your password is at least 8 characters',
+        status: 'info',
+      }),
+    );
     // dispatch(verifyUserRequest({ token }));
   }, [dispatch]);
 
@@ -41,9 +50,16 @@ export default function ResetPassword() {
           Please Enter New Pasword
         </h3>
       </div>
-      <InfoDialog status="info">
-        Please make sure your Password add at least 8 characters.
-      </InfoDialog>
+      {infoDialogContent ? (
+        <InfoDialog
+          className="naxatw-bg-secondary-50"
+          status={infoDialogContent.status}
+        >
+          {infoDialogContent.message}
+        </InfoDialog>
+      ) : (
+        ''
+      )}
       <div className="">
         <div className="mb-6 naxatw-space-y-[1.25rem]">
           <div className="naxatw-space-y-2">
@@ -78,12 +94,12 @@ export default function ResetPassword() {
         >
           Set New Password
         </Button>
-        <Link
+        <ButtonLink
           to="/login"
-          className="naxatw-mt-2 naxatw-flex naxatw-justify-center naxatw-px-5 naxatw-py-3 naxatw-rounded-lg naxatw-text-secondary-400 naxatw-font-bold naxatw-w-full naxatw-mt-1"
+          onClick={() => dispatch(setInfoDialogContent(''))}
         >
           Back
-        </Link>
+        </ButtonLink>
       </div>
     </div>
   );

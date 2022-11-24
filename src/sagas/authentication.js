@@ -20,6 +20,7 @@ export function* loginRequest({ payload }) {
     localStorage.setItem('refreshToken', response.data.refresh);
     localStorage.setItem('userToken', response.data.access);
     yield put(authActions.loginSuccess(response.data));
+    yield put(authActions.setInfoDialogContent(''));
     yield put(organizationsActions.toggleModal('access-to-functionalities'));
     yield put(push('/organizations'));
   } catch (error) {
@@ -76,7 +77,6 @@ function* forgotPasswordRequest({ payload }) {
     const formdata = prepareFormData(payload);
     yield call(forgotPassword, formdata);
     yield put(authActions.forgotPasswordSuccess());
-    yield put(authActions.setInfoDialogContent('forgot-password'));
     yield put(push('/login'));
     yield put(
       authActions.setInfoDialogContent({
@@ -100,16 +100,21 @@ function* resetPasswordRequest({ params, payload }) {
     const formdata = prepareFormData(payload);
     yield call(resetPassword, params, formdata);
     yield put(authActions.resetPasswordSuccess());
-    yield put(authActions.setInfoDialogContent('reset-password'));
     yield put(push('/login'));
     yield put(
-      toastActions.success({
+      authActions.setInfoDialogContent({
         message: 'Your password has been reset successfully.',
+        status: 'success',
       }),
     );
   } catch (error) {
     yield put(authActions.resetPasswordFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(
+      authActions.setInfoDialogContent({
+        message: error?.response?.data?.message,
+        status: 'error',
+      }),
+    );
   }
 }
 

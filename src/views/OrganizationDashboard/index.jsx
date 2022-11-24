@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router';
+import { projectHeaderHeight } from '@src/constants';
 import ProjectHeader from '@Components/common/ProjectHeader';
 import Projects from '@Components/OrganizationDashboard/Projects/index';
 import Home from '@Components/OrganizationDashboard/Home/index';
@@ -22,7 +23,9 @@ export default function OrganizationDashboard() {
     <div>
       <ProjectHeader />
 
-      <div className="naxatw-mt-[3.875rem]">{getTabContent(tabname)}</div>
+      <div className={`naxatw-mt-[${projectHeaderHeight}]`}>
+        {getTabContent(tabname)}
+      </div>
     </div>
   );
 }

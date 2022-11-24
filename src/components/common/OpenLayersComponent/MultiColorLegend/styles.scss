@@ -1,0 +1,17 @@
+.multi-color-legend {
+  background: #fff;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  grid-template-columns: auto auto;
+  margin-right: 10px;
+
+  span {
+    /* min-width: 10px; */
+    max-width: 20px;
+    height: 10px;
+  }
+  span:last-child:not(:nth-child(even)) {
+    grid-column: 1 / span 2;
+  }
+}

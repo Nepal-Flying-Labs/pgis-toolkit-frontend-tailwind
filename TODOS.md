@@ -1,4 +1,4 @@
-### AUthentication
+### Authentication
 
 - [x] implement account popup
 - [x] implement logout feature
@@ -20,6 +20,11 @@
 - [] integrate pagination api
 - [] implement permission in organization page
 
+### Project
+
+
 ### DESIGN
 
 - [] input field design
+
+

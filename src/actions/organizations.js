@@ -12,6 +12,11 @@ export const { Types, Creators } = createActions(
 
     setSearchText: ['payload'],
 
+    handleNextClick: null,
+    handlePreviousClick: null,
+    handleJumpsTo: ['payload'],
+    handleRowSelect: ['payload'],
+
     toggleModal: ['payload'],
   },
   { prefix: '/organizations' },

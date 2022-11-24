@@ -81,7 +81,7 @@ export const authenticated = apiInstance => {
     apiInstance.defaults.headers.post['X-CSRFToken'] = getCookie('csrftoken');
     apiInstance.defaults.headers.patch['X-CSRFToken'] = getCookie('csrftoken');
     apiInstance.defaults.headers.delete['X-CSRFToken'] = getCookie('csrftoken');
-    apiInstance.defaults.withCredentials = true;
+    apiInstance.defaults.withCredentials = false;
   }
   return apiInstance;
 };
@@ -91,7 +91,7 @@ export const loginHeaderAPI = apiInstance => {
     apiInstance.defaults.headers.common.Authorization = `Token ${process.env.TOKEN}`;
   } else {
     apiInstance.defaults.headers.post['X-CSRFToken'] = getCookie('csrftoken');
-    apiInstance.defaults.withCredentials = true;
+    apiInstance.defaults.withCredentials = false;
   }
   return apiInstance;
 };

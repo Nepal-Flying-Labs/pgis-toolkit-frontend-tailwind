@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar';
+import { projectHeaderHeight } from '@src/constants';
 import ProjectCard from './ProjectCard';
 
 export default function MapSidebar() {
@@ -26,7 +27,12 @@ export default function MapSidebar() {
         </div>
       </div>
 
-      <div className="naxatw-mt-5 naxatw-flex naxatw-flex-col naxatw-gap-2">
+      <div
+        className="naxatw-mt-5 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-y-auto"
+        style={{
+          height: `calc(100vh - ${projectHeaderHeight} - 9rem)`,
+        }}
+      >
         {projects?.results?.map(({ id, name }) => (
           <ProjectCard key={id} title={name} address="kenya" status="good" />
         ))}

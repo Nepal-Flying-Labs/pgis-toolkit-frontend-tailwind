@@ -1,32 +1,67 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router';
-import { useSelector } from 'react-redux';
-import usePagination from '@Hooks/usePagination';
-import { getSelectedItemRange } from '@Components/common/Pagination/getSelectedItem';
-import { userRowsOption } from '@src/constants/paginationRowOptions';
+import { useSelector, useDispatch } from 'react-redux';
+// import usePagination from '@Hooks/usePagination';
+import {
+  getSelectedRange,
+  getMaxPage,
+} from '@Components/common/Pagination/getSelectedItem';
+// import { userRowsOption } from '@src/constants/paginationRowOptions';
+import useDebouncedInput from '@Hooks/useDebouncedInput';
+import { Creators } from '@Actions/organizations';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 import SortingContainer from '@Components/common/SortingContainer';
 import Pagination from '@Components/common/Pagination';
 import DropdownOptions from '@Components/common/DropdownOptions';
 
+const {
+  setSearchText,
+  handleNextClick,
+  handlePreviousClick,
+  handleJumpsTo,
+  handleRowSelect,
+} = Creators;
 const dataPerPage = 10;
 
 export default function OrganizationList() {
+  const dispatch = useDispatch();
+  const searchText = useSelector(state => state.organizations.searchText);
   const organizationData = useSelector(
     state => state.organizations.organizationData,
   );
-  const {
-    next,
-    prev,
-    jump,
-    // handleSorting,
-    // currentList,
-    currentPage,
-    begin,
-    end,
-  } = usePagination(organizationData?.results, 10);
-  const [rowPerPage, setRowPerPage] = useState(userRowsOption);
+  // const {
+  //   next,
+  //   prev,
+  //   jump,
+  //   // handleSorting,
+  //   // currentList,
+  //   currentPage,
+  //   begin,
+  //   end,
+  // } = usePagination(organizationData?.results, 10);
+  const currentPage = useSelector(state => state.organizations.pagination.page);
+  const rowPerPage = useSelector(
+    state => state.organizations.pagination.rowSelect,
+  );
+  const totalCount = useSelector(state => state.organizations.pagination.count);
+  const nextPage = useSelector(state => state.organizations.pagination.next);
+  const previousPage = useSelector(
+    state => state.organizations.pagination.previous,
+  );
+
+  const next = () => {
+    if (nextPage !== null) dispatch(handleNextClick());
+  };
+  const previous = () => {
+    if (previousPage !== null) dispatch(handlePreviousClick());
+  };
+
+  const jump = data => {
+    dispatch(handleJumpsTo(data));
+  };
+
+  // const [rowPerPage, setRowPerPage] = useState(userRowsOption);
   const history = useHistory();
 
   const dropdownOptions = [
@@ -52,6 +87,14 @@ export default function OrganizationList() {
     },
   ];
 
+  const [value, handleSearch] = useDebouncedInput({
+    ms: 300,
+    init: searchText,
+    onChange: debouncedEvent => {
+      dispatch(setSearchText(debouncedEvent.target.value));
+    },
+  });
+
   return (
     <>
       <div className="naxatw-flex naxatw-items-center naxatw-w-60 naxatw-mt-4 naxatw-h-12">
@@ -76,6 +119,8 @@ export default function OrganizationList() {
           </div>
           <input
             type="text"
+            value={value}
+            onChange={handleSearch}
             id="simple-search"
             className="naxatw-bg-grey-100 naxatw-border naxatw-border-grey-300 naxatw-text-grey-900 naxatw-rounded-full naxatw-focus:ring-blue-500 naxatw-focus:border-blue-500 naxatw-block naxatw-w-full naxatw-pl-10 naxatw-p-2.5"
             placeholder="Search"
@@ -145,17 +190,18 @@ export default function OrganizationList() {
 
         <Pagination
           nextPage={next}
-          previousPage={prev}
-          currentPage={currentPage}
-          rowPerPage={rowPerPage}
+          previousPage={previous}
           jumpTo={jump}
-          setRowPerPage={setRowPerPage}
-          paginatedCounts={getSelectedItemRange(
-            begin,
-            end,
-            organizationData?.results || 10,
+          currentPage={currentPage}
+          count={totalCount || 0}
+          paginatedCounts={getSelectedRange(
+            totalCount,
+            rowPerPage,
+            currentPage,
           )}
-          paginatedCountsTotal={organizationData?.results?.length || 0}
+          maxPage={getMaxPage(totalCount, rowPerPage)}
+          rowSelect={rowPerPage}
+          handleSelect={data => dispatch(handleRowSelect(data))}
         />
       </div>
     </>

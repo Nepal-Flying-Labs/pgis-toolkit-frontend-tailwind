@@ -10,6 +10,7 @@ import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSw
 import Scalebar from '@Components/common/OpenLayersComponent/Scalebar/index';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import { projectHeaderHeight } from '@src/constants';
+import '@Components/common/OpenLayersComponent/map.css';
 
 const { API_URL } = process.env;
 

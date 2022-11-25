@@ -1,17 +1,46 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+/* eslint-disable no-extra-boolean-cast */
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
+import { Creators } from '@Actions/organizationDashboard';
+import useDebouncedInput from '@Hooks/useDebouncedInput';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar';
 import { projectHeaderHeight } from '@src/constants';
 import ProjectCard from './ProjectCard';
 
+const { getProjectsRequest } = Creators;
+
 export default function MapSidebar() {
+  const { organizationId } = useParams();
   const projects = useSelector(state => state.organizationDashboard.projects);
+  const dispatch = useDispatch();
+  const [searchValue, handleChange] = useDebouncedInput({
+    ms: 300,
+    init: '',
+    onChange: debouncedEvent => {
+      const searchText = debouncedEvent.target.value;
+      const params = { organization: organizationId };
+      if (!!searchText) {
+        params.search = searchText;
+      }
+      dispatch(getProjectsRequest(params));
+    },
+  });
+
+  // get projects list
+  useEffect(() => {
+    dispatch(getProjectsRequest({ organization: organizationId }));
+  }, [dispatch, organizationId]);
 
   return (
     <div className="naxatw-w-96 naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5">
       <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-gap-2">
-        <Searchbar className="naxatw-bg-white" />
+        <Searchbar
+          className="naxatw-bg-white"
+          value={searchValue}
+          onChange={handleChange}
+        />
 
         <Button className="naxatw-btn-primary" iconLeft="add_circle_outline">
           Project

@@ -42,7 +42,7 @@ const VectorTileLayer = ({
 
     const requestHeader = new Headers();
     if (authToken) {
-      requestHeader.append('Authorization', `Token ${authToken}`);
+      requestHeader.append('Authorization', `Bearer ${authToken}`);
     }
 
     const vectorTileSource = new VectorTileSource({

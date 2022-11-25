@@ -5,6 +5,7 @@ import authentication from './authentication';
 import loader from './loader';
 import toast from './toast';
 import organizations from './organizations';
+import organizationDashboard from './organizationDashboard';
 
 export default combineReducers({
   router: connectRouter(history),
@@ -12,4 +13,5 @@ export default combineReducers({
   loader,
   toast,
   organizations,
+  organizationDashboard,
 });

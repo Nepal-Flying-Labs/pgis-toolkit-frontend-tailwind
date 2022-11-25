@@ -1,34 +1,46 @@
-import React from 'react';
+/* eslint-disable no-extra-boolean-cast */
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
+import { Creators } from '@Actions/organizationDashboard';
+import useDebouncedInput from '@Hooks/useDebouncedInput';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar';
-import ProjectCard from './ProjectCard/index';
+import { projectHeaderHeight } from '@src/constants';
+import ProjectCard from './ProjectCard';
 
-const projects = [
-  {
-    id: 1,
-    name: 'Draft Project X',
-    address: 'Malawi, Country',
-    status: 'Ongoing',
-  },
-  {
-    id: 2,
-    name: 'Kenya Transportation mapping',
-    address: 'Malawi, Country',
-    status: 'Ongoing',
-  },
-  {
-    id: 3,
-    name: 'Draft Project X',
-    address: 'Malawi, Country',
-    status: 'Ongoing',
-  },
-];
+const { getProjectsRequest } = Creators;
 
 export default function MapSidebar() {
+  const { organizationId } = useParams();
+  const projects = useSelector(state => state.organizationDashboard.projects);
+  const dispatch = useDispatch();
+  const [searchValue, handleChange] = useDebouncedInput({
+    ms: 300,
+    init: '',
+    onChange: debouncedEvent => {
+      const searchText = debouncedEvent.target.value;
+      const params = { organization: organizationId };
+      if (!!searchText) {
+        params.search = searchText;
+      }
+      dispatch(getProjectsRequest(params));
+    },
+  });
+
+  // get projects list
+  useEffect(() => {
+    dispatch(getProjectsRequest({ organization: organizationId }));
+  }, [dispatch, organizationId]);
+
   return (
     <div className="naxatw-w-96 naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5">
       <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-gap-2">
-        <Searchbar className="naxatw-bg-white" />
+        <Searchbar
+          className="naxatw-bg-white"
+          value={searchValue}
+          onChange={handleChange}
+        />
 
         <Button className="naxatw-btn-primary" iconLeft="add_circle_outline">
           Project
@@ -44,14 +56,14 @@ export default function MapSidebar() {
         </div>
       </div>
 
-      <div className="naxatw-mt-5 naxatw-flex naxatw-flex-col naxatw-gap-2">
-        {projects.map(({ id, name, address, status }) => (
-          <ProjectCard
-            key={id}
-            title={name}
-            address={address}
-            status={status}
-          />
+      <div
+        className="naxatw-mt-5 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-y-auto"
+        style={{
+          height: `calc(100vh - ${projectHeaderHeight} - 9rem)`,
+        }}
+      >
+        {projects?.results?.map(({ id, name }) => (
+          <ProjectCard key={id} title={name} address="kenya" status="good" />
         ))}
       </div>
     </div>

@@ -4,9 +4,9 @@ import organizationsActions, { Types } from '@Actions/organizations';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
 
-export function* getOrganizationsRequest() {
+export function* getOrganizationsRequest({ params }) {
   try {
-    const response = yield call(getOrganizations);
+    const response = yield call(getOrganizations, params);
     yield put(organizationsActions.getOrganizationsSuccess(response.data));
   } catch (error) {
     yield put(organizationsActions.getOrganizationsFailure());

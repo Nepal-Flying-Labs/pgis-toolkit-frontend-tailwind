@@ -2,11 +2,11 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { projectHeaderHeight } from '@src/constants';
 import MaterialIcon from '@Components/common/MaterialIcon';
-import HeaderNotification from '../Header/HeaderNotification/index';
-import HeaderProfile from '../Header/HeaderProfile/index';
+import HeaderNotification from '../Header/HeaderNotification';
+import HeaderProfile from '../Header/HeaderProfile';
 
 export default function ProjectHeader() {
-  const { organizationId } = useParams();
+  const { organizationId, tabname } = useParams();
 
   return (
     <header
@@ -23,11 +23,20 @@ export default function ProjectHeader() {
         <div className="naxatw-flex naxatw-gap-10">
           <nav className="">
             <ul className="naxatw-font-bold naxatw-text-grey-500 naxatw-text-[0.9375rem] naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-8 naxatw-h-full">
-              <li>
+              <li
+                className={`${
+                  tabname === 'home' ? 'naxatw-text-grey-800' : ''
+                }`}
+              >
                 <Link to={`/organizations/${organizationId}/home`}>Home</Link>
               </li>
               <li>
-                <Link to={`/organizations/${organizationId}/projects`}>
+                <Link
+                  to={`/organizations/${organizationId}/projects`}
+                  className={`${
+                    tabname === 'projects' ? 'naxatw-text-grey-800' : ''
+                  }`}
+                >
                   Projects
                 </Link>
               </li>

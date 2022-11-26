@@ -16,3 +16,6 @@
   @apply naxatw-bg-white naxatw-text-secondary-400 hover:naxatw-bg-grey-100 
   hover:naxatw-underline;
 }
+.naxatw-btn.naxatw-btn-noborder {
+  @apply naxatw-border-none;
+}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function Searchbar({ className, placeholder, value, onChange }) {
   return (
-    <div className="naxatw-flex naxatw-items-center naxatw-w-60 naxatw-h-12">
+    <div className="naxatw-flex naxatw-items-center naxatw-w-full naxatw-h-12">
       <label htmlFor="simple-search" className="naxatw-sr-only">
         {placeholder}
       </label>

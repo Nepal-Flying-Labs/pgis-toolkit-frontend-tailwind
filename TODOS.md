@@ -20,6 +20,10 @@
 - [] integrate pagination api
 - [] implement permission in organization page
 
+- [] Setup your organization admin profile UI
+
+
+
 ### Project
 
 
@@ -28,3 +32,5 @@
 - [] input field design
 
 
+## Project Map
+Theme - category => layer

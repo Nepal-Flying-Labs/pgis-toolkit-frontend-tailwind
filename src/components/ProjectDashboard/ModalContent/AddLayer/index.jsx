@@ -1,7 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Creators } from '@Actions/projectDashboard';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
+import prepareFormData from '@Utils/prepareFormData';
+
+const { uploadLayerRequest } = Creators;
 
 const initialState = {
   uploadedFile: null,
@@ -17,7 +21,14 @@ export default function AddLayer() {
     initialValues: initialState,
     required: ['uploadedFile', 'layerName'],
     onSubmit: data => {
-      console.log(data, 'datax');
+      const payloadData = {
+        theme: selectedProjectTheme.id,
+        name: data.layerName,
+        layer_type: 'Vector',
+        file: data.uploadedFile[0],
+      };
+      const formdata = prepareFormData(payloadData);
+      dispatch(uploadLayerRequest(formdata));
     },
   });
 

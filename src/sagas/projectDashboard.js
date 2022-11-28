@@ -2,6 +2,7 @@ import { call, put, takeLatest, takeEvery } from 'redux-saga/effects';
 import {
   getProjectThemeLayers,
   getProjectThemes,
+  uploadLayer,
 } from '@Services/projectDashboard';
 import projectDashboardActions, { Types } from '@Actions/projectDashboard';
 import toastActions from '@Actions/toast';
@@ -31,12 +32,24 @@ export function* getProjectThemeLayersRequest({ params }) {
   }
 }
 
+export function* uploadLayerRequest({ payload }) {
+  try {
+    const response = yield call(uploadLayer, payload);
+    console.log(response, 'resx');
+    yield put(projectDashboardActions.uploadLayerSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.uploadLayerFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(Types.GET_PROJECT_THEMES_REQUEST, getProjectThemesRequest);
   yield takeEvery(
     Types.GET_PROJECT_THEME_LAYERS_REQUEST,
     getProjectThemeLayersRequest,
   );
+  yield takeEvery(Types.UPLOAD_LAYER_REQUEST, uploadLayerRequest);
 }
 
 export default projectDashboardWatcher;

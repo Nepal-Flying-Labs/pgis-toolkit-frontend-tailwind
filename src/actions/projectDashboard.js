@@ -13,6 +13,10 @@ export const { Types, Creators } = createActions(
     handleCheckbox: ['payload'],
     setZoomToLayerId: ['payload'],
     setSelectedProjectTheme: ['payload'],
+
+    uploadLayerRequest: ['payload'],
+    uploadLayerSuccess: ['payload'],
+    uploadLayerFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

@@ -4,8 +4,15 @@ import Authentication from '../views/Authentication';
 import Home from '../views/Home';
 import Organizations from '../views/Organizations';
 import OrganizationDashboard from '../views/OrganizationDashboard';
+import ProjectDashboard from '../views/ProjectDashboard';
 
 const indexRoutes = [
+  {
+    path: '/organizations/:organizationId/projects/:projectId/:tabname',
+    name: 'Project Dashboard',
+    component: ProjectDashboard,
+    authenticated: true,
+  },
   {
     path: '/organizations/:organizationId/:tabname',
     name: 'Organization Dashboard',

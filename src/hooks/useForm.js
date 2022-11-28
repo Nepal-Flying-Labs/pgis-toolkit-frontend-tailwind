@@ -29,8 +29,9 @@ const useForm = ({
       : { error: !value, message: 'Required' };
 
   const handleChange = e => {
-    const { name, value } = e.target;
-    setInputs(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, files } = e.target;
+
+    setInputs(prev => ({ ...prev, [name]: type === 'file' ? files : value }));
 
     if (!required.includes(name)) return;
     setMeta(prev => {

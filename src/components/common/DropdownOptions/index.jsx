@@ -10,7 +10,7 @@ export default function DropdownOptions({ options, data }) {
       <a
         ref={toggleRef}
         href={() => {}}
-        className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-gray-900 naxatw-bg-white naxatw-rounded-lg hover:naxatw-bg-gray-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-gray-50 naxatw-select-none"
+        className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-gray-800 naxatw-bg-white naxatw-rounded-lg hover:naxatw-bg-gray-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-gray-50 naxatw-select-none"
         onClick={handleToggle}
       >
         <i className="material-icons">more_vert</i>

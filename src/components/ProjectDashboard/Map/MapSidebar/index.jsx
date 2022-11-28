@@ -2,7 +2,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
-import { Creators } from '@Actions/projectDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import Accordion from '@Components/common/Accordion';
 import Button from '@Components/common/Button';
@@ -12,7 +13,9 @@ import { projectHeaderHeight } from '@src/constants';
 import { isEmpty } from '@Utils/commonUtils';
 import DropdownOptions from '@Components/common/DropdownOptions/index';
 
-const { handleCheckbox, setZoomToLayerId } = Creators;
+const { handleCheckbox, setZoomToLayerId, setSelectedProjectTheme } =
+  ProjectDashboardCreators;
+const { toggleModal } = CommonCreators;
 
 export default function MapSidebar() {
   const { organizationId } = useParams();
@@ -78,7 +81,13 @@ export default function MapSidebar() {
           <Button className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent">
             Layer Order
           </Button>
-          <Button className="naxatw-btn-primary" iconLeft="add_circle_outline">
+          <Button
+            className="naxatw-btn-primary"
+            iconLeft="add_circle_outline"
+            // onClick={() => {
+            //   dispatch(toggleModal('upload-layer'));
+            // }}
+          >
             Dataset
           </Button>
         </div>
@@ -109,6 +118,10 @@ export default function MapSidebar() {
                       <Button
                         className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
                         iconLeft="add_circle_outline"
+                        onClick={() => {
+                          dispatch(toggleModal('upload-layer'));
+                          dispatch(setSelectedProjectTheme(theme));
+                        }}
                       >
                         Layer
                       </Button>

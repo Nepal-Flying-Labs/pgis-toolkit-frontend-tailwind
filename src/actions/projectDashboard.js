@@ -12,6 +12,7 @@ export const { Types, Creators } = createActions(
 
     handleCheckbox: ['payload'],
     setZoomToLayerId: ['payload'],
+    setSelectedProjectTheme: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

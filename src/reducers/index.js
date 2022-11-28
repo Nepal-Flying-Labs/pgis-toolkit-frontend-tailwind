@@ -4,6 +4,7 @@ import history from '../utils/history';
 import authentication from './authentication';
 import loader from './loader';
 import toast from './toast';
+import common from './common';
 import organizations from './organizations';
 import organizationDashboard from './organizationDashboard';
 import projectDashboard from './projectDashboard';
@@ -13,6 +14,7 @@ export default combineReducers({
   authentication,
   loader,
   toast,
+  common,
   organizations,
   organizationDashboard,
   projectDashboard,

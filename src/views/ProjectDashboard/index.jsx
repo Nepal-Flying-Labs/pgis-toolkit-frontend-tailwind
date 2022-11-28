@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { projectHeaderHeight } from '@src/constants';
-import { Creators } from '@Actions/projectDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
 import ProjectHeader from '@Components/common/ProjectHeader';
 import Map from '@Components/ProjectDashboard/Map';
 import Data from '@Components/ProjectDashboard/Data';
@@ -12,8 +13,12 @@ import Users from '@Components/ProjectDashboard/Users';
 import Info from '@Components/ProjectDashboard/Info';
 import Settings from '@Components/ProjectDashboard/Settings';
 import { isEmpty } from '@Utils/commonUtils';
+import Modal from '@Components/common/Modal';
+import { getModalContent, getModalTitle } from '@src/constants/modalContents';
 
-const { getProjectThemesRequest, getProjectThemeLayersRequest } = Creators;
+const { getProjectThemesRequest, getProjectThemeLayersRequest } =
+  ProjectDashboardCreators;
+const { toggleModal } = CommonCreators;
 
 function getTabContent(tabname) {
   switch (tabname) {
@@ -39,6 +44,7 @@ function getTabContent(tabname) {
 export default function ProjectDashboard() {
   const { projectId, tabname } = useParams();
   const themes = useSelector(state => state.projectDashboard.themes);
+  const modalContent = useSelector(state => state.common.modalContent);
   const dispatch = useDispatch();
 
   // project map section
@@ -56,6 +62,14 @@ export default function ProjectDashboard() {
   return (
     <div>
       <ProjectHeader />
+
+      <Modal
+        show={!!modalContent}
+        title={getModalTitle(modalContent)}
+        onClose={() => dispatch(toggleModal())}
+      >
+        {getModalContent(modalContent)}
+      </Modal>
 
       <div
         style={{

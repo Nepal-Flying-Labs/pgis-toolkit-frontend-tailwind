@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
+import { useDispatch } from 'react-redux';
 import { projectHeaderHeight } from '@src/constants';
+import { Creators } from '@Actions/projectDashboard';
 import ProjectHeader from '@Components/common/ProjectHeader';
 import Map from '@Components/ProjectDashboard/Map';
 import Data from '@Components/ProjectDashboard/Data';
@@ -9,6 +11,8 @@ import Gallery from '@Components/ProjectDashboard/Gallery';
 import Users from '@Components/ProjectDashboard/Users';
 import Info from '@Components/ProjectDashboard/Info';
 import Settings from '@Components/ProjectDashboard/Settings';
+
+const { getProjectThemesRequest } = Creators;
 
 function getTabContent(tabname) {
   switch (tabname) {
@@ -32,7 +36,12 @@ function getTabContent(tabname) {
 }
 
 export default function ProjectDashboard() {
-  const { tabname } = useParams();
+  const { projectId, tabname } = useParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getProjectThemesRequest({ project: projectId }));
+  }, [dispatch, projectId]);
 
   return (
     <div>

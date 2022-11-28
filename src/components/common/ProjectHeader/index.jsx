@@ -50,6 +50,7 @@ export default function ProjectHeader() {
             <ul className="naxatw-font-bold naxatw-text-grey-500 naxatw-text-[0.9375rem] naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-8 naxatw-h-full">
               {headerData.map(({ label, route }) => (
                 <li
+                  key={label}
                   className={`${
                     tabname === route ? 'naxatw-text-grey-800' : ''
                   }`}

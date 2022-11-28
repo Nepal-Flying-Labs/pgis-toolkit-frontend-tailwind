@@ -19,3 +19,6 @@
 .naxatw-btn.naxatw-btn-noborder {
   @apply naxatw-border-none;
 }
+.naxatw-btn.naxatw-btn-transparent {
+  @apply naxatw-bg-transparent;
+}

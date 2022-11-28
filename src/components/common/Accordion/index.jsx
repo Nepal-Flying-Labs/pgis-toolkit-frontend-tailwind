@@ -50,6 +50,6 @@ Accordion.defaultProps = {
 
 Accordion.propTypes = {
   collapsed: PropTypes.bool,
-  header: PropTypes.string,
-  body: PropTypes.string,
+  header: PropTypes.node,
+  body: PropTypes.node,
 };

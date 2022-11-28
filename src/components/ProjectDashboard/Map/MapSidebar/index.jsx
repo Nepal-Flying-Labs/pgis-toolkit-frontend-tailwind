@@ -14,15 +14,6 @@ const { getProjectsRequest } = Creators;
 
 const accordionData = [
   {
-    id: 1,
-    title: 'Baseline Datasets',
-    content: (
-      <div>
-        <h1>BaselineData</h1>
-      </div>
-    ),
-  },
-  {
     id: 2,
     title: 'Obstacles Datasets',
     content: (
@@ -67,6 +58,7 @@ const accordionData = [
 
 export default function MapSidebar() {
   const { organizationId } = useParams();
+  const themes = useSelector(state => state.projectDashboard.themes);
   const dispatch = useDispatch();
   const [searchValue, handleChange] = useDebouncedInput({
     ms: 300,
@@ -99,7 +91,9 @@ export default function MapSidebar() {
       <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-mt-2">
         <div>Filters</div>
         <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
-          <div>Filters</div>
+          <Button className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent">
+            Layer Order
+          </Button>
           <Button className="naxatw-btn-primary" iconLeft="add_circle_outline">
             Dataset
           </Button>
@@ -112,14 +106,14 @@ export default function MapSidebar() {
           height: `calc(100vh - ${projectHeaderHeight} - 9rem)`,
         }}
       >
-        {accordionData.map(({ id, title, content }) => (
+        {themes.map(({ id, name, description }) => (
           <Accordion
             key={id}
             header={
               <div className="naxatw-flex naxatw-flex-col naxatw-gap-1">
                 <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
                   <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
-                    <h5 className="naxatw-text-grey-800">{title}</h5>
+                    <h5 className="naxatw-text-grey-800">{name}</h5>
                     <span className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer">
                       <MaterialIcon name="edit" className="naxatw-mt-1" />
                     </span>
@@ -134,14 +128,11 @@ export default function MapSidebar() {
                   </div>
                 </div>
                 <div>
-                  <p>
-                    Baseline Datasets contains different levels of boundaries.
-                  </p>
+                  <p>{description}</p>
                 </div>
               </div>
             }
-            body={content}
-            collapsed
+            body=""
           />
         ))}
       </div>

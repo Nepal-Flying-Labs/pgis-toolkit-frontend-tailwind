@@ -1,3 +1,6 @@
+### General 
+-[] Scrollbar setup
+
 ### Authentication
 
 - [x] implement account popup

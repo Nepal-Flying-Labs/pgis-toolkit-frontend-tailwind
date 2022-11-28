@@ -9,6 +9,7 @@ import Button from '@Components/common/Button';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import Searchbar from '@Components/common/Searchbar';
 import { projectHeaderHeight } from '@src/constants';
+import { isEmpty } from '@Utils/commonUtils';
 
 const { getProjectsRequest } = Creators;
 
@@ -59,6 +60,7 @@ const accordionData = [
 export default function MapSidebar() {
   const { organizationId } = useParams();
   const themes = useSelector(state => state.projectDashboard.themes);
+  const layers = useSelector(state => state.projectDashboard.layers);
   const dispatch = useDispatch();
   const [searchValue, handleChange] = useDebouncedInput({
     ms: 300,
@@ -77,6 +79,8 @@ export default function MapSidebar() {
   useEffect(() => {
     dispatch(getProjectsRequest({ organization: organizationId }));
   }, [dispatch, organizationId]);
+
+  console.log(layers, 'layersx');
 
   return (
     <div className="naxatw-w-[30rem] naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5">
@@ -106,35 +110,48 @@ export default function MapSidebar() {
           height: `calc(100vh - ${projectHeaderHeight} - 9rem)`,
         }}
       >
-        {themes.map(({ id, name, description }) => (
-          <Accordion
-            key={id}
-            header={
-              <div className="naxatw-flex naxatw-flex-col naxatw-gap-1">
-                <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
-                  <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
-                    <h5 className="naxatw-text-grey-800">{name}</h5>
-                    <span className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer">
-                      <MaterialIcon name="edit" className="naxatw-mt-1" />
-                    </span>
+        {themes.map(theme => {
+          const hasNoLayer = isEmpty(layers?.[theme.id]);
+          return (
+            <Accordion
+              key={theme.id}
+              collapsed={hasNoLayer}
+              header={
+                <div className="naxatw-flex naxatw-flex-col naxatw-gap-1">
+                  <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
+                    <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
+                      <h5 className="naxatw-text-grey-800">{theme.name}</h5>
+                      <span className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer">
+                        <MaterialIcon name="edit" className="naxatw-mt-1" />
+                      </span>
+                    </div>
+                    <div>
+                      <Button
+                        className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
+                        iconLeft="add_circle_outline"
+                      >
+                        Layer
+                      </Button>
+                    </div>
                   </div>
                   <div>
-                    <Button
-                      className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
-                      iconLeft="add_circle_outline"
-                    >
-                      Layer
-                    </Button>
+                    <p>{theme.description}</p>
                   </div>
                 </div>
+              }
+              body={
                 <div>
-                  <p>{description}</p>
+                  {layers?.[theme.id]?.map(layer => (
+                    <div key={layer.id}>
+                      <input id={layer.id} type="checkbox" />
+                      <label htmlFor={layer.id}>{layer.name}</label>
+                    </div>
+                  ))}
                 </div>
-              </div>
-            }
-            body=""
-          />
-        ))}
+              }
+            />
+          );
+        })}
       </div>
     </div>
   );

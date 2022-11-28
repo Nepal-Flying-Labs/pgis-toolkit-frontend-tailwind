@@ -41,7 +41,7 @@ export default function MapSection() {
               key={item.id}
               url={`${API_URL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
               authToken={localStorage.getItem('userToken')}
-              visibleOnMap
+              visibleOnMap={item.checked}
             />
           ) : (
             ''

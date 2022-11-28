@@ -9,6 +9,8 @@ export const { Types, Creators } = createActions(
     getProjectThemeLayersRequest: ['params'],
     getProjectThemeLayersSuccess: ['payload'],
     getProjectThemeLayersFailure: null,
+
+    handleCheckbox: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

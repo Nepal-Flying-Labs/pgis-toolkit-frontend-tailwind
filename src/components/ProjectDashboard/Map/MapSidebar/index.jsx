@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
-import { Creators } from '@Actions/organizationDashboard';
+import { Creators } from '@Actions/projectDashboard';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import Accordion from '@Components/common/Accordion';
 import Button from '@Components/common/Button';
@@ -11,51 +11,7 @@ import Searchbar from '@Components/common/Searchbar';
 import { projectHeaderHeight } from '@src/constants';
 import { isEmpty } from '@Utils/commonUtils';
 
-const { getProjectsRequest } = Creators;
-
-const accordionData = [
-  {
-    id: 2,
-    title: 'Obstacles Datasets',
-    content: (
-      <div>
-        <p className="naxatw-mb-2 naxatw-text-gray-500">
-          The main difference is that the core components from Flowbite are open
-          source under the MIT license, whereas Tailwind UI is a paid product.
-          Another difference is that Flowbite relies on smaller and standalone
-          components, whereas Tailwind UI offers sections of pages.
-        </p>
-        <p className="naxatw-mb-2 naxatw-text-gray-500">
-          However, we actually recommend using both Flowbite, Flowbite Pro, and
-          even Tailwind UI as there is no technical reason stopping you from
-          using the best of two worlds.
-        </p>
-        <p className="naxatw-mb-2 naxatw-text-gray-500">
-          Learn more about these technologies:
-        </p>
-        <ul className="naxatw-pl-5 naxatw-text-gray-500 naxatw-list-disc">
-          <li>
-            <a
-              href="https://flowbite.com/pro/"
-              className="naxatw-text-blue-600 hover:naxatw-underline"
-            >
-              Flowbite Pro
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://tailwindui.com/"
-              rel="nofollow"
-              className="naxatw-text-blue-600 hover:naxatw-underline"
-            >
-              Tailwind UI
-            </a>
-          </li>
-        </ul>
-      </div>
-    ),
-  },
-];
+const { handleCheckbox } = Creators;
 
 export default function MapSidebar() {
   const { organizationId } = useParams();
@@ -71,14 +27,9 @@ export default function MapSidebar() {
       if (!!searchText) {
         params.search = searchText;
       }
-      dispatch(getProjectsRequest(params));
+      // dispatch(getProjectsRequest(params));
     },
   });
-
-  // get projects list
-  useEffect(() => {
-    dispatch(getProjectsRequest({ organization: organizationId }));
-  }, [dispatch, organizationId]);
 
   return (
     <div className="naxatw-w-[30rem] naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5">
@@ -141,7 +92,20 @@ export default function MapSidebar() {
                 <div>
                   {layers?.[theme.id]?.map(layer => (
                     <div key={layer.id}>
-                      <input id={layer.id} type="checkbox" />
+                      <input
+                        id={layer.id}
+                        type="checkbox"
+                        checked={layer.checked}
+                        onChange={e => {
+                          dispatch(
+                            handleCheckbox({
+                              layerId: layer.id,
+                              themeId: theme.id,
+                              checked: e.target.checked,
+                            }),
+                          );
+                        }}
+                      />
                       <label htmlFor={layer.id}>{layer.name}</label>
                     </div>
                   ))}

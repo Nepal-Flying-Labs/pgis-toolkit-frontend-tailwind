@@ -80,8 +80,6 @@ export default function MapSidebar() {
     dispatch(getProjectsRequest({ organization: organizationId }));
   }, [dispatch, organizationId]);
 
-  console.log(layers, 'layersx');
-
   return (
     <div className="naxatw-w-[30rem] naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5">
       <div className="naxatw-flex naxatw-items-center">

@@ -60,7 +60,7 @@ export default function MapSection() {
         <LayerSwitcherControl />
 
         <Scalebar />
-        {mapState.map(item => {
+        {mapState.map((item, index) => {
           return item.layer_type === 'Vector' ? (
             <VectorTileLayer
               key={item.id}
@@ -68,6 +68,7 @@ export default function MapSection() {
               authToken={localStorage.getItem('userToken')}
               visibleOnMap={item.checked}
               style={item?.style || { ...defaultStyles }}
+              zIndex={mapState.length + 10 - index}
             />
           ) : (
             ''

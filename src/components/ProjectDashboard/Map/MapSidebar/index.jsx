@@ -42,7 +42,12 @@ export default function MapSidebar() {
       </div>
 
       <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-mt-2">
-        <div>Filters</div>
+        <Button
+          className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent"
+          iconLeft="tune"
+        >
+          Filters
+        </Button>
         <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
           <Button className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent">
             Layer Order

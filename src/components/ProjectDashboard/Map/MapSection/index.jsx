@@ -10,6 +10,7 @@ import {
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher';
 import Scalebar from '@Components/common/OpenLayersComponent/Scalebar';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
+import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { projectHeaderHeight } from '@src/constants';
 import '@Components/common/OpenLayersComponent/map.css';
 
@@ -42,6 +43,7 @@ export default function MapSection() {
               url={`${API_URL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
               authToken={localStorage.getItem('userToken')}
               visibleOnMap={item.checked}
+              style={item?.style || { ...defaultStyles }}
             />
           ) : (
             ''

@@ -1,5 +1,5 @@
 /* eslint-disable no-extra-boolean-cast */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { Creators } from '@Actions/projectDashboard';
@@ -10,8 +10,9 @@ import MaterialIcon from '@Components/common/MaterialIcon';
 import Searchbar from '@Components/common/Searchbar';
 import { projectHeaderHeight } from '@src/constants';
 import { isEmpty } from '@Utils/commonUtils';
+import DropdownOptions from '@Components/common/DropdownOptions/index';
 
-const { handleCheckbox } = Creators;
+const { handleCheckbox, setZoomToLayerId } = Creators;
 
 export default function MapSidebar() {
   const { organizationId } = useParams();
@@ -30,6 +31,31 @@ export default function MapSidebar() {
       // dispatch(getProjectsRequest(params));
     },
   });
+
+  const dropdownOptions = [
+    {
+      id: 1,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">zoom_in</i>
+          <p className="naxatw-text-body-lg">Zoom To Layer</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setZoomToLayerId(data.id));
+      },
+    },
+    {
+      id: 2,
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+        </span>
+      ),
+      onClick: () => {},
+    },
+  ];
 
   return (
     <div className="naxatw-w-[30rem] naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5">
@@ -96,22 +122,34 @@ export default function MapSidebar() {
               body={
                 <div>
                   {layers?.[theme.id]?.map(layer => (
-                    <div key={layer.id}>
-                      <input
-                        id={layer.id}
-                        type="checkbox"
-                        checked={layer.checked}
-                        onChange={e => {
-                          dispatch(
-                            handleCheckbox({
-                              layerId: layer.id,
-                              themeId: theme.id,
-                              checked: e.target.checked,
-                            }),
-                          );
-                        }}
-                      />
-                      <label htmlFor={layer.id}>{layer.name}</label>
+                    <div
+                      key={layer.id}
+                      className="naxatw-flex naxatw-justify-between"
+                    >
+                      <div>
+                        <input
+                          id={layer.id}
+                          type="checkbox"
+                          checked={layer.checked}
+                          onChange={e => {
+                            dispatch(
+                              handleCheckbox({
+                                layerId: layer.id,
+                                themeId: theme.id,
+                                checked: e.target.checked,
+                              }),
+                            );
+                          }}
+                        />
+                        <label
+                          className="naxatw-text-body-lg naxatw-text-grey-800"
+                          htmlFor={layer.id}
+                        >
+                          {layer.name}
+                        </label>
+                      </div>
+
+                      <DropdownOptions options={dropdownOptions} data={layer} />
                     </div>
                   ))}
                 </div>

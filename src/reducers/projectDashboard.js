@@ -4,6 +4,7 @@ import { Types } from '@Actions/projectDashboard';
 const initialState = {
   themes: [],
   layers: null,
+  zoomToLayerId: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -38,10 +39,16 @@ const handleCheckbox = (state, action) => {
   };
 };
 
+const setZoomToLayerId = (state, action) => ({
+  ...state,
+  zoomToLayerId: action.payload,
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
   [Types.HANDLE_CHECKBOX]: handleCheckbox,
+  [Types.SET_ZOOM_TO_LAYER_ID]: setZoomToLayerId,
 });
 
 export default projectDashboardReducer;

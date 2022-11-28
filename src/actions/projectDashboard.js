@@ -11,6 +11,7 @@ export const { Types, Creators } = createActions(
     getProjectThemeLayersFailure: null,
 
     handleCheckbox: ['payload'],
+    setZoomToLayerId: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

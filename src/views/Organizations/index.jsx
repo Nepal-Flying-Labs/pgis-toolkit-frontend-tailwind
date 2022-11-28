@@ -44,11 +44,22 @@ export default function Organizations() {
     state => state.authentication.userPermissions,
   );
   const modalContent = useSelector(state => state.organizations.modalContent);
+  const searchText = useSelector(state => state.organizations.searchText);
+  const page = useSelector(state => state.organizations.pagination.page);
+  const rowSelect = useSelector(
+    state => state.organizations.pagination.rowSelect,
+  );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(
+      getOrganizationsRequest({ search: searchText, page, limit: rowSelect }),
+    );
+  }, [dispatch, searchText, page, rowSelect]);
+
+  useEffect(() => {
     dispatch(getUserPermissionsRequest());
-    dispatch(getOrganizationsRequest());
   }, [dispatch]);
 
   return (

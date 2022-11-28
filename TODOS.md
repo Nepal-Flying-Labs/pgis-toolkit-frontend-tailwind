@@ -1,4 +1,7 @@
-### AUthentication
+### General 
+-[] Scrollbar setup
+
+### Authentication
 
 - [x] implement account popup
 - [x] implement logout feature
@@ -8,7 +11,7 @@
 - [x] implement loader
 - [x] info dialog in login
 - [x] implement toast design
-- [] implement info dialog instead of toast in login page
+- [x] implement info dialog instead of toast in login page
 - [] implement design template email
 - [] implement change password
 - [] implement keep me signed in
@@ -20,6 +23,17 @@
 - [] integrate pagination api
 - [] implement permission in organization page
 
+- [] Setup your organization admin profile UI
+
+
+
+### Project
+
+
 ### DESIGN
 
 - [] input field design
+
+
+## Project Map
+Theme - category => layer

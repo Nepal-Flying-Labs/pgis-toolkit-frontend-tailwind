@@ -6,20 +6,7 @@ const initialState = {
   layers: null,
   zoomToLayerId: null,
   selectedProjectTheme: null,
-  popupData: {
-    id: 104969,
-    layer_id: 201,
-    fid: 5,
-    county: 'Kakamega',
-    country: 'Kenya',
-    scpcode: 'KEN_3_207',
-    ctypcode: 'KEN_2_37',
-    dhis2_id: 'K7mZpm8COh7',
-    province: 'Western',
-    provpcode: 'KEN_1_6',
-    subcounty: 'Butere Sub County',
-    layer: 'default',
-  },
+  popupData: {},
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -64,12 +51,18 @@ const setSelectedProjectTheme = (state, action) => ({
   selectedProjectTheme: action.payload,
 });
 
+const getMapPopupDataSuccess = (state, action) => ({
+  ...state,
+  popupData: action.payload,
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
   [Types.HANDLE_CHECKBOX]: handleCheckbox,
   [Types.SET_ZOOM_TO_LAYER_ID]: setZoomToLayerId,
   [Types.SET_SELECTED_PROJECT_THEME]: setSelectedProjectTheme,
+  [Types.GET_MAP_POPUP_DATA_SUCCESS]: getMapPopupDataSuccess,
 });
 
 export default projectDashboardReducer;

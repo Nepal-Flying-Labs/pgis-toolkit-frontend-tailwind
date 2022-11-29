@@ -1,11 +1,13 @@
 import { call, put, takeLatest, takeEvery } from 'redux-saga/effects';
 import {
+  getMapPopupData,
   getProjectThemeLayers,
   getProjectThemes,
   uploadLayer,
 } from '@Services/projectDashboard';
 import projectDashboardActions, { Types } from '@Actions/projectDashboard';
 import toastActions from '@Actions/toast';
+import { withLoader } from '@Utils/sagaUtils';
 
 export function* getProjectThemesRequest({ params }) {
   try {
@@ -35,10 +37,19 @@ export function* getProjectThemeLayersRequest({ params }) {
 export function* uploadLayerRequest({ payload }) {
   try {
     const response = yield call(uploadLayer, payload);
-    console.log(response, 'resx');
     yield put(projectDashboardActions.uploadLayerSuccess(response.data));
   } catch (error) {
     yield put(projectDashboardActions.uploadLayerFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
+
+export function* getMapPopupDataRequest({ params }) {
+  try {
+    const response = yield call(getMapPopupData, params);
+    yield put(projectDashboardActions.getMapPopupDataSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getMapPopupDataFailure());
     yield put(toastActions.error({ message: error?.response?.data?.message }));
   }
 }
@@ -49,7 +60,11 @@ function* projectDashboardWatcher() {
     Types.GET_PROJECT_THEME_LAYERS_REQUEST,
     getProjectThemeLayersRequest,
   );
-  yield takeEvery(Types.UPLOAD_LAYER_REQUEST, uploadLayerRequest);
+  yield takeEvery(Types.UPLOAD_LAYER_REQUEST, withLoader(uploadLayerRequest));
+  yield takeEvery(
+    Types.GET_MAP_POPUP_DATA_REQUEST,
+    withLoader(getMapPopupDataRequest),
+  );
 }
 
 export default projectDashboardWatcher;

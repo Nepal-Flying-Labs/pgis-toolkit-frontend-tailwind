@@ -8,14 +8,9 @@ import capitalizeFirstLetter from '@src/utils/capitalizeFirstLetter';
 
 const exceptions = [
   // ...popupExceptionKeys,
-  'title',
-  'subtitle',
-  'name',
-  'region_name',
 ];
 
 const SitePopupUI = ({ data = {} }) => {
-  console.log(data, 'datax');
   const popupData = Object.keys(data).reduce((obj, key) => {
     const name = capitalizeFirstLetter(key);
     const exceptionKeys = [...exceptions];
@@ -31,7 +26,7 @@ const SitePopupUI = ({ data = {} }) => {
   }, {});
 
   return (
-    <ul className="naxatw-max-h-64 naxatw-overflow-auto naxatw-flex naxatw-flex-col naxatw-gap-2">
+    <ul className="naxatw-max-h-64 naxatw-overflow-y-auto naxatw-flex naxatw-flex-col naxatw-gap-2">
       {popupData &&
         Object.keys(popupData).map(key => (
           <li

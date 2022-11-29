@@ -17,6 +17,10 @@ export const { Types, Creators } = createActions(
     uploadLayerRequest: ['payload'],
     uploadLayerSuccess: ['payload'],
     uploadLayerFailure: null,
+
+    getMapPopupDataRequest: ['params'],
+    getMapPopupDataSuccess: ['payload'],
+    getMapPopupDataFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

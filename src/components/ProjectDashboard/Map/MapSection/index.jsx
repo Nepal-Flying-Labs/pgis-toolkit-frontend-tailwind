@@ -22,7 +22,7 @@ import AsyncPopup from '@Components/common/OpenLayersComponent/Custom/AsyncPopup
 
 const { API_URL } = process.env;
 
-const { setZoomToLayerId } = Creators;
+const { setZoomToLayerId, getMapPopupDataRequest } = Creators;
 
 export default function MapSection() {
   const { mapRef, map } = useOLMap({
@@ -106,8 +106,10 @@ export default function MapSection() {
 
         <AsyncPopup
           fetchPopupData={properties => {
-            const params = {};
-            if (!params) return;
+            const params = {
+              feature_id: properties.id,
+            };
+            dispatch(getMapPopupDataRequest(params));
           }}
           popupUI={properties => getPopupUI(properties)}
           // openPopupFor={searchedId}

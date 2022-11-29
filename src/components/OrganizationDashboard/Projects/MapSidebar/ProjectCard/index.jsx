@@ -2,8 +2,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions';
+import { useHistory, useParams } from 'react-router';
 
-export default function ProjectCard({ title, address, status, onClick }) {
+export default function ProjectCard({ title, address, status, id, onClick }) {
+  const { organizationId } = useParams();
+
+  const history = useHistory();
   const dropdownOptions = [
     {
       id: 1,
@@ -13,7 +17,11 @@ export default function ProjectCard({ title, address, status, onClick }) {
           <p className="naxatw-text-body-lg">Edit</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: projectId => {
+        history.push(
+          `/organizations/${organizationId}/project-setup/${projectId}`,
+        );
+      },
     },
     {
       id: 2,
@@ -34,7 +42,7 @@ export default function ProjectCard({ title, address, status, onClick }) {
     >
       <div className="naxatw-flex naxatw-justify-between">
         <h5>{title}</h5>
-        <DropdownOptions options={dropdownOptions} />
+        <DropdownOptions options={dropdownOptions} data={id} />
       </div>
       <div className="naxatw-mt-2">
         <p>{address}</p>
@@ -48,6 +56,7 @@ ProjectCard.defaultProps = {
   address: '',
   status: '',
   onClick: () => {},
+  id: null,
 };
 
 ProjectCard.propTypes = {
@@ -55,4 +64,5 @@ ProjectCard.propTypes = {
   address: PropTypes.string,
   status: PropTypes.string,
   onClick: PropTypes.func,
+  id: PropTypes.number,
 };

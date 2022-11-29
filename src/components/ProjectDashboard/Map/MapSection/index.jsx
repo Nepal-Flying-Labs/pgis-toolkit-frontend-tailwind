@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
-import { Creators } from '@Actions/projectDashboard';
+import { Creators, Types } from '@Actions/projectDashboard';
 import { mapStateSelector } from '@Selectors/projectDashboard';
 import {
   useOLMap,
@@ -15,6 +15,10 @@ import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/la
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { projectHeaderHeight } from '@src/constants';
 import '@Components/common/OpenLayersComponent/map.css';
+import Spinner from '@Components/common/Spinner';
+import PopupUI from '@Components/common/OpenLayersComponent/Custom/PopupUI';
+import { checkIfLoading } from '@Utils/loaderSelector';
+import AsyncPopup from '@Components/common/OpenLayersComponent/Custom/AsyncPopup';
 
 const { API_URL } = process.env;
 
@@ -29,6 +33,10 @@ export default function MapSection() {
   const mapState = useSelector(mapStateSelector);
   const zoomToLayerId = useSelector(
     state => state.projectDashboard.zoomToLayerId,
+  );
+  const popupData = useSelector(state => state.projectDashboard.popupData);
+  const isPopupDataFetching = useSelector(state =>
+    checkIfLoading(state, [Types.GET_MAP_POPUP_DATA_REQUEST]),
   );
   const dispatch = useDispatch();
 
@@ -47,6 +55,27 @@ export default function MapSection() {
     }
     dispatch(setZoomToLayerId(null));
   }, [dispatch, map, mapState, zoomToLayerId]);
+
+  const getPopupUI = useCallback(
+    properties => {
+      const { id } = properties;
+      return isPopupDataFetching ? (
+        <div
+          style={{
+            height: '170px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Spinner className="naxatw-w-8 naxatw-h-8 naxatw-fill-secondary-400" />
+        </div>
+      ) : (
+        <PopupUI data={popupData} />
+      );
+    },
+    [popupData, isPopupDataFetching], // eslint-disable-line
+  );
 
   return (
     <div className="naxatw-w-full">
@@ -74,6 +103,25 @@ export default function MapSection() {
             ''
           );
         })}
+
+        <AsyncPopup
+          fetchPopupData={properties => {
+            const params = {};
+            if (!params) return;
+          }}
+          popupUI={properties => getPopupUI(properties)}
+          // openPopupFor={searchedId}
+          // zoomedExtent={zoomedExtent}
+          onPopupClose={() => {
+            // console.log('closex');
+          }}
+          buttonText="Edit Feature"
+          onButtonClick={properties => {
+            // dispatch(getSiteByIdRequest(properties.id));
+          }}
+          loading={isPopupDataFetching}
+          // closePopup={!!siteGeojson || zoomToRegion}
+        />
       </MapComponent>
     </div>
   );

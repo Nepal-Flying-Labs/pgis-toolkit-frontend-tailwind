@@ -6,6 +6,20 @@ const initialState = {
   layers: null,
   zoomToLayerId: null,
   selectedProjectTheme: null,
+  popupData: {
+    id: 104969,
+    layer_id: 201,
+    fid: 5,
+    county: 'Kakamega',
+    country: 'Kenya',
+    scpcode: 'KEN_3_207',
+    ctypcode: 'KEN_2_37',
+    dhis2_id: 'K7mZpm8COh7',
+    province: 'Western',
+    provpcode: 'KEN_1_6',
+    subcounty: 'Butere Sub County',
+    layer: 'default',
+  },
 };
 
 const getProjectThemesSuccess = (state, action) => ({

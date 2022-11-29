@@ -1,7 +1,7 @@
 /* eslint-disable no-extra-boolean-cast */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router';
+import { useHistory, useParams, useRouteMatch } from 'react-router';
 import { Creators } from '@Actions/organizationDashboard';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import Button from '@Components/common/Button';
@@ -13,6 +13,8 @@ const { getProjectsRequest } = Creators;
 
 export default function MapSidebar() {
   const { organizationId } = useParams();
+  const { url } = useRouteMatch();
+  const history = useHistory();
   const projects = useSelector(state => state.organizationDashboard.projects);
   const dispatch = useDispatch();
   const [searchValue, handleChange] = useDebouncedInput({
@@ -63,7 +65,15 @@ export default function MapSidebar() {
         }}
       >
         {projects?.results?.map(({ id, name }) => (
-          <ProjectCard key={id} title={name} address="kenya" status="good" />
+          <ProjectCard
+            key={id}
+            title={name}
+            address="kenya"
+            status="good"
+            onClick={() => {
+              history.push(`${url}/${id}/map`);
+            }}
+          />
         ))}
       </div>
     </div>

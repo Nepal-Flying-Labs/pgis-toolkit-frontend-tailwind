@@ -24,7 +24,11 @@ export default function OrganizationDashboard() {
     <div>
       <ProjectHeader />
 
-      <div className={`naxatw-mt-[${projectHeaderHeight}]`}>
+      <div
+        style={{
+          marginTop: projectHeaderHeight,
+        }}
+      >
         {getTabContent(tabname)}
       </div>
     </div>

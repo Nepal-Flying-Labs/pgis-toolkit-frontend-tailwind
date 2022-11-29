@@ -31,7 +31,7 @@ export default function DropdownOptions({ options, data }) {
           {options.map(({ id, label, onClick }) => (
             <li
               key={id}
-              className="naxatw-block naxatw-py-[13px] naxatw-px-3 hover:naxatw-bg-gray-100"
+              className="naxatw-block naxatw-py-[13px] naxatw-px-3 hover:naxatw-bg-gray-100 naxatw-cursor-pointer"
             >
               <a
                 href={() => {}}

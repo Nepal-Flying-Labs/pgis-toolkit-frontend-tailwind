@@ -1,9 +1,74 @@
 .ol-attribution {
   display: none !important;
 }
+.ol-rotate {
+  display: none !important;
+}
 
 .ol-popup {
   border-radius: 8px !important;
   padding: 12px !important;
   width: 16.5rem !important;
+}
+
+.ol-control button {
+  color: #484848 !important;
+  font-size: 28px !important;
+  width: 40px !important;
+  height: 40px !important;
+  line-height: 38px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  background-color: rgb(253, 254, 255) !important;
+  border: 1px solid #d7d7d7 !important;
+  border-radius: 8px !important;
+  font-weight: normal !important;
+}
+.ol-control.ol-zoom button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.ol-control button:hover,
+.ol-control button:focus {
+  text-decoration: none !important;
+  background-color: #9da6e2 !important;
+  color: #011b8e !important;
+}
+
+.ol-zoom {
+  position: absolute;
+  bottom: 4.5rem !important;
+  right: 1rem !important;
+  top: unset !important;
+  left: unset !important;
+  background: transparent !important;
+}
+.ol-zoom-in {
+  border-radius: 8px !important;
+}
+.ol-zoom-out {
+  border-radius: 8px !important;
+}
+
+.ol-scale-line {
+  background: #ffffff !important;
+  position: absolute !important;
+  bottom: 1rem !important;
+  right: 1rem !important;
+  left: unset !important;
+  padding: 8.5px !important;
+}
+
+.ol-scale-line > .ol-scale-line-inner {
+  font-size: 14px !important;
+}
+
+.layer-switcher {
+  bottom: 10.2rem !important;
+  right: 1rem !important;
+  top: unset !important;
+  left: unset !important;
+  background: transparent !important;
 }

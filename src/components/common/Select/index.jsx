@@ -38,7 +38,7 @@ function Select({
         <button
           type="button"
           onClick={disabled ? () => {} : () => handleToggle()}
-          className={`naxatw-inline-flex naxatw-w-full naxatw-items-center  naxatw-justify-between  naxatw-px-3 naxatw-py-[13px]  naxatw-border-l hover:naxatw-text-gray-700 naxatw-rounded-r-md  ${
+          className={`naxatw-inline-flex naxatw-w-full naxatw-items-center  naxatw-justify-between  naxatw-px-3 naxatw-py-[13px]  naxatw-border-l hover:naxatw-text-grey-700 naxatw-rounded-r-md  ${
             toggle ? 'naxatw-bg-light-green' : ''
           }`}
         >
@@ -64,7 +64,7 @@ function Select({
                     role="menuitem"
                     className={`naxatw-whitespace-nowrap naxatw-px-2 naxatw-py-1 naxatw-mt-1
                     naxatw-cursor-pointer naxatw-rounded-sm 
-                   hover:naxatw-bg-gray-200  ${
+                   hover:naxatw-bg-grey-200  ${
                      selected === opt.value ? 'naxatw-bg-light-green' : ''
                    }`}
                     onClick={() => {

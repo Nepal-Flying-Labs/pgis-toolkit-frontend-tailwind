@@ -36,7 +36,7 @@ export default function HeaderProfile() {
             </div>
             <div
               onClick={() => dispatch(toggleModal('access-to-functionalities'))}
-              className="naxatw-h-[2.5rem] naxatw-flex naxatw-items-center naxatw-cursor-pointer naxatw-gap-x-3 hover:naxatw-bg-gray-100"
+              className="naxatw-h-[2.5rem] naxatw-flex naxatw-items-center naxatw-cursor-pointer naxatw-gap-x-3 hover:naxatw-bg-grey-100"
             >
               <span className="material-icons naxatw-text-[#00A699] naxatw-ml-[1.375rem] ">
                 info
@@ -50,7 +50,7 @@ export default function HeaderProfile() {
             </div>
           </div>
           <ul className="">
-            <li className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-p-3 hover:naxatw-bg-gray-100 naxatw-cursor-pointer">
+            <li className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-p-3 hover:naxatw-bg-grey-100 naxatw-cursor-pointer">
               <span className="material-icons naxatw-text-[#484848]">
                 settings
               </span>
@@ -61,7 +61,7 @@ export default function HeaderProfile() {
             <li
               role="presentation"
               onClick={() => dispatch(logoutRequest())}
-              className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-p-3 hover:naxatw-bg-gray-100 naxatw-cursor-pointer"
+              className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-p-3 hover:naxatw-bg-grey-100 naxatw-cursor-pointer"
             >
               <span className="material-icons naxatw-text-[#FF0F0F]">
                 logout

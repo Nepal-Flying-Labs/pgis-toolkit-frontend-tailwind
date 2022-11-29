@@ -65,7 +65,7 @@ const Popup = ({ map, except }) => {
   return (
     <div id="popup" className="ol-popup">
       <a href={() => {}} id="popup-closer" className="ol-popup-closer" />
-      <div id="popup-content" className="is-overflow" />
+      <div id="popup-content" className="is-overflow scrollbar" />
     </div>
   );
 };

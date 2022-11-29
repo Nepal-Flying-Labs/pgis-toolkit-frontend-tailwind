@@ -6,6 +6,7 @@ const initialState = {
   layers: null,
   zoomToLayerId: null,
   selectedProjectTheme: null,
+  popupData: {},
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -50,12 +51,18 @@ const setSelectedProjectTheme = (state, action) => ({
   selectedProjectTheme: action.payload,
 });
 
+const getMapPopupDataSuccess = (state, action) => ({
+  ...state,
+  popupData: action.payload,
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
   [Types.HANDLE_CHECKBOX]: handleCheckbox,
   [Types.SET_ZOOM_TO_LAYER_ID]: setZoomToLayerId,
   [Types.SET_SELECTED_PROJECT_THEME]: setSelectedProjectTheme,
+  [Types.GET_MAP_POPUP_DATA_SUCCESS]: getMapPopupDataSuccess,
 });
 
 export default projectDashboardReducer;

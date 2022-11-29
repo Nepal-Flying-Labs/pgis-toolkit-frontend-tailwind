@@ -8,3 +8,6 @@ export const getProjectThemeLayers = params =>
 
 export const uploadLayer = data =>
   authenticated(api).post(`/maps/layer/`, data);
+
+export const getMapPopupData = params =>
+  authenticated(api).get(`/maps/feature_popup/`, { params });

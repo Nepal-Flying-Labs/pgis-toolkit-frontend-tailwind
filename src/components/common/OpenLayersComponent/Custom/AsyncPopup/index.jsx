@@ -133,7 +133,7 @@ const AsyncPopup = ({
         ref={popupCloserRef}
         href={() => {}}
         id="popup-closer"
-        className="ol-popup-closer"
+        className="ol-popup-closer naxatw-hidden"
         onClick={closePopupFn}
       />
       <div id="popup-content" dangerouslySetInnerHTML={{ __html: popupHTML }} />

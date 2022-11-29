@@ -1,3 +1,9 @@
 .ol-attribution {
   display: none !important;
 }
+
+.ol-popup {
+  border-radius: 8px !important;
+  padding: 12px !important;
+  width: 16.5rem !important;
+}

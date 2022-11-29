@@ -87,7 +87,12 @@ export default function MapSidebar() {
   };
 
   return (
-    <div className="naxatw-w-[30rem] naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5">
+    <div
+      className="naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5"
+      style={{
+        minWidth: '30rem',
+      }}
+    >
       <div className="naxatw-flex naxatw-items-center">
         <Searchbar
           className="naxatw-bg-white"

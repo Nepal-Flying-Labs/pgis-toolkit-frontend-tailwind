@@ -3,7 +3,10 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { Creators as CommonCreators } from '@Actions/common';
-import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
+import {
+  Creators as ProjectDashboardCreators,
+  Types,
+} from '@Actions/projectDashboard';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import Accordion from '@Components/common/Accordion';
 import Button from '@Components/common/Button';
@@ -13,6 +16,8 @@ import { projectHeaderHeight } from '@src/constants';
 import { isEmpty } from '@Utils/commonUtils';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
+import LayerAccordion from '@Components/common/SkeletonLoader/LayerAccordion';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { handleCheckbox, setZoomToLayerId, setSelectedProjectTheme } =
   ProjectDashboardCreators;
@@ -22,6 +27,12 @@ export default function MapSidebar() {
   const { organizationId } = useParams();
   const themes = useSelector(state => state.projectDashboard.themes);
   const layers = useSelector(state => state.projectDashboard.layers);
+  const isLoading = useSelector(state =>
+    checkIfLoading(state, [
+      Types.GET_PROJECT_THEMES_REQUEST,
+      Types.GET_PROJECT_THEME_LAYERS_REQUEST,
+    ]),
+  );
   const dispatch = useDispatch();
   const [searchValue, handleChange] = useDebouncedInput({
     ms: 300,
@@ -113,82 +124,87 @@ export default function MapSidebar() {
           height: `calc(100vh - ${projectHeaderHeight} - 9rem)`,
         }}
       >
-        {themes.map(theme => {
-          const hasNoLayer = isEmpty(layers?.[theme.id]);
-          return (
-            <Accordion
-              key={theme.id}
-              collapsed={hasNoLayer}
-              header={
-                <div className="naxatw-flex naxatw-flex-col naxatw-gap-1">
-                  <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
-                    <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
-                      <h5 className="naxatw-text-grey-800">{theme.name}</h5>
-                      <span className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer">
-                        <MaterialIcon name="edit" className="naxatw-mt-1" />
-                      </span>
-                    </div>
-                    <div>
-                      <Button
-                        className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
-                        iconLeft="add_circle_outline"
-                        onClick={() => {
-                          dispatch(toggleModal('upload-layer'));
-                          dispatch(setSelectedProjectTheme(theme));
-                        }}
-                      >
-                        Layer
-                      </Button>
-                    </div>
-                  </div>
-                  <div>
-                    <p>{theme.description}</p>
-                  </div>
-                </div>
-              }
-              body={
-                <div>
-                  {layers?.[theme.id]?.map(layer => (
-                    <div
-                      key={layer.id}
-                      className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-my-2"
-                    >
-                      <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-                        <input
-                          id={layer.id}
-                          type="checkbox"
-                          className="naxatw-w-4 naxatw-h-4 naxatw-mr-4 naxatw-accent-grey-800"
-                          checked={layer.checked}
-                          onChange={e =>
-                            handleLayerCheck({
-                              checked: e.target.checked,
-                              layerId: layer.id,
-                              themeId: theme.id,
-                            })
-                          }
-                        />
-
-                        <LegendItem
-                          styles={layer.style}
-                          className="naxatw-mr-2"
-                        />
-
-                        <label
-                          className="naxatw-text-body-lg naxatw-text-grey-800"
-                          htmlFor={layer.id}
-                        >
-                          {layer.name}
-                        </label>
+        {isLoading
+          ? [...Array(3)].map(() => <LayerAccordion />)
+          : themes.map(theme => {
+              const hasNoLayer = isEmpty(layers?.[theme.id]);
+              return (
+                <Accordion
+                  key={theme.id}
+                  collapsed={hasNoLayer}
+                  header={
+                    <div className="naxatw-flex naxatw-flex-col naxatw-gap-1">
+                      <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
+                        <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
+                          <h5 className="naxatw-text-grey-800">{theme.name}</h5>
+                          <span className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer">
+                            <MaterialIcon name="edit" className="naxatw-mt-1" />
+                          </span>
+                        </div>
+                        <div>
+                          <Button
+                            className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
+                            iconLeft="add_circle_outline"
+                            onClick={() => {
+                              dispatch(toggleModal('upload-layer'));
+                              dispatch(setSelectedProjectTheme(theme));
+                            }}
+                          >
+                            Layer
+                          </Button>
+                        </div>
                       </div>
-
-                      <DropdownOptions options={dropdownOptions} data={layer} />
+                      <div>
+                        <p>{theme.description}</p>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              }
-            />
-          );
-        })}
+                  }
+                  body={
+                    <div>
+                      {layers?.[theme.id]?.map(layer => (
+                        <div
+                          key={layer.id}
+                          className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-my-2"
+                        >
+                          <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+                            <input
+                              id={layer.id}
+                              type="checkbox"
+                              className="naxatw-w-4 naxatw-h-4 naxatw-mr-4 naxatw-accent-grey-800"
+                              checked={layer.checked}
+                              onChange={e =>
+                                handleLayerCheck({
+                                  checked: e.target.checked,
+                                  layerId: layer.id,
+                                  themeId: theme.id,
+                                })
+                              }
+                            />
+
+                            <LegendItem
+                              styles={layer.style}
+                              className="naxatw-mr-2"
+                            />
+
+                            <label
+                              className="naxatw-text-body-lg naxatw-text-grey-800"
+                              htmlFor={layer.id}
+                            >
+                              {layer.name}
+                            </label>
+                          </div>
+
+                          <DropdownOptions
+                            options={dropdownOptions}
+                            data={layer}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  }
+                />
+              );
+            })}
       </div>
     </div>
   );

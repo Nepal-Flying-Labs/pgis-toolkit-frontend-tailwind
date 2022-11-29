@@ -55,13 +55,16 @@ export function* getMapPopupDataRequest({ params }) {
 }
 
 function* projectDashboardWatcher() {
-  yield takeLatest(Types.GET_PROJECT_THEMES_REQUEST, getProjectThemesRequest);
+  yield takeLatest(
+    Types.GET_PROJECT_THEMES_REQUEST,
+    withLoader(getProjectThemesRequest),
+  );
   yield takeEvery(
     Types.GET_PROJECT_THEME_LAYERS_REQUEST,
-    getProjectThemeLayersRequest,
+    withLoader(getProjectThemeLayersRequest),
   );
-  yield takeEvery(Types.UPLOAD_LAYER_REQUEST, withLoader(uploadLayerRequest));
-  yield takeEvery(
+  yield takeLatest(Types.UPLOAD_LAYER_REQUEST, withLoader(uploadLayerRequest));
+  yield takeLatest(
     Types.GET_MAP_POPUP_DATA_REQUEST,
     withLoader(getMapPopupDataRequest),
   );

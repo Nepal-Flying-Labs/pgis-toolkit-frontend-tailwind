@@ -73,6 +73,7 @@ export default function MapSidebar() {
             key={id}
             title={name}
             address="kenya"
+            id={id}
             status="good"
             onClick={() => {
               history.push(`${url}/${id}/map`);

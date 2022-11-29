@@ -11,7 +11,10 @@ export default function DropdownOptions({ options, data }) {
         ref={toggleRef}
         href={() => {}}
         className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-gray-800 naxatw-bg-white naxatw-rounded-lg hover:naxatw-bg-gray-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-gray-50 naxatw-select-none"
-        onClick={handleToggle}
+        onClick={e => {
+          e.stopPropagation();
+          handleToggle();
+        }}
       >
         <i className="material-icons">more_vert</i>
       </a>
@@ -30,7 +33,13 @@ export default function DropdownOptions({ options, data }) {
               key={id}
               className="naxatw-block naxatw-py-[13px] naxatw-px-3 hover:naxatw-bg-gray-100"
             >
-              <a href={() => {}} onClick={() => onClick(data)}>
+              <a
+                href={() => {}}
+                onClick={e => {
+                  onClick(data);
+                  e.stopPropagation();
+                }}
+              >
                 {label}
               </a>
             </li>

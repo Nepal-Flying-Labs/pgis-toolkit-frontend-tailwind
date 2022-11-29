@@ -13,11 +13,19 @@ const indexRoutes = [
     component: ProjectDashboard,
     authenticated: true,
   },
+
   {
     path: '/organizations/:organizationId/:tabname',
     name: 'Organization Dashboard',
     component: OrganizationDashboard,
     authenticated: true,
+  },
+  {
+    path: '/organizations/:organizationId/project-setup/:projectId',
+    name: 'Organization Dashboard',
+    component: OrganizationDashboard,
+    authenticated: true,
+    exact: true,
   },
   {
     path: '/organizations',

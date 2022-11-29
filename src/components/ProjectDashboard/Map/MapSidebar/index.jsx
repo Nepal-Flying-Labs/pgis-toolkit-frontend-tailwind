@@ -61,6 +61,19 @@ export default function MapSidebar() {
     },
   ];
 
+  const handleLayerCheck = ({ checked, layerId, themeId }) => {
+    dispatch(
+      handleCheckbox({
+        layerId,
+        themeId,
+        checked,
+      }),
+    );
+    if (checked) {
+      dispatch(setZoomToLayerId(layerId));
+    }
+  };
+
   return (
     <div className="naxatw-w-[30rem] naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5">
       <div className="naxatw-flex naxatw-items-center">
@@ -146,15 +159,13 @@ export default function MapSidebar() {
                           type="checkbox"
                           className="naxatw-w-4 naxatw-h-4 naxatw-mr-4 naxatw-accent-grey-800"
                           checked={layer.checked}
-                          onChange={e => {
-                            dispatch(
-                              handleCheckbox({
-                                layerId: layer.id,
-                                themeId: theme.id,
-                                checked: e.target.checked,
-                              }),
-                            );
-                          }}
+                          onChange={e =>
+                            handleLayerCheck({
+                              checked: e.target.checked,
+                              layerId: layer.id,
+                              themeId: theme.id,
+                            })
+                          }
                         />
 
                         <LegendItem

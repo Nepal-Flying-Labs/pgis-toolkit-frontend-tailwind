@@ -1,10 +1,16 @@
 import React from 'react';
 import { useParams } from 'react-router';
+import { useSelector, useDispatch } from 'react-redux';
 import { projectHeaderHeight } from '@src/constants';
+import { Creators } from '@Actions/organizationDashboard';
 import ProjectHeader from '@Components/common/ProjectHeader';
 import Projects from '@Components/OrganizationDashboard/Projects/index';
 import Home from '@Components/OrganizationDashboard/Home/index';
 import ProjectSetup from '@Components/OrganizationDashboard/ProjectSetup/index';
+import Modal from '@Components/common/Modal/index';
+import CreateProject from '@Components/OrganizationDashboard/ModalContent/CreateProject';
+
+const { toggleModal } = Creators;
 
 function getTabContent(tabname) {
   switch (tabname) {
@@ -19,11 +25,21 @@ function getTabContent(tabname) {
 
 export default function OrganizationDashboard() {
   const { tabname } = useParams();
+  const dispatch = useDispatch();
+  const modalContent = useSelector(
+    state => state.organizationDashboard.modalContent,
+  );
 
   return tabname !== 'project-setup' ? (
     <div>
       <ProjectHeader />
-
+      <Modal
+        show={!!modalContent}
+        title=""
+        onClose={() => dispatch(toggleModal())}
+      >
+        <CreateProject />
+      </Modal>
       <div
         style={{
           marginTop: projectHeaderHeight,

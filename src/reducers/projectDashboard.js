@@ -18,7 +18,11 @@ const getProjectThemeLayersSuccess = (state, action) => {
   const { data, theme } = action.payload;
   const layers = {
     ...state.layers,
-    [theme]: data.map(item => ({ ...item, checked: false })),
+    [theme]: data.map(item => ({
+      ...item,
+      checked: false,
+      style: { ...item.style, geometryType: item.geom_type },
+    })),
   };
   return {
     ...state,

@@ -35,6 +35,12 @@ export default function MapSection() {
     state => state.projectDashboard.zoomToLayerId,
   );
   const popupData = useSelector(state => state.projectDashboard.popupData);
+  const isMapDataLoading = useSelector(state =>
+    checkIfLoading(state, [
+      Types.GET_PROJECT_THEMES_REQUEST,
+      Types.GET_PROJECT_THEME_LAYERS_REQUEST,
+    ]),
+  );
   const isPopupDataFetching = useSelector(state =>
     checkIfLoading(state, [Types.GET_MAP_POPUP_DATA_REQUEST]),
   );
@@ -49,7 +55,7 @@ export default function MapSection() {
     if (isExtentValid(zoomExtent)) {
       map.getView().fit(zoomExtent, {
         padding: [50, 50, 50, 50],
-        duration: 700,
+        duration: 3500,
         constrainResolution: true,
       });
     }
@@ -78,7 +84,16 @@ export default function MapSection() {
   );
 
   return (
-    <div className="naxatw-w-full">
+    <div className="naxatw-w-full naxatw-relative">
+      {isMapDataLoading && (
+        <div className="naxatw-absolute naxatw-w-full naxatw-top-4 naxatw-z-10 naxatw-flex naxatw-justify-center">
+          <span className="naxatw-bg-white naxatw-p-3 naxatw-flex naxatw-items-center naxatw-gap-3 naxatw-rounded-md naxatw-shadow-3xl">
+            <h5 className="">Loading</h5>
+            <Spinner className="naxatw-w-6 naxatw-h-6 naxatw-fill-secondary-400" />
+          </span>
+        </div>
+      )}
+
       <MapComponent
         ref={mapRef}
         mapInstance={map}

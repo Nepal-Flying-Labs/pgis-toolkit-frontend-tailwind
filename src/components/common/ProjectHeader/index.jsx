@@ -36,7 +36,7 @@ export default function ProjectHeader() {
           <Link
             to={`${
               projectId
-                ? `/organizations/${organizationId}/home`
+                ? `/organizations/${organizationId}/projects`
                 : '/organizations'
             }`}
           >

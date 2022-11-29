@@ -16,7 +16,7 @@ export default function Modal({ title, show, onClose, children }) {
             <h3 className="naxatw-font-bold naxatw-tracking-wider">{title}</h3>
             <button
               type="button"
-              className="naxatw-text-gray-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center naxatw-"
+              className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
               onClick={onClose}
             >
               <i className="material-icons">close</i>

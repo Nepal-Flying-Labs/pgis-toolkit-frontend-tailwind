@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-extra-boolean-cast */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -125,7 +126,7 @@ export default function MapSidebar() {
         }}
       >
         {isLoading
-          ? [...Array(3)].map(() => <LayerAccordion />)
+          ? [...Array(3)].map((_, idx) => <LayerAccordion key={idx} />)
           : themes.map(theme => {
               const hasNoLayer = isEmpty(layers?.[theme.id]);
               return (
@@ -138,7 +139,10 @@ export default function MapSidebar() {
                         <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
                           <h5 className="naxatw-text-grey-800">{theme.name}</h5>
                           <span className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer">
-                            <MaterialIcon name="edit" className="naxatw-mt-1" />
+                            <MaterialIcon
+                              name="edit"
+                              className="material-icons-outlined naxatw-mt-1"
+                            />
                           </span>
                         </div>
                         <div>

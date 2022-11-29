@@ -9,7 +9,7 @@ import Searchbar from '@Components/common/Searchbar';
 import { projectHeaderHeight } from '@src/constants';
 import ProjectCard from './ProjectCard';
 
-const { getProjectsRequest } = Creators;
+const { getProjectsRequest, toggleModal } = Creators;
 
 export default function MapSidebar() {
   const { organizationId } = useParams();
@@ -44,7 +44,11 @@ export default function MapSidebar() {
           onChange={handleChange}
         />
 
-        <Button className="naxatw-btn-primary" iconLeft="add_circle_outline">
+        <Button
+          className="naxatw-btn-primary"
+          iconLeft="add_circle_outline"
+          onClick={() => dispatch(toggleModal('create-project'))}
+        >
           Project
         </Button>
       </div>
@@ -69,6 +73,7 @@ export default function MapSidebar() {
             key={id}
             title={name}
             address="kenya"
+            id={id}
             status="good"
             onClick={() => {
               history.push(`${url}/${id}/map`);

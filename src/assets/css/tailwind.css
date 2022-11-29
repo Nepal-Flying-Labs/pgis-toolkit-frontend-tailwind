@@ -31,7 +31,7 @@
 
 @layer components {
   .naxatw-input {
-    @apply naxatw-block naxatw-w-full naxatw-px-3 naxatw-py-[13px] naxatw-font-normal naxatw-text-gray-900 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-gray-300 naxatw-rounded-lg naxatw-transition naxatw-ease-in-out naxatw-m-0 focus:naxatw-text-gray-700 focus:naxatw-bg-white focus:naxatw-border-grey-800 focus:naxatw-outline-none;
+    @apply naxatw-block naxatw-w-full naxatw-px-3 naxatw-py-[13px] naxatw-font-normal naxatw-text-grey-900 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded-lg naxatw-transition naxatw-ease-in-out naxatw-m-0 focus:naxatw-text-grey-700 focus:naxatw-bg-white focus:naxatw-border-grey-800 focus:naxatw-outline-none;
   }
   .naxatw-label {
     @apply naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px];

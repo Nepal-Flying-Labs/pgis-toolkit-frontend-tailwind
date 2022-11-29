@@ -11,7 +11,8 @@ import MaterialIcon from '@Components/common/MaterialIcon';
 import Searchbar from '@Components/common/Searchbar';
 import { projectHeaderHeight } from '@src/constants';
 import { isEmpty } from '@Utils/commonUtils';
-import DropdownOptions from '@Components/common/DropdownOptions/index';
+import DropdownOptions from '@Components/common/DropdownOptions';
+import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 
 const { handleCheckbox, setZoomToLayerId, setSelectedProjectTheme } =
   ProjectDashboardCreators;
@@ -137,12 +138,13 @@ export default function MapSidebar() {
                   {layers?.[theme.id]?.map(layer => (
                     <div
                       key={layer.id}
-                      className="naxatw-flex naxatw-justify-between"
+                      className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-my-2"
                     >
-                      <div>
+                      <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                         <input
                           id={layer.id}
                           type="checkbox"
+                          className="naxatw-w-4 naxatw-h-4 naxatw-mr-4 naxatw-accent-grey-800"
                           checked={layer.checked}
                           onChange={e => {
                             dispatch(
@@ -154,6 +156,12 @@ export default function MapSidebar() {
                             );
                           }}
                         />
+
+                        <LegendItem
+                          styles={layer.style}
+                          className="naxatw-mr-2"
+                        />
+
                         <label
                           className="naxatw-text-body-lg naxatw-text-grey-800"
                           htmlFor={layer.id}

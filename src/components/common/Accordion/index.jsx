@@ -34,7 +34,7 @@ export default function Accordion({ collapsed: isCollapsed, header, body }) {
         </span>
       </div>
       <div className={`${collapsed ? 'naxatw-hidden' : ''}`}>
-        <div className="naxatw-p-5 naxatw-font-light naxatw-border naxatw-border-t-0 naxatw-border-gray-200">
+        <div className="naxatw-p-5 naxatw-font-light naxatw-border naxatw-border-t-0">
           {body}
         </div>
       </div>

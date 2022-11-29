@@ -56,7 +56,7 @@ const ProjectSetup = () => {
           </div>
           <button
             type="button"
-            className="naxatw-text-gray-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center naxatw-"
+            className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center naxatw-"
           >
             <i className="material-icons">close</i>
             <span className="naxatw-sr-only">Close modal</span>
@@ -126,7 +126,7 @@ const ProjectSetup = () => {
               >
                 Next
               </Button>
-              <Button className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-gray-200">
+              <Button className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200">
                 Save as Draft
               </Button>
             </div>

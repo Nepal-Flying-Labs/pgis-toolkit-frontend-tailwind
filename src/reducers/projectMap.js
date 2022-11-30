@@ -7,6 +7,7 @@ const initialState = {
   zoomToLayerId: null,
   selectedProjectTheme: null,
   popupData: {},
+  selectedLayer: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -60,6 +61,29 @@ const getMapPopupDataSuccess = (state, action) => ({
   popupData: action.payload,
 });
 
+const setSelectedLayer = (state, action) => ({
+  ...state,
+  selectedLayer: action.payload || null,
+});
+
+const handleStyleInput = (state, action) => {
+  const {
+    payload: { name, value },
+  } = action;
+  const selectedLayer = {
+    ...state.selectedLayer,
+    style: {
+      ...state.selectedLayer.style,
+      [name]: value,
+    },
+  };
+
+  return {
+    ...state,
+    selectedLayer,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -67,6 +91,8 @@ const projectMapReducer = createReducer(initialState, {
   [Types.SET_ZOOM_TO_LAYER_ID]: setZoomToLayerId,
   [Types.SET_SELECTED_PROJECT_THEME]: setSelectedProjectTheme,
   [Types.GET_MAP_POPUP_DATA_SUCCESS]: getMapPopupDataSuccess,
+  [Types.SET_SELECTED_LAYER]: setSelectedLayer,
+  [Types.HANDLE_STYLE_INPUT]: handleStyleInput,
 });
 
 export default projectMapReducer;

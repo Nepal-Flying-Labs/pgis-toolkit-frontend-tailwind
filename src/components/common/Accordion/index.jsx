@@ -10,7 +10,7 @@ export default function Accordion({ collapsed: isCollapsed, header, body }) {
 
   return (
     <div className="naxatw-bg-white naxatw-border naxatw-border-grey-800 naxatw-rounded-lg">
-      <div className="naxatw-p-5 naxatw-flex naxatw-items-start naxatw-justify-between naxatw-w-full naxatw-font-medium naxatw-gap-3">
+      <div className="naxatw-p-5 naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full naxatw-font-medium naxatw-gap-3">
         {header}
         <span className="naxatw-flex">
           <button

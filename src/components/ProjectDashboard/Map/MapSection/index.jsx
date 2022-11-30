@@ -12,7 +12,10 @@ import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSw
 import Scalebar from '@Components/common/OpenLayersComponent/Scalebar';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
-import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import {
+  defaultStyles,
+  getStyles,
+} from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { projectHeaderHeight } from '@src/constants';
 import Spinner from '@Components/common/Spinner';
 import PopupUI from '@Components/common/OpenLayersComponent/Custom/PopupUI';
@@ -34,6 +37,7 @@ export default function MapSection() {
   const mapState = useSelector(mapStateSelector);
   const zoomToLayerId = useSelector(state => state.projectMap.zoomToLayerId);
   const popupData = useSelector(state => state.projectMap.popupData);
+  const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,
@@ -110,7 +114,11 @@ export default function MapSection() {
               url={`${API_URL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
               authToken={localStorage.getItem('userToken')}
               visibleOnMap={item.checked}
-              style={item?.style || { ...defaultStyles }}
+              style={
+                item.id === selectedLayer?.id
+                  ? selectedLayer.style
+                  : item?.style || { ...defaultStyles }
+              }
               zIndex={mapState.length + 10 - index}
             />
           ) : (

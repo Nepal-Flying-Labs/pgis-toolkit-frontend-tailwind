@@ -27,6 +27,9 @@
   span {
     @apply naxatw-text-grey-800 naxatw-text-body-md;
   }
+  a {
+    @apply naxatw-cursor-pointer;
+  }
 }
 
 @layer components {

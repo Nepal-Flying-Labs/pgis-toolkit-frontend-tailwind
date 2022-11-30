@@ -2,6 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import {
   getProjects,
   postProjectInvite,
+  getIndividualProject,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
@@ -34,9 +35,25 @@ export function* postProjectInviteRequest({ payload }) {
   }
 }
 
+export function* getIndividualProjectRequest({ id }) {
+  try {
+    const response = yield call(getIndividualProject, id);
+    yield put(
+      organizationDashboardActions.getIndividualProjectSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.getIndividualProjectFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
+
 function* organizationDashboardWatcher() {
   yield takeLatest(Types.GET_PROJECTS_REQUEST, getProjectsRequest);
   yield takeLatest(Types.POST_PROJECT_INVITE_REQUEST, postProjectInviteRequest);
+  yield takeLatest(
+    Types.GET_INDIVIDUAL_PROJECT_REQUEST,
+    getIndividualProjectRequest,
+  );
 }
 
 export default organizationDashboardWatcher;

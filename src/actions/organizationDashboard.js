@@ -10,6 +10,10 @@ export const { Types, Creators } = createActions(
     postProjectInviteSuccess: ['payload'],
     postProjectInviteFailure: null,
 
+    getIndividualProjectRequest: ['id'],
+    getIndividualProjectSuccess: ['payload'],
+    getIndividualProjectFailure: null,
+
     toggleModal: ['payload'],
   },
   { prefix: 'organizationDashboard/' },

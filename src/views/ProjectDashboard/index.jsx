@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { projectHeaderHeight } from '@src/constants';
 import { Creators as CommonCreators } from '@Actions/common';
-import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
+import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import ProjectHeader from '@Components/common/ProjectHeader';
 import Map from '@Components/ProjectDashboard/Map';
 import Data from '@Components/ProjectDashboard/Data';
@@ -17,7 +17,7 @@ import Modal from '@Components/common/Modal';
 import { getModalContent, getModalTitle } from '@src/constants/modalContents';
 
 const { getProjectThemesRequest, getProjectThemeLayersRequest } =
-  ProjectDashboardCreators;
+  ProjectMapCreators;
 const { toggleModal } = CommonCreators;
 
 function getTabContent(tabname) {
@@ -43,7 +43,7 @@ function getTabContent(tabname) {
 
 export default function ProjectDashboard() {
   const { projectId, tabname } = useParams();
-  const themes = useSelector(state => state.projectDashboard.themes);
+  const themes = useSelector(state => state.projectMap.themes);
   const modalContent = useSelector(state => state.common.modalContent);
   const dispatch = useDispatch();
 

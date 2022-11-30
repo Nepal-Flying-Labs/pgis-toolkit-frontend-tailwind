@@ -12,10 +12,7 @@ import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSw
 import Scalebar from '@Components/common/OpenLayersComponent/Scalebar';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
-import {
-  defaultStyles,
-  getStyles,
-} from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { projectHeaderHeight } from '@src/constants';
 import Spinner from '@Components/common/Spinner';
 import PopupUI from '@Components/common/OpenLayersComponent/Custom/PopupUI';

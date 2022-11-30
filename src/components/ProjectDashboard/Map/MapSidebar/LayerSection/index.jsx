@@ -194,7 +194,7 @@ export default function LayerSection() {
 
                           <LegendItem
                             styles={layer.style}
-                            className="naxatw-mr-2 naxatw-cursor-pointer"
+                            className="naxatw-mr-2"
                           />
 
                           <label

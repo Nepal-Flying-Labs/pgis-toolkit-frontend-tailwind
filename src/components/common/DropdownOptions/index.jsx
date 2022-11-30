@@ -9,7 +9,6 @@ export default function DropdownOptions({ options, data }) {
     <div className="naxatw-relative naxatw-w-10 naxatw-flex">
       <a
         ref={toggleRef}
-        // href={() => {}}
         className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-grey-800 naxatw-bg-white naxatw-rounded-lg hover:naxatw-bg-grey-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-grey-50 naxatw-select-none"
         onClick={e => {
           e.stopPropagation();
@@ -34,7 +33,6 @@ export default function DropdownOptions({ options, data }) {
               className="naxatw-block naxatw-py-[13px] naxatw-px-3 hover:naxatw-bg-grey-100 naxatw-cursor-pointer"
             >
               <a
-                // href={() => {}}
                 onClick={e => {
                   onClick(data);
                   e.stopPropagation();

@@ -1,5 +1,6 @@
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/projectMap';
+import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
 const initialState = {
   themes: [],
@@ -22,7 +23,7 @@ const getProjectThemeLayersSuccess = (state, action) => {
     [theme]: data.map(item => ({
       ...item,
       checked: false,
-      style: { ...item.style, geometryType: item.geom_type },
+      style: { ...defaultStyles, ...item.style, geometryType: item.geom_type },
     })),
   };
   return {

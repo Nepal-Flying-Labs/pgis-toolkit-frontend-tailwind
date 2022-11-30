@@ -146,7 +146,7 @@ export default function MapSidebar() {
                 key={theme.id}
                 collapsed={hasNoLayer}
                 header={
-                  <div className="naxatw-flex naxatw-flex-col naxatw-gap-1">
+                  <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
                     <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
                       <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
                         <h5 className="naxatw-text-grey-800">{theme.name}</h5>

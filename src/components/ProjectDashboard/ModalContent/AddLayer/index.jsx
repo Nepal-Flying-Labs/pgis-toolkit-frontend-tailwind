@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators } from '@Actions/projectDashboard';
+import { Creators } from '@Actions/projectMap';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import prepareFormData from '@Utils/prepareFormData';
@@ -14,7 +14,7 @@ const initialState = {
 
 export default function AddLayer() {
   const selectedProjectTheme = useSelector(
-    state => state.projectDashboard.selectedProjectTheme,
+    state => state.projectMap.selectedProjectTheme,
   );
   const dispatch = useDispatch();
   const { values, inputProps, handleChange, handleSubmit } = useForm({

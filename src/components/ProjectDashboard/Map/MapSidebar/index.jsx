@@ -8,7 +8,7 @@ import { Creators as CommonCreators } from '@Actions/common';
 import {
   Creators as ProjectDashboardCreators,
   Types,
-} from '@Actions/projectDashboard';
+} from '@Actions/projectMap';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import Accordion from '@Components/common/Accordion';
 import Button from '@Components/common/Button';
@@ -27,8 +27,8 @@ const { toggleModal } = CommonCreators;
 
 export default function MapSidebar() {
   const { organizationId } = useParams();
-  const themes = useSelector(state => state.projectDashboard.themes);
-  const layers = useSelector(state => state.projectDashboard.layers);
+  const themes = useSelector(state => state.projectMap.themes);
+  const layers = useSelector(state => state.projectMap.layers);
   const isLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,

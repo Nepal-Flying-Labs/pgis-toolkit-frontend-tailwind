@@ -2,8 +2,8 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
-import { Creators, Types } from '@Actions/projectDashboard';
-import { mapStateSelector } from '@Selectors/projectDashboard';
+import { Creators, Types } from '@Actions/projectMap';
+import { mapStateSelector } from '@Selectors/projectMap';
 import {
   useOLMap,
   MapContainer as MapComponent,
@@ -32,10 +32,8 @@ export default function MapSection() {
     maxZoom: 25,
   });
   const mapState = useSelector(mapStateSelector);
-  const zoomToLayerId = useSelector(
-    state => state.projectDashboard.zoomToLayerId,
-  );
-  const popupData = useSelector(state => state.projectDashboard.popupData);
+  const zoomToLayerId = useSelector(state => state.projectMap.zoomToLayerId);
+  const popupData = useSelector(state => state.projectMap.popupData);
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,

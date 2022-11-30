@@ -61,7 +61,6 @@ export default function EditStyleSection() {
             placeholder="Layer Name"
             value={selectedLayer.name}
             // onChange={handleChange}
-            // {...inputProps}
           />
         </div>
       </div>
@@ -75,7 +74,6 @@ export default function EditStyleSection() {
             name="fillColor"
             value={fillColor}
             onChange={handleChange}
-            // {...inputProps}
           />
         </div>
       </div>
@@ -89,7 +87,31 @@ export default function EditStyleSection() {
             name="lineColor"
             value={lineColor}
             onChange={handleChange}
-            // {...inputProps}
+          />
+        </div>
+      </div>
+
+      <div className="naxatw-flex naxatw-items-center">
+        <div className="naxatw-w-full naxatw-space-y-2">
+          <label className="naxatw-label">Fill Opacity</label>
+          <input
+            type="range"
+            className={colorClassName}
+            name="fillOpacity"
+            value={fillOpacity}
+            onChange={handleChange}
+          />
+        </div>
+      </div>
+      <div className="naxatw-flex naxatw-items-center">
+        <div className="naxatw-w-full naxatw-space-y-2">
+          <label className="naxatw-label">Line Opacity</label>
+          <input
+            type="range"
+            className={colorClassName}
+            name="lineOpacity"
+            value={lineOpacity}
+            onChange={handleChange}
           />
         </div>
       </div>

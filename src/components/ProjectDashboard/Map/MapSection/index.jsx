@@ -2,8 +2,8 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
-import { Creators, Types } from '@Actions/projectDashboard';
-import { mapStateSelector } from '@Selectors/projectDashboard';
+import { Creators, Types } from '@Actions/projectMap';
+import { mapStateSelector } from '@Selectors/projectMap';
 import {
   useOLMap,
   MapContainer as MapComponent,
@@ -14,11 +14,12 @@ import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/Vecto
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { projectHeaderHeight } from '@src/constants';
-import '@Components/common/OpenLayersComponent/map.css';
 import Spinner from '@Components/common/Spinner';
 import PopupUI from '@Components/common/OpenLayersComponent/Custom/PopupUI';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import AsyncPopup from '@Components/common/OpenLayersComponent/Custom/AsyncPopup';
+import 'ol/ol.css';
+import '@Components/common/OpenLayersComponent/map.css';
 
 const { API_URL } = process.env;
 
@@ -31,10 +32,8 @@ export default function MapSection() {
     maxZoom: 25,
   });
   const mapState = useSelector(mapStateSelector);
-  const zoomToLayerId = useSelector(
-    state => state.projectDashboard.zoomToLayerId,
-  );
-  const popupData = useSelector(state => state.projectDashboard.popupData);
+  const zoomToLayerId = useSelector(state => state.projectMap.zoomToLayerId);
+  const popupData = useSelector(state => state.projectMap.popupData);
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,

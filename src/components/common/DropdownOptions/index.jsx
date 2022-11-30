@@ -10,7 +10,7 @@ export default function DropdownOptions({ options, data }) {
       <a
         ref={toggleRef}
         href={() => {}}
-        className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-gray-800 naxatw-bg-white naxatw-rounded-lg hover:naxatw-bg-gray-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-gray-50 naxatw-select-none"
+        className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-grey-800 naxatw-bg-white naxatw-rounded-lg hover:naxatw-bg-grey-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-grey-50 naxatw-select-none"
         onClick={e => {
           e.stopPropagation();
           handleToggle();
@@ -22,16 +22,16 @@ export default function DropdownOptions({ options, data }) {
         id="dropdownDots"
         className={`${
           toggle ? '' : 'naxatw-hidden'
-        } naxatw-absolute naxatw-top-[2px] naxatw-right-[42px] naxatw-z-10 naxatw-w-[12.5rem] naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-gray-100 naxatw-shadow-3xl`}
+        } naxatw-absolute naxatw-top-[2px] naxatw-right-[42px] naxatw-z-10 naxatw-w-[12.5rem] naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100 naxatw-shadow-3xl`}
       >
         <ul
-          className="naxatw-py-2 naxatw-text-sm naxatw-text-gray-700"
+          className="naxatw-py-2 naxatw-text-sm naxatw-text-grey-700"
           aria-labelledby="dropdownMenuIconButton"
         >
           {options.map(({ id, label, onClick }) => (
             <li
               key={id}
-              className="naxatw-block naxatw-py-[13px] naxatw-px-3 hover:naxatw-bg-gray-100"
+              className="naxatw-block naxatw-py-[13px] naxatw-px-3 hover:naxatw-bg-grey-100 naxatw-cursor-pointer"
             >
               <a
                 href={() => {}}

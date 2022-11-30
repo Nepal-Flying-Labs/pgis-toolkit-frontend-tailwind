@@ -18,7 +18,7 @@ const getPage = (page, values, handleChange) => {
     case 1:
       return <BasicInfo values={values} handleChange={handleChange} />;
     case 2:
-      return <Location />;
+      return <Location values={values} handleChange={handleChange} />;
     case 3:
       return <Documents />;
     default:
@@ -49,6 +49,21 @@ const pageStatus = [
   },
 ];
 
+const options = [
+  {
+    id: 1,
+    name: 'Filter 1',
+  },
+  {
+    id: 2,
+    name: 'Filter 2',
+  },
+  {
+    id: 3,
+    name: 'Filter 3',
+  },
+];
+
 const ProjectSetup = () => {
   const { projectId } = useParams();
   const dispatch = useDispatch();
@@ -56,8 +71,12 @@ const ProjectSetup = () => {
   const [page, setPage] = useState(1);
 
   const individualProject = useSelector(
-    state => state.organizationDashboard?.individualProject,
+    state => state.organizationDashboard.individualProject,
   );
+
+  // if(projectId){
+  //   const thematicArea=individualProject.find((data=>))
+  // }
 
   const { values, handleChange, handleSubmit } = useForm({
     initialValues: individualProject,

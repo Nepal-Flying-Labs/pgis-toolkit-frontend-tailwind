@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import Input from '@Components/common/Input';
 import Select from '@Components/common/Select';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
+import CustomCalendar from '@Components/common/CustomCalendar/index';
+import { format } from 'date-fns';
 
 const options = [
   {
@@ -22,6 +24,8 @@ const options = [
 
 const BasicInfo = ({ values, handleChange }) => {
   const [projectPartners, setProjectPartners] = useState([]);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   return (
     <>
       <div className="naxatw-px-[5.313rem] naxatw-flex">
@@ -56,25 +60,23 @@ const BasicInfo = ({ values, handleChange }) => {
       </div>
 
       <div className="naxatw-flex naxatw-justify-between">
-        <Input
-          type="date"
-          className="naxatw-w-[325px] naxatw-mr-5"
-          label="Start Date"
-          name="start_date"
-          value={values.start_date}
-          onChange={handleChange}
-          placeholder="Choose"
-        />
+        <div className="naxatw-space-y-2 naxatw-w-[325px]">
+          <label className="naxatw-label">Start Date</label>
+          <CustomCalendar
+            startDate={new Date()}
+            onChange={date => setStartDate(format(date, 'yyyy-MM-dd'))}
+            selected={startDate}
+          />
+        </div>
 
-        <Input
-          type="date"
-          className="naxatw-w-[325px]"
-          label="End Date"
-          name="end_date"
-          value={values.end_date}
-          onChange={handleChange}
-          placeholder="Choose"
-        />
+        <div className="naxatw-space-y-2 naxatw-w-[325px]">
+          <label className="naxatw-label">Start Date</label>
+          <CustomCalendar
+            startDate={new Date()}
+            onChange={date => setEndDate(format(date, 'yyyy-MM-dd'))}
+            selected={endDate}
+          />
+        </div>
       </div>
       <div className="naxatw-relative">
         <Input

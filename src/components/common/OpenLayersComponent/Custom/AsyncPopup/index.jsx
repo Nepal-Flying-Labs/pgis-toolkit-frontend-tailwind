@@ -131,7 +131,7 @@ const AsyncPopup = ({
     <div ref={popupRef} id="popup" className="ol-popup">
       <a
         ref={popupCloserRef}
-        href={() => {}}
+        // href={() => {}}
         id="popup-closer"
         className="ol-popup-closer naxatw-hidden"
         onClick={closePopupFn}

@@ -1,16 +1,21 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators as ProjectMapCreators } from '@Actions/projectMap';
+import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import Button from '@Components/common/Button/index';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
-const { setSelectedLayer, handleStyleInput } = ProjectMapCreators;
+const { setSelectedLayer, handleStyleInput, updateLayerRequest } =
+  ProjectMapCreators;
 
 const colorClassName = 'naxatw-input naxatw-h-12 naxatw-w-12 naxatw-p-[3px]';
 
 export default function EditFeatureSection() {
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.UPDATE_LAYER_REQUEST]),
+  );
   const dispatch = useDispatch();
   const [layerStyle, handleChange] = useDebouncedInput({
     ms: 70,
@@ -25,6 +30,13 @@ export default function EditFeatureSection() {
       );
     },
   });
+
+  const handleSave = () => {
+    const data = {
+      style: selectedLayer.style,
+    };
+    dispatch(updateLayerRequest(selectedLayer.id, data));
+  };
 
   const {
     lineColor,
@@ -118,7 +130,11 @@ export default function EditFeatureSection() {
       </div>
 
       <div>
-        <Button className="naxatw-btn-primary" onClick={() => {}}>
+        <Button
+          className="naxatw-btn-primary"
+          onClick={handleSave}
+          isLoading={loading}
+        >
           Save
         </Button>
       </div>

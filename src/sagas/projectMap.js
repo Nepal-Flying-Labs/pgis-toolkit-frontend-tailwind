@@ -3,11 +3,13 @@ import {
   getMapPopupData,
   getProjectThemeLayers,
   getProjectThemes,
+  updateLayer,
   uploadLayer,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import toastActions from '@Actions/toast';
 import { withLoader } from '@Utils/sagaUtils';
+import prepareFormData from '@Utils/prepareFormData';
 
 export function* getProjectThemesRequest({ params }) {
   try {
@@ -54,6 +56,22 @@ export function* getMapPopupDataRequest({ params }) {
   }
 }
 
+export function* updateLayerRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateLayer, id, formdata);
+    yield put(
+      projectMapActions.updateLayerSuccess({
+        responseData: response.data,
+        payload,
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.updateLayerFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -68,6 +86,7 @@ function* projectMapWatcher() {
     Types.GET_MAP_POPUP_DATA_REQUEST,
     withLoader(getMapPopupDataRequest),
   );
+  yield takeLatest(Types.UPDATE_LAYER_REQUEST, withLoader(updateLayerRequest));
 }
 
 export default projectMapWatcher;

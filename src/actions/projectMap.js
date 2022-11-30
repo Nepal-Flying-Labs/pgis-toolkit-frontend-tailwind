@@ -24,6 +24,10 @@ export const { Types, Creators } = createActions(
 
     setSelectedLayer: ['payload'],
     handleStyleInput: ['payload'],
+
+    updateLayerRequest: ['id', 'payload'],
+    updateLayerSuccess: ['payload'],
+    updateLayerFailure: null,
   },
   { prefix: 'projectMap/' },
 );

@@ -77,10 +77,27 @@ const handleStyleInput = (state, action) => {
       [name]: value,
     },
   };
-
   return {
     ...state,
     selectedLayer,
+  };
+};
+
+const updateLayerSuccess = (state, action) => {
+  const { responseData, payload } = action.payload;
+  const { theme } = responseData;
+  const layers = {
+    ...state.layers,
+    [theme]: state.layers[theme].map(item =>
+      item.id === responseData.id
+        ? { ...item, style: payload.style }
+        : { ...item },
+    ),
+  };
+  return {
+    ...state,
+    layers,
+    selectedLayer: null,
   };
 };
 
@@ -93,6 +110,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_MAP_POPUP_DATA_SUCCESS]: getMapPopupDataSuccess,
   [Types.SET_SELECTED_LAYER]: setSelectedLayer,
   [Types.HANDLE_STYLE_INPUT]: handleStyleInput,
+  [Types.UPDATE_LAYER_SUCCESS]: updateLayerSuccess,
 });
 
 export default projectMapReducer;

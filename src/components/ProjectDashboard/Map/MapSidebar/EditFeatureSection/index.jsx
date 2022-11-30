@@ -5,11 +5,11 @@ import useDebouncedInput from '@Hooks/useDebouncedInput';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import Button from '@Components/common/Button/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import RangeSlider from '../InputComponents/RangeSlider';
+import Input from '../InputComponents/Input';
 
 const { setSelectedLayer, handleStyleInput, updateLayerRequest } =
   ProjectMapCreators;
-
-const colorClassName = 'naxatw-input naxatw-h-12 naxatw-w-12 naxatw-p-[3px]';
 
 export default function EditFeatureSection() {
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
@@ -47,7 +47,6 @@ export default function EditFeatureSection() {
     dashline,
     circleRadius,
     geometryType,
-    opacity,
   } = layerStyle;
 
   return (
@@ -78,55 +77,67 @@ export default function EditFeatureSection() {
         </div>
       </div>
 
-      <div className="naxatw-flex naxatw-items-center">
-        <div className="naxatw-w-full naxatw-space-y-2">
-          <label className="naxatw-label">Fill color</label>
-          <input
+      <div className="naxatw-overflow-auto naxatw-h-[26rem] naxatw-flex naxatw-flex-col naxatw-gap-4">
+        {geometryType !== 'LineString' && (
+          <Input
             type="color"
-            className={colorClassName}
             name="fillColor"
+            label="Fill Color"
             value={fillColor}
             onChange={handleChange}
           />
-        </div>
-      </div>
+        )}
 
-      <div className="naxatw-flex naxatw-items-center">
-        <div className="naxatw-w-full naxatw-space-y-2">
-          <label className="naxatw-label">Line color</label>
-          <input
-            type="color"
-            className={colorClassName}
-            name="lineColor"
-            value={lineColor}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
+        <Input
+          type="color"
+          name="lineColor"
+          label="Line Color"
+          value={lineColor}
+          onChange={handleChange}
+        />
 
-      <div className="naxatw-flex naxatw-items-center">
-        <div className="naxatw-w-full naxatw-space-y-2">
-          <label className="naxatw-label">Fill Opacity</label>
-          <input
-            type="range"
-            className={colorClassName}
+        {geometryType !== 'LineString' && (
+          <RangeSlider
             name="fillOpacity"
+            label="Fill Opacity"
             value={fillOpacity}
             onChange={handleChange}
           />
-        </div>
-      </div>
-      <div className="naxatw-flex naxatw-items-center">
-        <div className="naxatw-w-full naxatw-space-y-2">
-          <label className="naxatw-label">Line Opacity</label>
-          <input
-            type="range"
-            className={colorClassName}
-            name="lineOpacity"
-            value={lineOpacity}
+        )}
+
+        <RangeSlider
+          name="lineOpacity"
+          label="Line Opacity"
+          value={lineOpacity}
+          onChange={handleChange}
+        />
+
+        <Input
+          type="number"
+          name="lineThickness"
+          label="Line thickness"
+          value={lineThickness}
+          onChange={handleChange}
+        />
+
+        {geometryType !== 'Point' && (
+          <RangeSlider
+            name="dashline"
+            label="Dash Line"
+            value={dashline}
             onChange={handleChange}
           />
-        </div>
+        )}
+
+        {geometryType === 'Point' && (
+          <Input
+            type="number"
+            name="circleRadius"
+            label="Radius"
+            value={circleRadius}
+            onChange={handleChange}
+          />
+        )}
       </div>
 
       <div>

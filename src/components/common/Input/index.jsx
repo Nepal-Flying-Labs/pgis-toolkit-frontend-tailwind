@@ -43,7 +43,7 @@ const Input = ({
             className="naxatw-absolute naxatw-right-2 naxatw-top-9 naxatw-text-[#00A699]"
           />
           <ul className="naxatw-mt-2">
-            <li className="naxatw-flex naxatw-p-3 naxatw-items-center naxatw-justify-between hover:naxatw-bg-gray-200">
+            <li className="naxatw-flex naxatw-p-3 naxatw-items-center naxatw-justify-between hover:naxatw-bg-grey-200">
               <span className="naxatw-text-body-lg">
                 World Health Organization
               </span>

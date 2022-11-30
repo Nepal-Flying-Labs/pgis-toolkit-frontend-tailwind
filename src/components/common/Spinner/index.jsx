@@ -8,7 +8,7 @@ export default function Spinner({ className }) {
       <svg
         key={className}
         aria-hidden="true"
-        className={`naxatw-mr-2 naxatw-w-[22px] naxatw-h-[22px] naxatw-text-gray-200 naxatw-animate-spin ${className}`}
+        className={`naxatw-mr-2 naxatw-w-[22px] naxatw-h-[22px] naxatw-text-grey-200 naxatw-animate-spin ${className}`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

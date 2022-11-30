@@ -28,7 +28,7 @@ function Select({
     <div
       className={`naxatw-inline-flex  ${
         !errorClassName
-          ? 'naxatw-bg-white naxatw-border naxatw-border-gray-100 naxatw-text-gray-600 hover:naxatw-bg-gray-200'
+          ? 'naxatw-bg-white naxatw-border naxatw-border-grey-100 naxatw-text-grey-600 hover:naxatw-bg-grey-200'
           : 'naxatw-bg-red-50 naxatw-border naxatw-border-red-100 naxatw-text-red-500'
       } naxatw-rounded-xl naxatw-w-16 `}
       ref={divRef}
@@ -37,7 +37,7 @@ function Select({
         <button
           type="button"
           onClick={disabled ? () => {} : () => handleToggle()}
-          className={`naxatw-inline-flex naxatw-w-full naxatw-items-center naxatw-justify-between naxatw-h-8 naxatw-px-2  naxatw-border-l hover:naxatw-text-gray-700 naxatw-rounded-xl  ${
+          className={`naxatw-inline-flex naxatw-w-full naxatw-items-center naxatw-justify-between naxatw-h-8 naxatw-px-2  naxatw-border-l hover:naxatw-text-grey-700 naxatw-rounded-xl  ${
             toggle ? 'naxatw-bg-light-green' : ''
           }`}
         >
@@ -49,7 +49,7 @@ function Select({
           )}
         </button>
         <div
-          className="naxatw-absolute naxatw-bottom-0 naxatw-z-20 naxatw-w-full naxatw-mb-10 naxatw-origin-top-right naxatw-bg-white naxatw-border naxatw-border-gray-100 naxatw-rounded-md naxatw-shadow-lg"
+          className="naxatw-absolute naxatw-bottom-0 naxatw-z-20 naxatw-w-full naxatw-mb-10 naxatw-origin-top-right naxatw-bg-white naxatw-border naxatw-border-grey-100 naxatw-rounded-md naxatw-shadow-lg"
           style={{
             //  visibility: toggle ? 'visible' : 'hidden' ,
             display: toggle ? 'block' : 'none',
@@ -64,7 +64,7 @@ function Select({
                     role="menuitem"
                     className={`naxatw-whitespace-nowrap naxatw-px-2 naxatw-py-1 naxatw-mt-1
                     naxatw-cursor-pointer naxatw-rounded-sm naxatw-text-xl naxatw-font-semibold
-                   hover:naxatw-bg-light-green naxatw-text-gray-500 ${
+                   hover:naxatw-bg-light-green naxatw-text-grey-500 ${
                      selected === opt.value ? 'naxatw-bg-light-green' : ''
                    }`}
                     onClick={() => {

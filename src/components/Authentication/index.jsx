@@ -82,7 +82,7 @@ export default function Authentication() {
                   <p className="naxatw-font-bold">Sign in with Google</p>
                 </Button>
 
-                <hr className="naxatw-my-8 naxatw-h-px naxatw-bg-gray-200 naxatw-border-0" />
+                <hr className="naxatw-my-8 naxatw-h-px naxatw-bg-grey-200 naxatw-border-0" />
 
                 <div className="mb-6 naxatw-space-y-8">
                   <div className="">
@@ -91,7 +91,7 @@ export default function Authentication() {
                     </label>
                     <input
                       type="text"
-                      className="form-control block w-full px-4 py-2 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      className="form-control block w-full px-4 py-2 font-normal text-grey-700 bg-white bg-clip-padding border border-solid border-grey-300 rounded transition ease-in-out m-0 focus:text-grey-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                       placeholder="Email address"
                     />
                   </div>
@@ -101,7 +101,7 @@ export default function Authentication() {
                     </label>
                     <input
                       type="password"
-                      className="form-control block w-full px-4 py-2 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      className="form-control block w-full px-4 py-2 font-normal text-grey-700 bg-white bg-clip-padding border border-solid border-grey-300 rounded transition ease-in-out m-0 focus:text-grey-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                       placeholder="Password"
                     />
                   </div>
@@ -112,7 +112,7 @@ export default function Authentication() {
                         id="keep-me"
                         type="checkbox"
                         value=""
-                        className="naxatw-w-4 naxatw-h-4 naxatw-bg-gray-50 naxatw-rounded naxatw-border naxatw-border-gray-300 naxatw-focus:ring-3 naxatw-focus:ring-blue-300"
+                        className="naxatw-w-4 naxatw-h-4 naxatw-bg-grey-50 naxatw-rounded naxatw-border naxatw-border-grey-300 naxatw-focus:ring-3 naxatw-focus:ring-blue-300"
                         required
                       />
                       <label htmlFor="keep-me" className="">

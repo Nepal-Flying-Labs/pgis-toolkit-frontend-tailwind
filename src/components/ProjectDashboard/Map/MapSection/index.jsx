@@ -14,11 +14,12 @@ import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/Vecto
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { projectHeaderHeight } from '@src/constants';
-import '@Components/common/OpenLayersComponent/map.css';
 import Spinner from '@Components/common/Spinner';
 import PopupUI from '@Components/common/OpenLayersComponent/Custom/PopupUI';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import AsyncPopup from '@Components/common/OpenLayersComponent/Custom/AsyncPopup';
+import 'ol/ol.css';
+import '@Components/common/OpenLayersComponent/map.css';
 
 const { API_URL } = process.env;
 

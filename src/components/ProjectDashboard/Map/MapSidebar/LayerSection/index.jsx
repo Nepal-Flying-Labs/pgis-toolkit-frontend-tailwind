@@ -195,9 +195,6 @@ export default function LayerSection() {
                           <LegendItem
                             styles={layer.style}
                             className="naxatw-mr-2 naxatw-cursor-pointer"
-                            onClick={() => {
-                              dispatch(setSelectedLayer(layer));
-                            }}
                           />
 
                           <label
@@ -208,10 +205,25 @@ export default function LayerSection() {
                           </label>
                         </div>
 
-                        <DropdownOptions
-                          options={dropdownOptions}
-                          data={layer}
-                        />
+                        <div className="naxatw-flex">
+                          {layer.checked && (
+                            <span
+                              className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer"
+                              onClick={() => {
+                                dispatch(setSelectedLayer(layer));
+                              }}
+                            >
+                              <MaterialIcon
+                                name="edit"
+                                className="material-icons-outlined naxatw-mt-1"
+                              />
+                            </span>
+                          )}
+                          <DropdownOptions
+                            options={dropdownOptions}
+                            data={layer}
+                          />
+                        </div>
                       </div>
                     ))}
                   </div>

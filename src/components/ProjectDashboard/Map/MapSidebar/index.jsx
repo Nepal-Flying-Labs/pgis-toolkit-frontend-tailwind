@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import EditStyleSection from './EditStyleSection';
+import EditFeatureSection from './EditFeatureSection';
 import LayerSection from './LayerSection';
 
 export default function MapSidebar() {
@@ -13,7 +13,7 @@ export default function MapSidebar() {
         minWidth: '30rem',
       }}
     >
-      {!selectedLayer ? <LayerSection /> : <EditStyleSection />}
+      {!selectedLayer ? <LayerSection /> : <EditFeatureSection />}
     </div>
   );
 }

@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import MaterialIcon from '@Components/common/MaterialIcon';
+import Button from '@Components/common/Button/index';
 
 const { setSelectedLayer, handleStyleInput } = ProjectMapCreators;
 
 const colorClassName = 'naxatw-input naxatw-h-12 naxatw-w-12 naxatw-p-[3px]';
 
-export default function EditStyleSection() {
+export default function EditFeatureSection() {
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const dispatch = useDispatch();
   const [layerStyle, handleChange] = useDebouncedInput({
@@ -114,6 +115,12 @@ export default function EditStyleSection() {
             onChange={handleChange}
           />
         </div>
+      </div>
+
+      <div>
+        <Button className="naxatw-btn-primary" onClick={() => {}}>
+          Save
+        </Button>
       </div>
     </div>
   );

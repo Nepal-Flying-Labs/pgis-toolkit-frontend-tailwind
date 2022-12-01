@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { projectHeaderHeight } from '@src/constants';
-import { Creators } from '@Actions/organizationDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as OrganizationDashboardCreators } from '@Actions/organizationDashboard';
 import ProjectHeader from '@Components/common/ProjectHeader';
 import Projects from '@Components/OrganizationDashboard/Projects/index';
 import Home from '@Components/OrganizationDashboard/Home/index';
@@ -10,7 +11,8 @@ import ProjectSetup from '@Components/OrganizationDashboard/ProjectSetup/index';
 import Modal from '@Components/common/Modal/index';
 import CreateProject from '@Components/OrganizationDashboard/ModalContent/CreateProject';
 
-const { toggleModal } = Creators;
+const { toggleModal } = CommonCreators;
+const { getOrganizationDetailRequest } = OrganizationDashboardCreators;
 
 function getTabContent(tabname) {
   switch (tabname) {
@@ -24,11 +26,15 @@ function getTabContent(tabname) {
 }
 
 export default function OrganizationDashboard() {
-  const { tabname } = useParams();
+  const { organizationId, tabname } = useParams();
   const dispatch = useDispatch();
   const modalContent = useSelector(
     state => state.organizationDashboard.modalContent,
   );
+
+  useEffect(() => {
+    dispatch(getOrganizationDetailRequest(organizationId));
+  }, [dispatch, organizationId]);
 
   return tabname !== 'project-setup' ? (
     <div>

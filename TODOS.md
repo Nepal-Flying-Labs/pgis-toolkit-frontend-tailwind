@@ -33,3 +33,4 @@
 
 ## Project Map
 - [] handle layer name style save
+- [] zoom to project location

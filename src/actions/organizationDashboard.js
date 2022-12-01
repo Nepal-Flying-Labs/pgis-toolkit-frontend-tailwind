@@ -2,6 +2,10 @@ import { createActions } from 'reduxsauce';
 
 export const { Types, Creators } = createActions(
   {
+    getOrganizationDetailRequest: ['id'],
+    getOrganizationDetailSuccess: ['payload'],
+    getOrganizationDetailFailure: null,
+
     getProjectsRequest: ['params'],
     getProjectsSuccess: ['payload'],
     getProjectsFailure: null,

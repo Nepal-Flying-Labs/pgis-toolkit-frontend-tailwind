@@ -17,6 +17,7 @@ const useOLMap = props => {
 
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
+  const [isMapLoading, setIsMapLoading] = useState(false);
   const [renderComplete, setRenderComplete] = useState(null);
 
   useEffect(() => {
@@ -62,7 +63,17 @@ const useOLMap = props => {
     };
   }, [map]);
 
-  return { mapRef, map, renderComplete };
+  useEffect(() => {
+    if (!map) return;
+    map.on('loadstart', () => {
+      setIsMapLoading(true);
+    });
+    map.on('loadend', () => {
+      setIsMapLoading(false);
+    });
+  }, [map]);
+
+  return { mapRef, map, renderComplete, isMapLoading };
 };
 
 export default useOLMap;

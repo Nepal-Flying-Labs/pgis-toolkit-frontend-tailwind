@@ -101,7 +101,7 @@ export default function MapSection() {
         <div className="naxatw-absolute naxatw-w-full naxatw-top-4 naxatw-z-10 naxatw-flex naxatw-justify-center">
           <span className="naxatw-bg-white naxatw-p-3 naxatw-flex naxatw-items-center naxatw-gap-3 naxatw-rounded-md naxatw-shadow-3xl">
             <h5 className="">Loading</h5>
-            <Spinner className="naxatw-w-6 naxatw-h-6 naxatw-fill-secondary-400" />
+            <Spinner className="naxatw-w-6 naxatw-h-6 naxatw-fill-primary-400" />
           </span>
         </div>
       )}

@@ -11,6 +11,11 @@
   position: relative;
 }
 
+.map-footer .ol-attribution li {
+  font-size: 14px !important;
+  color: #484848 !important;
+}
+
 .map-footer span .ol-attribution {
   left: 0 !important;
   right: unset !important;

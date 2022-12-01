@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { Attribution, ScaleLine } from 'ol/control';
 import Spinner from '@Components/common/Spinner';
+import MapFooterLogo from '@Assets/images/map-footer-logo.svg';
 
 function scaleControl() {
   const control = new ScaleLine({
@@ -28,9 +29,11 @@ export default function MapFooter({ map, loading = false }) {
 
   return (
     <div className="naxatw-absolute naxatw-bottom-0 naxatw-z-10 naxatw-bg-white naxatw-w-full naxatw-h-10 naxatw-flex naxatw-items-center naxatw-px-5 naxatw-py-3">
-      <div className="naxatw-flex naxatw-gap-7 map-footer">
-        <p>USAFIRI</p>
+      <div className="naxatw-flex naxatw-gap-7 map-footer naxatw-items-center">
+        <img className="naxatw-h-3" src={MapFooterLogo} alt="map-footer-logo" />
+
         {loading && <Spinner className="naxatw-fill-primary-400" />}
+
         <span id="layer-attribution" />
       </div>
 

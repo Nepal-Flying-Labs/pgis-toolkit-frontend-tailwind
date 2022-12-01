@@ -3,7 +3,12 @@ import { Types } from '@Actions/organizationDashboard';
 
 const initialState = {
   projects: null,
-  individualProject: {},
+  individualProject: {
+    pageOne: {},
+    pageTwo: {},
+    pageThree: {},
+    pageFour: {},
+  },
   modalContent: '',
   organizationDetail: null,
 };
@@ -25,14 +30,30 @@ const getProjectsSuccess = (state, action) => ({
 
 const getIndividualProjectSuccess = (state, action) => ({
   ...state,
-  individualProject: action.payload,
+  individualProject: {
+    ...state.individualProject,
+    pageOne: action.payload,
+    pageTwo: action.payload,
+  },
 });
+
+const setIndividualProject = (state, action) => {
+  const { key, value } = action.payload;
+  return {
+    ...state,
+    individualProject: {
+      ...state.individualProject,
+      [key]: value,
+    },
+  };
+};
 
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
   [Types.TOGGLE_MODAL]: toggleModal,
   [Types.GET_INDIVIDUAL_PROJECT_SUCCESS]: getIndividualProjectSuccess,
+  [Types.SET_INDIVIDUAL_PROJECT]: setIndividualProject,
 });
 
 export default organizationDashboardReducer;

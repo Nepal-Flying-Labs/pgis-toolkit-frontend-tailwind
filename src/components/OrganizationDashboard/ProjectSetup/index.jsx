@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable arrow-body-style */
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import Button from '@Components/common/Button/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
@@ -13,12 +13,12 @@ import Documents from './FormPages/Documents';
 
 const { getIndividualProjectRequest } = Creators;
 
-const getPage = (page, values, handleChange) => {
+const getPage = (page, setPage) => {
   switch (page) {
     case 1:
-      return <BasicInfo values={values} handleChange={handleChange} />;
+      return <BasicInfo setPage={setPage} />;
     case 2:
-      return <Location />;
+      return <Location page={page} setPage={setPage} />;
     case 3:
       return <Documents />;
     default:
@@ -54,15 +54,6 @@ const ProjectSetup = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [page, setPage] = useState(1);
-
-  const individualProject = useSelector(
-    state => state.organizationDashboard?.individualProject,
-  );
-
-  const { values, handleChange, handleSubmit } = useForm({
-    initialValues: individualProject,
-    onSubmit: data => console.log(data),
-  });
 
   useEffect(() => {
     dispatch(getIndividualProjectRequest(projectId));
@@ -135,8 +126,8 @@ const ProjectSetup = () => {
         </div>
         <div>
           <div className="naxatw-space-y-7">
-            {getPage(page, values, handleChange)}
-            <div className="naxatw-flex naxatw-justify-between  naxatw-pt-7 naxatw-pb-7 ">
+            {getPage(page, setPage)}
+            {/* <div className="naxatw-flex naxatw-justify-between  naxatw-pt-7 naxatw-pb-7 ">
               {page > 1 ? (
                 <Button
                   iconLeft="arrow_back"
@@ -155,12 +146,12 @@ const ProjectSetup = () => {
                 Next
               </Button>
               <Button
-                onClick={handleSubmit}
+                // onClick={handleSubmit}
                 className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
               >
                 Save as Draft
               </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

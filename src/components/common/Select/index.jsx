@@ -14,12 +14,12 @@ function Select({
   disabled,
   selected,
   noDataMessage,
+  dataKey,
   className,
   errorClassName,
   errorValue,
 }) {
   const [divRef, toggle, handleToggle] = useOutsideClick();
-
   const handleSelect = item => {
     onChange(item);
   };
@@ -38,7 +38,7 @@ function Select({
         <button
           type="button"
           onClick={disabled ? () => {} : () => handleToggle()}
-          className={`naxatw-inline-flex naxatw-w-full naxatw-items-center  naxatw-justify-between  naxatw-px-3 naxatw-py-[13px]  naxatw-border-l hover:naxatw-text-grey-700 naxatw-rounded-r-md  ${
+          className={`naxatw-inline-flex naxatw-w-full naxatw-items-center  naxatw-justify-between  naxatw-px-3 naxatw-py-[13px]  naxatw-border-l hover:naxatw-text-gray-700 naxatw-rounded-r-md  ${
             toggle ? 'naxatw-bg-light-green' : ''
           }`}
         >
@@ -64,8 +64,8 @@ function Select({
                     role="menuitem"
                     className={`naxatw-whitespace-nowrap naxatw-px-2 naxatw-py-1 naxatw-mt-1
                     naxatw-cursor-pointer naxatw-rounded-sm 
-                   hover:naxatw-bg-grey-200  ${
-                     selected === opt.value ? 'naxatw-bg-light-green' : ''
+                   hover:naxatw-bg-gray-200  ${
+                     selected === opt[dataKey] ? 'naxatw-bg-light-green' : ''
                    }`}
                     onClick={() => {
                       handleSelect(opt);
@@ -74,7 +74,7 @@ function Select({
                     onKeyDown={() => {}}
                     tabIndex="0"
                   >
-                    <span>{opt?.value || opt?.name}</span>
+                    <span>{opt[dataKey]}</span>
                   </li>
                 );
               })
@@ -101,6 +101,7 @@ Select.defaultProps = {
   noDataMessage: '',
   errorValue: false,
   errorClassName: false,
+  dataKey: 'name',
 };
 
 Select.propTypes = {
@@ -113,6 +114,7 @@ Select.propTypes = {
   errorValue: PropTypes.bool,
   className: PropTypes.string,
   errorClassName: PropTypes.bool,
+  dataKey: PropTypes.string,
 };
 
 export default Select;

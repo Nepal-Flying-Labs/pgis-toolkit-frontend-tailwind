@@ -96,7 +96,7 @@ export default function CreateAnOrganization() {
           <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
             Email Invite
           </label>
-          <div className="naxatw-flex naxatw-items-center">
+          <div className="naxatw-flex naxatw-items-center naxatw-relative">
             <input
               type="text"
               className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-px-3 naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gregrey-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
@@ -113,22 +113,30 @@ export default function CreateAnOrganization() {
                 setEmailList(prev => [...prev, values.email]);
               }}
             >
-              <i className="material-icons">add_circle_outline</i>
+              <i className="material-icons naxatw-text-[#40B449] naxatw-absolute naxatw-right-4 naxatw-top-3">
+                add_circle_outline
+              </i>
             </a>
           </div>
-          {emailList.map(item => (
-            <div key={item}>
-              <p>{item}</p>
-            </div>
-          ))}
+          <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-2 ">
+            {emailList.map(item => (
+              <div
+                key={item}
+                className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-gap-x-2 naxatw-rounded-3xl naxatw-bg-[#D7D7D7] naxatw-px-3 naxatw-py-[7px]"
+              >
+                <p className="naxatw-text-[#484848]">{item}</p>
+
+                <i className="material-icons naxatw-text-lg naxatw-text-[#484848] naxatw-cursor-pointer">
+                  close
+                </i>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
       <div className=" naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
-        <Button
-          className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold"
-          onClick={handleSubmit}
-        >
+        <Button className="naxatw-btn-primary" onClick={handleSubmit}>
           Invite & Save
         </Button>
       </div>

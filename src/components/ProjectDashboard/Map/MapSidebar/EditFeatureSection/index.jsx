@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
@@ -17,6 +17,7 @@ export default function EditFeatureSection() {
     checkIfLoading(state, [Types.UPDATE_LAYER_REQUEST]),
   );
   const dispatch = useDispatch();
+  const [layerName, setLayerName] = useState(selectedLayer.name);
   const [layerStyle, handleChange] = useDebouncedInput({
     ms: 70,
     init: selectedLayer.style,
@@ -33,6 +34,7 @@ export default function EditFeatureSection() {
 
   const handleSave = () => {
     const data = {
+      name: layerName,
       style: selectedLayer.style,
     };
     dispatch(updateLayerRequest(selectedLayer.id, data));
@@ -71,8 +73,8 @@ export default function EditFeatureSection() {
             className="naxatw-input"
             name="layerName"
             placeholder="Layer Name"
-            value={selectedLayer.name}
-            // onChange={handleChange}
+            value={layerName}
+            onChange={e => setLayerName(e.target.value)}
           />
         </div>
       </div>

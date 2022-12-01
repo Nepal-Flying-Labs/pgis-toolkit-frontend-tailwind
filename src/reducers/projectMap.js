@@ -88,12 +88,11 @@ const handleStyleInput = (state, action) => {
 const updateLayerSuccess = (state, action) => {
   const { responseData, payload } = action.payload;
   const { theme } = responseData;
+  const { style, name } = payload;
   const layers = {
     ...state.layers,
     [theme]: state.layers[theme].map(item =>
-      item.id === responseData.id
-        ? { ...item, style: payload.style }
-        : { ...item },
+      item.id === responseData.id ? { ...item, style, name } : { ...item },
     ),
   };
   return {

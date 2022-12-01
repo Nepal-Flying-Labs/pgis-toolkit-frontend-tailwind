@@ -20,6 +20,7 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import AsyncPopup from '@Components/common/OpenLayersComponent/Custom/AsyncPopup';
 import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
+import SidebarToggle from '../SidebarToggle/index';
 
 const { API_URL } = process.env;
 
@@ -34,6 +35,8 @@ export default function MapSection() {
   const mapState = useSelector(mapStateSelector);
   const zoomToLayerId = useSelector(state => state.projectMap.zoomToLayerId);
   const popupData = useSelector(state => state.projectMap.popupData);
+  const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
+  const hideSidebar = useSelector(state => state.projectMap.hideSidebar);
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,
@@ -45,6 +48,16 @@ export default function MapSection() {
   );
   const dispatch = useDispatch();
 
+  // update map size on sidebar toggle
+  useEffect(() => {
+    if (!map) return () => {};
+    const timer = setTimeout(() => {
+      map.updateSize();
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [map, hideSidebar]);
+
+  // zoom to layer id
   useEffect(() => {
     if (!map || !zoomToLayerId) return;
     const layer = mapState.find(item => item.id === zoomToLayerId);
@@ -100,6 +113,8 @@ export default function MapSection() {
           height: `calc(100vh - ${projectHeaderHeight})`,
         }}
       >
+        <SidebarToggle />
+
         <LayerSwitcherControl />
 
         <Scalebar />
@@ -110,7 +125,11 @@ export default function MapSection() {
               url={`${API_URL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
               authToken={localStorage.getItem('userToken')}
               visibleOnMap={item.checked}
-              style={item?.style || { ...defaultStyles }}
+              style={
+                item.id === selectedLayer?.id
+                  ? selectedLayer.style
+                  : item?.style || { ...defaultStyles }
+              }
               zIndex={mapState.length + 10 - index}
             />
           ) : (

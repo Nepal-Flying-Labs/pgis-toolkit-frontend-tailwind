@@ -26,14 +26,10 @@
 - [] Setup your organization admin profile UI
 
 
-
-### Project
-
-
 ### DESIGN
 
 - [] input field design
 
 
 ## Project Map
-Theme - category => layer
+- [] handle layer name style save

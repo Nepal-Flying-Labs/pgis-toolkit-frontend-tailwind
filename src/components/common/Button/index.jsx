@@ -63,7 +63,7 @@ Button.defaultProps = {
   iconRight: null,
   onClick: () => {},
   isLoading: false,
-  loaderClassName: 'naxatw-fill-blue-600',
+  loaderClassName: 'naxatw-fill-secondary-400',
 };
 
 Button.propTypes = {

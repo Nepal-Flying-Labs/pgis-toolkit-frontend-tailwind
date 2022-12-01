@@ -9,8 +9,8 @@ export default function Accordion({ collapsed: isCollapsed, header, body }) {
   }, [isCollapsed]);
 
   return (
-    <div className="naxatw-bg-white naxatw-border naxatw-border-grey-800 naxatw-rounded-lg">
-      <div className="naxatw-p-5 naxatw-flex naxatw-items-start naxatw-justify-between naxatw-w-full naxatw-font-medium naxatw-gap-3">
+    <div className="naxatw-bg-white naxatw-border naxatw-border-grey-800 naxatw-rounded-lg naxatw-p-5">
+      <div className=" naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full naxatw-font-medium naxatw-gap-3">
         {header}
         <span className="naxatw-flex">
           <button
@@ -25,7 +25,7 @@ export default function Accordion({ collapsed: isCollapsed, header, body }) {
         </span>
       </div>
       <div className={`${collapsed ? 'naxatw-hidden' : ''}`}>
-        <div className="naxatw-p-5 naxatw-font-light">{body}</div>
+        <div className="naxatw-font-light">{body}</div>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { projectHeaderHeight } from '@src/constants';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import HeaderNotification from '../Header/HeaderNotification';
 import HeaderProfile from '../Header/HeaderProfile';
+import { useSelector } from 'react-redux';
 
 const organizationHeaderData = [
   { label: 'Home', route: 'home' },
@@ -24,6 +25,9 @@ const projectHeaderData = [
 
 export default function ProjectHeader() {
   const { organizationId, tabname, projectId } = useParams();
+  const projectDetail = useSelector(
+    state => state.projectDashboard.projectDetail,
+  );
 
   const headerData = projectId ? projectHeaderData : organizationHeaderData;
 
@@ -32,7 +36,7 @@ export default function ProjectHeader() {
       className={`naxatw-h-[${projectHeaderHeight}] naxatw-fixed naxatw-w-full naxatw-z-[999] naxatw-top-0 naxatw-border-b naxatw-border-grey-300 naxatw-bg-white`}
     >
       <div className="naxatw-flex naxatw-justify-between naxatw-px-8 naxatw-py-3 naxatw-h-full">
-        <div className="naxatw-flex">
+        <div className="naxatw-flex naxatw-items-center naxatw-gap-8">
           <Link
             to={`${
               projectId
@@ -42,7 +46,7 @@ export default function ProjectHeader() {
           >
             <MaterialIcon name="arrow_back" />
           </Link>
-          <h4>World Bicycle Relief</h4>
+          <h4>{projectDetail?.name || 'World Bicycle Relief'}</h4>
         </div>
 
         <div className="naxatw-flex naxatw-gap-10">

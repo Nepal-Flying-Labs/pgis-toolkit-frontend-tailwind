@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 function getMetaState(data, required) {
   return required.reduce(
@@ -22,6 +22,10 @@ const useForm = ({
 }) => {
   const [inputs, setInputs] = useState(initialValues);
   const [meta, setMeta] = useState(getMetaState(initialValues, required));
+
+  useEffect(() => {
+    setInputs(initialValues);
+  }, [initialValues]);
 
   const isValid = (name, value) =>
     Object.prototype.hasOwnProperty.call(validationSchema, name)

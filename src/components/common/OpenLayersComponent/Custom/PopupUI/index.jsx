@@ -26,7 +26,7 @@ const SitePopupUI = ({ data = {} }) => {
   }, {});
 
   return (
-    <ul className="naxatw-max-h-64 naxatw-overflow-y-auto naxatw-flex naxatw-flex-col naxatw-gap-2">
+    <ul className="naxatw-max-h-64 naxatw-overflow-y-auto naxatw-flex naxatw-flex-col naxatw-gap-2 scrollbar">
       {popupData &&
         Object.keys(popupData).map(key => (
           <li

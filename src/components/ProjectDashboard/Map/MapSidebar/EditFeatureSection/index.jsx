@@ -77,7 +77,7 @@ export default function EditFeatureSection() {
         </div>
       </div>
 
-      <div className="naxatw-overflow-auto naxatw-h-[26rem] naxatw-flex naxatw-flex-col naxatw-gap-4">
+      <div className="naxatw-overflow-auto scrollbar naxatw-h-[26rem] naxatw-flex naxatw-flex-col naxatw-gap-4">
         {geometryType !== 'LineString' && (
           <Input
             type="color"

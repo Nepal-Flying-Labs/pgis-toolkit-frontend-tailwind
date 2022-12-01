@@ -122,7 +122,7 @@ export default function LayerSection() {
       </div>
 
       <div
-        className="naxatw-mt-5 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-y-auto"
+        className="naxatw-mt-5 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-y-auto scrollbar"
         style={{
           height: `calc(100vh - ${projectHeaderHeight} - 9rem)`,
         }}

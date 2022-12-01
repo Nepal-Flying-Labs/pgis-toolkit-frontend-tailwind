@@ -14,6 +14,8 @@ export const { Types, Creators } = createActions(
     getIndividualProjectSuccess: ['payload'],
     getIndividualProjectFailure: null,
 
+    setIndividualProject: ['payload'],
+
     toggleModal: ['payload'],
   },
   { prefix: 'organizationDashboard/' },

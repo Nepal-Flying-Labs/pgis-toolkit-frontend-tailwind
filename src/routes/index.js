@@ -13,6 +13,13 @@ const indexRoutes = [
     component: ProjectDashboard,
     authenticated: true,
   },
+  {
+    path: '/organizations/:organizationId/:tabname/:projectId',
+    name: 'Organization Dashboard',
+    component: OrganizationDashboard,
+    authenticated: true,
+    exact: true,
+  },
 
   {
     path: '/organizations/:organizationId/:tabname',
@@ -21,7 +28,7 @@ const indexRoutes = [
     authenticated: true,
   },
   {
-    path: '/organizations/:organizationId/project-setup/:projectId',
+    path: '/organizations/:organizationId/:tabname/:projectId',
     name: 'Organization Dashboard',
     component: OrganizationDashboard,
     authenticated: true,
@@ -50,7 +57,7 @@ const indexRoutes = [
     path: '/',
     name: 'Home',
     component: Home,
-    authenticated: false,
+    authenticated: true,
   },
 ];
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable arrow-body-style */
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { Creators, Types } from '@Actions/organizationDashboard';
@@ -8,6 +8,7 @@ import Input from '@Components/common/Input/index';
 import Button from '@Components/common/Button/index';
 import useForm from '@Hooks/useForm';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
 
 const { postProjectInviteRequest } = Creators;
 
@@ -23,14 +24,14 @@ const CreateProject = () => {
   );
 
   const dispatch = useDispatch();
+  const [emailList, setEmailList] = useState([]);
   const { values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: initialState,
     required: ['project_name', 'email'],
     onSubmit: data => {
-      const newEmail = data.email.split(',');
       const newData = {
         ...data,
-        email: newEmail,
+        email: emailList,
         organization: organizationId,
       };
       dispatch(postProjectInviteRequest(newData));
@@ -55,15 +56,46 @@ const CreateProject = () => {
         onChange={handleChange}
         {...inputProps}
       />
-      <Input
-        type="text"
-        label="Email Invite"
-        placeholder="Enter email address to invite project manager"
-        name="email"
-        value={values.email}
-        onChange={handleChange}
-        {...inputProps}
-      />
+      <div className="naxatw-relative">
+        <Input
+          type="text"
+          label="Email Invite"
+          placeholder="Enter email address to invite project manager"
+          name="email"
+          value={values.email}
+          onChange={handleChange}
+          {...inputProps}
+        />
+        <a
+          onClick={() => {
+            setEmailList(prev => [...prev, values.email]);
+          }}
+        >
+          <MaterialIcon
+            name="add_circle"
+            className="naxatw-absolute naxatw-top-11 naxatw-right-2 naxatw-text-[#00A699] naxatw-cursor-pointer"
+          />
+        </a>
+        <ul className="naxatw-mt-2">
+          {emailList.map((item, i) => (
+            <li
+              key={item}
+              className="naxatw-flex naxatw-p-3 naxatw-items-center naxatw-justify-between hover:naxatw-bg-gray-200"
+            >
+              <span className="naxatw-text-body-lg">{item}</span>
+              <a
+                onClick={() => {
+                  const updatedArray = emailList.filter(list => list !== item);
+                  setEmailList(updatedArray);
+                }}
+              >
+                <MaterialIcon name="close" className="naxatw-cursor-pointer" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       <div className="naxatw-flex naxatw-justify-center">
         <Button
           className="naxatw-btn-primary naxatw-mt-2 naxatw-w-[10.125rem]"

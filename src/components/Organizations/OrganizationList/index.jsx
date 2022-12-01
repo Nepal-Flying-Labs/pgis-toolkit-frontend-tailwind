@@ -129,7 +129,7 @@ export default function OrganizationList() {
         </div>
       </div>
 
-      <div className="naxatw-overflow-x-auto naxatw-relative naxatw-mt-[1.875rem]">
+      <div className="naxatw-overflow-x-auto scrollbar naxatw-relative naxatw-mt-[1.875rem]">
         <Table
           data={organizationData?.results}
           className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"

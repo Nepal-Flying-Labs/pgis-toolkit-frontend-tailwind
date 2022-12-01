@@ -5,4 +5,5 @@ export const getProjects = params =>
 export const postProjectInvite = payload =>
   authenticated(api).post(`/users/preliminary_user_create/`, payload);
 
-export const nothing = '';
+export const getIndividualProject = id =>
+  authenticated(api).get(`/projects/project/${id}/`);

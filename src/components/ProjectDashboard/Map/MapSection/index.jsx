@@ -37,6 +37,9 @@ export default function MapSection() {
   const popupData = useSelector(state => state.projectMap.popupData);
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const hideSidebar = useSelector(state => state.projectMap.hideSidebar);
+  const projectDetail = useSelector(
+    state => state.projectDashboard.projectDetail,
+  );
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,
@@ -47,6 +50,21 @@ export default function MapSection() {
     checkIfLoading(state, [Types.GET_MAP_POPUP_DATA_REQUEST]),
   );
   const dispatch = useDispatch();
+
+  // zoom to project location on initial map load
+  useEffect(() => {
+    if (!map || !projectDetail) return;
+    const bbox = projectDetail?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 3500,
+        constrainResolution: true,
+      });
+    }
+  }, [dispatch, map, projectDetail]);
 
   // update map size on sidebar toggle
   useEffect(() => {

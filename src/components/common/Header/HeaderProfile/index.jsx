@@ -36,12 +36,12 @@ export default function HeaderProfile() {
             </div>
             <div
               onClick={() => dispatch(toggleModal('access-to-functionalities'))}
-              className="naxatw-h-[2.5rem] naxatw-flex naxatw-items-center naxatw-cursor-pointer naxatw-gap-x-3 hover:naxatw-bg-grey-100"
+              className="naxatw-h-[2.5rem] naxatw-flex naxatw-items-center naxatw-cursor-pointer naxatw-gap-x-3 hover:naxatw-bg-grey-100 naxatw-group"
             >
               <span className="material-icons naxatw-text-[#00A699] naxatw-ml-[1.375rem] ">
-                info
+                info_outline
               </span>
-              <a className="naxatw-text-[0.938rem] naxatw-text-[#00A699] naxatw-font-bold naxatw-leading-6">
+              <a className="naxatw-text-[0.938rem] naxatw-text-[#00A699] naxatw-font-bold naxatw-leading-6 group-hover:naxatw-underline">
                 Your access to functionality
               </a>
               <span className="material-icons naxatw-text-[#00A699]">

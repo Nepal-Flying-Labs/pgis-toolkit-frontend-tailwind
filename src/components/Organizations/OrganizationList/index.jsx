@@ -153,11 +153,15 @@ export default function OrganizationList() {
           />
           <TableHeader
             dataField="Name"
-            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
             rowcolSpan="rowspan_2"
-            dataHeader={<SortingContainer name="Name" />}
+            dataHeader={
+              <SortingContainer name="Name" className="naxatw-text-black" />
+            }
             dataFormat={row => (
-              <span className="naxatw-text-base">{row.name}</span>
+              <span className="naxatw-text-base naxatw-font-bold">
+                {row.name}
+              </span>
             )}
           />
           <TableHeader

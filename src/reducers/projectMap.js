@@ -9,6 +9,7 @@ const initialState = {
   selectedProjectTheme: null,
   popupData: {},
   selectedLayer: null,
+  hideSidebar: false,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -102,6 +103,11 @@ const updateLayerSuccess = (state, action) => {
   };
 };
 
+const toggleSidebar = state => ({
+  ...state,
+  hideSidebar: !state.hideSidebar,
+});
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -112,6 +118,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.SET_SELECTED_LAYER]: setSelectedLayer,
   [Types.HANDLE_STYLE_INPUT]: handleStyleInput,
   [Types.UPDATE_LAYER_SUCCESS]: updateLayerSuccess,
+  [Types.TOGGLE_SIDEBAR]: toggleSidebar,
 });
 
 export default projectMapReducer;

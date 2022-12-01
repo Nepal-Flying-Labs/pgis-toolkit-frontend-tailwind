@@ -20,6 +20,7 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import AsyncPopup from '@Components/common/OpenLayersComponent/Custom/AsyncPopup';
 import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
+import SidebarToggle from '../SidebarToggle/index';
 
 const { API_URL } = process.env;
 
@@ -101,6 +102,8 @@ export default function MapSection() {
           height: `calc(100vh - ${projectHeaderHeight})`,
         }}
       >
+        <SidebarToggle />
+
         <LayerSwitcherControl />
 
         <Scalebar />

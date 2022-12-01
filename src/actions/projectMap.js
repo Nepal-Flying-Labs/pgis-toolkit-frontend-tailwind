@@ -28,6 +28,8 @@ export const { Types, Creators } = createActions(
     updateLayerRequest: ['id', 'payload'],
     updateLayerSuccess: ['payload'],
     updateLayerFailure: null,
+
+    toggleSidebar: null,
   },
   { prefix: 'projectMap/' },
 );

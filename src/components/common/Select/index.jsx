@@ -14,7 +14,7 @@ function Select({
   disabled,
   selected,
   noDataMessage,
-  key,
+  dataKey,
   className,
   errorClassName,
   errorValue,
@@ -65,7 +65,7 @@ function Select({
                     className={`naxatw-whitespace-nowrap naxatw-px-2 naxatw-py-1 naxatw-mt-1
                     naxatw-cursor-pointer naxatw-rounded-sm 
                    hover:naxatw-bg-gray-200  ${
-                     selected === opt[key] ? 'naxatw-bg-light-green' : ''
+                     selected === opt[dataKey] ? 'naxatw-bg-light-green' : ''
                    }`}
                     onClick={() => {
                       handleSelect(opt);
@@ -74,7 +74,7 @@ function Select({
                     onKeyDown={() => {}}
                     tabIndex="0"
                   >
-                    <span>{opt[key]}</span>
+                    <span>{opt[dataKey]}</span>
                   </li>
                 );
               })
@@ -101,7 +101,7 @@ Select.defaultProps = {
   noDataMessage: '',
   errorValue: false,
   errorClassName: false,
-  key: 'name',
+  dataKey: 'name',
 };
 
 Select.propTypes = {
@@ -114,7 +114,7 @@ Select.propTypes = {
   errorValue: PropTypes.bool,
   className: PropTypes.string,
   errorClassName: PropTypes.bool,
-  key: PropTypes.string,
+  dataKey: PropTypes.string,
 };
 
 export default Select;

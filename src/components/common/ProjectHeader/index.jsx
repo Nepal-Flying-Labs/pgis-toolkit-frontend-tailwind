@@ -25,11 +25,17 @@ const projectHeaderData = [
 
 export default function ProjectHeader() {
   const { organizationId, tabname, projectId } = useParams();
+  const organizationDetail = useSelector(
+    state => state.organizationDashboard.organizationDetail,
+  );
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
 
   const headerData = projectId ? projectHeaderData : organizationHeaderData;
+  const headerTitle = projectId
+    ? projectDetail?.name
+    : organizationDetail?.name;
 
   return (
     <header
@@ -46,7 +52,7 @@ export default function ProjectHeader() {
           >
             <MaterialIcon name="arrow_back" />
           </Link>
-          <h4>{projectDetail?.name || 'World Bicycle Relief'}</h4>
+          <h4>{headerTitle}</h4>
         </div>
 
         <div className="naxatw-flex naxatw-gap-10">

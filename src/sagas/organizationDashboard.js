@@ -3,12 +3,26 @@ import {
   getProjects,
   postProjectInvite,
   getIndividualProject,
+  getOrganizationDetail,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
 } from '@Actions/organizationDashboard';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
+import { withLoader } from '@Utils/sagaUtils';
+
+export function* getOrganizationDetailRequest({ id }) {
+  try {
+    const response = yield call(getOrganizationDetail, id);
+    yield put(
+      organizationDashboardActions.getOrganizationDetailSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.getOrganizationDetailFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
 
 export function* getProjectsRequest({ params }) {
   try {
@@ -48,6 +62,10 @@ export function* getIndividualProjectRequest({ id }) {
 }
 
 function* organizationDashboardWatcher() {
+  yield takeLatest(
+    Types.GET_ORGANIZATION_DETAIL_REQUEST,
+    withLoader(getOrganizationDetailRequest),
+  );
   yield takeLatest(Types.GET_PROJECTS_REQUEST, getProjectsRequest);
   yield takeLatest(Types.POST_PROJECT_INVITE_REQUEST, postProjectInviteRequest);
   yield takeLatest(

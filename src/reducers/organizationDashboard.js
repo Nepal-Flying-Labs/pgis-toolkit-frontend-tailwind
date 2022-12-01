@@ -5,6 +5,14 @@ const initialState = {
   projects: null,
   individualProject: {},
   modalContent: '',
+  organizationDetail: null,
+};
+
+const getOrganizationDetailSuccess = (state, action) => {
+  return {
+    ...state,
+    organizationDetail: action.payload,
+  };
 };
 
 const toggleModal = (state, action) => ({
@@ -23,6 +31,7 @@ const getIndividualProjectSuccess = (state, action) => ({
 });
 
 const organizationDashboardReducer = createReducer(initialState, {
+  [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
   [Types.TOGGLE_MODAL]: toggleModal,
   [Types.GET_INDIVIDUAL_PROJECT_SUCCESS]: getIndividualProjectSuccess,

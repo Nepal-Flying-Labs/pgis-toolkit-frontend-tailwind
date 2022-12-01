@@ -9,7 +9,6 @@ import {
   MapContainer as MapComponent,
 } from '@Components/common/OpenLayersComponent';
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher';
-import Scalebar from '@Components/common/OpenLayersComponent/Scalebar';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
@@ -20,7 +19,8 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import AsyncPopup from '@Components/common/OpenLayersComponent/Custom/AsyncPopup';
 import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
-import SidebarToggle from '../SidebarToggle/index';
+import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
+import SidebarToggle from '../SidebarToggle';
 
 const { API_URL } = process.env;
 
@@ -117,7 +117,6 @@ export default function MapSection() {
 
         <LayerSwitcherControl />
 
-        <Scalebar />
         {mapState.map((item, index) => {
           return item.layer_type === 'Vector' ? (
             <VectorTileLayer
@@ -157,6 +156,8 @@ export default function MapSection() {
           loading={isPopupDataFetching}
           // closePopup={!!siteGeojson || zoomToRegion}
         />
+
+        <MapFooter />
       </MapComponent>
     </div>
   );

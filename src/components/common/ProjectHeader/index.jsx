@@ -2,9 +2,9 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { projectHeaderHeight } from '@src/constants';
 import MaterialIcon from '@Components/common/MaterialIcon';
+import { useSelector } from 'react-redux';
 import HeaderNotification from '../Header/HeaderNotification';
 import HeaderProfile from '../Header/HeaderProfile';
-import { useSelector } from 'react-redux';
 
 const organizationHeaderData = [
   { label: 'Home', route: 'home' },

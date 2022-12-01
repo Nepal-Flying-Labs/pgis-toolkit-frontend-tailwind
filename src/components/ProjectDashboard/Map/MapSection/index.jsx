@@ -135,8 +135,8 @@ export default function MapSection() {
 
         <LayerSwitcherControl />
 
-        {mapState.map((item, index) => {
-          return item.layer_type === 'Vector' ? (
+        {mapState.map((item, index) =>
+          item.layer_type === 'Vector' ? (
             <VectorTileLayer
               key={item.id}
               url={`${API_URL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
@@ -151,8 +151,8 @@ export default function MapSection() {
             />
           ) : (
             ''
-          );
-        })}
+          ),
+        )}
 
         <AsyncPopup
           fetchPopupData={properties => {

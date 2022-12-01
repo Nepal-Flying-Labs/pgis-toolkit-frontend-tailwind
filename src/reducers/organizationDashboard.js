@@ -8,12 +8,10 @@ const initialState = {
   organizationDetail: null,
 };
 
-const getOrganizationDetailSuccess = (state, action) => {
-  return {
-    ...state,
-    organizationDetail: action.payload,
-  };
-};
+const getOrganizationDetailSuccess = (state, action) => ({
+  ...state,
+  organizationDetail: action.payload,
+});
 
 const toggleModal = (state, action) => ({
   ...state,

@@ -17,7 +17,7 @@ export function* getProjectThemesRequest({ params }) {
     yield put(projectMapActions.getProjectThemesSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.getProjectThemesFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
   }
 }
 
@@ -32,7 +32,7 @@ export function* getProjectThemeLayersRequest({ params }) {
     );
   } catch (error) {
     yield put(projectMapActions.getProjectThemeLayersFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
   }
 }
 
@@ -42,7 +42,7 @@ export function* uploadLayerRequest({ payload }) {
     yield put(projectMapActions.uploadLayerSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.uploadLayerFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
   }
 }
 
@@ -52,7 +52,7 @@ export function* getMapPopupDataRequest({ params }) {
     yield put(projectMapActions.getMapPopupDataSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.getMapPopupDataFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
   }
 }
 
@@ -68,7 +68,7 @@ export function* updateLayerRequest({ id, payload }) {
     );
   } catch (error) {
     yield put(projectMapActions.updateLayerFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
   }
 }
 

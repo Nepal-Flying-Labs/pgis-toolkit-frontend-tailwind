@@ -27,7 +27,7 @@ const { API_URL } = process.env;
 const { setZoomToLayerId, getMapPopupDataRequest } = Creators;
 
 export default function MapSection() {
-  const { mapRef, map } = useOLMap({
+  const { mapRef, map, isMapLoading } = useOLMap({
     center: fromLonLat([85.3, 27.7]),
     zoom: 2,
     maxZoom: 25,
@@ -157,7 +157,7 @@ export default function MapSection() {
           // closePopup={!!siteGeojson || zoomToRegion}
         />
 
-        <MapFooter />
+        <MapFooter loading={isMapLoading} />
       </MapComponent>
     </div>
   );

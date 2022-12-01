@@ -21,6 +21,15 @@ export const { Types, Creators } = createActions(
     getMapPopupDataRequest: ['params'],
     getMapPopupDataSuccess: ['payload'],
     getMapPopupDataFailure: null,
+
+    setSelectedLayer: ['payload'],
+    handleStyleInput: ['payload'],
+
+    updateLayerRequest: ['id', 'payload'],
+    updateLayerSuccess: ['payload'],
+    updateLayerFailure: null,
+
+    toggleSidebar: null,
   },
   { prefix: 'projectMap/' },
 );

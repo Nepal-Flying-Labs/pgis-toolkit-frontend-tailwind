@@ -2,7 +2,10 @@ export default function prepareFormData(data) {
   const formData = Object.entries(data).reduce(
     (obj, item) => ({
       ...obj,
-      [item[0]]: Array.isArray(item[1]) ? JSON.stringify(item[1]) : item[1],
+      [item[0]]:
+        Array.isArray(item[1]) || typeof item[1] === 'object'
+          ? JSON.stringify(item[1])
+          : item[1],
     }),
     {},
   );

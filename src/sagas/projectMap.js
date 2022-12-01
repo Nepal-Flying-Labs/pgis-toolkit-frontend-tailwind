@@ -3,11 +3,13 @@ import {
   getMapPopupData,
   getProjectThemeLayers,
   getProjectThemes,
+  updateLayer,
   uploadLayer,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import toastActions from '@Actions/toast';
 import { withLoader } from '@Utils/sagaUtils';
+import prepareFormData from '@Utils/prepareFormData';
 
 export function* getProjectThemesRequest({ params }) {
   try {
@@ -15,7 +17,7 @@ export function* getProjectThemesRequest({ params }) {
     yield put(projectMapActions.getProjectThemesSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.getProjectThemesFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
   }
 }
 
@@ -30,7 +32,7 @@ export function* getProjectThemeLayersRequest({ params }) {
     );
   } catch (error) {
     yield put(projectMapActions.getProjectThemeLayersFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
   }
 }
 
@@ -40,7 +42,7 @@ export function* uploadLayerRequest({ payload }) {
     yield put(projectMapActions.uploadLayerSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.uploadLayerFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
   }
 }
 
@@ -50,7 +52,23 @@ export function* getMapPopupDataRequest({ params }) {
     yield put(projectMapActions.getMapPopupDataSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.getMapPopupDataFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
+export function* updateLayerRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateLayer, id, formdata);
+    yield put(
+      projectMapActions.updateLayerSuccess({
+        responseData: response.data,
+        payload,
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.updateLayerFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
   }
 }
 
@@ -68,6 +86,7 @@ function* projectMapWatcher() {
     Types.GET_MAP_POPUP_DATA_REQUEST,
     withLoader(getMapPopupDataRequest),
   );
+  yield takeLatest(Types.UPDATE_LAYER_REQUEST, withLoader(updateLayerRequest));
 }
 
 export default projectMapWatcher;

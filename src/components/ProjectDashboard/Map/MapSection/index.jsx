@@ -36,6 +36,7 @@ export default function MapSection() {
   const zoomToLayerId = useSelector(state => state.projectMap.zoomToLayerId);
   const popupData = useSelector(state => state.projectMap.popupData);
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
+  const hideSidebar = useSelector(state => state.projectMap.hideSidebar);
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,
@@ -47,6 +48,16 @@ export default function MapSection() {
   );
   const dispatch = useDispatch();
 
+  // update map size on sidebar toggle
+  useEffect(() => {
+    if (!map) return () => {};
+    const timer = setTimeout(() => {
+      map.updateSize();
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [map, hideSidebar]);
+
+  // zoom to layer id
   useEffect(() => {
     if (!map || !zoomToLayerId) return;
     const layer = mapState.find(item => item.id === zoomToLayerId);

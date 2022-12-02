@@ -5,11 +5,10 @@ const layersSelector = state => state.projectMap.layers;
 
 export const mapStateSelector = createSelector(
   [themesSelector, layersSelector],
-  (themes, layers) => {
-    return themes.reduce((arr, theme) => {
+  (themes, layers) =>
+    themes.reduce((arr, theme) => {
       const layer = layers?.[theme.id];
       if (!layer) return [...arr];
       return [...arr, ...layer];
-    }, []);
-  },
+    }, []),
 );

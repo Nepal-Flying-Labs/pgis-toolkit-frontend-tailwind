@@ -7,7 +7,7 @@ import toast from './toast';
 import common from './common';
 import organizations from './organizations';
 import organizationDashboard from './organizationDashboard';
-// import projectDashboard from './projectDashboard';
+import projectDashboard from './projectDashboard';
 import projectMap from './projectMap';
 
 export default combineReducers({
@@ -18,6 +18,6 @@ export default combineReducers({
   common,
   organizations,
   organizationDashboard,
-  // projectDashboard,
+  projectDashboard,
   projectMap,
 });

@@ -1,4 +1,6 @@
-// import { api, authenticated } from '.';
+import { api, authenticated } from '.';
 
-// export const getMapPopupData = params =>
-// authenticated(api).get(`/maps/feature_popup/`, { params });
+export const getProjectDetail = params =>
+  authenticated(api).get(`/projects/project_detail/`, { params });
+
+export const nothing = '';

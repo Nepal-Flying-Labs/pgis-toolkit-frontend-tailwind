@@ -16,6 +16,9 @@ export default function MapSidebar() {
   const { url } = useRouteMatch();
   const history = useHistory();
   const projects = useSelector(state => state.organizationDashboard.projects);
+  const organizationDetail = useSelector(
+    state => state.organizationDashboard.organizationDetail,
+  );
   const dispatch = useDispatch();
   const [searchValue, handleChange] = useDebouncedInput({
     ms: 300,
@@ -58,10 +61,12 @@ export default function MapSidebar() {
 
       <div className="naxatw-flex naxatw-mt-2 naxatw-gap-2">
         <div className="naxatw-px-5 naxatw-py-2.5 naxatw-bg-white naxatw-border naxatw-border-grey-800 naxatw-rounded-full">
-          All(47)
+          {organizationDetail ? `All(${organizationDetail.projects})` : 'All'}
         </div>
         <div className="naxatw-px-5 naxatw-py-2.5 naxatw-bg-white naxatw-border naxatw-bonaxatw-bg-grey-300 naxatw-rounded-full">
-          Ongoing(32)
+          {organizationDetail
+            ? `Ongoing(${organizationDetail.ongoing})`
+            : 'Ongoing'}
         </div>
       </div>
 

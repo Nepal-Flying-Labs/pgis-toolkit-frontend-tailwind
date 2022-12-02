@@ -9,7 +9,6 @@ import {
   MapContainer as MapComponent,
 } from '@Components/common/OpenLayersComponent';
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher';
-import Scalebar from '@Components/common/OpenLayersComponent/Scalebar';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
@@ -20,14 +19,15 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import AsyncPopup from '@Components/common/OpenLayersComponent/Custom/AsyncPopup';
 import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
-import SidebarToggle from '../SidebarToggle/index';
+import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
+import SidebarToggle from '../SidebarToggle';
 
 const { API_URL } = process.env;
 
 const { setZoomToLayerId, getMapPopupDataRequest } = Creators;
 
 export default function MapSection() {
-  const { mapRef, map } = useOLMap({
+  const { mapRef, map, isMapLoading } = useOLMap({
     center: fromLonLat([85.3, 27.7]),
     zoom: 2,
     maxZoom: 25,
@@ -37,6 +37,9 @@ export default function MapSection() {
   const popupData = useSelector(state => state.projectMap.popupData);
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const hideSidebar = useSelector(state => state.projectMap.hideSidebar);
+  const projectDetail = useSelector(
+    state => state.projectDashboard.projectDetail,
+  );
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,
@@ -47,6 +50,21 @@ export default function MapSection() {
     checkIfLoading(state, [Types.GET_MAP_POPUP_DATA_REQUEST]),
   );
   const dispatch = useDispatch();
+
+  // zoom to project location on initial map load
+  useEffect(() => {
+    if (!map || !projectDetail) return;
+    const bbox = projectDetail?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 3500,
+        constrainResolution: true,
+      });
+    }
+  }, [dispatch, map, projectDetail]);
 
   // update map size on sidebar toggle
   useEffect(() => {
@@ -101,7 +119,7 @@ export default function MapSection() {
         <div className="naxatw-absolute naxatw-w-full naxatw-top-4 naxatw-z-10 naxatw-flex naxatw-justify-center">
           <span className="naxatw-bg-white naxatw-p-3 naxatw-flex naxatw-items-center naxatw-gap-3 naxatw-rounded-md naxatw-shadow-3xl">
             <h5 className="">Loading</h5>
-            <Spinner className="naxatw-w-6 naxatw-h-6 naxatw-fill-secondary-400" />
+            <Spinner className="naxatw-w-6 naxatw-h-6 naxatw-fill-primary-400" />
           </span>
         </div>
       )}
@@ -117,9 +135,8 @@ export default function MapSection() {
 
         <LayerSwitcherControl />
 
-        <Scalebar />
-        {mapState.map((item, index) => {
-          return item.layer_type === 'Vector' ? (
+        {mapState.map((item, index) =>
+          item.layer_type === 'Vector' ? (
             <VectorTileLayer
               key={item.id}
               url={`${API_URL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
@@ -134,8 +151,8 @@ export default function MapSection() {
             />
           ) : (
             ''
-          );
-        })}
+          ),
+        )}
 
         <AsyncPopup
           fetchPopupData={properties => {
@@ -157,6 +174,8 @@ export default function MapSection() {
           loading={isPopupDataFetching}
           // closePopup={!!siteGeojson || zoomToRegion}
         />
+
+        <MapFooter loading={isMapLoading} />
       </MapComponent>
     </div>
   );

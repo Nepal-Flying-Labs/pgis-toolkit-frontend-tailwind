@@ -33,6 +33,10 @@ const BasicInfo = ({ setPage }) => {
   const individualProject = useSelector(
     state => state.organizationDashboard.individualProject.pageOne,
   );
+  const [partner, setPartner] = useState('');
+  const handlePartner = e => {
+    setPartner(e.target.value);
+  };
 
   const { values, handleChange, handleCustomChange, handleSubmit } = useForm({
     initialValues: individualProject,
@@ -40,15 +44,14 @@ const BasicInfo = ({ setPage }) => {
       dispatch(setIndividualProject({ key: 'pageOne', value: data }));
     },
   });
-  const [projectPartners, setProjectPartners] = useState([]);
-  const [thematicFilter, setThematicFilter] = useState(null);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  // if (Object.keys(individualProject).length > 0) {
-  //   setStartDate(individualProject?.start_date);
-  //   setEndDate(individualProject?.end_date);
-  //   setProjectPartners(individualProject?.partners);
-  // }
+
+  const handleKeyChange = e => {
+    if (e.key === 'Enter' && partner) {
+      handleCustomChange('partners', [...values.partners, partner]);
+      setPartner('');
+    }
+  };
+
   return (
     <>
       <div className="naxatw-px-[5.313rem] naxatw-flex">
@@ -114,26 +117,21 @@ const BasicInfo = ({ setPage }) => {
         </div>
       </div>
       <div className="naxatw-relative">
-        <Input
-          label="Project Partners "
-          type="text"
-          name="partner"
-          value={values.partner}
-          onChange={handleChange}
-          placeholder="Enter name of Project Partners"
+        <input
+          className="naxatw-input"
+          value={partner}
+          onChange={e => handlePartner(e)}
+          onKeyDown={e => handleKeyChange(e)}
         />
         <a
           onClick={() => {
-            // setProjectPartners(prev => [...prev, values.partners]);
-            handleCustomChange('partners', [
-              ...values.partners,
-              values.partner,
-            ]);
+            handleCustomChange('partners', [...values.partners, partner]);
+            setPartner('');
           }}
         >
           <MaterialIcon
             name="add_circle_outline"
-            className="naxatw-absolute naxatw-top-11 naxatw-right-2 naxatw-text-[#00A699] naxatw-cursor-pointer"
+            className="naxatw-absolute naxatw-top-4 naxatw-right-2 naxatw-text-[#00A699] naxatw-cursor-pointer"
           />
         </a>
         <ul className="naxatw-mt-2">

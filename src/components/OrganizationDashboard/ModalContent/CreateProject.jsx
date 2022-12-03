@@ -25,18 +25,25 @@ const CreateProject = () => {
 
   const dispatch = useDispatch();
   const [emailList, setEmailList] = useState([]);
-  const { values, inputProps, handleChange, handleSubmit } = useForm({
+  const [emailError, setEmailError] = useState(false);
+  const { meta, values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: initialState,
-    required: ['project_name', 'email'],
+    required: ['project_name'],
     onSubmit: data => {
-      const newData = {
-        ...data,
-        email: emailList,
-        organization: organizationId,
-      };
-      dispatch(postProjectInviteRequest(newData));
+      if (Object.keys(emailList).length > 0) {
+        const newData = {
+          ...data,
+          email: emailList.map(email => email.value),
+          organization: organizationId,
+        };
+        dispatch(postProjectInviteRequest(newData));
+      } else {
+        setEmailError(true);
+      }
     },
   });
+
+  console.log(emailList);
   return (
     <div className="naxatw-space-y-8">
       <h3>Basic Project Setup & Invitation</h3>
@@ -56,6 +63,11 @@ const CreateProject = () => {
         onChange={handleChange}
         {...inputProps}
       />
+      {meta.project_name.error && meta.project_name.touched && (
+        <span className="naxatw--mt-[10px] naxatw-text-red-500">
+          Required field
+        </span>
+      )}
       <div className="naxatw-relative">
         <Input
           type="text"
@@ -64,11 +76,28 @@ const CreateProject = () => {
           name="email"
           value={values.email}
           onChange={handleChange}
+          onKeyDown={e => {
+            if (e.key === 'Enter') {
+              if (values.email) {
+                setEmailList(prev => [
+                  ...prev,
+                  { id: Math.floor(Math.random() * 100), value: values.email },
+                ]);
+                setEmailError(false);
+              }
+            }
+          }}
           {...inputProps}
         />
         <a
           onClick={() => {
-            setEmailList(prev => [...prev, values.email]);
+            if (values.email) {
+              setEmailList(prev => [
+                ...prev,
+                { id: Math.floor(Math.random() * 100), value: values.email },
+              ]);
+              setEmailError(false);
+            }
           }}
         >
           <MaterialIcon
@@ -76,24 +105,30 @@ const CreateProject = () => {
             className="naxatw-absolute naxatw-top-11 naxatw-right-2 naxatw-text-[#00A699] naxatw-cursor-pointer"
           />
         </a>
-        <ul className="naxatw-mt-2">
-          {emailList.map((item, i) => (
-            <li
-              key={item}
-              className="naxatw-flex naxatw-p-3 naxatw-items-center naxatw-justify-between hover:naxatw-bg-gray-200"
+        {emailError && (
+          <span className="naxatw--mt-[10px] naxatw-text-red-500">
+            Please add email
+          </span>
+        )}
+        <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-2 naxatw-mt-2  ">
+          {emailList.map(item => (
+            <div
+              key={item.id}
+              className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-gap-x-2 naxatw-rounded-3xl naxatw-bg-[#D7D7D7] naxatw-px-3 naxatw-py-[7px]"
             >
-              <span className="naxatw-text-body-lg">{item}</span>
-              <a
+              <p className="naxatw-text-[#484848]">{item.value}</p>
+
+              <i
+                className="material-icons naxatw-text-lg naxatw-text-[#484848] naxatw-cursor-pointer"
                 onClick={() => {
-                  const updatedArray = emailList.filter(list => list !== item);
-                  setEmailList(updatedArray);
+                  setEmailList(emailList.filter(email => email.id !== item.id));
                 }}
               >
-                <MaterialIcon name="close" className="naxatw-cursor-pointer" />
-              </a>
-            </li>
+                close
+              </i>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
 
       <div className="naxatw-flex naxatw-justify-center">

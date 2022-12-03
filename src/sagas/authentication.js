@@ -24,7 +24,6 @@ export function* loginRequest({ payload }) {
     localStorage.setItem('userToken', response.data.access);
     yield put(authActions.loginSuccess(response.data));
     const landingResponse = yield call(landingPage);
-    console.log(landingResponse);
     yield put(authActions.setInfoDialogContent(''));
     yield put(organizationsActions.toggleModal('access-to-functionalities'));
     yield put(push(`${landingResponse.data.page}`));
@@ -51,6 +50,7 @@ export function* verifyUserRequest({ params }) {
   } catch (error) {
     yield put(authActions.verifyUserFailure());
     yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(push('/login'));
   }
 }
 

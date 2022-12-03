@@ -43,7 +43,6 @@ const CreateProject = () => {
     },
   });
 
-  console.log(emailList);
   return (
     <div className="naxatw-space-y-8">
       <h3>Basic Project Setup & Invitation</h3>

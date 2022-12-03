@@ -24,6 +24,7 @@ export function* createOrganizationRequest({ payload }) {
         organizationId: response.data.organization,
       }),
     );
+    yield put(organizationsActions.getOrganizationsRequest());
   } catch (error) {
     yield put(organizationsActions.createOrganizationFailure());
     yield put(toastActions.error({ message: error?.response?.data?.message }));

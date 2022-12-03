@@ -1,4 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+
 import {
   getProjects,
   postProjectInvite,
@@ -35,6 +36,7 @@ export function* getProjectsRequest({ params }) {
 }
 
 export function* postProjectInviteRequest({ payload }) {
+  const { organization } = payload;
   try {
     const formdata = prepareFormData(payload);
     const response = yield call(postProjectInvite, formdata);
@@ -43,6 +45,9 @@ export function* postProjectInviteRequest({ payload }) {
     );
     yield put(organizationDashboardActions.toggleModal(''));
     yield put(toastActions.success({ message: 'Invitation sent success' }));
+    yield put(
+      organizationDashboardActions.getProjectsRequest({ organization }),
+    );
   } catch (error) {
     yield put(organizationDashboardActions.postProjectInviteFailure());
     yield put(toastActions.error({ message: error?.response?.data?.message }));

@@ -32,6 +32,6 @@ Input.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string,
   name: PropTypes.string.isRequired,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func,
 };

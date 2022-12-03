@@ -29,6 +29,10 @@ export const { Types, Creators } = createActions(
     updateLayerSuccess: ['payload'],
     updateLayerFailure: null,
 
+    uploadIconRequest: ['id', 'payload'],
+    uploadIconSuccess: ['payload'],
+    uploadIconFailure: null,
+
     toggleSidebar: null,
   },
   { prefix: 'projectMap/' },

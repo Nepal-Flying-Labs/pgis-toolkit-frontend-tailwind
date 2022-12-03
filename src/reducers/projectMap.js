@@ -24,7 +24,15 @@ const getProjectThemeLayersSuccess = (state, action) => {
     [theme]: data.map(item => ({
       ...item,
       checked: false,
-      style: { ...defaultStyles, ...item.style, geometryType: item.geom_type },
+      style: {
+        ...defaultStyles,
+        ...item.style,
+        geometryType: item.geom_type,
+        icon: {
+          id: 1,
+          url: item.icon,
+        },
+      },
     })),
   };
   return {
@@ -107,6 +115,31 @@ const toggleSidebar = state => ({
   hideSidebar: !state.hideSidebar,
 });
 
+const uploadIconSuccess = (state, action) => {
+  const { id: layerId, theme, icon } = action.payload;
+  const layers = {
+    ...state.layers,
+    [theme]: state.layers[theme].map(item =>
+      item.id === layerId
+        ? {
+            ...item,
+            style: {
+              ...item.style,
+              icon: { ...item.style.icon, id: 1, url: icon },
+            },
+          }
+        : {
+            ...item,
+          },
+    ),
+  };
+
+  return {
+    ...state,
+    layers,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -118,6 +151,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.HANDLE_STYLE_INPUT]: handleStyleInput,
   [Types.UPDATE_LAYER_SUCCESS]: updateLayerSuccess,
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
+  [Types.UPLOAD_ICON_SUCCESS]: uploadIconSuccess,
 });
 
 export default projectMapReducer;

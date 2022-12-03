@@ -72,6 +72,17 @@ export function* updateLayerRequest({ id, payload }) {
   }
 }
 
+export function* uploadIconRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateLayer, id, formdata);
+    yield put(projectMapActions.uploadIconSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.uploadIconFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -87,6 +98,7 @@ function* projectMapWatcher() {
     withLoader(getMapPopupDataRequest),
   );
   yield takeLatest(Types.UPDATE_LAYER_REQUEST, withLoader(updateLayerRequest));
+  yield takeLatest(Types.UPLOAD_ICON_REQUEST, withLoader(uploadIconRequest));
 }
 
 export default projectMapWatcher;

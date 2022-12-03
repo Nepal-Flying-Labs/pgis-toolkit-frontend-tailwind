@@ -133,10 +133,17 @@ const uploadIconSuccess = (state, action) => {
           },
     ),
   };
-
+  const selectedLayer = {
+    ...state.selectedLayer,
+    style: {
+      ...state.selectedLayer.style,
+      icon: { ...state.selectedLayer.style.icon, id: 1, url: icon },
+    },
+  };
   return {
     ...state,
     layers,
+    selectedLayer,
   };
 };
 

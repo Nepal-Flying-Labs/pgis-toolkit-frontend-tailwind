@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
@@ -6,6 +7,7 @@ import MaterialIcon from '@Components/common/MaterialIcon';
 import Button from '@Components/common/Button/index';
 import useCustomUpload from '@Hooks/useCustomUpload';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import Spinner from '@Components/common/Spinner';
 import RangeSlider from '../InputComponents/RangeSlider';
 import Input from '../InputComponents/Input';
 
@@ -20,6 +22,9 @@ export default function EditFeatureSection() {
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.UPDATE_LAYER_REQUEST]),
+  );
+  const isIconUploading = useSelector(state =>
+    checkIfLoading(state, [Types.UPLOAD_ICON_REQUEST]),
   );
   const [styleTab, setStyleTab] = useState('advance');
   const dispatch = useDispatch();
@@ -51,12 +56,6 @@ export default function EditFeatureSection() {
   const handleIconUpload = e => {
     const data = {
       icon: e.target.files[0],
-      // style: {
-      //   ...selectedLayer.style,
-      //   icon: {
-      //   ...selectedLayer.style.icon,
-      //   }
-      // }
     };
     dispatch(uploadIconRequest(selectedLayer.id, data));
   };
@@ -70,6 +69,7 @@ export default function EditFeatureSection() {
     dashline,
     circleRadius,
     geometryType,
+    icon,
   } = layerStyle;
 
   return (
@@ -136,10 +136,16 @@ export default function EditFeatureSection() {
         {styleTab === 'standard' ? (
           <div className="naxatw-flex naxatw-items-center naxatw-gap-4">
             <div
-              className="naxatw-w-10 naxatw-h-10 naxatw-border naxatw-flex naxatw-items-center naxatw-justify-center naxatw-rounded-lg naxatw-border-grey-800 naxatw-cursor-pointer"
+              className="naxatw-w-10 naxatw-h-10 naxatw-border naxatw-flex naxatw-items-center naxatw-justify-center naxatw-rounded-lg naxatw-border-grey-800 naxatw-cursor-pointer naxatw-bg-white naxatw-p-1"
               onClick={onFileUpload}
             >
-              <MaterialIcon name="add" />
+              {isIconUploading ? (
+                <Spinner className="naxatw-fill-primary-400" />
+              ) : icon?.url ? (
+                <img src={icon.url} alt="icon" />
+              ) : (
+                <MaterialIcon name="add" />
+              )}
             </div>
             <Button
               className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent"

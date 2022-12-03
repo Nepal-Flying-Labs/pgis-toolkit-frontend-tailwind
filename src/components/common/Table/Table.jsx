@@ -238,7 +238,7 @@ TableHeader.defaultProps = {
 TableHeader.propTypes = {
   dataField: PropTypes.string,
   dataFormat: PropTypes.func,
-  dataHeader: PropTypes.string,
+  dataHeader: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   rowcolSpan: PropTypes.string,
   headerClassName: PropTypes.string,
   isSubHeader: PropTypes.bool,

@@ -1,0 +1,56 @@
+/* eslint-disable no-nested-ternary */
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
+import MaterialIcon from '@Components/common/MaterialIcon';
+import Button from '@Components/common/Button';
+import useCustomUpload from '@Hooks/useCustomUpload';
+import { checkIfLoading } from '@Utils/loaderSelector';
+import Spinner from '@Components/common/Spinner';
+
+const { uploadIconRequest } = ProjectMapCreators;
+
+export default function StandardStyling() {
+  const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
+  const [inputRef, onFileUpload] = useCustomUpload();
+  const isIconUploading = useSelector(state =>
+    checkIfLoading(state, [Types.UPLOAD_ICON_REQUEST]),
+  );
+  const dispatch = useDispatch();
+
+  const handleIconUpload = e => {
+    const data = {
+      icon: e.target.files[0],
+    };
+    dispatch(uploadIconRequest(selectedLayer.id, data));
+  };
+
+  return (
+    <div className="naxatw-flex naxatw-items-center naxatw-gap-4">
+      <div
+        className="naxatw-w-10 naxatw-h-10 naxatw-border naxatw-flex naxatw-items-center naxatw-justify-center naxatw-rounded-lg naxatw-border-grey-800 naxatw-cursor-pointer naxatw-bg-white naxatw-p-1"
+        onClick={onFileUpload}
+      >
+        {isIconUploading ? (
+          <Spinner className="naxatw-fill-primary-400" />
+        ) : selectedLayer.style?.icon?.url ? (
+          <img src={selectedLayer.style.icon.url} alt="icon" />
+        ) : (
+          <MaterialIcon name="add" />
+        )}
+      </div>
+      <Button
+        className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent"
+        onClick={onFileUpload}
+      >
+        Upload Icon
+      </Button>
+      <input
+        type="file"
+        ref={inputRef}
+        style={{ display: 'none' }}
+        onChange={handleIconUpload}
+      />
+    </div>
+  );
+}

@@ -28,7 +28,7 @@
     @apply naxatw-text-grey-800 naxatw-text-body-md;
   }
   a {
-    @apply naxatw-cursor-pointer naxatw-select-none naxatw-flex naxatw-items-center naxatw-justify-center;
+    @apply naxatw-cursor-pointer naxatw-select-none;
   }
 }
 
@@ -70,4 +70,23 @@
       background: #989899;
     }
   }
+}
+
+.naxatw-color-input {
+  -webkit-appearance: none;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+}
+.naxatw-color-input::-webkit-color-swatch {
+  border: none;
+  border-radius: 8px;
+  padding: 0;
+}
+.naxatw-color-input::-webkit-color-swatch-wrapper {
+  border: none;
+  border-radius: 8px;
+  padding: 0;
 }

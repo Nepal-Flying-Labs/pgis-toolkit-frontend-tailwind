@@ -10,7 +10,7 @@ export default function Input({ label, type, name, value, onChange }) {
           type={type}
           className={`naxatw-input ${
             type === 'color'
-              ? 'naxatw-input naxatw-h-12 naxatw-w-12 naxatw-p-[3px]'
+              ? 'naxatw-input naxatw-h-12 naxatw-w-12 naxatw-p-[3px] naxatw-color-input'
               : 'naxatw-w-20'
           }`}
           name={name}

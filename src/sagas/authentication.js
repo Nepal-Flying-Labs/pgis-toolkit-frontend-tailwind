@@ -27,7 +27,7 @@ export function* loginRequest({ payload }) {
     console.log(landingResponse);
     yield put(authActions.setInfoDialogContent(''));
     yield put(organizationsActions.toggleModal('access-to-functionalities'));
-    yield put(push(`/${landingResponse.data.page}`));
+    yield put(push(`${landingResponse.data.page}`));
   } catch (error) {
     yield put(authActions.loginFailure());
     yield put(

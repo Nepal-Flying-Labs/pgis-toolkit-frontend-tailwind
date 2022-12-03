@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { projectHeaderHeight } from '@src/constants';
-import { Creators as CommonCreators } from '@Actions/common';
+// import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as OrganizationDashboardCreators } from '@Actions/organizationDashboard';
 import ProjectHeader from '@Components/common/ProjectHeader';
 import Projects from '@Components/OrganizationDashboard/Projects/index';
@@ -11,8 +11,8 @@ import ProjectSetup from '@Components/OrganizationDashboard/ProjectSetup/index';
 import Modal from '@Components/common/Modal/index';
 import CreateProject from '@Components/OrganizationDashboard/ModalContent/CreateProject';
 
-const { toggleModal } = CommonCreators;
-const { getOrganizationDetailRequest } = OrganizationDashboardCreators;
+const { getOrganizationDetailRequest, toggleModal } =
+  OrganizationDashboardCreators;
 
 function getTabContent(tabname) {
   switch (tabname) {
@@ -42,7 +42,7 @@ export default function OrganizationDashboard() {
       <Modal
         show={!!modalContent}
         title=""
-        onClose={() => dispatch(toggleModal())}
+        onClose={() => dispatch(toggleModal(''))}
       >
         <CreateProject />
       </Modal>

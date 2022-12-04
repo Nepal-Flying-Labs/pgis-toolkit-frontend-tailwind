@@ -18,6 +18,10 @@ export const { Types, Creators } = createActions(
     getIndividualProjectSuccess: ['payload'],
     getIndividualProjectFailure: null,
 
+    patchProjectRequest: ['id', 'payload'],
+    patchProjectSuccess: ['payload'],
+    patchProjectFailure: null,
+
     setIndividualProject: ['payload'],
 
     toggleModal: ['payload'],

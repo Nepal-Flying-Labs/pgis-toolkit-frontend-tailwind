@@ -11,3 +11,6 @@ export const postProjectInvite = payload =>
 
 export const getIndividualProject = id =>
   authenticated(api).get(`/projects/project/${id}/`);
+
+export const patchProject = (id, payload) =>
+  authenticated(api).patch(`/projects/project/${id}/`, payload);

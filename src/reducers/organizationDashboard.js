@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/organizationDashboard';
 
@@ -28,14 +29,25 @@ const getProjectsSuccess = (state, action) => ({
   projects: action.payload,
 });
 
-const getIndividualProjectSuccess = (state, action) => ({
-  ...state,
-  individualProject: {
-    ...state.individualProject,
-    pageOne: action.payload,
-    pageTwo: action.payload,
-  },
-});
+const getIndividualProjectSuccess = (state, action) => {
+  const { name, description, thematic_areas, start_date, end_date, partners } =
+    action.payload;
+  return {
+    ...state,
+    individualProject: {
+      ...state.individualProject,
+      pageOne: {
+        name,
+        description,
+        thematic_areas,
+        start_date,
+        end_date,
+        partners,
+      },
+      pageTwo: action.payload,
+    },
+  };
+};
 
 const setIndividualProject = (state, action) => {
   const { key, value } = action.payload;

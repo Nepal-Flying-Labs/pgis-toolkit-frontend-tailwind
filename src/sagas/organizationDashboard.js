@@ -5,6 +5,7 @@ import {
   postProjectInvite,
   getIndividualProject,
   getOrganizationDetail,
+  patchProject,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
@@ -66,6 +67,19 @@ export function* getIndividualProjectRequest({ id }) {
   }
 }
 
+export function* patchProjectRequest({ id, payload }) {
+  try {
+    const formData = prepareFormData(payload);
+    const response = yield call(patchProject, id, formData);
+    yield put(organizationDashboardActions.patchProjectSuccess(response.data));
+    yield put(organizationDashboardActions.toggleModal(''));
+    yield put(toastActions.success({ message: 'Data saved successfully' }));
+  } catch (error) {
+    yield put(organizationDashboardActions.patchProjectFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
+
 function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
@@ -79,6 +93,10 @@ function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_INDIVIDUAL_PROJECT_REQUEST,
     withLoader(getIndividualProjectRequest),
+  );
+  yield takeLatest(
+    Types.PATCH_PROJECT_REQUEST,
+    withLoader(patchProjectRequest),
   );
 }
 

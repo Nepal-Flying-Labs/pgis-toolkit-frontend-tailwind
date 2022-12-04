@@ -31,6 +31,7 @@ const getProjectThemeLayersSuccess = (state, action) => {
         icon: {
           id: 1,
           url: item.icon,
+          scale: item.style?.icon?.scale || 0.9,
         },
       },
     })),
@@ -93,6 +94,26 @@ const handleStyleInput = (state, action) => {
   };
 };
 
+const handleIconInput = (state, action) => {
+  const {
+    payload: { name, value },
+  } = action;
+  const selectedLayer = {
+    ...state.selectedLayer,
+    style: {
+      ...state.selectedLayer.style,
+      icon: {
+        ...state.selectedLayer.style.icon,
+        [name]: value,
+      },
+    },
+  };
+  return {
+    ...state,
+    selectedLayer,
+  };
+};
+
 const updateLayerSuccess = (state, action) => {
   const { responseData, payload } = action.payload;
   const { theme } = responseData;
@@ -125,7 +146,7 @@ const uploadIconSuccess = (state, action) => {
             ...item,
             style: {
               ...item.style,
-              icon: { ...item.style.icon, id: 1, url: icon },
+              icon: { ...item.style.icon, id: 1, url: icon, scale: 0.9 },
             },
           }
         : {
@@ -137,7 +158,7 @@ const uploadIconSuccess = (state, action) => {
     ...state.selectedLayer,
     style: {
       ...state.selectedLayer.style,
-      icon: { ...state.selectedLayer.style.icon, id: 1, url: icon },
+      icon: { ...state.selectedLayer.style.icon, id: 1, url: icon, scale: 0.9 },
     },
   };
   return {
@@ -173,6 +194,7 @@ const deleteIconSuccess = (state, action) => {
       icon: {},
     },
   };
+
   return {
     ...state,
     layers,
@@ -189,6 +211,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_MAP_POPUP_DATA_SUCCESS]: getMapPopupDataSuccess,
   [Types.SET_SELECTED_LAYER]: setSelectedLayer,
   [Types.HANDLE_STYLE_INPUT]: handleStyleInput,
+  [Types.HANDLE_ICON_INPUT]: handleIconInput,
   [Types.UPDATE_LAYER_SUCCESS]: updateLayerSuccess,
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
   [Types.UPLOAD_ICON_SUCCESS]: uploadIconSuccess,

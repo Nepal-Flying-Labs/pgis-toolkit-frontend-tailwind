@@ -24,6 +24,7 @@ export const { Types, Creators } = createActions(
 
     setSelectedLayer: ['payload'],
     handleStyleInput: ['payload'],
+    handleIconInput: ['payload'],
 
     updateLayerRequest: ['id', 'payload'],
     updateLayerSuccess: ['payload'],

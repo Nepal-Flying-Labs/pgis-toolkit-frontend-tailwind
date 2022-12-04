@@ -1,13 +1,16 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-extra-boolean-cast */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useParams, useRouteMatch } from 'react-router';
-import { Creators } from '@Actions/organizationDashboard';
+import { Creators, Types } from '@Actions/organizationDashboard';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar';
 import { projectHeaderHeight } from '@src/constants';
+import { checkIfLoading } from '@Utils/loaderSelector';
 import ProjectCard from './ProjectCard';
+import ProjectCardSkeleton from './ProjectCardSkeleton/index';
 
 const { getProjectsRequest, toggleModal } = Creators;
 
@@ -16,6 +19,9 @@ export default function MapSidebar() {
   const { url } = useRouteMatch();
   const history = useHistory();
   const projects = useSelector(state => state.organizationDashboard.projects);
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.GET_PROJECTS_REQUEST]),
+  );
   const organizationDetail = useSelector(
     state => state.organizationDashboard.organizationDetail,
   );
@@ -76,18 +82,26 @@ export default function MapSidebar() {
           height: `calc(100vh - ${projectHeaderHeight} - 9rem)`,
         }}
       >
-        {projects?.results?.map(({ id, name }) => (
-          <ProjectCard
-            key={id}
-            title={name}
-            address="kenya"
-            id={id}
-            status="good"
-            onClick={() => {
-              history.push(`${url}/${id}/map`);
-            }}
-          />
-        ))}
+        {!loading ? (
+          projects?.results.length > 0 ? (
+            projects?.results?.map(({ id, name }) => (
+              <ProjectCard
+                key={id}
+                title={name}
+                address="kenya"
+                id={id}
+                status="good"
+                onClick={() => {
+                  history.push(`${url}/${id}/map`);
+                }}
+              />
+            ))
+          ) : (
+            <span>No project found</span>
+          )
+        ) : (
+          <ProjectCardSkeleton itemNumber={5} />
+        )}
       </div>
     </div>
   );

@@ -71,11 +71,14 @@ function* organizationDashboardWatcher() {
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
     withLoader(getOrganizationDetailRequest),
   );
-  yield takeLatest(Types.GET_PROJECTS_REQUEST, getProjectsRequest);
-  yield takeLatest(Types.POST_PROJECT_INVITE_REQUEST, postProjectInviteRequest);
+  yield takeLatest(Types.GET_PROJECTS_REQUEST, withLoader(getProjectsRequest));
+  yield takeLatest(
+    Types.POST_PROJECT_INVITE_REQUEST,
+    withLoader(postProjectInviteRequest),
+  );
   yield takeLatest(
     Types.GET_INDIVIDUAL_PROJECT_REQUEST,
-    getIndividualProjectRequest,
+    withLoader(getIndividualProjectRequest),
   );
 }
 

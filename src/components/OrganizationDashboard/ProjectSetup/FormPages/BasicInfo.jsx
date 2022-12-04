@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Input from '@Components/common/Input';
 import Select from '@Components/common/Select';
@@ -38,12 +38,16 @@ const BasicInfo = ({ setPage }) => {
     setPartner(e.target.value);
   };
 
-  const { values, handleChange, handleCustomChange, handleSubmit } = useForm({
-    initialValues: individualProject,
-    onSubmit: data => {
-      dispatch(setIndividualProject({ key: 'pageOne', value: data }));
-    },
-  });
+  const { values, setValues, handleChange, handleCustomChange, handleSubmit } =
+    useForm({
+      initialValues: individualProject,
+      onSubmit: data => {
+        dispatch(setIndividualProject({ key: 'pageOne', value: data }));
+      },
+    });
+  useEffect(() => {
+    setValues(individualProject);
+  }, [setValues, individualProject]);
 
   const handleKeyChange = e => {
     if (e.key === 'Enter' && partner) {

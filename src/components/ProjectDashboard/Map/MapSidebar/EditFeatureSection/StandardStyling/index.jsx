@@ -29,7 +29,7 @@ export default function StandardStyling() {
 
   const handleIconDelete = () => {
     const data = {
-      icon: null,
+      icon: '',
       style: {
         ...selectedLayer.style,
         icon: {},
@@ -51,7 +51,7 @@ export default function StandardStyling() {
   const hasIcon = !!selectedLayer.style.icon.id;
 
   return (
-    <div className="naxatw-flex naxatw-flex-col  naxatw-gap-4">
+    <div className="naxatw-flex naxatw-flex-col naxatw-gap-4">
       <div className="naxatw-flex naxatw-items-center naxatw-gap-4">
         <div
           className="naxatw-w-10 naxatw-h-10 naxatw-border naxatw-flex naxatw-items-center naxatw-justify-center naxatw-rounded-lg naxatw-border-grey-800 naxatw-cursor-pointer naxatw-bg-white naxatw-p-1"

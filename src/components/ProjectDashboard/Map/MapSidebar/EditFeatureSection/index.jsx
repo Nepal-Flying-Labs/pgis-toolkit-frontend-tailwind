@@ -21,9 +21,13 @@ export default function EditFeatureSection() {
   const [layerName, setLayerName] = useState(selectedLayer.name);
 
   useEffect(() => {
-    if (!selectedLayer?.style?.icon?.url) return;
-    setStyleTab('Standard');
-  }, [selectedLayer]);
+    if (!selectedLayer?.style?.icon?.url) {
+      setStyleTab('Advance');
+    } else {
+      setStyleTab('Standard');
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const handleSave = () => {
     const data = {
@@ -66,22 +70,24 @@ export default function EditFeatureSection() {
           <div className="naxatw-w-full naxatw-space-y-2">
             <label className="naxatw-label">Styling</label>
 
-            <div className="naxatw-flex naxatw-gap-2">
-              {tabData.map(({ label }) => (
-                <div
-                  className={`naxatw-w-fit naxatw-bg-white naxatw-border naxatw-rounded-2xl naxatw-px-3 naxatw-py-2 naxatw-cursor-pointer ${
-                    styleTab === label
-                      ? 'naxatw-border-grey-800'
-                      : 'naxatw-border-grey-100'
-                  }`}
-                  onClick={() => {
-                    setStyleTab(label);
-                  }}
-                >
-                  {label}
-                </div>
-              ))}
-            </div>
+            {selectedLayer.style?.geometryType === 'Point' && (
+              <div className="naxatw-flex naxatw-gap-2">
+                {tabData.map(({ label }) => (
+                  <div
+                    className={`naxatw-w-fit naxatw-bg-white naxatw-border naxatw-rounded-2xl naxatw-px-3 naxatw-py-2 naxatw-cursor-pointer ${
+                      styleTab === label
+                        ? 'naxatw-border-grey-800'
+                        : 'naxatw-border-grey-100'
+                    }`}
+                    onClick={() => {
+                      setStyleTab(label);
+                    }}
+                  >
+                    {label}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

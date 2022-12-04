@@ -13,9 +13,15 @@ import Users from '@Components/ProjectDashboard/Users';
 import Info from '@Components/ProjectDashboard/Info';
 import Settings from '@Components/ProjectDashboard/Settings';
 import Modal from '@Components/common/Modal';
-import { getModalContent, getModalTitle } from '@src/constants/modalContents';
+import {
+  getModalContent,
+  getModalTitle,
+  getPromptDialogContent,
+  getPromptDialogTitle,
+} from '@src/constants/modalContents';
+import PromptDialog from '@Components/common/PromptDialog';
 
-const { toggleModal } = CommonCreators;
+const { toggleModal, togglePromptDialog } = CommonCreators;
 const { getProjectDetailRequest } = ProjectDashboardCreators;
 
 function getTabContent(tabname) {
@@ -42,6 +48,9 @@ function getTabContent(tabname) {
 export default function ProjectDashboard() {
   const { tabname, projectId } = useParams();
   const modalContent = useSelector(state => state.common.modalContent);
+  const promptDialogContent = useSelector(
+    state => state.common.promptDialogContent,
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,6 +60,14 @@ export default function ProjectDashboard() {
   return (
     <div>
       <ProjectHeader />
+
+      <PromptDialog
+        show={!!promptDialogContent}
+        title={getPromptDialogTitle(promptDialogContent)}
+        onClose={() => dispatch(togglePromptDialog())}
+      >
+        {getPromptDialogContent(promptDialogContent)}
+      </PromptDialog>
 
       <Modal
         show={!!modalContent}

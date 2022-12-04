@@ -147,6 +147,39 @@ const uploadIconSuccess = (state, action) => {
   };
 };
 
+const deleteIconSuccess = (state, action) => {
+  console.log(action.payload, 'payloadx');
+  const { id: layerId, theme } = action.payload;
+  const layers = {
+    ...state.layers,
+    [theme]: state.layers[theme].map(item =>
+      item.id === layerId
+        ? {
+            ...item,
+            style: {
+              ...item.style,
+              icon: {},
+            },
+          }
+        : {
+            ...item,
+          },
+    ),
+  };
+  const selectedLayer = {
+    ...state.selectedLayer,
+    style: {
+      ...state.selectedLayer.style,
+      icon: {},
+    },
+  };
+  return {
+    ...state,
+    layers,
+    selectedLayer,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -159,6 +192,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.UPDATE_LAYER_SUCCESS]: updateLayerSuccess,
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
   [Types.UPLOAD_ICON_SUCCESS]: uploadIconSuccess,
+  [Types.DELETE_ICON_SUCCESS]: deleteIconSuccess,
 });
 
 export default projectMapReducer;

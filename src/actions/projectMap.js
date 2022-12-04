@@ -33,6 +33,10 @@ export const { Types, Creators } = createActions(
     uploadIconSuccess: ['payload'],
     uploadIconFailure: null,
 
+    deleteIconRequest: ['id', 'payload'],
+    deleteIconSuccess: ['payload'],
+    deleteIconFailure: null,
+
     toggleSidebar: null,
   },
   { prefix: 'projectMap/' },

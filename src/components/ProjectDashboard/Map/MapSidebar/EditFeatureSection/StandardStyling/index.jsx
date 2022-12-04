@@ -8,7 +8,7 @@ import useCustomUpload from '@Hooks/useCustomUpload';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Spinner from '@Components/common/Spinner';
 
-const { uploadIconRequest } = ProjectMapCreators;
+const { uploadIconRequest, deleteIconRequest } = ProjectMapCreators;
 
 export default function StandardStyling() {
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
@@ -23,6 +23,17 @@ export default function StandardStyling() {
       icon: e.target.files[0],
     };
     dispatch(uploadIconRequest(selectedLayer.id, data));
+  };
+
+  const handleIconDelete = () => {
+    const data = {
+      icon: null,
+      style: {
+        ...selectedLayer.style,
+        icon: {},
+      },
+    };
+    dispatch(deleteIconRequest(selectedLayer.id, data));
   };
 
   return (
@@ -51,6 +62,10 @@ export default function StandardStyling() {
         style={{ display: 'none' }}
         onChange={handleIconUpload}
       />
+
+      <a className="naxatw-text-[#FF0F0F]" onClick={handleIconDelete}>
+        <MaterialIcon name="delete" />
+      </a>
     </div>
   );
 }

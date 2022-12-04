@@ -83,6 +83,17 @@ export function* uploadIconRequest({ id, payload }) {
   }
 }
 
+export function* deleteIconRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateLayer, id, formdata);
+    yield put(projectMapActions.deleteIconSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.deleteIconFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -99,6 +110,7 @@ function* projectMapWatcher() {
   );
   yield takeLatest(Types.UPDATE_LAYER_REQUEST, withLoader(updateLayerRequest));
   yield takeLatest(Types.UPLOAD_ICON_REQUEST, withLoader(uploadIconRequest));
+  yield takeLatest(Types.DELETE_ICON_REQUEST, withLoader(deleteIconRequest));
 }
 
 export default projectMapWatcher;

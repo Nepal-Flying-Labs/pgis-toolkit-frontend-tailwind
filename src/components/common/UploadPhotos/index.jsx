@@ -103,40 +103,55 @@ function UploadPhotos({
           uploadedFile?.map(
             (file, i) =>
               !file.isDeleted && (
-                <div
-                  key={i}
-                  className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-mb-2 naxatw-px-[20px] naxatw-py-[15px] naxatw-border naxatw-border-[#D7D7D7] naxatw-rounded-xl"
-                >
-                  <div className="naxatw-flex naxatw-gap-x-5 naxatw-items-center">
-                    <span className="naxatw-w-[40px] naxatw-h-[40px] naxatw-rounded-full naxatw-bg-red-50 naxatw-text-center naxatw-border naxatw-border-[#D7D7D7]">
-                      {' '}
+                // <div
+                //   key={i}
+                //   className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-mb-2 naxatw-px-[20px] naxatw-py-[15px] naxatw-border naxatw-border-[#D7D7D7] naxatw-rounded-xl"
+                // >
+                //   <div className="naxatw-flex naxatw-gap-x-5 naxatw-items-center">
+                //     <span className="naxatw-w-[40px] naxatw-h-[40px] naxatw-rounded-full naxatw-bg-red-50 naxatw-text-center naxatw-border naxatw-border-[#D7D7D7]">
+                //       {' '}
+                //       <MaterialIcon
+                //         name="description"
+                //         className="naxatw-text-2xl naxatw-leading-10 naxatw-text-red-500"
+                //       />
+                //     </span>
+                //     <div>
+                //       <p className="naxatw-text-[15px] naxatw-leading-[22px] naxatw-font-bold naxatw-text-[#484848]">
+                //         File Name
+                //       </p>
+                //       <span className="naxatw-text-body-md naxatw-text-[#757575]">
+                //         Uploaded on 16/11/2022
+                //       </span>
+                //     </div>
+                //   </div>
+                //   <div className="naxatw-flex naxatw-items-center naxatw-gap-x-4">
+                //     <MaterialIcon
+                //       name="download"
+                //       className="naxatw-text-[#484848] naxatw-cursor-pointer"
+                //     />
+                //     <a onClick={() => removeFile(i)}>
+                //       <MaterialIcon
+                //         name="delete_outline"
+                //         className="naxatw-text-red-500 naxatw-cursor-pointer"
+                //       />
+                //     </a>
+                //   </div>
+                // </div>
+                <a key={i} onClick={() => removeFile(i)}>
+                  <img
+                    src={file.image || urlImage}
+                    alt=""
+                    className="naxatw-rounded-full naxatw-max-h-[100px] naxatw-max-w-[100px]"
+                  />
+                  <div>
+                    <span className="naxatw-text-red-500">
                       <MaterialIcon
-                        name="description"
-                        className="naxatw-text-2xl naxatw-leading-10 naxatw-text-red-500"
+                        name="close"
+                        className="naxatw-text-red-500"
                       />
                     </span>
-                    <div>
-                      <p className="naxatw-text-[15px] naxatw-leading-[22px] naxatw-font-bold naxatw-text-[#484848]">
-                        File Name
-                      </p>
-                      <span className="naxatw-text-body-md naxatw-text-[#757575]">
-                        Uploaded on 16/11/2022
-                      </span>
-                    </div>
                   </div>
-                  <div className="naxatw-flex naxatw-items-center naxatw-gap-x-4">
-                    <MaterialIcon
-                      name="download"
-                      className="naxatw-text-[#484848] naxatw-cursor-pointer"
-                    />
-                    <a onClick={() => removeFile(i)}>
-                      <MaterialIcon
-                        name="delete_outline"
-                        className="naxatw-text-red-500 naxatw-cursor-pointer"
-                      />
-                    </a>
-                  </div>
-                </div>
+                </a>
               ),
           )}
       </div>

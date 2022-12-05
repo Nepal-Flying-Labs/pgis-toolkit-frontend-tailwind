@@ -12,7 +12,7 @@ const esbuild = require('esbuild');
 // const colors = require('../src/constants/colors');
 
 const APP_DIR = path.resolve(__dirname, '../src');
-const {  TITLE } = dotenv.parsed;
+const { TITLE } = dotenv.parsed;
 module.exports = (env = {}) => {
   const { NODE_ENV } = env;
   return merge([
@@ -24,6 +24,7 @@ module.exports = (env = {}) => {
       resolve: {
         fallback: {
           fs: false,
+          buffer: require.resolve('buffer/'),
         },
         extensions: ['.js', '.jsx'],
         alias: {
@@ -61,8 +62,11 @@ module.exports = (env = {}) => {
           {
             test: /\.css$/,
             use: [
-              NODE_ENV === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
-              'css-loader','postcss-loader',
+              NODE_ENV === 'production'
+                ? MiniCssExtractPlugin.loader
+                : 'style-loader',
+              'css-loader',
+              'postcss-loader',
               {
                 loader: 'esbuild-loader',
                 options: {
@@ -75,7 +79,9 @@ module.exports = (env = {}) => {
           {
             test: /\.s(a|c)ss$/,
             use: [
-              NODE_ENV === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
+              NODE_ENV === 'production'
+                ? MiniCssExtractPlugin.loader
+                : 'style-loader',
               'css-loader',
               {
                 loader: 'sass-loader',
@@ -152,6 +158,9 @@ module.exports = (env = {}) => {
         new webpack.DefinePlugin({
           'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
           'process.env': JSON.stringify(dotenv.parsed),
+        }),
+        new webpack.ProvidePlugin({
+          Buffer: ['buffer', 'Buffer'],
         }),
       ],
       devtool: 'eval-source-map',

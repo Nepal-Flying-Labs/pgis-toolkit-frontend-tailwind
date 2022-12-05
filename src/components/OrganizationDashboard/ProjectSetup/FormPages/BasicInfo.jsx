@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
@@ -8,23 +9,17 @@ import { Creators } from '@Actions/organizationDashboard';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
 import Button from '@Components/common/Button';
+import UploadPhotos from '@Components/common/UploadPhotos/index';
 import useForm from '@Hooks/useForm';
 import { format } from 'date-fns';
 
-const { setIndividualProject } = Creators;
+const { setIndividualProject, toggleModal } = Creators;
 
-const options = [
+const thematicFocusArea = [
   {
     id: 1,
-    name: 'Filter 1',
-  },
-  {
-    id: 2,
-    name: 'Filter 2',
-  },
-  {
-    id: 3,
-    name: 'Filter 3',
+    value: 'Climate change and Energy',
+    displayName: 'Climate change and Energy',
   },
 ];
 
@@ -41,6 +36,7 @@ const BasicInfo = ({ setPage }) => {
   const { values, setValues, handleChange, handleCustomChange, handleSubmit } =
     useForm({
       initialValues: individualProject,
+      required: ['name'],
       onSubmit: data => {
         dispatch(setIndividualProject({ key: 'pageOne', value: data }));
       },
@@ -83,17 +79,29 @@ const BasicInfo = ({ setPage }) => {
         onChange={handleChange}
         placeholder="Write a short summary of a project"
       />
+      <div className="naxatw-space-y-2">
+        <label className="naxatw-label">Upload Cover Image</label>
+        <UploadPhotos
+          multiple
+          label="coverImage"
+          uploadedFile={values?.coverImage}
+          accept="image/*"
+          onChange={images => {
+            handleCustomChange('coverImage', images);
+          }}
+        />
+      </div>
 
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Thematic Focus Area*</label>
         <Select
-          options={options}
-          dataKey="name"
-          defaultValue="Choose"
+          options={thematicFocusArea}
+          dataKey="displayName"
+          placeholder="Choose"
           onChange={data => {
-            handleCustomChange('thematic_areas', data.name);
+            handleCustomChange('thematic_areas', data.value);
           }}
-          selected={values.thematic_areas}
+          selected={values.thematic_areas || 'Choose'}
         />
       </div>
 
@@ -110,7 +118,7 @@ const BasicInfo = ({ setPage }) => {
         </div>
 
         <div className="naxatw-space-y-2 naxatw-w-[325px]">
-          <label className="naxatw-label">Start Date</label>
+          <label className="naxatw-label">End Date</label>
           <CustomCalendar
             startDate={new Date()}
             onChange={date => {
@@ -120,7 +128,8 @@ const BasicInfo = ({ setPage }) => {
           />
         </div>
       </div>
-      <div className="naxatw-relative">
+      <div className="naxatw-relative naxatw-space-y-2">
+        <label className="naxatw-label">Partners</label>
         <input
           className="naxatw-input"
           value={partner}
@@ -135,7 +144,7 @@ const BasicInfo = ({ setPage }) => {
         >
           <MaterialIcon
             name="add_circle_outline"
-            className="naxatw-absolute naxatw-top-4 naxatw-right-2 naxatw-text-[#00A699] naxatw-cursor-pointer"
+            className="naxatw-absolute naxatw-top-11 naxatw-right-2 naxatw-text-[#00A699] naxatw-cursor-pointer"
           />
         </a>
         <ul className="naxatw-mt-2">
@@ -162,6 +171,13 @@ const BasicInfo = ({ setPage }) => {
 
       <hr />
       <h4>Contact Person Details</h4>
+      {values?.contact_person?.map(person => {
+        return (
+          <div className="naxatw-flex">
+            <span>{person.name}</span>
+          </div>
+        );
+      })}
       <Input
         type="text"
         label="Name of contact Person"
@@ -210,7 +226,10 @@ const BasicInfo = ({ setPage }) => {
           Next
         </Button>
         <Button
-          // onClick={handleSubmit}
+          onClick={() => {
+            handleSubmit();
+            dispatch(toggleModal('save-as-draft'));
+          }}
           className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
         >
           Save as Draft

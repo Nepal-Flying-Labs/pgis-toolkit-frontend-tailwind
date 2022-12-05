@@ -1,3 +1,4 @@
+/* eslint-disable no-unneeded-ternary */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-no-useless-fragment */
@@ -12,9 +13,11 @@ import Button from '@Components/common/Button/index';
 import Chip from '@Components/common/Chip';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import UploadPhotos from '@Components/common/UploadPhotos/index';
+import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetup/UploadPolygonBoundary/index';
 import MapSection from '../MapSection/index';
+
 // import MaterialIcon from '@Components/common/MaterialIcon/index';
-const { setIndividualProject } = Creators;
+const { setIndividualProject, toggleModal } = Creators;
 
 const options = [
   {
@@ -32,8 +35,13 @@ const options = [
 ];
 
 const Location = ({ page, setPage }) => {
-  const [geographicToggle, handleGeographicToggle] = useState('Upload Area');
   const dispatch = useDispatch();
+  const countryList = useSelector(
+    state => state.organizationDashboard.countryList,
+  );
+  const pageOne = useSelector(
+    state => state.organizationDashboard.individualProject.pageOne,
+  );
   const individualProject = useSelector(
     state => state.organizationDashboard.individualProject.pageTwo,
   );
@@ -56,12 +64,14 @@ const Location = ({ page, setPage }) => {
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Country</label>
         <Select
-          options={options}
+          options={countryList}
           defaultValue="Choose"
           onChange={data => {
-            handleCustomChange('country', data.name);
+            handleCustomChange('country', data.id);
           }}
-          selected={values.country}
+          // selected={
+          //   countryList.filter(country => country.id === values.country)[0].name
+          // }
           dataKey="name"
         />
       </div>
@@ -80,7 +90,7 @@ const Location = ({ page, setPage }) => {
         <div className="naxatw-flex naxatw-gap-x-2">
           <Chip
             name="Upload Area"
-            status={values.location_type}
+            status={values.location_type || ''}
             value="Upload Area"
             onClick={() => {
               handleCustomChange('location_type', 'Upload Area');
@@ -88,7 +98,7 @@ const Location = ({ page, setPage }) => {
           />
           <Chip
             name="Draw Area on Map"
-            status={values.location_type}
+            status={values.location_type || ''}
             value="Custom Draw"
             onClick={() => {
               handleCustomChange('location_type', 'Custom Draw');
@@ -96,20 +106,13 @@ const Location = ({ page, setPage }) => {
           />
         </div>
       </div>
-      <div className="naxatw-space-y-2">
-        <label className="naxatw-label">Upload Polygon Boundary</label>
-        <UploadPhotos
-          isDropzone={false}
-          multiple
-          label="Logo"
-          uploadedFile={values?.logo}
-          accept="image/*"
-          onChange={images => {
-            handleCustomChange('logo', images);
-          }}
-        />
-        <MapSection />
-      </div>
+
+      <UploadPolygonBoundary
+        uploadedFile={values?.file || []}
+        setuploadedFile={file => {
+          handleCustomChange('file', file);
+        }}
+      />
 
       <div className="naxatw-flex naxatw-justify-between  naxatw-pt-7 naxatw-pb-7 ">
         {page > 1 ? (
@@ -136,7 +139,10 @@ const Location = ({ page, setPage }) => {
           Save
         </Button>
         <Button
-          // onClick={handleSubmit}
+          onClick={() => {
+            handleSubmit();
+            dispatch(toggleModal('save-as-draft'));
+          }}
           className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
         >
           Save as Draft

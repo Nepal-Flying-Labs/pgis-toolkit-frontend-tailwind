@@ -1,9 +1,12 @@
+/* eslint-disable camelcase */
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/organizationDashboard';
 
 const initialState = {
   projects: null,
+  countryList: [],
   individualProject: {
+    project: {},
     pageOne: {},
     pageTwo: {},
     pageThree: {},
@@ -28,14 +31,47 @@ const getProjectsSuccess = (state, action) => ({
   projects: action.payload,
 });
 
-const getIndividualProjectSuccess = (state, action) => ({
-  ...state,
-  individualProject: {
-    ...state.individualProject,
-    pageOne: action.payload,
-    pageTwo: action.payload,
-  },
-});
+const getIndividualProjectSuccess = (state, action) => {
+  const {
+    name,
+    description,
+    thematic_areas,
+    start_date,
+    end_date,
+    partners,
+    bbox,
+    country,
+    file,
+    file_type,
+    geographical_region,
+    geometry_type,
+    location_type,
+  } = action.payload;
+  return {
+    ...state,
+    individualProject: {
+      ...state.individualProject,
+      project: action.payload,
+      pageOne: {
+        name,
+        description,
+        thematic_areas,
+        start_date,
+        end_date,
+        partners,
+      },
+      pageTwo: {
+        bbox,
+        country,
+        file,
+        file_type,
+        geographical_region,
+        geometry_type,
+        location_type,
+      },
+    },
+  };
+};
 
 const setIndividualProject = (state, action) => {
   const { key, value } = action.payload;
@@ -48,12 +84,33 @@ const setIndividualProject = (state, action) => {
   };
 };
 
+const getContactPersonSuccess = (action, state) => {
+  const { data } = action.payload;
+  return {
+    ...state,
+    individualProject: {
+      ...state.individualProject,
+      pageOne: {
+        ...state.individualProject.pageOne,
+        contactPerson: data,
+      },
+    },
+  };
+};
+
+const getCountryListSuccess = (state, action) => ({
+  ...state,
+  countryList: action.payload,
+});
+
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
   [Types.TOGGLE_MODAL]: toggleModal,
   [Types.GET_INDIVIDUAL_PROJECT_SUCCESS]: getIndividualProjectSuccess,
   [Types.SET_INDIVIDUAL_PROJECT]: setIndividualProject,
+  [Types.GET_CONTACT_PERSON_SUCCESS]: getContactPersonSuccess,
+  [Types.GET_COUNTRY_LIST_SUCCESS]: getCountryListSuccess,
 });
 
 export default organizationDashboardReducer;

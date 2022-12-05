@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
@@ -170,6 +171,13 @@ const BasicInfo = ({ setPage }) => {
 
       <hr />
       <h4>Contact Person Details</h4>
+      {values?.contact_person?.map(person => {
+        return (
+          <div className="naxatw-flex">
+            <span>{person.name}</span>
+          </div>
+        );
+      })}
       <Input
         type="text"
         label="Name of contact Person"

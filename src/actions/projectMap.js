@@ -23,11 +23,25 @@ export const { Types, Creators } = createActions(
     getMapPopupDataFailure: null,
 
     setSelectedLayer: ['payload'],
+    setDeleteLayer: ['payload'],
     handleStyleInput: ['payload'],
+    handleIconInput: ['payload'],
 
     updateLayerRequest: ['id', 'payload'],
     updateLayerSuccess: ['payload'],
     updateLayerFailure: null,
+
+    deleteLayerRequest: ['id', 'payload'],
+    deleteLayerSuccess: ['payload'],
+    deleteLayerFailure: null,
+
+    uploadIconRequest: ['id', 'payload'],
+    uploadIconSuccess: ['payload'],
+    uploadIconFailure: null,
+
+    deleteIconRequest: ['id', 'payload'],
+    deleteIconSuccess: ['payload'],
+    deleteIconFailure: null,
 
     toggleSidebar: null,
   },

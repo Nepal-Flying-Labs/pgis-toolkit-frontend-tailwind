@@ -23,8 +23,9 @@ const {
   setZoomToLayerId,
   setSelectedProjectTheme,
   setSelectedLayer,
+  setDeleteLayer,
 } = ProjectMapCreators;
-const { toggleModal } = CommonCreators;
+const { toggleModal, togglePromptDialog } = CommonCreators;
 
 export default function LayerSection() {
   const { organizationId } = useParams();
@@ -71,7 +72,10 @@ export default function LayerSection() {
           <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: data => {
+        dispatch(setDeleteLayer(data));
+        dispatch(togglePromptDialog('delete-layer'));
+      },
     },
   ];
 

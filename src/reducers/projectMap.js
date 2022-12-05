@@ -9,6 +9,7 @@ const initialState = {
   selectedProjectTheme: null,
   popupData: {},
   selectedLayer: null,
+  deleteLayer: null,
   hideSidebar: false,
 };
 
@@ -24,7 +25,16 @@ const getProjectThemeLayersSuccess = (state, action) => {
     [theme]: data.map(item => ({
       ...item,
       checked: false,
-      style: { ...defaultStyles, ...item.style, geometryType: item.geom_type },
+      style: {
+        ...defaultStyles,
+        ...item.style,
+        geometryType: item.geom_type,
+        icon: {
+          id: 1,
+          url: item.icon,
+          scale: item.style?.icon?.scale || 0.9,
+        },
+      },
     })),
   };
   return {
@@ -68,6 +78,11 @@ const setSelectedLayer = (state, action) => ({
   selectedLayer: action.payload || null,
 });
 
+const setDeleteLayer = (state, action) => ({
+  ...state,
+  deleteLayer: action.payload || null,
+});
+
 const handleStyleInput = (state, action) => {
   const {
     payload: { name, value },
@@ -82,6 +97,39 @@ const handleStyleInput = (state, action) => {
   return {
     ...state,
     selectedLayer,
+  };
+};
+
+const handleIconInput = (state, action) => {
+  const {
+    payload: { name, value },
+  } = action;
+  const selectedLayer = {
+    ...state.selectedLayer,
+    style: {
+      ...state.selectedLayer.style,
+      icon: {
+        ...state.selectedLayer.style.icon,
+        [name]: value,
+      },
+    },
+  };
+  return {
+    ...state,
+    selectedLayer,
+  };
+};
+
+const deleteLayerSuccess = (state, action) => {
+  const { theme, id: layerId } = action.payload;
+  const layers = {
+    ...state.layers,
+    [theme]: state.layers[theme].filter(item => item.id !== layerId),
+  };
+  return {
+    ...state,
+    layers,
+    deleteLayer: null,
   };
 };
 
@@ -107,6 +155,72 @@ const toggleSidebar = state => ({
   hideSidebar: !state.hideSidebar,
 });
 
+const uploadIconSuccess = (state, action) => {
+  const { id: layerId, theme, icon } = action.payload;
+  const layers = {
+    ...state.layers,
+    [theme]: state.layers[theme].map(item =>
+      item.id === layerId
+        ? {
+            ...item,
+            style: {
+              ...item.style,
+              icon: { ...item.style.icon, id: 1, url: icon, scale: 0.9 },
+            },
+          }
+        : {
+            ...item,
+          },
+    ),
+  };
+  const selectedLayer = {
+    ...state.selectedLayer,
+    style: {
+      ...state.selectedLayer.style,
+      icon: { ...state.selectedLayer.style.icon, id: 1, url: icon, scale: 0.9 },
+    },
+  };
+  return {
+    ...state,
+    layers,
+    selectedLayer,
+  };
+};
+
+const deleteIconSuccess = (state, action) => {
+  console.log(action.payload, 'payloadx');
+  const { id: layerId, theme } = action.payload;
+  const layers = {
+    ...state.layers,
+    [theme]: state.layers[theme].map(item =>
+      item.id === layerId
+        ? {
+            ...item,
+            style: {
+              ...item.style,
+              icon: {},
+            },
+          }
+        : {
+            ...item,
+          },
+    ),
+  };
+  const selectedLayer = {
+    ...state.selectedLayer,
+    style: {
+      ...state.selectedLayer.style,
+      icon: {},
+    },
+  };
+
+  return {
+    ...state,
+    layers,
+    selectedLayer,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -115,9 +229,14 @@ const projectMapReducer = createReducer(initialState, {
   [Types.SET_SELECTED_PROJECT_THEME]: setSelectedProjectTheme,
   [Types.GET_MAP_POPUP_DATA_SUCCESS]: getMapPopupDataSuccess,
   [Types.SET_SELECTED_LAYER]: setSelectedLayer,
+  [Types.SET_DELETE_LAYER]: setDeleteLayer,
   [Types.HANDLE_STYLE_INPUT]: handleStyleInput,
+  [Types.HANDLE_ICON_INPUT]: handleIconInput,
   [Types.UPDATE_LAYER_SUCCESS]: updateLayerSuccess,
+  [Types.DELETE_LAYER_SUCCESS]: deleteLayerSuccess,
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
+  [Types.UPLOAD_ICON_SUCCESS]: uploadIconSuccess,
+  [Types.DELETE_ICON_SUCCESS]: deleteIconSuccess,
 });
 
 export default projectMapReducer;

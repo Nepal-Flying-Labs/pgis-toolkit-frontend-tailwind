@@ -1,36 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
-import useDebouncedInput from '@Hooks/useDebouncedInput';
 import MaterialIcon from '@Components/common/MaterialIcon';
-import Button from '@Components/common/Button/index';
+import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
-import RangeSlider from '../InputComponents/RangeSlider';
-import Input from '../InputComponents/Input';
+import AdvanceStyling from './AdvanceStyling';
+import StandardStyling from './StandardStyling';
 
-const { setSelectedLayer, handleStyleInput, updateLayerRequest } =
-  ProjectMapCreators;
+const { setSelectedLayer, updateLayerRequest } = ProjectMapCreators;
+
+const tabData = [{ label: 'Standard' }, { label: 'Advance' }];
 
 export default function EditFeatureSection() {
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.UPDATE_LAYER_REQUEST]),
   );
+  const [styleTab, setStyleTab] = useState('Advance');
   const dispatch = useDispatch();
   const [layerName, setLayerName] = useState(selectedLayer.name);
-  const [layerStyle, handleChange] = useDebouncedInput({
-    ms: 70,
-    init: selectedLayer.style,
-    onChange: debouncedEvent => {
-      const { name, value } = debouncedEvent.target;
-      dispatch(
-        handleStyleInput({
-          name,
-          value,
-        }),
-      );
-    },
-  });
+
+  useEffect(() => {
+    if (!selectedLayer?.style?.icon?.url) {
+      setStyleTab('Advance');
+    } else {
+      setStyleTab('Standard');
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const handleSave = () => {
     const data = {
@@ -39,17 +36,6 @@ export default function EditFeatureSection() {
     };
     dispatch(updateLayerRequest(selectedLayer.id, data));
   };
-
-  const {
-    lineColor,
-    fillColor,
-    lineOpacity,
-    fillOpacity,
-    lineThickness,
-    dashline,
-    circleRadius,
-    geometryType,
-  } = layerStyle;
 
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-5">
@@ -65,91 +51,59 @@ export default function EditFeatureSection() {
         <h4>Edit Feature</h4>
       </div>
 
-      <div className="naxatw-flex naxatw-items-center">
-        <div className="naxatw-w-full naxatw-space-y-2">
-          <label className="naxatw-label">Layer</label>
-          <input
-            type="text"
-            className="naxatw-input"
-            name="layerName"
-            placeholder="Layer Name"
-            value={layerName}
-            onChange={e => setLayerName(e.target.value)}
-          />
+      <div className="naxatw-overflow-auto scrollbar naxatw-h-[32rem] naxatw-flex naxatw-flex-col naxatw-gap-5">
+        <div className="naxatw-flex naxatw-items-center">
+          <div className="naxatw-w-full naxatw-space-y-2">
+            <label className="naxatw-label">Layer</label>
+            <input
+              type="text"
+              className="naxatw-input"
+              name="layerName"
+              placeholder="Layer Name"
+              value={layerName}
+              onChange={e => setLayerName(e.target.value)}
+            />
+          </div>
         </div>
-      </div>
 
-      <div className="naxatw-overflow-auto scrollbar naxatw-h-[26rem] naxatw-flex naxatw-flex-col naxatw-gap-4">
-        {geometryType !== 'LineString' && (
-          <Input
-            type="color"
-            name="fillColor"
-            label="Fill Color"
-            value={fillColor}
-            onChange={handleChange}
-          />
-        )}
+        <div className="naxatw-flex naxatw-items-center">
+          <div className="naxatw-w-full naxatw-space-y-2">
+            <label className="naxatw-label">Styling</label>
 
-        <Input
-          type="color"
-          name="lineColor"
-          label="Line Color"
-          value={lineColor}
-          onChange={handleChange}
-        />
+            {selectedLayer.style?.geometryType === 'Point' && (
+              <div className="naxatw-flex naxatw-gap-2">
+                {tabData.map(({ label }) => (
+                  <div
+                    className={`naxatw-w-fit naxatw-bg-white naxatw-border naxatw-rounded-2xl naxatw-px-3 naxatw-py-2 naxatw-cursor-pointer ${
+                      styleTab === label
+                        ? 'naxatw-border-grey-800'
+                        : 'naxatw-border-grey-100'
+                    }`}
+                    onClick={() => {
+                      setStyleTab(label);
+                    }}
+                  >
+                    {label}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
 
-        {geometryType !== 'LineString' && (
-          <RangeSlider
-            name="fillOpacity"
-            label="Fill Opacity"
-            value={fillOpacity}
-            onChange={handleChange}
-          />
-        )}
+        <div className="naxatw-flex naxatw-flex-col naxatw-gap-4">
+          {styleTab === 'Standard' ? <StandardStyling /> : <AdvanceStyling />}
+        </div>
 
-        <RangeSlider
-          name="lineOpacity"
-          label="Line Opacity"
-          value={lineOpacity}
-          onChange={handleChange}
-        />
-
-        <Input
-          type="number"
-          name="lineThickness"
-          label="Line thickness"
-          value={lineThickness}
-          onChange={handleChange}
-        />
-
-        {geometryType !== 'Point' && (
-          <RangeSlider
-            name="dashline"
-            label="Dash Line"
-            value={dashline}
-            onChange={handleChange}
-          />
-        )}
-
-        {geometryType === 'Point' && (
-          <Input
-            type="number"
-            name="circleRadius"
-            label="Radius"
-            value={circleRadius}
-            onChange={handleChange}
-          />
-        )}
-      </div>
-
-      <div>
-        <Button
-          className="naxatw-btn-primary"
-          onClick={handleSave}
-          isLoading={loading}
-        >
-          Save
-        </Button>
+        <div className="naxatw-fixed naxatw-bottom-0 naxatw-w-full naxatw-py-4 naxatw-bg-grey-100">
+          <Button
+            className="naxatw-btn-primary"
+            onClick={handleSave}
+            isLoading={loading}
+          >
+            Save
+          </Button>
+        </div>
       </div>
     </div>
   );

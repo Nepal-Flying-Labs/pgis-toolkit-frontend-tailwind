@@ -1,3 +1,4 @@
+/* eslint-disable no-unneeded-ternary */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-no-useless-fragment */
@@ -12,7 +13,9 @@ import Button from '@Components/common/Button/index';
 import Chip from '@Components/common/Chip';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import UploadPhotos from '@Components/common/UploadPhotos/index';
+import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetup/UploadPolygonBoundary/index';
 import MapSection from '../MapSection/index';
+
 // import MaterialIcon from '@Components/common/MaterialIcon/index';
 const { setIndividualProject, toggleModal } = Creators;
 
@@ -42,7 +45,10 @@ const Location = ({ page, setPage }) => {
   );
 
   const { values, handleChange, handleCustomChange, handleSubmit } = useForm({
-    initialValues: individualProject,
+    initialValues: {
+      ...individualProject,
+      location_type: individualProject.location_type || 'Upload Area',
+    },
     onSubmit: data =>
       dispatch(setIndividualProject({ key: 'pageTwo', value: data })),
   });
@@ -99,20 +105,13 @@ const Location = ({ page, setPage }) => {
           />
         </div>
       </div>
-      <div className="naxatw-space-y-2">
-        <label className="naxatw-label">Upload Polygon Boundary</label>
-        <UploadPhotos
-          isDropzone={false}
-          multiple
-          label="Logo"
-          uploadedFile={values?.file}
-          accept="image/*"
-          onChange={images => {
-            handleCustomChange('file', images);
-          }}
-        />
-        <MapSection />
-      </div>
+
+      <UploadPolygonBoundary
+        uploadedFile={values?.file || []}
+        setuploadedFile={file => {
+          handleCustomChange('file', file);
+        }}
+      />
 
       <div className="naxatw-flex naxatw-justify-between  naxatw-pt-7 naxatw-pb-7 ">
         {page > 1 ? (

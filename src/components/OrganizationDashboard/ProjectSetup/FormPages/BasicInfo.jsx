@@ -8,6 +8,7 @@ import { Creators } from '@Actions/organizationDashboard';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
 import Button from '@Components/common/Button';
+import UploadPhotos from '@Components/common/UploadPhotos/index';
 import useForm from '@Hooks/useForm';
 import { format } from 'date-fns';
 
@@ -76,6 +77,18 @@ const BasicInfo = ({ setPage }) => {
         onChange={handleChange}
         placeholder="Write a short summary of a project"
       />
+      <div className="naxatw-space-y-2">
+        <label className="naxatw-label">Upload Cover Image</label>
+        <UploadPhotos
+          multiple
+          label="coverImage"
+          uploadedFile={values?.coverImage}
+          accept="image/*"
+          onChange={images => {
+            handleCustomChange('coverImage', images);
+          }}
+        />
+      </div>
 
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Thematic Focus Area*</label>

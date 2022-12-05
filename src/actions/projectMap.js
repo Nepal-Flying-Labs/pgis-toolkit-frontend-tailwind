@@ -24,6 +24,7 @@ export const { Types, Creators } = createActions(
 
     setSelectedLayer: ['payload'],
     setDeleteLayer: ['payload'],
+    setSidebarContent: ['payload'],
     handleStyleInput: ['payload'],
     handleIconInput: ['payload'],
 

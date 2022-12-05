@@ -78,9 +78,11 @@ export default function StandardStyling() {
           onChange={handleIconUpload}
         />
 
-        <a className="naxatw-text-[#FF0F0F]" onClick={handleIconDelete}>
-          <MaterialIcon name="delete" />
-        </a>
+        {hasIcon && (
+          <a className="naxatw-text-[#FF0F0F]" onClick={handleIconDelete}>
+            <MaterialIcon name="delete" />
+          </a>
+        )}
       </div>
 
       {hasIcon && (

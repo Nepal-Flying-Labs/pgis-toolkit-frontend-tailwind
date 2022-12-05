@@ -11,6 +11,7 @@ const initialState = {
   selectedLayer: null,
   deleteLayer: null,
   hideSidebar: false,
+  sidebarContent: '',
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -29,11 +30,13 @@ const getProjectThemeLayersSuccess = (state, action) => {
         ...defaultStyles,
         ...item.style,
         geometryType: item.geom_type,
-        icon: {
-          id: 1,
-          url: item.icon,
-          scale: item.style?.icon?.scale || 0.9,
-        },
+        icon: item.icon
+          ? {
+              id: 1,
+              url: item.icon,
+              scale: item.style?.icon?.scale || 0.9,
+            }
+          : {},
       },
     })),
   };
@@ -188,7 +191,6 @@ const uploadIconSuccess = (state, action) => {
 };
 
 const deleteIconSuccess = (state, action) => {
-  console.log(action.payload, 'payloadx');
   const { id: layerId, theme } = action.payload;
   const layers = {
     ...state.layers,
@@ -221,6 +223,13 @@ const deleteIconSuccess = (state, action) => {
   };
 };
 
+const setSidebarContent = (state, action) => {
+  return {
+    ...state,
+    sidebarContent: action.payload || '',
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -237,6 +246,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
   [Types.UPLOAD_ICON_SUCCESS]: uploadIconSuccess,
   [Types.DELETE_ICON_SUCCESS]: deleteIconSuccess,
+  [Types.SET_SIDEBAR_CONTENT]: setSidebarContent,
 });
 
 export default projectMapReducer;

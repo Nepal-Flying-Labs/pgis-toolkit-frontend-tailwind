@@ -1,6 +1,7 @@
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import { arrayMove } from '@dnd-kit/sortable';
 
 const initialState = {
   themes: [],
@@ -12,6 +13,7 @@ const initialState = {
   deleteLayer: null,
   hideSidebar: false,
   sidebarContent: '',
+  layerOrder: [],
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -21,10 +23,12 @@ const getProjectThemesSuccess = (state, action) => ({
 
 const getProjectThemeLayersSuccess = (state, action) => {
   const { data, theme } = action.payload;
+  const layerOrder = [...state.layerOrder, ...data.map(item => item.id)];
   const layers = {
     ...state.layers,
     [theme]: data.map(item => ({
       ...item,
+      theme,
       checked: false,
       style: {
         ...defaultStyles,
@@ -43,6 +47,7 @@ const getProjectThemeLayersSuccess = (state, action) => {
   return {
     ...state,
     layers,
+    layerOrder,
   };
 };
 
@@ -230,6 +235,20 @@ const setSidebarContent = (state, action) => {
   };
 };
 
+const handleLayerSort = (state, action) => {
+  const {
+    payload: { active, over },
+  } = action;
+  const { layerOrder } = state;
+  const oldIndex = layerOrder.findIndex(id => id === active.id);
+  const newIndex = layerOrder.findIndex(id => id === over.id);
+  const sortedLayerOrder = arrayMove(layerOrder, oldIndex, newIndex);
+  return {
+    ...state,
+    layerOrder: sortedLayerOrder,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -247,6 +266,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.UPLOAD_ICON_SUCCESS]: uploadIconSuccess,
   [Types.DELETE_ICON_SUCCESS]: deleteIconSuccess,
   [Types.SET_SIDEBAR_CONTENT]: setSidebarContent,
+  [Types.HANDLE_LAYER_SORT]: handleLayerSort,
 });
 
 export default projectMapReducer;

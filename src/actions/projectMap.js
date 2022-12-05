@@ -45,6 +45,7 @@ export const { Types, Creators } = createActions(
     deleteIconFailure: null,
 
     toggleSidebar: null,
+    handleLayerSort: ['payload'],
   },
   { prefix: 'projectMap/' },
 );

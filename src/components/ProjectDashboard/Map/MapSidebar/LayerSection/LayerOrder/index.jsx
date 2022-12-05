@@ -1,33 +1,27 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-array-index-key */
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
-import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
-import Button from '@Components/common/Button';
+import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
-import { checkIfLoading } from '@Utils/loaderSelector';
+import { SortableList, SortableItem } from '@Components/common/DNDKit';
+import { mapStateSelector } from '@Selectors/projectMap';
 
 const {
   handleCheckbox,
   setZoomToLayerId,
-  setSelectedProjectTheme,
   setSelectedLayer,
   setDeleteLayer,
+  handleLayerSort,
 } = ProjectMapCreators;
-const { toggleModal, togglePromptDialog } = CommonCreators;
+const { togglePromptDialog } = CommonCreators;
 
 export default function LayerOrder() {
-  const themes = useSelector(state => state.projectMap.themes);
-  const layers = useSelector(state => state.projectMap.layers);
-  const isLoading = useSelector(state =>
-    checkIfLoading(state, [
-      Types.GET_PROJECT_THEMES_REQUEST,
-      Types.GET_PROJECT_THEME_LAYERS_REQUEST,
-    ]),
-  );
+  const mapState = useSelector(mapStateSelector);
   const dispatch = useDispatch();
 
   const handleLayerCheck = ({ checked, layerId, themeId }) => {
@@ -73,58 +67,79 @@ export default function LayerOrder() {
 
   return (
     <div className="naxatw-bg-white naxatw-border naxatw-border-grey-800 naxatw-rounded-lg naxatw-p-5">
-      <div>
+      <SortableList
+        items={mapState}
+        onDragEnd={event => {
+          const { active, over } = event;
+          if (active.id === over.id) return;
+          dispatch(handleLayerSort({ active, over }));
+        }}
+      >
         <div className="naxatw-font-light">
-          {layers[22].map(layer => (
-            <div
-              key={layer.id}
-              className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-my-2"
-            >
-              <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-                <input
-                  id={layer.id}
-                  type="checkbox"
-                  className="naxatw-w-4 naxatw-h-4 naxatw-mr-4 naxatw-accent-grey-800"
-                  checked={layer.checked}
-                  onChange={e =>
-                    handleLayerCheck({
-                      checked: e.target.checked,
-                      layerId: layer.id,
-                      // themeId: theme.id,
-                    })
-                  }
-                />
-
-                <LegendItem styles={layer.style} className="naxatw-mr-2" />
-
-                <label
-                  className="naxatw-text-body-lg naxatw-text-grey-800"
-                  htmlFor={layer.id}
+          {mapState.map(layer => (
+            <SortableItem
+              key={`item-${layer.id}`}
+              id={layer.id}
+              content={({ listeners, attributes }) => (
+                <div
+                  key={layer.id}
+                  className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-my-2"
                 >
-                  {layer.name}
-                </label>
-              </div>
-
-              <div className="naxatw-flex">
-                {layer.checked && (
-                  <span
-                    className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer"
-                    onClick={() => {
-                      dispatch(setSelectedLayer(layer));
-                    }}
-                  >
-                    <MaterialIcon
-                      name="edit"
-                      className="material-icons-outlined naxatw-mt-1"
+                  <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+                    <input
+                      id={layer.id}
+                      type="checkbox"
+                      className="naxatw-w-4 naxatw-h-4 naxatw-mr-4 naxatw-accent-grey-800"
+                      checked={layer.checked}
+                      onChange={e =>
+                        handleLayerCheck({
+                          checked: e.target.checked,
+                          layerId: layer.id,
+                          themeId: layer.theme,
+                        })
+                      }
                     />
-                  </span>
-                )}
-                <DropdownOptions options={dropdownOptions} data={layer} />
-              </div>
-            </div>
+
+                    <a
+                      className="naxatw-flex naxatw-cursor-move naxatw-mr-2"
+                      {...listeners}
+                      {...attributes}
+                    >
+                      <MaterialIcon name="unfold_more" />
+                    </a>
+
+                    <LegendItem styles={layer.style} className="naxatw-mr-2" />
+
+                    <label
+                      className="naxatw-text-body-lg naxatw-text-grey-800"
+                      htmlFor={layer.id}
+                    >
+                      {layer.name}
+                    </label>
+                  </div>
+
+                  <div className="naxatw-flex">
+                    {layer.checked && (
+                      <span
+                        className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer"
+                        onClick={() => {
+                          dispatch(setSelectedLayer(layer));
+                        }}
+                      >
+                        <MaterialIcon
+                          name="edit"
+                          className="material-icons-outlined naxatw-mt-1"
+                        />
+                      </span>
+                    )}
+                    <DropdownOptions options={dropdownOptions} data={layer} />
+                  </div>
+                </div>
+              )}
+            />
           ))}
         </div>
-      </div>
+      </SortableList>
     </div>
   );
 }

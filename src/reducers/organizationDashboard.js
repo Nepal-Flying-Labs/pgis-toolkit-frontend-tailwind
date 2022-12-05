@@ -30,8 +30,21 @@ const getProjectsSuccess = (state, action) => ({
 });
 
 const getIndividualProjectSuccess = (state, action) => {
-  const { name, description, thematic_areas, start_date, end_date, partners } =
-    action.payload;
+  const {
+    name,
+    description,
+    thematic_areas,
+    start_date,
+    end_date,
+    partners,
+    bbox,
+    country,
+    file,
+    file_type,
+    geographical_region,
+    geometry_type,
+    location_type,
+  } = action.payload;
   return {
     ...state,
     individualProject: {
@@ -44,7 +57,15 @@ const getIndividualProjectSuccess = (state, action) => {
         end_date,
         partners,
       },
-      pageTwo: action.payload,
+      pageTwo: {
+        bbox,
+        country,
+        file,
+        file_type,
+        geographical_region,
+        geometry_type,
+        location_type,
+      },
     },
   };
 };

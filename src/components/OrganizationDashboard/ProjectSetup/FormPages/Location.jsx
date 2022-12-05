@@ -14,7 +14,7 @@ import MaterialIcon from '@Components/common/MaterialIcon/index';
 import UploadPhotos from '@Components/common/UploadPhotos/index';
 import MapSection from '../MapSection/index';
 // import MaterialIcon from '@Components/common/MaterialIcon/index';
-const { setIndividualProject } = Creators;
+const { setIndividualProject, toggleModal } = Creators;
 
 const options = [
   {
@@ -34,6 +34,9 @@ const options = [
 const Location = ({ page, setPage }) => {
   const [geographicToggle, handleGeographicToggle] = useState('Upload Area');
   const dispatch = useDispatch();
+  const pageOne = useSelector(
+    state => state.organizationDashboard.individualProject.pageOne,
+  );
   const individualProject = useSelector(
     state => state.organizationDashboard.individualProject.pageTwo,
   );
@@ -80,7 +83,7 @@ const Location = ({ page, setPage }) => {
         <div className="naxatw-flex naxatw-gap-x-2">
           <Chip
             name="Upload Area"
-            status={values.location_type}
+            status={values.location_type || 'Upload Area'}
             value="Upload Area"
             onClick={() => {
               handleCustomChange('location_type', 'Upload Area');
@@ -102,10 +105,10 @@ const Location = ({ page, setPage }) => {
           isDropzone={false}
           multiple
           label="Logo"
-          uploadedFile={values?.logo}
+          uploadedFile={values?.file}
           accept="image/*"
           onChange={images => {
-            handleCustomChange('logo', images);
+            handleCustomChange('file', images);
           }}
         />
         <MapSection />
@@ -136,7 +139,10 @@ const Location = ({ page, setPage }) => {
           Save
         </Button>
         <Button
-          // onClick={handleSubmit}
+          onClick={() => {
+            handleSubmit();
+            dispatch(toggleModal('save-as-draft'));
+          }}
           className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
         >
           Save as Draft

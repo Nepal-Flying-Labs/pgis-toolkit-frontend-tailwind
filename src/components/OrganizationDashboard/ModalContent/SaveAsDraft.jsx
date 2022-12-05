@@ -18,6 +18,9 @@ const SaveAsDraft = () => {
   const pageOne = useSelector(
     state => state.organizationDashboard.individualProject.pageOne,
   );
+  const pageTwo = useSelector(
+    state => state.organizationDashboard.individualProject.pageTwo,
+  );
   return (
     <div>
       <div className="naxatw-flex naxatw-items-center naxatw-gap-x-5 naxatw-mb-7">
@@ -43,7 +46,9 @@ const SaveAsDraft = () => {
           </Button>
           <Button
             onClick={() => {
-              dispatch(patchProjectRequest(projectId, pageOne));
+              dispatch(
+                patchProjectRequest(projectId, { ...pageOne, ...pageTwo }),
+              );
             }}
             className="naxatw-btn-primary naxatw-w-[7.563rem]"
             isLoading={loading}

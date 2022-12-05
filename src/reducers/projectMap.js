@@ -9,6 +9,7 @@ const initialState = {
   selectedProjectTheme: null,
   popupData: {},
   selectedLayer: null,
+  deleteLayer: null,
   hideSidebar: false,
 };
 
@@ -77,6 +78,11 @@ const setSelectedLayer = (state, action) => ({
   selectedLayer: action.payload || null,
 });
 
+const setDeleteLayer = (state, action) => ({
+  ...state,
+  deleteLayer: action.payload || null,
+});
+
 const handleStyleInput = (state, action) => {
   const {
     payload: { name, value },
@@ -111,6 +117,19 @@ const handleIconInput = (state, action) => {
   return {
     ...state,
     selectedLayer,
+  };
+};
+
+const deleteLayerSuccess = (state, action) => {
+  const { theme, id: layerId } = action.payload;
+  const layers = {
+    ...state.layers,
+    [theme]: state.layers[theme].filter(item => item.id !== layerId),
+  };
+  return {
+    ...state,
+    layers,
+    deleteLayer: null,
   };
 };
 
@@ -210,9 +229,11 @@ const projectMapReducer = createReducer(initialState, {
   [Types.SET_SELECTED_PROJECT_THEME]: setSelectedProjectTheme,
   [Types.GET_MAP_POPUP_DATA_SUCCESS]: getMapPopupDataSuccess,
   [Types.SET_SELECTED_LAYER]: setSelectedLayer,
+  [Types.SET_DELETE_LAYER]: setDeleteLayer,
   [Types.HANDLE_STYLE_INPUT]: handleStyleInput,
   [Types.HANDLE_ICON_INPUT]: handleIconInput,
   [Types.UPDATE_LAYER_SUCCESS]: updateLayerSuccess,
+  [Types.DELETE_LAYER_SUCCESS]: deleteLayerSuccess,
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
   [Types.UPLOAD_ICON_SUCCESS]: uploadIconSuccess,
   [Types.DELETE_ICON_SUCCESS]: deleteIconSuccess,

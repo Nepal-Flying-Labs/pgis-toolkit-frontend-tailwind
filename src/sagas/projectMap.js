@@ -7,6 +7,7 @@ import {
   uploadLayer,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
+import commonActions from '@Actions/common';
 import toastActions from '@Actions/toast';
 import { withLoader } from '@Utils/sagaUtils';
 import prepareFormData from '@Utils/prepareFormData';
@@ -72,6 +73,18 @@ export function* updateLayerRequest({ id, payload }) {
   }
 }
 
+export function* deleteLayerRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateLayer, id, formdata);
+    yield put(projectMapActions.deleteLayerSuccess(response.data));
+    yield put(commonActions.togglePromptDialog());
+  } catch (error) {
+    yield put(projectMapActions.deleteLayerFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 export function* uploadIconRequest({ id, payload }) {
   try {
     const formdata = prepareFormData(payload);
@@ -109,6 +122,7 @@ function* projectMapWatcher() {
     withLoader(getMapPopupDataRequest),
   );
   yield takeLatest(Types.UPDATE_LAYER_REQUEST, withLoader(updateLayerRequest));
+  yield takeLatest(Types.DELETE_LAYER_REQUEST, withLoader(deleteLayerRequest));
   yield takeLatest(Types.UPLOAD_ICON_REQUEST, withLoader(uploadIconRequest));
   yield takeLatest(Types.DELETE_ICON_REQUEST, withLoader(deleteIconRequest));
 }

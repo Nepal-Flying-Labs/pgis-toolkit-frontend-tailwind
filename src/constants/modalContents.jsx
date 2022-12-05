@@ -23,7 +23,7 @@ export function getModalContent(content) {
 export function getPromptDialogTitle(content) {
   switch (content) {
     case 'delete-layer':
-      return 'Delete layer';
+      return '';
     default:
       return '';
   }

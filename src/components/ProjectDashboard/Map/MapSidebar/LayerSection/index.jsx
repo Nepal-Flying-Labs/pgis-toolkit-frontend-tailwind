@@ -23,6 +23,7 @@ const {
   setZoomToLayerId,
   setSelectedProjectTheme,
   setSelectedLayer,
+  setDeleteLayer,
 } = ProjectMapCreators;
 const { toggleModal, togglePromptDialog } = CommonCreators;
 
@@ -72,7 +73,7 @@ export default function LayerSection() {
         </span>
       ),
       onClick: data => {
-        dispatch(setSelectedLayer(data));
+        dispatch(setDeleteLayer(data));
         dispatch(togglePromptDialog('delete-layer'));
       },
     },

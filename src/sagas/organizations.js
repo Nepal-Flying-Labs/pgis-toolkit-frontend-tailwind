@@ -3,6 +3,7 @@ import { createOrganization, getOrganizations } from '@Services/organizations';
 import organizationsActions, { Types } from '@Actions/organizations';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
+import { withLoader } from '@Utils/sagaUtils';
 
 export function* getOrganizationsRequest({ params }) {
   try {
@@ -24,6 +25,7 @@ export function* createOrganizationRequest({ payload }) {
         organizationId: response.data.organization,
       }),
     );
+    yield put(organizationsActions.getOrganizationsRequest());
   } catch (error) {
     yield put(organizationsActions.createOrganizationFailure());
     yield put(toastActions.error({ message: error?.response?.data?.message }));
@@ -31,7 +33,10 @@ export function* createOrganizationRequest({ payload }) {
 }
 
 function* organizationsWatcher() {
-  yield takeLatest(Types.GET_ORGANIZATIONS_REQUEST, getOrganizationsRequest);
+  yield takeLatest(
+    Types.GET_ORGANIZATIONS_REQUEST,
+    withLoader(getOrganizationsRequest),
+  );
   yield takeLatest(
     Types.CREATE_ORGANIZATION_REQUEST,
     createOrganizationRequest,

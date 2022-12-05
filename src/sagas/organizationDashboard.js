@@ -1,4 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+
 import {
   getProjects,
   postProjectInvite,
@@ -35,6 +36,7 @@ export function* getProjectsRequest({ params }) {
 }
 
 export function* postProjectInviteRequest({ payload }) {
+  const { organization } = payload;
   try {
     const formdata = prepareFormData(payload);
     const response = yield call(postProjectInvite, formdata);
@@ -43,6 +45,9 @@ export function* postProjectInviteRequest({ payload }) {
     );
     yield put(organizationDashboardActions.toggleModal(''));
     yield put(toastActions.success({ message: 'Invitation sent success' }));
+    yield put(
+      organizationDashboardActions.getProjectsRequest({ organization }),
+    );
   } catch (error) {
     yield put(organizationDashboardActions.postProjectInviteFailure());
     yield put(toastActions.error({ message: error?.response?.data?.message }));
@@ -66,11 +71,14 @@ function* organizationDashboardWatcher() {
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
     withLoader(getOrganizationDetailRequest),
   );
-  yield takeLatest(Types.GET_PROJECTS_REQUEST, getProjectsRequest);
-  yield takeLatest(Types.POST_PROJECT_INVITE_REQUEST, postProjectInviteRequest);
+  yield takeLatest(Types.GET_PROJECTS_REQUEST, withLoader(getProjectsRequest));
+  yield takeLatest(
+    Types.POST_PROJECT_INVITE_REQUEST,
+    withLoader(postProjectInviteRequest),
+  );
   yield takeLatest(
     Types.GET_INDIVIDUAL_PROJECT_REQUEST,
-    getIndividualProjectRequest,
+    withLoader(getIndividualProjectRequest),
   );
 }
 

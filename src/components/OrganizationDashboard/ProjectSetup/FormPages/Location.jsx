@@ -10,6 +10,9 @@ import Select from '@Components/common/Select/index';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button/index';
 import Chip from '@Components/common/Chip';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
+import UploadPhotos from '@Components/common/UploadPhotos/index';
+import MapSection from '../MapSection/index';
 // import MaterialIcon from '@Components/common/MaterialIcon/index';
 const { setIndividualProject } = Creators;
 
@@ -25,17 +28,6 @@ const options = [
   {
     id: 3,
     name: 'Filter 3',
-  },
-];
-
-const chipOptions = [
-  {
-    id: 1,
-    name: 'Upload Area',
-  },
-  {
-    id: 1,
-    name: 'Draw Area on Map',
   },
 ];
 
@@ -63,7 +55,15 @@ const Location = ({ page, setPage }) => {
       </div>
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Country</label>
-        <Select options={options} defaultValue="Choose" />
+        <Select
+          options={options}
+          defaultValue="Choose"
+          onChange={data => {
+            handleCustomChange('country', data.name);
+          }}
+          selected={values.country}
+          dataKey="name"
+        />
       </div>
 
       <Input
@@ -80,26 +80,37 @@ const Location = ({ page, setPage }) => {
         <div className="naxatw-flex naxatw-gap-x-2">
           <Chip
             name="Upload Area"
-            status={geographicToggle}
+            status={values.location_type}
+            value="Upload Area"
             onClick={() => {
-              handleGeographicToggle('Upload Area');
-              handleCustomChange('location_type', geographicToggle);
+              handleCustomChange('location_type', 'Upload Area');
             }}
           />
           <Chip
             name="Draw Area on Map"
-            status={geographicToggle}
+            status={values.location_type}
+            value="Custom Draw"
             onClick={() => {
-              handleGeographicToggle('Draw Area on Map');
-              handleCustomChange('location_type', geographicToggle);
+              handleCustomChange('location_type', 'Custom Draw');
             }}
           />
         </div>
       </div>
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Upload Polygon Boundary</label>
-        <Select options={options} defaultValue="Choose" />
+        <UploadPhotos
+          isDropzone={false}
+          multiple
+          label="Logo"
+          uploadedFile={values?.logo}
+          accept="image/*"
+          onChange={images => {
+            handleCustomChange('logo', images);
+          }}
+        />
+        <MapSection />
       </div>
+
       <div className="naxatw-flex naxatw-justify-between  naxatw-pt-7 naxatw-pb-7 ">
         {page > 1 ? (
           <Button
@@ -118,11 +129,11 @@ const Location = ({ page, setPage }) => {
         <Button
           className="naxatw-btn-primary naxatw-w-[4.75rem]"
           onClick={() => {
-            handleSubmit();
-            setPage(prevPage => prevPage + 1);
+            // handleSubmit();
+            // setPage(prevPage => prevPage + 1);
           }}
         >
-          Next
+          Save
         </Button>
         <Button
           // onClick={handleSubmit}

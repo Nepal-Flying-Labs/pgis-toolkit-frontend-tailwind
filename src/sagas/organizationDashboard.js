@@ -6,6 +6,8 @@ import {
   getIndividualProject,
   getOrganizationDetail,
   patchProject,
+  getContactPerson,
+  getCountryList,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
@@ -80,6 +82,30 @@ export function* patchProjectRequest({ id, payload }) {
   }
 }
 
+export function* getContactPersonRequest({ params }) {
+  try {
+    const response = yield call(getContactPerson, params);
+    yield put(
+      organizationDashboardActions.getContactPersonSuccess({
+        data: response.data,
+      }),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.getContactPersonFailure());
+  }
+}
+
+export function* getCountryListRequest() {
+  try {
+    const response = yield call(getCountryList);
+    yield put(
+      organizationDashboardActions.getCountryListSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.getCountryListFailure());
+  }
+}
+
 function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
@@ -97,6 +123,14 @@ function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.PATCH_PROJECT_REQUEST,
     withLoader(patchProjectRequest),
+  );
+  yield takeLatest(
+    Types.GET_CONTACT_PERSON_REQUEST,
+    withLoader(getContactPersonRequest),
+  );
+  yield takeLatest(
+    Types.GET_COUNTRY_LIST_REQUEST,
+    withLoader(getCountryListRequest),
   );
 }
 

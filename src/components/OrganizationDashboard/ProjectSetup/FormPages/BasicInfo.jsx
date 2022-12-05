@@ -35,6 +35,7 @@ const BasicInfo = ({ setPage }) => {
   const { values, setValues, handleChange, handleCustomChange, handleSubmit } =
     useForm({
       initialValues: individualProject,
+      required: ['name'],
       onSubmit: data => {
         dispatch(setIndividualProject({ key: 'pageOne', value: data }));
       },

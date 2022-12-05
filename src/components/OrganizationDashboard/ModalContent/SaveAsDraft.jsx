@@ -9,6 +9,17 @@ import { Creators, Types } from '@Actions/organizationDashboard';
 
 const { toggleModal, patchProjectRequest } = Creators;
 
+function diffObject(a, b) {
+  const diffObj = Object.keys(b).reduce((diff, key) => {
+    if (a[key] === b[key]) return diff;
+    return {
+      ...diff,
+      [key]: b[key],
+    };
+  }, {});
+  return diffObj;
+}
+
 const SaveAsDraft = () => {
   const { projectId } = useParams();
   const dispatch = useDispatch();
@@ -21,6 +32,12 @@ const SaveAsDraft = () => {
   const pageTwo = useSelector(
     state => state.organizationDashboard.individualProject.pageTwo,
   );
+  const project = useSelector(
+    state => state.organizationDashboard.individualProject.project,
+  );
+
+  const finalObj = { ...pageOne, ...pageTwo };
+  const diffObj = diffObject(project, finalObj);
   return (
     <div>
       <div className="naxatw-flex naxatw-items-center naxatw-gap-x-5 naxatw-mb-7">
@@ -46,9 +63,7 @@ const SaveAsDraft = () => {
           </Button>
           <Button
             onClick={() => {
-              dispatch(
-                patchProjectRequest(projectId, { ...pageOne, ...pageTwo }),
-              );
+              dispatch(patchProjectRequest(projectId, diffObj));
             }}
             className="naxatw-btn-primary naxatw-w-[7.563rem]"
             isLoading={loading}

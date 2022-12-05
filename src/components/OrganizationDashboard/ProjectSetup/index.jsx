@@ -15,7 +15,12 @@ import Location from './FormPages/Location';
 import Documents from './FormPages/Documents';
 import Images from './FormPages/Images';
 
-const { getIndividualProjectRequest, toggleModal } = Creators;
+const {
+  getIndividualProjectRequest,
+  toggleModal,
+  getContactPersonRequest,
+  getCountryListRequest,
+} = Creators;
 
 const getPage = (page, setPage) => {
   switch (page) {
@@ -66,6 +71,8 @@ const ProjectSetup = () => {
 
   useEffect(() => {
     dispatch(getIndividualProjectRequest(projectId));
+    dispatch(getContactPersonRequest({ project: projectId }));
+    dispatch(getCountryListRequest());
   }, [dispatch, projectId]);
 
   return (

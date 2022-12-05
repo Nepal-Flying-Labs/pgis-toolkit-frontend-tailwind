@@ -4,7 +4,9 @@ import { Types } from '@Actions/organizationDashboard';
 
 const initialState = {
   projects: null,
+  countryList: [],
   individualProject: {
+    project: {},
     pageOne: {},
     pageTwo: {},
     pageThree: {},
@@ -49,6 +51,7 @@ const getIndividualProjectSuccess = (state, action) => {
     ...state,
     individualProject: {
       ...state.individualProject,
+      project: action.payload,
       pageOne: {
         name,
         description,
@@ -81,12 +84,33 @@ const setIndividualProject = (state, action) => {
   };
 };
 
+const getContactPersonSuccess = (action, state) => {
+  const { data } = action.payload;
+  return {
+    ...state,
+    individualProject: {
+      ...state.individualProject,
+      pageOne: {
+        ...state.individualProject.pageOne,
+        contactPerson: data,
+      },
+    },
+  };
+};
+
+const getCountryListSuccess = (state, action) => ({
+  ...state,
+  countryList: action.payload,
+});
+
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
   [Types.TOGGLE_MODAL]: toggleModal,
   [Types.GET_INDIVIDUAL_PROJECT_SUCCESS]: getIndividualProjectSuccess,
   [Types.SET_INDIVIDUAL_PROJECT]: setIndividualProject,
+  [Types.GET_CONTACT_PERSON_SUCCESS]: getContactPersonSuccess,
+  [Types.GET_COUNTRY_LIST_SUCCESS]: getCountryListSuccess,
 });
 
 export default organizationDashboardReducer;

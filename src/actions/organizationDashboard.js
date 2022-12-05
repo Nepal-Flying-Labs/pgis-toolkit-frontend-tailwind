@@ -18,9 +18,17 @@ export const { Types, Creators } = createActions(
     getIndividualProjectSuccess: ['payload'],
     getIndividualProjectFailure: null,
 
+    getContactPersonRequest: ['params'],
+    getContactPersonSuccess: ['payload'],
+    getContactPersonFailure: null,
+
     patchProjectRequest: ['id', 'payload'],
     patchProjectSuccess: ['payload'],
     patchProjectFailure: null,
+
+    getCountryListRequest: null,
+    getCountryListSuccess: ['payload'],
+    getCountryListFailure: null,
 
     setIndividualProject: ['payload'],
 

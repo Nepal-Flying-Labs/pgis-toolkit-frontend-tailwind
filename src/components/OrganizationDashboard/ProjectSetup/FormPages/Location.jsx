@@ -35,8 +35,10 @@ const options = [
 ];
 
 const Location = ({ page, setPage }) => {
-  const [geographicToggle, handleGeographicToggle] = useState('Upload Area');
   const dispatch = useDispatch();
+  const countryList = useSelector(
+    state => state.organizationDashboard.countryList,
+  );
   const pageOne = useSelector(
     state => state.organizationDashboard.individualProject.pageOne,
   );
@@ -45,10 +47,7 @@ const Location = ({ page, setPage }) => {
   );
 
   const { values, handleChange, handleCustomChange, handleSubmit } = useForm({
-    initialValues: {
-      ...individualProject,
-      location_type: individualProject.location_type || 'Upload Area',
-    },
+    initialValues: individualProject,
     onSubmit: data =>
       dispatch(setIndividualProject({ key: 'pageTwo', value: data })),
   });
@@ -65,12 +64,14 @@ const Location = ({ page, setPage }) => {
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Country</label>
         <Select
-          options={options}
+          options={countryList}
           defaultValue="Choose"
           onChange={data => {
-            handleCustomChange('country', data.name);
+            handleCustomChange('country', data.id);
           }}
-          selected={values.country}
+          // selected={
+          //   countryList.filter(country => country.id === values.country)[0].name
+          // }
           dataKey="name"
         />
       </div>
@@ -89,7 +90,7 @@ const Location = ({ page, setPage }) => {
         <div className="naxatw-flex naxatw-gap-x-2">
           <Chip
             name="Upload Area"
-            status={values.location_type || 'Upload Area'}
+            status={values.location_type || ''}
             value="Upload Area"
             onClick={() => {
               handleCustomChange('location_type', 'Upload Area');
@@ -97,7 +98,7 @@ const Location = ({ page, setPage }) => {
           />
           <Chip
             name="Draw Area on Map"
-            status={values.location_type}
+            status={values.location_type || ''}
             value="Custom Draw"
             onClick={() => {
               handleCustomChange('location_type', 'Custom Draw');

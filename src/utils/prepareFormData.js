@@ -1,11 +1,15 @@
+/* eslint-disable no-nested-ternary */
+
 export default function prepareFormData(data) {
   const formData = Object.entries(data).reduce(
-    (obj, item) => ({
+    (obj, [key, value]) => ({
       ...obj,
-      [item[0]]:
-        Array.isArray(item[1]) || typeof item[1] === 'object'
-          ? JSON.stringify(item[1])
-          : item[1],
+      [key]:
+        value instanceof File
+          ? value
+          : Array.isArray(value) || typeof value === 'object'
+          ? JSON.stringify(value)
+          : value,
     }),
     {},
   );

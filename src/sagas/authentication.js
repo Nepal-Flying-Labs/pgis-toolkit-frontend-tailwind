@@ -7,6 +7,8 @@ import {
   forgotPassword,
   resetPassword,
   getUserPermissions,
+  landingPage,
+  getUserGroup,
 } from '@Services/authentication';
 import authActions, { Types } from '@Actions/authentication';
 import organizationsActions from '@Actions/organizations';
@@ -17,12 +19,14 @@ import { withLoader } from '@Utils/sagaUtils';
 export function* loginRequest({ payload }) {
   try {
     const response = yield call(loginUser, payload);
+
     localStorage.setItem('refreshToken', response.data.refresh);
     localStorage.setItem('userToken', response.data.access);
     yield put(authActions.loginSuccess(response.data));
+    const landingResponse = yield call(landingPage);
     yield put(authActions.setInfoDialogContent(''));
     yield put(organizationsActions.toggleModal('access-to-functionalities'));
-    yield put(push('/organizations'));
+    yield put(push(`${landingResponse.data.page}`));
   } catch (error) {
     yield put(authActions.loginFailure());
     yield put(
@@ -46,6 +50,7 @@ export function* verifyUserRequest({ params }) {
   } catch (error) {
     yield put(authActions.verifyUserFailure());
     yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(push('/login'));
   }
 }
 
@@ -128,6 +133,16 @@ function* getUserPermissionsRequest({ params }) {
   }
 }
 
+function* getUserGroupRequest() {
+  try {
+    const response = yield call(getUserGroup);
+    yield put(authActions.getUserGroupSuccess(response.data));
+  } catch (error) {
+    yield put(authActions.getUserGroupFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
+
 function* authenticationWatcher() {
   yield takeLatest(Types.LOGIN_REQUEST, withLoader(loginRequest));
   yield takeLatest(Types.SIGN_UP_REQUEST, withLoader(signUpRequest));
@@ -144,6 +159,10 @@ function* authenticationWatcher() {
   yield takeLatest(
     Types.GET_USER_PERMISSIONS_REQUEST,
     withLoader(getUserPermissionsRequest),
+  );
+  yield takeLatest(
+    Types.GET_USER_GROUP_REQUEST,
+    withLoader(getUserGroupRequest),
   );
 }
 

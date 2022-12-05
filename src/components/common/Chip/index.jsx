@@ -4,20 +4,20 @@ import PropTypes from 'prop-types';
 
 // import './MultiSelectDropdown.css';
 
-const Chip = ({ name, onClick, status }) => {
+const Chip = ({ name, onClick, status, value }) => {
   const [activeChip, setActiveChip] = useState(false);
 
   useEffect(() => {
     if (Array.isArray(status)) {
-      if (status.includes(name)) {
+      if (status.includes(value)) {
         return setActiveChip(true);
       }
-    } else if (status === name) {
+    } else if (status === value) {
       return setActiveChip(true);
     }
 
     return setActiveChip(false);
-  }, [name, status]);
+  }, [name, status, value]);
 
   return (
     <div
@@ -38,6 +38,7 @@ Chip.propTypes = {
   name: PropTypes.string.isRequired,
   status: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
   onClick: PropTypes.func,
+  value: PropTypes.string.isRequired,
 };
 
 Chip.defaultProps = {

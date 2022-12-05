@@ -10,6 +10,7 @@ import useForm from '@Hooks/useForm';
 import BasicInfo from './FormPages/BasicInfo';
 import Location from './FormPages/Location';
 import Documents from './FormPages/Documents';
+import Images from './FormPages/Images';
 
 const { getIndividualProjectRequest } = Creators;
 
@@ -19,8 +20,10 @@ const getPage = (page, setPage) => {
       return <BasicInfo setPage={setPage} />;
     case 2:
       return <Location page={page} setPage={setPage} />;
-    case 3:
-      return <Documents />;
+    // case 3:
+    //   return <Documents page={page} setPage={setPage} />;
+    // case 4:
+    //   return <Images page={page} setPage={setPage} />;
     default:
       return '';
   }
@@ -37,16 +40,16 @@ const pageStatus = [
     value: 2,
     text: 'Location',
   },
-  {
-    id: 3,
-    value: 3,
-    text: 'Documents',
-  },
-  {
-    id: 4,
-    value: 4,
-    text: 'Data',
-  },
+  // {
+  //   id: 3,
+  //   value: 3,
+  //   text: 'Documents',
+  // },
+  // {
+  //   id: 4,
+  //   value: 4,
+  //   text: 'Images',
+  // },
 ];
 
 const ProjectSetup = () => {
@@ -79,7 +82,7 @@ const ProjectSetup = () => {
           </button>
         </div>
       </div>
-      <div className="naxatw-w-[41.875rem] naxatw-mx-auto">
+      <div className="naxatw-w-[41.875rem] naxatw-mx-auto ">
         <div className=" naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-center naxatw-px-[5.313rem] naxatw-py-5">
           <div className="naxatw-flex ">
             {pageStatus.map(pg => (

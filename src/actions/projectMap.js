@@ -46,6 +46,10 @@ export const { Types, Creators } = createActions(
 
     toggleSidebar: null,
     handleLayerSort: ['payload'],
+
+    saveMapConfigRequest: ['params', 'payload'],
+    saveMapConfigSuccess: ['payload'],
+    saveMapConfigFailure: null,
   },
   { prefix: 'projectMap/' },
 );

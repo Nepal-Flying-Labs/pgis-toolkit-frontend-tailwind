@@ -34,7 +34,7 @@
 ## Project Map
 - [x] handle layer name style save
 - [x] zoom to project location
-- [] layer order
+- [x] layer order
 - [] upload layer
 - [] layer search
 - [] project header height dynamic calculation 

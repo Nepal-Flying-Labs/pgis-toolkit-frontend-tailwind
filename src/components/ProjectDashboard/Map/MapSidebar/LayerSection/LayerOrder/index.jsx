@@ -2,6 +2,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
+import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
@@ -17,11 +18,14 @@ const {
   setSelectedLayer,
   setDeleteLayer,
   handleLayerSort,
+  saveMapConfigRequest,
 } = ProjectMapCreators;
 const { togglePromptDialog } = CommonCreators;
 
 export default function LayerOrder() {
+  const { projectId } = useParams();
   const mapState = useSelector(mapStateSelector);
+  const layerOrder = useSelector(state => state.projectMap.layerOrder);
   const dispatch = useDispatch();
 
   const handleLayerCheck = ({ checked, layerId, themeId }) => {
@@ -73,6 +77,12 @@ export default function LayerOrder() {
           const { active, over } = event;
           if (active.id === over.id) return;
           dispatch(handleLayerSort({ active, over }));
+          dispatch(
+            saveMapConfigRequest(
+              { project: projectId },
+              { map_config: { layerOrder } },
+            ),
+          );
         }}
       >
         <div className="naxatw-font-light">

@@ -12,7 +12,6 @@ import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSw
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
-import { projectHeaderHeight } from '@src/constants';
 import Spinner from '@Components/common/Spinner';
 import PopupUI from '@Components/common/OpenLayersComponent/Custom/PopupUI';
 import { checkIfLoading } from '@Utils/loaderSelector';
@@ -39,6 +38,9 @@ export default function MapSection() {
   const hideSidebar = useSelector(state => state.projectMap.hideSidebar);
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
+  );
+  const projectHeaderHeight = useSelector(
+    state => state.common.projectHeaderHeight,
   );
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
@@ -128,7 +130,7 @@ export default function MapSection() {
         ref={mapRef}
         mapInstance={map}
         style={{
-          height: `calc(100vh - ${projectHeaderHeight})`,
+          height: `calc(100vh - ${projectHeaderHeight}px)`,
         }}
       >
         <SidebarToggle />

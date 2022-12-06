@@ -1,12 +1,19 @@
 import React from 'react';
-import { projectHeaderHeight } from '@src/constants';
+import { useSelector } from 'react-redux';
 import MapSidebar from './MapSidebar';
 import MapSection from './MapSection';
 
 export default function Projects() {
+  const projectHeaderHeight = useSelector(
+    state => state.common.projectHeaderHeight,
+  );
+
   return (
     <div
-      className={`naxatw-h-[calc(100vh-${projectHeaderHeight})] naxatw-flex`}
+      className="naxatw-flex"
+      style={{
+        height: `calc(100vh - ${projectHeaderHeight}px)`,
+      }}
     >
       <MapSidebar />
 

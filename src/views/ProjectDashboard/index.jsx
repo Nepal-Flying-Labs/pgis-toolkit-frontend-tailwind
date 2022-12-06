@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { projectHeaderHeight } from '@src/constants';
+// import { projectHeaderHeight } from '@src/constants';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
 import ProjectHeader from '@Components/common/ProjectHeader';
@@ -50,6 +50,9 @@ export default function ProjectDashboard() {
   const modalContent = useSelector(state => state.common.modalContent);
   const promptDialogContent = useSelector(
     state => state.common.promptDialogContent,
+  );
+  const projectHeaderHeight = useSelector(
+    state => state.common.projectHeaderHeight,
   );
   const dispatch = useDispatch();
 

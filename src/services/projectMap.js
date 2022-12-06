@@ -14,3 +14,6 @@ export const updateLayer = (id, data) =>
 
 export const getMapPopupData = params =>
   authenticated(api).get(`/maps/feature_popup/`, { params });
+
+export const saveMapConfig = (params, data) =>
+  authenticated(api).patch(`/maps/map_config/`, data, { params });

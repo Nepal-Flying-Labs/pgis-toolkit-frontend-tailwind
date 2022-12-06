@@ -4,6 +4,7 @@ export const { Types, Creators } = createActions(
   {
     toggleModal: ['payload'],
     togglePromptDialog: ['payload'],
+    setProjectHeaderHeight: ['payload'],
   },
   { prefix: 'common/' },
 );

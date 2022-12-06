@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { projectHeaderHeight } from '@src/constants';
 // import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as OrganizationDashboardCreators } from '@Actions/organizationDashboard';
 import ProjectHeader from '@Components/common/ProjectHeader';
@@ -30,6 +29,9 @@ export default function OrganizationDashboard() {
   const dispatch = useDispatch();
   const modalContent = useSelector(
     state => state.organizationDashboard.modalContent,
+  );
+  const projectHeaderHeight = useSelector(
+    state => state.common.projectHeaderHeight,
   );
 
   useEffect(() => {

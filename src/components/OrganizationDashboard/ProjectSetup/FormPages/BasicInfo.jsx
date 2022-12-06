@@ -86,12 +86,11 @@ const BasicInfo = ({ setPage }) => {
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Upload Cover Image</label>
         <UploadPhotos
-          multiple
           label="coverImage"
-          uploadedFile={values?.coverImage}
+          uploadedFile={values?.cover_image}
           accept="image/*"
           onChange={images => {
-            handleCustomChange('coverImage', images);
+            handleCustomChange('cover_image', images);
           }}
         />
       </div>

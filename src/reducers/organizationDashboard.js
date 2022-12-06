@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/organizationDashboard';
+import { getFileExtension } from '@Utils/commonUtils';
 
 const initialState = {
   projects: null,
@@ -35,6 +36,7 @@ const getProjectsSuccess = (state, action) => ({
 const getIndividualProjectSuccess = (state, action) => {
   const {
     name,
+    cover_image,
     description,
     thematic_areas,
     start_date,
@@ -47,13 +49,19 @@ const getIndividualProjectSuccess = (state, action) => {
     geographical_region,
     geometry_type,
     location_type,
+    last_updated,
   } = action.payload;
+  const fileNameArray = file?.split('/');
+  const fileName = fileNameArray ? fileNameArray[fileNameArray.length - 1] : '';
   return {
     ...state,
     individualProject: {
       ...state.individualProject,
       project: action.payload,
       stepOne: {
+        cover_image: cover_image
+          ? [{ image: cover_image, fileName: getFileExtension(cover_image) }]
+          : [],
         name,
         description,
         thematic_areas,
@@ -64,7 +72,14 @@ const getIndividualProjectSuccess = (state, action) => {
       stepTwo: {
         bbox,
         country,
-        file,
+        file: file
+          ? {
+              fileURL: file,
+              name: fileName,
+              type: file_type,
+              lastModifiedDate: last_updated,
+            }
+          : '',
         file_type,
         geographical_region,
         geometry_type,

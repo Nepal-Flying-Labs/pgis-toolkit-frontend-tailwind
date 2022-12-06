@@ -5,6 +5,7 @@
 /* eslint-disable arrow-body-style */
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
 import { Creators } from '@Actions/organizationDashboard';
 import Input from '@Components/common/Input/index';
 import Select from '@Components/common/Select/index';
@@ -17,40 +18,53 @@ import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetu
 import MapSection from '../MapSection/index';
 
 // import MaterialIcon from '@Components/common/MaterialIcon/index';
-const { setIndividualProject, toggleModal } = Creators;
+const { setIndividualProject, toggleModal, patchProjectRequest } = Creators;
 
-const options = [
-  {
-    id: 1,
-    name: 'Filter 1',
-  },
-  {
-    id: 2,
-    name: 'Filter 2',
-  },
-  {
-    id: 3,
-    name: 'Filter 3',
-  },
-];
+function diffObject(a, b) {
+  const diffObj = Object.keys(b).reduce((diff, key) => {
+    if (a[key] === b[key]) return diff;
+    return {
+      ...diff,
+      [key]: b[key],
+    };
+  }, {});
+  return diffObj;
+}
 
 const Location = ({ page, setPage }) => {
+  const { projectId } = useParams();
   const dispatch = useDispatch();
   const countryList = useSelector(
     state => state.organizationDashboard.countryList,
   );
-  const pageOne = useSelector(
-    state => state.organizationDashboard.individualProject.pageOne,
+  const stepOne = useSelector(
+    state => state.organizationDashboard.individualProject.stepOne,
   );
-  const individualProject = useSelector(
-    state => state.organizationDashboard.individualProject.pageTwo,
+  const stepTwo = useSelector(
+    state => state.organizationDashboard.individualProject.stepTwo,
+  );
+  const project = useSelector(
+    state => state.organizationDashboard.individualProject.project,
   );
 
   const { values, handleChange, handleCustomChange, handleSubmit } = useForm({
-    initialValues: individualProject,
+    initialValues: stepTwo,
     onSubmit: data =>
-      dispatch(setIndividualProject({ key: 'pageTwo', value: data })),
+      dispatch(setIndividualProject({ key: 'stepTwo', value: data })),
   });
+
+  const onSaveClick = () => {
+    handleSubmit();
+    const finalObj = {
+      ...stepOne,
+      ...stepTwo,
+      status: 'ongoing',
+    };
+    console.log(finalObj, 'finalObj');
+    const diffObj = diffObject(project, finalObj);
+    console.log(diffObj);
+    dispatch(patchProjectRequest(projectId, diffObj));
+  };
 
   return (
     <>
@@ -65,17 +79,16 @@ const Location = ({ page, setPage }) => {
         <label className="naxatw-label">Country</label>
         <Select
           options={countryList}
-          defaultValue="Choose"
+          placeholder="Choose"
           onChange={data => {
             handleCustomChange('country', data.id);
           }}
-          // selected={
-          //   countryList.filter(country => country.id === values.country)[0].name
-          // }
+          selected={
+            countryList.find(country => country.id === values.country[0])?.name
+          }
           dataKey="name"
         />
       </div>
-
       <Input
         type="text"
         label="Name of Geographical Region"
@@ -84,16 +97,15 @@ const Location = ({ page, setPage }) => {
         onChange={handleChange}
         placeholder="Enter name of Geographical Region"
       />
-
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Choose the Geographic Boundary</label>
         <div className="naxatw-flex naxatw-gap-x-2">
           <Chip
             name="Upload Area"
             status={values.location_type || ''}
-            value="Upload Area"
+            value="File Upload"
             onClick={() => {
-              handleCustomChange('location_type', 'Upload Area');
+              handleCustomChange('location_type', 'File Upload');
             }}
           />
           <Chip
@@ -106,14 +118,16 @@ const Location = ({ page, setPage }) => {
           />
         </div>
       </div>
-
-      <UploadPolygonBoundary
-        uploadedFile={values?.file || []}
-        setuploadedFile={file => {
-          handleCustomChange('file', file);
-        }}
-      />
-
+      {console.log(values, 'formvalues')}
+      {values?.location_type === 'File Upload' && (
+        <UploadPolygonBoundary
+          uploadedFile={values?.file}
+          setuploadedFile={file => {
+            handleCustomChange('file', file);
+          }}
+        />
+      )}
+      {values?.location_type === 'Custom Draw' && <MapSection />}
       <div className="naxatw-flex naxatw-justify-between  naxatw-pt-7 naxatw-pb-7 ">
         {page > 1 ? (
           <Button
@@ -132,6 +146,7 @@ const Location = ({ page, setPage }) => {
         <Button
           className="naxatw-btn-primary naxatw-w-[4.75rem]"
           onClick={() => {
+            onSaveClick();
             // handleSubmit();
             // setPage(prevPage => prevPage + 1);
           }}

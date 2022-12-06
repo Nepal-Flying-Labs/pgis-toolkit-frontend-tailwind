@@ -46,6 +46,7 @@ export const { Types, Creators } = createActions(
 
     toggleSidebar: null,
     handleLayerSort: ['payload'],
+    setSearchText: ['payload'],
 
     saveMapConfigRequest: ['params', 'payload'],
     saveMapConfigSuccess: ['payload'],

@@ -36,5 +36,6 @@
 - [x] zoom to project location
 - [x] layer order
 - [x] project header height dynamic calculation 
+- [x] layer search
 - [] upload layer
-- [] layer search
+- [] no data page from geonadir

@@ -11,6 +11,10 @@ import { isEmpty } from '@Utils/commonUtils';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 import LayerAccordion from '@Components/common/SkeletonLoader/LayerAccordion';
+import {
+  filteredLayersSelector,
+  filteredThemesSelector,
+} from '@Selectors/projectMap';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
 const {
@@ -23,8 +27,8 @@ const {
 const { toggleModal, togglePromptDialog } = CommonCreators;
 
 export default function LayerList() {
-  const themes = useSelector(state => state.projectMap.themes);
-  const layers = useSelector(state => state.projectMap.layers);
+  const themes = useSelector(filteredThemesSelector);
+  const layers = useSelector(filteredLayersSelector);
   const isLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,

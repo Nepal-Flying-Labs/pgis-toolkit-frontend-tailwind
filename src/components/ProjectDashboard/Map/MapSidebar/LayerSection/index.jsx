@@ -3,43 +3,31 @@
 /* eslint-disable no-extra-boolean-cast */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
-import useDebouncedInput from '@Hooks/useDebouncedInput';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar';
 import LayerOrder from './LayerOrder';
 import LayerList from './LayerList';
 
-const { setSidebarContent } = ProjectMapCreators;
+const { setSidebarContent, setSearchText } = ProjectMapCreators;
 
 export default function LayerSection() {
-  const { organizationId } = useParams();
   const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
+  const searchText = useSelector(state => state.projectMap.searchText);
   const dispatch = useDispatch();
-  const [searchValue, handleChange] = useDebouncedInput({
-    ms: 300,
-    init: '',
-    onChange: debouncedEvent => {
-      const searchText = debouncedEvent.target.value;
-      const params = { organization: organizationId };
-      if (!!searchText) {
-        params.search = searchText;
-      }
-      // dispatch(getProjectsRequest(params));
-    },
-  });
 
   return (
     <>
       <div className="naxatw-flex naxatw-items-center">
         <Searchbar
           className="naxatw-bg-white"
-          value={searchValue}
-          onChange={handleChange}
+          value={searchText}
+          onChange={e => {
+            dispatch(setSearchText(e.target.value));
+          }}
         />
       </div>
 

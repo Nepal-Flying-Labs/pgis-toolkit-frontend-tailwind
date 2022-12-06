@@ -14,6 +14,7 @@ const initialState = {
   hideSidebar: false,
   sidebarContent: '',
   layerOrder: [],
+  searchText: '',
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -249,6 +250,13 @@ const handleLayerSort = (state, action) => {
   };
 };
 
+const setSearchText = (state, action) => {
+  return {
+    ...state,
+    searchText: action.payload,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -267,6 +275,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.DELETE_ICON_SUCCESS]: deleteIconSuccess,
   [Types.SET_SIDEBAR_CONTENT]: setSidebarContent,
   [Types.HANDLE_LAYER_SORT]: handleLayerSort,
+  [Types.SET_SEARCH_TEXT]: setSearchText,
 });
 
 export default projectMapReducer;

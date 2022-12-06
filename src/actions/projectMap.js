@@ -24,6 +24,7 @@ export const { Types, Creators } = createActions(
 
     setSelectedLayer: ['payload'],
     setDeleteLayer: ['payload'],
+    setSidebarContent: ['payload'],
     handleStyleInput: ['payload'],
     handleIconInput: ['payload'],
 
@@ -44,6 +45,12 @@ export const { Types, Creators } = createActions(
     deleteIconFailure: null,
 
     toggleSidebar: null,
+    handleLayerSort: ['payload'],
+    setSearchText: ['payload'],
+
+    saveMapConfigRequest: ['params', 'payload'],
+    saveMapConfigSuccess: ['payload'],
+    saveMapConfigFailure: null,
   },
   { prefix: 'projectMap/' },
 );

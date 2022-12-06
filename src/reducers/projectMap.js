@@ -1,6 +1,7 @@
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import { arrayMove } from '@dnd-kit/sortable';
 
 const initialState = {
   themes: [],
@@ -11,6 +12,9 @@ const initialState = {
   selectedLayer: null,
   deleteLayer: null,
   hideSidebar: false,
+  sidebarContent: '',
+  layerOrder: [],
+  searchText: '',
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -20,26 +24,31 @@ const getProjectThemesSuccess = (state, action) => ({
 
 const getProjectThemeLayersSuccess = (state, action) => {
   const { data, theme } = action.payload;
+  const layerOrder = [...state.layerOrder, ...data.map(item => item.id)];
   const layers = {
     ...state.layers,
     [theme]: data.map(item => ({
       ...item,
+      theme,
       checked: false,
       style: {
         ...defaultStyles,
         ...item.style,
         geometryType: item.geom_type,
-        icon: {
-          id: 1,
-          url: item.icon,
-          scale: item.style?.icon?.scale || 0.9,
-        },
+        icon: item.icon
+          ? {
+              id: 1,
+              url: item.icon,
+              scale: item.style?.icon?.scale || 0.9,
+            }
+          : {},
       },
     })),
   };
   return {
     ...state,
     layers,
+    layerOrder,
   };
 };
 
@@ -188,7 +197,6 @@ const uploadIconSuccess = (state, action) => {
 };
 
 const deleteIconSuccess = (state, action) => {
-  console.log(action.payload, 'payloadx');
   const { id: layerId, theme } = action.payload;
   const layers = {
     ...state.layers,
@@ -221,6 +229,34 @@ const deleteIconSuccess = (state, action) => {
   };
 };
 
+const setSidebarContent = (state, action) => {
+  return {
+    ...state,
+    sidebarContent: action.payload || '',
+  };
+};
+
+const handleLayerSort = (state, action) => {
+  const {
+    payload: { active, over },
+  } = action;
+  const { layerOrder } = state;
+  const oldIndex = layerOrder.findIndex(id => id === active.id);
+  const newIndex = layerOrder.findIndex(id => id === over.id);
+  const sortedLayerOrder = arrayMove(layerOrder, oldIndex, newIndex);
+  return {
+    ...state,
+    layerOrder: sortedLayerOrder,
+  };
+};
+
+const setSearchText = (state, action) => {
+  return {
+    ...state,
+    searchText: action.payload,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -237,6 +273,9 @@ const projectMapReducer = createReducer(initialState, {
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
   [Types.UPLOAD_ICON_SUCCESS]: uploadIconSuccess,
   [Types.DELETE_ICON_SUCCESS]: deleteIconSuccess,
+  [Types.SET_SIDEBAR_CONTENT]: setSidebarContent,
+  [Types.HANDLE_LAYER_SORT]: handleLayerSort,
+  [Types.SET_SEARCH_TEXT]: setSearchText,
 });
 
 export default projectMapReducer;

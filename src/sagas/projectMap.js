@@ -3,6 +3,7 @@ import {
   getMapPopupData,
   getProjectThemeLayers,
   getProjectThemes,
+  saveMapConfig,
   updateLayer,
   uploadLayer,
 } from '@Services/projectMap';
@@ -107,6 +108,17 @@ export function* deleteIconRequest({ id, payload }) {
   }
 }
 
+export function* saveMapConfigRequest({ params, payload }) {
+  try {
+    const response = yield call(saveMapConfig, params, payload);
+    console.log(response, 'resx');
+    yield put(projectMapActions.saveMapConfigSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.saveMapConfigFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -125,6 +137,10 @@ function* projectMapWatcher() {
   yield takeLatest(Types.DELETE_LAYER_REQUEST, withLoader(deleteLayerRequest));
   yield takeLatest(Types.UPLOAD_ICON_REQUEST, withLoader(uploadIconRequest));
   yield takeLatest(Types.DELETE_ICON_REQUEST, withLoader(deleteIconRequest));
+  yield takeLatest(
+    Types.SAVE_MAP_CONFIG_REQUEST,
+    withLoader(saveMapConfigRequest),
+  );
 }
 
 export default projectMapWatcher;

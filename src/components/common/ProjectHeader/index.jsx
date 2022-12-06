@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { Creators } from '@Actions/common';
 import { projectHeaderHeight } from '@src/constants';
+import useWindowDimensions from '@Hooks/useWindowDimentions';
 import MaterialIcon from '@Components/common/MaterialIcon';
-import { useSelector } from 'react-redux';
 import HeaderNotification from '../Header/HeaderNotification';
 import HeaderProfile from '../Header/HeaderProfile';
 
@@ -23,6 +25,8 @@ const projectHeaderData = [
   { label: 'Settings', route: 'settings' },
 ];
 
+const { setProjectHeaderHeight } = Creators;
+
 export default function ProjectHeader() {
   const { organizationId, tabname, projectId } = useParams();
   const organizationDetail = useSelector(
@@ -31,14 +35,24 @@ export default function ProjectHeader() {
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
+  const { width } = useWindowDimensions();
+  const dispatch = useDispatch();
 
   const headerData = projectId ? projectHeaderData : organizationHeaderData;
   const headerTitle = projectId
     ? projectDetail?.name
     : organizationDetail?.name;
 
+  useEffect(() => {
+    if (!headerTitle) return;
+    const el = document.getElementById('project-header');
+    const dims = el.getBoundingClientRect();
+    dispatch(setProjectHeaderHeight(dims.height));
+  }, [dispatch, headerTitle, width]);
+
   return (
     <header
+      id="project-header"
       className={`naxatw-h-[${projectHeaderHeight}] naxatw-fixed naxatw-w-full naxatw-z-[999] naxatw-top-0 naxatw-border-b naxatw-border-grey-300 naxatw-bg-white`}
     >
       <div className="naxatw-flex naxatw-justify-between naxatw-px-8 naxatw-py-3 naxatw-h-full">

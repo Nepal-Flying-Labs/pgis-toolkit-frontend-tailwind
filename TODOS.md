@@ -35,6 +35,6 @@
 - [x] handle layer name style save
 - [x] zoom to project location
 - [x] layer order
+- [x] project header height dynamic calculation 
 - [] upload layer
 - [] layer search
-- [] project header height dynamic calculation 

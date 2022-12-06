@@ -9,7 +9,7 @@ export default function MapSidebar() {
 
   return (
     <div
-      className={`naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5 naxatw-transition-all naxatw-duration-300 naxatw-overflow-auto ${
+      className={`naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5 naxatw-transition-all naxatw-duration-300 naxatw-overflow-auto scrollbar ${
         hideSidebar ? 'naxatw-hidden' : 'naxatw-block'
       }`}
       style={{

@@ -8,7 +8,6 @@ import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar';
-import { projectHeaderHeight } from '@src/constants';
 import LayerOrder from './LayerOrder';
 import LayerList from './LayerList';
 
@@ -17,6 +16,9 @@ const { setSidebarContent } = ProjectMapCreators;
 export default function LayerSection() {
   const { organizationId } = useParams();
   const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
+  const projectHeaderHeight = useSelector(
+    state => state.common.projectHeaderHeight,
+  );
   const dispatch = useDispatch();
   const [searchValue, handleChange] = useDebouncedInput({
     ms: 300,
@@ -76,7 +78,7 @@ export default function LayerSection() {
       <div
         className="naxatw-mt-5 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-y-auto scrollbar"
         style={{
-          height: `calc(100vh - ${projectHeaderHeight} - 9rem)`,
+          height: `calc(100vh - ${projectHeaderHeight}px - 9rem)`,
         }}
       >
         {sidebarContent === 'layer-order' ? <LayerOrder /> : <LayerList />}

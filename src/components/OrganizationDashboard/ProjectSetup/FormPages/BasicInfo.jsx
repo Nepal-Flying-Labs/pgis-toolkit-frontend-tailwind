@@ -12,6 +12,7 @@ import Button from '@Components/common/Button';
 import UploadPhotos from '@Components/common/UploadPhotos/index';
 import useForm from '@Hooks/useForm';
 import { format } from 'date-fns';
+import ContactPerson from './ContactPerson';
 
 const { setIndividualProject, toggleModal } = Creators;
 
@@ -25,8 +26,8 @@ const thematicFocusArea = [
 
 const BasicInfo = ({ setPage }) => {
   const dispatch = useDispatch();
-  const individualProject = useSelector(
-    state => state.organizationDashboard.individualProject.pageOne,
+  const stepOne = useSelector(
+    state => state.organizationDashboard.individualProject.stepOne,
   );
   const [partner, setPartner] = useState('');
   const handlePartner = e => {
@@ -35,15 +36,15 @@ const BasicInfo = ({ setPage }) => {
 
   const { values, setValues, handleChange, handleCustomChange, handleSubmit } =
     useForm({
-      initialValues: individualProject,
+      initialValues: stepOne,
       required: ['name'],
       onSubmit: data => {
-        dispatch(setIndividualProject({ key: 'pageOne', value: data }));
+        dispatch(setIndividualProject({ key: 'stepOne', value: data }));
       },
     });
   useEffect(() => {
-    setValues(individualProject);
-  }, [setValues, individualProject]);
+    setValues(stepOne);
+  }, [setValues, stepOne]);
 
   const handleKeyChange = e => {
     if (e.key === 'Enter' && partner) {
@@ -65,7 +66,7 @@ const BasicInfo = ({ setPage }) => {
         type="text"
         label="Name of project*"
         name="name"
-        value={values.name}
+        value={values?.name}
         onChange={handleChange}
         placeholder="Enter name of project"
       />
@@ -75,7 +76,7 @@ const BasicInfo = ({ setPage }) => {
         label="Project Objectives"
         className="naxatw-h-[77px] naxatw-pb-8"
         name="description"
-        value={values.description || ''}
+        value={values?.description || ''}
         onChange={handleChange}
         placeholder="Write a short summary of a project"
       />
@@ -101,7 +102,7 @@ const BasicInfo = ({ setPage }) => {
           onChange={data => {
             handleCustomChange('thematic_areas', data.value);
           }}
-          selected={values.thematic_areas || 'Choose'}
+          selected={values?.thematic_areas || 'Choose'}
         />
       </div>
 
@@ -113,7 +114,7 @@ const BasicInfo = ({ setPage }) => {
             onChange={date => {
               handleCustomChange('start_date', format(date, 'yyyy-MM-dd'));
             }}
-            selected={values.start_date}
+            selected={values?.start_date}
           />
         </div>
 
@@ -124,7 +125,7 @@ const BasicInfo = ({ setPage }) => {
             onChange={date => {
               handleCustomChange('end_date', format(date, 'yyyy-MM-dd'));
             }}
-            selected={values.end_date}
+            selected={values?.end_date}
           />
         </div>
       </div>
@@ -138,7 +139,7 @@ const BasicInfo = ({ setPage }) => {
         />
         <a
           onClick={() => {
-            handleCustomChange('partners', [...values.partners, partner]);
+            handleCustomChange('partners', [...values?.partners, partner]);
             setPartner('');
           }}
         >
@@ -170,49 +171,7 @@ const BasicInfo = ({ setPage }) => {
       </div>
 
       <hr />
-      <h4>Contact Person Details</h4>
-      {values?.contact_person?.map(person => {
-        return (
-          <div className="naxatw-flex">
-            <span>{person.name}</span>
-          </div>
-        );
-      })}
-      <Input
-        type="text"
-        label="Name of contact Person"
-        name="contact_name"
-        value={values.contact_name}
-        onChange={handleChange}
-        placeholder="Full Name"
-      />
-
-      <Input
-        label="Position"
-        type="text"
-        name="position"
-        value={values.position}
-        onChange={handleChange}
-        placeholder="Position"
-      />
-
-      <Input
-        type="email"
-        label="Email"
-        name="email"
-        value={values.email}
-        onChange={handleChange}
-        placeholder="example.com"
-      />
-
-      <Input
-        label="Phone"
-        type="text"
-        name="phone"
-        value={values.phone}
-        onChange={handleChange}
-        placeholder="Phone Number"
-      />
+      <ContactPerson />
       <div className="naxatw-flex naxatw-justify-between  naxatw-pt-7 naxatw-pb-7 ">
         <div />
 

@@ -6,11 +6,12 @@ const initialState = {
   projects: null,
   countryList: [],
   individualProject: {
+    contactPerson: [],
     project: {},
-    pageOne: {},
-    pageTwo: {},
-    pageThree: {},
-    pageFour: {},
+    stepOne: {},
+    stepTwo: {},
+    stepThree: {},
+    stepFour: {},
   },
   modalContent: '',
   organizationDetail: null,
@@ -52,7 +53,7 @@ const getIndividualProjectSuccess = (state, action) => {
     individualProject: {
       ...state.individualProject,
       project: action.payload,
-      pageOne: {
+      stepOne: {
         name,
         description,
         thematic_areas,
@@ -60,7 +61,7 @@ const getIndividualProjectSuccess = (state, action) => {
         end_date,
         partners,
       },
-      pageTwo: {
+      stepTwo: {
         bbox,
         country,
         file,
@@ -84,19 +85,25 @@ const setIndividualProject = (state, action) => {
   };
 };
 
-const getContactPersonSuccess = (action, state) => {
+const getContactPersonSuccess = (state, action) => {
   const { data } = action.payload;
+
   return {
     ...state,
     individualProject: {
       ...state.individualProject,
-      pageOne: {
-        ...state.individualProject.pageOne,
-        contactPerson: data,
-      },
+      contactPerson: data,
     },
   };
 };
+
+const setContactPerson = (state, action) => ({
+  ...state,
+  individualProject: {
+    ...state.individualProject,
+    contactPerson: action.payload,
+  },
+});
 
 const getCountryListSuccess = (state, action) => ({
   ...state,
@@ -110,6 +117,7 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_INDIVIDUAL_PROJECT_SUCCESS]: getIndividualProjectSuccess,
   [Types.SET_INDIVIDUAL_PROJECT]: setIndividualProject,
   [Types.GET_CONTACT_PERSON_SUCCESS]: getContactPersonSuccess,
+  [Types.SET_CONTACT_PERSON]: setContactPerson,
   [Types.GET_COUNTRY_LIST_SUCCESS]: getCountryListSuccess,
 });
 

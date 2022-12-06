@@ -2,13 +2,18 @@
 /* eslint-disable arrow-body-style */
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
 import useForm from '@Hooks/useForm';
 import Input from '@Components/common/Input/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import Button from '@Components/common/Button/index';
 import { Creators } from '@Actions/organizationDashboard';
 
-const { setContactPerson } = Creators;
+const {
+  setContactPerson,
+  postContactPersonRequest,
+  patchContactPersonRequest,
+} = Creators;
 
 const initialContact = {
   name: '',
@@ -18,27 +23,20 @@ const initialContact = {
 };
 
 const ContactPerson = () => {
+  const { projectId } = useParams();
   const dispatch = useDispatch();
   const contactPerson = useSelector(
     state => state.organizationDashboard.individualProject.contactPerson,
   );
-  const [contact, setContact] = useState(contactPerson);
-
-  const contactDelete = id => {
-    setContact(contact.filter(p => p.id !== id));
-    dispatch(setContactPerson(contact));
+  const deleteContact = id => {
+    dispatch(patchContactPersonRequest(id, { is_deleted: 'True' }));
   };
 
   const { meta, values, handleChange, handleSubmit, resetFormState } = useForm({
     initialValues: initialContact,
     required: ['name', 'position'],
     onSubmit: data => {
-      setContact([
-        ...contact,
-        { ...data, id: Math.floor(Math.random() * 100) },
-      ]);
-
-      dispatch(setContactPerson(contact));
+      dispatch(postContactPersonRequest(data, { project: projectId }));
       resetFormState();
     },
   });
@@ -47,14 +45,15 @@ const ContactPerson = () => {
     <>
       <h4>Contact Person Details</h4>
       <div className="">
-        {contact?.map(person => {
+        {contactPerson?.map(person => {
           return (
             <div
+              onClick={() => deleteContact(person.id)}
               key={person.id}
               className="naxatw-flex  naxatw-p-4 naxatw-mb-2 naxatw-justify-between naxatw-items-center naxatw-rounded-xl naxatw-border"
             >
               <span>{person.name}</span>
-              <div onClick={() => contactDelete(person.id)}>
+              <div>
                 <MaterialIcon
                   name="delete_outline"
                   className="naxatw-text-red-500 naxatw-cursor-pointer"

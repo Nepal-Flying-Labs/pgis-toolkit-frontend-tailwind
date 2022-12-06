@@ -48,7 +48,10 @@ const BasicInfo = ({ setPage }) => {
 
   const handleKeyChange = e => {
     if (e.key === 'Enter' && partner) {
-      handleCustomChange('partners', [...values.partners, partner]);
+      handleCustomChange('partners', [
+        ...values.partners,
+        { value: partner, id: Math.floor(Math.random() * 100) },
+      ]);
       setPartner('');
     }
   };
@@ -100,7 +103,7 @@ const BasicInfo = ({ setPage }) => {
           dataKey="displayName"
           placeholder="Choose"
           onChange={data => {
-            handleCustomChange('thematic_areas', data.value);
+            handleCustomChange('thematic_areas', [data.value]);
           }}
           selected={values?.thematic_areas || 'Choose'}
         />
@@ -139,7 +142,10 @@ const BasicInfo = ({ setPage }) => {
         />
         <a
           onClick={() => {
-            handleCustomChange('partners', [...values?.partners, partner]);
+            handleCustomChange('partners', [
+              ...values?.partners,
+              { value: partner, id: Math.floor(Math.random() * 100) },
+            ]);
             setPartner('');
           }}
         >
@@ -151,14 +157,14 @@ const BasicInfo = ({ setPage }) => {
         <ul className="naxatw-mt-2">
           {values?.partners?.map(item => (
             <li
-              key={item}
+              key={item.id}
               className="naxatw-flex naxatw-p-3 naxatw-items-center naxatw-justify-between hover:naxatw-bg-gray-200"
             >
-              <span className="naxatw-text-body-lg">{item}</span>
+              <span className="naxatw-text-body-lg">{item.value}</span>
               <a
                 onClick={() => {
                   const updatedArray = values?.partners?.filter(
-                    list => list !== item,
+                    list => list.id !== item.id,
                   );
                   handleCustomChange('partners', updatedArray);
                 }}

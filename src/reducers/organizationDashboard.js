@@ -97,6 +97,27 @@ const getContactPersonSuccess = (state, action) => {
   };
 };
 
+const postContactPersonSuccess = (state, action) => ({
+  ...state,
+  individualProject: {
+    ...state.individualProject,
+    contactPerson: [...state.individualProject.contactPerson, action.payload],
+  },
+});
+
+const patchContactPersonSuccess = (state, action) => {
+  const newData = state.individualProject.contactPerson.filter(
+    person => person.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    individualProject: {
+      ...state.individualProject,
+      contactPerson: newData,
+    },
+  };
+};
+
 const setContactPerson = (state, action) => ({
   ...state,
   individualProject: {
@@ -117,6 +138,8 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_INDIVIDUAL_PROJECT_SUCCESS]: getIndividualProjectSuccess,
   [Types.SET_INDIVIDUAL_PROJECT]: setIndividualProject,
   [Types.GET_CONTACT_PERSON_SUCCESS]: getContactPersonSuccess,
+  [Types.POST_CONTACT_PERSON_SUCCESS]: postContactPersonSuccess,
+  [Types.PATCH_CONTACT_PERSON_SUCCESS]: patchContactPersonSuccess,
   [Types.SET_CONTACT_PERSON]: setContactPerson,
   [Types.GET_COUNTRY_LIST_SUCCESS]: getCountryListSuccess,
 });

@@ -26,18 +26,19 @@ const SaveAsDraft = () => {
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.PATCH_PROJECT_REQUEST]),
   );
-  const pageOne = useSelector(
-    state => state.organizationDashboard.individualProject.pageOne,
+  const stepOne = useSelector(
+    state => state.organizationDashboard.individualProject.stepOne,
   );
-  const pageTwo = useSelector(
-    state => state.organizationDashboard.individualProject.pageTwo,
+  const stepTwo = useSelector(
+    state => state.organizationDashboard.individualProject.stepTwo,
   );
   const project = useSelector(
     state => state.organizationDashboard.individualProject.project,
   );
 
-  const finalObj = { ...pageOne, ...pageTwo };
+  const finalObj = { ...stepOne, ...stepTwo };
   const diffObj = diffObject(project, finalObj);
+
   return (
     <div>
       <div className="naxatw-flex naxatw-items-center naxatw-gap-x-5 naxatw-mb-7">

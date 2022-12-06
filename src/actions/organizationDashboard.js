@@ -24,6 +24,14 @@ export const { Types, Creators } = createActions(
 
     setContactPerson: ['payload'],
 
+    postContactPersonRequest: ['payload'],
+    postContactPersonSuccess: ['payload'],
+    postContactPersonFailure: null,
+
+    patchContactPersonRequest: ['id', 'params'],
+    patchContactPersonSuccess: ['payload'],
+    patchContactPersonFailure: null,
+
     patchProjectRequest: ['id', 'payload'],
     patchProjectSuccess: ['payload'],
     patchProjectFailure: null,

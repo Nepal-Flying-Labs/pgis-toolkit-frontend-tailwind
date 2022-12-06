@@ -7,6 +7,8 @@ import {
   getOrganizationDetail,
   patchProject,
   getContactPerson,
+  postContactPerson,
+  patchContactPerson,
   getCountryList,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
@@ -95,6 +97,29 @@ export function* getContactPersonRequest({ params }) {
   }
 }
 
+export function* postContactPersonRequest({ params, payload }) {
+  try {
+    console.log(payload);
+    const formData = prepareFormData(payload);
+    const response = yield call(postContactPerson, formData, params);
+    yield put(
+      organizationDashboardActions.postContactPersonSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.postContactPersonFailure());
+  }
+}
+export function* patchContactPersonRequest({ params, id }) {
+  try {
+    const response = yield call(patchContactPerson, id, params);
+    yield put(
+      organizationDashboardActions.patchContactPersonSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.patchContactPersonFailure());
+  }
+}
+
 export function* getCountryListRequest() {
   try {
     const response = yield call(getCountryList);
@@ -127,6 +152,14 @@ function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_CONTACT_PERSON_REQUEST,
     withLoader(getContactPersonRequest),
+  );
+  yield takeLatest(
+    Types.POST_CONTACT_PERSON_REQUEST,
+    withLoader(postContactPersonRequest),
+  );
+  yield takeLatest(
+    Types.PATCH_CONTACT_PERSON_REQUEST,
+    withLoader(patchContactPersonRequest),
   );
   yield takeLatest(
     Types.GET_COUNTRY_LIST_REQUEST,

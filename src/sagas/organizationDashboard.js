@@ -5,6 +5,9 @@ import {
   postProjectInvite,
   getIndividualProject,
   getOrganizationDetail,
+  patchProject,
+  getContactPerson,
+  getCountryList,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
@@ -66,6 +69,43 @@ export function* getIndividualProjectRequest({ id }) {
   }
 }
 
+export function* patchProjectRequest({ id, payload }) {
+  try {
+    const formData = prepareFormData(payload);
+    const response = yield call(patchProject, id, formData);
+    yield put(organizationDashboardActions.patchProjectSuccess(response.data));
+    yield put(organizationDashboardActions.toggleModal(''));
+    yield put(toastActions.success({ message: 'Data saved successfully' }));
+  } catch (error) {
+    yield put(organizationDashboardActions.patchProjectFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
+
+export function* getContactPersonRequest({ params }) {
+  try {
+    const response = yield call(getContactPerson, params);
+    yield put(
+      organizationDashboardActions.getContactPersonSuccess({
+        data: response.data,
+      }),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.getContactPersonFailure());
+  }
+}
+
+export function* getCountryListRequest() {
+  try {
+    const response = yield call(getCountryList);
+    yield put(
+      organizationDashboardActions.getCountryListSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.getCountryListFailure());
+  }
+}
+
 function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
@@ -79,6 +119,18 @@ function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_INDIVIDUAL_PROJECT_REQUEST,
     withLoader(getIndividualProjectRequest),
+  );
+  yield takeLatest(
+    Types.PATCH_PROJECT_REQUEST,
+    withLoader(patchProjectRequest),
+  );
+  yield takeLatest(
+    Types.GET_CONTACT_PERSON_REQUEST,
+    withLoader(getContactPersonRequest),
+  );
+  yield takeLatest(
+    Types.GET_COUNTRY_LIST_REQUEST,
+    withLoader(getCountryListRequest),
   );
 }
 

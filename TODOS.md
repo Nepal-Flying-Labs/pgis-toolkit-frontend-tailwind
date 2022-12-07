@@ -38,4 +38,9 @@
 - [x] project header height dynamic calculation 
 - [x] layer search
 - [] upload layer
-- [] no data page from geonadir
+- [] no data yet section
+- [] save bbox
+- [] upload layer
+    task id -> successful -> patch -> style to layer api
+
+- [] add to map -> style patch

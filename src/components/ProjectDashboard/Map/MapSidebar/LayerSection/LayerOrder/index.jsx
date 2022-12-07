@@ -80,7 +80,7 @@ export default function LayerOrder() {
           dispatch(
             saveMapConfigRequest(
               { project: projectId },
-              { map_config: { layerOrder } },
+              { map_config: JSON.stringify({ layerOrder }) },
             ),
           );
         }}

@@ -2,7 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import projectDashboardActions, { Types } from '@Actions/projectDashboard';
 import projectMapActions from '@Actions/projectMap';
 import toastActions from '@Actions/toast';
-import { getProjectDetail } from '@Services/projectDashboard';
+import { getProjectDetail, getLayers } from '@Services/projectDashboard';
 import { withLoader } from '@Utils/sagaUtils';
 
 export function* getProjectDetailRequest({ params }) {
@@ -16,10 +16,24 @@ export function* getProjectDetailRequest({ params }) {
   }
 }
 
+export function* getProjectLayersRequest({ params }) {
+  try {
+    const response = yield call(getLayers, params);
+    yield put(projectDashboardActions.getProjectLayersSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getProjectLayersFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
     withLoader(getProjectDetailRequest),
+  );
+  yield takeLatest(
+    Types.GET_PROJECT_LAYERS_REQUEST,
+    withLoader(getProjectLayersRequest),
   );
 }
 

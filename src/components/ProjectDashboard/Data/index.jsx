@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { Creators } from '@Actions/projectDashboard';
 import UploadFolder from '@Assets/images/project/upload-folder.png';
 import ImportFromOSM from '@Assets/images/project/import-osm.png';
 import WMSLayer from '@Assets/images/project/wms-layer.png';
-import NoDataYet from '@Assets/images/no-data-yet.png';
+import { isEmpty } from '@Utils/commonUtils';
+import NoDataYet from './NoDataYet';
+import LayerList from './LayerList';
+
+const { getProjectLayersRequest } = Creators;
 
 const uploadMethods = [
   {
@@ -29,6 +36,24 @@ const uploadMethods = [
 ];
 
 export default function Data() {
+  const { projectId } = useParams();
+  const projectDetail = useSelector(
+    state => state.projectDashboard.projectDetail,
+  );
+  const layers = useSelector(state => state.projectDashboard.data.layers);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!projectDetail) return;
+    dispatch(getProjectLayersRequest({ project: projectId }));
+  }, [dispatch, projectId, projectDetail]);
+
+  const getContent = () => {
+    if (!layers) return '';
+    if (isEmpty(layers)) return <NoDataYet />;
+    return <LayerList />;
+  };
+
   return (
     <div className="naxatw-absolute naxatw-mx-10">
       <div className="naxatw-flex naxatw-items-center naxatw-py-[22px]">
@@ -48,7 +73,7 @@ export default function Data() {
           >
             <div className="naxatw-flex naxatw-gap-5 naxatw-items-center">
               <figure>
-                <img height={124} width={124} src={icon} alt="uploadx" />
+                <img height={80} width={80} src={icon} alt="uploadx" />
               </figure>
               <div>
                 <h5 className="naxatw-text-grey-800">{title}</h5>
@@ -59,14 +84,7 @@ export default function Data() {
         ))}
       </div>
 
-      <div className="naxatw-flex naxatw-flex-col naxatw-px-5 naxatw-py-10 naxatw-items-center">
-        <img width={60} height={60} src={NoDataYet} alt="no-data-yet" />
-        <h3 className="naxatw-mt-7">No data yet</h3>
-        <p className="naxatw-mt-2">
-          Upload your datasets, import from OSM or add WMS layer through the
-          above buttons.
-        </p>
-      </div>
+      {getContent()}
     </div>
   );
 }

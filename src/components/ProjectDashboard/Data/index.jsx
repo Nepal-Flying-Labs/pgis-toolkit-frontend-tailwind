@@ -57,10 +57,10 @@ export default function Data() {
   return (
     <div className="naxatw-absolute naxatw-mx-10">
       <div className="naxatw-flex naxatw-items-center naxatw-py-[22px]">
-        <h3>Data Catalogue</h3>
+        <h3 className="naxatw-font-bold">Data Catalogue</h3>
       </div>
 
-      <div className="">
+      <div className="naxatw-space-y-2">
         <h4 className="naxatw-text-grey-800">Please upload your dataset</h4>
         <p>Download Datasets for Field Data Collection</p>
       </div>

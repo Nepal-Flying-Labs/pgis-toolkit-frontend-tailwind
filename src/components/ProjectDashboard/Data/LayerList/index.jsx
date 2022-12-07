@@ -47,6 +47,7 @@ export default function LayerList() {
       </div>
 
       <Table
+        rowClassName="naxatw-py-1 naxatw-px-3"
         data={layers || []}
         className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
         headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"

@@ -19,8 +19,13 @@ const { setIndividualProject, toggleModal } = Creators;
 const thematicFocusArea = [
   {
     id: 1,
-    value: 'Climate change and Energy',
+    value: 'a',
     displayName: 'Climate change and Energy',
+  },
+  {
+    id: 2,
+    value: 'b',
+    displayName: 'Climate change and Energy B',
   },
 ];
 

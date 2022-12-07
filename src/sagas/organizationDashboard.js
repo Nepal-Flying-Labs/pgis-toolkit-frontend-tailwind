@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { call, put, takeLatest } from 'redux-saga/effects';
 
 import {
@@ -72,8 +73,29 @@ export function* getIndividualProjectRequest({ id }) {
 }
 
 export function* patchProjectRequest({ id, payload }) {
+  console.log(payload, 'payload');
   try {
-    const formData = prepareFormData(payload);
+    let filteredImagePayload;
+    if (payload?.cover_image) {
+      filteredImagePayload = {
+        ...payload,
+        cover_image:
+          payload?.cover_image && payload.cover_image.length > 0
+            ? payload?.cover_image?.filter(img => !img.isDeleted && img.file)
+                .length > 0
+              ? payload?.cover_image?.filter(
+                  img => !img.isDeleted && img.file,
+                )?.[0]?.file
+              : null
+            : null,
+      };
+    } else {
+      filteredImagePayload = {
+        ...payload,
+      };
+    }
+    console.log(filteredImagePayload, 'filterImage');
+    const formData = prepareFormData(filteredImagePayload);
     const response = yield call(patchProject, id, formData);
     yield put(organizationDashboardActions.patchProjectSuccess(response.data));
     yield put(organizationDashboardActions.toggleModal(''));

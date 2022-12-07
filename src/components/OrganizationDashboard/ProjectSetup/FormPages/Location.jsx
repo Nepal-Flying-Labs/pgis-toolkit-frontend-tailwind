@@ -19,7 +19,7 @@ import MapSection from '../MapSection/index';
 
 // import MaterialIcon from '@Components/common/MaterialIcon/index';
 const { setIndividualProject, toggleModal, patchProjectRequest } = Creators;
-
+const ax = {};
 function diffObject(a, b) {
   const diffObj = Object.keys(b).reduce((diff, key) => {
     if (a[key] === b[key]) return diff;
@@ -48,22 +48,21 @@ const Location = ({ page, setPage }) => {
   );
 
   const { values, handleChange, handleCustomChange, handleSubmit } = useForm({
-    initialValues: stepTwo,
-    onSubmit: data =>
-      dispatch(setIndividualProject({ key: 'stepTwo', value: data })),
+    initialValues: { ...stepTwo, file_type: 'Shapefile' },
+    onSubmit: data => {
+      const finalObj = {
+        ...stepOne,
+        ...values,
+        status: 'ongoing',
+      };
+      const diffObj = diffObject(project, finalObj);
+      dispatch(patchProjectRequest(projectId, diffObj));
+    },
   });
+  console.log(values.file);
 
   const onSaveClick = () => {
     handleSubmit();
-    const finalObj = {
-      ...stepOne,
-      ...stepTwo,
-      status: 'ongoing',
-    };
-    console.log(finalObj, 'finalObj');
-    const diffObj = diffObject(project, finalObj);
-    console.log(diffObj);
-    dispatch(patchProjectRequest(projectId, diffObj));
   };
 
   return (
@@ -84,7 +83,7 @@ const Location = ({ page, setPage }) => {
             handleCustomChange('country', data.id);
           }}
           selected={
-            countryList.find(country => country.id === values.country[0])?.name
+            countryList.find(country => country.id === values.country)?.name
           }
           dataKey="name"
         />
@@ -118,12 +117,16 @@ const Location = ({ page, setPage }) => {
           />
         </div>
       </div>
-      {console.log(values, 'formvalues')}
       {values?.location_type === 'File Upload' && (
         <UploadPolygonBoundary
           uploadedFile={values?.file}
           setuploadedFile={file => {
+            console.log(file, 'file');
             handleCustomChange('file', file);
+            // handleCustomChange(
+            //   'file_type',
+            //   file.type === 'application/geo+json' ? 'GeoJSON' : 'ShapeFile',
+            // );
           }}
         />
       )}
@@ -134,7 +137,7 @@ const Location = ({ page, setPage }) => {
             iconLeft="arrow_back"
             className=" naxatw-w-[8.875rem] naxatw-text-[#00A699] "
             onClick={() => {
-              handleSubmit();
+              // handleSubmit();
               setPage(prevPage => prevPage - 1);
             }}
           >
@@ -146,8 +149,7 @@ const Location = ({ page, setPage }) => {
         <Button
           className="naxatw-btn-primary naxatw-w-[4.75rem]"
           onClick={() => {
-            onSaveClick();
-            // handleSubmit();
+            handleSubmit();
             // setPage(prevPage => prevPage + 1);
           }}
         >
@@ -155,7 +157,6 @@ const Location = ({ page, setPage }) => {
         </Button>
         <Button
           onClick={() => {
-            handleSubmit();
             dispatch(toggleModal('save-as-draft'));
           }}
           className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"

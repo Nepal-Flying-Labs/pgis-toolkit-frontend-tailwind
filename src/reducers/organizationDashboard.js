@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/organizationDashboard';
@@ -51,18 +52,32 @@ const getIndividualProjectSuccess = (state, action) => {
     location_type,
     last_updated,
   } = action.payload;
-  const fileNameArray = file?.split('/');
-  const fileName = fileNameArray ? fileNameArray[fileNameArray.length - 1] : '';
+  let newFile;
+  if (file) {
+    fetch(file)
+      .then(res => res.blob())
+      .then(blob => {
+        newFile = new File([blob], 'example', { type: blob.type });
+      });
+  }
+  console.log(newFile, 'newFile');
+  // const fileNameArray = file?.split('/');
+  // const fileName = fileNameArray ? fileNameArray[fileNameArray.length - 1] : '';
   return {
     ...state,
     individualProject: {
       ...state.individualProject,
       project: action.payload,
       stepOne: {
-        cover_image: cover_image
-          ? [{ image: cover_image, fileName: getFileExtension(cover_image) }]
-          : [],
         name,
+        cover_image: cover_image
+          ? [
+              {
+                image: cover_image,
+                fileName: getFileExtension(cover_image),
+              },
+            ]
+          : [],
         description,
         thematic_areas,
         start_date,
@@ -72,14 +87,15 @@ const getIndividualProjectSuccess = (state, action) => {
       stepTwo: {
         bbox,
         country,
-        file: file
-          ? {
-              fileURL: file,
-              name: fileName,
-              type: file_type,
-              lastModifiedDate: last_updated,
-            }
-          : '',
+        // file: file
+        //   ? {
+        //       fileURL: file,
+        //       name: fileName,
+        //       type: file_type,
+        //       lastModifiedDate: last_updated,
+        //     }
+        //   : '',
+        // file: newFile,
         file_type,
         geographical_region,
         geometry_type,

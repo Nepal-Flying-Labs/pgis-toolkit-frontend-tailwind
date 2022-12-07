@@ -131,7 +131,7 @@ function UploadPolygonBoundary({ uploadedFile, setuploadedFile }) {
           </div>
         )}
       </div>
-      {/* <MapSection geojson={geojson} /> */}
+      <MapSection geojson={geojson} />
     </div>
   );
 }

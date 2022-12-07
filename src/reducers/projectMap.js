@@ -1,7 +1,7 @@
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
-import { arrayMove } from '@dnd-kit/sortable';
+import { isEmpty } from '@Utils/commonUtils';
 
 const initialState = {
   themes: [],
@@ -24,7 +24,9 @@ const getProjectThemesSuccess = (state, action) => ({
 
 const getProjectThemeLayersSuccess = (state, action) => {
   const { data, theme } = action.payload;
-  const layerOrder = [...state.layerOrder, ...data.map(item => item.id)];
+  const layerOrder = !isEmpty(state.layerOrder)
+    ? state.layerOrder
+    : data.map(item => item.id);
   const layers = {
     ...state.layers,
     [theme]: data.map(item => ({
@@ -236,26 +238,22 @@ const setSidebarContent = (state, action) => {
   };
 };
 
-const handleLayerSort = (state, action) => {
-  const {
-    payload: { active, over },
-  } = action;
-  const { layerOrder } = state;
-  const oldIndex = layerOrder.findIndex(id => id === active.id);
-  const newIndex = layerOrder.findIndex(id => id === over.id);
-  const sortedLayerOrder = arrayMove(layerOrder, oldIndex, newIndex);
-  return {
-    ...state,
-    layerOrder: sortedLayerOrder,
-  };
-};
-
 const setSearchText = (state, action) => {
   return {
     ...state,
     searchText: action.payload,
   };
 };
+
+const setMapConfig = (state, action) => ({
+  ...state,
+  layerOrder: action.payload?.layerOrder || initialState.layerOrder,
+});
+
+const setProjectMapState = (state, action) => ({
+  ...state,
+  ...action.payload,
+});
 
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
@@ -274,8 +272,9 @@ const projectMapReducer = createReducer(initialState, {
   [Types.UPLOAD_ICON_SUCCESS]: uploadIconSuccess,
   [Types.DELETE_ICON_SUCCESS]: deleteIconSuccess,
   [Types.SET_SIDEBAR_CONTENT]: setSidebarContent,
-  [Types.HANDLE_LAYER_SORT]: handleLayerSort,
   [Types.SET_SEARCH_TEXT]: setSearchText,
+  [Types.SET_MAP_CONFIG]: setMapConfig,
+  [Types.SET_PROJECT_MAP_STATE]: setProjectMapState,
 });
 
 export default projectMapReducer;

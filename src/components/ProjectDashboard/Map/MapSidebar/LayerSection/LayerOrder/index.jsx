@@ -4,6 +4,7 @@
 import React from 'react';
 import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
+import { arrayMove } from '@dnd-kit/sortable';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import MaterialIcon from '@Components/common/MaterialIcon';
@@ -17,8 +18,8 @@ const {
   setZoomToLayerId,
   setSelectedLayer,
   setDeleteLayer,
-  handleLayerSort,
   saveMapConfigRequest,
+  setProjectMapState,
 } = ProjectMapCreators;
 const { togglePromptDialog } = CommonCreators;
 
@@ -69,22 +70,24 @@ export default function LayerOrder() {
     },
   ];
 
+  const handleLayerSort = event => {
+    const { active, over } = event;
+    if (active.id === over.id) return;
+    const oldIndex = layerOrder.findIndex(id => id === active.id);
+    const newIndex = layerOrder.findIndex(id => id === over.id);
+    const sortedLayerOrder = arrayMove(layerOrder, oldIndex, newIndex);
+    dispatch(setProjectMapState({ layerOrder: sortedLayerOrder }));
+    dispatch(
+      saveMapConfigRequest(
+        { project: projectId },
+        { map_config: JSON.stringify({ layerOrder: sortedLayerOrder }) },
+      ),
+    );
+  };
+
   return (
     <div className="naxatw-bg-white naxatw-border naxatw-border-grey-800 naxatw-rounded-lg naxatw-p-5">
-      <SortableList
-        items={mapState}
-        onDragEnd={event => {
-          const { active, over } = event;
-          if (active.id === over.id) return;
-          dispatch(handleLayerSort({ active, over }));
-          dispatch(
-            saveMapConfigRequest(
-              { project: projectId },
-              { map_config: { layerOrder } },
-            ),
-          );
-        }}
-      >
+      <SortableList items={mapState} onDragEnd={handleLayerSort}>
         <div className="naxatw-font-light">
           {mapState.map(layer => (
             <SortableItem

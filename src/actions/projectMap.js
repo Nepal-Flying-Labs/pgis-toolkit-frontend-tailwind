@@ -51,6 +51,8 @@ export const { Types, Creators } = createActions(
     saveMapConfigRequest: ['params', 'payload'],
     saveMapConfigSuccess: ['payload'],
     saveMapConfigFailure: null,
+
+    setMapConfig: ['payload'],
   },
   { prefix: 'projectMap/' },
 );

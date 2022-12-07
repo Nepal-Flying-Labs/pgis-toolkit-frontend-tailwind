@@ -12,14 +12,19 @@ const { getProjectThemesRequest, getProjectThemeLayersRequest } =
 export default function Map() {
   const { projectId } = useParams();
   const themes = useSelector(state => state.projectMap.themes);
+  const projectDetail = useSelector(
+    state => state.projectDashboard.projectDetail,
+  );
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
   const dispatch = useDispatch();
+
   // project map section
   useEffect(() => {
+    if (!projectDetail) return;
     dispatch(getProjectThemesRequest({ project: projectId }));
-  }, [dispatch, projectId]);
+  }, [dispatch, projectId, projectDetail]);
 
   useEffect(() => {
     if (isEmpty(themes)) return;

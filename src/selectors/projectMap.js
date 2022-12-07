@@ -14,9 +14,11 @@ export const mapStateSelector = createSelector(
       if (!layer) return [...arr];
       return [...arr, ...layer];
     }, []);
-    const sortedLayers = layerOrder.map(id =>
-      allLayers.find(layer => layer.id === id),
-    );
+    const sortedLayers = layerOrder.reduce((arr, id) => {
+      const layer = allLayers.find(lyr => lyr.id === id);
+      if (!layer) return [...arr];
+      return [...arr, layer];
+    }, []);
     return sortedLayers;
   },
 );

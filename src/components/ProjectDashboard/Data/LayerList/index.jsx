@@ -4,7 +4,8 @@ import React from 'react';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 import SortingContainer from '@Components/common/SortingContainer';
 import DropdownOptions from '@Components/common/DropdownOptions';
-import Button from '@Components/common/Button/index';
+import Button from '@Components/common/Button';
+import Toggle from '@Components/common/Toggle';
 
 const currentPage = 1;
 const dataPerPage = 10;
@@ -123,7 +124,9 @@ export default function LayerList() {
           headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
           rowcolSpan="rowSpan_2"
           dataFormat={row => (
-            <span className="naxatw-text-base">{row.display_on_map}</span>
+            <span className="naxatw-flex">
+              <Toggle checked={row.display_on_map} />
+            </span>
           )}
         />
         <TableHeader

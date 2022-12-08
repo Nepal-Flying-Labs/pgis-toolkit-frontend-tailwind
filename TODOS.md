@@ -37,7 +37,7 @@
 - [x] layer order
 - [x] project header height dynamic calculation 
 - [x] layer search
-- [] upload layer
+- [] handle csv upload
 - [] no data yet section
 - [] save bbox
 - [] upload layer

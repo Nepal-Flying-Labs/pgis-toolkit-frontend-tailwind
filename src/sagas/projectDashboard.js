@@ -2,8 +2,9 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import projectDashboardActions, { Types } from '@Actions/projectDashboard';
 import projectMapActions from '@Actions/projectMap';
 import toastActions from '@Actions/toast';
-import { getProjectDetail, getLayers } from '@Services/projectDashboard';
 import { withLoader } from '@Utils/sagaUtils';
+import { getProjectDetail, getLayers } from '@Services/projectDashboard';
+import { getProjectThemes } from '@Services/projectMap';
 
 export function* getProjectDetailRequest({ params }) {
   try {
@@ -26,6 +27,16 @@ export function* getProjectLayersRequest({ params }) {
   }
 }
 
+export function* getCategoryListRequest({ params }) {
+  try {
+    const response = yield call(getProjectThemes, params);
+    yield put(projectDashboardActions.getCategoryListSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getCategoryListFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -34,6 +45,10 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_LAYERS_REQUEST,
     withLoader(getProjectLayersRequest),
+  );
+  yield takeLatest(
+    Types.GET_CATEGORY_LIST_REQUEST,
+    withLoader(getCategoryListRequest),
   );
 }
 

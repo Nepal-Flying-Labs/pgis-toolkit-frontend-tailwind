@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Toggle({ checked, onChange }) {
+export default function Toggle({ id, name, checked, onChange }) {
   return (
     <label className="naxatw-inline-flex naxatw-relative naxatw-items-center naxatw-cursor-pointer">
       <input
         type="checkbox"
+        id={id}
+        name={name}
         className="naxatw-sr-only naxatw-peer"
         checked={checked}
         onChange={onChange}
@@ -21,11 +23,15 @@ export default function Toggle({ checked, onChange }) {
 }
 
 Toggle.defaultProps = {
+  id: '',
+  name: '',
   checked: false,
   onChange: () => {},
 };
 
 Toggle.propTypes = {
+  id: PropTypes.string,
+  name: PropTypes.string,
   checked: PropTypes.bool,
   onChange: PropTypes.func,
 };

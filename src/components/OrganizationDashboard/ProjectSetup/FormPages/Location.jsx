@@ -59,7 +59,6 @@ const Location = ({ page, setPage }) => {
       dispatch(patchProjectRequest(projectId, diffObj));
     },
   });
-  console.log(values.file);
 
   const onSaveClick = () => {
     handleSubmit();
@@ -121,7 +120,6 @@ const Location = ({ page, setPage }) => {
         <UploadPolygonBoundary
           uploadedFile={values?.file}
           setuploadedFile={file => {
-            console.log(file, 'file');
             handleCustomChange('file', file);
             // handleCustomChange(
             //   'file_type',

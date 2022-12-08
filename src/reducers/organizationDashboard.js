@@ -52,17 +52,9 @@ const getIndividualProjectSuccess = (state, action) => {
     location_type,
     last_updated,
   } = action.payload;
-  let newFile;
-  if (file) {
-    fetch(file)
-      .then(res => res.blob())
-      .then(blob => {
-        newFile = new File([blob], 'example', { type: blob.type });
-      });
-  }
-  console.log(newFile, 'newFile');
-  // const fileNameArray = file?.split('/');
-  // const fileName = fileNameArray ? fileNameArray[fileNameArray.length - 1] : '';
+
+  const fileNameArray = file?.split('/');
+  const fileName = fileNameArray ? fileNameArray[fileNameArray.length - 1] : '';
   return {
     ...state,
     individualProject: {
@@ -87,15 +79,14 @@ const getIndividualProjectSuccess = (state, action) => {
       stepTwo: {
         bbox,
         country,
-        // file: file
-        //   ? {
-        //       fileURL: file,
-        //       name: fileName,
-        //       type: file_type,
-        //       lastModifiedDate: last_updated,
-        //     }
-        //   : '',
-        // file: newFile,
+        file: file
+          ? {
+              fileURL: file,
+              name: fileName,
+              type: file_type,
+              lastModifiedDate: last_updated,
+            }
+          : '',
         file_type,
         geographical_region,
         geometry_type,

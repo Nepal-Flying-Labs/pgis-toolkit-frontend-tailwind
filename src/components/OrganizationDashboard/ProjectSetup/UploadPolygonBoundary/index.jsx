@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import { formatBytes, getFileExtension } from '@Utils/commonUtils';
 import useCustomUpload from '@Hooks/useCustomUpload';
 import { convertSHPToGeoJSON, validateGeoJSON } from '@Utils/convertLayerUtils';
+import { format } from 'date-fns';
 import Button from '../../../common/Button/index';
 import MaterialIcon from '../../../common/MaterialIcon/index';
 import MapSection from '../MapSection/index';
@@ -50,13 +51,6 @@ function UploadPolygonBoundary({ uploadedFile, setuploadedFile }) {
     }
   };
 
-  // const deleteFile = id => {
-  //   const toDeleteFile = uploadedFile.filter(data => data.id !== id);
-  //   setuploadedFile(toDeleteFile);
-  //   setGeojson(null);
-  //   // const toDeleteFileNames = toDeleteFile.map((data) => data.filename);
-  //   inputRef.current.value = '';
-  // };
   return (
     <div className="naxatw-space-y-2">
       <label className="naxatw-label">Upload Polygon Boundary</label>
@@ -112,15 +106,21 @@ function UploadPolygonBoundary({ uploadedFile, setuploadedFile }) {
                   {uploadedFile.name}
                 </p>
                 <span className="naxatw-text-body-md naxatw-text-[#757575]">
-                  -
+                  Uploaded on{' '}
+                  {format(
+                    new Date(uploadedFile.lastModifiedDate),
+                    'MM/dd/yyyy',
+                  ) || '-'}
                 </span>
               </div>
             </div>
             <div className="naxatw-flex naxatw-items-center naxatw-gap-x-4">
-              <MaterialIcon
-                name="download"
-                className="naxatw-text-[#484848] naxatw-cursor-pointer"
-              />
+              <a href={uploadedFile?.fileURL}>
+                <MaterialIcon
+                  name="download"
+                  className="naxatw-text-[#484848] naxatw-cursor-pointer"
+                />
+              </a>
               <a onClick={() => setuploadedFile('')}>
                 <MaterialIcon
                   name="delete_outline"

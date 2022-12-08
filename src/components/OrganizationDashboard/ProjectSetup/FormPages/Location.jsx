@@ -12,6 +12,7 @@ import Select from '@Components/common/Select/index';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button/index';
 import Chip from '@Components/common/Chip';
+import MultiSelect from '@Components/common/MultiSelect/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import UploadPhotos from '@Components/common/UploadPhotos/index';
 import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetup/UploadPolygonBoundary/index';
@@ -75,7 +76,7 @@ const Location = ({ page, setPage }) => {
       </div>
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Country</label>
-        <Select
+        {/* <Select
           options={countryList}
           placeholder="Choose"
           onChange={data => {
@@ -85,6 +86,18 @@ const Location = ({ page, setPage }) => {
             countryList.find(country => country.id === values.country)?.name
           }
           dataKey="name"
+        /> */}
+        <MultiSelect
+          options={countryList}
+          placeholder="Choose"
+          field="name"
+          onChange={data => {
+            const country = data.map(i => i.id);
+            handleCustomChange('country', country);
+          }}
+          selected={countryList.filter(item =>
+            values?.country?.includes(item.id),
+          )}
         />
       </div>
       <Input

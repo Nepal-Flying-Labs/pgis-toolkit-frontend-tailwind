@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Input from '@Components/common/Input';
 import Select from '@Components/common/Select';
+import MultiSelect from '@Components/common/MultiSelect/index';
 import { Creators } from '@Actions/organizationDashboard';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
@@ -20,12 +21,17 @@ const thematicFocusArea = [
   {
     id: 1,
     value: 'a',
-    displayName: 'Climate change and Energy',
+    displayName: 'Climate change and Energy A',
   },
   {
     id: 2,
     value: 'b',
     displayName: 'Climate change and Energy B',
+  },
+  {
+    id: 3,
+    value: 'c',
+    displayName: 'Climate change and Energy C',
   },
 ];
 
@@ -102,7 +108,7 @@ const BasicInfo = ({ setPage }) => {
 
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Thematic Focus Area*</label>
-        <Select
+        {/* <Select
           options={thematicFocusArea}
           dataKey="displayName"
           placeholder="Choose"
@@ -110,9 +116,20 @@ const BasicInfo = ({ setPage }) => {
             handleCustomChange('thematic_areas', [data.value]);
           }}
           selected={values?.thematic_areas || 'Choose'}
+        /> */}
+        <MultiSelect
+          options={thematicFocusArea}
+          placeholder="Choose"
+          field="displayName"
+          onChange={data => {
+            const area = data.map(i => i.value);
+            handleCustomChange('thematic_areas', area);
+          }}
+          selected={thematicFocusArea.filter(item =>
+            values?.thematic_areas?.includes(item.value),
+          )}
         />
       </div>
-
       <div className="naxatw-flex naxatw-justify-between">
         <div className="naxatw-space-y-2 naxatw-w-[325px]">
           <label className="naxatw-label">Start Date</label>

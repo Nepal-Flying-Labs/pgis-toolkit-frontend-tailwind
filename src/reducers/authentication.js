@@ -7,7 +7,7 @@ const initialState = {
   userDetail: {},
   infoDialogContent: null,
   userPermissions: null,
-  modalContent: 'signup',
+  modalContent: '',
   userGroup: null,
 };
 

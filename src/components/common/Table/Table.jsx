@@ -193,7 +193,7 @@ export default class Table extends Component {
         row[noColumnCondition.key] === noColumnCondition.value ? (
           <>
             <td className={rowClassName}>
-              <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-10 naxatw-py-2 naxatw-items-center">
+              <span className="naxatw-text-base naxatw-flex naxatw-gap-10 naxatw-py-2 naxatw-items-center">
                 {index + 1}
               </span>
             </td>
@@ -204,10 +204,10 @@ export default class Table extends Component {
             </td>
             <td colSpan={7} className={rowClassName}>
               <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-10 naxatw-py-2 naxatw-items-center">
-                <p className="naxatw-flex naxatw-gap-5 naxatw-text-secondary-400">
+                <div className="naxatw-flex naxatw-gap-5 naxatw-text-secondary-400">
                   <i className="material-icons">rotate_right</i>
                   Uploading <Spinner className="naxatw-fill-primary-400" />
-                </p>
+                </div>
               </span>
             </td>
           </>

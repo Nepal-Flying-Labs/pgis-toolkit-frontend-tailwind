@@ -34,10 +34,22 @@ const uploadDatasetsSuccess = (state, action) => {
   };
 };
 
+const deleteDataSuccess = (state, action) => {
+  const { id: layerId } = action.payload;
+  const layers = state.data.layers.filter(item => item.id !== layerId);
+  return {
+    ...state,
+    data: {
+      layers,
+    },
+  };
+};
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
   [Types.UPLOAD_DATASETS_SUCCESS]: uploadDatasetsSuccess,
+  [Types.DELETE_DATA_SUCCESS]: deleteDataSuccess,
 });
 
 export default projectDashboardReducer;

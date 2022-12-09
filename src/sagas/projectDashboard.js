@@ -72,6 +72,18 @@ export function* uploadDatasetsRequest({ payload }) {
   }
 }
 
+export function* deleteDataRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateLayer, id, formdata);
+    yield put(projectDashboardActions.deleteDataSuccess(response.data));
+    yield put(commonActions.togglePromptDialog());
+  } catch (error) {
+    yield put(projectDashboardActions.deleteDataFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -89,6 +101,7 @@ function* projectDashboardWatcher() {
     Types.UPLOAD_DATASETS_REQUEST,
     withLoader(uploadDatasetsRequest),
   );
+  yield takeLatest(Types.DELETE_DATA_REQUEST, withLoader(deleteDataRequest));
 }
 
 export default projectDashboardWatcher;

@@ -17,6 +17,10 @@ export const { Types, Creators } = createActions(
     uploadDatasetsRequest: ['payload'],
     uploadDatasetsSuccess: ['payload'],
     uploadDatasetsFailure: null,
+
+    deleteDataRequest: ['id', 'payload'],
+    deleteDataSuccess: ['payload'],
+    deleteDataFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

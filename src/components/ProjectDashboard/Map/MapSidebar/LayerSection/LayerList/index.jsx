@@ -1,7 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
@@ -17,7 +16,6 @@ import {
   filteredThemesSelector,
 } from '@Selectors/projectMap';
 import { checkIfLoading } from '@Utils/loaderSelector';
-import NoDataYet from '@Components/ProjectDashboard/Data/NoDataYet/index';
 
 const {
   handleCheckbox,
@@ -29,7 +27,6 @@ const {
 const { toggleModal, togglePromptDialog } = CommonCreators;
 
 export default function LayerList() {
-  const history = useHistory();
   const themes = useSelector(filteredThemesSelector);
   const layers = useSelector(filteredLayersSelector);
   const isLoading = useSelector(state =>

@@ -1,4 +1,11 @@
-import { call, put, takeLatest, all } from 'redux-saga/effects';
+import {
+  call,
+  put,
+  takeLatest,
+  takeEvery,
+  all,
+  delay,
+} from 'redux-saga/effects';
 import projectDashboardActions, { Types } from '@Actions/projectDashboard';
 import projectMapActions from '@Actions/projectMap';
 import toastActions from '@Actions/toast';
@@ -14,7 +21,6 @@ import {
   updateLayer,
   uploadLayer,
 } from '@Services/projectMap';
-import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import prepareFormData from '@Utils/prepareFormData';
 
 export function* getProjectDetailRequest({ params }) {
@@ -52,23 +58,21 @@ export function* uploadDatasetsRequest({ payload }) {
   try {
     const responses = yield all(payload.map(data => call(uploadLayer, data)));
     const responsesData = responses.map(res => res.data);
-    // const layerResponses = yield all(
-    //   responsesData.map(item => {
-    //     const data = prepareFormData({
-    //       style: { ...defaultStyles },
-    //     });
-    //     return call(updateLayer, item.layer_id, data);
-    //   }),
-    // );
     const layerResponses = yield all(
       responsesData.map(item => call(getLayerById, item.layer_id)),
     );
     const layerData = layerResponses.map(res => res.data);
     yield put(projectDashboardActions.uploadDatasetsSuccess(layerData));
     yield put(commonActions.toggleModal());
+    yield put(
+      toastActions.success({
+        message:
+          'The layer is being uploaded. We will notify you shortly after upload success',
+      }),
+    );
   } catch (error) {
     yield put(projectDashboardActions.uploadDatasetsFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
   }
 }
 
@@ -80,6 +84,28 @@ export function* deleteDataRequest({ id, payload }) {
     yield put(commonActions.togglePromptDialog());
   } catch (error) {
     yield put(projectDashboardActions.deleteDataFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
+export function* checkUploadStatusRequest({ id }) {
+  try {
+    let responseData = { upload_status: 'uploading' };
+    yield put(projectDashboardActions.setUploadStatusCheckingId(id));
+    while (responseData?.upload_status === 'uploading') {
+      yield delay(1000 * 15); // call api in 10 second interval
+      const response = yield call(getLayerById, id);
+      responseData = response.data;
+    }
+    yield put(projectDashboardActions.checkUploadStatusSuccess(responseData));
+    yield put(
+      toastActions.success({
+        message: `${responseData.name} was successfully uploaded`,
+      }),
+    );
+    yield put(commonActions.togglePromptDialog());
+  } catch (error) {
+    yield put(projectDashboardActions.checkUploadStatusFailure());
     yield put(toastActions.error({ message: error?.response?.data?.detail }));
   }
 }
@@ -102,6 +128,10 @@ function* projectDashboardWatcher() {
     withLoader(uploadDatasetsRequest),
   );
   yield takeLatest(Types.DELETE_DATA_REQUEST, withLoader(deleteDataRequest));
+  yield takeEvery(
+    Types.CHECK_UPLOAD_STATUS_REQUEST,
+    withLoader(checkUploadStatusRequest),
+  );
 }
 
 export default projectDashboardWatcher;

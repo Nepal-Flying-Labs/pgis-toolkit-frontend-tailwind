@@ -1,5 +1,5 @@
 ### General 
--[] Scrollbar setup
+- [ ] Scrollbar setup
 
 ### Authentication
 
@@ -12,23 +12,22 @@
 - [x] info dialog in login
 - [x] implement toast design
 - [x] implement info dialog instead of toast in login page
-- [] implement design template email
-- [] implement change password
-- [] implement keep me signed in
+- [ ] implement design template email
+- [ ] implement change password
+- [ ] implement keep me signed in
 
 ### Organization
 
-- [] implement user role
-- [] integrate search api
-- [] integrate pagination api
-- [] implement permission in organization page
-
-- [] Setup your organization admin profile UI
+- [ ] implement user role
+- [ ] integrate search api
+- [ ] integrate pagination api
+- [ ] implement permission in organization page
+- [ ] Setup your organization admin profile UI
 
 
 ### DESIGN
 
-- [] input field design
+- [ ] input field design
 
 
 ## Project Map
@@ -37,14 +36,13 @@
 - [x] layer order
 - [x] project header height dynamic calculation 
 - [x] layer search
-- [] handle csv upload
-- [] no data yet section
-- [] save bbox
-- [] upload layer
-    task id -> successful -> patch -> style to layer api
+- [ ] handle csv upload
+- [ ] no data yet section
+- [ ] save bbox
+- [ ] upload layer
 
-- [] add to map -> style patch
-- [] layer upload limit 5
+- [ ] add to map -> style patch
+- [ ] layer upload limit 5
 
 ### ISSUES
 - [x] login redirect to projects tab organization dashboard
@@ -52,12 +50,14 @@
 - [x] remove notification icon from header
 - [x] dont zoom to layer on layer on
 - [x] name auto fill in layer upload
-- [] download each data from layer list
+
+### Backend
+- [ ] download each data from layer list
 
 ### Figma changes
-- [] typography
-- [] button size
-- [] tooltip, navbar
-- [] date format setup
-- [] table row height
-- [] project dashboard
+- [ ] typography
+- [ ] button size
+- [ ] tooltip, navbar
+- [ ] date format setup
+- [ ] table row height
+- [ ] project dashboard

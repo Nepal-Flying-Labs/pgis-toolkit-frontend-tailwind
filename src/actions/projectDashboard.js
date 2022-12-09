@@ -21,6 +21,12 @@ export const { Types, Creators } = createActions(
     deleteDataRequest: ['id', 'payload'],
     deleteDataSuccess: ['payload'],
     deleteDataFailure: null,
+
+    setUploadStatusCheckingId: ['payload'],
+
+    checkUploadStatusRequest: ['id'],
+    checkUploadStatusSuccess: ['payload'],
+    checkUploadStatusFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

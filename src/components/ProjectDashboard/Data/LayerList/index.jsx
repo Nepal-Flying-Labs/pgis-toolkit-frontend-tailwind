@@ -7,6 +7,7 @@ import DropdownOptions from '@Components/common/DropdownOptions';
 import Button from '@Components/common/Button';
 import Toggle from '@Components/common/Toggle';
 import Spinner from '@Components/common/Spinner/index';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
 
 const currentPage = 1;
 const dataPerPage = 10;
@@ -37,8 +38,6 @@ export default function LayerList() {
     },
   ];
 
-  console.log(layers, 'layersx');
-
   return (
     <div className="naxatw-space-y-10 naxatw-mt-5">
       <div className="naxatw-flex naxatw-justify-end">
@@ -52,6 +51,7 @@ export default function LayerList() {
 
       <Table
         rowClassName="naxatw-py-1 naxatw-px-3"
+        noColumnCondition={{ key: 'upload_status', value: 'uploading' }}
         data={layers || []}
         className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
         headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
@@ -76,8 +76,14 @@ export default function LayerList() {
           headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
           rowcolSpan="rowSpan_2"
           dataFormat={row => (
-            <span className="naxatw-text-base naxatw-font-bold">
+            <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-2">
               {row.name}
+              {row.upload_status === 'uploading' && (
+                <p className="naxatw-flex naxatw-gap-5 naxatw-text-secondary-400">
+                  <MaterialIcon name="rotate_right" />
+                  Uploading <Spinner className="naxatw-fill-primary-400" />
+                </p>
+              )}
             </span>
           )}
         />
@@ -86,7 +92,7 @@ export default function LayerList() {
           headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
           rowcolSpan="rowSpan_2"
           dataFormat={row => (
-            <span className="naxatw-text-base">{row.theme}</span>
+            <span className="naxatw-text-base">{row.theme || '-'}</span>
           )}
         />
         <TableHeader
@@ -119,15 +125,7 @@ export default function LayerList() {
           rowcolSpan="rowSpan_2"
           dataHeader={<SortingContainer name="Status" />}
           dataFormat={row => (
-            <span className="naxatw-text-base">
-              {row.upload_status === 'uploading' ? (
-                <p className="naxatw-flex naxatw-gap-2 naxatw-text-sm">
-                  Uploading <Spinner className="naxatw-fill-primary-400" />
-                </p>
-              ) : (
-                row.status
-              )}
-            </span>
+            <span className="naxatw-text-base">{row.status}</span>
           )}
         />
         <TableHeader

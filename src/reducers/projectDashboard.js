@@ -13,13 +13,15 @@ const getProjectDetailSuccess = (state, action) => ({
   projectDetail: action.payload.data,
 });
 
-const getProjectLayersSuccess = (state, action) => ({
-  ...state,
-  data: {
-    ...state.data,
-    layers: action.payload,
-  },
-});
+const getProjectLayersSuccess = (state, action) => {
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      layers: action.payload,
+    },
+  };
+};
 
 const uploadDatasetsSuccess = (state, action) => {
   const layers = [...state.data.layers, ...action.payload];

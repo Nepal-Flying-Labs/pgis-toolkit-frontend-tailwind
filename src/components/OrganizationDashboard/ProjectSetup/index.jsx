@@ -3,13 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
-import Button from '@Components/common/Button/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { Creators } from '@Actions/organizationDashboard';
 import Modal from '@Components/common/Modal/index';
-import useForm from '@Hooks/useForm';
-import SaveAsDraft from '../ModalContent/SaveAsDraft';
-
+import PromptDialog from '@Components/common/PromptDialog/index';
+import {
+  getPromptDialogContent,
+  getPromptDialogTitle,
+} from '@src/constants/modalContents';
+import { Creators as CommonCreators } from '@Actions/common';
+import CreateProjectSuccess from '../ModalContent/CreateProjectSuccess';
 import BasicInfo from './FormPages/BasicInfo';
 import Location from './FormPages/Location';
 import Documents from './FormPages/Documents';
@@ -21,6 +24,8 @@ const {
   getContactPersonRequest,
   getCountryListRequest,
 } = Creators;
+
+const { togglePromptDialog } = CommonCreators;
 
 const getPage = (page, setPage) => {
   switch (page) {
@@ -68,6 +73,9 @@ const ProjectSetup = () => {
   const modalContent = useSelector(
     state => state.organizationDashboard.modalContent,
   );
+  const promptDialogContent = useSelector(
+    state => state.common.promptDialogContent,
+  );
 
   useEffect(() => {
     dispatch(getIndividualProjectRequest(projectId));
@@ -77,12 +85,19 @@ const ProjectSetup = () => {
 
   return (
     <>
+      <PromptDialog
+        show={!!promptDialogContent}
+        title={getPromptDialogTitle(promptDialogContent)}
+        onClose={() => dispatch(togglePromptDialog())}
+      >
+        {getPromptDialogContent(promptDialogContent)}
+      </PromptDialog>
       <Modal
         show={!!modalContent}
         title=""
         onClose={() => dispatch(toggleModal(''))}
       >
-        <SaveAsDraft />
+        <CreateProjectSuccess />
       </Modal>
       <div>
         <div className="naxatw-w-full naxatw-h-[6.625rem] naxatw-flex naxatw-justify-center naxatw-sticky naxatw-top-0 naxatw-z-10 naxatw-bg-white naxatw-shadow-md">

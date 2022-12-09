@@ -166,7 +166,7 @@ export default class Table extends Component {
 
   renderRow = () => {
     const {
-      props: { data, uniqueKey, onRowClick },
+      props: { data, uniqueKey, onRowClick, rowClassName },
     } = this;
     const { fields, containSubHeaderCollection } = this.getFields();
 
@@ -196,7 +196,8 @@ export default class Table extends Component {
                 key={`${field}_${row[field] || ind}_${
                   row[uniqueKey] || ind
                 }`.replace(/ /g, '_')}
-                className="naxatw-py-[0.8125rem] naxatw-px-3"
+                // className="naxatw-py-1 naxatw-px-3"
+                className={rowClassName}
               >
                 {this.getBodyCellData(row, field, index)}
               </td>
@@ -259,6 +260,7 @@ Table.defaultProps = {
   rowColSpanNum: [],
   rowcolSpanName: [],
   headClassName: [],
+  rowClassName: 'naxatw-py-[0.8125rem] naxatw-px-3',
 };
 
 Table.propTypes = {
@@ -276,4 +278,5 @@ Table.propTypes = {
   rowColSpanNum: PropTypes.array,
   headClassName: PropTypes.array,
   rowcolSpanName: PropTypes.array,
+  rowClassName: PropTypes.string,
 };

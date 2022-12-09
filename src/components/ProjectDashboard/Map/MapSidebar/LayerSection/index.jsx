@@ -2,6 +2,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-extra-boolean-cast */
 import React from 'react';
+import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import Button from '@Components/common/Button';
@@ -17,6 +18,7 @@ export default function LayerSection() {
     state => state.common.projectHeaderHeight,
   );
   const searchText = useSelector(state => state.projectMap.searchText);
+  const history = useHistory();
   const dispatch = useDispatch();
 
   return (
@@ -54,11 +56,11 @@ export default function LayerSection() {
           <Button
             className="naxatw-btn-primary"
             iconLeft="add_circle_outline"
-            // onClick={() => {
-            //   dispatch(toggleModal('upload-layer'));
-            // }}
+            onClick={() => {
+              history.push('data');
+            }}
           >
-            Dataset
+            Data
           </Button>
         </div>
       </div>

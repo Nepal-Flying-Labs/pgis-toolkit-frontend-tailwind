@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { Creators, Types } from '@Actions/organizationDashboard';
+import toastActions from '@Actions/toast';
 import Input from '@Components/common/Input/index';
 import Select from '@Components/common/Select/index';
 import useForm from '@Hooks/useForm';
@@ -89,6 +90,10 @@ const Location = ({ page, setPage }) => {
 
       if (values.file) {
         dispatch(patchProjectRequest(projectId, finalPayloadData));
+      } else {
+        dispatch(
+          toastActions.error({ message: 'Geographic Boundary is Required' }),
+        );
       }
     },
   });

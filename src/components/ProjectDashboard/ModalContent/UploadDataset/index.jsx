@@ -2,15 +2,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators } from '@Actions/projectMap';
+import { Creators as ProjectMapCreators } from '@Actions/projectMap';
+import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
 import Dropzone from '@Components/common/Dropzone';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import FileIcon from '@Assets/images/icons/file-icon.svg';
 import Select from '@Components/common/Select';
 import Toggle from '@Components/common/Toggle';
 import Button from '@Components/common/Button';
+import prepareFormData from '@Utils/prepareFormData';
 
-const { getProjectThemesRequest } = Creators;
+const { getProjectThemesRequest } = ProjectMapCreators;
+const { uploadDatasetsRequest } = ProjectDashboardCreators;
 
 export default function UploadDataset() {
   const { projectId } = useParams();
@@ -84,7 +87,18 @@ export default function UploadDataset() {
       };
     }, {});
     if (errorCount === 0) {
-      dispatch();
+      const payloadData = uploadedFiles.map(item => {
+        const data = {
+          name: item.name,
+          theme: item.category,
+          display_on_map: item.addToMap,
+          file: item.file,
+          layer_type: 'Vector',
+          source: 'computer',
+        };
+        return prepareFormData(data);
+      });
+      dispatch(uploadDatasetsRequest(payloadData));
     } else {
       setErrorFields(errors);
     }

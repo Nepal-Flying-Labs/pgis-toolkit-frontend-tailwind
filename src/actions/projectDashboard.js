@@ -13,6 +13,10 @@ export const { Types, Creators } = createActions(
     getCategoryListRequest: ['params'],
     getCategoryListSuccess: ['payload'],
     getCategoryListFailure: null,
+
+    uploadDatasetsRequest: ['payload'],
+    uploadDatasetsSuccess: ['payload'],
+    uploadDatasetsFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

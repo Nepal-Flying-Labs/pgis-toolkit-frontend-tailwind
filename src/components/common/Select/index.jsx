@@ -132,7 +132,7 @@ Select.propTypes = {
   dataKey: PropTypes.string,
   labelKey: PropTypes.string,
   valueKey: PropTypes.string,
-  selectedValue: PropTypes.string,
+  selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default Select;

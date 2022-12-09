@@ -30,7 +30,7 @@ Toggle.defaultProps = {
 };
 
 Toggle.propTypes = {
-  id: PropTypes.string,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   name: PropTypes.string,
   checked: PropTypes.bool,
   onChange: PropTypes.func,

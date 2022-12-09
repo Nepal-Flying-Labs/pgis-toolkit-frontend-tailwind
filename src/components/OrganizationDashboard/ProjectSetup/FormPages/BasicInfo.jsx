@@ -165,11 +165,13 @@ const BasicInfo = ({ setPage }) => {
         />
         <a
           onClick={() => {
-            handleCustomChange('partners', [
-              ...values?.partners,
-              { value: partner, id: Math.floor(Math.random() * 100) },
-            ]);
-            setPartner('');
+            if (partner) {
+              handleCustomChange('partners', [
+                ...values?.partners,
+                { value: partner, id: Math.floor(Math.random() * 100) },
+              ]);
+              setPartner('');
+            }
           }}
         >
           <MaterialIcon

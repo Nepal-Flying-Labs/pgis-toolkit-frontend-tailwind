@@ -73,9 +73,6 @@ export default function LayerList() {
         checked,
       }),
     );
-    if (checked) {
-      dispatch(setZoomToLayerId(layerId));
-    }
   };
 
   return isLoading || themes === null

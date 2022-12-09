@@ -50,7 +50,7 @@
 - [x] login redirect to projects tab organization dashboard
 - [x] remove click on routes with no content
 - [x] remove notification icon from header
-- [] dont zoom to layer on layer on
+- [x] dont zoom to layer on layer on
 - [] name auto fill in layer upload
 - [] download each data from layer list
 

@@ -9,6 +9,7 @@ const searchTextSelector = state => state.projectMap.searchText;
 export const mapStateSelector = createSelector(
   [themesSelector, layersSelector, layerOrderSelector],
   (themes, layers, layerOrder) => {
+    if (!themes) return [];
     const allLayers = themes.reduce((arr, theme) => {
       const layer = layers?.[theme.id];
       if (!layer) return [...arr];

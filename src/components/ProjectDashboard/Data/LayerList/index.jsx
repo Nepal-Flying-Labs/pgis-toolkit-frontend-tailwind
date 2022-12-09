@@ -6,6 +6,7 @@ import SortingContainer from '@Components/common/SortingContainer';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import Button from '@Components/common/Button';
 import Toggle from '@Components/common/Toggle';
+import Spinner from '@Components/common/Spinner/index';
 
 const currentPage = 1;
 const dataPerPage = 10;
@@ -35,6 +36,8 @@ export default function LayerList() {
       onClick: () => {},
     },
   ];
+
+  console.log(layers, 'layersx');
 
   return (
     <div className="naxatw-space-y-10 naxatw-mt-5">
@@ -116,7 +119,15 @@ export default function LayerList() {
           rowcolSpan="rowSpan_2"
           dataHeader={<SortingContainer name="Status" />}
           dataFormat={row => (
-            <span className="naxatw-text-base">{row.status}</span>
+            <span className="naxatw-text-base">
+              {row.upload_status === 'uploading' ? (
+                <p className="naxatw-flex naxatw-gap-2 naxatw-text-sm">
+                  Uploading <Spinner className="naxatw-fill-primary-400" />
+                </p>
+              ) : (
+                row.status
+              )}
+            </span>
           )}
         />
         <TableHeader

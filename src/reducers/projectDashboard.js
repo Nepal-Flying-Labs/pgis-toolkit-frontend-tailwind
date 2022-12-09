@@ -21,9 +21,21 @@ const getProjectLayersSuccess = (state, action) => ({
   },
 });
 
+const uploadDatasetsSuccess = (state, action) => {
+  const layers = [...state.data.layers, ...action.payload];
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      layers,
+    },
+  };
+};
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
+  [Types.UPLOAD_DATASETS_SUCCESS]: uploadDatasetsSuccess,
 });
 
 export default projectDashboardReducer;

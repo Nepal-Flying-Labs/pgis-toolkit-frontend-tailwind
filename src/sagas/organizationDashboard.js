@@ -75,6 +75,7 @@ export function* getIndividualProjectRequest({ id }) {
 
 export function* patchProjectRequest({ id, payload }) {
   const { status, organization } = payload;
+  console.log(payload, 'payload');
   try {
     let filteredImagePayload;
     if (payload?.cover_image) {

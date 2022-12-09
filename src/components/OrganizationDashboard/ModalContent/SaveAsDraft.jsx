@@ -24,6 +24,21 @@ function diffObject(a, b) {
   return diffObj;
 }
 
+const getFileType = file => {
+  if (file) {
+    switch (file.type) {
+      case 'application/geo+json':
+        return 'GeoJSON';
+      case 'application/zip':
+        return 'Shapefile';
+      default:
+        return '';
+    }
+  } else {
+    return '';
+  }
+};
+
 const SaveAsDraft = () => {
   const { projectId, organizationId } = useParams();
   const dispatch = useDispatch();
@@ -44,13 +59,16 @@ const SaveAsDraft = () => {
     ...stepOne,
     ...stepTwo,
     organization: organizationId,
-    status: 'draft',
   };
 
   const diffObj = diffObject(project, finalObj);
-  const payloadData = diffObj?.file?.fileURL
+  const payloadData = diffObj?.file?.existedData
     ? removeObjectKeys(diffObj, ['file'])
-    : diffObj;
+    : { ...diffObj, file_type: getFileType(stepTwo.file) };
+
+  const finalPayloadData = payloadData?.cover_image?.[0]?.existedData
+    ? removeObjectKeys(payloadData, ['cover_image'])
+    : payloadData;
 
   return (
     <div>
@@ -77,7 +95,7 @@ const SaveAsDraft = () => {
           </Button>
           <Button
             onClick={() => {
-              dispatch(patchProjectRequest(projectId, payloadData));
+              dispatch(patchProjectRequest(projectId, finalPayloadData));
             }}
             className="naxatw-btn-primary naxatw-w-[7.563rem]"
             isLoading={loading}

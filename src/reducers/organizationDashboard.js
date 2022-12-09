@@ -67,6 +67,7 @@ const getIndividualProjectSuccess = (state, action) => {
               {
                 image: cover_image,
                 fileName: getFileExtension(cover_image),
+                existedData: true,
               },
             ]
           : [],
@@ -85,6 +86,7 @@ const getIndividualProjectSuccess = (state, action) => {
               name: fileName,
               type: file_type,
               lastModifiedDate: last_updated,
+              existedData: true,
             }
           : '',
         file_type,

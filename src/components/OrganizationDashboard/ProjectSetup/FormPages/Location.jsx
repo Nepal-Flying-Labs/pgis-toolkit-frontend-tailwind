@@ -35,7 +35,7 @@ function diffObject(a, b) {
 
 const Location = ({ page, setPage }) => {
   // const [isFileChange, setFileChange] = useState(false);
-  const { projectId } = useParams();
+  const { projectId, organizationId } = useParams();
   const dispatch = useDispatch();
   const countryList = useSelector(
     state => state.organizationDashboard.countryList,
@@ -71,23 +71,21 @@ const Location = ({ page, setPage }) => {
       const finalObj = {
         ...stepOne,
         ...values,
-        file_type: getFileType(values.file),
+        organization: organizationId,
         status: 'ongoing',
       };
-      // if(!isFileChange){
-      //     const removeProp='file';
-
-      // }
 
       const diffObj = diffObject(project, finalObj);
 
-      console.log(diffObj, 'diff');
-      const payloadData = diffObj?.file?.fileURL
+      const payloadData = diffObj?.file?.existedData
         ? removeObjectKeys(diffObj, ['file'])
-        : diffObj;
+        : { ...diffObj, file_type: getFileType(values.file) };
+      const finalPayloadData = payloadData?.cover_image?.[0]?.existedData
+        ? removeObjectKeys(payloadData, ['cover_image'])
+        : payloadData;
 
       if (values.file) {
-        dispatch(patchProjectRequest(projectId, payloadData));
+        dispatch(patchProjectRequest(projectId, finalPayloadData));
       }
     },
   });

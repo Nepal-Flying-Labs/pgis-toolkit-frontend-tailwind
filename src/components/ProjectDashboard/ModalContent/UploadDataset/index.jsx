@@ -3,7 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
-import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
+import {
+  Creators as ProjectDashboardCreators,
+  Types,
+} from '@Actions/projectDashboard';
 import Dropzone from '@Components/common/Dropzone';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import FileIcon from '@Assets/images/icons/file-icon.svg';
@@ -11,6 +14,7 @@ import Select from '@Components/common/Select';
 import Toggle from '@Components/common/Toggle';
 import Button from '@Components/common/Button';
 import prepareFormData from '@Utils/prepareFormData';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { getProjectThemesRequest } = ProjectMapCreators;
 const { uploadDatasetsRequest } = ProjectDashboardCreators;
@@ -20,6 +24,9 @@ export default function UploadDataset() {
   const themes = useSelector(state => state.projectMap.themes);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [errorFields, setErrorFields] = useState({});
+  const isUploading = useSelector(state =>
+    checkIfLoading(state, [Types.UPLOAD_DATASETS_REQUEST]),
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -75,6 +82,7 @@ export default function UploadDataset() {
   };
 
   const handleSubmit = () => {
+    if (isUploading) return;
     let errorCount = 0;
     const errors = uploadedFiles.reduce((obj, item) => {
       const fields = [];
@@ -190,7 +198,11 @@ export default function UploadDataset() {
       </div>
 
       <div className=" naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
-        <Button className="naxatw-btn-primary" onClick={handleSubmit}>
+        <Button
+          className="naxatw-btn-primary"
+          onClick={handleSubmit}
+          isLoading={isUploading}
+        >
           Add To Catalogue
         </Button>
       </div>

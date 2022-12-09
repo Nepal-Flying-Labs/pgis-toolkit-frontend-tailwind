@@ -9,6 +9,14 @@ export const { Types, Creators } = createActions(
     getProjectLayersRequest: ['params'],
     getProjectLayersSuccess: ['payload'],
     getProjectLayersFailure: null,
+
+    getCategoryListRequest: ['params'],
+    getCategoryListSuccess: ['payload'],
+    getCategoryListFailure: null,
+
+    uploadDatasetsRequest: ['payload'],
+    uploadDatasetsSuccess: ['payload'],
+    uploadDatasetsFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

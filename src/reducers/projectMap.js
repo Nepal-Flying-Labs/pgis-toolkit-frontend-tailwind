@@ -4,8 +4,8 @@ import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/st
 import { isEmpty } from '@Utils/commonUtils';
 
 const initialState = {
-  themes: [],
-  layers: null,
+  themes: null, // []
+  layers: null, // {}
   zoomToLayerId: null,
   selectedProjectTheme: null,
   popupData: {},

@@ -35,7 +35,7 @@ export default function Dropzone({
 Dropzone.defaultProps = {
   label: '',
   accept: '',
-  multipe: false,
+  multiple: false,
   onChange: () => {},
 };
 
@@ -43,5 +43,5 @@ Dropzone.propTypes = {
   label: PropTypes.string,
   accept: PropTypes.string,
   multiple: PropTypes.bool,
-  onChange: PropTypes.string,
+  onChange: PropTypes.func,
 };

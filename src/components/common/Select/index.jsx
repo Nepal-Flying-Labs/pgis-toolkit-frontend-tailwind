@@ -18,12 +18,22 @@ function Select({
   className,
   errorClassName,
   errorValue,
+  labelKey,
+  valueKey,
+  selectedValue,
 }) {
   const [divRef, toggle, handleToggle] = useOutsideClick();
   const handleSelect = item => {
     onChange(item);
   };
 
+  const getSelectedValue = () => {
+    return (
+      selected ||
+      options.find(item => item[valueKey] === selectedValue)?.[labelKey] ||
+      placeholder
+    );
+  };
   return (
     // eslint-disable-next-line react/jsx-curly-brace-presence
     <div
@@ -42,7 +52,7 @@ function Select({
             toggle ? 'naxatw-bg-light-green' : ''
           }`}
         >
-          <span className="naxatw-text-body-lg">{selected || placeholder}</span>
+          <span className="naxatw-text-body-lg">{getSelectedValue()}</span>
           {!toggle ? (
             <i className="material-icons">arrow_drop_down</i>
           ) : (
@@ -57,24 +67,26 @@ function Select({
         >
           <ul>
             {options ? (
-              options.map(opt => {
+              options.map(item => {
                 return (
                   <li
-                    key={opt.id}
+                    key={item.id}
                     role="menuitem"
                     className={`naxatw-whitespace-nowrap naxatw-px-2 naxatw-py-1 naxatw-mt-1
                     naxatw-cursor-pointer naxatw-rounded-sm 
                    hover:naxatw-bg-gray-200  ${
-                     selected === opt[dataKey] ? 'naxatw-bg-light-green' : ''
+                     selected === item[dataKey] || item[valueKey]
+                       ? 'naxatw-bg-light-green'
+                       : ''
                    }`}
                     onClick={() => {
-                      handleSelect(opt);
+                      handleSelect(item);
                       handleToggle(!toggle);
                     }}
                     onKeyDown={() => {}}
                     tabIndex="0"
                   >
-                    <span>{opt[dataKey]}</span>
+                    <span>{item[dataKey] || item[labelKey]}</span>
                   </li>
                 );
               })
@@ -102,6 +114,9 @@ Select.defaultProps = {
   errorValue: false,
   errorClassName: false,
   dataKey: 'name',
+  labelKey: 'label',
+  valueKey: 'id',
+  selectedValue: '',
 };
 
 Select.propTypes = {
@@ -115,6 +130,9 @@ Select.propTypes = {
   className: PropTypes.string,
   errorClassName: PropTypes.bool,
   dataKey: PropTypes.string,
+  labelKey: PropTypes.string,
+  valueKey: PropTypes.string,
+  selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default Select;

@@ -32,7 +32,7 @@ export default function ProjectCard({ title, address, status, id, onClick }) {
       ),
       onClick: projectId => {
         history.push(
-          `/organizations/${organizationId}/project-setup/${projectId}`,
+          `/organizations/${organizationId}/project-edit/${projectId}`,
         );
       },
     },

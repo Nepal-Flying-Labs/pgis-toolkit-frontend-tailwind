@@ -50,7 +50,7 @@ export default function OrganizationDashboard() {
     dispatch(getOrganizationDetailRequest(organizationId));
   }, [dispatch, organizationId]);
 
-  return tabname !== 'project-setup' ? (
+  return tabname !== ('project-setup' && 'project-edit') ? (
     <div>
       <ProjectHeader />
       <Modal

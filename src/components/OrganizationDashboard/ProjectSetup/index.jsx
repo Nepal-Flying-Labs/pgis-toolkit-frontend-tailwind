@@ -64,7 +64,7 @@ const pageStatus = [
 ];
 
 const ProjectSetup = () => {
-  const { projectId } = useParams();
+  const { projectId, tabname } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   const [page, setPage] = useState(1);
@@ -95,9 +95,13 @@ const ProjectSetup = () => {
         <div className="naxatw-w-full naxatw-h-[6.625rem] naxatw-flex naxatw-justify-center naxatw-sticky naxatw-top-0 naxatw-z-10 naxatw-bg-white naxatw-shadow-md">
           <div className="naxatw-flex naxatw-justify-between naxatw-w-[41.875rem] naxatw-items-center">
             <div>
-              <h3>Create a New Project</h3>
+              <h3>
+                {tabname === 'project-setup'
+                  ? 'Create a New Project'
+                  : 'Edit a Project'}
+              </h3>
               <span className="naxatw-text-body-lg naxatw-mt-1">
-                The functions works in 5 steps as highlighted below.
+                The functions works in 2 steps as highlighted below.
               </span>
             </div>
             <button

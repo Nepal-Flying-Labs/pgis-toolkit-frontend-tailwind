@@ -31,7 +31,9 @@ export function* loginRequest({ payload }) {
     yield put(authActions.loginFailure());
     yield put(
       authActions.setInfoDialogContent({
-        message: error?.response?.data?.detail,
+        message:
+          error?.response?.data?.detail ||
+          error?.landingResponse?.data?.message,
         status: 'error',
       }),
     );

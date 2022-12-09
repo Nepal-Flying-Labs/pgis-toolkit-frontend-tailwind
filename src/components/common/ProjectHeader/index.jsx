@@ -9,20 +9,20 @@ import HeaderNotification from '../Header/HeaderNotification';
 import HeaderProfile from '../Header/HeaderProfile';
 
 const organizationHeaderData = [
-  { label: 'Home', route: 'home' },
-  { label: 'Projects', route: 'projects' },
-  { label: 'User', route: 'user' },
-  { label: 'Settings', route: 'settings' },
+  { label: 'Home', route: 'home', disabled: true },
+  { label: 'Projects', route: 'projects', disabled: false },
+  { label: 'User', route: 'user', disabled: true },
+  { label: 'Settings', route: 'settings', disabled: true },
 ];
 
 const projectHeaderData = [
-  { label: 'Map', route: 'map' },
-  { label: 'Data', route: 'data' },
-  { label: 'Document', route: 'document' },
-  { label: 'Gallery', route: 'gallery' },
-  { label: 'Users', route: 'users' },
-  { label: 'Info.', route: 'info' },
-  { label: 'Settings', route: 'settings' },
+  { label: 'Map', route: 'map', disabled: false },
+  { label: 'Data', route: 'data', disabled: false },
+  { label: 'Document', route: 'document', disabled: true },
+  { label: 'Gallery', route: 'gallery', disabled: true },
+  { label: 'Users', route: 'users', disabled: true },
+  { label: 'Info.', route: 'info', disabled: true },
+  { label: 'Settings', route: 'settings', disabled: true },
 ];
 
 const { setProjectHeaderHeight } = Creators;
@@ -72,7 +72,7 @@ export default function ProjectHeader() {
         <div className="naxatw-flex naxatw-gap-10">
           <nav className="">
             <ul className="naxatw-font-bold naxatw-text-grey-500 naxatw-text-[0.9375rem] naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-8 naxatw-h-full">
-              {headerData.map(({ label, route }) => (
+              {headerData.map(({ label, route, disabled }) => (
                 <li
                   key={label}
                   className={`${
@@ -85,6 +85,7 @@ export default function ProjectHeader() {
                         ? `/organizations/${organizationId}/projects/${projectId}/${route}`
                         : `/organizations/${organizationId}/${route}`
                     }
+                    style={{ pointerEvents: disabled ? 'none' : 'unset' }}
                   >
                     {label}
                   </Link>

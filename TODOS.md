@@ -44,3 +44,7 @@
     task id -> successful -> patch -> style to layer api
 
 - [] add to map -> style patch
+
+### ISSUES
+- [] login redirect to projects tab organization dashboard
+- [] remove click on routes with no content

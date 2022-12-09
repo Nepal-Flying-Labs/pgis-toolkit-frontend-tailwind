@@ -44,7 +44,20 @@
     task id -> successful -> patch -> style to layer api
 
 - [] add to map -> style patch
+- [] layer upload limit 5
 
 ### ISSUES
 - [] login redirect to projects tab organization dashboard
 - [] remove click on routes with no content
+- [] remove notification icon from header
+- [] dont zoom to layer on layer on
+- [] name auto fill in layer upload
+- [] download each data from layer list
+
+### Figma changes
+- [] typography
+- [] button size
+- [] tooltip, navbar
+- [] date format setup
+- [] table row height
+- [] project dashboard

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import LoginLogo from '@Assets/images/logo.png';
 import HeaderProfile from './HeaderProfile';
-import HeaderNotification from './HeaderNotification';
+// import HeaderNotification from './HeaderNotification';
 
 export default function Header() {
   return (
@@ -22,7 +22,7 @@ export default function Header() {
           </ul>
         </nav>
         <div className="naxatw-flex naxatw-gap-4 naxatw-items-center">
-          <HeaderNotification />
+          {/* <HeaderNotification /> */}
 
           <HeaderProfile />
         </div>

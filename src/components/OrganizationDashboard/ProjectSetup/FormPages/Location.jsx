@@ -16,6 +16,7 @@ import Chip from '@Components/common/Chip';
 import MultiSelect from '@Components/common/MultiSelect/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import UploadPhotos from '@Components/common/UploadPhotos/index';
+import removeObjectKeys from '@Utils/removeObjectKeys';
 import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetup/UploadPolygonBoundary/index';
 import MapSection from '../MapSection/index';
 
@@ -77,10 +78,16 @@ const Location = ({ page, setPage }) => {
       //     const removeProp='file';
 
       // }
+
       const diffObj = diffObject(project, finalObj);
 
+      console.log(diffObj, 'diff');
+      const payloadData = diffObj?.file?.fileURL
+        ? removeObjectKeys(diffObj, ['file'])
+        : diffObj;
+
       if (values.file) {
-        dispatch(patchProjectRequest(projectId, diffObj));
+        dispatch(patchProjectRequest(projectId, payloadData));
       }
     },
   });

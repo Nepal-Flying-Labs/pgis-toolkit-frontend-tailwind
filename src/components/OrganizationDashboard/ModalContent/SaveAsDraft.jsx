@@ -6,6 +6,8 @@ import { Creators as CommonCreators } from '@Actions/common';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import removeObjectKeys from '@Utils/removeObjectKeys';
+
 import { Creators, Types } from '@Actions/organizationDashboard';
 
 const { patchProjectRequest } = Creators;
@@ -44,10 +46,11 @@ const SaveAsDraft = () => {
     organization: organizationId,
     status: 'draft',
   };
-  console.log(finalObj, 'final obj');
-  console.log(project, 'project');
+
   const diffObj = diffObject(project, finalObj);
-  console.log(diffObj, 'different object');
+  const payloadData = diffObj?.file?.fileURL
+    ? removeObjectKeys(diffObj, ['file'])
+    : diffObj;
 
   return (
     <div>
@@ -74,7 +77,7 @@ const SaveAsDraft = () => {
           </Button>
           <Button
             onClick={() => {
-              dispatch(patchProjectRequest(projectId, diffObj));
+              dispatch(patchProjectRequest(projectId, payloadData));
             }}
             className="naxatw-btn-primary naxatw-w-[7.563rem]"
             isLoading={loading}

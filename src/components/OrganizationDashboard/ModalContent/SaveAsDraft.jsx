@@ -2,12 +2,14 @@
 import React from 'react';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import Button from '@Components/common/Button/index';
+import { Creators as CommonCreators } from '@Actions/common';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { Creators, Types } from '@Actions/organizationDashboard';
 
-const { toggleModal, patchProjectRequest } = Creators;
+const { patchProjectRequest } = Creators;
+const { togglePromptDialog } = CommonCreators;
 
 function diffObject(a, b) {
   const diffObj = Object.keys(b).reduce((diff, key) => {
@@ -57,7 +59,7 @@ const SaveAsDraft = () => {
       <div className="naxatw-mt-5 naxatw-p-7 naxatw-flex naxatw-justify-center">
         <div className="naxatw-flex naxatw-gap-x-2">
           <Button
-            onClick={() => dispatch(toggleModal(''))}
+            onClick={() => dispatch(togglePromptDialog(''))}
             className="naxatw-w-[5.25rem] naxatw-text-[#00A699] hover:naxatw-underline hover:naxatw-bg-gray-100"
           >
             Discard

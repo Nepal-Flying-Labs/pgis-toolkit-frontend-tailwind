@@ -11,6 +11,7 @@ import Input from '@Components/common/Input/index';
 import Select from '@Components/common/Select/index';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button/index';
+import { Creators as CommonCreators } from '@Actions/common';
 import Chip from '@Components/common/Chip';
 import MultiSelect from '@Components/common/MultiSelect/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
@@ -18,7 +19,7 @@ import UploadPhotos from '@Components/common/UploadPhotos/index';
 import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetup/UploadPolygonBoundary/index';
 import MapSection from '../MapSection/index';
 
-// import MaterialIcon from '@Components/common/MaterialIcon/index';
+const { togglePromptDialog } = CommonCreators;
 const { setIndividualProject, toggleModal, patchProjectRequest } = Creators;
 const ax = {};
 function diffObject(a, b) {
@@ -57,6 +58,7 @@ const Location = ({ page, setPage }) => {
         status: 'ongoing',
       };
       const diffObj = diffObject(project, finalObj);
+
       dispatch(patchProjectRequest(projectId, diffObj));
     },
   });
@@ -168,7 +170,7 @@ const Location = ({ page, setPage }) => {
         </Button>
         <Button
           onClick={() => {
-            dispatch(toggleModal('save-as-draft'));
+            dispatch(togglePromptDialog('save-as-draft'));
           }}
           className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
         >

@@ -9,6 +9,7 @@ import MultiSelect from '@Components/common/MultiSelect/index';
 import { Creators } from '@Actions/organizationDashboard';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
+import { Creators as CommonCreators } from '@Actions/common';
 import Button from '@Components/common/Button';
 import UploadPhotos from '@Components/common/UploadPhotos/index';
 import useForm from '@Hooks/useForm';
@@ -16,6 +17,7 @@ import { format } from 'date-fns';
 import ContactPerson from './ContactPerson';
 
 const { setIndividualProject, toggleModal } = Creators;
+const { togglePromptDialog } = CommonCreators;
 
 const thematicFocusArea = [
   {
@@ -130,6 +132,7 @@ const BasicInfo = ({ setPage }) => {
           )}
         />
       </div>
+
       <div className="naxatw-flex naxatw-justify-between">
         <div className="naxatw-space-y-2 naxatw-w-[325px]">
           <label className="naxatw-label">Start Date</label>
@@ -153,6 +156,7 @@ const BasicInfo = ({ setPage }) => {
           />
         </div>
       </div>
+
       <div className="naxatw-relative naxatw-space-y-2">
         <label className="naxatw-label">Partners</label>
         <input
@@ -199,6 +203,7 @@ const BasicInfo = ({ setPage }) => {
 
       <hr />
       <ContactPerson />
+
       <div className="naxatw-flex naxatw-justify-between  naxatw-pt-7 naxatw-pb-7 ">
         <div />
 
@@ -214,7 +219,7 @@ const BasicInfo = ({ setPage }) => {
         <Button
           onClick={() => {
             handleSubmit();
-            dispatch(toggleModal('save-as-draft'));
+            dispatch(togglePromptDialog('save-as-draft'));
           }}
           className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
         >

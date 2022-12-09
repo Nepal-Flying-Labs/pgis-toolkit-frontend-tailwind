@@ -3,11 +3,11 @@ import { api, authenticated } from '.';
 export const loginUser = payload => api.post('/users/token/login/', payload);
 
 export const verifyUser = params =>
-  authenticated(api).get(`/users/preliminary_user_verify/`, { params });
+  api.get(`/users/preliminary_user_verify/`, { params });
 
-export const createUser = data => authenticated(api).get(`/users/user/`, data);
+export const createUser = data => api.get(`/users/user/`, data);
 
-export const signUpUser = data => authenticated(api).post(`/users/user/`, data);
+export const signUpUser = data => api.post(`/users/user/`, data);
 
 export const forgotPassword = payload =>
   api.post(`/users/forgot_password_email/`, payload);

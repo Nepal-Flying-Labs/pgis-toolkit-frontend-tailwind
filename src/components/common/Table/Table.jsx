@@ -3,6 +3,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
+import Spinner from '../Spinner';
 
 export function TableHeader({
   dataField,
@@ -166,7 +167,7 @@ export default class Table extends Component {
 
   renderRow = () => {
     const {
-      props: { data, uniqueKey, onRowClick, rowClassName },
+      props: { data, uniqueKey, onRowClick, rowClassName, noColumnCondition },
     } = this;
     const { fields, containSubHeaderCollection } = this.getFields();
 
@@ -188,20 +189,44 @@ export default class Table extends Component {
           style: { cursor: 'pointer' },
         })}
       >
-        {fields?.map(
-          (field, ind) =>
-            !containSubHeaderCollection[ind] && (
-              <td
-                // eslint-disable-next-line
-                key={`${field}_${row[field] || ind}_${
-                  row[uniqueKey] || ind
-                }`.replace(/ /g, '_')}
-                // className="naxatw-py-1 naxatw-px-3"
-                className={rowClassName}
-              >
-                {this.getBodyCellData(row, field, index)}
-              </td>
-            ),
+        {noColumnCondition &&
+        row[noColumnCondition.key] === noColumnCondition.value ? (
+          <>
+            <td className={rowClassName}>
+              <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-10 naxatw-py-2 naxatw-items-center">
+                {index + 1}
+              </span>
+            </td>
+            <td className={rowClassName}>
+              <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-10 naxatw-py-2 naxatw-items-center">
+                {row.name}
+              </span>
+            </td>
+            <td colSpan={7} className={rowClassName}>
+              <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-10 naxatw-py-2 naxatw-items-center">
+                <p className="naxatw-flex naxatw-gap-5 naxatw-text-secondary-400">
+                  <i className="material-icons">rotate_right</i>
+                  Uploading <Spinner className="naxatw-fill-primary-400" />
+                </p>
+              </span>
+            </td>
+          </>
+        ) : (
+          fields?.map(
+            (field, ind) =>
+              !containSubHeaderCollection[ind] && (
+                <td
+                  // eslint-disable-next-line
+                  key={`${field}_${row[field] || ind}_${
+                    row[uniqueKey] || ind
+                  }`.replace(/ /g, '_')}
+                  // className="naxatw-py-1 naxatw-px-3"
+                  className={rowClassName}
+                >
+                  {this.getBodyCellData(row, field, index)}
+                </td>
+              ),
+          )
         )}
       </tr>
     ));
@@ -261,6 +286,7 @@ Table.defaultProps = {
   rowcolSpanName: [],
   headClassName: [],
   rowClassName: 'naxatw-py-[0.8125rem] naxatw-px-3',
+  noColumnCondition: null,
 };
 
 Table.propTypes = {
@@ -279,4 +305,5 @@ Table.propTypes = {
   headClassName: PropTypes.array,
   rowcolSpanName: PropTypes.array,
   rowClassName: PropTypes.string,
+  noColumnCondition: PropTypes.object,
 };

@@ -20,7 +20,7 @@ function getTabContent(tabname) {
     case 'projects':
       return <Projects />;
     default:
-      return <Home />;
+      return <Projects />;
   }
 }
 

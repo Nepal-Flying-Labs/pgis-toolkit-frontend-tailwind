@@ -51,7 +51,7 @@
 - [x] remove click on routes with no content
 - [x] remove notification icon from header
 - [x] dont zoom to layer on layer on
-- [] name auto fill in layer upload
+- [x] name auto fill in layer upload
 - [] download each data from layer list
 
 ### Figma changes

@@ -42,7 +42,7 @@ export default function UploadDataset() {
         ...prev,
         ...Array.from(files).map((file, index) => ({
           id: prevId + 1 + index,
-          name: '',
+          name: file.name.split('.')[0],
           category: null,
           addToMap: false,
           file,

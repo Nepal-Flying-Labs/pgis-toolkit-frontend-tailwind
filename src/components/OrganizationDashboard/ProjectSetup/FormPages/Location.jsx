@@ -21,7 +21,6 @@ import MapSection from '../MapSection/index';
 
 const { togglePromptDialog } = CommonCreators;
 const { setIndividualProject, toggleModal, patchProjectRequest } = Creators;
-const ax = {};
 function diffObject(a, b) {
   const diffObj = Object.keys(b).reduce((diff, key) => {
     if (a[key] === b[key]) return diff;
@@ -34,6 +33,7 @@ function diffObject(a, b) {
 }
 
 const Location = ({ page, setPage }) => {
+  // const [isFileChange, setFileChange] = useState(false);
   const { projectId } = useParams();
   const dispatch = useDispatch();
   const countryList = useSelector(
@@ -49,23 +49,41 @@ const Location = ({ page, setPage }) => {
     state => state.organizationDashboard.individualProject.project,
   );
 
+  const getFileType = file => {
+    if (file) {
+      switch (file.type) {
+        case 'application/geo+json':
+          return 'GeoJSON';
+        case 'application/zip':
+          return 'Shapefile';
+        default:
+          return '';
+      }
+    } else {
+      return '';
+    }
+  };
+
   const { values, handleChange, handleCustomChange, handleSubmit } = useForm({
-    initialValues: { ...stepTwo, file_type: 'Shapefile' },
+    initialValues: stepTwo,
     onSubmit: data => {
       const finalObj = {
         ...stepOne,
         ...values,
+        file_type: getFileType(values.file),
         status: 'ongoing',
       };
+      // if(!isFileChange){
+      //     const removeProp='file';
+
+      // }
       const diffObj = diffObject(project, finalObj);
 
-      dispatch(patchProjectRequest(projectId, diffObj));
+      if (values.file) {
+        dispatch(patchProjectRequest(projectId, diffObj));
+      }
     },
   });
-
-  const onSaveClick = () => {
-    handleSubmit();
-  };
 
   return (
     <>
@@ -136,6 +154,7 @@ const Location = ({ page, setPage }) => {
           uploadedFile={values?.file}
           setuploadedFile={file => {
             handleCustomChange('file', file);
+            // setFileChange(true);
             // handleCustomChange(
             //   'file_type',
             //   file.type === 'application/geo+json' ? 'GeoJSON' : 'ShapeFile',
@@ -143,6 +162,7 @@ const Location = ({ page, setPage }) => {
           }}
         />
       )}
+
       {values?.location_type === 'Custom Draw' && <MapSection />}
       <div className="naxatw-flex naxatw-justify-between  naxatw-pt-7 naxatw-pb-7 ">
         {page > 1 ? (
@@ -151,6 +171,7 @@ const Location = ({ page, setPage }) => {
             className=" naxatw-w-[8.875rem] naxatw-text-[#00A699] "
             onClick={() => {
               // handleSubmit();
+              dispatch(setIndividualProject({ key: 'stepTwo', value: values }));
               setPage(prevPage => prevPage - 1);
             }}
           >
@@ -170,6 +191,7 @@ const Location = ({ page, setPage }) => {
         </Button>
         <Button
           onClick={() => {
+            dispatch(setIndividualProject({ key: 'stepTwo', value: values }));
             dispatch(togglePromptDialog('save-as-draft'));
           }}
           className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"

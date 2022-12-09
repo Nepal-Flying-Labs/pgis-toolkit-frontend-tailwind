@@ -51,9 +51,7 @@ const BasicInfo = ({ setPage }) => {
     useForm({
       initialValues: stepOne,
       required: ['name'],
-      onSubmit: data => {
-        dispatch(setIndividualProject({ key: 'stepOne', value: data }));
-      },
+      onSubmit: data => {},
     });
   useEffect(() => {
     setValues(stepOne);
@@ -210,7 +208,7 @@ const BasicInfo = ({ setPage }) => {
         <Button
           className="naxatw-btn-primary naxatw-w-[4.75rem]"
           onClick={() => {
-            handleSubmit();
+            dispatch(setIndividualProject({ key: 'stepOne', value: values }));
             setPage(prevPage => prevPage + 1);
           }}
         >
@@ -218,7 +216,7 @@ const BasicInfo = ({ setPage }) => {
         </Button>
         <Button
           onClick={() => {
-            handleSubmit();
+            dispatch(setIndividualProject({ key: 'stepOne', value: values }));
             dispatch(togglePromptDialog('save-as-draft'));
           }}
           className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"

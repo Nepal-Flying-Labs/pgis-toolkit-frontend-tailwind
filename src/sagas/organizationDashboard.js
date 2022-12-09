@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import { call, put, takeLatest } from 'redux-saga/effects';
-
+import { push } from 'connected-react-router';
 import {
   getProjects,
   postProjectInvite,
@@ -15,6 +15,7 @@ import {
 import organizationDashboardActions, {
   Types,
 } from '@Actions/organizationDashboard';
+import commonActions from '@Actions/common';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
 import { withLoader } from '@Utils/sagaUtils';
@@ -73,7 +74,7 @@ export function* getIndividualProjectRequest({ id }) {
 }
 
 export function* patchProjectRequest({ id, payload }) {
-  console.log(payload, 'payload');
+  const { status, organization } = payload;
   try {
     let filteredImagePayload;
     if (payload?.cover_image) {
@@ -86,19 +87,28 @@ export function* patchProjectRequest({ id, payload }) {
               ? payload?.cover_image?.filter(
                   img => !img.isDeleted && img.file,
                 )?.[0]?.file
-              : null
-            : null,
+              : ''
+            : '',
       };
     } else {
       filteredImagePayload = {
         ...payload,
       };
     }
-    console.log(filteredImagePayload, 'filterImage');
+
+    console.log(status, 'status');
     const formData = prepareFormData(filteredImagePayload);
     const response = yield call(patchProject, id, formData);
     yield put(organizationDashboardActions.patchProjectSuccess(response.data));
     yield put(organizationDashboardActions.toggleModal(''));
+    if (status === 'ongoing') {
+      yield put(
+        organizationDashboardActions.toggleModal('create-project-success'),
+      );
+    } else {
+      yield put(commonActions.togglePromptDialog(''));
+      yield put(push(`/organizations/${organization}/projects`));
+    }
     yield put(toastActions.success({ message: 'Data saved successfully' }));
   } catch (error) {
     yield put(organizationDashboardActions.patchProjectFailure());

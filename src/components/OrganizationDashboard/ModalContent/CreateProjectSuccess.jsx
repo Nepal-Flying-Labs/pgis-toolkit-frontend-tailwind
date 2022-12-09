@@ -1,8 +1,16 @@
 /* eslint-disable arrow-body-style */
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import Button from '@Components/common/Button/index';
+import { Creators } from '@Actions/organizationDashboard';
+import { useParams, useHistory } from 'react-router';
+
+const { toggleModal } = Creators;
 
 const CreateProjectSuccess = () => {
+  const dispatch = useDispatch();
+  const { organizationId } = useParams();
+  const history = useHistory();
   return (
     <div>
       <div className="naxatw-py-7">
@@ -26,7 +34,10 @@ const CreateProjectSuccess = () => {
           className="naxatw-btn-primary naxatw-mt-2 naxatw-w-[5rem]"
           //   isLoading={loading}
           //   loaderClassName="naxatw-fill-secondary-400"
-          //   onClick={handleSubmit}
+          onClick={() => {
+            dispatch(toggleModal(''));
+            history.push(`/organizations/${organizationId}/projects`);
+          }}
         >
           Done
         </Button>

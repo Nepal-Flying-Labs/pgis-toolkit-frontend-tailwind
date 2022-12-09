@@ -23,7 +23,7 @@ function diffObject(a, b) {
 }
 
 const SaveAsDraft = () => {
-  const { projectId } = useParams();
+  const { projectId, organizationId } = useParams();
   const dispatch = useDispatch();
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.PATCH_PROJECT_REQUEST]),
@@ -38,8 +38,16 @@ const SaveAsDraft = () => {
     state => state.organizationDashboard.individualProject.project,
   );
 
-  const finalObj = { ...stepOne, ...stepTwo };
+  const finalObj = {
+    ...stepOne,
+    ...stepTwo,
+    organization: organizationId,
+    status: 'draft',
+  };
+  console.log(finalObj, 'final obj');
+  console.log(project, 'project');
   const diffObj = diffObject(project, finalObj);
+  console.log(diffObj, 'different object');
 
   return (
     <div>

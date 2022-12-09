@@ -75,7 +75,6 @@ export function* getIndividualProjectRequest({ id }) {
 
 export function* patchProjectRequest({ id, payload }) {
   const { status, organization } = payload;
-  console.log(payload, 'payload');
   try {
     let filteredImagePayload;
     if (payload?.cover_image) {
@@ -97,12 +96,12 @@ export function* patchProjectRequest({ id, payload }) {
       };
     }
 
-    console.log(status, 'status');
     const formData = prepareFormData(filteredImagePayload);
     const response = yield call(patchProject, id, formData);
     yield put(organizationDashboardActions.patchProjectSuccess(response.data));
     yield put(organizationDashboardActions.toggleModal(''));
     if (status === 'ongoing') {
+      yield put(push(`/organizations/${organization}/projects`));
       yield put(
         organizationDashboardActions.toggleModal('create-project-success'),
       );

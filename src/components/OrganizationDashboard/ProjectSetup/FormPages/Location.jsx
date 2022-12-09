@@ -76,7 +76,6 @@ const Location = ({ page, setPage }) => {
         ...stepOne,
         ...values,
         organization: organizationId,
-        status: 'ongoing',
       };
 
       const diffObj = diffObject(project, finalObj);
@@ -89,7 +88,12 @@ const Location = ({ page, setPage }) => {
         : payloadData;
 
       if (values.file) {
-        dispatch(patchProjectRequest(projectId, finalPayloadData));
+        dispatch(
+          patchProjectRequest(projectId, {
+            ...finalPayloadData,
+            status: 'ongoing',
+          }),
+        );
       } else {
         dispatch(
           toastActions.error({ message: 'Geographic Boundary is Required' }),

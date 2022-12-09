@@ -5,14 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { Creators } from '@Actions/organizationDashboard';
-import Modal from '@Components/common/Modal/index';
 import PromptDialog from '@Components/common/PromptDialog/index';
 import {
   getPromptDialogContent,
   getPromptDialogTitle,
 } from '@src/constants/modalContents';
 import { Creators as CommonCreators } from '@Actions/common';
-import CreateProjectSuccess from '../ModalContent/CreateProjectSuccess';
+
 import BasicInfo from './FormPages/BasicInfo';
 import Location from './FormPages/Location';
 import Documents from './FormPages/Documents';
@@ -20,7 +19,6 @@ import Images from './FormPages/Images';
 
 const {
   getIndividualProjectRequest,
-  toggleModal,
   getContactPersonRequest,
   getCountryListRequest,
 } = Creators;
@@ -92,13 +90,7 @@ const ProjectSetup = () => {
       >
         {getPromptDialogContent(promptDialogContent)}
       </PromptDialog>
-      <Modal
-        show={!!modalContent}
-        title=""
-        onClose={() => dispatch(toggleModal(''))}
-      >
-        <CreateProjectSuccess />
-      </Modal>
+
       <div>
         <div className="naxatw-w-full naxatw-h-[6.625rem] naxatw-flex naxatw-justify-center naxatw-sticky naxatw-top-0 naxatw-z-10 naxatw-bg-white naxatw-shadow-md">
           <div className="naxatw-flex naxatw-justify-between naxatw-w-[41.875rem] naxatw-items-center">

@@ -123,7 +123,7 @@ export default function UploadDataset() {
       <div className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-2">
         <Dropzone
           label="Please upload your datasets (shp, csv, geojson or gpkg file format)"
-          accept=".shp, .csv, .geojson"
+          accept=".shp, .geojson"
           multiple
           onChange={handleUpload}
         />

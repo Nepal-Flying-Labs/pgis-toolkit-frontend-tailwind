@@ -6,7 +6,8 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
-import { Creators } from '@Actions/organizationDashboard';
+import { Creators, Types } from '@Actions/organizationDashboard';
+import toastActions from '@Actions/toast';
 import Input from '@Components/common/Input/index';
 import Select from '@Components/common/Select/index';
 import useForm from '@Hooks/useForm';
@@ -16,6 +17,8 @@ import Chip from '@Components/common/Chip';
 import MultiSelect from '@Components/common/MultiSelect/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import UploadPhotos from '@Components/common/UploadPhotos/index';
+import removeObjectKeys from '@Utils/removeObjectKeys';
+import { checkIfLoading } from '@Utils/loaderSelector';
 import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetup/UploadPolygonBoundary/index';
 import MapSection from '../MapSection/index';
 
@@ -33,9 +36,11 @@ function diffObject(a, b) {
 }
 
 const Location = ({ page, setPage }) => {
-  // const [isFileChange, setFileChange] = useState(false);
-  const { projectId } = useParams();
+  const { projectId, organizationId } = useParams();
   const dispatch = useDispatch();
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.PATCH_PROJECT_REQUEST]),
+  );
   const countryList = useSelector(
     state => state.organizationDashboard.countryList,
   );
@@ -70,17 +75,29 @@ const Location = ({ page, setPage }) => {
       const finalObj = {
         ...stepOne,
         ...values,
-        file_type: getFileType(values.file),
-        status: 'ongoing',
+        organization: organizationId,
       };
-      // if(!isFileChange){
-      //     const removeProp='file';
 
-      // }
       const diffObj = diffObject(project, finalObj);
 
+      const payloadData = diffObj?.file?.existedData
+        ? removeObjectKeys(diffObj, ['file'])
+        : { ...diffObj, file_type: getFileType(values.file) };
+      const finalPayloadData = payloadData?.cover_image?.[0]?.existedData
+        ? removeObjectKeys(payloadData, ['cover_image'])
+        : payloadData;
+
       if (values.file) {
-        dispatch(patchProjectRequest(projectId, diffObj));
+        dispatch(
+          patchProjectRequest(projectId, {
+            ...finalPayloadData,
+            status: 'ongoing',
+          }),
+        );
+      } else {
+        dispatch(
+          toastActions.error({ message: 'Geographic Boundary is Required' }),
+        );
       }
     },
   });
@@ -182,6 +199,8 @@ const Location = ({ page, setPage }) => {
         )}
         <Button
           className="naxatw-btn-primary naxatw-w-[4.75rem]"
+          isLoading={loading}
+          loaderClassName="naxatw-fill-secondary-400"
           onClick={() => {
             handleSubmit();
             // setPage(prevPage => prevPage + 1);

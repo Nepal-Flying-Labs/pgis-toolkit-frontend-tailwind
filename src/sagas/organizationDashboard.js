@@ -96,12 +96,12 @@ export function* patchProjectRequest({ id, payload }) {
       };
     }
 
-    console.log(status, 'status');
     const formData = prepareFormData(filteredImagePayload);
     const response = yield call(patchProject, id, formData);
     yield put(organizationDashboardActions.patchProjectSuccess(response.data));
     yield put(organizationDashboardActions.toggleModal(''));
     if (status === 'ongoing') {
+      yield put(push(`/organizations/${organization}/projects`));
       yield put(
         organizationDashboardActions.toggleModal('create-project-success'),
       );

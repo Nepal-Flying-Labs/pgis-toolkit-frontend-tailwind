@@ -9,6 +9,7 @@ import Home from '@Components/OrganizationDashboard/Home/index';
 import ProjectSetup from '@Components/OrganizationDashboard/ProjectSetup/index';
 import Modal from '@Components/common/Modal/index';
 import CreateProject from '@Components/OrganizationDashboard/ModalContent/CreateProject';
+import CreateProjectSuccess from '@Components/OrganizationDashboard/ModalContent/CreateProjectSuccess';
 
 const { getOrganizationDetailRequest, toggleModal } =
   OrganizationDashboardCreators;
@@ -21,6 +22,17 @@ function getTabContent(tabname) {
       return <Projects />;
     default:
       return <Projects />;
+  }
+}
+
+function getModalContent(modalContent) {
+  switch (modalContent) {
+    case 'create-project':
+      return <CreateProject />;
+    case 'create-project-success':
+      return <CreateProjectSuccess />;
+    default:
+      return '';
   }
 }
 
@@ -38,7 +50,7 @@ export default function OrganizationDashboard() {
     dispatch(getOrganizationDetailRequest(organizationId));
   }, [dispatch, organizationId]);
 
-  return tabname !== 'project-setup' ? (
+  return tabname !== ('project-setup' && 'project-edit') ? (
     <div>
       <ProjectHeader />
       <Modal
@@ -46,7 +58,14 @@ export default function OrganizationDashboard() {
         title=""
         onClose={() => dispatch(toggleModal(''))}
       >
-        <CreateProject />
+        {getModalContent(modalContent)}
+      </Modal>
+      <Modal
+        show={!!modalContent}
+        title=""
+        onClose={() => dispatch(toggleModal(''))}
+      >
+        {getModalContent(modalContent)}
       </Modal>
       <div
         style={{

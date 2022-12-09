@@ -6,6 +6,8 @@ import { Creators as CommonCreators } from '@Actions/common';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import removeObjectKeys from '@Utils/removeObjectKeys';
+
 import { Creators, Types } from '@Actions/organizationDashboard';
 
 const { patchProjectRequest } = Creators;
@@ -21,6 +23,21 @@ function diffObject(a, b) {
   }, {});
   return diffObj;
 }
+
+const getFileType = file => {
+  if (file) {
+    switch (file.type) {
+      case 'application/geo+json':
+        return 'GeoJSON';
+      case 'application/zip':
+        return 'Shapefile';
+      default:
+        return '';
+    }
+  } else {
+    return '';
+  }
+};
 
 const SaveAsDraft = () => {
   const { projectId, organizationId } = useParams();
@@ -42,12 +59,16 @@ const SaveAsDraft = () => {
     ...stepOne,
     ...stepTwo,
     organization: organizationId,
-    status: 'draft',
   };
-  console.log(finalObj, 'final obj');
-  console.log(project, 'project');
+
   const diffObj = diffObject(project, finalObj);
-  console.log(diffObj, 'different object');
+  const payloadData = diffObj?.file?.existedData
+    ? removeObjectKeys(diffObj, ['file'])
+    : { ...diffObj, file_type: getFileType(stepTwo.file) };
+
+  const finalPayloadData = payloadData?.cover_image?.[0]?.existedData
+    ? removeObjectKeys(payloadData, ['cover_image'])
+    : payloadData;
 
   return (
     <div>
@@ -74,7 +95,7 @@ const SaveAsDraft = () => {
           </Button>
           <Button
             onClick={() => {
-              dispatch(patchProjectRequest(projectId, diffObj));
+              dispatch(patchProjectRequest(projectId, finalPayloadData));
             }}
             className="naxatw-btn-primary naxatw-w-[7.563rem]"
             isLoading={loading}

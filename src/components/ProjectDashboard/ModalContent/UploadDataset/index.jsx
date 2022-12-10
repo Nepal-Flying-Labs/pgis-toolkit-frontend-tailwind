@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
+import toastActions from '@Actions/toast';
 import {
   Creators as ProjectDashboardCreators,
   Types,
@@ -38,6 +39,14 @@ export default function UploadDataset() {
 
   const handleUpload = e => {
     const { files } = e.target;
+    if (files.length + uploadedFiles.length > 5) {
+      dispatch(
+        toastActions.error({
+          message: 'Only 5 files can be uploaded at a time.',
+        }),
+      );
+      return;
+    }
     Array.from(files).forEach((file, index) => {
       const [filename, extension] = file.name.split('.');
       const prevId = uploadedFiles.at(-1)?.id || 0;
@@ -149,7 +158,7 @@ export default function UploadDataset() {
         at the moment.
       </p>
 
-      <div className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-auto scrollbar naxatw-min-h-96">
+      <div className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-auto scrollbar naxatw-max-h-96">
         <Dropzone
           label="Please upload your datasets (shp, csv, geojson or gpkg file format)"
           accept=".zip, .geojson, .csv, .gpkg"

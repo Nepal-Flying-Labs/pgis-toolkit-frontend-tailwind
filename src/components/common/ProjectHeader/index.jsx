@@ -11,7 +11,7 @@ import HeaderProfile from '../Header/HeaderProfile';
 const organizationHeaderData = [
   { label: 'Home', route: 'home', disabled: true },
   { label: 'Projects', route: 'projects', disabled: false },
-  { label: 'User', route: 'user', disabled: true },
+  { label: 'User', route: 'user', disabled: false },
   { label: 'Settings', route: 'settings', disabled: true },
 ];
 

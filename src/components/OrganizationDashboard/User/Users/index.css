@@ -1,0 +1,11 @@
+.naxa-table {
+    @apply naxatw-block naxatw-w-full;
+  }
+  
+  .naxa-table table th {
+    @apply naxatw-sticky naxatw-top-0 naxatw-z-[1] naxatw-w-full naxatw-top-0  naxatw-bg-white ;
+  }
+  
+  
+
+  

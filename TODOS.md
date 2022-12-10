@@ -36,10 +36,10 @@
 - [x] layer order
 - [x] project header height dynamic calculation 
 - [x] layer search
+- [x] no data yet section
 - [ ] handle csv upload
-- [ ] no data yet section
 - [ ] save bbox
-- [ ] upload layer
+- [ ] upload layer validation
 
 - [ ] add to map -> style patch
 - [ ] layer upload limit 5

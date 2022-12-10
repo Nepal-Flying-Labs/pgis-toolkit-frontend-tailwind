@@ -67,7 +67,7 @@ export function* uploadDatasetsRequest({ payload }) {
     yield put(
       toastActions.success({
         message:
-          'The layer is being uploaded. We will notify you shortly after upload success',
+          'The layer is being uploaded. We will notify you shortly after upload success.',
       }),
     );
   } catch (error) {
@@ -100,7 +100,7 @@ export function* checkUploadStatusRequest({ id }) {
     yield put(projectDashboardActions.checkUploadStatusSuccess(responseData));
     yield put(
       toastActions.success({
-        message: `${responseData.name} was successfully uploaded`,
+        message: `${responseData.name} was successfully uploaded.`,
       }),
     );
     yield put(commonActions.togglePromptDialog());

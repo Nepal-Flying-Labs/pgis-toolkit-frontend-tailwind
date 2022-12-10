@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Creators as OrganizationDashboardCreators } from '@Actions/organizationDashboard';
 import ProjectHeader from '@Components/common/ProjectHeader';
 import Projects from '@Components/OrganizationDashboard/Projects/index';
+import User from '@Components/OrganizationDashboard/User/index';
 import Home from '@Components/OrganizationDashboard/Home/index';
 import ProjectSetup from '@Components/OrganizationDashboard/ProjectSetup/index';
 import Modal from '@Components/common/Modal/index';
@@ -20,6 +21,8 @@ function getTabContent(tabname) {
       return <Home />;
     case 'projects':
       return <Projects />;
+    case 'user':
+      return <User />;
     default:
       return <Projects />;
   }

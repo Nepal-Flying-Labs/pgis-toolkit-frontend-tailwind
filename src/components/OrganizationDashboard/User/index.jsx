@@ -1,10 +1,15 @@
 /* eslint-disable arrow-body-style */
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Button from '@Components/common/Button/index';
+import { Creators } from '@Actions/organizationDashboard';
 import Users from '@Components/OrganizationDashboard/User/Users';
 import AssignUsers from '@Components/OrganizationDashboard/User/AssignUsers';
 
+const { toggleModal } = Creators;
+
 const User = () => {
+  const dispatch = useDispatch();
   const [active, setActive] = useState('users');
   const handleTabChange = name => {
     setActive(name);
@@ -14,6 +19,7 @@ const User = () => {
       <div className="naxatw-flex naxatw-justify-between naxatw-py-5 ">
         <h3>Users</h3>
         <Button
+          onClick={() => dispatch(toggleModal('create-new-user'))}
           iconLeft="add"
           className=" naxatw-w-[9.375rem]  naxatw-text-[#00A699] naxatw-border-[1px] group-hover hover:naxatw-bg-grey-200 naxatw-flex naxatw-items-center"
         >

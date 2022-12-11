@@ -1,6 +1,7 @@
 import React from 'react';
 import AddLayer from '@Components/ProjectDashboard/ModalContent/AddLayer';
 import DeleteLayer from '@Components/ProjectDashboard/ModalContent/DeleteLayer';
+import SaveAsDraft from '@Components/OrganizationDashboard/ModalContent/SaveAsDraft';
 import UploadDataset from '@Components/ProjectDashboard/ModalContent/UploadDataset';
 
 export function getModalTitle(content) {
@@ -38,6 +39,8 @@ export function getPromptDialogContent(content) {
   switch (content) {
     case 'delete-layer':
       return <DeleteLayer />;
+    case 'save-as-draft':
+      return <SaveAsDraft />;
     default:
       return '';
   }

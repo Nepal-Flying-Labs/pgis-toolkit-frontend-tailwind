@@ -1,5 +1,6 @@
+/* eslint-disable no-nested-ternary */
 import { call, put, takeLatest } from 'redux-saga/effects';
-
+import { push } from 'connected-react-router';
 import {
   getProjects,
   postProjectInvite,
@@ -7,11 +8,14 @@ import {
   getOrganizationDetail,
   patchProject,
   getContactPerson,
+  postContactPerson,
+  patchContactPerson,
   getCountryList,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
 } from '@Actions/organizationDashboard';
+import commonActions from '@Actions/common';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
 import { withLoader } from '@Utils/sagaUtils';
@@ -70,11 +74,41 @@ export function* getIndividualProjectRequest({ id }) {
 }
 
 export function* patchProjectRequest({ id, payload }) {
+  const { status, organization } = payload;
   try {
-    const formData = prepareFormData(payload);
+    let filteredImagePayload;
+    if (payload?.cover_image) {
+      filteredImagePayload = {
+        ...payload,
+        cover_image:
+          payload?.cover_image && payload.cover_image.length > 0
+            ? payload?.cover_image?.filter(img => !img.isDeleted && img.file)
+                .length > 0
+              ? payload?.cover_image?.filter(
+                  img => !img.isDeleted && img.file,
+                )?.[0]?.file
+              : ''
+            : '',
+      };
+    } else {
+      filteredImagePayload = {
+        ...payload,
+      };
+    }
+
+    const formData = prepareFormData(filteredImagePayload);
     const response = yield call(patchProject, id, formData);
     yield put(organizationDashboardActions.patchProjectSuccess(response.data));
     yield put(organizationDashboardActions.toggleModal(''));
+    if (status === 'ongoing') {
+      yield put(push(`/organizations/${organization}/projects`));
+      yield put(
+        organizationDashboardActions.toggleModal('create-project-success'),
+      );
+    } else {
+      yield put(commonActions.togglePromptDialog(''));
+      yield put(push(`/organizations/${organization}/projects`));
+    }
     yield put(toastActions.success({ message: 'Data saved successfully' }));
   } catch (error) {
     yield put(organizationDashboardActions.patchProjectFailure());
@@ -92,6 +126,29 @@ export function* getContactPersonRequest({ params }) {
     );
   } catch (error) {
     yield put(organizationDashboardActions.getContactPersonFailure());
+  }
+}
+
+export function* postContactPersonRequest({ params, payload }) {
+  try {
+    console.log(payload);
+    const formData = prepareFormData(payload);
+    const response = yield call(postContactPerson, formData, params);
+    yield put(
+      organizationDashboardActions.postContactPersonSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.postContactPersonFailure());
+  }
+}
+export function* patchContactPersonRequest({ params, id }) {
+  try {
+    const response = yield call(patchContactPerson, id, params);
+    yield put(
+      organizationDashboardActions.patchContactPersonSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.patchContactPersonFailure());
   }
 }
 
@@ -127,6 +184,14 @@ function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_CONTACT_PERSON_REQUEST,
     withLoader(getContactPersonRequest),
+  );
+  yield takeLatest(
+    Types.POST_CONTACT_PERSON_REQUEST,
+    withLoader(postContactPersonRequest),
+  );
+  yield takeLatest(
+    Types.PATCH_CONTACT_PERSON_REQUEST,
+    withLoader(patchContactPersonRequest),
   );
   yield takeLatest(
     Types.GET_COUNTRY_LIST_REQUEST,

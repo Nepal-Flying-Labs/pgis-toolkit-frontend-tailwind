@@ -2,12 +2,16 @@
 import React from 'react';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import Button from '@Components/common/Button/index';
+import { Creators as CommonCreators } from '@Actions/common';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import removeObjectKeys from '@Utils/removeObjectKeys';
+
 import { Creators, Types } from '@Actions/organizationDashboard';
 
-const { toggleModal, patchProjectRequest } = Creators;
+const { patchProjectRequest } = Creators;
+const { togglePromptDialog } = CommonCreators;
 
 function diffObject(a, b) {
   const diffObj = Object.keys(b).reduce((diff, key) => {
@@ -20,24 +24,52 @@ function diffObject(a, b) {
   return diffObj;
 }
 
+const getFileType = file => {
+  if (file) {
+    switch (file.type) {
+      case 'application/geo+json':
+        return 'GeoJSON';
+      case 'application/zip':
+        return 'Shapefile';
+      default:
+        return '';
+    }
+  } else {
+    return '';
+  }
+};
+
 const SaveAsDraft = () => {
-  const { projectId } = useParams();
+  const { projectId, organizationId } = useParams();
   const dispatch = useDispatch();
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.PATCH_PROJECT_REQUEST]),
   );
-  const pageOne = useSelector(
-    state => state.organizationDashboard.individualProject.pageOne,
+  const stepOne = useSelector(
+    state => state.organizationDashboard.individualProject.stepOne,
   );
-  const pageTwo = useSelector(
-    state => state.organizationDashboard.individualProject.pageTwo,
+  const stepTwo = useSelector(
+    state => state.organizationDashboard.individualProject.stepTwo,
   );
   const project = useSelector(
     state => state.organizationDashboard.individualProject.project,
   );
 
-  const finalObj = { ...pageOne, ...pageTwo };
+  const finalObj = {
+    ...stepOne,
+    ...stepTwo,
+    organization: organizationId,
+  };
+
   const diffObj = diffObject(project, finalObj);
+  const payloadData = diffObj?.file?.existedData
+    ? removeObjectKeys(diffObj, ['file'])
+    : { ...diffObj, file_type: getFileType(stepTwo.file) };
+
+  const finalPayloadData = payloadData?.cover_image?.[0]?.existedData
+    ? removeObjectKeys(payloadData, ['cover_image'])
+    : payloadData;
+
   return (
     <div>
       <div className="naxatw-flex naxatw-items-center naxatw-gap-x-5 naxatw-mb-7">
@@ -56,14 +88,14 @@ const SaveAsDraft = () => {
       <div className="naxatw-mt-5 naxatw-p-7 naxatw-flex naxatw-justify-center">
         <div className="naxatw-flex naxatw-gap-x-2">
           <Button
-            onClick={() => dispatch(toggleModal(''))}
+            onClick={() => dispatch(togglePromptDialog(''))}
             className="naxatw-w-[5.25rem] naxatw-text-[#00A699] hover:naxatw-underline hover:naxatw-bg-gray-100"
           >
             Discard
           </Button>
           <Button
             onClick={() => {
-              dispatch(patchProjectRequest(projectId, diffObj));
+              dispatch(patchProjectRequest(projectId, finalPayloadData));
             }}
             className="naxatw-btn-primary naxatw-w-[7.563rem]"
             isLoading={loading}

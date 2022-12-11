@@ -4,6 +4,19 @@ import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import { useHistory, useParams } from 'react-router';
 
+const getStatusColor = status => {
+  switch (status) {
+    case 'draft':
+      return '#757575';
+    case 'completed':
+      return '#40B449';
+    case 'ongoing':
+      return '#0076FF';
+    default:
+      return '#FFFFFF';
+  }
+};
+
 export default function ProjectCard({ title, address, status, id, onClick }) {
   const { organizationId } = useParams();
 
@@ -19,7 +32,7 @@ export default function ProjectCard({ title, address, status, id, onClick }) {
       ),
       onClick: projectId => {
         history.push(
-          `/organizations/${organizationId}/project-setup/${projectId}`,
+          `/organizations/${organizationId}/project-edit/${projectId}`,
         );
       },
     },
@@ -37,15 +50,25 @@ export default function ProjectCard({ title, address, status, id, onClick }) {
 
   return (
     <div
-      className="naxatw-w-full naxatw-px-5 naxatw-py-4 naxatw-bg-white naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-cursor-pointer hover:naxatw-border-grey-800"
+      className={`naxatw-w-full naxatw-px-5 naxatw-py-4 ${
+        status === 'draft' ? 'naxatw-bg-[#D7D7D7]' : 'naxatw-bg-white'
+      } naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-cursor-pointer hover:naxatw-border-grey-800`}
       onClick={onClick}
     >
       <div className="naxatw-flex naxatw-justify-between">
         <h5>{title}</h5>
         <DropdownOptions options={dropdownOptions} data={id} />
       </div>
-      <div className="naxatw-mt-2">
+      <div className="naxatw-mt-2 naxatw-flex naxatw-gap-x-3 naxatw-items-center">
         <p>{address}</p>
+        <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
+          <span
+            className={`naxatw-w-2 naxatw-h-2 naxatw-rounded-full naxatw-bg-[${getStatusColor(
+              status,
+            )}]`}
+          />
+          <span>{status}</span>
+        </div>
       </div>
     </div>
   );

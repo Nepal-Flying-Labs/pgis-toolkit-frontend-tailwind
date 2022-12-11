@@ -16,6 +16,12 @@ export const patchProject = (id, payload) =>
   authenticated(api).patch(`/projects/project/${id}/`, payload);
 
 export const getContactPerson = params =>
-  authenticated(api).get(`/projects/contact_person/`, params);
+  authenticated(api).get(`/projects/contact_person/`, { params });
+
+export const postContactPerson = (payload, params) =>
+  authenticated(api).post(`/projects/contact_person/`, payload, { params });
+
+export const patchContactPerson = (id, params) =>
+  authenticated(api).patch(`/projects/contact_person/${id}/`, { params });
 
 export const getCountryList = () => authenticated(api).get('/projects/country');

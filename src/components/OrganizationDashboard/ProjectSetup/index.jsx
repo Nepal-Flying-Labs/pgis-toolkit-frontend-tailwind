@@ -3,12 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
-import Button from '@Components/common/Button/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { Creators } from '@Actions/organizationDashboard';
-import Modal from '@Components/common/Modal/index';
-import useForm from '@Hooks/useForm';
-import SaveAsDraft from '../ModalContent/SaveAsDraft';
+import PromptDialog from '@Components/common/PromptDialog/index';
+import {
+  getPromptDialogContent,
+  getPromptDialogTitle,
+} from '@src/constants/modalContents';
+import { Creators as CommonCreators } from '@Actions/common';
 
 import BasicInfo from './FormPages/BasicInfo';
 import Location from './FormPages/Location';
@@ -17,10 +19,11 @@ import Images from './FormPages/Images';
 
 const {
   getIndividualProjectRequest,
-  toggleModal,
   getContactPersonRequest,
   getCountryListRequest,
 } = Creators;
+
+const { togglePromptDialog } = CommonCreators;
 
 const getPage = (page, setPage) => {
   switch (page) {
@@ -61,12 +64,15 @@ const pageStatus = [
 ];
 
 const ProjectSetup = () => {
-  const { projectId } = useParams();
+  const { projectId, tabname } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   const [page, setPage] = useState(1);
   const modalContent = useSelector(
     state => state.organizationDashboard.modalContent,
+  );
+  const promptDialogContent = useSelector(
+    state => state.common.promptDialogContent,
   );
 
   useEffect(() => {
@@ -77,20 +83,25 @@ const ProjectSetup = () => {
 
   return (
     <>
-      <Modal
-        show={!!modalContent}
-        title=""
-        onClose={() => dispatch(toggleModal(''))}
+      <PromptDialog
+        show={!!promptDialogContent}
+        title={getPromptDialogTitle(promptDialogContent)}
+        onClose={() => dispatch(togglePromptDialog())}
       >
-        <SaveAsDraft />
-      </Modal>
+        {getPromptDialogContent(promptDialogContent)}
+      </PromptDialog>
+
       <div>
         <div className="naxatw-w-full naxatw-h-[6.625rem] naxatw-flex naxatw-justify-center naxatw-sticky naxatw-top-0 naxatw-z-10 naxatw-bg-white naxatw-shadow-md">
           <div className="naxatw-flex naxatw-justify-between naxatw-w-[41.875rem] naxatw-items-center">
             <div>
-              <h3>Create a New Project</h3>
+              <h3>
+                {tabname === 'project-setup'
+                  ? 'Create a New Project'
+                  : 'Edit a Project'}
+              </h3>
               <span className="naxatw-text-body-lg naxatw-mt-1">
-                The functions works in 5 steps as highlighted below.
+                The functions works in 2 steps as highlighted below.
               </span>
             </div>
             <button

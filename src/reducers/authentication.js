@@ -7,6 +7,7 @@ const initialState = {
   userDetail: {},
   infoDialogContent: null,
   userPermissions: null,
+  modalContent: '',
   userGroup: null,
 };
 
@@ -35,12 +36,18 @@ const getUserGroupSuccess = (state, action) => ({
   userGroup: action.payload,
 });
 
+const toggleModal = (state, action) => ({
+  ...state,
+  modalContent: action.payload || '',
+});
+
 const authenticationReducer = createReducer(initialState, {
   [Types.LOGIN_SUCCESS]: loginSuccess,
   [Types.VERIFY_USER_SUCCESS]: verifyUserSuccess,
   [Types.SET_INFO_DIALOG_CONTENT]: setInfoDialogContent,
   [Types.GET_USER_PERMISSIONS_SUCCESS]: getUserPermissionsSuccess,
   [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
+  [Types.TOGGLE_MODAL]: toggleModal,
 });
 
 export default persist('user', ['user'], authenticationReducer);

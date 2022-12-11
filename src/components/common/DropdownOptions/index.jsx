@@ -9,7 +9,7 @@ export default function DropdownOptions({ options, data }) {
     <div className="naxatw-relative naxatw-w-10 naxatw-flex">
       <a
         ref={toggleRef}
-        className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-grey-800 naxatw-bg-white naxatw-rounded-lg hover:naxatw-bg-grey-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-grey-50 naxatw-select-none"
+        className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-grey-800  naxatw-rounded-lg hover:naxatw-bg-grey-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-grey-50 naxatw-select-none"
         onClick={e => {
           e.stopPropagation();
           handleToggle();

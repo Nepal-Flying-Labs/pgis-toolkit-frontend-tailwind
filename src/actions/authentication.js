@@ -34,6 +34,8 @@ export const { Types, Creators } = createActions({
   getUserGroupRequest: ['params'],
   getUserGroupSuccess: ['payload'],
   getUserGroupFailure: null,
+
+  toggleModal: ['payload'],
 });
 
 export default Creators;

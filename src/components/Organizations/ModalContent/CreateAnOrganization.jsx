@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Creators } from '@Actions/organizations';
+import { useDispatch, useSelector } from 'react-redux';
+import { Creators, Types } from '@Actions/organizations';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button';
 import Input from '@Components/common/Input/index';
 import Select from '@Components/common/Select/index';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { createOrganizationRequest } = Creators;
 
@@ -35,6 +36,9 @@ export default function CreateAnOrganization() {
   const dispatch = useDispatch();
   const [emailList, setEmailList] = useState([]);
   const [emailError, setEmailError] = useState(false);
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.CREATE_ORGANIZATION_REQUEST]),
+  );
   const {
     values,
     meta,
@@ -193,7 +197,12 @@ export default function CreateAnOrganization() {
       </div>
 
       <div className=" naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
-        <Button className="naxatw-btn-primary" onClick={handleSubmit}>
+        <Button
+          className="naxatw-btn-primary"
+          isLoading={loading}
+          loaderClassName="naxatw-fill-secondary-400"
+          onClick={handleSubmit}
+        >
           Invite & Save
         </Button>
       </div>

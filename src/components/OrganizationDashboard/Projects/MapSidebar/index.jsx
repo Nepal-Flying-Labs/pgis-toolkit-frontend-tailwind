@@ -84,16 +84,18 @@ export default function MapSidebar() {
       >
         {!loading ? (
           projects?.results.length > 0 ? (
-            projects?.results?.map(({ id, name }) => (
+            projects?.results?.map(({ id, name, status }) => (
               <ProjectCard
                 key={id}
                 title={name}
                 address="kenya"
                 id={id}
-                status="good"
-                onClick={() => {
-                  history.push(`${url}/${id}/map`);
-                }}
+                status={status}
+                onClick={
+                  status !== 'draft'
+                    ? () => history.push(`${url}/${id}/map`)
+                    : () => {}
+                }
               />
             ))
           ) : (

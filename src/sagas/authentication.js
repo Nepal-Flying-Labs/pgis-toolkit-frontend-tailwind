@@ -31,7 +31,9 @@ export function* loginRequest({ payload }) {
     yield put(authActions.loginFailure());
     yield put(
       authActions.setInfoDialogContent({
-        message: error?.response?.data?.detail,
+        message:
+          error?.response?.data?.detail ||
+          error?.landingResponse?.data?.message,
         status: 'error',
       }),
     );
@@ -58,7 +60,8 @@ export function* signUpRequest({ payload }) {
   try {
     const formdata = prepareFormData(payload);
     yield call(signUpUser, formdata);
-    yield put(push('/login'));
+    yield put(authActions.toggleModal('sign-up-success'));
+    // yield put(push('/login'));
   } catch (error) {
     yield put(authActions.signUpFailure());
     yield put(toastActions.error({ message: error?.response?.data?.message }));

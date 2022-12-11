@@ -5,28 +5,42 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Input from '@Components/common/Input';
 import Select from '@Components/common/Select';
+import MultiSelect from '@Components/common/MultiSelect/index';
 import { Creators } from '@Actions/organizationDashboard';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
+import { Creators as CommonCreators } from '@Actions/common';
 import Button from '@Components/common/Button';
 import UploadPhotos from '@Components/common/UploadPhotos/index';
 import useForm from '@Hooks/useForm';
 import { format } from 'date-fns';
+import ContactPerson from './ContactPerson';
 
 const { setIndividualProject, toggleModal } = Creators;
+const { togglePromptDialog } = CommonCreators;
 
 const thematicFocusArea = [
   {
     id: 1,
-    value: 'Climate change and Energy',
-    displayName: 'Climate change and Energy',
+    value: 'a',
+    displayName: 'Climate change and Energy A',
+  },
+  {
+    id: 2,
+    value: 'b',
+    displayName: 'Climate change and Energy B',
+  },
+  {
+    id: 3,
+    value: 'c',
+    displayName: 'Climate change and Energy C',
   },
 ];
 
 const BasicInfo = ({ setPage }) => {
   const dispatch = useDispatch();
-  const individualProject = useSelector(
-    state => state.organizationDashboard.individualProject.pageOne,
+  const stepOne = useSelector(
+    state => state.organizationDashboard.individualProject.stepOne,
   );
   const [partner, setPartner] = useState('');
   const handlePartner = e => {
@@ -35,19 +49,20 @@ const BasicInfo = ({ setPage }) => {
 
   const { values, setValues, handleChange, handleCustomChange, handleSubmit } =
     useForm({
-      initialValues: individualProject,
+      initialValues: stepOne,
       required: ['name'],
-      onSubmit: data => {
-        dispatch(setIndividualProject({ key: 'pageOne', value: data }));
-      },
+      onSubmit: data => {},
     });
   useEffect(() => {
-    setValues(individualProject);
-  }, [setValues, individualProject]);
+    setValues(stepOne);
+  }, [setValues, stepOne]);
 
   const handleKeyChange = e => {
     if (e.key === 'Enter' && partner) {
-      handleCustomChange('partners', [...values.partners, partner]);
+      handleCustomChange('partners', [
+        ...values.partners,
+        { value: partner, id: Math.floor(Math.random() * 100) },
+      ]);
       setPartner('');
     }
   };
@@ -65,7 +80,7 @@ const BasicInfo = ({ setPage }) => {
         type="text"
         label="Name of project*"
         name="name"
-        value={values.name}
+        value={values?.name}
         onChange={handleChange}
         placeholder="Enter name of project"
       />
@@ -75,33 +90,44 @@ const BasicInfo = ({ setPage }) => {
         label="Project Objectives"
         className="naxatw-h-[77px] naxatw-pb-8"
         name="description"
-        value={values.description || ''}
+        value={values?.description || ''}
         onChange={handleChange}
         placeholder="Write a short summary of a project"
       />
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Upload Cover Image</label>
         <UploadPhotos
-          multiple
           label="coverImage"
-          uploadedFile={values?.coverImage}
+          uploadedFile={values?.cover_image}
           accept="image/*"
           onChange={images => {
-            handleCustomChange('coverImage', images);
+            handleCustomChange('cover_image', images);
           }}
         />
       </div>
 
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Thematic Focus Area*</label>
-        <Select
+        {/* <Select
           options={thematicFocusArea}
           dataKey="displayName"
           placeholder="Choose"
           onChange={data => {
-            handleCustomChange('thematic_areas', data.value);
+            handleCustomChange('thematic_areas', [data.value]);
           }}
-          selected={values.thematic_areas || 'Choose'}
+          selected={values?.thematic_areas || 'Choose'}
+        /> */}
+        <MultiSelect
+          options={thematicFocusArea}
+          placeholder="Choose"
+          field="displayName"
+          onChange={data => {
+            const area = data.map(i => i.value);
+            handleCustomChange('thematic_areas', area);
+          }}
+          selected={thematicFocusArea.filter(item =>
+            values?.thematic_areas?.includes(item.value),
+          )}
         />
       </div>
 
@@ -113,7 +139,7 @@ const BasicInfo = ({ setPage }) => {
             onChange={date => {
               handleCustomChange('start_date', format(date, 'yyyy-MM-dd'));
             }}
-            selected={values.start_date}
+            selected={values?.start_date}
           />
         </div>
 
@@ -124,10 +150,11 @@ const BasicInfo = ({ setPage }) => {
             onChange={date => {
               handleCustomChange('end_date', format(date, 'yyyy-MM-dd'));
             }}
-            selected={values.end_date}
+            selected={values?.end_date}
           />
         </div>
       </div>
+
       <div className="naxatw-relative naxatw-space-y-2">
         <label className="naxatw-label">Partners</label>
         <input
@@ -138,8 +165,13 @@ const BasicInfo = ({ setPage }) => {
         />
         <a
           onClick={() => {
-            handleCustomChange('partners', [...values.partners, partner]);
-            setPartner('');
+            if (partner) {
+              handleCustomChange('partners', [
+                ...values?.partners,
+                { value: partner, id: Math.floor(Math.random() * 100) },
+              ]);
+              setPartner('');
+            }
           }}
         >
           <MaterialIcon
@@ -150,14 +182,14 @@ const BasicInfo = ({ setPage }) => {
         <ul className="naxatw-mt-2">
           {values?.partners?.map(item => (
             <li
-              key={item}
+              key={item.id}
               className="naxatw-flex naxatw-p-3 naxatw-items-center naxatw-justify-between hover:naxatw-bg-gray-200"
             >
-              <span className="naxatw-text-body-lg">{item}</span>
+              <span className="naxatw-text-body-lg">{item.value}</span>
               <a
                 onClick={() => {
                   const updatedArray = values?.partners?.filter(
-                    list => list !== item,
+                    list => list.id !== item.id,
                   );
                   handleCustomChange('partners', updatedArray);
                 }}
@@ -170,56 +202,15 @@ const BasicInfo = ({ setPage }) => {
       </div>
 
       <hr />
-      <h4>Contact Person Details</h4>
-      {values?.contact_person?.map(person => {
-        return (
-          <div className="naxatw-flex">
-            <span>{person.name}</span>
-          </div>
-        );
-      })}
-      <Input
-        type="text"
-        label="Name of contact Person"
-        name="contact_name"
-        value={values.contact_name}
-        onChange={handleChange}
-        placeholder="Full Name"
-      />
+      <ContactPerson />
 
-      <Input
-        label="Position"
-        type="text"
-        name="position"
-        value={values.position}
-        onChange={handleChange}
-        placeholder="Position"
-      />
-
-      <Input
-        type="email"
-        label="Email"
-        name="email"
-        value={values.email}
-        onChange={handleChange}
-        placeholder="example.com"
-      />
-
-      <Input
-        label="Phone"
-        type="text"
-        name="phone"
-        value={values.phone}
-        onChange={handleChange}
-        placeholder="Phone Number"
-      />
       <div className="naxatw-flex naxatw-justify-between  naxatw-pt-7 naxatw-pb-7 ">
         <div />
 
         <Button
           className="naxatw-btn-primary naxatw-w-[4.75rem]"
           onClick={() => {
-            handleSubmit();
+            dispatch(setIndividualProject({ key: 'stepOne', value: values }));
             setPage(prevPage => prevPage + 1);
           }}
         >
@@ -227,8 +218,8 @@ const BasicInfo = ({ setPage }) => {
         </Button>
         <Button
           onClick={() => {
-            handleSubmit();
-            dispatch(toggleModal('save-as-draft'));
+            dispatch(setIndividualProject({ key: 'stepOne', value: values }));
+            dispatch(togglePromptDialog('save-as-draft'));
           }}
           className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
         >

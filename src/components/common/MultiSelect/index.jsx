@@ -1,0 +1,137 @@
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { isEmpty } from '@Utils/commonUtils';
+import useOutsideClick from '@Hooks/useOutsideClick';
+
+function MultiSelect({
+  options,
+  placeholder,
+  className,
+  onChange,
+  disabled,
+  selected,
+  noDataMessage,
+  errorClassName,
+  field,
+}) {
+  const [newOptions, setNewOptions] = useState([]);
+  const [divRef, toggle, handleToggle] = useOutsideClick('multiple');
+  useEffect(() => {
+    const optData = options.map(item => ({
+      ...item,
+      isSelected: selected.map(i => i[field]).includes(item[field]),
+    }));
+    setNewOptions(optData);
+  }, [options, selected, field]);
+
+  const handleSelect = item => {
+    const optData = newOptions?.map(unit =>
+      unit[field] === item[field]
+        ? {
+            ...unit,
+            isSelected: !unit.isSelected,
+          }
+        : { ...unit },
+    );
+    const selectedOptions = optData?.filter(unit => unit.isSelected);
+    onChange(selectedOptions);
+    setNewOptions(optData);
+  };
+  const selectedValues = selected.map(item => item[field]);
+  return (
+    <div
+      className={`naxatw-inline-flex ${
+        !errorClassName
+          ? 'naxatw-bg-white naxatw-border naxatw-border-gray-300 naxatw-text-gray-600 '
+          : 'naxatw-bg-red-50 naxatw-border naxatw-border-red-100 naxatw-text-red-500'
+      } naxatw-rounded-md naxatw-w-full  ${className} ${
+        disabled
+          ? 'disabled:naxatw-bg-slate-50 disabled:naxatw-text-slate-500 disabled:naxatw-border-slate-200 '
+          : ''
+      }`}
+      onClick={disabled ? () => {} : () => handleToggle()}
+      ref={divRef}
+    >
+      <div className="naxatw-relative naxatw-w-full">
+        <div
+          className={`naxatw-inline-flex naxatw-w-full naxatw-items-center naxatw-justify-between naxatw-h-12  naxatw-border-l naxatw-px-3 py-[13px] naxatw-border-gray-100 naxatw-cursor-pointer naxatw-rounded-r-md ${
+            toggle ? 'naxatw-bg-light-green' : ''
+          }`}
+          onClick={disabled ? () => {} : () => handleToggle()}
+          onKeyDown={disabled ? () => {} : () => handleToggle()}
+        >
+          <span>{selectedValues?.join(', ') || placeholder}</span>
+          {!toggle ? (
+            <i className="material-icons">arrow_drop_down</i>
+          ) : (
+            <i className="material-icons">arrow_drop_up</i>
+          )}
+        </div>
+        <div
+          className="naxatw-absolute  naxatw-w-full naxatw-left-0 naxatw-z-10 naxatw-w-full naxatw-mt-2 naxatw-origin-top-right naxatw-bg-white naxatw-border naxatw-border-gray-300 naxatw-rounded-md naxatw-shadow-lg"
+          style={{
+            //  visibility: toggle ? 'visible' : 'hidden' ,
+            display: toggle ? 'block' : 'none',
+          }}
+        >
+          <ul
+            className="naxatw-p-2 scrollbar naxatw-max-h-[300px] naxatw-overflow-y-auto"
+            style={{
+              //  visibility: toggle ? 'visible' : 'hidden' ,
+              display: toggle ? 'block' : 'none',
+            }}
+          >
+            {!isEmpty(options) ? (
+              options.map(item => (
+                <li
+                  key={item?.id || item.code || item?.name}
+                  role="menuitem"
+                  tabIndex="0"
+                  onKeyDown={() => {}}
+                  onClick={() => handleSelect(item)}
+                  className={`naxatw-whitespace-nowrap naxatw-px-1 naxatw-py-2 naxatw-mt-1
+                naxatw-cursor-pointer naxatw-rounded-sm naxatw-text-sm 
+               hover:naxatw-bg-gray-100  naxatw-flex naxatw-justify-between naxatw-items-center ${
+                 selected === item.name ? 'naxatw-bg-gray-200' : ''
+               }`}
+                >
+                  {item[field]}
+                  {selectedValues.includes(item[field]) && (
+                    <i className="material-icons">check</i>
+                  )}
+                </li>
+              ))
+            ) : (
+              <li>{noDataMessage}</li>
+            )}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}
+MultiSelect.defaultProps = {
+  options: [],
+  placeholder: 'Select',
+  className: '',
+  onChange: () => {},
+  disabled: false,
+  selected: [],
+  noDataMessage: 'noData',
+  errorClassName: false,
+  field: 'id',
+};
+MultiSelect.propTypes = {
+  options: PropTypes.array,
+  placeholder: PropTypes.string || PropTypes.React,
+  className: PropTypes.string,
+  onChange: PropTypes.func,
+  disabled: PropTypes.bool,
+  selected: PropTypes.array,
+  noDataMessage: PropTypes.string,
+  errorClassName: PropTypes.bool,
+  field: PropTypes.string,
+};
+export default MultiSelect;

@@ -6,6 +6,7 @@ import { Creators } from '@Actions/organizations';
 const { toggleModal } = Creators;
 
 const AccessToFunctionalities = () => {
+  // const userGroup = useSelector(state => state.authentication.userGroup);
   const dispatch = useDispatch();
   return (
     <div>
@@ -29,19 +30,21 @@ const AccessToFunctionalities = () => {
             <span className="material-icons naxatw-h-6 naxatw-w-6 naxatw-text-secondary-400">
               check
             </span>
-            <h6 className="naxatw-font-bold">Access to functionality 1</h6>
+            <h6 className="naxatw-font-bold">Inviting Organization</h6>
           </li>
           <li className="naxatw-flex naxatw-gap-x-3 naxatw-items-center">
             <span className="material-icons naxatw-h-6 naxatw-w-6 naxatw-text-secondary-400">
               check
             </span>
-            <h6 className="naxatw-font-bold">Access to functionality 2</h6>
+            <h6 className="naxatw-font-bold">
+              Viewing basic details of organization
+            </h6>
           </li>
           <li className="naxatw-flex naxatw-gap-x-3 naxatw-items-center">
             <span className="material-icons naxatw-h-6 naxatw-w-6 naxatw-text-secondary-400">
               check
             </span>
-            <h6 className="naxatw-font-bold">Access to functionality 3</h6>
+            <h6 className="naxatw-font-bold">Managing Organization Details</h6>
           </li>
         </ul>
       </div>

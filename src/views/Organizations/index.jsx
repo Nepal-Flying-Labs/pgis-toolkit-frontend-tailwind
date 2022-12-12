@@ -13,7 +13,7 @@ import AccessToFunctionalities from '@Components/ModalContent/AccessToFunctional
 import OrganizationList from '@Components/Organizations/OrganizationList';
 
 const { getOrganizationsRequest, toggleModal } = OrganizationsCreators;
-const { getUserPermissionsRequest, getUserGroupRequest } = AuthCreators;
+const { getUserPermissionsRequest } = AuthCreators;
 
 function getModalTitle(content) {
   switch (content) {
@@ -60,7 +60,6 @@ export default function Organizations() {
 
   useEffect(() => {
     dispatch(getUserPermissionsRequest());
-    dispatch(getUserGroupRequest());
   }, [dispatch]);
 
   return (

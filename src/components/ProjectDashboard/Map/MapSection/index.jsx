@@ -20,6 +20,7 @@ import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import SidebarToggle from '../SidebarToggle';
+import Toolbox from '../Toolbox';
 
 const { API_URL } = process.env;
 
@@ -134,6 +135,8 @@ export default function MapSection() {
         }}
       >
         <SidebarToggle />
+
+        <Toolbox />
 
         <LayerSwitcherControl />
 

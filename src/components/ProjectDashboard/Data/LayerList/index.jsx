@@ -1,19 +1,25 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { useDispatch, useSelector } from 'react-redux';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 import SortingContainer from '@Components/common/SortingContainer';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import Button from '@Components/common/Button';
 import Toggle from '@Components/common/Toggle';
-import Spinner from '@Components/common/Spinner/index';
-import MaterialIcon from '@Components/common/MaterialIcon/index';
+import Spinner from '@Components/common/Spinner';
+import MaterialIcon from '@Components/common/MaterialIcon';
 
 const currentPage = 1;
 const dataPerPage = 10;
 
+const { setDeleteLayer } = ProjectMapCreators;
+const { togglePromptDialog } = CommonCreators;
+
 export default function LayerList() {
   const layers = useSelector(state => state.projectDashboard.data.layers);
+  const dispatch = useDispatch();
 
   const dropdownOptions = [
     {
@@ -34,7 +40,10 @@ export default function LayerList() {
           <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: data => {
+        dispatch(setDeleteLayer({ ...data, deleteType: 'data' }));
+        dispatch(togglePromptDialog('delete-layer'));
+      },
     },
   ];
 

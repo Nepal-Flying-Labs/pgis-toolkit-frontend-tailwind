@@ -60,7 +60,7 @@ function Select({
           )}
         </button>
         <div
-          className="naxatw-absolute naxatw-left-0 naxatw-z-10 naxatw-w-full naxatw-mt-2 naxatw-origin-top-right naxatw-bg-white naxatw-border naxatw-border-[#D7D7D7] naxatw-rounded-md naxatw-shadow-lg"
+          className="naxatw-absolute naxatw-left-0 naxatw-z-10 naxatw-w-fit naxatw-mt-2 naxatw-origin-top-right naxatw-bg-white naxatw-border naxatw-border-[#D7D7D7] naxatw-rounded-md naxatw-shadow-lg"
           style={{
             display: toggle ? 'block' : 'none',
           }}

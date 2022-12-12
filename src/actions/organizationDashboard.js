@@ -40,7 +40,17 @@ export const { Types, Creators } = createActions(
     getCountryListSuccess: ['payload'],
     getCountryListFailure: null,
 
+    getUsersRequest: ['params'],
+    getUsersSuccess: ['payload'],
+    getUsersFailure: null,
+
     setIndividualProject: ['payload'],
+
+    setUserRole: ['payload'],
+    setSearchText: ['payload'],
+    setUsersOrdering: ['payload'],
+
+    clearUsersFilter: null,
 
     toggleModal: ['payload'],
   },

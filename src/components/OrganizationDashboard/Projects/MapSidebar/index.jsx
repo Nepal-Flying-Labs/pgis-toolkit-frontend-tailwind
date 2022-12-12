@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-extra-boolean-cast */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useParams, useRouteMatch } from 'react-router';
 import { Creators, Types } from '@Actions/organizationDashboard';
@@ -15,6 +15,7 @@ import ProjectCardSkeleton from './ProjectCardSkeleton/index';
 const { getProjectsRequest, toggleModal } = Creators;
 
 export default function MapSidebar() {
+  const [toggleId, setToggleId] = useState(null);
   const { organizationId } = useParams();
   const { url } = useRouteMatch();
   const history = useHistory();
@@ -91,6 +92,8 @@ export default function MapSidebar() {
                 address="kenya"
                 id={id}
                 status={status}
+                toggle={toggleId === id}
+                setToggle={setToggleId}
                 onClick={
                   status !== 'draft'
                     ? () => history.push(`${url}/${id}/map`)

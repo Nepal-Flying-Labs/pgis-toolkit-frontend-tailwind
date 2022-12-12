@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/organizations';
@@ -105,7 +106,7 @@ export default function CreateAnOrganization() {
           />
         </div>
 
-        <div className="naxatw-space-y-2">
+        {/* <div className="naxatw-space-y-2">
           <label className="naxatw-label">Thematic Focus Area*</label>
           <Select
             options={options}
@@ -116,7 +117,7 @@ export default function CreateAnOrganization() {
             }}
             selected={values.thematicAreas}
           />
-        </div>
+        </div> */}
 
         <div className="naxatw-space-y-2">
           <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">

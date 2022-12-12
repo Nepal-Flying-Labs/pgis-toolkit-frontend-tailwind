@@ -25,8 +25,9 @@ export function* loginRequest({ payload }) {
     yield put(authActions.loginSuccess(response.data));
     const landingResponse = yield call(landingPage);
     yield put(authActions.setInfoDialogContent(''));
-    yield put(organizationsActions.toggleModal('access-to-functionalities'));
+    yield put(authActions.getUserGroupRequest());
     yield put(push(`${landingResponse.data.page}`));
+    yield put(organizationsActions.toggleModal('access-to-functionalities'));
   } catch (error) {
     yield put(authActions.loginFailure());
     yield put(

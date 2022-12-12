@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators } from '@Actions/projectMap';
+import { Creators } from '@Actions/common';
 import Button from '@Components/common/Button';
 
+const { toggleModal } = Creators;
+
 const btnClassname =
-  'naxatw-p-2  naxatw-h-10 naxatw-flex naxatw-items-center naxatw-rounded-lg hover:naxatw-bg-grey-100';
+  'naxatw-p-2 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-rounded-lg hover:naxatw-bg-grey-100';
 
 export default function Toolbox() {
   const [showToolbox, setShowToolbox] = useState(false);
@@ -25,6 +27,9 @@ export default function Toolbox() {
         <Button
           className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
           iconLeft="search"
+          onClick={() => {
+            dispatch(toggleModal('data-query'));
+          }}
         >
           Data Query
         </Button>

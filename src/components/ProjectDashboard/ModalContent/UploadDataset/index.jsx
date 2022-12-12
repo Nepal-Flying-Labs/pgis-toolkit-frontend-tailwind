@@ -285,7 +285,7 @@ export default function UploadDataset() {
       </div>
 
       {!isEmpty(uploadedFiles) && (
-        <div className=" naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
+        <div className="naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
           <Button
             className="naxatw-btn-primary"
             onClick={handleSubmit}

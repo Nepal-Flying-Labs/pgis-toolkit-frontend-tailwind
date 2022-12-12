@@ -3,6 +3,7 @@ import AddLayer from '@Components/ProjectDashboard/ModalContent/AddLayer';
 import DeleteLayer from '@Components/ProjectDashboard/ModalContent/DeleteLayer';
 import SaveAsDraft from '@Components/OrganizationDashboard/ModalContent/SaveAsDraft';
 import UploadDataset from '@Components/ProjectDashboard/ModalContent/UploadDataset';
+import DataQuery from '@Components/ProjectDashboard/ModalContent/DataQuery';
 
 export function getModalTitle(content) {
   switch (content) {
@@ -10,6 +11,8 @@ export function getModalTitle(content) {
       return 'Upload layer';
     case 'upload-dataset':
       return 'Upload your datasets';
+    case 'data-query':
+      return 'Data Query';
     default:
       return '';
   }
@@ -21,6 +24,8 @@ export function getModalContent(content) {
       return <AddLayer />;
     case 'upload-dataset':
       return <UploadDataset />;
+    case 'data-query':
+      return <DataQuery />;
     default:
       return '';
   }

@@ -10,7 +10,8 @@ import { isEmpty } from '@Utils/commonUtils';
 import NoDataYet from './NoDataYet';
 import LayerList from './LayerList';
 
-const { getProjectLayersRequest } = ProjectDashboardCreators;
+const { getProjectLayersRequest, checkUploadStatusRequest } =
+  ProjectDashboardCreators;
 const { toggleModal } = CommonCreators;
 
 export default function Data() {
@@ -19,12 +20,28 @@ export default function Data() {
     state => state.projectDashboard.projectDetail,
   );
   const layers = useSelector(state => state.projectDashboard.data.layers);
+  const uploadStatusCheckingIds = useSelector(
+    state => state.projectDashboard.data.uploadStatusCheckingIds,
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!projectDetail) return;
     dispatch(getProjectLayersRequest({ project: projectId }));
   }, [dispatch, projectId, projectDetail]);
+
+  // check upload status for data
+  useEffect(() => {
+    if (!layers) return;
+    const uploadingLayers = layers.filter(
+      item =>
+        item.upload_status === 'uploading' &&
+        !uploadStatusCheckingIds.includes(item.id),
+    );
+    uploadingLayers.forEach(layer => {
+      dispatch(checkUploadStatusRequest(layer.id));
+    });
+  }, [dispatch, layers, uploadStatusCheckingIds]);
 
   const uploadMethods = [
     {

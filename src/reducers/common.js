@@ -4,7 +4,7 @@ import { Types } from '@Actions/common';
 const initialState = {
   modalContent: '',
   promptDialogContent: '',
-  projectHeaderHeight: null,
+  projectHeaderHeight: 65,
 };
 
 const toggleModal = (state, action) => ({

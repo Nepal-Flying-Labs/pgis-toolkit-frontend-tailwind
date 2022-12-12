@@ -5,7 +5,7 @@ import { Creators } from '@Actions/common';
 import { projectHeaderHeight } from '@src/constants';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
 import MaterialIcon from '@Components/common/MaterialIcon';
-import HeaderNotification from '../Header/HeaderNotification';
+// import HeaderNotification from '../Header/HeaderNotification';
 import HeaderProfile from '../Header/HeaderProfile';
 
 const organizationHeaderData = [
@@ -95,7 +95,7 @@ export default function ProjectHeader() {
           </nav>
 
           <div className="naxatw-flex naxatw-gap-4 naxatw-items-center">
-            <HeaderNotification />
+            {/* <HeaderNotification /> */}
 
             <HeaderProfile />
           </div>

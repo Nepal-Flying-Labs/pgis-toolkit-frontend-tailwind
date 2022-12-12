@@ -1,19 +1,39 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
-import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
+import {
+  Creators as ProjectMapCreators,
+  Types as ProjectMapTypes,
+} from '@Actions/projectMap';
+import {
+  Creators as ProjectDashboardCreators,
+  Types as ProjectDashboardTypes,
+} from '@Actions/projectDashboard';
 import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { deleteLayerRequest } = ProjectMapCreators;
+const { deleteDataRequest } = ProjectDashboardCreators;
 const { togglePromptDialog } = CommonCreators;
 
 export default function DeleteLayer() {
   const deleteLayer = useSelector(state => state.projectMap.deleteLayer);
   const isDeleting = useSelector(state =>
-    checkIfLoading(state, [Types.DELETE_LAYER_REQUEST]),
+    checkIfLoading(state, [
+      ProjectMapTypes.DELETE_LAYER_REQUEST,
+      ProjectDashboardTypes.DELETE_DATA_REQUEST,
+    ]),
   );
   const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    if (isDeleting) return;
+    if (deleteLayer?.deleteType === 'data') {
+      dispatch(deleteDataRequest(deleteLayer?.id, { is_deleted: true }));
+    } else {
+      dispatch(deleteLayerRequest(deleteLayer?.id, { is_deleted: true }));
+    }
+  };
 
   return (
     <div>
@@ -34,10 +54,7 @@ export default function DeleteLayer() {
           iconLeft="delete_outline"
           isLoading={isDeleting}
           loaderClassName="naxatw-fill-secondary-400"
-          onClick={() => {
-            if (isDeleting) return;
-            dispatch(deleteLayerRequest(deleteLayer?.id, { is_deleted: true }));
-          }}
+          onClick={handleDelete}
         >
           Delete
         </Button>

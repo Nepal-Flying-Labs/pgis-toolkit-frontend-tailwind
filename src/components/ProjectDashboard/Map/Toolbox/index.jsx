@@ -37,6 +37,9 @@ export default function Toolbox() {
         <Button
           className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
           iconLeft="travel_explore"
+          onClick={() => {
+            dispatch(toggleModal('analysis'));
+          }}
         >
           Analysis
         </Button>

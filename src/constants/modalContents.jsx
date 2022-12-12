@@ -4,6 +4,8 @@ import DeleteLayer from '@Components/ProjectDashboard/ModalContent/DeleteLayer';
 import SaveAsDraft from '@Components/OrganizationDashboard/ModalContent/SaveAsDraft';
 import UploadDataset from '@Components/ProjectDashboard/ModalContent/UploadDataset';
 import DataQuery from '@Components/ProjectDashboard/ModalContent/DataQuery';
+import Analysis from '@Components/ProjectDashboard/ModalContent/Analysis';
+import BufferAnalysis from '@Components/ProjectDashboard/ModalContent/Analysis/BufferAnalysis';
 
 export function getModalTitle(content) {
   switch (content) {
@@ -13,6 +15,10 @@ export function getModalTitle(content) {
       return 'Upload your datasets';
     case 'data-query':
       return 'Data Query';
+    case 'analysis':
+      return 'Analysis';
+    case 'buffer-analysis':
+      return 'Buffer Analysis';
     default:
       return '';
   }
@@ -26,6 +32,10 @@ export function getModalContent(content) {
       return <UploadDataset />;
     case 'data-query':
       return <DataQuery />;
+    case 'analysis':
+      return <Analysis />;
+    case 'buffer-analysis':
+      return <BufferAnalysis />;
     default:
       return '';
   }

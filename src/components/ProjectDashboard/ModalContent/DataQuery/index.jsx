@@ -1,4 +1,6 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { Creators } from '@Actions/common';
 import Select from '@Components/common/Select';
 import Button from '@Components/common/Button';
 
@@ -26,7 +28,11 @@ const operators = [
   { id: 9, label: 'Or', value: '=' },
 ];
 
+const { toggleModal } = Creators;
+
 export default function DataQuery() {
+  const dispatch = useDispatch();
+
   return (
     <div>
       <p>Baseline Datasets contains different levels of boundaries.</p>
@@ -105,7 +111,12 @@ export default function DataQuery() {
       </div>
 
       <div className="naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
-        <Button className="naxatw-btn-primary" onClick={() => {}}>
+        <Button
+          className="naxatw-btn-primary"
+          onClick={() => {
+            dispatch(toggleModal());
+          }}
+        >
           Save
         </Button>
       </div>

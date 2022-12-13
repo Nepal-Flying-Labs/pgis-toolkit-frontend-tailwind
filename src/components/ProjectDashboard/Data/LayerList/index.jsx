@@ -61,7 +61,7 @@ export default function LayerList() {
       <Table
         rowClassName="naxatw-py-1 naxatw-px-3"
         noColumnCondition={{ key: 'upload_status', value: 'uploading' }}
-        data={layers || []}
+        data={layers?.results || []}
         className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
         headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
         // headerWidths={['50px', '200px', '150px', '150px', '50px']}

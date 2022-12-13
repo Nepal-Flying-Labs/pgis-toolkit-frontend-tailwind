@@ -28,7 +28,7 @@
     @apply naxatw-text-grey-800 naxatw-text-body-md;
   }
   a {
-    @apply naxatw-cursor-pointer naxatw-select-none;
+    @apply naxatw-text-[13px] naxatw-cursor-pointer naxatw-select-none;
   }
 }
 

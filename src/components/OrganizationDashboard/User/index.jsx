@@ -1,12 +1,12 @@
 /* eslint-disable arrow-body-style */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from '@Components/common/Button/index';
 import { Creators } from '@Actions/organizationDashboard';
 import Users from '@Components/OrganizationDashboard/User/Users';
 import AssignUsers from '@Components/OrganizationDashboard/User/AssignUsers';
 
-const { toggleModal } = Creators;
+const { toggleModal, clearUsersFilter } = Creators;
 
 const User = () => {
   const dispatch = useDispatch();
@@ -14,6 +14,12 @@ const User = () => {
   const handleTabChange = name => {
     setActive(name);
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearUsersFilter());
+    };
+  }, []);
   return (
     <div className="naxatw-mx-10">
       <div className="naxatw-flex naxatw-justify-between naxatw-py-5 ">

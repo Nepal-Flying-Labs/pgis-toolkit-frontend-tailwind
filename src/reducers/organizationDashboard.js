@@ -17,6 +17,12 @@ const initialState = {
   },
   modalContent: '',
   organizationDetail: null,
+  users: [],
+  usersFilter: {
+    searchText: '',
+    userRole: null,
+    ordering: null,
+  },
 };
 
 const getOrganizationDetailSuccess = (state, action) => ({
@@ -155,6 +161,43 @@ const getCountryListSuccess = (state, action) => ({
   countryList: action.payload,
 });
 
+const setUserRole = (state, action) => ({
+  ...state,
+  usersFilter: {
+    ...state.usersFilter,
+    userRole: action.payload,
+  },
+});
+
+const setSearchText = (state, action) => ({
+  ...state,
+  usersFilter: {
+    ...state.usersFilter,
+    searchText: action.payload,
+  },
+});
+
+const getUsersSuccess = (state, action) => ({
+  ...state,
+  users: action.payload,
+});
+
+const setUsersOrdering = (state, action) => ({
+  ...state,
+  usersFilter: {
+    ...state.usersFilter,
+    ordering: action.payload,
+  },
+});
+
+const clearUsersFilter = state => ({
+  ...state,
+  usersFilter: {
+    searchText: '',
+    userRole: null,
+  },
+});
+
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
@@ -166,6 +209,11 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.PATCH_CONTACT_PERSON_SUCCESS]: patchContactPersonSuccess,
   [Types.SET_CONTACT_PERSON]: setContactPerson,
   [Types.GET_COUNTRY_LIST_SUCCESS]: getCountryListSuccess,
+  [Types.SET_USER_ROLE]: setUserRole,
+  [Types.SET_SEARCH_TEXT]: setSearchText,
+  [Types.GET_USERS_SUCCESS]: getUsersSuccess,
+  [Types.SET_USERS_ORDERING]: setUsersOrdering,
+  [Types.CLEAR_USERS_FILTER]: clearUsersFilter,
 });
 
 export default organizationDashboardReducer;

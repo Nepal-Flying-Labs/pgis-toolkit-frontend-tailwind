@@ -4,9 +4,9 @@ import React from 'react';
 
 const getColor = status => {
   switch (status) {
-    case 'active':
+    case true:
       return { bg: 'naxatw-bg-green-500', text: 'naxatw-text-green-500' };
-    case 'inactive':
+    case false:
       return { bg: 'naxatw-bg-red-500', text: 'naxatw-text-red-500' };
     default:
       return { bg: 'naxatw-bg-blue-500', text: 'naxatw-text-blue-500' };
@@ -14,11 +14,13 @@ const getColor = status => {
 };
 
 const Status = ({ status }) => {
-  const stat = getColor(status.toLowerCase());
+  const stat = getColor(status);
   return (
     <div className=" naxatw-flex naxatw-items-center naxatw-gap-x-2">
       <div className={`naxatw-w-2 naxatw-h-2 ${stat.bg} naxatw-rounded-full`} />
-      <span className={`naxatw-text-body-md ${stat.text}`}>{status}</span>
+      <span className={`naxatw-text-body-md ${stat.text}`}>
+        {status ? 'Active' : 'Inactive'}
+      </span>
     </div>
   );
 };

@@ -25,3 +25,6 @@ export const patchContactPerson = (id, params) =>
   authenticated(api).patch(`/projects/contact_person/${id}/`, { params });
 
 export const getCountryList = () => authenticated(api).get('/projects/country');
+
+export const getUsers = params =>
+  authenticated(api).get('/users/user/', { params });

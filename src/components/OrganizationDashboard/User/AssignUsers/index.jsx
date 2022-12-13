@@ -66,7 +66,7 @@ const AssignUsers = () => {
           <div className="naxatw-flex naxatw-items-center naxatw-relative">
             <input
               type="text"
-              className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-px-3 naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white  naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded-md naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gregrey-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
+              className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-pr-3 naxatw-pl-[50px] naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white  naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded-md naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gregrey-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
               name="email"
               placeholder="Select user's email or name"
               value={values.email}
@@ -86,6 +86,9 @@ const AssignUsers = () => {
               }}
               {...inputProps}
             />
+            <span className="material-icons naxatw-absolute naxatw-left-[13px]">
+              mail_outline
+            </span>
             <a
               type="submit"
               className="naxatw-text-2xl naxatw-ml-2 naxatw-cursor-pointer naxatw-select-none"
@@ -102,7 +105,7 @@ const AssignUsers = () => {
               }}
             >
               <i className="material-icons naxatw-text-[#40B449] naxatw-absolute naxatw-right-4 naxatw-top-3">
-                add_circle_outline
+                add
               </i>
             </a>
           </div>

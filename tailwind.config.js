@@ -70,6 +70,14 @@ module.exports = {
             letterSpacing: '0',
           },
         ],
+        'body-btn': [
+          '0.813rem',
+          {
+            lineHeight: '1.125',
+            fontWeight: '700',
+            letterSpacing: '0',
+          },
+        ],
 
         'icon-md': [
           '1.5rem',

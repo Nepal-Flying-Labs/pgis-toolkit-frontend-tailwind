@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import useOutsideClick from '@Hooks/useOutsideClick';
 
-export default function DropdownOptions({ options, data }) {
+export default function DropdownOptions({ options, data, stopPropagation }) {
   const [toggleRef, toggle, handleToggle] = useOutsideClick();
 
   return (
@@ -10,7 +11,10 @@ export default function DropdownOptions({ options, data }) {
       <a
         ref={toggleRef}
         className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-grey-800  naxatw-rounded-lg hover:naxatw-bg-grey-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-grey-50 naxatw-select-none"
-        onClick={handleToggle}
+        onClick={e => {
+          if (stopPropagation) e.stopPropagation();
+          handleToggle();
+        }}
       >
         <i className="material-icons">more_vert</i>
       </a>

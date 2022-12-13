@@ -35,6 +35,7 @@ const initialState = {
 
 export default function CreateAnOrganization() {
   const dispatch = useDispatch();
+  const [email, setEmail] = useState('');
   const [emailList, setEmailList] = useState([]);
   const [emailError, setEmailError] = useState(false);
   const loading = useSelector(state =>
@@ -54,7 +55,7 @@ export default function CreateAnOrganization() {
       if (Object.keys(emailList).length > 0) {
         const payload = {
           organization_name: data.organizationName,
-          email: emailList.map(email => email.value),
+          email: emailList.map(e => e.value),
         };
         dispatch(createOrganizationRequest(payload));
       } else {
@@ -126,27 +127,33 @@ export default function CreateAnOrganization() {
           <div className="naxatw-flex naxatw-items-center naxatw-relative">
             <input
               type="text"
-              className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-px-3 naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gregrey-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
+              className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-pr-3 naxatw-pl-[50px] naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gregrey-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
               name="email"
               placeholder="Enter email address to invite organization admin"
-              value={values.email}
-              onChange={handleChange}
+              value={email}
+              onChange={e => {
+                setEmail(e.target.value);
+              }}
               onKeyDown={e => {
                 if (e.key === 'Enter') {
-                  if (values.email) {
+                  if (email) {
                     setEmailList(prev => [
                       ...prev,
                       {
                         id: Math.floor(Math.random() * 100),
-                        value: values.email,
+                        value: email,
                       },
                     ]);
+                    setEmail('');
                     setEmailError(false);
                   }
                 }
               }}
               {...inputProps}
             />
+            <span className="material-icons naxatw-absolute naxatw-left-[13px]">
+              mail_outline
+            </span>
             <a
               type="submit"
               className="naxatw-text-2xl naxatw-ml-2 naxatw-cursor-pointer naxatw-select-none"
@@ -156,15 +163,16 @@ export default function CreateAnOrganization() {
                     ...prev,
                     {
                       id: Math.floor(Math.random() * 100),
-                      value: values.email,
+                      value: email,
                     },
                   ]);
+                  setEmail('');
                   setEmailError(false);
                 }
               }}
             >
               <i className="material-icons naxatw-text-[#40B449] naxatw-absolute naxatw-right-4 naxatw-top-3">
-                add_circle_outline
+                add
               </i>
             </a>
           </div>
@@ -184,9 +192,7 @@ export default function CreateAnOrganization() {
                 <i
                   className="material-icons naxatw-text-lg naxatw-text-[#484848] naxatw-cursor-pointer"
                   onClick={() => {
-                    setEmailList(
-                      emailList.filter(email => email.id !== item.id),
-                    );
+                    setEmailList(emailList.filter(e => e.id !== item.id));
                   }}
                 >
                   close

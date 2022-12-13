@@ -55,9 +55,10 @@ export default function ProjectHeader() {
       id="project-header"
       className={`naxatw-h-[${projectHeaderHeight}] naxatw-fixed naxatw-w-full naxatw-z-[999] naxatw-top-0 naxatw-border-b naxatw-border-grey-300 naxatw-bg-white`}
     >
-      <div className="naxatw-flex naxatw-justify-between naxatw-px-8 naxatw-py-3 naxatw-h-full">
-        <div className="naxatw-flex naxatw-items-center naxatw-gap-8">
+      <div className="naxatw-flex naxatw-justify-between naxatw-px-8 naxatw-py-1 naxatw-h-full">
+        <div className="naxatw-flex naxatw-items-center naxatw-gap-5">
           <Link
+            className="naxatw-pt-2"
             to={`${
               projectId
                 ? `/organizations/${organizationId}/projects`

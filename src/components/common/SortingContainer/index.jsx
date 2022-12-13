@@ -10,7 +10,7 @@ export default function SortingContainer({ name, handleSort, className }) {
   return (
     <div className="naxatw-flex naxatw-items-center">
       <span
-        className={`naxatw-font-bold ${className} naxatw-text-grey-500 naxatw-text-sm`}
+        className={`naxatw-font-bold ${className} naxatw-text-grey-500 naxatw-text-body-sm`}
       >
         {name}
       </span>

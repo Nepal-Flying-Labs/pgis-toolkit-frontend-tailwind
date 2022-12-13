@@ -285,7 +285,7 @@ Table.defaultProps = {
   rowColSpanNum: [],
   rowcolSpanName: [],
   headClassName: [],
-  rowClassName: 'naxatw-py-[0.8125rem] naxatw-px-3',
+  rowClassName: 'naxatw-py-[0.500rem] naxatw-px-3',
   noColumnCondition: null,
 };
 

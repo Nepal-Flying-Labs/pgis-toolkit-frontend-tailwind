@@ -24,6 +24,7 @@ const CreateProject = () => {
   );
 
   const dispatch = useDispatch();
+  const [email, setEmail] = useState('');
   const [emailList, setEmailList] = useState([]);
   const [emailError, setEmailError] = useState(false);
   const { meta, values, inputProps, handleChange, handleSubmit } = useForm({
@@ -33,7 +34,7 @@ const CreateProject = () => {
       if (Object.keys(emailList).length > 0) {
         const newData = {
           ...data,
-          email: emailList.map(email => email.value),
+          email: emailList.map(e => e.value),
           organization: organizationId,
         };
         dispatch(postProjectInviteRequest(newData));
@@ -47,7 +48,7 @@ const CreateProject = () => {
     <div className="naxatw-space-y-8">
       <h3>Basic Project Setup & Invitation</h3>
       <div className="naxatw-flex">
-        <span className="naxatw-text-body-lg naxatw-text-center">
+        <span className="naxatw-text-body-lg ">
           Setup basic information of your project and assign a project manager.
           The project manager can then complete the full details.
         </span>
@@ -73,15 +74,16 @@ const CreateProject = () => {
           label="Email Invite"
           placeholder="Enter email address to invite project manager"
           name="email"
-          value={values.email}
-          onChange={handleChange}
+          value={email}
+          onChange={e => setEmail(e.target.value)}
           onKeyDown={e => {
             if (e.key === 'Enter') {
-              if (values.email) {
+              if (email) {
                 setEmailList(prev => [
                   ...prev,
-                  { id: Math.floor(Math.random() * 100), value: values.email },
+                  { id: Math.floor(Math.random() * 100), value: email },
                 ]);
+                setEmail('');
                 setEmailError(false);
               }
             }
@@ -90,11 +92,12 @@ const CreateProject = () => {
         />
         <a
           onClick={() => {
-            if (values.email) {
+            if (email) {
               setEmailList(prev => [
                 ...prev,
-                { id: Math.floor(Math.random() * 100), value: values.email },
+                { id: Math.floor(Math.random() * 100), value: email },
               ]);
+              setEmail('');
               setEmailError(false);
             }
           }}
@@ -120,7 +123,7 @@ const CreateProject = () => {
               <i
                 className="material-icons naxatw-text-lg naxatw-text-[#484848] naxatw-cursor-pointer"
                 onClick={() => {
-                  setEmailList(emailList.filter(email => email.id !== item.id));
+                  setEmailList(emailList.filter(e => e.id !== item.id));
                 }}
               >
                 close

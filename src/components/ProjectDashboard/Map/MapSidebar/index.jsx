@@ -28,7 +28,7 @@ export default function MapSidebar() {
           <NoDataYet />
           <Button
             className="naxatw-btn-primary"
-            iconLeft="add_circle_outline"
+            iconLeft="add"
             onClick={() => {
               history.push('data');
             }}

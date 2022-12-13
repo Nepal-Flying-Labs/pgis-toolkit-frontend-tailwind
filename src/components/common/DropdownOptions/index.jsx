@@ -7,7 +7,7 @@ export default function DropdownOptions({ options, data, stopPropagation }) {
   const [toggleRef, toggle, handleToggle] = useOutsideClick();
 
   return (
-    <div className="naxatw-relative naxatw-w-10 naxatw-flex">
+    <div className="naxatw-relative naxatw-w-10 naxatw-flex naxatw-justify-end">
       <a
         ref={toggleRef}
         className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-grey-800  naxatw-rounded-lg hover:naxatw-bg-grey-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-grey-50 naxatw-select-none"
@@ -22,7 +22,7 @@ export default function DropdownOptions({ options, data, stopPropagation }) {
         id="dropdownDots"
         className={`${
           toggle ? '' : 'naxatw-hidden'
-        } naxatw-absolute naxatw-top-[2px] naxatw-right-[42px] naxatw-z-10 naxatw-w-[12.5rem] naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100 naxatw-shadow-3xl`}
+        } naxatw-absolute naxatw-top-[2px] naxatw-right-[30px] naxatw-z-10 naxatw-w-[12.5rem] naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100 naxatw-shadow-3xl`}
       >
         <ul
           className="naxatw-py-2 naxatw-text-sm naxatw-text-grey-700"
@@ -31,7 +31,7 @@ export default function DropdownOptions({ options, data, stopPropagation }) {
           {options.map(({ id, label, onClick }) => (
             <li
               key={id}
-              className="naxatw-block naxatw-py-[13px] naxatw-px-3 hover:naxatw-bg-grey-100 naxatw-cursor-pointer"
+              className="naxatw-block naxatw-py-2.5 naxatw-px-3 hover:naxatw-bg-grey-100 naxatw-cursor-pointer"
             >
               <a
                 onClick={e => {

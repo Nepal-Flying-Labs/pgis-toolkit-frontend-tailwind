@@ -12,7 +12,7 @@
 }
 
 .map-footer .ol-attribution li {
-  font-size: 14px !important;
+  font-size: 13px !important;
   color: #484848 !important;
   display: flex !important;
 }
@@ -33,7 +33,7 @@
 }
 
 .ol-scale-line > .ol-scale-line-inner {
-  font-size: 14px !important;
+  font-size: 13px !important;
 }
 
 .ol-rotate {
@@ -74,10 +74,10 @@
 
 .ol-zoom {
   position: absolute;
-  bottom: 4.5rem !important;
-  right: 1rem !important;
+  bottom: 2.5rem !important;
+  left: 1rem !important;
   top: unset !important;
-  left: unset !important;
+  right: unset !important;
   background: transparent !important;
 }
 .ol-zoom-in {
@@ -101,9 +101,9 @@
 /* } */
 
 .layer-switcher {
-  bottom: 10.2rem !important;
-  right: 1rem !important;
+  bottom: 8.2rem !important;
+  left: 1rem !important;
   top: unset !important;
-  left: unset !important;
+  right: unset !important;
   background: transparent !important;
 }

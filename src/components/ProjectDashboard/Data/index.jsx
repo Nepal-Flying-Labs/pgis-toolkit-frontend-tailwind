@@ -33,7 +33,7 @@ export default function Data() {
   // check upload status for data
   useEffect(() => {
     if (!layers) return;
-    const uploadingLayers = layers.filter(
+    const uploadingLayers = layers?.results?.filter(
       item =>
         item.upload_status === 'uploading' &&
         !uploadStatusCheckingIds.includes(item.id),

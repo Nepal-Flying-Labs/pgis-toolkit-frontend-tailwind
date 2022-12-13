@@ -23,7 +23,11 @@ export default function Toolbox() {
         )}
       </a>
 
-      <div className={`naxatw-flex ${showToolbox ? '' : 'naxatw-hidden'}`}>
+      <div
+        className={`naxatw-flex naxatw-items-center ${
+          showToolbox ? '' : 'naxatw-hidden'
+        }`}
+      >
         <Button
           className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
           iconLeft="search"

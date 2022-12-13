@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { projectHeaderHeight } from '@src/constants';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
+import ManageDataCollection from '@Components/ProjectDashboard/ManageDataCollection/index';
 import ProjectHeader from '@Components/common/ProjectHeader';
 import Map from '@Components/ProjectDashboard/Map';
 import Data from '@Components/ProjectDashboard/Data';
@@ -60,7 +61,7 @@ export default function ProjectDashboard() {
     dispatch(getProjectDetailRequest({ project: projectId }));
   }, [dispatch, projectId]);
 
-  return (
+  return tabname !== 'manage-data' ? (
     <div>
       <ProjectHeader />
 
@@ -88,5 +89,7 @@ export default function ProjectDashboard() {
         {getTabContent(tabname)}
       </div>
     </div>
+  ) : (
+    <ManageDataCollection />
   );
 }

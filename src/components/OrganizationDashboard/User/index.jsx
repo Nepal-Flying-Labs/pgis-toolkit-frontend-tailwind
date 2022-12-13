@@ -27,9 +27,9 @@ const User = () => {
         <Button
           onClick={() => dispatch(toggleModal('create-new-user'))}
           iconLeft="add"
-          className=" naxatw-w-[9.375rem]  naxatw-text-[#00A699] naxatw-border-[1px] group-hover hover:naxatw-bg-grey-200 naxatw-flex naxatw-items-center"
+          className=" naxatw-btn-secondary "
         >
-          <span className="hover:naxatw-underline naxatw-text-[13px] naxatw-leading-[18px] naxatw-text-[#00A699] naxatw-font-bold ">
+          <span className=" naxatw-text-[13px] naxatw-leading-[18px] naxatw-text-[#00A699] naxatw-font-bold ">
             Create New
           </span>
         </Button>

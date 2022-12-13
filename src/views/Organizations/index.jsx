@@ -82,7 +82,7 @@ export default function Organizations() {
           {userPermissions?.includes('add_organization') && (
             <Button
               className="naxatw-btn-primary"
-              iconLeft="add_circle_outline"
+              iconLeft="add"
               onClick={() => dispatch(toggleModal('create-organization'))}
             >
               Create New

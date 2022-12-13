@@ -25,7 +25,7 @@ export default function Searchbar({ className, placeholder, value, onChange }) {
         </div>
         <input
           type="text"
-          className={`naxatw-border naxatw-border-grey-300 naxatw-text-grey-900 naxatw-rounded-full focus:naxatw-ring-blue-500 focus:naxatw-border-blue-500 naxatw-block naxatw-w-full naxatw-pl-10 naxatw-p-2.5 ${className}`}
+          className={`naxatw-border naxatw-border-grey-300 naxatw-text-grey-900 naxatw-rounded-full focus:naxatw-ring-blue-500 focus:naxatw-border-blue-500 naxatw-block naxatw-w-full naxatw-pl-10 naxatw-pr-3 naxatw-py-[14px]  ${className}`}
           placeholder={placeholder}
           value={value}
           onChange={onChange}

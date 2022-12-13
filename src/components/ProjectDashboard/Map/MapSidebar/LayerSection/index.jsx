@@ -26,6 +26,7 @@ export default function LayerSection() {
       <div className="naxatw-flex naxatw-items-center">
         <Searchbar
           className="naxatw-bg-white"
+          isSmall
           value={searchText}
           onChange={e => {
             dispatch(setSearchText(e.target.value));
@@ -35,14 +36,14 @@ export default function LayerSection() {
 
       <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-mt-2">
         <Button
-          className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent"
+          className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent naxatw-btn-sm"
           iconLeft="tune"
         >
           Filters
         </Button>
         <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
           <Button
-            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent"
+            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent naxatw-btn-sm"
             onClick={() => {
               dispatch(
                 setSidebarContent(
@@ -54,13 +55,13 @@ export default function LayerSection() {
             {sidebarContent === 'layer-order' ? 'Category' : 'Layer Order'}
           </Button>
           <Button
-            className="naxatw-btn-primary"
-            iconLeft="add_circle_outline"
+            className="naxatw-btn-primary naxatw-btn-sm"
+            iconLeft="add"
             onClick={() => {
               history.push('data');
             }}
           >
-            Data
+            Add Data
           </Button>
         </div>
       </div>

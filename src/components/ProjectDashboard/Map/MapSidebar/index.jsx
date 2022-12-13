@@ -16,11 +16,11 @@ export default function MapSidebar() {
 
   return (
     <div
-      className={`naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5 naxatw-transition-all naxatw-duration-300 naxatw-overflow-auto scrollbar ${
+      className={`naxatw-bg-grey-100 naxatw-pl-4 naxatw-pr-4 naxatw-pt-3 naxatw-transition-all naxatw-duration-300 naxatw-overflow-auto scrollbar ${
         hideSidebar ? 'naxatw-hidden' : 'naxatw-block'
       }`}
       style={{
-        minWidth: '30rem',
+        minWidth: '23rem',
       }}
     >
       {themes !== null && isEmpty(themes) ? (
@@ -28,7 +28,7 @@ export default function MapSidebar() {
           <NoDataYet />
           <Button
             className="naxatw-btn-primary"
-            iconLeft="add_circle_outline"
+            iconLeft="add"
             onClick={() => {
               history.push('data');
             }}

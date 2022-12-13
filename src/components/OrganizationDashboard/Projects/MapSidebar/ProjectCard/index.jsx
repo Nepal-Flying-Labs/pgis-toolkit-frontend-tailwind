@@ -62,6 +62,7 @@ export default function ProjectCard({
         </span>
       ),
       onClick: projectId => {
+        console.log(projectId);
         history.push(
           `/organizations/${organizationId}/project-edit/${projectId}`,
         );
@@ -119,7 +120,7 @@ export default function ProjectCard({
                   >
                     <a
                       onClick={e => {
-                        handleClick(optionId);
+                        handleClick(id);
                         e.stopPropagation();
                       }}
                     >

@@ -1,5 +1,5 @@
 .naxatw-btn {
-  @apply naxatw-px-5 naxatw-py-3 naxatw-font-bold naxatw-rounded-lg naxatw-text-[15px] 
+  @apply naxatw-px-5 naxatw-py-3 naxatw-font-bold naxatw-rounded-lg naxatw-text-[0.813rem] naxatw-leading-[1.125rem]
   naxatw-flex naxatw-items-start naxatw-justify-center;
 }
 .naxatw-btn.naxatw-btn-sm {

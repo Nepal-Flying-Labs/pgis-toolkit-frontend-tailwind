@@ -100,9 +100,9 @@ const ManageDataCollection = () => {
           </div>
         </div>
 
-        <div className="">
+        <div className="naxatw-container">
           {getContent(active)}
-          <div className="naxatw-flex naxatw-justify-between naxatw-py-5">
+          <div className="naxatw-flex naxatw-justify-between naxatw-py-5 naxatw-w-[800px]">
             {active > 1 ? (
               <Button
                 iconLeft="arrow_back"

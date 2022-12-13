@@ -7,8 +7,8 @@ import fileIcon from '@Assets/images/group.png';
 const StepOne = () => {
   const [option, setOption] = useState(null);
   return (
-    <div className="">
-      <div className="naxatw-mx-auto naxatw-w-[800px] ">
+    <div className="naxatw-container ">
+      <div className="naxatw-w-[800px] naxatw-mx-auto">
         <h4 className="naxatw-mb-2">Get Started & Manage Data</h4>
         <p>
           USAFIRI allows you to import data in two different ways. Prior to data

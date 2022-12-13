@@ -1,5 +1,5 @@
 /* eslint-disable react/button-has-type */
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -13,23 +13,10 @@ export default function Button({
   isLoading,
   loaderClassName,
 }) {
-  const [isHovered, setIsHovered] = useState(false);
   return (
-    <button
-      type={type}
-      className={`naxatw-btn ${className}`}
-      onClick={onClick}
-      onMouseEnter={() => {
-        if (!className.includes('secondary')) return;
-        setIsHovered(true);
-      }}
-      onMouseLeave={() => {
-        if (!className.includes('secondary')) return;
-        setIsHovered(false);
-      }}
-    >
+    <button type={type} className={`naxatw-btn ${className}`} onClick={onClick}>
       {iconLeft && (
-        <i className="material-icons naxatw-mr-2 naxatw-text-[22px] hover:naxatw-no-underline">
+        <i className="material-icons naxatw-mr-2 naxatw-text-[22px]">
           {iconLeft}
         </i>
       )}
@@ -56,16 +43,7 @@ export default function Button({
         </div>
       ) : (
         <>
-          <p
-            className={` ${
-              isHovered
-                ? 'naxatw-underline naxatw-text-secondary-400'
-                : 'naxatw-text-white'
-            }`}
-          >
-            {children}
-          </p>
-
+          {children}
           {iconRight && (
             <i className="material-icons naxatw-mr-2 naxatw-text-[22px]">
               {iconRight}

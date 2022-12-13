@@ -110,9 +110,9 @@ export default function OrganizationList() {
         {!loading ? (
           <Table
             data={organizationData?.results || []}
-            className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
-            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            headerWidths={['50px', '200px', '150px', '150px', '50px']}
+            className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-body-sm"
+            headerClassName="naxatw-py-1 naxatw-px-3"
+            headerWidths={['30px', '200px', '150px', '150px', '50px']}
             // eslint-disable-next-line
             onRowClick={row => {
               history.push(`/organizations/${row.id}/projects`);
@@ -120,52 +120,54 @@ export default function OrganizationList() {
           >
             <TableHeader
               dataField="SN"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+              headerClassName="naxatw-py-1 naxatw-px-3"
               rowcolSpan="rowSpan_2"
               dataHeader={<SortingContainer name="S.N" />}
               dataFormat={(row, _, index) => (
-                <span className="naxatw-text-base">
+                <span className="naxatw-text-body-lg">
                   {(currentPage - 1) * dataPerPage + (index + 1)}
                 </span>
               )}
             />
             <TableHeader
               dataField="Name"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+              headerClassName="naxatw-py-1 naxatw-px-3 "
               rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer name="Name" className="naxatw-text-black" />
-              }
+              dataHeader={<SortingContainer name="Name" className="" />}
               dataFormat={row => (
-                <span className="naxatw-text-base naxatw-font-bold">
-                  {row.name}
-                </span>
+                <span className="naxatw-text-body-lg ">{row.name}</span>
               )}
             />
             <TableHeader
               dataField="Email"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+              headerClassName="naxatw-py-1 naxatw-px-3"
               rowcolSpan="rowSpan_2"
               // dataHeader={<SortingContainer name="S.N" />}
               dataFormat={row => (
-                <span className="naxatw-text-base">{row.email}</span>
+                <span className="naxatw-text-body-lg">{row.email}</span>
               )}
             />
             <TableHeader
               dataField="Projects"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+              headerClassName="naxatw-py-1 naxatw-px-3"
               rowcolSpan="rowSpan_2"
               dataHeader={<SortingContainer name="Projects" />}
               dataFormat={row => (
-                <span className="naxatw-text-base">{row.projects}</span>
+                <span className="naxatw-text-body-lg">{row.projects}</span>
               )}
             />
             <TableHeader
               dataField=""
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
+              headerClassName="naxatw-py-1 naxatw-px-3 naxatw-text-right"
               rowcolSpan="rowSpan_3"
               dataFormat={row => (
-                <DropdownOptions options={dropdownOptions} data={row} />
+                <div className="naxatw-flex naxatw-justify-end naxatw-w-full">
+                  <DropdownOptions
+                    options={dropdownOptions}
+                    data={row}
+                    stopPropagation
+                  />
+                </div>
               )}
             />
           </Table>

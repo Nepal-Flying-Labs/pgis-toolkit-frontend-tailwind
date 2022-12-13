@@ -51,6 +51,7 @@ const projects = [
 ];
 
 const AssignUsers = () => {
+  const [email, setEmail] = useState('');
   const [emailList, setEmailList] = useState([]);
   const { values, inputProps, handleChange, handleCustomChange, handleSubmit } =
     useForm({
@@ -60,7 +61,7 @@ const AssignUsers = () => {
     <div className="naxatw-w-[670px] naxatw-mx-auto ">
       <div className="naxatw-space-y-7">
         <div className="naxatw-space-y-2 naxatw-pt-5">
-          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
+          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
             Assign User
           </label>
           <div className="naxatw-flex naxatw-items-center naxatw-relative">
@@ -69,18 +70,19 @@ const AssignUsers = () => {
               className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-pr-3 naxatw-pl-[50px] naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white  naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded-md naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gregrey-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
               name="email"
               placeholder="Select user's email or name"
-              value={values.email}
-              onChange={handleChange}
+              value={email}
+              onChange={e => setEmail(e.target.value)}
               onKeyDown={e => {
                 if (e.key === 'Enter') {
-                  if (values.email) {
+                  if (email) {
                     setEmailList(prev => [
                       ...prev,
                       {
                         id: Math.floor(Math.random() * 100),
-                        value: values.email,
+                        value: email,
                       },
                     ]);
+                    setEmail('');
                   }
                 }
               }}
@@ -93,14 +95,15 @@ const AssignUsers = () => {
               type="submit"
               className="naxatw-text-2xl naxatw-ml-2 naxatw-cursor-pointer naxatw-select-none"
               onClick={() => {
-                if (values.email) {
+                if (email) {
                   setEmailList(prev => [
                     ...prev,
                     {
                       id: Math.floor(Math.random() * 100),
-                      value: values.email,
+                      value: email,
                     },
                   ]);
+                  setEmail('');
                 }
               }}
             >
@@ -114,16 +117,14 @@ const AssignUsers = () => {
             {emailList.map(item => (
               <div
                 key={item.id}
-                className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-gap-x-2 naxatw-rounded-3xl naxatw-bg-[#D7D7D7] naxatw-px-3 naxatw-py-[7px]"
+                className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-gap-x-2 naxatw-rounded-3xl naxatw-bg-[#F5F5F5] naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-[7px]"
               >
                 <p className="naxatw-text-[#484848]">{item.value}</p>
 
                 <i
                   className="material-icons naxatw-text-lg naxatw-text-[#484848] naxatw-cursor-pointer"
                   onClick={() => {
-                    setEmailList(
-                      emailList.filter(email => email.id !== item.id),
-                    );
+                    setEmailList(emailList.filter(e => e.id !== item.id));
                   }}
                 >
                   close
@@ -134,7 +135,9 @@ const AssignUsers = () => {
         </div>
         <div className="naxatw-flex naxatw-gap-x-5">
           <div className="naxatw-space-y-2 naxatw-pt-5 naxatw-basis-1/2">
-            <label>Assign as</label>
+            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
+              Assign as
+            </label>
             <div className="naxatw-space-y-2">
               <Searchbar
                 className="naxatw-h-[40px]"
@@ -148,7 +151,9 @@ const AssignUsers = () => {
             </div>
           </div>
           <div className="naxatw-space-y-2 naxatw-pt-5 naxatw-basis-1/2">
-            <label>Assign as</label>
+            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
+              Assign as
+            </label>
             <div className="naxatw-space-y-2">
               <Searchbar
                 className="naxatw-h-[40px]"

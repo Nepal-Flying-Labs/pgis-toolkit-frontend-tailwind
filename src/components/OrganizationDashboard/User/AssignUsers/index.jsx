@@ -2,12 +2,53 @@
 /* eslint-disable arrow-body-style */
 import React, { useState } from 'react';
 import useForm from '@Hooks/useForm';
+import Searchbar from '@Components/common/Searchbar/index';
+import Button from '@Components/common/Button/index';
+import Checkbox from './Checkbox/index';
 
 const initialState = {
   email: '',
   assignAs: '',
   assignTo: '',
 };
+
+const userRoles = [
+  {
+    id: 'manager',
+    name: 'Manager',
+  },
+  {
+    id: 'editor',
+    name: 'Editor',
+  },
+  {
+    id: 'owner',
+    name: 'Owner',
+  },
+  {
+    id: 'admin ',
+    name: 'Admin',
+  },
+];
+
+const projects = [
+  {
+    id: 1,
+    name: 'Transportation Management',
+  },
+  {
+    id: 2,
+    name: 'Disaster Relief',
+  },
+  {
+    id: 3,
+    name: 'Bicycle for educational Empowerment',
+  },
+  {
+    id: 4,
+    name: 'Bicycle for transportation',
+  },
+];
 
 const AssignUsers = () => {
   const [emailList, setEmailList] = useState([]);
@@ -88,10 +129,38 @@ const AssignUsers = () => {
             ))}
           </div>
         </div>
-        <div>
-          <div className="naxatw-space-y-2 naxatw-pt-5">
+        <div className="naxatw-flex naxatw-gap-x-5">
+          <div className="naxatw-space-y-2 naxatw-pt-5 naxatw-basis-1/2">
             <label>Assign as</label>
+            <div className="naxatw-space-y-2">
+              <Searchbar
+                className="naxatw-h-[40px]"
+                placeholder="Search Role"
+              />
+              <div className="naxatw-w-full naxatw-space-y-5  naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-2 naxatw-max-h-[300px] naxatw-overflow-x-auto scrollbar">
+                {userRoles.map(roles => (
+                  <Checkbox id={roles.id} label={roles.name} />
+                ))}
+              </div>
+            </div>
           </div>
+          <div className="naxatw-space-y-2 naxatw-pt-5 naxatw-basis-1/2">
+            <label>Assign as</label>
+            <div className="naxatw-space-y-2">
+              <Searchbar
+                className="naxatw-h-[40px]"
+                placeholder="Search Projects"
+              />
+              <div className="naxatw-w-full naxatw-space-y-5  naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-2 naxatw-max-h-[300px] naxatw-overflow-x-auto scrollbar">
+                {projects.map(project => (
+                  <Checkbox id={project.id} label={project.name} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="naxatw-mt-5 naxatw-flex naxatw-justify-center">
+          <Button className="naxatw-w-[86px] naxatw-btn-primary">Assign</Button>
         </div>
       </div>
     </div>

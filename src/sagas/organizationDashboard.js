@@ -11,6 +11,7 @@ import {
   postContactPerson,
   patchContactPerson,
   getCountryList,
+  getUsers,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
@@ -163,6 +164,15 @@ export function* getCountryListRequest() {
   }
 }
 
+export function* getUsersRequest({ params }) {
+  try {
+    const response = yield call(getUsers, params);
+    yield put(organizationDashboardActions.getUsersSuccess(response.data));
+  } catch (error) {
+    yield put(organizationDashboardActions.getUsersFailure());
+  }
+}
+
 function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
@@ -197,6 +207,7 @@ function* organizationDashboardWatcher() {
     Types.GET_COUNTRY_LIST_REQUEST,
     withLoader(getCountryListRequest),
   );
+  yield takeLatest(Types.GET_USERS_REQUEST, withLoader(getUsersRequest));
 }
 
 export default organizationDashboardWatcher;

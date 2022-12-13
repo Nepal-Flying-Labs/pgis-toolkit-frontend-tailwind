@@ -14,7 +14,7 @@ const LegendItem = ({
   styles = { ...defaultStyles },
   onClick = () => {},
   className = '',
-  size = '40px',
+  size = '28px',
   ...rest
 }) => {
   const stylex = { ...defaultStyles, ...styles };

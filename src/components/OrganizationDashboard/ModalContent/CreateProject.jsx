@@ -69,9 +69,10 @@ const CreateProject = () => {
         </span>
       )}
       <div className="naxatw-relative">
-        <Input
+        <input
           type="text"
           label="Email Invite"
+          className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-pr-3 naxatw-pl-[50px] naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gregrey-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
           placeholder="Enter email address to invite project manager"
           name="email"
           value={email}
@@ -90,6 +91,9 @@ const CreateProject = () => {
           }}
           {...inputProps}
         />
+        <span className="material-icons naxatw-absolute naxatw-left-[13px] naxatw-top-3">
+          mail_outline
+        </span>
         <a
           onClick={() => {
             if (email) {
@@ -103,8 +107,8 @@ const CreateProject = () => {
           }}
         >
           <MaterialIcon
-            name="add_circle"
-            className="naxatw-absolute naxatw-top-11 naxatw-right-2 naxatw-text-[#00A699] naxatw-cursor-pointer"
+            name="add"
+            className="naxatw-text-[#40B449] naxatw-absolute naxatw-right-4 naxatw-top-3"
           />
         </a>
         {emailError && (

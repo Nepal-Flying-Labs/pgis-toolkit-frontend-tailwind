@@ -73,7 +73,7 @@ export default function ProjectHeader() {
 
         <div className="naxatw-flex naxatw-gap-10 ">
           <nav className="">
-            <ul className="naxatw-font-bold naxatw-block naxatw-text-grey-500 naxatw-text-[0.9375rem] naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-8 naxatw-h-full">
+            <ul className="naxatw-font-bold naxatw-block naxatw-text-grey-500 naxatw-text-[0.9375rem] naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-2 naxatw-h-full">
               {headerData.map(({ label, route, disabled }) => (
                 <li key={label}>
                   <Link

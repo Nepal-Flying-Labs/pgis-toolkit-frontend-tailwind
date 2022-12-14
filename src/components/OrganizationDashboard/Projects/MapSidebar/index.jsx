@@ -97,7 +97,10 @@ export default function MapSidebar() {
                 onClick={
                   status !== 'draft'
                     ? () => history.push(`${url}/${id}/map`)
-                    : () => {}
+                    : () =>
+                        history.push(
+                          `/organizations/${organizationId}/project-edit/${id}`,
+                        )
                 }
               />
             ))

@@ -4,7 +4,10 @@ import React from 'react';
 
 const ProjectCardSkeleton = ({ itemNumber }) => {
   return Array.from({ length: itemNumber }, (_, i) => (
-    <div className="naxatw-w-full naxatw-px-5 naxatw-py-4 naxatw-animate-pulse naxatw-bg-white naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-cursor-pointer hover:naxatw-border-grey-800">
+    <div
+      key={i}
+      className="naxatw-w-full naxatw-px-5 naxatw-py-4 naxatw-animate-pulse naxatw-bg-white naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-cursor-pointer hover:naxatw-border-grey-800"
+    >
       <div className="naxatw-flex naxatw-justify-between">
         <div className="naxatw-bg-gray-200 naxatw-w-[100px] naxatw-h-4" />
         <span className="naxatw-bg-gray-200 naxatw-w-[20px] naxatw-h-4" />

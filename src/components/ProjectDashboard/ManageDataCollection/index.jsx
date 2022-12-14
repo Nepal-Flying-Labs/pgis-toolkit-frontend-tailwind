@@ -67,6 +67,7 @@ const ManageDataCollection = () => {
             <ul>
               {linkOptions.map(link => (
                 <li
+                  key={link.id}
                   onClick={() => setActive(link.id)}
                   className={`naxatw-p-4 naxatw-flex naxatw-justify-between naxatw-gap-x-3 naxatw-items-center naxatw-cursor-pointer ${
                     active === link.id ? 'naxatw-bg-[#F5F5F5]' : ''
@@ -100,18 +101,20 @@ const ManageDataCollection = () => {
           </div>
         </div>
 
-        <div className="">
+        <div className="naxatw-container">
           {getContent(active)}
-          <div className="naxatw-flex naxatw-justify-between naxatw-py-5">
+          <div className="naxatw-flex naxatw-justify-between naxatw-py-5 naxatw-w-[800px]">
             {active > 1 ? (
               <Button
                 iconLeft="arrow_back"
-                className=" naxatw-w-[8.875rem] naxatw-text-[#00A699] "
+                className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-group"
                 onClick={() => {
                   setActive(prev => prev - 1);
                 }}
               >
-                Go back
+                <span className="naxatw-text-body-btn group-hover:naxatw-underline naxatw-text-secondary-400 ">
+                  Go back
+                </span>
               </Button>
             ) : (
               <div />

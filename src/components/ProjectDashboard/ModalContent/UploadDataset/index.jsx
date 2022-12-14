@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
@@ -158,7 +159,10 @@ export default function UploadDataset() {
         at the moment.
       </p>
 
-      <div className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-auto scrollbar naxatw-max-h-96">
+      <div
+        className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-auto scrollbar naxatw-max-h-96"
+        style={{ overflow: 'unset' }}
+      >
         <Dropzone
           label="Please upload your datasets (shp, csv, geojson or gpkg file format)"
           accept=".zip, .geojson, .csv, .gpkg"

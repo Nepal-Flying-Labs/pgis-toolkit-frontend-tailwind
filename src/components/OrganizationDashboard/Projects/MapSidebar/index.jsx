@@ -99,7 +99,7 @@ export default function MapSidebar() {
                     ? () => history.push(`${url}/${id}/map`)
                     : () =>
                         history.push(
-                          `/organizations/${organizationId}/project-edit/${projectId}`,
+                          `/organizations/${organizationId}/project-edit/${id}`,
                         )
                 }
               />

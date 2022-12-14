@@ -35,12 +35,12 @@ export default function LayerSection() {
       </div>
 
       <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-mt-2">
-        <Button
+        {/* <Button
           className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent naxatw-btn-sm"
           iconLeft="tune"
         >
           Filters
-        </Button>
+        </Button> */}
         <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
           <Button
             className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent naxatw-btn-sm"

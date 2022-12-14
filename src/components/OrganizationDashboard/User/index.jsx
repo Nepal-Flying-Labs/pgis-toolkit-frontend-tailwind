@@ -19,7 +19,7 @@ const User = () => {
     return () => {
       dispatch(clearUsersFilter());
     };
-  }, []);
+  }, [dispatch]);
   return (
     <div className="naxatw-mx-10">
       <div className="naxatw-flex naxatw-justify-between naxatw-py-5 ">
@@ -27,9 +27,9 @@ const User = () => {
         <Button
           onClick={() => dispatch(toggleModal('create-new-user'))}
           iconLeft="add"
-          className=" naxatw-btn-secondary "
+          className=" naxatw-btn-secondary naxatw-group"
         >
-          <span className=" naxatw-text-[13px] naxatw-leading-[18px] naxatw-text-[#00A699] naxatw-font-bold ">
+          <span className=" naxatw-text-[13px] naxatw-leading-[18px] naxatw-text-[#00A699] naxatw-font-bold group-hover:naxatw-underline">
             Create New
           </span>
         </Button>

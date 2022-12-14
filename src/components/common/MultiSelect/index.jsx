@@ -46,7 +46,7 @@ function MultiSelect({
         !errorClassName
           ? 'naxatw-bg-white naxatw-border naxatw-border-gray-300 naxatw-text-gray-600 '
           : 'naxatw-bg-red-50 naxatw-border naxatw-border-red-100 naxatw-text-red-500'
-      } naxatw-rounded-md naxatw-w-full  ${className} ${
+      } naxatw-rounded-md naxatw-w-full hover:naxatw-bg-[#F5F5F5]   ${className} ${
         disabled
           ? 'disabled:naxatw-bg-slate-50 disabled:naxatw-text-slate-500 disabled:naxatw-border-slate-200 '
           : ''

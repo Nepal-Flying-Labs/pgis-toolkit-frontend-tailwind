@@ -7,20 +7,20 @@ import fileIcon from '@Assets/images/group.png';
 const StepOne = () => {
   const [option, setOption] = useState(null);
   return (
-    <div className="">
-      <div className="naxatw-mx-auto naxatw-w-[800px] ">
+    <div className="naxatw-container ">
+      <div className="naxatw-w-[800px] naxatw-mx-auto">
         <h4 className="naxatw-mb-2">Get Started & Manage Data</h4>
-        <p>
+        <p className="naxatw-text-body-lg">
           USAFIRI allows you to import data in two different ways. Prior to data
           management, please make sure you go through the data requirement
           document and necessary list of datasets and templates.
         </p>
         <div className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-my-5">
           <div className="naxatw-w-[490px]">
-            <p>Data Requirement document </p>
-            <span>
+            <p className="naxatw-text-body-btn">Data Requirement document </p>
+            <span className="naxatw-text-body-md">
               USAFIRI allows you to import data from multiple sources. Prior to
-              data management, please make sure you{' '}
+              data management, please make sure you
             </span>
           </div>
           <a className="naxatw-flex naxatw-items-center naxatw-gap-x-2">

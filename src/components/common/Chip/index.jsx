@@ -24,7 +24,7 @@ const Chip = ({ name, onClick, status, value }) => {
       tabIndex={0}
       role="button"
       onClick={onClick}
-      className={`naxatw-px-5 naxatw-py-2.5 naxatw-rounded-3xl naxatw-border ${
+      className={`naxatw-px-5 naxatw-py-2.5 hover:naxatw-bg-[#F5F5F5] naxatw-rounded-3xl naxatw-border ${
         activeChip
           ? ' naxatw-border-[#484848] naxatw-bg-[#F5F5F5]'
           : 'naxatw-border-[#D7D7D7]'

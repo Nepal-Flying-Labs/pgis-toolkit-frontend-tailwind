@@ -53,12 +53,14 @@ export default function LayerList() {
   return (
     <div className="naxatw-space-y-10 naxatw-mt-5">
       <div className="naxatw-flex naxatw-justify-end">
-        <Button
-          className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
-          iconLeft="download"
-        >
-          Download All
-        </Button>
+        {/*
+          <Button
+            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
+            iconLeft="download"
+          >
+            Download All
+          </Button>
+        */}
       </div>
 
       <Table

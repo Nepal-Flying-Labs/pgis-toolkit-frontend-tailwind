@@ -239,7 +239,7 @@ export default class Table extends Component {
                   Upload Failed
                   <Button
                     className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
-                    onClick={onBtnClick}
+                    onClick={() => onBtnClick(row)}
                   >
                     View Detail
                   </Button>

@@ -15,6 +15,7 @@ import {
   getProjectDetail,
   getLayers,
   getLayerById,
+  getUploadErrorResponse,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -110,6 +111,16 @@ export function* checkUploadStatusRequest({ id }) {
   }
 }
 
+export function* getErrorDetailRequest({ params }) {
+  try {
+    const response = yield call(getUploadErrorResponse, params);
+    yield put(projectDashboardActions.getErrorDetailSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getErrorDetailFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -131,6 +142,10 @@ function* projectDashboardWatcher() {
   yield takeEvery(
     Types.CHECK_UPLOAD_STATUS_REQUEST,
     withLoader(checkUploadStatusRequest),
+  );
+  yield takeEvery(
+    Types.GET_ERROR_DETAIL_REQUEST,
+    withLoader(getErrorDetailRequest),
   );
 }
 

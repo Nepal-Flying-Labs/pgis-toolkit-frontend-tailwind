@@ -28,6 +28,10 @@ export const { Types, Creators } = createActions(
     checkUploadStatusSuccess: ['payload'],
     checkUploadStatusFailure: null,
 
+    getErrorDetailRequest: ['params'],
+    getErrorDetailSuccess: ['payload'],
+    getErrorDetailFailure: null,
+
     setDataState: ['payload'],
   },
   { prefix: 'projectDashboard/' },

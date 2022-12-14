@@ -7,6 +7,7 @@ const initialState = {
     layers: null,
     uploadStatusCheckingIds: [],
     selectedData: null,
+    uploadErrorResponse: null,
   },
 };
 
@@ -88,6 +89,16 @@ const setDataState = (state, action) => {
   };
 };
 
+const getErrorDetailSuccess = (state, action) => {
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      uploadErrorResponse: action.payload,
+    },
+  };
+};
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -96,6 +107,7 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.SET_UPLOAD_STATUS_CHECKING_ID]: setUploadStatusCheckingId,
   [Types.CHECK_UPLOAD_STATUS_SUCCESS]: checkUploadStatusSuccess,
   [Types.SET_DATA_STATE]: setDataState,
+  [Types.GET_ERROR_DETAIL_SUCCESS]: getErrorDetailSuccess,
 });
 
 export default projectDashboardReducer;

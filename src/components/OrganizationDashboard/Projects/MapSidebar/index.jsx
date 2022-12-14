@@ -16,7 +16,7 @@ const { getProjectsRequest, toggleModal } = Creators;
 
 export default function MapSidebar() {
   const [toggleId, setToggleId] = useState(null);
-  const { organizationId, projectId } = useParams();
+  const { organizationId } = useParams();
   const { url } = useRouteMatch();
   const history = useHistory();
   const projects = useSelector(state => state.organizationDashboard.projects);

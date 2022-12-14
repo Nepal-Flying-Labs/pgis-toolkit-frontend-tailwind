@@ -25,7 +25,7 @@ const getProjectLayersSuccess = (state, action) => {
 };
 
 const uploadDatasetsSuccess = (state, action) => {
-  const layers = [...state.data.layers, ...action.payload];
+  const layers = [...action.payload, ...state.data.layers];
   return {
     ...state,
     data: {

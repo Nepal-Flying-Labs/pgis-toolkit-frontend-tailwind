@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
@@ -7,6 +7,7 @@ import UploadFolder from '@Assets/images/project/upload-folder.png';
 import ImportFromOSM from '@Assets/images/project/import-osm.png';
 import WMSLayer from '@Assets/images/project/wms-layer.png';
 import { isEmpty } from '@Utils/commonUtils';
+import Button from '@Components/common/Button/index';
 import NoDataYet from './NoDataYet';
 import LayerList from './LayerList';
 
@@ -15,7 +16,8 @@ const { getProjectLayersRequest, checkUploadStatusRequest } =
 const { toggleModal } = CommonCreators;
 
 export default function Data() {
-  const { projectId } = useParams();
+  const { projectId, organizationId } = useParams();
+  const history = useHistory();
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
@@ -80,8 +82,18 @@ export default function Data() {
 
   return (
     <div className="naxatw-absolute naxatw-mx-10">
-      <div className="naxatw-flex naxatw-items-center naxatw-py-[22px]">
-        <h3 className="naxatw-font-bold">Data Catalogue</h3>
+      <div className="naxatw-flex naxatw-justify-between naxatw-items-center ">
+        <h3 className="naxatw-font-bold naxatw-py-5">Data Catalogue</h3>
+        <Button
+          onClick={() =>
+            history.push(
+              `/organizations/${organizationId}/projects/${projectId}/manage-data`,
+            )
+          }
+          className="naxatw-btn-primary"
+        >
+          Manage Data Collection
+        </Button>
       </div>
 
       <div className="naxatw-space-y-2">

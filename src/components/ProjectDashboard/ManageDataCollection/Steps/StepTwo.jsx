@@ -20,7 +20,7 @@ const data = [
     category: 'Obstacle',
   },
   {
-    id: 1,
+    id: 3,
     checked: true,
     layer_name: 'Street',
     category: 'Street',

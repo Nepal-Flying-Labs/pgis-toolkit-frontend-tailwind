@@ -67,6 +67,7 @@ const ManageDataCollection = () => {
             <ul>
               {linkOptions.map(link => (
                 <li
+                  key={link.id}
                   onClick={() => setActive(link.id)}
                   className={`naxatw-p-4 naxatw-flex naxatw-justify-between naxatw-gap-x-3 naxatw-items-center naxatw-cursor-pointer ${
                     active === link.id ? 'naxatw-bg-[#F5F5F5]' : ''

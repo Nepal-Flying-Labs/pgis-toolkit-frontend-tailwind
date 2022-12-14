@@ -48,8 +48,8 @@
 
 - [x] upload, styling, download option in 
 - [x] add to map
-- [ ] edit button while hover only 
-- [ ] layer order not working
+- [x] layer order not working
+- [x] edit button while hover only 
 - [ ] bbox in organization page
 - [ ] data download
 

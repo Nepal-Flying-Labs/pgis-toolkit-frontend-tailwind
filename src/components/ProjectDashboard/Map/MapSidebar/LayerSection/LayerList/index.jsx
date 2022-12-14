@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
@@ -27,6 +27,7 @@ const {
 const { toggleModal, togglePromptDialog } = CommonCreators;
 
 export default function LayerList() {
+  const [hoverId, setHoverId] = useState(null);
   const themes = useSelector(filteredThemesSelector);
   const layers = useSelector(filteredLayersSelector);
   const isLoading = useSelector(state =>
@@ -109,6 +110,8 @@ export default function LayerList() {
                   <div
                     key={layer.id}
                     className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-my-2"
+                    onMouseEnter={() => setHoverId(layer.id)}
+                    onMouseLeave={() => setHoverId(null)}
                   >
                     <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                       <input
@@ -139,9 +142,9 @@ export default function LayerList() {
                     </div>
 
                     <div className="naxatw-flex">
-                      {layer.checked && (
+                      {layer.id === hoverId && (
                         <span
-                          className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer"
+                          className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer"
                           onClick={() => {
                             dispatch(setSelectedLayer(layer));
                           }}
@@ -149,6 +152,7 @@ export default function LayerList() {
                           <MaterialIcon
                             name="edit"
                             className="material-icons-outlined naxatw-mt-1"
+                            style={{ fontSize: '20px' }}
                           />
                         </span>
                       )}

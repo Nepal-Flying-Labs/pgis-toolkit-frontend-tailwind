@@ -1,7 +1,6 @@
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
-import { isEmpty } from '@Utils/commonUtils';
 
 const initialState = {
   themes: null, // []

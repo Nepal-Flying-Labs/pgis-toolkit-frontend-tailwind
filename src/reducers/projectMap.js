@@ -26,9 +26,10 @@ const getProjectThemesSuccess = (state, action) => ({
 const getProjectThemeLayersSuccess = (state, action) => {
   const { data: layerData, theme } = action.payload;
   const data = layerData.filter(item => item.upload_status === 'successful');
-  const layerOrder = !isEmpty(state.layerOrder)
-    ? state.layerOrder
-    : data.map(item => item.id);
+  const notPresentLayers = data
+    .filter(item => !state.layerOrder.includes(item.id))
+    .map(item => item.id);
+  const layerOrder = [...notPresentLayers, ...state.layerOrder];
   const layers = {
     ...state.layers,
     [theme]: data.map(item => ({

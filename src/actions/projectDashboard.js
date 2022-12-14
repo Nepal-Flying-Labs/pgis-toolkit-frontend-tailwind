@@ -37,6 +37,12 @@ export const { Types, Creators } = createActions(
     permanentDataDeleteRequest: ['id'],
     permanentDataDeleteSuccess: ['payload'],
     permanentDataDeleteFailure: null,
+
+    handleAddToMap: ['payload'],
+
+    updateDataRequest: ['id', 'payload'],
+    updateDataSuccess: ['payload'],
+    updateDataFailure: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

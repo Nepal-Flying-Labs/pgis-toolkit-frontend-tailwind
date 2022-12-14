@@ -141,6 +141,17 @@ export function* permanentDataDeleteRequest({ id }) {
   }
 }
 
+export function* updateDataRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    yield call(updateLayer, id, formdata);
+    yield put(projectDashboardActions.updateDataSuccess());
+  } catch (error) {
+    yield put(projectDashboardActions.updateDataFailure(id));
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -163,14 +174,15 @@ function* projectDashboardWatcher() {
     Types.CHECK_UPLOAD_STATUS_REQUEST,
     withLoader(checkUploadStatusRequest),
   );
-  yield takeEvery(
+  yield takeLatest(
     Types.GET_ERROR_DETAIL_REQUEST,
     withLoader(getErrorDetailRequest),
   );
-  yield takeEvery(
+  yield takeLatest(
     Types.PERMANENT_DATA_DELETE_REQUEST,
     withLoader(permanentDataDeleteRequest),
   );
+  yield takeLatest(Types.UPDATE_DATA_REQUEST, withLoader(updateDataRequest));
 }
 
 export default projectDashboardWatcher;

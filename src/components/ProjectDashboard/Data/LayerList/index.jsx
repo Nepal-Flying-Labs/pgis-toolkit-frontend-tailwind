@@ -17,7 +17,12 @@ const currentPage = 1;
 const dataPerPage = 10;
 
 const { setDeleteLayer } = ProjectMapCreators;
-const { setDataState, permanentDataDeleteRequest } = ProjectDashboardCreators;
+const {
+  setDataState,
+  permanentDataDeleteRequest,
+  handleAddToMap,
+  updateDataRequest,
+} = ProjectDashboardCreators;
 const { togglePromptDialog } = CommonCreators;
 
 export default function LayerList() {
@@ -150,7 +155,16 @@ export default function LayerList() {
           rowcolSpan="rowSpan_2"
           dataFormat={row => (
             <span className="naxatw-flex">
-              <Toggle checked={row.display_on_map} />
+              <Toggle
+                checked={row.display_on_map}
+                onChange={e => {
+                  const { checked } = e.target;
+                  dispatch(handleAddToMap({ id: row.id, checked }));
+                  dispatch(
+                    updateDataRequest(row.id, { display_on_map: checked }),
+                  );
+                }}
+              />
             </span>
           )}
         />

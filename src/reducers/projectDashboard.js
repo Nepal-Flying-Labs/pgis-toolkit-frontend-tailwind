@@ -110,6 +110,35 @@ const permanentDataDeleteSuccess = (state, action) => {
   };
 };
 
+const handleAddToMap = (state, action) => {
+  const { id, checked } = action.payload;
+  const layers = state.data.layers.map(item =>
+    item.id === id ? { ...item, display_on_map: checked } : { ...item },
+  );
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      layers,
+    },
+  };
+};
+
+const updateDataFailure = (state, action) => {
+  const layers = state.data.layers.map(item =>
+    item.id === action.payload
+      ? { ...item, display_on_map: !item.display_on_map }
+      : { ...item },
+  );
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      layers,
+    },
+  };
+};
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -120,6 +149,8 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.SET_DATA_STATE]: setDataState,
   [Types.GET_ERROR_DETAIL_SUCCESS]: getErrorDetailSuccess,
   [Types.PERMANENT_DATA_DELETE_SUCCESS]: permanentDataDeleteSuccess,
+  [Types.HANDLE_ADD_TO_MAP]: handleAddToMap,
+  [Types.UPDATE_DATA_FAILURE]: updateDataFailure,
 });
 
 export default projectDashboardReducer;

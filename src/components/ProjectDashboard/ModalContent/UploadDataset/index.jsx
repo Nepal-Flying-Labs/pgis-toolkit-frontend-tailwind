@@ -183,7 +183,10 @@ export default function UploadDataset() {
             latlngOptions,
           }) => (
             <div key={id} className="naxatw-flex naxatw-flex-col naxatw-gap-2">
-              <div className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-px-5 naxatw-py-3 naxatw-flex naxatw-flex-col naxatw-gap-2">
+              <div
+                className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-px-5 naxatw-py-3
+                naxatw-flex naxatw-flex-col naxatw-gap-2"
+              >
                 <div className="naxatw-flex naxatw-justify-between">
                   <div className="naxatw-flex naxatw-gap-5">
                     <img src={FileIcon} alt="file-icon" />

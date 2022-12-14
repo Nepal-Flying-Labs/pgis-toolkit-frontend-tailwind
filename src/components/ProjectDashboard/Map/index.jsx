@@ -5,6 +5,8 @@ import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import { isEmpty } from '@Utils/commonUtils';
 import MapSidebar from './MapSidebar';
 import MapSection from './MapSection';
+import MapExportSidebar from './MapExportSection/MapExportSidebar';
+import MapExport from './MapExportSection/MapExport';
 
 const { getProjectThemesRequest, getProjectThemeLayersRequest } =
   ProjectMapCreators;
@@ -18,6 +20,7 @@ export default function Map() {
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
+  const toggleExport = useSelector(state => state.projectMap.toggleExport);
   const dispatch = useDispatch();
 
   // project map section
@@ -38,9 +41,17 @@ export default function Map() {
       className="naxatw-flex"
       style={{ height: `calc(100vh - ${projectHeaderHeight}px)` }}
     >
-      <MapSidebar />
-
-      <MapSection />
+      {toggleExport ? (
+        <>
+          <MapExportSidebar />
+          <MapExport />
+        </>
+      ) : (
+        <>
+          <MapSidebar />
+          <MapSection />
+        </>
+      )}
     </div>
   );
 }

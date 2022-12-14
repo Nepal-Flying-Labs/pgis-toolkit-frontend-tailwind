@@ -27,6 +27,8 @@ export const { Types, Creators } = createActions(
     checkUploadStatusRequest: ['id'],
     checkUploadStatusSuccess: ['payload'],
     checkUploadStatusFailure: null,
+
+    setDataState: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

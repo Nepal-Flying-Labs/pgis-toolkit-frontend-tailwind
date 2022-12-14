@@ -1,5 +1,5 @@
-import { isEmpty } from '@Utils/commonUtils';
 import { createSelector } from 'reselect';
+import { isEmpty } from '@Utils/commonUtils';
 
 const themesSelector = state => state.projectMap.themes;
 const layersSelector = state => state.projectMap.layers;
@@ -20,7 +20,10 @@ export const mapStateSelector = createSelector(
       if (!layer) return [...arr];
       return [...arr, layer];
     }, []);
-    return sortedLayers;
+    const notPresentLayers = allLayers.filter(
+      allLayer => !layerOrder.includes(allLayer.id),
+    );
+    return [...notPresentLayers, ...sortedLayers];
   },
 );
 

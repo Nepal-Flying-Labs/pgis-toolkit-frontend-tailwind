@@ -88,24 +88,14 @@ export default function LayerList() {
                 <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
                   <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
                     <h5 className="naxatw-text-grey-800">{theme.name}</h5>
+                    {/*
                     <span className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer">
                       <MaterialIcon
                         name="edit"
                         className="material-icons-outlined naxatw-mt-1"
                       />
                     </span>
-                  </div>
-                  <div>
-                    <Button
-                      className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
-                      iconLeft="add_circle_outline"
-                      onClick={() => {
-                        dispatch(toggleModal('upload-layer'));
-                        dispatch(setSelectedProjectTheme(theme));
-                      }}
-                    >
-                      Layer
-                    </Button>
+                */}
                   </div>
                 </div>
                 <div>

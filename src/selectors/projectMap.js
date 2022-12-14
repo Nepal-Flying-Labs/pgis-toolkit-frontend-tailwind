@@ -20,7 +20,10 @@ export const mapStateSelector = createSelector(
       if (!layer) return [...arr];
       return [...arr, layer];
     }, []);
-    return sortedLayers;
+    const notPresentLayers = allLayers.filter(
+      allLayer => !layerOrder.includes(allLayer.id),
+    );
+    return [...notPresentLayers, ...sortedLayers];
   },
 );
 

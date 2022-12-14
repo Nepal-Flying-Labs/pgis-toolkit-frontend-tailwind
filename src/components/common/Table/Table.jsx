@@ -4,6 +4,7 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import Spinner from '../Spinner';
+import Button from '../Button/index';
 
 export function TableHeader({
   dataField,
@@ -26,6 +27,7 @@ export function TableHeader({
     />
   );
 }
+
 export default class Table extends Component {
   getFields = () => {
     const {
@@ -189,8 +191,7 @@ export default class Table extends Component {
           style: { cursor: 'pointer' },
         })}
       >
-        {noColumnCondition &&
-        row[noColumnCondition.key] === noColumnCondition.value ? (
+        {noColumnCondition && row[noColumnCondition.key] === 'uploading' ? (
           <>
             <td className={rowClassName}>
               <span className="naxatw-text-base naxatw-flex naxatw-gap-10 naxatw-py-2 naxatw-items-center">
@@ -207,6 +208,34 @@ export default class Table extends Component {
                 <div className="naxatw-flex naxatw-gap-5 naxatw-text-secondary-400">
                   <i className="material-icons">rotate_right</i>
                   Uploading <Spinner className="naxatw-fill-primary-400" />
+                </div>
+              </span>
+            </td>
+          </>
+        ) : noColumnCondition && row[noColumnCondition.key] === 'failed' ? (
+          <>
+            <td className={rowClassName}>
+              <span className="naxatw-text-base naxatw-flex naxatw-gap-10 naxatw-py-2 naxatw-items-center">
+                {index + 1}
+              </span>
+            </td>
+            <td className={rowClassName}>
+              <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-10 naxatw-py-2 naxatw-items-center">
+                {row.name}
+              </span>
+            </td>
+            <td colSpan={7} className={rowClassName}>
+              <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-10 naxatw-py-2 naxatw-items-center">
+                <div className="naxatw-flex naxatw-items-center naxatw-gap-5 naxatw-text-[#FF0F0F]">
+                  <i className="material-icons">error</i>
+                  Upload Failed
+                  <Button className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder">
+                    View Detail
+                  </Button>
+                  <Button
+                    className="naxatw-btn-sm naxatw-btn-noborder naxatw-text-[#FF0F0F]"
+                    iconLeft="delete"
+                  />
                 </div>
               </span>
             </td>

@@ -1,5 +1,5 @@
-import { isEmpty } from '@Utils/commonUtils';
 import { createSelector } from 'reselect';
+import { isEmpty } from '@Utils/commonUtils';
 
 const themesSelector = state => state.projectMap.themes;
 const layersSelector = state => state.projectMap.layers;

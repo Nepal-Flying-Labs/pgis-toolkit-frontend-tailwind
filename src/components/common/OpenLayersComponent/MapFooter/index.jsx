@@ -36,7 +36,9 @@ export default function MapFooter({ map, loading = false }) {
           alt="map-footer-logo"
         />
 
-        {loading && <Spinner className="naxatw-fill-primary-400" />}
+        {loading && (
+          <Spinner className="!naxatw-w-4 !naxatw-h-4 naxatw-fill-primary-400" />
+        )}
 
         <span id="layer-attribution" />
       </div>

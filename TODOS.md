@@ -46,6 +46,9 @@
 - [ ] layer upload limit 5
 - [ ] line thickness limit 0
 
+- [ ] upload, styling, download option in 
+- [ ] edit button while hover only 
+
 ### ISSUES
 - [x] login redirect to projects tab organization dashboard
 - [x] remove click on routes with no content

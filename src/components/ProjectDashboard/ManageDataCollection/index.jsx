@@ -1,11 +1,40 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable arrow-body-style */
 import React, { useState } from 'react';
+import { useDispatch,useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import Button from '@Components/common/Button/index';
+import {Creators as CommonCreators} from '@Actions/common';
+import Modal from '@Components/common/Modal/index';
+import ManageAttributes from '@Components/ProjectDashboard/ModalContent/ManageAttributes/index';
+import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer/index';
 import StepOne from './Steps/StepOne';
 import StepTwo from './Steps/StepTwo';
 import StepThree from './Steps/StepThree';
+
+const {toggleModal}=CommonCreators;
+
+const getModalTitle=(content)=> {
+  switch (content) {
+    case 'add-wms-layer':
+      return 'Add WMS Layer';
+    case 'manage-attributes':
+      return 'Manage Attributes';
+    default:
+      return '';
+  }
+}
+
+const getModalContent=(content)=>{
+  switch (content) {
+    case 'add-wms-layer':
+      return <AddWMSLayer />;
+    case 'manage-attributes':
+      return <ManageAttributes />;
+    default:
+      return '';
+  }
+}
 
 const linkOptions = [
   {
@@ -36,10 +65,20 @@ const getContent = step => {
 };
 
 const ManageDataCollection = () => {
+  const dispatch=useDispatch();
+  const modalContent=useSelector(state=>state.common.modalContent);
   const [active, setActive] = useState(1);
   const history = useHistory();
   return (
     <div>
+
+<Modal
+        show={!!modalContent}
+        title={getModalTitle(modalContent)}
+        onClose={() => dispatch(toggleModal())}
+      >
+        {getModalContent(modalContent)}
+      </Modal>
       <div className="naxatw-flex naxatw-justify-between naxatw-px-10 naxatw-py-5 naxatw-border naxatw-border-b">
         <div className="naxatw-w-[712px]">
           <h3>Manage Data Collection</h3>
@@ -61,15 +100,15 @@ const ManageDataCollection = () => {
           </button>
         </div>
       </div>
-      <div className="naxatw-flex naxatw-gap-x-[21px] naxatw-mt-5  naxatw-px-10">
-        <div className="naxatw-w-[325px]">
-          <div className="naxatw-rounded-xl naxatw-border naxatw-py-3">
+      <div className="naxatw-flex naxatw-gap-x-[21px] naxatw-mt-5  naxatw-px-10 ">
+        <div className="">
+          <div className="naxatw-rounded-xl naxatw-border naxatw-py-3 fl naxatw-w-[325px]">
             <ul>
               {linkOptions.map(link => (
                 <li
                   key={link.id}
                   onClick={() => setActive(link.id)}
-                  className={`naxatw-p-4 naxatw-flex naxatw-justify-between naxatw-gap-x-3 naxatw-items-center naxatw-cursor-pointer ${
+                  className={`naxatw-p-4 naxatw-flex naxatw-justify-between naxatw-gap-x-3 naxatw-items-center naxatw-cursor-pointer  ${
                     active === link.id ? 'naxatw-bg-[#F5F5F5]' : ''
                   } `}
                 >
@@ -103,11 +142,11 @@ const ManageDataCollection = () => {
 
         <div className="naxatw-container">
           {getContent(active)}
-          <div className="naxatw-flex naxatw-justify-between naxatw-py-5 naxatw-w-[800px]">
+          <div className={`naxatw-flex naxatw-justify-between naxatw-py-5 ${active===2?'naxatw-w-full':'naxatw-w-[800px]'} naxatw-mx-auto`}>
             {active > 1 ? (
               <Button
                 iconLeft="arrow_back"
-                className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-group"
+                className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-group hover:naxatw-bg-[#F5F5F5]"
                 onClick={() => {
                   setActive(prev => prev - 1);
                 }}
@@ -119,12 +158,19 @@ const ManageDataCollection = () => {
             ) : (
               <div />
             )}
-            <Button
+            {active<linkOptions.length?
+            (<Button
               className="naxatw-btn-primary naxatw-w-[71px]"
               onClick={() => setActive(prev => prev + 1)}
             >
               Next
-            </Button>
+            </Button>): (<Button
+              className="naxatw-btn-primary naxatw-w-[71px]"
+              onClick={() =>{}}
+            >
+              Save
+            </Button>)}
+            <div />
           </div>
         </div>
       </div>

@@ -62,7 +62,6 @@ export default function ProjectCard({
         </span>
       ),
       onClick: projectId => {
-        console.log(projectId);
         history.push(
           `/organizations/${organizationId}/project-edit/${projectId}`,
         );

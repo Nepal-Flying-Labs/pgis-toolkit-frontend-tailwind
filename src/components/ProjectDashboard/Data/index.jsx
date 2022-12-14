@@ -35,12 +35,13 @@ export default function Data() {
   // check upload status for data
   useEffect(() => {
     if (!layers) return;
-    const uploadingLayers = layers?.results?.filter(
+    const uploadingLayers = layers?.filter(
       item =>
         item.upload_status === 'uploading' &&
         !uploadStatusCheckingIds.includes(item.id),
     );
-    uploadingLayers.forEach(layer => {
+
+    uploadingLayers?.forEach(layer => {
       dispatch(checkUploadStatusRequest(layer.id));
     });
   }, [dispatch, layers, uploadStatusCheckingIds]);

@@ -10,11 +10,13 @@ import {
 // import checkIfSvgUrl from '../OpenLayersComponent/helpers/checkIfSvgUrl';
 // import './styles.scss';
 
+const lineTypes = ['LineString', 'MultiLineString'];
+
 const LegendItem = ({
   styles = { ...defaultStyles },
   onClick = () => {},
   className = '',
-  size = '40px',
+  size = '28px',
   ...rest
 }) => {
   const stylex = { ...defaultStyles, ...styles };
@@ -86,7 +88,7 @@ const LegendItem = ({
             ...style,
           }}
         />
-      ) : geometryType === 'LineString' ? (
+      ) : lineTypes.includes(geometryType) ? (
         <div
           style={{
             display: 'flex',

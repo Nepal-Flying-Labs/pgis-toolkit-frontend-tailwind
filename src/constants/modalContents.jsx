@@ -6,6 +6,7 @@ import UploadDataset from '@Components/ProjectDashboard/ModalContent/UploadDatas
 import DataQuery from '@Components/ProjectDashboard/ModalContent/DataQuery';
 import Analysis from '@Components/ProjectDashboard/ModalContent/Analysis';
 import BufferAnalysis from '@Components/ProjectDashboard/ModalContent/Analysis/BufferAnalysis';
+import UploadFailed from '@Components/ProjectDashboard/ModalContent/UploadFailed';
 
 export function getModalTitle(content) {
   switch (content) {
@@ -45,6 +46,8 @@ export function getPromptDialogTitle(content) {
   switch (content) {
     case 'delete-layer':
       return '';
+    case 'upload-failed':
+      return '';
     default:
       return '';
   }
@@ -56,6 +59,8 @@ export function getPromptDialogContent(content) {
       return <DeleteLayer />;
     case 'save-as-draft':
       return <SaveAsDraft />;
+    case 'upload-failed':
+      return <UploadFailed />;
     default:
       return '';
   }

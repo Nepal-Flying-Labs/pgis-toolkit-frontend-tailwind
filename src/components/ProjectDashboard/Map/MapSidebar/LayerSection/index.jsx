@@ -35,25 +35,19 @@ export default function LayerSection() {
       </div>
 
       <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-mt-2">
-        {/* <Button
+        <Button
           className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent naxatw-btn-sm"
-          iconLeft="tune"
+          onClick={() => {
+            dispatch(
+              setSidebarContent(
+                sidebarContent === 'layer-order' ? '' : 'layer-order',
+              ),
+            );
+          }}
         >
-          Filters
-        </Button> */}
+          {sidebarContent === 'layer-order' ? 'Category' : 'Layer Order'}
+        </Button>
         <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
-          <Button
-            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent naxatw-btn-sm"
-            onClick={() => {
-              dispatch(
-                setSidebarContent(
-                  sidebarContent === 'layer-order' ? '' : 'layer-order',
-                ),
-              );
-            }}
-          >
-            {sidebarContent === 'layer-order' ? 'Category' : 'Layer Order'}
-          </Button>
           <Button
             className="naxatw-btn-primary naxatw-btn-sm"
             iconLeft="add"
@@ -67,9 +61,9 @@ export default function LayerSection() {
       </div>
 
       <div
-        className="naxatw-mt-5 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-y-auto scrollbar"
+        className="naxatw-mt-3 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-y-auto scrollbar"
         style={{
-          height: `calc(100vh - ${projectHeaderHeight}px - 9rem)`,
+          height: `calc(100vh - ${projectHeaderHeight}px - 7.7rem)`,
         }}
       >
         {sidebarContent === 'layer-order' ? <LayerOrder /> : <LayerList />}

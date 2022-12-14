@@ -46,12 +46,17 @@
 - [ ] layer upload limit 5
 - [ ] line thickness limit 0
 
+- [ ] upload, styling, download option in 
+- [ ] edit button while hover only 
+
+
 ### ISSUES
 - [x] login redirect to projects tab organization dashboard
 - [x] remove click on routes with no content
 - [x] remove notification icon from header
 - [x] dont zoom to layer on layer on
 - [x] name auto fill in layer upload
+- [ ] update map config after layer upload success
 
 ### Backend
 - [ ] download each data from layer list

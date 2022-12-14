@@ -4,6 +4,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
+import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 import SortingContainer from '@Components/common/SortingContainer';
 import DropdownOptions from '@Components/common/DropdownOptions';
@@ -16,6 +17,7 @@ const currentPage = 1;
 const dataPerPage = 10;
 
 const { setDeleteLayer } = ProjectMapCreators;
+const { setDataState } = ProjectDashboardCreators;
 const { togglePromptDialog } = CommonCreators;
 
 export default function LayerList() {
@@ -65,6 +67,10 @@ export default function LayerList() {
         data={layers || []}
         className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
         headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+        onBtnClick={row => {
+          dispatch(setDataState({ selectedData: row }));
+          dispatch(togglePromptDialog('upload-failed'));
+        }}
         // headerWidths={['50px', '200px', '150px', '150px', '50px']}
         onRowClick={row => {
           // history.push(`/organizations/${row.id}/projects`);

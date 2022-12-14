@@ -1,10 +1,11 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable react/no-unused-prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import Spinner from '../Spinner';
-import Button from '../Button/index';
+import Button from '../Button';
 
 export function TableHeader({
   dataField,
@@ -169,7 +170,14 @@ export default class Table extends Component {
 
   renderRow = () => {
     const {
-      props: { data, uniqueKey, onRowClick, rowClassName, noColumnCondition },
+      props: {
+        data,
+        uniqueKey,
+        onRowClick,
+        rowClassName,
+        noColumnCondition,
+        onBtnClick,
+      },
     } = this;
     const { fields, containSubHeaderCollection } = this.getFields();
 
@@ -227,9 +235,12 @@ export default class Table extends Component {
             <td colSpan={7} className={rowClassName}>
               <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-10 naxatw-py-2 naxatw-items-center">
                 <div className="naxatw-flex naxatw-items-center naxatw-gap-5 naxatw-text-[#FF0F0F]">
-                  <i className="material-icons">error</i>
+                  <i className="material-icons">error_outline</i>
                   Upload Failed
-                  <Button className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder">
+                  <Button
+                    className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
+                    onClick={onBtnClick}
+                  >
                     View Detail
                   </Button>
                   <Button
@@ -316,6 +327,7 @@ Table.defaultProps = {
   headClassName: [],
   rowClassName: 'naxatw-py-[0.500rem] naxatw-px-3',
   noColumnCondition: null,
+  onBtnClick: () => {},
 };
 
 Table.propTypes = {
@@ -335,4 +347,5 @@ Table.propTypes = {
   rowcolSpanName: PropTypes.array,
   rowClassName: PropTypes.string,
   noColumnCondition: PropTypes.object,
+  onBtnClick: PropTypes.func,
 };

@@ -185,14 +185,16 @@ const Location = ({ page, setPage }) => {
         {page > 1 ? (
           <Button
             iconLeft="arrow_back"
-            className=" naxatw-w-[8.875rem] naxatw-text-[#00A699] "
+            className=" naxatw-w-[8.875rem] naxatw-text-[#00A699] hover:naxatw-bg-[#F5F5F5] naxatw-group "
             onClick={() => {
               // handleSubmit();
               dispatch(setIndividualProject({ key: 'stepTwo', value: values }));
               setPage(prevPage => prevPage - 1);
             }}
           >
-            Go back
+            <span className="group-hover:naxatw-underline naxatw-text-secondary-400 naxatw-text-body-btn">
+              Go back
+            </span>
           </Button>
         ) : (
           <div />

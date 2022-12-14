@@ -106,12 +106,14 @@ const ManageDataCollection = () => {
             {active > 1 ? (
               <Button
                 iconLeft="arrow_back"
-                className=" naxatw-w-[8.875rem] naxatw-text-[#00A699] "
+                className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-group"
                 onClick={() => {
                   setActive(prev => prev - 1);
                 }}
               >
-                Go back
+                <span className="naxatw-text-body-btn group-hover:naxatw-underline naxatw-text-secondary-400 ">
+                  Go back
+                </span>
               </Button>
             ) : (
               <div />

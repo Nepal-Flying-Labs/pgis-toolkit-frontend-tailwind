@@ -23,17 +23,27 @@ const thematicFocusArea = [
   {
     id: 1,
     value: 'a',
-    displayName: 'Climate change and Energy A',
+    displayName: 'Disaster Risk Reduction & Management',
   },
   {
     id: 2,
     value: 'b',
-    displayName: 'Climate change and Energy B',
+    displayName: 'Development Planning & Management',
   },
   {
     id: 3,
     value: 'c',
-    displayName: 'Climate change and Energy C',
+    displayName: 'Mobility',
+  },
+  {
+    id: 4,
+    value: 'd',
+    displayName: 'Climate Change & Environment',
+  },
+  {
+    id: 5,
+    value: 'e',
+    displayName: 'Urban Sustainability',
   },
 ];
 

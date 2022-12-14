@@ -24,7 +24,7 @@ const StepThree = () => {
               iconLeft="rotate_right"
               className="hover:naxatw-bg-[#F5F5F5] naxatw-group naxatw-mt-3 naxatw-text-secondary-400"
             >
-              <span className="group-hover:naxatw-underline naxatw-text-body-btn naxatw-text-secondary-400">
+              <span className="group-hover:naxatw-underline naxatw-text-[15px] naxatw-text-secondary-400 naxatw-font-bold">
                 Downloading
               </span>
             </Button>
@@ -54,7 +54,7 @@ const StepThree = () => {
               iconLeft="download"
               className="hover:naxatw-bg-[#F5F5F5] naxatw-group naxatw-mt-3 naxatw-text-secondary-400"
             >
-              <span className="group-hover:naxatw-underline naxatw-text-body-btn naxatw-text-secondary-400">
+              <span className="group-hover:naxatw-underline naxatw-text-[15px] naxatw-text-secondary-400 naxatw-font-bold">
                 Download
               </span>
             </Button>
@@ -65,7 +65,9 @@ const StepThree = () => {
           </div>
         </div>
         <Button className="hover:naxatw-bg-[#F5F5F5] hover:naxatw-underline naxatw-mt-3 naxatw-text-secondary-400">
-          I want to download later
+           <span className=" naxatw-text-[15px] naxatw-text-secondary-400 naxatw-font-bold">
+                I want to download later
+              </span>
         </Button>
       </div>
     </div>

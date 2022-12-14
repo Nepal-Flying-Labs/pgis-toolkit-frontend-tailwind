@@ -24,8 +24,7 @@ const CreateProjectSuccess = () => {
         </div>
         <div className="naxatw-mt-7">
           <span className="naxatw-text-body-lg">
-            Your project has been created successfully. You can now add Data,
-            Documents, Images, Maps, among others applications to this project.
+          Congratulations on creating your project. You can now add Data, Documents, and Images to this project.
           </span>
         </div>
       </div>

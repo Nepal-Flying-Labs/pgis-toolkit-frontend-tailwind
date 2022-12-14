@@ -31,8 +31,8 @@ const ManageAttributes = () => {
   return (
     <div className=''>
         <div className="naxatw-flex naxatw-justify-end " >
-            <Button className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] hover:naxatw-underline">
-                Attribute
+            <Button iconLeft="add" className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-group">
+                <span className=' naxatw-text-secondary-400 group-hover:naxatw-underline'>Attribute</span>
             </Button>
         </div>
         <div>

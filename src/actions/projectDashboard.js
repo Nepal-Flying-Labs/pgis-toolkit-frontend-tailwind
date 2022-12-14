@@ -33,6 +33,10 @@ export const { Types, Creators } = createActions(
     getErrorDetailFailure: null,
 
     setDataState: ['payload'],
+
+    permanentDataDeleteRequest: ['id'],
+    permanentDataDeleteSuccess: ['payload'],
+    permanentDataDeleteFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

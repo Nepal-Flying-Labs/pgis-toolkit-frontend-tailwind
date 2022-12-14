@@ -99,6 +99,17 @@ const getErrorDetailSuccess = (state, action) => {
   };
 };
 
+const permanentDataDeleteSuccess = (state, action) => {
+  const layers = state.data.layers.filter(item => item.id !== action.payload);
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      layers,
+    },
+  };
+};
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -108,6 +119,7 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.CHECK_UPLOAD_STATUS_SUCCESS]: checkUploadStatusSuccess,
   [Types.SET_DATA_STATE]: setDataState,
   [Types.GET_ERROR_DETAIL_SUCCESS]: getErrorDetailSuccess,
+  [Types.PERMANENT_DATA_DELETE_SUCCESS]: permanentDataDeleteSuccess,
 });
 
 export default projectDashboardReducer;

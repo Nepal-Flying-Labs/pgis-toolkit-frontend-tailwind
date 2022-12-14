@@ -16,6 +16,7 @@ import {
   getLayers,
   getLayerById,
   getUploadErrorResponse,
+  permanentDataDelete,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -99,11 +100,19 @@ export function* checkUploadStatusRequest({ id }) {
       responseData = response.data;
     }
     yield put(projectDashboardActions.checkUploadStatusSuccess(responseData));
-    yield put(
-      toastActions.success({
-        message: `${responseData.name} was successfully uploaded.`,
-      }),
-    );
+    if (responseData.upload_status === 'successful') {
+      yield put(
+        toastActions.success({
+          message: `${responseData.name} was successfully uploaded.`,
+        }),
+      );
+    } else {
+      yield put(
+        toastActions.error({
+          message: `${responseData.name} upload failed.`,
+        }),
+      );
+    }
     yield put(commonActions.togglePromptDialog());
   } catch (error) {
     yield put(projectDashboardActions.checkUploadStatusFailure());
@@ -117,6 +126,17 @@ export function* getErrorDetailRequest({ params }) {
     yield put(projectDashboardActions.getErrorDetailSuccess(response.data));
   } catch (error) {
     yield put(projectDashboardActions.getErrorDetailFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
+export function* permanentDataDeleteRequest({ id }) {
+  try {
+    yield call(permanentDataDelete, id);
+    yield put(projectDashboardActions.permanentDataDeleteSuccess(id));
+    yield put(toastActions.success({ message: 'Data deleted successfully.' }));
+  } catch (error) {
+    yield put(projectDashboardActions.permanentDataDeleteFailure());
     yield put(toastActions.error({ message: error?.response?.data?.detail }));
   }
 }
@@ -146,6 +166,10 @@ function* projectDashboardWatcher() {
   yield takeEvery(
     Types.GET_ERROR_DETAIL_REQUEST,
     withLoader(getErrorDetailRequest),
+  );
+  yield takeEvery(
+    Types.PERMANENT_DATA_DELETE_REQUEST,
+    withLoader(permanentDataDeleteRequest),
   );
 }
 

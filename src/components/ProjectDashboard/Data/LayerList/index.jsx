@@ -17,7 +17,7 @@ const currentPage = 1;
 const dataPerPage = 10;
 
 const { setDeleteLayer } = ProjectMapCreators;
-const { setDataState } = ProjectDashboardCreators;
+const { setDataState, permanentDataDeleteRequest } = ProjectDashboardCreators;
 const { togglePromptDialog } = CommonCreators;
 
 export default function LayerList() {
@@ -73,6 +73,10 @@ export default function LayerList() {
           dispatch(setDataState({ selectedData: row }));
           dispatch(togglePromptDialog('upload-failed'));
         }}
+        onDeleteBtnClick={row => {
+          dispatch(permanentDataDeleteRequest(row.id));
+          // dispatch(togglePromptDialog('upload-failed'));
+        }}
         // headerWidths={['50px', '200px', '150px', '150px', '50px']}
         onRowClick={row => {
           // history.push(`/organizations/${row.id}/projects`);
@@ -96,12 +100,6 @@ export default function LayerList() {
           dataFormat={row => (
             <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-2">
               {row.name}
-              {row.upload_status === 'uploading' && (
-                <p className="naxatw-flex naxatw-gap-5 naxatw-text-secondary-400">
-                  <MaterialIcon name="rotate_right" />
-                  Uploading <Spinner className="naxatw-fill-primary-400" />
-                </p>
-              )}
             </span>
           )}
         />

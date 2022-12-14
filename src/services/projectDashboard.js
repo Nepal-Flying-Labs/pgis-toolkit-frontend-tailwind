@@ -10,3 +10,6 @@ export const getLayerById = id => authenticated(api).get(`/maps/layer/${id}/`);
 
 export const getUploadErrorResponse = params =>
   authenticated(api).get(`maps/get_layer_upload_task_response/`, { params });
+
+export const permanentDataDelete = id =>
+  authenticated(api).delete(`maps/layer/${id}/`);

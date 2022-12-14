@@ -177,6 +177,7 @@ export default class Table extends Component {
         rowClassName,
         noColumnCondition,
         onBtnClick,
+        onDeleteBtnClick,
       },
     } = this;
     const { fields, containSubHeaderCollection } = this.getFields();
@@ -239,13 +240,14 @@ export default class Table extends Component {
                   Upload Failed
                   <Button
                     className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
-                    onClick={onBtnClick}
+                    onClick={() => onBtnClick(row)}
                   >
                     View Detail
                   </Button>
                   <Button
                     className="naxatw-btn-sm naxatw-btn-noborder naxatw-text-[#FF0F0F]"
                     iconLeft="delete"
+                    onClick={() => onDeleteBtnClick(row)}
                   />
                 </div>
               </span>
@@ -328,6 +330,7 @@ Table.defaultProps = {
   rowClassName: 'naxatw-py-[0.500rem] naxatw-px-3',
   noColumnCondition: null,
   onBtnClick: () => {},
+  onDeleteBtnClick: () => {},
 };
 
 Table.propTypes = {
@@ -348,4 +351,5 @@ Table.propTypes = {
   rowClassName: PropTypes.string,
   noColumnCondition: PropTypes.object,
   onBtnClick: PropTypes.func,
+  onDeleteBtnClick: PropTypes.func,
 };

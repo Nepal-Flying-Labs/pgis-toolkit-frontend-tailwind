@@ -15,6 +15,8 @@ import {
   getProjectDetail,
   getLayers,
   getLayerById,
+  getUploadErrorResponse,
+  permanentDataDelete,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -98,14 +100,54 @@ export function* checkUploadStatusRequest({ id }) {
       responseData = response.data;
     }
     yield put(projectDashboardActions.checkUploadStatusSuccess(responseData));
-    yield put(
-      toastActions.success({
-        message: `${responseData.name} was successfully uploaded.`,
-      }),
-    );
+    if (responseData.upload_status === 'successful') {
+      yield put(
+        toastActions.success({
+          message: `${responseData.name} was successfully uploaded.`,
+        }),
+      );
+    } else {
+      yield put(
+        toastActions.error({
+          message: `${responseData.name} upload failed.`,
+        }),
+      );
+    }
     yield put(commonActions.togglePromptDialog());
   } catch (error) {
     yield put(projectDashboardActions.checkUploadStatusFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
+export function* getErrorDetailRequest({ params }) {
+  try {
+    const response = yield call(getUploadErrorResponse, params);
+    yield put(projectDashboardActions.getErrorDetailSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getErrorDetailFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
+export function* permanentDataDeleteRequest({ id }) {
+  try {
+    yield call(permanentDataDelete, id);
+    yield put(projectDashboardActions.permanentDataDeleteSuccess(id));
+    yield put(toastActions.success({ message: 'Data deleted successfully.' }));
+  } catch (error) {
+    yield put(projectDashboardActions.permanentDataDeleteFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
+export function* updateDataRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    yield call(updateLayer, id, formdata);
+    yield put(projectDashboardActions.updateDataSuccess());
+  } catch (error) {
+    yield put(projectDashboardActions.updateDataFailure(id));
     yield put(toastActions.error({ message: error?.response?.data?.detail }));
   }
 }
@@ -132,6 +174,15 @@ function* projectDashboardWatcher() {
     Types.CHECK_UPLOAD_STATUS_REQUEST,
     withLoader(checkUploadStatusRequest),
   );
+  yield takeLatest(
+    Types.GET_ERROR_DETAIL_REQUEST,
+    withLoader(getErrorDetailRequest),
+  );
+  yield takeLatest(
+    Types.PERMANENT_DATA_DELETE_REQUEST,
+    withLoader(permanentDataDeleteRequest),
+  );
+  yield takeLatest(Types.UPDATE_DATA_REQUEST, withLoader(updateDataRequest));
 }
 
 export default projectDashboardWatcher;

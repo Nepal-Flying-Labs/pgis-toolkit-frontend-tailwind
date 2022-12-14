@@ -1,11 +1,22 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { Creators } from '@Actions/projectDashboard';
+import { useDispatch, useSelector } from 'react-redux';
+
+const { getErrorDetailRequest } = Creators;
 
 export default function UploadFailed() {
-  // const selectedData = selected();
+  const selectedData = useSelector(
+    state => state.projectDashboard.data.selectedData,
+  );
+  const uploadErrorResponse = useSelector(
+    state => state.projectDashboard.data.uploadErrorResponse,
+  );
   const dispatch = useDispatch();
 
-  useEffect(() => {}, [dispatch]);
+  useEffect(() => {
+    if (!selectedData) return;
+    dispatch(getErrorDetailRequest({ layer: selectedData.id }));
+  }, [dispatch, selectedData]);
 
-  return <div>upload failed</div>;
+  return <div>{uploadErrorResponse && <h4>{uploadErrorResponse}.</h4>}</div>;
 }

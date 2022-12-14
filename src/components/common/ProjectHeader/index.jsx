@@ -55,8 +55,8 @@ export default function ProjectHeader() {
       id="project-header"
       className={`naxatw-h-[${projectHeaderHeight}] naxatw-fixed naxatw-w-full naxatw-z-[999] naxatw-top-0 naxatw-border-b naxatw-border-grey-300 naxatw-bg-white`}
     >
-      <div className="naxatw-flex naxatw-justify-between naxatw-px-8 naxatw-py-1 naxatw-h-full">
-        <div className="naxatw-flex naxatw-items-center naxatw-gap-5">
+      <div className="naxatw-flex naxatw-justify-between naxatw-px-8  naxatw-h-full">
+        <div className="naxatw-flex naxatw-items-center naxatw-gap-5 naxatw-py-1">
           <Link
             className="naxatw-pt-2"
             to={`${
@@ -70,17 +70,17 @@ export default function ProjectHeader() {
           <h4>{headerTitle}</h4>
         </div>
 
-        <div className="naxatw-flex naxatw-gap-10">
+        <div className="naxatw-flex naxatw-gap-10 ">
           <nav className="">
-            <ul className="naxatw-font-bold naxatw-text-grey-500 naxatw-text-[0.9375rem] naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-8 naxatw-h-full">
+            <ul className="naxatw-font-bold naxatw-block naxatw-text-grey-500 naxatw-text-[0.9375rem] naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-8 naxatw-h-full">
               {headerData.map(({ label, route, disabled }) => (
-                <li
-                  key={label}
-                  className={`${
-                    tabname === route ? 'naxatw-text-grey-800' : ''
-                  }`}
-                >
+                <li key={label}>
                   <Link
+                    className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 ${
+                      tabname === route
+                        ? 'naxatw-text-grey-800 naxatw-border-b-[2px] naxatw-border-grey-800'
+                        : ''
+                    } `}
                     to={
                       projectId
                         ? `/organizations/${organizationId}/projects/${projectId}/${route}`

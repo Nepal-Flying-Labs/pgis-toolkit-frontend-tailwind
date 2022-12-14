@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -21,7 +22,7 @@ const projectHeaderData = [
   { label: 'Document', route: 'document', disabled: true },
   { label: 'Gallery', route: 'gallery', disabled: true },
   { label: 'Users', route: 'users', disabled: true },
-  { label: 'Info.', route: 'info', disabled: true },
+  { label: 'Info', route: 'info', disabled: false },
   { label: 'Settings', route: 'settings', disabled: true },
 ];
 
@@ -82,7 +83,9 @@ export default function ProjectHeader() {
                         : ''
                     } `}
                     to={
-                      projectId
+                      route === 'info'
+                        ? `/organizations/${organizationId}/project-edit/${projectId}`
+                        : projectId
                         ? `/organizations/${organizationId}/projects/${projectId}/${route}`
                         : `/organizations/${organizationId}/${route}`
                     }

@@ -66,7 +66,6 @@ export default function OrganizationDashboard() {
   useEffect(
     () => () => {
       dispatch(resetOrganizationDashboardState());
-      console.log('unmount');
     },
     [dispatch],
   );

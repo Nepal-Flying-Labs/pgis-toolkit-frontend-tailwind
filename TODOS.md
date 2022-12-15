@@ -52,6 +52,7 @@
 - [x] edit button while hover only 
 - [ ] bbox in organization page
 - [ ] data download
+- [ ] random color style patch after layer upload
 
 
 ### ISSUES

@@ -24,7 +24,7 @@ export function* loginRequest({ payload }) {
     localStorage.setItem('userToken', response.data.access);
     yield put(authActions.loginSuccess(response.data));
     const landingResponse = yield call(landingPage);
-    yield put(authActions.setInfoDialogContent(''));
+    yield put(authActions.setInfoDialogContent(null));
     yield put(authActions.getUserGroupRequest());
     yield put(push(`${landingResponse.data.page}`));
     yield put(organizationsActions.toggleModal('access-to-functionalities'));
@@ -45,9 +45,22 @@ export function* verifyUserRequest({ params }) {
   try {
     const response = yield call(verifyUser, params);
     if (response.data.user_created) {
+      yield put(
+        authActions.setInfoDialogContent({
+          message:
+            'To access your invited organization or project, please sign in.',
+          status: 'success',
+        }),
+      );
       yield put(push('/login'));
     } else {
       yield put(authActions.verifyUserSuccess(response.data));
+      yield put(
+        authActions.setInfoDialogContent({
+          message: 'Please Sign Up',
+          status: 'success',
+        }),
+      );
       yield put(push('/sign-up'));
     }
   } catch (error) {

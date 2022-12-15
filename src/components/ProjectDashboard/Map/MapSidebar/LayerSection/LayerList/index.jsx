@@ -55,6 +55,16 @@ export default function LayerList() {
     {
       id: 2,
       label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">add</i>
+          <p className="naxatw-text-body-lg">Add Feature</p>
+        </span>
+      ),
+      onClick: () => {},
+    },
+    {
+      id: 3,
+      label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
           <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>

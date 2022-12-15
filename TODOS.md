@@ -56,8 +56,8 @@
 - [ ] bbox in organization page
 - [ ] random color style patch after layer upload
 - [ ] boundary in Baseline data automatic
-- [ ] add feature button in dropdown
-- [ ] view on map button on data catalogue
+- [x] add feature button in dropdown
+- [x] view on map button on data catalogue
 - [ ] buffer analysis redesign
 
 ### ISSUES

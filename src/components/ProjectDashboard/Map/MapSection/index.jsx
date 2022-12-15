@@ -67,7 +67,7 @@ export default function MapSection() {
         constrainResolution: true,
       });
     }
-  }, [dispatch, map, projectDetail]);
+  }, [map, projectDetail]);
 
   // update map size on sidebar toggle
   useEffect(() => {

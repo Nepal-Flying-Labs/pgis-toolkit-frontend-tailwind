@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { saveAs } from 'file-saver';
 import Select from '@Components/common/Select';
 import Button from '@Components/common/Button';
+import { baseURL } from '@Services';
 
 const downloadOptions = [
   { id: 1, label: 'Shapefile', value: 'shapefile' },
@@ -16,10 +18,11 @@ export default function DownloadLayer() {
   const selectedData = useSelector(
     state => state.projectDashboard.data.selectedData,
   );
-  const dispatch = useDispatch();
 
   const handleDownload = () => {
     if (!selectedOption) return;
+    const downloadLink = `${baseURL}/api/maps/layer_download/?layer_id=${selectedData.id}&output_format=${selectedOption.value}`;
+    saveAs(downloadLink);
   };
 
   return (
@@ -31,7 +34,10 @@ export default function DownloadLayer() {
             <Select
               placeholder="Choose"
               options={downloadOptions}
+              label="label"
+              value="value"
               onChange={selectedItem => setSelectedOption(selectedItem)}
+              selectedValue={selectedOption?.id}
             />
           </div>
         </div>

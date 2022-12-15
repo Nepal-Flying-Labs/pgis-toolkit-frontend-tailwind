@@ -92,7 +92,11 @@ const ManageDataCollection = () => {
         <div>
           <button
             type="button"
-            onClick={() => history.goBack()}
+            onClick={() =>
+              history.push(
+                `/organizations/${organizationId}/projects/${projectId}/data`,
+              )
+            }
             className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center naxatw-"
           >
             <i className="material-icons">close</i>

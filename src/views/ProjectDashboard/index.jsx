@@ -21,6 +21,7 @@ import {
   getPromptDialogTitle,
 } from '@src/constants/modalContents';
 import PromptDialog from '@Components/common/PromptDialog';
+import AppLoader from '@Components/common/AppLoader';
 import { isEmpty } from '@Utils/commonUtils';
 
 const { toggleModal, togglePromptDialog } = CommonCreators;
@@ -77,12 +78,8 @@ export default function ProjectDashboard() {
     dispatch(getProjectLayersRequest({ project: projectId }));
   }, [dispatch, projectId]);
 
-  // useEffect(() => {
-  //   if (!layers) return;
-  // }, [history, layers, projectId, organizationId]);
-
   if (!layers) {
-    return <h1>Initializing</h1>;
+    return <AppLoader />;
   }
 
   if (isEmpty(layers) && !pushedToManageDataPage.current) {

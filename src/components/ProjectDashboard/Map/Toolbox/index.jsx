@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Creators } from '@Actions/common';
+import { useDispatch } from 'react-redux';
+import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import Button from '@Components/common/Button';
 
-const { toggleModal } = Creators;
+const { toggleModal } = CommonCreators;
+const { setProjectMapState } = ProjectMapCreators;
 
 const btnClassname =
   'naxatw-p-2 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-rounded-lg hover:naxatw-bg-grey-100';
@@ -48,7 +50,12 @@ export default function Toolbox() {
           Analysis
         </Button>
 
-        <a className={btnClassname} onClick={() => {}}>
+        <a
+          className={btnClassname}
+          onClick={() =>
+            dispatch(setProjectMapState({ toggleMapExport: true }))
+          }
+        >
           <i className="material-symbols-outlined">download</i>
         </a>
 

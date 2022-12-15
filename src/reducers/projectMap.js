@@ -14,7 +14,7 @@ const initialState = {
   sidebarContent: '',
   layerOrder: [],
   searchText: '',
-  toggleExport: false,
+  toggleMapExport: false,
 };
 
 const getProjectThemesSuccess = (state, action) => ({

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useParams } from 'react-router';
+import React, { useEffect, useRef } from 'react';
+import { useHistory, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 // import { projectHeaderHeight } from '@src/constants';
 import { Creators as CommonCreators } from '@Actions/common';
@@ -21,10 +21,15 @@ import {
   getPromptDialogTitle,
 } from '@src/constants/modalContents';
 import PromptDialog from '@Components/common/PromptDialog';
+import AppLoader from '@Components/common/AppLoader';
+import { isEmpty } from '@Utils/commonUtils';
 
 const { toggleModal, togglePromptDialog } = CommonCreators;
-const { getProjectDetailRequest, resetProjectDashboardState } =
-  ProjectDashboardCreators;
+const {
+  getProjectLayersRequest,
+  getProjectDetailRequest,
+  resetProjectDashboardState,
+} = ProjectDashboardCreators;
 
 function getTabContent(tabname) {
   switch (tabname) {
@@ -48,7 +53,8 @@ function getTabContent(tabname) {
 }
 
 export default function ProjectDashboard() {
-  const { tabname, projectId } = useParams();
+  const { tabname, projectId, organizationId } = useParams();
+  const history = useHistory();
   const modalContent = useSelector(state => state.common.modalContent);
   const promptDialogContent = useSelector(
     state => state.common.promptDialogContent,
@@ -56,6 +62,8 @@ export default function ProjectDashboard() {
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
+  const layers = useSelector(state => state.projectDashboard.data.layers);
+  const pushedToManageDataPage = useRef(false);
   const dispatch = useDispatch();
 
   useEffect(
@@ -67,7 +75,19 @@ export default function ProjectDashboard() {
 
   useEffect(() => {
     dispatch(getProjectDetailRequest({ project: projectId }));
+    dispatch(getProjectLayersRequest({ project: projectId }));
   }, [dispatch, projectId]);
+
+  if (!layers) {
+    return <AppLoader />;
+  }
+
+  if (isEmpty(layers) && !pushedToManageDataPage.current) {
+    pushedToManageDataPage.current = true;
+    history.push(
+      `/organizations/${organizationId}/projects/${projectId}/manage-data`,
+    );
+  }
 
   return tabname !== 'manage-data' ? (
     <div>

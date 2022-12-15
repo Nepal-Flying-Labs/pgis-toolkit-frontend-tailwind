@@ -53,7 +53,6 @@ export const defaultStyles = {
   labelMaxAngleDegree: 0.7853981633974483,
   labelOverflow: false,
   labelLineHeight: 1,
-  visibleOnMap: true,
   icon: {},
   showSublayer: false,
   sublayerColumnName: '',

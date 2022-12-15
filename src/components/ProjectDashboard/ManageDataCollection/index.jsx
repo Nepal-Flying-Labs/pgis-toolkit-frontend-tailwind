@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable arrow-body-style */
 import React, { useState } from 'react';
-import { useDispatch,useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router';
 import Button from '@Components/common/Button/index';
-import {Creators as CommonCreators} from '@Actions/common';
+import { Creators as CommonCreators } from '@Actions/common';
 import Modal from '@Components/common/Modal/index';
 import ManageAttributes from '@Components/ProjectDashboard/ModalContent/ManageAttributes/index';
 import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer/index';
@@ -12,9 +12,9 @@ import StepOne from './Steps/StepOne';
 import StepTwo from './Steps/StepTwo';
 import StepThree from './Steps/StepThree';
 
-const {toggleModal}=CommonCreators;
+const { toggleModal } = CommonCreators;
 
-const getModalTitle=(content)=> {
+const getModalTitle = content => {
   switch (content) {
     case 'add-wms-layer':
       return 'Add WMS Layer';
@@ -23,9 +23,9 @@ const getModalTitle=(content)=> {
     default:
       return '';
   }
-}
+};
 
-const getModalContent=(content)=>{
+const getModalContent = content => {
   switch (content) {
     case 'add-wms-layer':
       return <AddWMSLayer />;
@@ -34,7 +34,7 @@ const getModalContent=(content)=>{
     default:
       return '';
   }
-}
+};
 
 const linkOptions = [
   {
@@ -65,14 +65,14 @@ const getContent = step => {
 };
 
 const ManageDataCollection = () => {
-  const dispatch=useDispatch();
-  const modalContent=useSelector(state=>state.common.modalContent);
+  const { projectId, organizationId } = useParams();
+  const dispatch = useDispatch();
+  const modalContent = useSelector(state => state.common.modalContent);
   const [active, setActive] = useState(1);
   const history = useHistory();
   return (
     <div>
-
-<Modal
+      <Modal
         show={!!modalContent}
         title={getModalTitle(modalContent)}
         onClose={() => dispatch(toggleModal())}
@@ -92,7 +92,11 @@ const ManageDataCollection = () => {
         <div>
           <button
             type="button"
-            onClick={() => history.goBack()}
+            onClick={() =>
+              history.push(
+                `/organizations/${organizationId}/projects/${projectId}/data`,
+              )
+            }
             className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center naxatw-"
           >
             <i className="material-icons">close</i>
@@ -142,7 +146,11 @@ const ManageDataCollection = () => {
 
         <div className="naxatw-container">
           {getContent(active)}
-          <div className={`naxatw-flex naxatw-justify-between naxatw-py-5 ${active===2?'naxatw-w-full':'naxatw-w-[800px]'} naxatw-mx-auto`}>
+          <div
+            className={`naxatw-flex naxatw-justify-between naxatw-py-5 ${
+              active === 2 ? 'naxatw-w-full' : 'naxatw-w-[800px]'
+            } naxatw-mx-auto`}
+          >
             {active > 1 ? (
               <Button
                 iconLeft="arrow_back"
@@ -158,18 +166,25 @@ const ManageDataCollection = () => {
             ) : (
               <div />
             )}
-            {active<linkOptions.length?
-            (<Button
-              className="naxatw-btn-primary naxatw-w-[71px]"
-              onClick={() => setActive(prev => prev + 1)}
-            >
-              Next
-            </Button>): (<Button
-              className="naxatw-btn-primary naxatw-w-[71px]"
-              onClick={() =>{}}
-            >
-              Save
-            </Button>)}
+            {active < linkOptions.length ? (
+              <Button
+                className="naxatw-btn-primary naxatw-w-[71px]"
+                onClick={() => setActive(prev => prev + 1)}
+              >
+                Next
+              </Button>
+            ) : (
+              <Button
+                className="naxatw-btn-primary naxatw-w-[71px]"
+                onClick={() =>
+                  history.push(
+                    `/organizations/${organizationId}/projects/${projectId}/data`,
+                  )
+                }
+              >
+                Save
+              </Button>
+            )}
             <div />
           </div>
         </div>

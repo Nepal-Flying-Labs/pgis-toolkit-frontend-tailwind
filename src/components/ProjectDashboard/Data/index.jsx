@@ -85,16 +85,28 @@ export default function Data() {
     <div className="naxatw-absolute naxatw-mx-10">
       <div className="naxatw-flex naxatw-justify-between naxatw-items-center ">
         <h3 className="naxatw-font-bold naxatw-py-5">Data Catalogue</h3>
-        <Button
-          onClick={() =>
-            history.push(
-              `/organizations/${organizationId}/projects/${projectId}/manage-data`,
-            )
-          }
-          className="naxatw-btn-primary"
-        >
-          Manage Data Collection
-        </Button>
+        <div className="naxatw-flex naxatw-gap-3">
+          <Button
+            className="naxatw-btn-secondary naxatw-btn-noborder"
+            onClick={() =>
+              history.push(
+                `/organizations/${organizationId}/projects/${projectId}/map`,
+              )
+            }
+          >
+            View on map
+          </Button>
+          <Button
+            className="naxatw-btn-primary"
+            onClick={() =>
+              history.push(
+                `/organizations/${organizationId}/projects/${projectId}/manage-data`,
+              )
+            }
+          >
+            Manage Data Collection
+          </Button>
+        </div>
       </div>
 
       <div className="naxatw-space-y-2">

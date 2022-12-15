@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/authentication';
 import InfoDialog from '@Components/common/InfoDialog';
@@ -10,7 +10,7 @@ import ButtonLink from '@Components/common/ButtonLink';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import './styles.css';
 
-const { loginRequest } = Creators;
+const { loginRequest, getLandingPageRequest } = Creators;
 
 const initialState = {
   username: '',
@@ -33,6 +33,13 @@ export default function SignIn() {
       dispatch(loginRequest(data));
     },
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem('userToken');
+    if (token) {
+      dispatch(getLandingPageRequest());
+    }
+  }, [dispatch]);
 
   return (
     <>

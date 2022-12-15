@@ -22,27 +22,27 @@ const { togglePromptDialog } = CommonCreators;
 const thematicFocusArea = [
   {
     id: 1,
-    value: 'a',
+    value: 'Disaster Risk Reduction & Management',
     displayName: 'Disaster Risk Reduction & Management',
   },
   {
     id: 2,
-    value: 'b',
+    value: 'Development Planning & Management',
     displayName: 'Development Planning & Management',
   },
   {
     id: 3,
-    value: 'c',
+    value: 'Mobility',
     displayName: 'Mobility',
   },
   {
     id: 4,
-    value: 'd',
+    value: 'Climate Change & Environment',
     displayName: 'Climate Change & Environment',
   },
   {
     id: 5,
-    value: 'e',
+    value: 'Urban Sustainability',
     displayName: 'Urban Sustainability',
   },
 ];

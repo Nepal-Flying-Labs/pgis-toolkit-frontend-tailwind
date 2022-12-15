@@ -25,14 +25,7 @@ export default function SignUp() {
   );
   const { meta, values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: { ...initialState, email: userDetail?.email || '' },
-    required: [
-      'fullname',
-      'email',
-      'username',
-      'password',
-      'address',
-      'phoneNumber',
-    ],
+    required: ['fullname', 'email', 'username', 'password'],
     onSubmit: data => {
       const payloadData = {
         full_name: data.fullname,
@@ -62,7 +55,7 @@ export default function SignUp() {
         <div className="mb-6 naxatw-space-y-[1.125rem]">
           <div className="naxatw-space-y-2">
             <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
-              Full Name
+              Full Name*
             </label>
             <input
               type="text"
@@ -81,7 +74,7 @@ export default function SignUp() {
           </div>
           <div className="naxatw-space-y-2">
             <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
-              Email is address
+              Email*
             </label>
             <input
               type="text"
@@ -103,7 +96,7 @@ export default function SignUp() {
           <div className="naxatw-flex naxatw-gap-1.5">
             <div className="naxatw-space-y-2">
               <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
-                Username
+                Username*
               </label>
               <input
                 type="text"
@@ -122,7 +115,7 @@ export default function SignUp() {
             </div>
             <div className="naxatw-space-y-2">
               <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
-                Password
+                Password*
               </label>
               <input
                 type="password"
@@ -155,11 +148,11 @@ export default function SignUp() {
                 onChange={handleChange}
                 {...inputProps}
               />
-              {meta.address.error && meta.address.touched && (
+              {/* {meta.address.error && meta.address.touched && (
                 <span className="naxatw--mt-[10px] naxatw-text-red-500">
                   Address is required
                 </span>
-              )}
+              )} */}
             </div>
             <div className="naxatw-space-y-2">
               <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
@@ -174,11 +167,11 @@ export default function SignUp() {
                 onChange={handleChange}
                 {...inputProps}
               />
-              {meta.phoneNumber.error && meta.phoneNumber.touched && (
+              {/* {meta.phoneNumber.error && meta.phoneNumber.touched && (
                 <span className="naxatw--mt-[10px] naxatw-text-red-500">
                   Phone number is required
                 </span>
-              )}
+              )} */}
             </div>
           </div>
         </div>

@@ -10,13 +10,25 @@ import Button from '@Components/common/Button/index';
 const getStatusColor = status => {
   switch (status) {
     case 'draft':
-      return '#757575';
+      return {
+        bgColor: 'naxatw-bg-[#757575]',
+        textColor: 'naxatw-text-[#757575]',
+      };
     case 'completed':
-      return '#40B449';
+      return {
+        bgColor: 'naxatw-bg-[#40B449]',
+        textColor: 'naxatw-text-[#40B449]',
+      };
     case 'ongoing':
-      return '#0076FF';
+      return {
+        bgColor: 'naxatw-bg-[#0076FF]',
+        textColor: 'naxatw-text-[#0076FF]',
+      };
     default:
-      return '#FFFFFF';
+      return {
+        bgColor: 'naxatw-bg-[#757575]',
+        textColor: 'naxatw-text-[#757575]',
+      };
   }
 };
 
@@ -26,10 +38,15 @@ export default function ProjectCard({
   status,
   id,
   onClick,
+  coverImage,
   toggle,
   setToggle,
+  startDate,
+  endDate,
+  thematicAreas,
 }) {
   const ref = useRef();
+  const statusColor = getStatusColor(status);
   const onOutsideClick = useCallback(
     e => {
       if (!ref?.current?.contains(e.target)) {
@@ -82,67 +99,133 @@ export default function ProjectCard({
   ];
 
   return (
+    // <div
+    //   className={`naxatw-w-full naxatw-px-5 naxatw-py-4 ${
+    //     status === 'draft' ? 'naxatw-bg-[#D7D7D7]' : 'naxatw-bg-white'
+    //   } naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-cursor-pointer hover:naxatw-border-grey-800`}
+    //   onClick={onClick}
+    // >
+    //   <div className="naxatw-flex naxatw-justify-between">
+    //     <h5>{title}</h5>
+    //     {/* <DropdownOptions options={dropdownOptions} data={id} stopPropagation /> */}
+    //     <div className="naxatw-relative naxatw-w-10 naxatw-flex">
+    //       <a
+    //         ref={ref}
+    //         className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-grey-800  naxatw-rounded-lg hover:naxatw-bg-grey-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-grey-50 naxatw-select-none"
+    //         onClick={e => {
+    //           setToggle(id);
+
+    //           e.stopPropagation();
+    //         }}
+    //       >
+    //         <i className="material-icons">more_vert</i>
+    //       </a>
+    //       <div
+    //         id="dropdownDots"
+    //         className={`${
+    //           toggle ? '' : 'naxatw-hidden'
+    //         } naxatw-absolute naxatw-top-[2px] naxatw-right-[42px] naxatw-z-10 naxatw-w-[12.5rem] naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100 naxatw-shadow-3xl`}
+    //       >
+    //         <ul
+    //           className="naxatw-py-2 naxatw-text-sm naxatw-text-grey-700"
+    //           aria-labelledby="dropdownMenuIconButton"
+    //         >
+    //           {dropdownOptions.map(
+    //             ({ id: optionId, label, onClick: handleClick }) => (
+    //               <li
+    //                 key={optionId}
+    //                 className="naxatw-block naxatw-py-[13px] naxatw-px-3 hover:naxatw-bg-grey-100 naxatw-cursor-pointer"
+    //               >
+    //                 <a
+    //                   onClick={e => {
+    //                     handleClick(id);
+    //                     e.stopPropagation();
+    //                   }}
+    //                 >
+    //                   {label}
+    //                 </a>
+    //               </li>
+    //             ),
+    //           )}
+    //         </ul>
+    //       </div>
+    //     </div>
+    //   </div>
+    //   <div className="naxatw-mt-2 naxatw-flex naxatw-gap-x-3 naxatw-items-center">
+    //     <p>{address}</p>
+    //     <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
+    //       <span
+    //         className={`naxatw-w-2 naxatw-h-2 naxatw-rounded-full naxatw-bg-[${getStatusColor(
+    //           status,
+    //         )}]`}
+    //       />
+    //       <span>{status}</span>
+    //     </div>
+    //   </div>
+    // </div>
+
     <div
-      className={`naxatw-w-full naxatw-px-5 naxatw-py-4 ${
-        status === 'draft' ? 'naxatw-bg-[#D7D7D7]' : 'naxatw-bg-white'
-      } naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-cursor-pointer hover:naxatw-border-grey-800`}
+      className={`naxatw-flex naxatw-border naxatw-rounded-xl naxatw-cursor-pointer  ${
+        status === 'draft' ? 'naxatw-bg-[#F5F5F5]' : 'naxatw-bg-white'
+      }`}
       onClick={onClick}
     >
-      <div className="naxatw-flex naxatw-justify-between">
-        <h5>{title}</h5>
-        {/* <DropdownOptions options={dropdownOptions} data={id} stopPropagation /> */}
-        <div className="naxatw-relative naxatw-w-10 naxatw-flex">
-          <a
-            ref={ref}
-            className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-grey-800  naxatw-rounded-lg hover:naxatw-bg-grey-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-grey-50 naxatw-select-none"
-            onClick={e => {
-              setToggle(id);
+      <div className=" naxatw-w-[120px] naxatw-h-[164px]">
+        <img
+          className=" naxatw-object-cover naxatw-w-full naxatw-h-full naxatw-rounded-l-xl"
+          src={coverImage || AvatarIcon}
+          alt="cover_image"
+        />
+      </div>
 
-              e.stopPropagation();
-            }}
-          >
-            <i className="material-icons">more_vert</i>
-          </a>
-          <div
-            id="dropdownDots"
-            className={`${
-              toggle ? '' : 'naxatw-hidden'
-            } naxatw-absolute naxatw-top-[2px] naxatw-right-[42px] naxatw-z-10 naxatw-w-[12.5rem] naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100 naxatw-shadow-3xl`}
-          >
-            <ul
-              className="naxatw-py-2 naxatw-text-sm naxatw-text-grey-700"
-              aria-labelledby="dropdownMenuIconButton"
-            >
-              {dropdownOptions.map(
-                ({ id: optionId, label, onClick: handleClick }) => (
-                  <li
-                    key={optionId}
-                    className="naxatw-block naxatw-py-[13px] naxatw-px-3 hover:naxatw-bg-grey-100 naxatw-cursor-pointer"
-                  >
-                    <a
-                      onClick={e => {
-                        handleClick(id);
-                        e.stopPropagation();
-                      }}
-                    >
-                      {label}
-                    </a>
-                  </li>
-                ),
-              )}
-            </ul>
+      <div className=" naxatw-pt-4 naxatw-pl-4 naxatw-pr-2 naxatw-pb-3 naxatw-flex  naxatw-w-full naxatw-justify-between naxatw-rounded-r-xl">
+        <div className="naxatw-w-[426px]">
+          <h5>{title || '-'}</h5>
+          <div className="naxatw-flex naxatw-flex-wrap naxatw-mt-2.5 naxatw-gap-x-3">
+            <span className="naxatw-text-body-md">{`${startDate || '-'} - ${
+              endDate || '-'
+            }`}</span>
+            <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+              <span
+                className={`naxatw-w-2 naxatw-h-2 naxatw-rounded-full ${statusColor.bgColor}`}
+              />
+              <span className={`${statusColor.textColor} naxatw-capitalize`}>
+                {status || '-'}
+              </span>
+            </div>
+          </div>
+          <div className="naxatw-mt-3">
+            <p className="naxatw-text-body-sm naxatw-text-[#989898] naxatw-uppercase">
+              Thematic areas
+            </p>
+            <span className="naxatw-text-body-md">
+              {thematicAreas ? thematicAreas.toString() : '-'}
+            </span>
           </div>
         </div>
-      </div>
-      <div className="naxatw-mt-2 naxatw-flex naxatw-gap-x-3 naxatw-items-center">
-        <p>{address}</p>
-        <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
-          <span
-            className={`naxatw-w-2 naxatw-h-2 naxatw-rounded-full naxatw-bg-[${getStatusColor(
-              status,
-            )}]`}
+        <div className="naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-items-end naxatw-w-[300px] ">
+          <DropdownOptions
+            options={dropdownOptions}
+            data={id}
+            stopPropagation
           />
-          <span>{status}</span>
+          {status !== 'draft' ? (
+            <div className="naxatw-flex naxatw-flex-col naxatw-items-end">
+              <Button
+                className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]"
+                onClick={() => {}}
+              >
+                Info
+              </Button>
+              <Button className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]">
+                View on Map
+              </Button>
+            </div>
+          ) : (
+            <Button className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]">
+              Edit
+            </Button>
+          )}
         </div>
       </div>
     </div>
@@ -187,6 +270,7 @@ ProjectCard.defaultProps = {
   status: '',
   onClick: () => {},
   id: null,
+  coverImage: null,
 };
 
 ProjectCard.propTypes = {
@@ -195,4 +279,5 @@ ProjectCard.propTypes = {
   status: PropTypes.string,
   onClick: PropTypes.func,
   id: PropTypes.number,
+  coverImage: PropTypes.string,
 };

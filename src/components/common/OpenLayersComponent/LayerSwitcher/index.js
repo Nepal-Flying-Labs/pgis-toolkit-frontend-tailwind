@@ -123,7 +123,7 @@ const LayerSwitcherControl = ({ map, visible = 'mapbox' }) => {
           attributions:
             'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/' +
             'rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
-          url: 'https://api.mapbox.com/styles/v1/nishon-naxa/ckgkuy7y08rpi19qk46sces9c/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibmlzaG9uLW5heGEiLCJhIjoiY2s5Nzl3MnoyMDQ5ZzNscHJ0eTZvOHBrcCJ9.JL4lV84Jv8Wi1cYNhJilPA',
+          url: 'https://api.mapbox.com/styles/v1/nishon-naxa/ckgkuy7y08rpi19qk46sces9c/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibmlzaG9uLW5heGEiLCJhIjoiY2xhYnhwbzN0MDUxYTN1bWhvcWxocWlpaSJ9.0FarR4aPxb7F9BHP31msww',
           layer: 'topoMap',
           maxZoom: 19,
           crossOrigin: 'Anonymous',

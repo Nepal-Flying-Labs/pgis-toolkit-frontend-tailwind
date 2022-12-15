@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -62,7 +63,13 @@ function MultiSelect({
           onClick={disabled ? () => {} : () => handleToggle()}
           onKeyDown={disabled ? () => {} : () => handleToggle()}
         >
-          <span>{selectedValues?.join(', ') || placeholder}</span>
+          <span>
+            {selectedValues.length > 0
+              ? selectedValues.length < 2
+                ? selectedValues[0]
+                : `${selectedValues.length} Selected`
+              : placeholder}
+          </span>
           {!toggle ? (
             <i className="material-icons">arrow_drop_down</i>
           ) : (
@@ -77,7 +84,7 @@ function MultiSelect({
           }}
         >
           <ul
-            className="naxatw-p-2 scrollbar naxatw-max-h-[300px] naxatw-overflow-y-auto"
+            className=" scrollbar naxatw-max-h-[300px] naxatw-overflow-y-auto"
             style={{
               //  visibility: toggle ? 'visible' : 'hidden' ,
               display: toggle ? 'block' : 'none',
@@ -91,15 +98,17 @@ function MultiSelect({
                   tabIndex="0"
                   onKeyDown={() => {}}
                   onClick={() => handleSelect(item)}
-                  className={`naxatw-whitespace-nowrap naxatw-px-1 naxatw-py-2 naxatw-mt-1
-                naxatw-cursor-pointer naxatw-rounded-sm naxatw-text-sm 
+                  className={`naxatw-whitespace-nowrap naxatw-px-3 naxatw-h-[48px] naxatw-py-6 naxatw-mt-1
+                naxatw-cursor-pointer  naxatw-text-body-lg
                hover:naxatw-bg-gray-100  naxatw-flex naxatw-justify-between naxatw-items-center ${
                  selected === item.name ? 'naxatw-bg-gray-200' : ''
                }`}
                 >
                   {item[field]}
                   {selectedValues.includes(item[field]) && (
-                    <i className="material-icons">check</i>
+                    <i className="material-icons naxatw-text-secondary-400">
+                      check
+                    </i>
                   )}
                 </li>
               ))

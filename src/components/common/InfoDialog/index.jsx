@@ -19,10 +19,10 @@ export default function InfoDialog({ status, children }) {
   const infoStatus = getStatus(status);
   return (
     <div
-      className={`${infoStatus.bgColor} naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-rounded-md naxatw-p-3 naxatw-mb-10`}
+      className={`${infoStatus.bgColor} naxatw-flex naxatw-items-start naxatw-gap-x-3 naxatw-rounded-md naxatw-p-3 naxatw-mb-10`}
     >
       <MaterialIcon name={infoStatus.icon} />
-      <span className="naxatw-text-body-lg">{children}</span>
+      <span className="naxatw-text-body-lg naxatw-text-left">{children}</span>
     </div>
   );
 }

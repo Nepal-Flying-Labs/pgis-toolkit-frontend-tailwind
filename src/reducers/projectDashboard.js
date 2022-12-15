@@ -139,6 +139,10 @@ const updateDataFailure = (state, action) => {
   };
 };
 
+const resetProjectDashboardState = () => ({
+  ...initialState,
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -151,6 +155,7 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.PERMANENT_DATA_DELETE_SUCCESS]: permanentDataDeleteSuccess,
   [Types.HANDLE_ADD_TO_MAP]: handleAddToMap,
   [Types.UPDATE_DATA_FAILURE]: updateDataFailure,
+  [Types.RESET_PROJECT_DASHBOARD_STATE]: resetProjectDashboardState,
 });
 
 export default projectDashboardReducer;

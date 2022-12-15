@@ -24,8 +24,11 @@ import PromptDialog from '@Components/common/PromptDialog';
 import { isEmpty } from '@Utils/commonUtils';
 
 const { toggleModal, togglePromptDialog } = CommonCreators;
-const { getProjectDetailRequest, getProjectLayersRequest } =
-  ProjectDashboardCreators;
+const {
+  getProjectLayersRequest,
+  getProjectDetailRequest,
+  resetProjectDashboardState,
+} = ProjectDashboardCreators;
 
 function getTabContent(tabname) {
   switch (tabname) {
@@ -61,6 +64,13 @@ export default function ProjectDashboard() {
   const layers = useSelector(state => state.projectDashboard.data.layers);
   const pushedToManageDataPage = useRef(false);
   const dispatch = useDispatch();
+
+  useEffect(
+    () => () => {
+      dispatch(resetProjectDashboardState());
+    },
+    [dispatch],
+  );
 
   useEffect(() => {
     dispatch(getProjectDetailRequest({ project: projectId }));

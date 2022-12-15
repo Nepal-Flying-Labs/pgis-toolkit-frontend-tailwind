@@ -43,6 +43,8 @@ export const { Types, Creators } = createActions(
     updateDataRequest: ['id', 'payload'],
     updateDataSuccess: ['payload'],
     updateDataFailure: ['payload'],
+
+    resetProjectDashboardState: null,
   },
   { prefix: 'projectDashboard/' },
 );

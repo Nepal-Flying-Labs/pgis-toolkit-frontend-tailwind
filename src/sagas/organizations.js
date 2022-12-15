@@ -39,7 +39,7 @@ function* organizationsWatcher() {
   );
   yield takeLatest(
     Types.CREATE_ORGANIZATION_REQUEST,
-    createOrganizationRequest,
+    withLoader(createOrganizationRequest),
   );
 }
 

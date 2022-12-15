@@ -205,7 +205,7 @@ export default function CreateAnOrganization() {
 
       <div className=" naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
         <Button
-          className="naxatw-btn-primary"
+          className="naxatw-btn-primary naxatw-w-[128px]"
           isLoading={loading}
           loaderClassName="naxatw-fill-secondary-400"
           onClick={handleSubmit}

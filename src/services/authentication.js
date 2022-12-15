@@ -18,6 +18,7 @@ export const resetPassword = (params, payload) =>
 export const getUserPermissions = params =>
   authenticated(api).get(`/users/permissions/`, { params });
 
-export const landingPage = () => authenticated(api).get('/users/landing_page/');
+export const getLandingPage = () =>
+  authenticated(api).get('/users/landing_page/');
 
 export const getUserGroup = () => authenticated(api).get('/users/user_group/');

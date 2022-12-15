@@ -35,6 +35,10 @@ export const { Types, Creators } = createActions({
   getUserGroupSuccess: ['payload'],
   getUserGroupFailure: null,
 
+  getLandingPageRequest: null,
+  getLandingPageSuccess: ['payload'],
+  getLandingPageFailure: null,
+
   toggleModal: ['payload'],
 });
 

@@ -4,6 +4,8 @@ import React, { useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import { useHistory, useParams } from 'react-router';
+import AvatarIcon from '@Assets/images/icons/avatar-icon.svg';
+import Button from '@Components/common/Button/index';
 
 const getStatusColor = status => {
   switch (status) {
@@ -144,6 +146,38 @@ export default function ProjectCard({
         </div>
       </div>
     </div>
+    // <div className="naxatw-flex naxatw-border naxatw-rounded-md">
+    //   <img
+    //     className="naxatw-w-[120px] naxatw-h-[164px] "
+    //     src={AvatarIcon}
+    //     alt="cover_image"
+    //   />
+    //   <div className=" naxatw-pt-4 naxatw-pl-4 naxatw-pr-2 naxatw-pb-3 naxatw-flex naxatw-bg-white">
+    //     <div className="">
+    //       <h5>Transportation mapping Kenya 2</h5>
+    //       <div className="naxatw-flex naxatw-mt-2.5 naxatw-gap-x-3">
+    //         <span>Jan 04, 2020 - Jan 04, 2024</span>
+    //         <span>Ongoing</span>
+    //       </div>
+    //       <div className="naxatw-mt-3">
+    //         <p className="naxatw-text-body-sm">Thematic areas</p>
+    //         <span>
+    //           Climate change and energy, Ecosystem services, Planetary Health,
+    //           Sustainable Development ...
+    //         </span>
+    //       </div>
+    //     </div>
+    //     <div className="naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-items-end">
+    //       <span>dropdown</span>
+    //       <div className="naxatw-flex naxatw-flex-col naxatw-items-end">
+    //         <Button className="naxatw-btn-secondary naxatw-btn-transparent">
+    //           Info
+    //         </Button>
+    //         <Button className="naxatw-w-fit">View on Map</Button>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
   );
 }
 

@@ -22,3 +22,5 @@ export const getLandingPage = () =>
   authenticated(api).get('/users/landing_page/');
 
 export const getUserGroup = () => authenticated(api).get('/users/user_group/');
+
+export const getUserProfile = () => authenticated(api).get('/users/myprofile/');

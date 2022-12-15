@@ -5,6 +5,7 @@ import persist from '../utils/persist';
 const initialState = {
   user: {},
   userDetail: {},
+  userProfile: {},
   infoDialogContent: null,
   userPermissions: null,
   modalContent: '',
@@ -41,6 +42,11 @@ const toggleModal = (state, action) => ({
   modalContent: action.payload || '',
 });
 
+const getUserProfileSuccess = (state, action) => ({
+  ...state,
+  userProfile: action.payload,
+});
+
 const authenticationReducer = createReducer(initialState, {
   [Types.LOGIN_SUCCESS]: loginSuccess,
   [Types.VERIFY_USER_SUCCESS]: verifyUserSuccess,
@@ -48,6 +54,7 @@ const authenticationReducer = createReducer(initialState, {
   [Types.GET_USER_PERMISSIONS_SUCCESS]: getUserPermissionsSuccess,
   [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
   [Types.TOGGLE_MODAL]: toggleModal,
+  [Types.GET_USER_PROFILE_SUCCESS]: getUserProfileSuccess,
 });
 
 export default persist('user', ['user'], authenticationReducer);

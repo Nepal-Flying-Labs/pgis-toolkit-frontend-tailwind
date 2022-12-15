@@ -20,7 +20,6 @@ const indexRoutes = [
     authenticated: true,
     exact: true,
   },
-
   {
     path: '/organizations/:organizationId/:tabname',
     name: 'Organization Dashboard',

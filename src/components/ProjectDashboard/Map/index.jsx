@@ -20,7 +20,9 @@ export default function Map() {
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
-  const toggleExport = useSelector(state => state.projectMap.toggleExport);
+  const toggleMapExport = useSelector(
+    state => state.projectMap.toggleMapExport,
+  );
   const dispatch = useDispatch();
 
   // project map section
@@ -41,7 +43,7 @@ export default function Map() {
       className="naxatw-flex"
       style={{ height: `calc(100vh - ${projectHeaderHeight}px)` }}
     >
-      {toggleExport ? (
+      {toggleMapExport ? (
         <>
           <MapExportSidebar />
           <MapExport />

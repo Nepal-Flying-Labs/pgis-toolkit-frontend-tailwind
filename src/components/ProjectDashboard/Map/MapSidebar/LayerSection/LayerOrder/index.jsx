@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/no-unstable-nested-components */
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { arrayMove } from '@dnd-kit/sortable';
@@ -25,6 +25,7 @@ const { togglePromptDialog } = CommonCreators;
 
 export default function LayerOrder() {
   const { projectId } = useParams();
+  const [hoverId, setHoverId] = useState(null);
   const mapState = useSelector(mapStateSelector);
   const layerOrder = useSelector(state => state.projectMap.layerOrder);
   const dispatch = useDispatch();
@@ -37,9 +38,6 @@ export default function LayerOrder() {
         checked,
       }),
     );
-    if (checked) {
-      dispatch(setZoomToLayerId(layerId));
-    }
   };
 
   const dropdownOptions = [
@@ -97,12 +95,14 @@ export default function LayerOrder() {
                 <div
                   key={layer.id}
                   className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-my-2"
+                  onMouseEnter={() => setHoverId(layer.id)}
+                  onMouseLeave={() => setHoverId(null)}
                 >
                   <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                     <input
                       id={layer.id}
                       type="checkbox"
-                      className="naxatw-w-4 naxatw-h-4 naxatw-mr-4 naxatw-accent-grey-800"
+                      className="naxatw-w-4 naxatw-h-4 naxatw-mr-2 naxatw-accent-grey-800"
                       checked={layer.checked}
                       onChange={e =>
                         handleLayerCheck({
@@ -132,9 +132,9 @@ export default function LayerOrder() {
                   </div>
 
                   <div className="naxatw-flex">
-                    {layer.checked && (
+                    {layer.id === hoverId && (
                       <span
-                        className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer"
+                        className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer"
                         onClick={() => {
                           dispatch(setSelectedLayer(layer));
                         }}
@@ -142,6 +142,7 @@ export default function LayerOrder() {
                         <MaterialIcon
                           name="edit"
                           className="material-icons-outlined naxatw-mt-1"
+                          style={{ fontSize: '20px' }}
                         />
                       </span>
                     )}

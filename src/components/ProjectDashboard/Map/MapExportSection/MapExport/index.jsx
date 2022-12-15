@@ -1,9 +1,5 @@
 import React from 'react';
 
 export default function MapExport() {
-  return (
-    <div>
-      <h2>map</h2>
-    </div>
-  );
+  return <div className="naxatw-bg-grey-300 naxatw-w-full"></div>;
 }

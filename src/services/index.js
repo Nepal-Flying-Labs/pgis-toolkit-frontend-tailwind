@@ -2,9 +2,10 @@
 import axios from 'axios';
 import getCookie from '@src/utils/cookieUtils';
 
-const { API_URL } = process.env;
+const { API_URL, BASE_URL } = process.env;
 
 export const apiURL = API_URL;
+export const baseURL = BASE_URL;
 
 export const api = axios.create({
   baseURL: `${API_URL}`,

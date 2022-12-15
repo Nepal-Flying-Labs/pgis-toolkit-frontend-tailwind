@@ -17,8 +17,13 @@ const currentPage = 1;
 const dataPerPage = 10;
 
 const { setDeleteLayer } = ProjectMapCreators;
-const { setDataState } = ProjectDashboardCreators;
-const { togglePromptDialog } = CommonCreators;
+const {
+  setDataState,
+  permanentDataDeleteRequest,
+  handleAddToMap,
+  updateDataRequest,
+} = ProjectDashboardCreators;
+const { togglePromptDialog, toggleModal } = CommonCreators;
 
 export default function LayerList() {
   const layers = useSelector(state => state.projectDashboard.data.layers);
@@ -38,6 +43,19 @@ export default function LayerList() {
     {
       id: 2,
       label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">download</i>
+          <p className="naxatw-text-body-lg">Download</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setDataState({ selectedData: data }));
+        dispatch(toggleModal('download-layer'));
+      },
+    },
+    {
+      id: 3,
+      label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
           <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
@@ -53,12 +71,14 @@ export default function LayerList() {
   return (
     <div className="naxatw-space-y-10 naxatw-mt-5">
       <div className="naxatw-flex naxatw-justify-end">
-        <Button
-          className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
-          iconLeft="download"
-        >
-          Download All
-        </Button>
+        {/*
+          <Button
+            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
+            iconLeft="download"
+          >
+            Download All
+          </Button>
+        */}
       </div>
 
       <Table
@@ -70,6 +90,10 @@ export default function LayerList() {
         onBtnClick={row => {
           dispatch(setDataState({ selectedData: row }));
           dispatch(togglePromptDialog('upload-failed'));
+        }}
+        onDeleteBtnClick={row => {
+          dispatch(permanentDataDeleteRequest(row.id));
+          // dispatch(togglePromptDialog('upload-failed'));
         }}
         // headerWidths={['50px', '200px', '150px', '150px', '50px']}
         onRowClick={row => {
@@ -94,12 +118,6 @@ export default function LayerList() {
           dataFormat={row => (
             <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-2">
               {row.name}
-              {row.upload_status === 'uploading' && (
-                <p className="naxatw-flex naxatw-gap-5 naxatw-text-secondary-400">
-                  <MaterialIcon name="rotate_right" />
-                  Uploading <Spinner className="naxatw-fill-primary-400" />
-                </p>
-              )}
             </span>
           )}
         />
@@ -150,7 +168,16 @@ export default function LayerList() {
           rowcolSpan="rowSpan_2"
           dataFormat={row => (
             <span className="naxatw-flex">
-              <Toggle checked={row.display_on_map} />
+              <Toggle
+                checked={row.display_on_map}
+                onChange={e => {
+                  const { checked } = e.target;
+                  dispatch(handleAddToMap({ id: row.id, checked }));
+                  dispatch(
+                    updateDataRequest(row.id, { display_on_map: checked }),
+                  );
+                }}
+              />
             </span>
           )}
         />

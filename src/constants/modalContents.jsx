@@ -7,6 +7,7 @@ import DataQuery from '@Components/ProjectDashboard/ModalContent/DataQuery';
 import Analysis from '@Components/ProjectDashboard/ModalContent/Analysis';
 import BufferAnalysis from '@Components/ProjectDashboard/ModalContent/Analysis/BufferAnalysis';
 import UploadFailed from '@Components/ProjectDashboard/ModalContent/UploadFailed';
+import DownloadLayer from '@Components/ProjectDashboard/ModalContent/DownloadLayer';
 
 export function getModalTitle(content) {
   switch (content) {
@@ -20,6 +21,8 @@ export function getModalTitle(content) {
       return 'Analysis';
     case 'buffer-analysis':
       return 'Buffer Analysis';
+    case 'download-layer':
+      return 'Download Layer';
     default:
       return '';
   }
@@ -37,6 +40,8 @@ export function getModalContent(content) {
       return <Analysis />;
     case 'buffer-analysis':
       return <BufferAnalysis />;
+    case 'download-layer':
+      return <DownloadLayer />;
     default:
       return '';
   }

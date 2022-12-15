@@ -1,7 +1,6 @@
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
-import { isEmpty } from '@Utils/commonUtils';
 
 const initialState = {
   themes: null, // []
@@ -15,7 +14,7 @@ const initialState = {
   sidebarContent: '',
   layerOrder: [],
   searchText: '',
-  toggleExport: false,
+  toggleMapExport: false,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -26,9 +25,10 @@ const getProjectThemesSuccess = (state, action) => ({
 const getProjectThemeLayersSuccess = (state, action) => {
   const { data: layerData, theme } = action.payload;
   const data = layerData.filter(item => item.upload_status === 'successful');
-  const layerOrder = !isEmpty(state.layerOrder)
-    ? state.layerOrder
-    : data.map(item => item.id);
+  const notPresentLayers = data
+    .filter(item => !state.layerOrder.includes(item.id))
+    .map(item => item.id);
+  const layerOrder = [...notPresentLayers, ...state.layerOrder];
   const layers = {
     ...state.layers,
     [theme]: data.map(item => ({

@@ -111,7 +111,6 @@ export function* deleteIconRequest({ id, payload }) {
 export function* saveMapConfigRequest({ params, payload }) {
   try {
     const response = yield call(saveMapConfig, params, payload);
-    console.log(response, 'resx');
     yield put(projectMapActions.saveMapConfigSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.saveMapConfigFailure());

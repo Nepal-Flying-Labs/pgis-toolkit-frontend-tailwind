@@ -28,7 +28,21 @@ export const { Types, Creators } = createActions(
     checkUploadStatusSuccess: ['payload'],
     checkUploadStatusFailure: null,
 
+    getErrorDetailRequest: ['params'],
+    getErrorDetailSuccess: ['payload'],
+    getErrorDetailFailure: null,
+
     setDataState: ['payload'],
+
+    permanentDataDeleteRequest: ['id'],
+    permanentDataDeleteSuccess: ['payload'],
+    permanentDataDeleteFailure: null,
+
+    handleAddToMap: ['payload'],
+
+    updateDataRequest: ['id', 'payload'],
+    updateDataSuccess: ['payload'],
+    updateDataFailure: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

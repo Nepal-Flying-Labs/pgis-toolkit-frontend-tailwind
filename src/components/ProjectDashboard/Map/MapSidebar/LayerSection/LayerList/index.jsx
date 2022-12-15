@@ -1,11 +1,11 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-array-index-key */
 import React, { useState } from 'react';
+import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import Accordion from '@Components/common/Accordion';
-import Button from '@Components/common/Button';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import { isEmpty } from '@Utils/commonUtils';
 import DropdownOptions from '@Components/common/DropdownOptions';
@@ -20,13 +20,14 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 const {
   handleCheckbox,
   setZoomToLayerId,
-  setSelectedProjectTheme,
   setSelectedLayer,
   setDeleteLayer,
+  saveMapConfigRequest,
 } = ProjectMapCreators;
-const { toggleModal, togglePromptDialog } = CommonCreators;
+const { togglePromptDialog } = CommonCreators;
 
 export default function LayerList() {
+  const { projectId } = useParams();
   const [hoverId, setHoverId] = useState(null);
   const themes = useSelector(filteredThemesSelector);
   const layers = useSelector(filteredLayersSelector);
@@ -74,6 +75,12 @@ export default function LayerList() {
         checked,
       }),
     );
+    // dispatch(
+    //   saveMapConfigRequest(
+    //     { project: projectId },
+    //     { map_config: JSON.stringify({ layerOrder: sortedLayerOrder }) },
+    //   ),
+    // );
   };
 
   return isLoading || themes === null

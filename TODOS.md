@@ -51,8 +51,14 @@
 - [x] layer order not working
 - [x] edit button while hover only 
 - [x] data download
+- [ ] data catalogue page
+- [ ] checkbox and bbox state in map config
 - [ ] bbox in organization page
 - [ ] random color style patch after layer upload
+- [ ] boundary in Baseline data automatic
+- [ ] add feature button in dropdown
+- [ ] view on map button on data catalogue
+- [ ] buffer analysis redesign
 
 
 ### ISSUES

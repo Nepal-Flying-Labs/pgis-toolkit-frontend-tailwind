@@ -46,12 +46,12 @@
 - [ ] layer upload limit 5
 - [ ] line thickness limit 0
 
-- [ ] upload, styling, download option in 
-- [ ] edit button while hover only 
-- [ ] layer order not working
+- [x] upload, styling, download option in 
+- [x] add to map
+- [x] layer order not working
+- [x] edit button while hover only 
 - [ ] bbox in organization page
 - [ ] data download
-- [ ] add to map
 
 
 ### ISSUES

@@ -23,7 +23,8 @@ import {
 import PromptDialog from '@Components/common/PromptDialog';
 
 const { toggleModal, togglePromptDialog } = CommonCreators;
-const { getProjectDetailRequest } = ProjectDashboardCreators;
+const { getProjectDetailRequest, resetProjectDashboardState } =
+  ProjectDashboardCreators;
 
 function getTabContent(tabname) {
   switch (tabname) {
@@ -56,6 +57,13 @@ export default function ProjectDashboard() {
     state => state.common.projectHeaderHeight,
   );
   const dispatch = useDispatch();
+
+  useEffect(
+    () => () => {
+      dispatch(resetProjectDashboardState());
+    },
+    [dispatch],
+  );
 
   useEffect(() => {
     dispatch(getProjectDetailRequest({ project: projectId }));

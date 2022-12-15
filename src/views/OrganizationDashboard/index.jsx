@@ -13,8 +13,11 @@ import CreateProject from '@Components/OrganizationDashboard/ModalContent/Create
 import CreateProjectSuccess from '@Components/OrganizationDashboard/ModalContent/CreateProjectSuccess';
 import CreateNewUser from '@Components/OrganizationDashboard/ModalContent/CreateNewUser';
 
-const { getOrganizationDetailRequest, toggleModal } =
-  OrganizationDashboardCreators;
+const {
+  getOrganizationDetailRequest,
+  toggleModal,
+  resetOrganizationDashboardState,
+} = OrganizationDashboardCreators;
 
 function getTabContent(tabname) {
   switch (tabname) {
@@ -58,6 +61,13 @@ export default function OrganizationDashboard() {
   );
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
+  );
+
+  useEffect(
+    () => () => {
+      dispatch(resetOrganizationDashboardState());
+    },
+    [dispatch],
   );
 
   useEffect(() => {

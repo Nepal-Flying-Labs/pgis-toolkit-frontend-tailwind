@@ -198,6 +198,10 @@ const clearUsersFilter = state => ({
   },
 });
 
+const resetOrganizationDashboardState = () => ({
+  ...initialState,
+});
+
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
@@ -214,6 +218,7 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_USERS_SUCCESS]: getUsersSuccess,
   [Types.SET_USERS_ORDERING]: setUsersOrdering,
   [Types.CLEAR_USERS_FILTER]: clearUsersFilter,
+  [Types.RESET_ORGANIZATION_DASHBOARD_STATE]: resetOrganizationDashboardState,
 });
 
 export default organizationDashboardReducer;

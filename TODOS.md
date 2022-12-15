@@ -1,4 +1,5 @@
-### General 
+### General
+
 - [ ] Scrollbar setup
 
 ### Authentication
@@ -24,17 +25,16 @@
 - [ ] implement permission in organization page
 - [ ] Setup your organization admin profile UI
 
-
 ### DESIGN
 
 - [ ] input field design
 
-
 ## Project Map
+
 - [x] handle layer name style save
 - [x] zoom to project location
 - [x] layer order
-- [x] project header height dynamic calculation 
+- [x] project header height dynamic calculation
 - [x] layer search
 - [x] no data yet section
 - [ ] handle csv upload
@@ -46,16 +46,16 @@
 - [ ] layer upload limit 5
 - [ ] line thickness limit 0
 
-- [x] upload, styling, download option in 
+- [x] upload, styling, download option in
 - [x] add to map
 - [x] layer order not working
-- [x] edit button while hover only 
+- [x] edit button while hover only
 - [x] data download
 - [ ] bbox in organization page
 - [ ] random color style patch after layer upload
 
-
 ### ISSUES
+
 - [x] login redirect to projects tab organization dashboard
 - [x] remove click on routes with no content
 - [x] remove notification icon from header
@@ -64,12 +64,21 @@
 - [ ] update map config after layer upload success
 
 ### Backend
+
 - [ ] download each data from layer list
 
 ### Figma changes
+
 - [ ] typography
 - [ ] button size
 - [ ] tooltip, navbar
 - [ ] date format setup
 - [ ] table row height
 - [ ] project dashboard
+
+### Login
+
+- [ ] Loader in organization invite
+- [ ] organization modal in invitation success
+- [ ] splash screen for checking landing page
+- [ ] project card design

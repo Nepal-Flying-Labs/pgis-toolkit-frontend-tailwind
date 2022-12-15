@@ -53,6 +53,8 @@ export const { Types, Creators } = createActions(
     clearUsersFilter: null,
 
     toggleModal: ['payload'],
+
+    resetOrganizationDashboardState: null,
   },
   { prefix: 'organizationDashboard/' },
 );

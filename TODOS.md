@@ -68,3 +68,7 @@
 - [ ] date format setup
 - [ ] table row height
 - [ ] project dashboard
+
+### Login
+- [ ] splash screen for checking landing page
+- [ ] project card design

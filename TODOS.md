@@ -50,8 +50,9 @@
 - [x] add to map
 - [x] layer order not working
 - [x] edit button while hover only 
+- [x] data download
 - [ ] bbox in organization page
-- [ ] data download
+- [ ] random color style patch after layer upload
 
 
 ### ISSUES

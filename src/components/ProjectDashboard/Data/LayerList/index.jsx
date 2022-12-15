@@ -23,7 +23,7 @@ const {
   handleAddToMap,
   updateDataRequest,
 } = ProjectDashboardCreators;
-const { togglePromptDialog } = CommonCreators;
+const { togglePromptDialog, toggleModal } = CommonCreators;
 
 export default function LayerList() {
   const layers = useSelector(state => state.projectDashboard.data.layers);
@@ -42,6 +42,19 @@ export default function LayerList() {
     },
     {
       id: 2,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">download</i>
+          <p className="naxatw-text-body-lg">Download</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setDataState({ selectedData: data }));
+        dispatch(toggleModal('download-layer'));
+      },
+    },
+    {
+      id: 3,
       label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>

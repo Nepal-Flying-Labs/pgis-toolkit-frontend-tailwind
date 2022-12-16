@@ -88,3 +88,12 @@
 - [ ] organization modal in invitation success
 - [ ] splash screen for checking landing page
 - [ ] project card design
+
+### Styles
+
+- [ ] Button Component
+- [ ] Icon component
+- [ ] Fixed row in table
+- [ ] Remove Pagination
+- [ ] Search bar outline on select
+- [ ] Font issue in Safari

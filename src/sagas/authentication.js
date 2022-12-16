@@ -9,6 +9,7 @@ import {
   getUserPermissions,
   getLandingPage,
   getUserGroup,
+  getUserProfile,
 } from '@Services/authentication';
 import authActions, { Types } from '@Actions/authentication';
 import organizationsActions from '@Actions/organizations';
@@ -25,7 +26,6 @@ export function* loginRequest({ payload }) {
     yield put(authActions.loginSuccess(response.data));
     const landingResponse = yield call(getLandingPage);
     yield put(authActions.setInfoDialogContent(null));
-    yield put(authActions.getUserGroupRequest());
     yield put(push(`${landingResponse.data.page}`));
     yield put(organizationsActions.toggleModal('access-to-functionalities'));
   } catch (error) {
@@ -33,8 +33,7 @@ export function* loginRequest({ payload }) {
     yield put(
       authActions.setInfoDialogContent({
         message:
-          error?.response?.data?.detail ||
-          error?.landingResponse?.data?.message,
+          error?.response?.data?.detail || error?.response?.data?.message,
         status: 'error',
       }),
     );
@@ -172,6 +171,16 @@ function* getLandingPageRequest() {
   }
 }
 
+function* getUserProfileRequest() {
+  try {
+    const response = yield call(getUserProfile);
+    yield put(authActions.getUserProfileSuccess(response.data));
+  } catch (error) {
+    yield put(authActions.getUserProfileFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.message }));
+  }
+}
+
 function* authenticationWatcher() {
   yield takeLatest(Types.LOGIN_REQUEST, withLoader(loginRequest));
   yield takeLatest(Types.SIGN_UP_REQUEST, withLoader(signUpRequest));
@@ -196,6 +205,10 @@ function* authenticationWatcher() {
   yield takeLatest(
     Types.GET_LANDING_PAGE_REQUEST,
     withLoader(getLandingPageRequest),
+  );
+  yield takeLatest(
+    Types.GET_USER_PROFILE_REQUEST,
+    withLoader(getUserProfileRequest),
   );
 }
 

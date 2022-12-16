@@ -41,7 +41,7 @@
 - [ ] save bbox
 - [ ] upload layer validation
 
-- [ ] line thickness limit 0
+- [x] line thickness limit 0
 
 - [x] upload, styling, download option in
 - [x] add to map
@@ -49,13 +49,13 @@
 - [x] edit button while hover only
 - [x] data download
 - [x] checkbox and bbox state in map config
-- [ ] random color style patch after layer upload
-- [ ] boundary in Baseline data automatic
+- [x] random color style patch after layer upload
 - [x] route to data catalogue page for empty layer
 - [x] add feature button in dropdown
 - [x] view on map button on data catalogue
 - [x] bbox in organization page
 - [ ] buffer analysis redesign
+- [ ] boundary in Baseline data automatic
 
 ### ISSUES
 

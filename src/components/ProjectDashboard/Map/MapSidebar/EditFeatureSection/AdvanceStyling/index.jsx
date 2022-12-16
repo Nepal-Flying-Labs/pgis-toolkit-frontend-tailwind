@@ -39,9 +39,11 @@ export default function AdvanceStyling() {
     geometryType,
   } = layerStyle;
 
+  console.log(layerStyle, 'layerStylex');
+
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-4">
-      {lineTypes.includes(geometryType) && (
+      {!lineTypes.includes(geometryType) && (
         <Input
           type="color"
           name="fillColor"
@@ -59,7 +61,7 @@ export default function AdvanceStyling() {
         onChange={handleChange}
       />
 
-      {lineTypes.includes(geometryType) && (
+      {!lineTypes.includes(geometryType) && (
         <RangeSlider
           name="fillOpacity"
           label="Fill Opacity"
@@ -83,7 +85,7 @@ export default function AdvanceStyling() {
         onChange={handleChange}
       />
 
-      {pointTypes.includes(geometryType) && (
+      {!pointTypes.includes(geometryType) && (
         <RangeSlider
           name="dashline"
           label="Dash Line"

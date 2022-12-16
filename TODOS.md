@@ -49,7 +49,7 @@
 - [x] edit button while hover only
 - [x] data download
 - [x] checkbox and bbox state in map config
-- [ ] random color style patch after layer upload
+- [x] random color style patch after layer upload
 - [ ] boundary in Baseline data automatic
 - [x] route to data catalogue page for empty layer
 - [x] add feature button in dropdown

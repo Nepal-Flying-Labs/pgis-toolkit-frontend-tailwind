@@ -32,6 +32,7 @@ api.interceptors.response.use(
         error.response.data.detail === 'Token is invalid or expired' &&
         error.response.status === 401
       ) {
+        localStorage.clear();
         window.location.href = '/login';
       }
       if (
@@ -40,6 +41,7 @@ api.interceptors.response.use(
           error.response.data.detail === 'Invalid token.') &&
         error.response.status === 403
       ) {
+        localStorage.clear();
         window.location.href = '/login';
       }
       return api
@@ -55,6 +57,7 @@ api.interceptors.response.use(
             err.response.data.detail === 'Token is invalid or expired' &&
             err.response.status === 401
           ) {
+            localStorage.clear();
             window.location.href = '/login';
           }
         });

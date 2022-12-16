@@ -12,7 +12,10 @@ const initialState = {
   deleteLayer: null,
   hideSidebar: false,
   sidebarContent: '',
-  layerOrder: [],
+  mapSettings: {
+    layerOrder: [],
+    checkedLayers: [],
+  },
   searchText: '',
   toggleMapExport: false,
 };
@@ -26,15 +29,15 @@ const getProjectThemeLayersSuccess = (state, action) => {
   const { data: layerData, theme } = action.payload;
   const data = layerData.filter(item => item.upload_status === 'successful');
   const notPresentLayers = data
-    .filter(item => !state.layerOrder.includes(item.id))
+    .filter(item => !state.mapSettings.layerOrder.includes(item.id))
     .map(item => item.id);
-  const layerOrder = [...notPresentLayers, ...state.layerOrder];
+  const layerOrder = [...notPresentLayers, ...state.mapSettings.layerOrder];
   const layers = {
     ...state.layers,
     [theme]: data.map(item => ({
       ...item,
       theme,
-      checked: false,
+      checked: state.mapSettings.checkedLayers.includes(item.id),
       style: {
         ...defaultStyles,
         ...item.style,
@@ -52,7 +55,10 @@ const getProjectThemeLayersSuccess = (state, action) => {
   return {
     ...state,
     layers,
-    layerOrder,
+    mapSettings: {
+      ...state.mapSettings,
+      layerOrder,
+    },
   };
 };
 
@@ -64,10 +70,17 @@ const handleCheckbox = (state, action) => {
       item.id === layerId ? { ...item, checked } : { ...item },
     ),
   };
+  const mapSettings = {
+    ...state.mapSettings,
+    checkedLayers: checked
+      ? [...new Set([...state.mapSettings.checkedLayers, layerId])]
+      : state.mapSettings.checkedLayers.filter(id => id !== layerId),
+  };
 
   return {
     ...state,
     layers,
+    mapSettings,
   };
 };
 
@@ -249,7 +262,13 @@ const setSearchText = (state, action) => {
 
 const setMapConfig = (state, action) => ({
   ...state,
-  layerOrder: action.payload?.layerOrder || initialState.layerOrder,
+  mapSettings: {
+    ...state.mapSettings,
+    layerOrder:
+      action.payload?.layerOrder || initialState.mapSettings.layerOrder,
+    checkedLayers:
+      action.payload?.checkedLayers || initialState.mapSettings.checkedLayers,
+  },
 });
 
 const setProjectMapState = (state, action) => ({

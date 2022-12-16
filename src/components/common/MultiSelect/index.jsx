@@ -43,11 +43,15 @@ function MultiSelect({
   const selectedValues = selected.map(item => item[field]);
   return (
     <div
-      className={`naxatw-inline-flex ${
+      className={`naxatw-inline-flex naxatw-border ${
+        toggle
+          ? ' naxatw-border-[2px] naxatw-border-[#484848]'
+          : 'naxatw-border-[#BDBDBD] '
+      } ${
         !errorClassName
-          ? 'naxatw-bg-white naxatw-border naxatw-border-gray-300 naxatw-text-gray-600 '
+          ? ' '
           : 'naxatw-bg-red-50 naxatw-border naxatw-border-red-100 naxatw-text-red-500'
-      } naxatw-rounded-md naxatw-w-full hover:naxatw-bg-[#F5F5F5]   ${className} ${
+      } naxatw-rounded-md naxatw-w-full hover:naxatw-border-[#484848]   ${className} ${
         disabled
           ? 'disabled:naxatw-bg-slate-50 disabled:naxatw-text-slate-500 disabled:naxatw-border-slate-200 '
           : ''
@@ -55,15 +59,15 @@ function MultiSelect({
       onClick={disabled ? () => {} : () => handleToggle()}
       ref={divRef}
     >
-      <div className="naxatw-relative naxatw-w-full">
+      <div className="naxatw-relative naxatw-w-full ">
         <div
-          className={`naxatw-inline-flex naxatw-w-full naxatw-items-center naxatw-justify-between naxatw-h-12  naxatw-border-l naxatw-px-3 py-[13px] naxatw-border-gray-100 naxatw-cursor-pointer naxatw-rounded-r-md ${
-            toggle ? 'naxatw-bg-light-green' : ''
+          className={`naxatw-inline-flex naxatw-w-full  naxatw-items-center naxatw-justify-between naxatw-h-12 naxatw-gap-x-2  naxatw-border-l naxatw-pl-3 naxatw-pr-2 naxatw-py-3 naxatw-border-gray-100 naxatw-cursor-pointer naxatw-rounded-r-md 
+            
           }`}
           onClick={disabled ? () => {} : () => handleToggle()}
           onKeyDown={disabled ? () => {} : () => handleToggle()}
         >
-          <span>
+          <span className="naxatw-text-body-lg">
             {selectedValues.length > 0
               ? selectedValues.length < 2
                 ? selectedValues[0]
@@ -98,10 +102,12 @@ function MultiSelect({
                   tabIndex="0"
                   onKeyDown={() => {}}
                   onClick={() => handleSelect(item)}
-                  className={`naxatw-whitespace-nowrap naxatw-px-3 naxatw-h-[48px] naxatw-py-6 naxatw-mt-1
-                naxatw-cursor-pointer  naxatw-text-body-lg
-               hover:naxatw-bg-gray-100  naxatw-flex naxatw-justify-between naxatw-items-center ${
-                 selected === item.name ? 'naxatw-bg-gray-200' : ''
+                  className={`naxatw-whitespace-nowrap naxatw-px-3 naxatw-h-[48px] naxatw-py-2 naxatw-mt-1
+                naxatw-cursor-pointer  naxatw-text-body-lg naxatw-text-[#484848]
+               hover:naxatw-bg-gray-100  naxatw-flex naxatw-justify-between naxatw-gap-x-2 naxatw-items-center ${
+                 selectedValues.includes(item[field])
+                   ? 'naxatw-bg-gray-100'
+                   : ''
                }`}
                 >
                   {item[field]}

@@ -120,7 +120,7 @@ const CreateProject = () => {
           {emailList.map(item => (
             <div
               key={item.id}
-              className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-gap-x-2 naxatw-rounded-3xl naxatw-border naxatw-border-[#D7D7D7] naxatw-bg-[#F5F5F5] naxatw-px-3 naxatw-py-[7px]"
+              className="naxatw-flex naxatw-justify-between hover:naxatw-border-[#484848] naxatw-cursor-pointer nax naxatw-items-center naxatw-gap-x-2 naxatw-rounded-3xl naxatw-border naxatw-border-[#D7D7D7] naxatw-bg-[#F5F5F5] naxatw-px-3 naxatw-py-[7px]"
             >
               <p className="naxatw-text-[#484848]">{item.value}</p>
 

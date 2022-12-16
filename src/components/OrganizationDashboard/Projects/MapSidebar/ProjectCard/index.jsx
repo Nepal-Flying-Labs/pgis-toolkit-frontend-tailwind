@@ -186,12 +186,14 @@ export default function ProjectCard({
               endDate || 'N/A'
             }`}</span>
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
-              <span
-                className={`naxatw-w-2 naxatw-h-2 naxatw-rounded-full ${statusColor.bgColor}`}
+              <div
+                className={`naxatw-w-2 naxatw-h-2 naxatw-rounded-full  ${statusColor.bgColor}`}
               />
-              <span className={`${statusColor.textColor} naxatw-capitalize`}>
+              <p
+                className={`${statusColor.textColor} naxatw-capitalize naxatw-text-body-md `}
+              >
                 {status || 'N/A'}
-              </span>
+              </p>
             </div>
           </div>
           <div className="naxatw-mt-3">

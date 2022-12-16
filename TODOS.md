@@ -40,10 +40,7 @@
 - [ ] handle csv upload
 - [ ] save bbox
 - [ ] upload layer validation
-- [ ] add to map feature
 
-- [ ] add to map -> style patch
-- [ ] layer upload limit 5
 - [ ] line thickness limit 0
 
 - [x] upload, styling, download option in

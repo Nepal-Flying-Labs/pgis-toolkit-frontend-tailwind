@@ -133,10 +133,14 @@ const AsyncPopup = ({
         ref={popupCloserRef}
         // href={() => {}}
         id="popup-closer"
-        className="ol-popup-closer naxatw-hidden"
+        className="ol-popup-closer naxatw-text-grey-800"
         onClick={closePopupFn}
       />
-      <div id="popup-content" dangerouslySetInnerHTML={{ __html: popupHTML }} />
+      <div
+        id="popup-content"
+        style={{ marginTop: '0.5rem' }}
+        dangerouslySetInnerHTML={{ __html: popupHTML }}
+      />
       {properties?.layer === 'site' && !loading && (
         <div
           style={{

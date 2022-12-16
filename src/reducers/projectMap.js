@@ -1,6 +1,8 @@
 import { createReducer } from 'reduxsauce';
+import chroma from 'chroma-js';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import { pointTypes } from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 
 const initialState = {
   themes: null, // []
@@ -40,6 +42,10 @@ const getProjectThemeLayersSuccess = (state, action) => {
       checked: state.mapSettings.checkedLayers.includes(item.id),
       style: {
         ...defaultStyles,
+        fillColor: chroma.random().hex(),
+        fillOpacity: pointTypes.includes(item.geom_type)
+          ? 100
+          : defaultStyles.fillOpacity,
         ...item.style,
         geometryType: item.geom_type,
         icon: item.icon

@@ -61,13 +61,10 @@ function UploadPolygonBoundary({ uploadedFile, setuploadedFile }) {
           }`}
         >
           <Button
-            className="naxatw-flex naxatw-items-center naxatw-gap-x-2 "
+            className="naxatw-btn-secondary naxatw-btn-noborder "
+            iconLeft="upload"
             onClick={onFileUpload}
           >
-            <MaterialIcon
-              name="upload"
-              className="naxatw-2xl naxatw-text-[#00A699]"
-            />
             <span className="naxatw-text-[15px] naxatw-font-bold naxatw-text-[#00A699]">
               Upload
             </span>

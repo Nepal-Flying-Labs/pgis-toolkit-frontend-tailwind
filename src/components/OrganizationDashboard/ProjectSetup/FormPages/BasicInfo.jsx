@@ -185,8 +185,8 @@ const BasicInfo = ({ setPage }) => {
           }}
         >
           <MaterialIcon
-            name="add_circle_outline"
-            className="naxatw-absolute naxatw-top-11 naxatw-right-2 naxatw-text-[#00A699] naxatw-cursor-pointer"
+            name="add"
+            className="naxatw-absolute naxatw-top-11 naxatw-right-2 naxatw-text-[#00A699] naxatw-cursor-pointer naxatw-text-icon-md"
           />
         </a>
         <ul className="naxatw-mt-2">

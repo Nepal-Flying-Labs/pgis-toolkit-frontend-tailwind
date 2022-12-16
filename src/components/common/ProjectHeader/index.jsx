@@ -66,7 +66,11 @@ export default function ProjectHeader() {
                 : '/organizations'
             }`}
           >
-            <MaterialIcon name="arrow_back" />
+            <MaterialIcon
+              name="arrow_back"
+              className="naxatw-text-icon-md"
+              wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
+            />
           </Link>
           <h4>{headerTitle}</h4>
         </div>

@@ -31,9 +31,11 @@ export default function Searchbar({
         </div>
         <input
           type="text"
-          className={`naxatw-border naxatw-border-grey-300 naxatw-text-grey-900 naxatw-rounded-full focus:naxatw-ring-blue-500
-            focus:naxatw-border-blue-500 naxatw-block naxatw-w-full naxatw-pl-10 naxatw-pr-3 ${
-              isSmall ? 'naxatw-py-2.5' : 'naxatw-py-3.5'
+          className={`naxatw-border naxatw-border-grey-300 naxatw-text-grey-900 naxatw-rounded-full focus:naxatw-outline-none  focus:naxatw-border-[#484848]
+            naxatw-block naxatw-w-full naxatw-pl-[44px] naxatw-pr-3 ${
+              isSmall
+                ? 'naxatw-py-2 naxatw-h-[40px]'
+                : 'naxatw-py-3 naxatw-h-[48px]'
             }
             ${className}`}
           placeholder={placeholder}

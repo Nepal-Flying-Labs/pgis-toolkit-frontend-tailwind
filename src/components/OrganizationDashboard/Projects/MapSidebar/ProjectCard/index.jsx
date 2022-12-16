@@ -170,7 +170,7 @@ export default function ProjectCard({
       }`}
       onClick={onClick}
     >
-      <div className=" naxatw-w-[120px] naxatw-h-[164px]">
+      <div className=" naxatw-w-[120px] naxatw-h-[164px] naxatw-min-w-[120px]">
         <img
           className=" naxatw-object-cover naxatw-w-full naxatw-h-full naxatw-rounded-l-xl"
           src={coverImage || AvatarImage}
@@ -186,12 +186,14 @@ export default function ProjectCard({
               endDate || 'N/A'
             }`}</span>
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
-              <span
-                className={`naxatw-w-2 naxatw-h-2 naxatw-rounded-full ${statusColor.bgColor}`}
+              <div
+                className={`naxatw-w-2 naxatw-h-2 naxatw-rounded-full  ${statusColor.bgColor}`}
               />
-              <span className={`${statusColor.textColor} naxatw-capitalize`}>
+              <p
+                className={`${statusColor.textColor} naxatw-capitalize naxatw-text-body-md `}
+              >
                 {status || 'N/A'}
-              </span>
+              </p>
             </div>
           </div>
           <div className="naxatw-mt-3">
@@ -203,7 +205,7 @@ export default function ProjectCard({
             </span>
           </div>
         </div>
-        <div className="naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-items-end naxatw-w-[300px] ">
+        <div className="naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-items-end naxatw-w-[300px]  ">
           <DropdownOptions
             options={dropdownOptions}
             data={id}

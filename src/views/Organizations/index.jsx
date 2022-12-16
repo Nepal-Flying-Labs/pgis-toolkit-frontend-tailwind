@@ -83,7 +83,7 @@ export default function Organizations() {
               iconLeft="add"
               onClick={() => dispatch(toggleModal('create-organization'))}
             >
-              Create New
+              Create Organization
             </Button>
           )}
         </div>

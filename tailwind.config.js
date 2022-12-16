@@ -71,9 +71,9 @@ module.exports = {
           },
         ],
         'body-btn': [
-          '0.813rem',
+          '0.938rem',
           {
-            lineHeight: '1.125',
+            lineHeight: '1.25',
             fontWeight: '700',
             letterSpacing: '0',
           },

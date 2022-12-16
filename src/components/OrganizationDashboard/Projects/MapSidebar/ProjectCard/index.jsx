@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import { useHistory, useParams } from 'react-router';
-import AvatarIcon from '@Assets/images/icons/avatar-icon.svg';
+import AvatarImage from '@Assets/images/img-sm-avatar.png';
 import Button from '@Components/common/Button/index';
 
 const getStatusColor = status => {
@@ -173,24 +173,24 @@ export default function ProjectCard({
       <div className=" naxatw-w-[120px] naxatw-h-[164px]">
         <img
           className=" naxatw-object-cover naxatw-w-full naxatw-h-full naxatw-rounded-l-xl"
-          src={coverImage || AvatarIcon}
+          src={coverImage || AvatarImage}
           alt="cover_image"
         />
       </div>
 
       <div className=" naxatw-pt-4 naxatw-pl-4 naxatw-pr-2 naxatw-pb-3 naxatw-flex  naxatw-w-full naxatw-justify-between naxatw-rounded-r-xl">
         <div className="naxatw-w-[426px]">
-          <h5>{title || '-'}</h5>
+          <h5>{title || 'N/A'}</h5>
           <div className="naxatw-flex naxatw-flex-wrap naxatw-mt-2.5 naxatw-gap-x-3">
-            <span className="naxatw-text-body-md">{`${startDate || '-'} - ${
-              endDate || '-'
+            <span className="naxatw-text-body-md">{`${startDate || 'N/A'} - ${
+              endDate || 'N/A'
             }`}</span>
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
               <span
                 className={`naxatw-w-2 naxatw-h-2 naxatw-rounded-full ${statusColor.bgColor}`}
               />
               <span className={`${statusColor.textColor} naxatw-capitalize`}>
-                {status || '-'}
+                {status || 'N/A'}
               </span>
             </div>
           </div>
@@ -199,7 +199,7 @@ export default function ProjectCard({
               Thematic areas
             </p>
             <span className="naxatw-text-body-md">
-              {thematicAreas ? thematicAreas.toString() : '-'}
+              {thematicAreas ? thematicAreas.toString() : 'N/A'}
             </span>
           </div>
         </div>
@@ -213,11 +213,18 @@ export default function ProjectCard({
             <div className="naxatw-flex naxatw-flex-col naxatw-items-end">
               <Button
                 className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]"
-                onClick={() => {}}
+                onClick={e => {
+                  e.stopPropagation();
+                }}
               >
                 Info
               </Button>
-              <Button className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]">
+              <Button
+                className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]"
+                onClick={e => {
+                  e.stopPropagation();
+                }}
+              >
                 View on Map
               </Button>
             </div>

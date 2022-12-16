@@ -59,8 +59,10 @@ export default function SignIn() {
           ''
         )}
         <Button className="naxatw-btn-secondary naxatw-w-full ">
-          <img className="naxatw-mr-3" src={GoogleIcon} alt="google-icon" />
-          <p>Sign in with Google</p>
+          <div className="naxatw-flex naxatw-items-center">
+            <img className="naxatw-mr-3" src={GoogleIcon} alt="google-icon" />
+            <p className="naxatw-text-inherit">Sign in with Google</p>
+          </div>
         </Button>
 
         <div className="naxatw-my-[28px] naxatw-flex naxatw-items-center">

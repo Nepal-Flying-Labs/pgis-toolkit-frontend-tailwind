@@ -60,10 +60,11 @@ export default function MapSidebar() {
             className="naxatw-bg-white"
             value={searchValue}
             onChange={handleChange}
+            isSmall
           />
 
           <Button
-            className="naxatw-btn-primary"
+            className="naxatw-btn-primary naxatw-btn-sm"
             iconLeft="add_circle_outline"
             onClick={() => dispatch(toggleModal('create-project'))}
           >

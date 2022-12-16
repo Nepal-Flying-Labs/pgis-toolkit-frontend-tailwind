@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import useOutsideClick from '@Hooks/useOutsideClick';
+import MaterialIcon from '../MaterialIcon/index';
 
 export default function DropdownOptions({ options, data, stopPropagation }) {
   const [toggleRef, toggle, handleToggle] = useOutsideClick();
@@ -16,13 +17,17 @@ export default function DropdownOptions({ options, data, stopPropagation }) {
           handleToggle();
         }}
       >
-        <i className="material-icons">more_vert</i>
+        <MaterialIcon
+          className="naxatw-text-icon-md"
+          name="more_vert"
+          wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
+        />
       </a>
       <div
         id="dropdownDots"
         className={`${
           toggle ? '' : 'naxatw-hidden'
-        } naxatw-absolute naxatw-top-[2px] naxatw-right-[30px] naxatw-z-10 naxatw-w-[12.5rem] naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100 naxatw-shadow-3xl`}
+        } naxatw-absolute naxatw-top-[2px] naxatw-right-[40px] naxatw-z-10 naxatw-w-[12.5rem] naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100 naxatw-shadow-3xl`}
       >
         <ul
           className="naxatw-py-2 naxatw-text-sm naxatw-text-grey-700"

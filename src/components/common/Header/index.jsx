@@ -18,7 +18,7 @@ export default function Header() {
           />
         </Link>
         <nav className="">
-          <ul className="naxatw-font-bold naxatw-text-grey-500 naxatw-text-[0.9375rem] naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-2 naxatw-h-full">
+          <ul className="naxatw-font-bold naxatw-text-grey-500  naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-2 naxatw-h-full">
             <li
               className={`${
                 pathname === '/organizations'
@@ -27,7 +27,7 @@ export default function Header() {
               } hover:naxatw-text-secondary-400`}
             >
               <Link
-                className="naxatw-inline-block naxatw-px-3 naxatw-py-[18.65px]"
+                className="naxatw-inline-block naxatw-px-3 naxatw-py-[18.65px] naxatw-text-[0.9375rem]"
                 to="/organizations"
               >
                 Organizations
@@ -41,7 +41,7 @@ export default function Header() {
               } hover:naxatw-text-secondary-400`}
             >
               <Link
-                className="naxatw-inline-block naxatw-px-3 naxatw-py-[18.65px]"
+                className="naxatw-inline-block naxatw-px-3 naxatw-py-[18.65px] naxatw-text-[0.9375rem]"
                 to="/users"
                 style={{ pointerEvents: 'none' }}
               >

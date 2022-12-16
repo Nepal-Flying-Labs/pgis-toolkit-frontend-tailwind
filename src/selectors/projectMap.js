@@ -3,7 +3,7 @@ import { isEmpty } from '@Utils/commonUtils';
 
 const themesSelector = state => state.projectMap.themes;
 const layersSelector = state => state.projectMap.layers;
-const layerOrderSelector = state => state.projectMap.layerOrder;
+const layerOrderSelector = state => state.projectMap.mapSettings.layerOrder;
 const searchTextSelector = state => state.projectMap.searchText;
 
 export const mapStateSelector = createSelector(

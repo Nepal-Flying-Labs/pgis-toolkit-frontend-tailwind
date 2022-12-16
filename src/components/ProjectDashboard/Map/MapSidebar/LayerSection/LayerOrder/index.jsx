@@ -27,7 +27,7 @@ export default function LayerOrder() {
   const { projectId } = useParams();
   const [hoverId, setHoverId] = useState(null);
   const mapState = useSelector(mapStateSelector);
-  const layerOrder = useSelector(state => state.projectMap.layerOrder);
+  const mapSettings = useSelector(state => state.projectMap.mapSettings);
   const dispatch = useDispatch();
 
   const handleLayerCheck = ({ checked, layerId, themeId }) => {
@@ -37,6 +37,19 @@ export default function LayerOrder() {
         themeId,
         checked,
       }),
+    );
+    dispatch(
+      saveMapConfigRequest(
+        { project: projectId },
+        {
+          map_config: JSON.stringify({
+            ...mapSettings,
+            checkedLayers: checked
+              ? [...new Set([...mapSettings.checkedLayers, layerId])]
+              : mapSettings.checkedLayers.filter(id => id !== layerId),
+          }),
+        },
+      ),
     );
   };
 
@@ -71,14 +84,24 @@ export default function LayerOrder() {
   const handleLayerSort = event => {
     const { active, over } = event;
     if (active.id === over.id) return;
+    const { layerOrder } = mapSettings;
     const oldIndex = layerOrder.findIndex(id => id === active.id);
     const newIndex = layerOrder.findIndex(id => id === over.id);
     const sortedLayerOrder = arrayMove(layerOrder, oldIndex, newIndex);
-    dispatch(setProjectMapState({ layerOrder: sortedLayerOrder }));
+    dispatch(
+      setProjectMapState({
+        mapSettings: { ...mapSettings, layerOrder: sortedLayerOrder },
+      }),
+    );
     dispatch(
       saveMapConfigRequest(
         { project: projectId },
-        { map_config: JSON.stringify({ layerOrder: sortedLayerOrder }) },
+        {
+          map_config: JSON.stringify({
+            ...mapSettings,
+            layerOrder: sortedLayerOrder,
+          }),
+        },
       ),
     );
   };

@@ -170,7 +170,7 @@ export default function ProjectCard({
       }`}
       onClick={onClick}
     >
-      <div className=" naxatw-w-[120px] naxatw-h-[164px]">
+      <div className=" naxatw-w-[120px] naxatw-h-[164px] naxatw-min-w-[120px]">
         <img
           className=" naxatw-object-cover naxatw-w-full naxatw-h-full naxatw-rounded-l-xl"
           src={coverImage || AvatarImage}
@@ -203,7 +203,7 @@ export default function ProjectCard({
             </span>
           </div>
         </div>
-        <div className="naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-items-end naxatw-w-[300px] ">
+        <div className="naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-items-end naxatw-w-[300px]  ">
           <DropdownOptions
             options={dropdownOptions}
             data={id}

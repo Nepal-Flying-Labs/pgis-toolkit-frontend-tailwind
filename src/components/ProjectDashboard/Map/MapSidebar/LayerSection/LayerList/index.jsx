@@ -31,6 +31,7 @@ export default function LayerList() {
   const [hoverId, setHoverId] = useState(null);
   const themes = useSelector(filteredThemesSelector);
   const layers = useSelector(filteredLayersSelector);
+  const mapSettings = useSelector(state => state.projectMap.mapSettings);
   const isLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,
@@ -85,12 +86,19 @@ export default function LayerList() {
         checked,
       }),
     );
-    // dispatch(
-    //   saveMapConfigRequest(
-    //     { project: projectId },
-    //     { map_config: JSON.stringify({ layerOrder: sortedLayerOrder }) },
-    //   ),
-    // );
+    dispatch(
+      saveMapConfigRequest(
+        { project: projectId },
+        {
+          map_config: JSON.stringify({
+            ...mapSettings,
+            checkedLayers: checked
+              ? [...new Set([...mapSettings.checkedLayers, layerId])]
+              : mapSettings.checkedLayers.filter(id => id !== layerId),
+          }),
+        },
+      ),
+    );
   };
 
   return isLoading || themes === null

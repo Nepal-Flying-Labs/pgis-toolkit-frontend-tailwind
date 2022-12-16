@@ -48,7 +48,7 @@
 - [x] layer order not working
 - [x] edit button while hover only
 - [x] data download
-- [ ] checkbox and bbox state in map config
+- [x] checkbox and bbox state in map config
 - [ ] random color style patch after layer upload
 - [ ] boundary in Baseline data automatic
 - [x] route to data catalogue page for empty layer

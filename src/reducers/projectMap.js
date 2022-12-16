@@ -42,10 +42,6 @@ const getProjectThemeLayersSuccess = (state, action) => {
       checked: state.mapSettings.checkedLayers.includes(item.id),
       style: {
         ...defaultStyles,
-        fillColor: chroma.random().hex(),
-        fillOpacity: pointTypes.includes(item.geom_type)
-          ? 100
-          : defaultStyles.fillOpacity,
         ...item.style,
         geometryType: item.geom_type,
         icon: item.icon

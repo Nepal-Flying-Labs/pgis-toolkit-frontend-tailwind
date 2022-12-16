@@ -39,8 +39,6 @@ export default function AdvanceStyling() {
     geometryType,
   } = layerStyle;
 
-  console.log(layerStyle, 'layerStylex');
-
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-4">
       {!lineTypes.includes(geometryType) && (
@@ -80,6 +78,8 @@ export default function AdvanceStyling() {
       <Input
         type="number"
         name="lineThickness"
+        min={1}
+        max={100}
         label="Line thickness"
         value={lineThickness}
         onChange={handleChange}
@@ -99,6 +99,8 @@ export default function AdvanceStyling() {
           type="number"
           name="circleRadius"
           label="Radius"
+          min={1}
+          max={100}
           value={circleRadius}
           onChange={handleChange}
         />

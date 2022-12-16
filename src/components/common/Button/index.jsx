@@ -14,7 +14,11 @@ export default function Button({
   loaderClassName,
 }) {
   return (
-    <button type={type} className={`naxatw-btn ${className}`} onClick={onClick}>
+    <button
+      type={type}
+      className={`naxatw-btn naxatw-group ${className}`}
+      onClick={onClick}
+    >
       {iconLeft && (
         <i className="material-icons naxatw-mr-2 naxatw-text-[22px]">
           {iconLeft}
@@ -43,7 +47,10 @@ export default function Button({
         </div>
       ) : (
         <>
-          {children}
+          <p className="group-hover:naxatw-underline naxatw-text-inherit">
+            {children}
+          </p>
+
           {iconRight && (
             <i className="material-icons naxatw-mr-2 naxatw-text-[22px]">
               {iconRight}

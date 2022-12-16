@@ -1,22 +1,31 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Creators as AuthCreators } from '@Actions/authentication';
 import { Creators as OrganizationsCreators } from '@Actions/organizations';
 import useOutsideClick from '@Hooks/useOutsideClick';
-import AvatarIcon from '@Assets/images/icons/avatar-icon.svg';
+import AvatarIcon from '@Assets/images/user-avatar.png';
 
-const { logoutRequest } = AuthCreators;
+const { logoutRequest, getUserProfileRequest } = AuthCreators;
 const { toggleModal } = OrganizationsCreators;
 
 export default function HeaderProfile() {
+  const userProfile = useSelector(state => state.authentication.userProfile);
   const [ref, toggle, handleToggle] = useOutsideClick();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserProfileRequest());
+  }, [dispatch]);
 
   return (
     <div className="naxatw-relative" ref={ref}>
       <div onClick={() => handleToggle(!toggle)}>
         <figure className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-cursor-pointer naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
-          <img src={AvatarIcon} alt="avatar-placeholder" />
+          <img
+            src={userProfile.image || AvatarIcon}
+            alt="avatar-placeholder"
+            className="naxatw-rounded-full"
+          />
         </figure>
       </div>
 
@@ -25,13 +34,19 @@ export default function HeaderProfile() {
           <div className="naxatw-h-[7.625rem] naxatw-w-full  naxatw-mt-2 naxatw-p-3">
             <div className="naxatw-h-[2.875rem] naxatw-flex naxatw-mb-3 naxatw-gap-x-3 naxatw-items-center">
               <figure className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
-                <img src={AvatarIcon} alt="avatar-placeholder" />
+                <img
+                  src={userProfile.image || AvatarIcon}
+                  alt="avatar-placeholder"
+                  className="naxatw-rounded-full"
+                />
               </figure>
               <div>
                 <p className="naxatw-text-[0.938rem] naxatw-font-bold naxatw-leading-[1.375rem]">
-                  San Shree
+                  {userProfile.full_name || 'Username'}
                 </p>
-                <span className="naxatw-text-body-md">Super Admin</span>
+                <span className="naxatw-text-body-md">
+                  {userProfile.role || 'User Role'}
+                </span>
               </div>
             </div>
             <div

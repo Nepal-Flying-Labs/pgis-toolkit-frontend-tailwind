@@ -108,7 +108,7 @@ const CreateProject = () => {
         >
           <MaterialIcon
             name="add"
-            className="naxatw-text-[#40B449] naxatw-absolute naxatw-right-4 naxatw-top-3"
+            className="naxatw-text-[#40B449] naxatw-absolute naxatw-right-4 naxatw-top-3 naxatw-text-icon-md"
           />
         </a>
         {emailError && (

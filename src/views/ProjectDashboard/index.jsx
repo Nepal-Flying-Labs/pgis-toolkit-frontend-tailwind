@@ -24,7 +24,7 @@ import PromptDialog from '@Components/common/PromptDialog';
 import AppLoader from '@Components/common/AppLoader';
 import { isEmpty } from '@Utils/commonUtils';
 
-const { toggleModal, togglePromptDialog } = CommonCreators;
+const { toggleModal, togglePromptDialog, setModalContent } = CommonCreators;
 const {
   getProjectLayersRequest,
   getProjectDetailRequest,
@@ -55,6 +55,7 @@ function getTabContent(tabname) {
 export default function ProjectDashboard() {
   const { tabname, projectId, organizationId } = useParams();
   const history = useHistory();
+  const showModal = useSelector(state => state.common.showModal);
   const modalContent = useSelector(state => state.common.modalContent);
   const promptDialogContent = useSelector(
     state => state.common.promptDialogContent,
@@ -89,6 +90,13 @@ export default function ProjectDashboard() {
     );
   }
 
+  const handleModalClose = () => {
+    dispatch(toggleModal());
+    setTimeout(() => {
+      dispatch(setModalContent(''));
+    }, 300);
+  };
+
   return tabname !== 'manage-data' ? (
     <div>
       <ProjectHeader />
@@ -102,9 +110,9 @@ export default function ProjectDashboard() {
       </PromptDialog>
 
       <Modal
-        show={!!modalContent}
+        show={showModal}
         title={getModalTitle(modalContent)}
-        onClose={() => dispatch(toggleModal())}
+        onClose={handleModalClose}
       >
         {getModalContent(modalContent)}
       </Modal>

@@ -29,7 +29,7 @@ const analysisData = [
   },
 ];
 
-const { toggleModal } = Creators;
+const { setModalContent } = Creators;
 
 export default function Analysis() {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ export default function Analysis() {
           <div
             key={id}
             className="naxatw-border naxatw-border-grey-200 naxatw-rounded-lg naxatw-px-4 naxatw-py-3 naxatw-cursor-pointer"
-            onClick={() => dispatch(toggleModal(analysisType))}
+            onClick={() => dispatch(setModalContent(analysisType))}
           >
             <h5 className="naxatw-text-grey-800">{title}</h5>
             <p className="naxatw-text-body-md">{description}</p>

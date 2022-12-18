@@ -56,6 +56,8 @@
 - [x] bbox in organization page
 - [ ] buffer analysis redesign
 - [ ] boundary in Baseline data automatic
+- [ ] attribute edit
+- [ ] add feature
 
 ### ISSUES
 

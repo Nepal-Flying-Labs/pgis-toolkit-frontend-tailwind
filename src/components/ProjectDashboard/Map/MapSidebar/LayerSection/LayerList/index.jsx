@@ -23,6 +23,7 @@ const {
   setSelectedLayer,
   setDeleteLayer,
   saveMapConfigRequest,
+  setProjectMapState,
 } = ProjectMapCreators;
 const { togglePromptDialog } = CommonCreators;
 
@@ -61,7 +62,13 @@ export default function LayerList() {
           <p className="naxatw-text-body-lg">Add Feature</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: data => {
+        dispatch(
+          setProjectMapState({
+            addFeatureTo: data,
+          }),
+        );
+      },
     },
     {
       id: 3,

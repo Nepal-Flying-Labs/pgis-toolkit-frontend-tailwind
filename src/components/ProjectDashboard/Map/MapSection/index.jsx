@@ -19,12 +19,14 @@ import AsyncPopup from '@Components/common/OpenLayersComponent/Custom/AsyncPopup
 import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
+import AddFeature from '@Components/common/OpenLayersComponent/CustomLayer/AddFeature';
 import SidebarToggle from '../SidebarToggle';
 import Toolbox from '../Toolbox';
 
 const { API_URL } = process.env;
 
-const { setZoomToLayerId, getMapPopupDataRequest } = Creators;
+const { setZoomToLayerId, getMapPopupDataRequest, setProjectMapState } =
+  Creators;
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -37,6 +39,7 @@ export default function MapSection() {
   const popupData = useSelector(state => state.projectMap.popupData);
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const hideSidebar = useSelector(state => state.projectMap.hideSidebar);
+  const addFeatureTo = useSelector(state => state.projectMap.addFeatureTo);
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
@@ -137,6 +140,31 @@ export default function MapSection() {
         <SidebarToggle />
 
         <Toolbox />
+
+        <AddFeature
+          enable={!!addFeatureTo}
+          geometryType={addFeatureTo?.geom_type}
+          style={
+            addFeatureTo?.style
+              ? { ...addFeatureTo.style }
+              : { ...defaultStyles }
+          }
+          onDrawFinish={geojson => {
+            console.log(geojson, 'geojsonx');
+            dispatch(
+              setProjectMapState({
+                addFeatureTo: null,
+              }),
+            );
+          }}
+          onCancel={() => {
+            dispatch(
+              setProjectMapState({
+                addFeatureTo: null,
+              }),
+            );
+          }}
+        />
 
         <LayerSwitcherControl />
 

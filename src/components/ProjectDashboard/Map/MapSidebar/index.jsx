@@ -21,7 +21,7 @@ export default function MapSidebar() {
         width: hideSidebar ? '0' : '23rem',
         minWidth: hideSidebar ? '0' : '23rem',
         padding: hideSidebar ? '0' : '',
-        transition: 'ease-in-out 250ms',
+        transition: 'ease-in-out 300ms',
       }}
     >
       {themes !== null && isEmpty(themes) ? (

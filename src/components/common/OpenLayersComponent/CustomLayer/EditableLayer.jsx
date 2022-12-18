@@ -231,7 +231,7 @@ const EditableLayer = ({
     <div
       className="naxatw-absolute naxatw-p-2 naxatw-rounded-lg naxatw-bottom-10 naxatw-right-4 naxatw-bg-white naxatw-z-10
                  naxatw-shadow-3xl"
-      // style={{ display: !geojson ? 'none' : '' }}
+      style={{ display: !geojson ? 'none' : '' }}
     >
       <div className="">
         <h5>Edit Toolbar</h5>

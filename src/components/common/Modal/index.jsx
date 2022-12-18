@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
 export default function Modal({ title, show, onClose, children }) {
-  const modalRef = useRef();
+  const nodeRef = useRef();
 
   return (
     <CSSTransition
-      nodeRef={modalRef}
+      nodeRef={nodeRef}
       in={show}
       timeout={150}
       unmountOnExit
@@ -29,7 +29,7 @@ export default function Modal({ title, show, onClose, children }) {
       `}
       >
         <div
-          ref={modalRef}
+          ref={nodeRef}
           className="naxatw-fixed naxatw-inset-0 naxatw-overflow-y-auto"
         >
           <div className="naxatw-flex naxatw-min-h-full naxatw-items-center naxatw-justify-center naxatw-p-4 naxatw-text-center">

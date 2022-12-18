@@ -19,6 +19,8 @@ const initialState = {
   searchText: '',
   toggleMapExport: false,
   addFeatureTo: null,
+  editFeatureGeojson: null,
+  selectedLayerForEdit: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({

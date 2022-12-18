@@ -20,6 +20,8 @@ import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import AddFeature from '@Components/common/OpenLayersComponent/CustomLayer/AddFeature';
+import EditableLayer from '@Components/common/OpenLayersComponent/CustomLayer/EditableLayer';
+import getFeatureGeojson from '@Components/common/OpenLayersComponent/helpers/getFeatureGeojson';
 import SidebarToggle from '../SidebarToggle';
 import Toolbox from '../Toolbox';
 
@@ -40,6 +42,12 @@ export default function MapSection() {
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const hideSidebar = useSelector(state => state.projectMap.hideSidebar);
   const addFeatureTo = useSelector(state => state.projectMap.addFeatureTo);
+  const editFeatureGeojson = useSelector(
+    state => state.projectMap.editFeatureGeojson,
+  );
+  const selectedLayerForEdit = useSelector(
+    state => state.projectMap.selectedLayerForEdit,
+  );
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
@@ -141,6 +149,27 @@ export default function MapSection() {
 
         <Toolbox />
 
+        <LayerSwitcherControl />
+
+        {mapState.map((item, index) =>
+          item.layer_type === 'Vector' ? (
+            <VectorTileLayer
+              key={item.id}
+              url={`${API_URL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+              authToken={localStorage.getItem('userToken')}
+              visibleOnMap={item.checked}
+              style={
+                item.id === selectedLayer?.id
+                  ? selectedLayer.style
+                  : item?.style || { ...defaultStyles }
+              }
+              zIndex={mapState.length + 10 - index}
+            />
+          ) : (
+            ''
+          ),
+        )}
+
         <AddFeature
           enable={!!addFeatureTo}
           geometryType={addFeatureTo?.geom_type}
@@ -166,26 +195,30 @@ export default function MapSection() {
           }}
         />
 
-        <LayerSwitcherControl />
-
-        {mapState.map((item, index) =>
-          item.layer_type === 'Vector' ? (
-            <VectorTileLayer
-              key={item.id}
-              url={`${API_URL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
-              authToken={localStorage.getItem('userToken')}
-              visibleOnMap={item.checked}
-              style={
-                item.id === selectedLayer?.id
-                  ? selectedLayer.style
-                  : item?.style || { ...defaultStyles }
-              }
-              zIndex={mapState.length + 10 - index}
-            />
-          ) : (
-            ''
-          ),
-        )}
+        <EditableLayer
+          geojson={editFeatureGeojson}
+          zIndex={100}
+          style={selectedLayerForEdit?.style || { ...defaultStyles }}
+          onSave={modifiedGeojson => {
+            dispatch(
+              setProjectMapState({
+                editFeatureGeojson: null,
+                selectedLayerForEdit: null,
+              }),
+            );
+          }}
+          onCancel={() => {
+            dispatch(
+              setProjectMapState({
+                editFeatureGeojson: null,
+                selectedLayerForEdit: null,
+              }),
+            );
+          }}
+          onError={message => {
+            // dispatch(toastActions.error({ message }));
+          }}
+        />
 
         <AsyncPopup
           fetchPopupData={properties => {
@@ -201,11 +234,20 @@ export default function MapSection() {
             // console.log('closex');
           }}
           buttonText="Edit Feature"
-          onButtonClick={properties => {
-            // dispatch(getSiteByIdRequest(properties.id));
+          onButtonClick={(properties, feature) => {
+            const geojson = getFeatureGeojson(feature);
+            const selectedFeature = mapState.find(
+              layer => layer.id === properties.layer_id,
+            );
+            dispatch(
+              setProjectMapState({
+                editFeatureGeojson: geojson,
+                selectedLayerForEdit: selectedFeature,
+              }),
+            );
           }}
           loading={isPopupDataFetching}
-          // closePopup={!!siteGeojson || zoomToRegion}
+          closePopup={!!addFeatureTo || !!editFeatureGeojson}
         />
 
         <MapFooter loading={isMapLoading} />

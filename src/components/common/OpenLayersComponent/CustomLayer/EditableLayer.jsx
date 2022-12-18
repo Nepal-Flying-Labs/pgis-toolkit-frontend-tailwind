@@ -9,6 +9,7 @@ import { getUid } from 'ol/util';
 import { Modify, Select, Translate, Draw, Snap } from 'ol/interaction';
 import { shiftKeyOnly, singleClick } from 'ol/events/condition';
 import getFeatureGeojson from '../helpers/getFeatureGeojson';
+import { getStyles } from '../helpers/styleUtils';
 
 import './styles.scss';
 
@@ -20,6 +21,7 @@ import './styles.scss';
 const EditableLayer = ({
   map,
   geojson,
+  style,
   zIndex = 2,
   onSave,
   onCancel,
@@ -100,6 +102,7 @@ const EditableLayer = ({
       }),
       zIndex: zIndex + 1,
       declutter: true,
+      style: (feature, resolution) => getStyles({ style, feature, resolution }),
     });
     layerUid.current = getUid(vectorLyr);
     map.addLayer(vectorLyr);
@@ -224,10 +227,11 @@ const EditableLayer = ({
     onSave(lastModifiedFeature);
   };
 
-  if (!geojson) return '';
-
   return (
-    <div className="toolbar__container">
+    <div
+      className="toolbar__container"
+      style={{ display: !geojson ? 'none' : '' }}
+    >
       <div className="toolbar__title">
         <h6>Edit Toolbar</h6>
       </div>

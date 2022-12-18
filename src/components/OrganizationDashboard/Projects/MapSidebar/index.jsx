@@ -4,7 +4,11 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useParams, useRouteMatch } from 'react-router';
-import { Creators, Types } from '@Actions/organizationDashboard';
+import {
+  Creators as OrganizationDashboardCreators,
+  Types,
+} from '@Actions/organizationDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar';
@@ -13,7 +17,8 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import ProjectCard from './ProjectCard';
 import ProjectCardSkeleton from './ProjectCardSkeleton/index';
 
-const { getProjectsRequest, toggleModal } = Creators;
+const { getProjectsRequest } = OrganizationDashboardCreators;
+const { toggleModal } = CommonCreators;
 
 export default function MapSidebar() {
   const [sidebarToggle, setSidebarToggle] = useState(false);

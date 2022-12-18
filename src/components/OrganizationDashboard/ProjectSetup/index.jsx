@@ -6,16 +6,13 @@ import { useHistory, useParams } from 'react-router';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { Creators } from '@Actions/organizationDashboard';
 import PromptDialog from '@Components/common/PromptDialog/index';
-import {
-  getPromptDialogContent,
-  getPromptDialogTitle,
-} from '@src/constants/modalContents';
+import { getPromptDialogContent } from '@src/constants/modalContents';
 import { Creators as CommonCreators } from '@Actions/common';
 
 import BasicInfo from './FormPages/BasicInfo';
 import Location from './FormPages/Location';
-import Documents from './FormPages/Documents';
-import Images from './FormPages/Images';
+// import Documents from './FormPages/Documents';
+// import Images from './FormPages/Images';
 
 const {
   getIndividualProjectRequest,
@@ -23,7 +20,7 @@ const {
   getCountryListRequest,
 } = Creators;
 
-const { togglePromptDialog } = CommonCreators;
+const { togglePromptDialog, setPromptDialogContent } = CommonCreators;
 
 const getPage = (page, setPage) => {
   switch (page) {
@@ -68,9 +65,7 @@ const ProjectSetup = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [page, setPage] = useState(1);
-  const modalContent = useSelector(
-    state => state.organizationDashboard.modalContent,
-  );
+  const showPromptDialog = useSelector(state => state.common.showPromptDialog);
   const promptDialogContent = useSelector(
     state => state.common.promptDialogContent,
   );
@@ -81,14 +76,21 @@ const ProjectSetup = () => {
     dispatch(getCountryListRequest());
   }, [dispatch, projectId]);
 
+  const handlePromptDialogClose = () => {
+    dispatch(togglePromptDialog());
+    setTimeout(() => {
+      dispatch(setPromptDialogContent(''));
+    }, 300);
+  };
+
   return (
     <>
       <PromptDialog
-        show={!!promptDialogContent}
-        title={getPromptDialogTitle(promptDialogContent)}
-        onClose={() => dispatch(togglePromptDialog())}
+        show={showPromptDialog}
+        title={getPromptDialogContent(promptDialogContent)?.title}
+        onClose={handlePromptDialogClose}
       >
-        {getPromptDialogContent(promptDialogContent)}
+        {getPromptDialogContent(promptDialogContent)?.content}
       </PromptDialog>
 
       <div>

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as AuthCreators } from '@Actions/authentication';
-import { Creators as OrganizationsCreators } from '@Actions/organizations';
+import { Creators as CommonCreators } from '@Actions/common';
 import useOutsideClick from '@Hooks/useOutsideClick';
 import AvatarIcon from '@Assets/images/user-avatar.png';
 
 const { logoutRequest, getUserProfileRequest } = AuthCreators;
-const { toggleModal } = OrganizationsCreators;
+const { toggleModal } = CommonCreators;
 
 export default function HeaderProfile() {
   const userProfile = useSelector(state => state.authentication.userProfile);

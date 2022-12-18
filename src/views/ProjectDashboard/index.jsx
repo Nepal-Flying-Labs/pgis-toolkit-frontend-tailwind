@@ -16,15 +16,18 @@ import Settings from '@Components/ProjectDashboard/Settings';
 import Modal from '@Components/common/Modal';
 import {
   getModalContent,
-  getModalTitle,
   getPromptDialogContent,
-  getPromptDialogTitle,
 } from '@src/constants/modalContents';
 import PromptDialog from '@Components/common/PromptDialog';
 import AppLoader from '@Components/common/AppLoader';
 import { isEmpty } from '@Utils/commonUtils';
 
-const { toggleModal, togglePromptDialog } = CommonCreators;
+const {
+  toggleModal,
+  togglePromptDialog,
+  setModalContent,
+  setPromptDialogContent,
+} = CommonCreators;
 const {
   getProjectLayersRequest,
   getProjectDetailRequest,
@@ -55,7 +58,9 @@ function getTabContent(tabname) {
 export default function ProjectDashboard() {
   const { tabname, projectId, organizationId } = useParams();
   const history = useHistory();
+  const showModal = useSelector(state => state.common.showModal);
   const modalContent = useSelector(state => state.common.modalContent);
+  const showPromptDialog = useSelector(state => state.common.showPromptDialog);
   const promptDialogContent = useSelector(
     state => state.common.promptDialogContent,
   );
@@ -94,19 +99,19 @@ export default function ProjectDashboard() {
       <ProjectHeader />
 
       <PromptDialog
-        show={!!promptDialogContent}
-        title={getPromptDialogTitle(promptDialogContent)}
+        show={showPromptDialog}
+        title={getPromptDialogContent(promptDialogContent)?.title}
         onClose={() => dispatch(togglePromptDialog())}
       >
-        {getPromptDialogContent(promptDialogContent)}
+        {getPromptDialogContent(promptDialogContent)?.content}
       </PromptDialog>
 
       <Modal
-        show={!!modalContent}
-        title={getModalTitle(modalContent)}
+        show={showModal}
+        title={getModalContent(modalContent)?.title}
         onClose={() => dispatch(toggleModal())}
       >
-        {getModalContent(modalContent)}
+        {getModalContent(modalContent)?.content}
       </Modal>
 
       <div

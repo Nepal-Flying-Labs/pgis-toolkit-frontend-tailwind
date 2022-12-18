@@ -3,38 +3,15 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
-import Button from '@Components/common/Button/index';
+import Button from '@Components/common/Button';
 import { Creators as CommonCreators } from '@Actions/common';
-import Modal from '@Components/common/Modal/index';
-import ManageAttributes from '@Components/ProjectDashboard/ModalContent/ManageAttributes/index';
-import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer/index';
+import Modal from '@Components/common/Modal';
+import { getModalContent } from '@src/constants/modalContents';
 import StepOne from './Steps/StepOne';
 import StepTwo from './Steps/StepTwo';
 import StepThree from './Steps/StepThree';
 
 const { toggleModal } = CommonCreators;
-
-const getModalTitle = content => {
-  switch (content) {
-    case 'add-wms-layer':
-      return 'Add WMS Layer';
-    case 'manage-attributes':
-      return 'Manage Attributes';
-    default:
-      return '';
-  }
-};
-
-const getModalContent = content => {
-  switch (content) {
-    case 'add-wms-layer':
-      return <AddWMSLayer />;
-    case 'manage-attributes':
-      return <ManageAttributes />;
-    default:
-      return '';
-  }
-};
 
 const linkOptions = [
   {
@@ -67,17 +44,18 @@ const getContent = step => {
 const ManageDataCollection = () => {
   const { projectId, organizationId } = useParams();
   const dispatch = useDispatch();
+  const showModal = useSelector(state => state.common.showModal);
   const modalContent = useSelector(state => state.common.modalContent);
   const [active, setActive] = useState(1);
   const history = useHistory();
   return (
     <div>
       <Modal
-        show={!!modalContent}
-        title={getModalTitle(modalContent)}
+        show={showModal}
+        title={getModalContent(modalContent)?.title}
         onClose={() => dispatch(toggleModal())}
       >
-        {getModalContent(modalContent)}
+        {getModalContent(modalContent)?.content}
       </Modal>
       <div className="naxatw-flex naxatw-justify-between naxatw-px-10 naxatw-py-5 naxatw-border naxatw-border-b">
         <div className="naxatw-w-[712px]">

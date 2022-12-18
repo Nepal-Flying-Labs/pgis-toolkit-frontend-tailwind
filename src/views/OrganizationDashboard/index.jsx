@@ -3,21 +3,19 @@ import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 // import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as OrganizationDashboardCreators } from '@Actions/organizationDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
 import ProjectHeader from '@Components/common/ProjectHeader';
 import Projects from '@Components/OrganizationDashboard/Projects/index';
 import User from '@Components/OrganizationDashboard/User/index';
 import Home from '@Components/OrganizationDashboard/Home/index';
 import ProjectSetup from '@Components/OrganizationDashboard/ProjectSetup/index';
-import Modal from '@Components/common/Modal/index';
-import CreateProject from '@Components/OrganizationDashboard/ModalContent/CreateProject';
-import CreateProjectSuccess from '@Components/OrganizationDashboard/ModalContent/CreateProjectSuccess';
-import CreateNewUser from '@Components/OrganizationDashboard/ModalContent/CreateNewUser';
+import Modal from '@Components/common/Modal';
+import { getModalContent } from '@src/constants/modalContents';
 
-const {
-  getOrganizationDetailRequest,
-  toggleModal,
-  resetOrganizationDashboardState,
-} = OrganizationDashboardCreators;
+const { getOrganizationDetailRequest, resetOrganizationDashboardState } =
+  OrganizationDashboardCreators;
+
+const { toggleModal } = CommonCreators;
 
 function getTabContent(tabname) {
   switch (tabname) {
@@ -32,33 +30,11 @@ function getTabContent(tabname) {
   }
 }
 
-function getModalContent(modalContent) {
-  switch (modalContent) {
-    case 'create-project':
-      return <CreateProject />;
-    case 'create-project-success':
-      return <CreateProjectSuccess />;
-    case 'create-new-user':
-      return <CreateNewUser />;
-    default:
-      return '';
-  }
-}
-function getModalTitle(modalContent) {
-  switch (modalContent) {
-    case 'create-new-user':
-      return 'Create a new user';
-    default:
-      return '';
-  }
-}
-
 export default function OrganizationDashboard() {
   const { organizationId, tabname } = useParams();
   const dispatch = useDispatch();
-  const modalContent = useSelector(
-    state => state.organizationDashboard.modalContent,
-  );
+  const showModal = useSelector(state => state.common.showModal);
+  const modalContent = useSelector(state => state.common.modalContent);
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
@@ -78,11 +54,11 @@ export default function OrganizationDashboard() {
     <div>
       <ProjectHeader />
       <Modal
-        show={!!modalContent}
-        title={getModalTitle(modalContent)}
-        onClose={() => dispatch(toggleModal(''))}
+        show={showModal}
+        title={getModalContent(modalContent)?.title}
+        onClose={() => dispatch(toggleModal())}
       >
-        {getModalContent(modalContent)}
+        {getModalContent(modalContent)?.content}
       </Modal>
       <div
         style={{

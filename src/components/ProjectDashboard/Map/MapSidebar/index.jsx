@@ -16,11 +16,12 @@ export default function MapSidebar() {
 
   return (
     <div
-      className={`naxatw-bg-grey-100 naxatw-pl-4 naxatw-pr-4 naxatw-pt-3 naxatw-transition-all naxatw-duration-300 naxatw-overflow-auto scrollbar ${
-        hideSidebar ? 'naxatw-hidden' : 'naxatw-block'
-      }`}
+      className="naxatw-bg-grey-100 naxatw-pl-4 naxatw-pr-4 naxatw-pt-3 naxatw-overflow-auto scrollbar"
       style={{
-        minWidth: '23rem',
+        width: hideSidebar ? '0' : '23rem',
+        minWidth: hideSidebar ? '0' : '23rem',
+        padding: hideSidebar ? '0' : '',
+        transition: 'ease-in-out 300ms',
       }}
     >
       {themes !== null && isEmpty(themes) ? (

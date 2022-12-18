@@ -1,8 +1,6 @@
 import { createReducer } from 'reduxsauce';
-import chroma from 'chroma-js';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
-import { pointTypes } from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 
 const initialState = {
   themes: null, // []
@@ -20,6 +18,9 @@ const initialState = {
   },
   searchText: '',
   toggleMapExport: false,
+  addFeatureTo: null,
+  editFeatureGeojson: null,
+  selectedLayerForEdit: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({

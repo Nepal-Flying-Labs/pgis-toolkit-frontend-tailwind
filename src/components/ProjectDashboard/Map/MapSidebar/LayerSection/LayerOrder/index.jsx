@@ -117,7 +117,7 @@ export default function LayerOrder() {
               content={({ listeners, attributes }) => (
                 <div
                   key={layer.id}
-                  className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-my-2"
+                  className="naxatw-flex naxatw-justify-between naxatw-items-center"
                   onMouseEnter={() => setHoverId(layer.id)}
                   onMouseLeave={() => setHoverId(null)}
                 >
@@ -157,7 +157,7 @@ export default function LayerOrder() {
                   <div className="naxatw-flex">
                     {layer.id === hoverId && (
                       <span
-                        className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer"
+                        className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
                         onClick={() => {
                           dispatch(setSelectedLayer(layer));
                         }}

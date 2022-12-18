@@ -2,11 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from '@Components/common/Button/index';
-import { Creators } from '@Actions/organizationDashboard';
+import { Creators as OrganizationDashboardCreators } from '@Actions/organizationDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
 import Users from '@Components/OrganizationDashboard/User/Users';
 import AssignUsers from '@Components/OrganizationDashboard/User/AssignUsers';
 
-const { toggleModal, clearUsersFilter } = Creators;
+const { clearUsersFilter } = OrganizationDashboardCreators;
+const { toggleModal } = CommonCreators;
 
 const User = () => {
   const dispatch = useDispatch();

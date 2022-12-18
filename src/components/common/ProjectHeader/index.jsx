@@ -10,7 +10,7 @@ import MaterialIcon from '@Components/common/MaterialIcon';
 import HeaderProfile from '../Header/HeaderProfile';
 
 const organizationHeaderData = [
-  { label: 'Info', route: 'home', disabled: true },
+  { label: 'Info', route: 'home', disabled: false },
   { label: 'Projects', route: 'projects', disabled: false },
   { label: 'User', route: 'user', disabled: false },
   { label: 'Settings', route: 'settings', disabled: true },

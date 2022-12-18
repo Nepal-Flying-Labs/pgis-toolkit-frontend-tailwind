@@ -1,7 +1,7 @@
 .naxatw-btn {
   @apply naxatw-px-5 naxatw-py-3 naxatw-font-bold naxatw-rounded-lg naxatw-text-[0.938rem]
   naxatw-leading-[1.25rem] naxatw-flex naxatw-items-center naxatw-justify-center naxatw-h-[48px] 
-  naxatw-transition-colors naxatw-duration-200;
+  naxatw-transition-colors naxatw-duration-150;
 }
 .naxatw-btn.naxatw-btn-sm {
   @apply naxatw-px-4 naxatw-py-2 naxatw-h-[40px];

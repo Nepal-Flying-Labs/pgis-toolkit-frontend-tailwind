@@ -1,8 +1,8 @@
 /* eslint-disable arrow-body-style */
 import React from 'react';
 import { useHistory } from 'react-router';
-import { Creators } from '@Actions/authentication';
-import Button from '@Components/common/Button/index';
+import { Creators } from '@Actions/common';
+import Button from '@Components/common/Button';
 import { useDispatch } from 'react-redux';
 
 const { toggleModal } = Creators;
@@ -22,7 +22,7 @@ const SignupSuccess = () => {
           //   loaderClassName="naxatw-fill-secondary-400"
           onClick={() => {
             history.push('/login');
-            dispatch(toggleModal(''));
+            dispatch(toggleModal());
           }}
         >
           Sign in

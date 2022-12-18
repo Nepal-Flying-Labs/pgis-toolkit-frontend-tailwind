@@ -12,7 +12,7 @@ import {
   getUserProfile,
 } from '@Services/authentication';
 import authActions, { Types } from '@Actions/authentication';
-import organizationsActions from '@Actions/organizations';
+import commonActions from '@Actions/common';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
 import { withLoader } from '@Utils/sagaUtils';
@@ -27,7 +27,7 @@ export function* loginRequest({ payload }) {
     const landingResponse = yield call(getLandingPage);
     yield put(authActions.setInfoDialogContent(null));
     yield put(push(`${landingResponse.data.page}`));
-    yield put(organizationsActions.toggleModal('access-to-functionalities'));
+    yield put(commonActions.toggleModal('access-to-functionalities'));
   } catch (error) {
     yield put(authActions.loginFailure());
     yield put(
@@ -73,7 +73,7 @@ export function* signUpRequest({ payload }) {
   try {
     const formdata = prepareFormData(payload);
     yield call(signUpUser, formdata);
-    yield put(authActions.toggleModal('sign-up-success'));
+    yield put(commonActions.toggleModal('sign-up-success'));
     // yield put(push('/login'));
   } catch (error) {
     yield put(authActions.signUpFailure());

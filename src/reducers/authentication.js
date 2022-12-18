@@ -8,7 +8,6 @@ const initialState = {
   userProfile: {},
   infoDialogContent: null,
   userPermissions: null,
-  modalContent: '',
   userGroup: null,
 };
 
@@ -37,11 +36,6 @@ const getUserGroupSuccess = (state, action) => ({
   userGroup: action.payload,
 });
 
-const toggleModal = (state, action) => ({
-  ...state,
-  modalContent: action.payload || '',
-});
-
 const getUserProfileSuccess = (state, action) => ({
   ...state,
   userProfile: action.payload,
@@ -53,7 +47,6 @@ const authenticationReducer = createReducer(initialState, {
   [Types.SET_INFO_DIALOG_CONTENT]: setInfoDialogContent,
   [Types.GET_USER_PERMISSIONS_SUCCESS]: getUserPermissionsSuccess,
   [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
-  [Types.TOGGLE_MODAL]: toggleModal,
   [Types.GET_USER_PROFILE_SUCCESS]: getUserProfileSuccess,
 });
 

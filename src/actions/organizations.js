@@ -16,8 +16,6 @@ export const { Types, Creators } = createActions(
     handlePreviousClick: null,
     handleJumpsTo: ['payload'],
     handleRowSelect: ['payload'],
-
-    toggleModal: ['payload'],
   },
   { prefix: '/organizations' },
 );

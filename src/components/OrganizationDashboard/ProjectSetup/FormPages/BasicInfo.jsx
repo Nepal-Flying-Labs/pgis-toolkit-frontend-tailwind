@@ -4,7 +4,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Input from '@Components/common/Input';
-import Select from '@Components/common/Select';
 import MultiSelect from '@Components/common/MultiSelect/index';
 import { Creators } from '@Actions/organizationDashboard';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
@@ -16,7 +15,7 @@ import useForm from '@Hooks/useForm';
 import { format } from 'date-fns';
 import ContactPerson from './ContactPerson';
 
-const { setIndividualProject, toggleModal } = Creators;
+const { setIndividualProject } = Creators;
 const { togglePromptDialog } = CommonCreators;
 
 const thematicFocusArea = [

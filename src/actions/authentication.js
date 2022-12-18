@@ -42,8 +42,6 @@ export const { Types, Creators } = createActions({
   getLandingPageRequest: null,
   getLandingPageSuccess: ['payload'],
   getLandingPageFailure: null,
-
-  toggleModal: ['payload'],
 });
 
 export default Creators;

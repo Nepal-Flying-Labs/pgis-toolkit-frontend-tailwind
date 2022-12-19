@@ -11,7 +11,7 @@ const initialState = {
   selectedLayer: null,
   deleteLayer: null,
   hideSidebar: false,
-  sidebarContent: '',
+  sidebarContent: '', // 'layer-order', 'edit-style', 'edit-feature', 'add-feature'
   mapSettings: {
     layerOrder: [],
     checkedLayers: [],
@@ -21,6 +21,7 @@ const initialState = {
   addFeatureTo: null,
   editFeatureGeojson: null,
   selectedLayerForEdit: null,
+  individualAttributeData: [],
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -279,6 +280,17 @@ const setProjectMapState = (state, action) => ({
   ...action.payload,
 });
 
+const getLayerAttributeFieldsSuccess = (state, action) => {
+  const individualAttributeData = action.payload.map(item => ({
+    ...item,
+    value: '',
+  }));
+  return {
+    ...state,
+    individualAttributeData,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -299,6 +311,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.SET_SEARCH_TEXT]: setSearchText,
   [Types.SET_MAP_CONFIG]: setMapConfig,
   [Types.SET_PROJECT_MAP_STATE]: setProjectMapState,
+  [Types.GET_LAYER_ATTRIBUTE_FIELDS_SUCCESS]: getLayerAttributeFieldsSuccess,
 });
 
 export default projectMapReducer;

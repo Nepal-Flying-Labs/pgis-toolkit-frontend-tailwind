@@ -53,6 +53,10 @@ export const { Types, Creators } = createActions(
 
     setMapConfig: ['payload'],
     setProjectMapState: ['payload'],
+
+    getLayerAttributeFieldsRequest: ['params'],
+    getLayerAttributeFieldsSuccess: ['payload'],
+    getLayerAttributeFieldsFailure: null,
   },
   { prefix: 'projectMap/' },
 );

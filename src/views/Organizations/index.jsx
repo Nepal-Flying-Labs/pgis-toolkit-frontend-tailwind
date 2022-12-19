@@ -1,49 +1,24 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as AuthCreators } from '@Actions/authentication';
 import { Creators as OrganizationsCreators } from '@Actions/organizations';
 import Header from '@Components/common/Header';
 import Button from '@Components/common/Button';
 import Modal from '@Components/common/Modal';
-import {
-  CreateAnOrganization,
-  CreateOrganizationSuccess,
-} from '@Components/Organizations/ModalContent';
-import AccessToFunctionalities from '@Components/ModalContent/AccessToFunctionalities';
 import OrganizationList from '@Components/Organizations/OrganizationList';
+import { getModalContent } from '@src/constants/modalContents';
 
-const { getOrganizationsRequest, toggleModal } = OrganizationsCreators;
+const { toggleModal } = CommonCreators;
+const { getOrganizationsRequest } = OrganizationsCreators;
 const { getUserPermissionsRequest } = AuthCreators;
-
-function getModalTitle(content) {
-  switch (content) {
-    case 'create-organization':
-      return 'Create an Organization';
-    case 'create-organization-success':
-      return '';
-    default:
-      return '';
-  }
-}
-
-function getModalContent(content) {
-  switch (content) {
-    case 'create-organization':
-      return <CreateAnOrganization />;
-    case 'create-organization-success':
-      return <CreateOrganizationSuccess />;
-    case 'access-to-functionalities':
-      return <AccessToFunctionalities />;
-    default:
-      return '';
-  }
-}
 
 export default function Organizations() {
   const userPermissions = useSelector(
     state => state.authentication.userPermissions,
   );
-  const modalContent = useSelector(state => state.organizations.modalContent);
+  const showModal = useSelector(state => state.common.showModal);
+  const modalContent = useSelector(state => state.common.modalContent);
   const searchText = useSelector(state => state.organizations.searchText);
   const page = useSelector(state => state.organizations.pagination.page);
   const rowSelect = useSelector(
@@ -67,11 +42,11 @@ export default function Organizations() {
       <Header />
 
       <Modal
-        show={!!modalContent}
-        title={getModalTitle(modalContent)}
+        show={showModal}
+        title={getModalContent(modalContent)?.title}
         onClose={() => dispatch(toggleModal())}
       >
-        {getModalContent(modalContent)}
+        {getModalContent(modalContent)?.content}
       </Modal>
 
       <div className="naxatw-mt-24 naxatw-px-10">

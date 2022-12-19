@@ -1,5 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { createOrganization, getOrganizations } from '@Services/organizations';
+import commonActions from '@Actions/common';
 import organizationsActions, { Types } from '@Actions/organizations';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
@@ -25,6 +26,7 @@ export function* createOrganizationRequest({ payload }) {
         organizationId: response.data.organization,
       }),
     );
+    yield put(commonActions.toggleModal('create-organization-success'));
     yield put(organizationsActions.getOrganizationsRequest());
   } catch (error) {
     yield put(organizationsActions.createOrganizationFailure());

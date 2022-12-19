@@ -3,27 +3,25 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable arrow-body-style */
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { Creators, Types } from '@Actions/organizationDashboard';
 import toastActions from '@Actions/toast';
 import Input from '@Components/common/Input/index';
-import Select from '@Components/common/Select/index';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button/index';
 import { Creators as CommonCreators } from '@Actions/common';
 import Chip from '@Components/common/Chip';
 import MultiSelect from '@Components/common/MultiSelect/index';
-import MaterialIcon from '@Components/common/MaterialIcon/index';
-import UploadPhotos from '@Components/common/UploadPhotos/index';
 import removeObjectKeys from '@Utils/removeObjectKeys';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetup/UploadPolygonBoundary/index';
 import MapSection from '../MapSection/index';
 
 const { togglePromptDialog } = CommonCreators;
-const { setIndividualProject, toggleModal, patchProjectRequest } = Creators;
+const { setIndividualProject, patchProjectRequest } = Creators;
+
 function diffObject(a, b) {
   const diffObj = Object.keys(b).reduce((diff, key) => {
     if (a[key] === b[key]) return diff;

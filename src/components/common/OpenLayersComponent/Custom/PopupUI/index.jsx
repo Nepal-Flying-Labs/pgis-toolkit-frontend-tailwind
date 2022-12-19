@@ -10,7 +10,7 @@ const exceptions = [
   // ...popupExceptionKeys,
 ];
 
-const SitePopupUI = ({ data = {} }) => {
+export default function PopupUI({ data = {} }) {
   const popupData = Object.keys(data).reduce((obj, key) => {
     const name = capitalizeFirstLetter(key);
     const exceptionKeys = [...exceptions];
@@ -41,6 +41,4 @@ const SitePopupUI = ({ data = {} }) => {
         ))}
     </ul>
   );
-};
-
-export default SitePopupUI;
+}

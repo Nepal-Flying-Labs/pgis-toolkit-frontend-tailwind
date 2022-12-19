@@ -9,8 +9,9 @@ import { getUid } from 'ol/util';
 import { Modify, Select, Translate, Draw, Snap } from 'ol/interaction';
 import { shiftKeyOnly, singleClick } from 'ol/events/condition';
 import getFeatureGeojson from '../helpers/getFeatureGeojson';
+import { getStyles } from '../helpers/styleUtils';
 
-import './styles.scss';
+// import './styles.scss';
 
 // const drawSource = new VectorSource();
 // const drawLayer = new VectorLayer({
@@ -20,6 +21,7 @@ import './styles.scss';
 const EditableLayer = ({
   map,
   geojson,
+  style,
   zIndex = 2,
   onSave,
   onCancel,
@@ -100,6 +102,7 @@ const EditableLayer = ({
       }),
       zIndex: zIndex + 1,
       declutter: true,
+      style: (feature, resolution) => getStyles({ style, feature, resolution }),
     });
     layerUid.current = getUid(vectorLyr);
     map.addLayer(vectorLyr);
@@ -224,30 +227,62 @@ const EditableLayer = ({
     onSave(lastModifiedFeature);
   };
 
-  if (!geojson) return '';
-
   return (
-    <div className="toolbar__container">
-      <div className="toolbar__title">
-        <h6>Edit Toolbar</h6>
+    <div
+      className="naxatw-absolute naxatw-p-2 naxatw-rounded-lg naxatw-bottom-10 naxatw-right-4 naxatw-bg-white naxatw-z-10
+                 naxatw-shadow-3xl"
+      style={{ display: !geojson ? 'none' : '' }}
+    >
+      <div className="">
+        <h5>Edit Toolbar</h5>
       </div>
-      <div className="toolbar__items">
-        <button type="button" title="Drag" onClick={handleDrag}>
-          <i className="material-icons">open_with</i>
+      <div className="naxatw-text-grey-800 naxatw-mt-2">
+        <button
+          className="naxatw-icon-btn naxatw-icon-btn-sm"
+          type="button"
+          title="Drag"
+          onClick={handleDrag}
+        >
+          <i className="material-symbols-outlined">open_with</i>
         </button>
-        <button type="button" title="Edit" onClick={handleEdit}>
+        <button
+          className="naxatw-icon-btn naxatw-icon-btn-sm"
+          type="button"
+          title="Edit"
+          onClick={handleEdit}
+        >
           <i className="material-icons">timeline</i>
         </button>
-        <button type="button" title="Delete" onClick={handleDelete}>
-          <i className="material-icons">delete</i>
+        <button
+          className="naxatw-icon-btn naxatw-icon-btn-sm"
+          type="button"
+          title="Delete"
+          onClick={handleDelete}
+        >
+          <i className="material-icons">delete_outline</i>
         </button>
-        <button type="button" title="Undo" onClick={handleUndo}>
+        <button
+          className="naxatw-icon-btn naxatw-icon-btn-sm"
+          type="button"
+          title="Undo"
+          onClick={handleUndo}
+        >
           <i className="material-icons">undo</i>
         </button>
-        <button type="button" title="Save" onClick={handleSave}>
-          <i className="material-icons">save</i>
+        <button
+          className="naxatw-icon-btn naxatw-icon-btn-sm"
+          type="button"
+          title="Save"
+          onClick={handleSave}
+        >
+          <i className="material-symbols-outlined">save</i>
         </button>
-        <button type="button" title="Cancel" onClick={onCancel}>
+        <button
+          className="naxatw-icon-btn naxatw-icon-btn-sm"
+          type="button"
+          title="Cancel"
+          onClick={onCancel}
+        >
           <i className="material-icons">close</i>
         </button>
       </div>

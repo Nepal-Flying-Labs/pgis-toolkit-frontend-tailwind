@@ -4,11 +4,11 @@
 import Searchbar from '@Components/common/Searchbar/index';
 import { useDispatch } from 'react-redux';
 import Table, { TableHeader } from '@Components/common/Table/Table';
-import {Creators as CommonCreators} from '@Actions/common'
+import { Creators as CommonCreators } from '@Actions/common';
 import SortingContainer from '@Components/common/SortingContainer/index';
 import React from 'react';
 
-const {toggleModal}=CommonCreators;
+const { toggleModal } = CommonCreators;
 
 const data = [
   {
@@ -32,7 +32,7 @@ const data = [
 ];
 
 const StepTwo = () => {
-  const dispatch=useDispatch(); 
+  const dispatch = useDispatch();
   return (
     <div>
       <h4>Preparation for data collection</h4>
@@ -99,12 +99,18 @@ const StepTwo = () => {
             dataFormat={row => (
               <div className="naxatw-flex naxatw-justify-end naxatw-gap-x-2 naxatw-items-center">
                 <a className="naxatw-px-2 naxatw-py-[11px]">
-                  <span className="naxatw-text-secondary-400 naxatw-text-body-btn" onClick={()=>dispatch(toggleModal('add-wms-layer'))}>
+                  <span
+                    className="naxatw-text-secondary-400 naxatw-text-body-btn"
+                    onClick={() => dispatch(toggleModal('add-wms-layer'))}
+                  >
                     Import From OSM
                   </span>
                 </a>
 
-                <a className="naxatw-px-2 naxatw-py-[11px]" onClick={()=>dispatch(toggleModal('manage-attributes'))}>
+                <a
+                  className="naxatw-px-2 naxatw-py-[11px]"
+                  onClick={() => dispatch(toggleModal('manage-attributes'))}
+                >
                   <span className="naxatw-text-secondary-400 naxatw-text-body-btn">
                     Manage attributes
                   </span>

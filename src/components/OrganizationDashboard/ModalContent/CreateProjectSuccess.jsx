@@ -2,7 +2,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import Button from '@Components/common/Button/index';
-import { Creators } from '@Actions/organizationDashboard';
+import { Creators } from '@Actions/common';
 import { useParams, useHistory } from 'react-router';
 
 const { toggleModal } = Creators;
@@ -24,7 +24,8 @@ const CreateProjectSuccess = () => {
         </div>
         <div className="naxatw-mt-7">
           <span className="naxatw-text-body-lg">
-          Congratulations on creating your project. You can now add Data, Documents, and Images to this project.
+            Congratulations on creating your project. You can now add Data,
+            Documents, and Images to this project.
           </span>
         </div>
       </div>
@@ -34,7 +35,7 @@ const CreateProjectSuccess = () => {
           //   isLoading={loading}
           //   loaderClassName="naxatw-fill-secondary-400"
           onClick={() => {
-            dispatch(toggleModal(''));
+            dispatch(toggleModal());
             history.push(`/organizations/${organizationId}/projects`);
           }}
         >

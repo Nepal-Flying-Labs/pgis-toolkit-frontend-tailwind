@@ -23,6 +23,7 @@ const {
   setSelectedLayer,
   setDeleteLayer,
   saveMapConfigRequest,
+  setProjectMapState,
 } = ProjectMapCreators;
 const { togglePromptDialog } = CommonCreators;
 
@@ -61,7 +62,13 @@ export default function LayerList() {
           <p className="naxatw-text-body-lg">Add Feature</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: data => {
+        dispatch(
+          setProjectMapState({
+            addFeatureTo: data,
+          }),
+        );
+      },
     },
     {
       id: 3,
@@ -134,7 +141,7 @@ export default function LayerList() {
                 {layers?.[theme.id]?.map(layer => (
                   <div
                     key={layer.id}
-                    className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-my-2"
+                    className="naxatw-flex naxatw-justify-between naxatw-items-center"
                     onMouseEnter={() => setHoverId(layer.id)}
                     onMouseLeave={() => setHoverId(null)}
                   >
@@ -169,7 +176,7 @@ export default function LayerList() {
                     <div className="naxatw-flex">
                       {layer.id === hoverId && (
                         <span
-                          className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer"
+                          className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
                           onClick={() => {
                             dispatch(setSelectedLayer(layer));
                           }}

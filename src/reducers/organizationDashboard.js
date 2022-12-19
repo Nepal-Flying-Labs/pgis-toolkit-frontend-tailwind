@@ -15,7 +15,6 @@ const initialState = {
     stepThree: {},
     stepFour: {},
   },
-  modalContent: '',
   organizationDetail: null,
   users: [],
   usersFilter: {
@@ -28,11 +27,6 @@ const initialState = {
 const getOrganizationDetailSuccess = (state, action) => ({
   ...state,
   organizationDetail: action.payload,
-});
-
-const toggleModal = (state, action) => ({
-  ...state,
-  modalContent: action.payload || '',
 });
 
 const getProjectsSuccess = (state, action) => ({
@@ -205,7 +199,6 @@ const resetOrganizationDashboardState = () => ({
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
-  [Types.TOGGLE_MODAL]: toggleModal,
   [Types.GET_INDIVIDUAL_PROJECT_SUCCESS]: getIndividualProjectSuccess,
   [Types.SET_INDIVIDUAL_PROJECT]: setIndividualProject,
   [Types.GET_CONTACT_PERSON_SUCCESS]: getContactPersonSuccess,

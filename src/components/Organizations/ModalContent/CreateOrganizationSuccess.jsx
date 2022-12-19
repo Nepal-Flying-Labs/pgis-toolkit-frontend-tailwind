@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators } from '@Actions/organizations';
+import { Creators } from '@Actions/common';
 import Button from '@Components/common/Button';
 
 const { toggleModal } = Creators;

@@ -1,4 +1,5 @@
-import { call, put, takeLatest, takeEvery } from 'redux-saga/effects';
+import { call, put, takeLatest, takeEvery, all } from 'redux-saga/effects';
+import chroma from 'chroma-js';
 import {
   getMapPopupData,
   getProjectThemeLayers,
@@ -12,6 +13,9 @@ import commonActions from '@Actions/common';
 import toastActions from '@Actions/toast';
 import { withLoader } from '@Utils/sagaUtils';
 import prepareFormData from '@Utils/prepareFormData';
+import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import { pointTypes } from '@Components/common/OpenLayersComponent/Legend/LegendItem';
+import { isEmpty } from '@Utils/commonUtils';
 
 export function* getProjectThemesRequest({ params }) {
   try {
@@ -26,9 +30,32 @@ export function* getProjectThemesRequest({ params }) {
 export function* getProjectThemeLayersRequest({ params }) {
   try {
     const response = yield call(getProjectThemeLayers, params);
+    const layersWithNoStyle = response.data.filter(item =>
+      isEmpty(item.style || {}),
+    );
+    const payloadData = layersWithNoStyle.map(item => ({
+      id: item.id,
+      style: {
+        ...defaultStyles,
+        fillColor: chroma.random().hex(),
+        fillOpacity: pointTypes.includes(item.geom_type)
+          ? 100
+          : defaultStyles.fillOpacity,
+      },
+    }));
+    yield all(
+      payloadData.map(item =>
+        call(updateLayer, item.id, prepareFormData({ style: item.style })),
+      ),
+    );
+    const data = response.data.map(item =>
+      item.style
+        ? { ...item }
+        : { ...item, style: payloadData.find(i => i.id === item.id)?.style },
+    );
     yield put(
       projectMapActions.getProjectThemeLayersSuccess({
-        data: response.data,
+        data,
         theme: params.theme,
       }),
     );

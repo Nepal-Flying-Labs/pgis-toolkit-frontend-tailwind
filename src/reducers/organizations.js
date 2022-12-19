@@ -3,7 +3,6 @@ import { Types } from '@Actions/organizations';
 
 const initialState = {
   organizationData: {},
-  modalContent: '',
   createOrganizationDetail: null,
   searchText: '',
   pagination: {
@@ -14,11 +13,6 @@ const initialState = {
     previous: null,
   },
 };
-
-const toggleModal = (state, action) => ({
-  ...state,
-  modalContent: action.payload || '',
-});
 
 const getOrganizationsSuccess = (state, action) => {
   const { counts, next, previous } = action.payload;
@@ -37,7 +31,6 @@ const getOrganizationsSuccess = (state, action) => {
 const createOrganizationSuccess = (state, action) => ({
   ...state,
   createOrganizationDetail: action.payload,
-  modalContent: 'create-organization-success',
 });
 
 const setSearchText = (state, action) => ({
@@ -91,7 +84,6 @@ const handleRowSelect = (state, action) => ({
 const organizationsReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATIONS_SUCCESS]: getOrganizationsSuccess,
   [Types.CREATE_ORGANIZATION_SUCCESS]: createOrganizationSuccess,
-  [Types.TOGGLE_MODAL]: toggleModal,
   [Types.SET_SEARCH_TEXT]: setSearchText,
   [Types.HANDLE_NEXT_CLICK]: handleNextClick,
   [Types.HANDLE_PREVIOUS_CLICK]: handlePreviousClick,

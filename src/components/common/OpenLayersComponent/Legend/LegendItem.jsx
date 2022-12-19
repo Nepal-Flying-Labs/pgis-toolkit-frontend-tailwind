@@ -10,7 +10,9 @@ import {
 // import checkIfSvgUrl from '../OpenLayersComponent/helpers/checkIfSvgUrl';
 // import './styles.scss';
 
-const lineTypes = ['LineString', 'MultiLineString'];
+export const pointTypes = ['Point', 'MultiPoint'];
+export const lineTypes = ['LineString', 'MultiLineString'];
+// const polygonTypes = ['Polygon', 'MultiPolygon'];
 
 const LegendItem = ({
   styles = { ...defaultStyles },
@@ -73,7 +75,7 @@ const LegendItem = ({
         <div style={style}>
           <img src={icon?.url} alt="icon" />
         </div>
-      ) : geometryType === 'Point' ? (
+      ) : pointTypes.includes(geometryType) ? (
         <div
           style={{
             backgroundColor: hexToRgba(fillColor, fillOpacity),

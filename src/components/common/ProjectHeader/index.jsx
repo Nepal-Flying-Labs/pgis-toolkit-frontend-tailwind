@@ -10,7 +10,7 @@ import MaterialIcon from '@Components/common/MaterialIcon';
 import HeaderProfile from '../Header/HeaderProfile';
 
 const organizationHeaderData = [
-  { label: 'Info', route: 'home', disabled: true },
+  { label: 'Info', route: 'home', disabled: false },
   { label: 'Projects', route: 'projects', disabled: false },
   { label: 'User', route: 'user', disabled: false },
   { label: 'Settings', route: 'settings', disabled: true },
@@ -57,9 +57,9 @@ export default function ProjectHeader() {
       className={`naxatw-h-[${projectHeaderHeight}] naxatw-fixed naxatw-w-full naxatw-z-[999] naxatw-top-0 naxatw-border-b naxatw-border-grey-300 naxatw-bg-white`}
     >
       <div className="naxatw-flex naxatw-justify-between naxatw-px-8  naxatw-h-full">
-        <div className="naxatw-flex naxatw-items-center naxatw-gap-5 naxatw-py-1">
+        <div className="naxatw-flex naxatw-items-center naxatw-gap-5 ">
           <Link
-            className="naxatw-pt-2"
+            className=""
             to={`${
               projectId
                 ? `/organizations/${organizationId}/projects`

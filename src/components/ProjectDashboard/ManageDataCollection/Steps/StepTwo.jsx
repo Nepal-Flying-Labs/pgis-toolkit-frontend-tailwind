@@ -47,7 +47,7 @@ const StepTwo = () => {
           <Searchbar />
         </div>
       </div>
-      <div>
+      <div className="naxa-table ">
         <Table
           data={data || []}
           className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"

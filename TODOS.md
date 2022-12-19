@@ -67,6 +67,8 @@
 - [x] dont zoom to layer on layer on
 - [x] name auto fill in layer upload
 - [ ] update map config after layer upload success
+- [ ] error details in error dialog
+- [ ] pull feature geojson before edit
 
 ### Backend
 

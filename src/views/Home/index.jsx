@@ -10,6 +10,7 @@ export default function Home() {
   useEffect(() => {
     dispatch(getLandingPageRequest());
   }, [dispatch]);
+
   return (
     <div>
       <h3 className="naxatw-fixed naxatw-inset-0 naxatw-flex naxatw-justify-center naxatw-items-center">

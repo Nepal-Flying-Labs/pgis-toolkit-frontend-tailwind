@@ -20,7 +20,6 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 const {
   handleCheckbox,
   setZoomToLayerId,
-  setSelectedLayer,
   setDeleteLayer,
   saveMapConfigRequest,
   setProjectMapState,
@@ -65,7 +64,8 @@ export default function LayerList() {
       onClick: data => {
         dispatch(
           setProjectMapState({
-            addFeatureTo: data,
+            selectedLayer: data,
+            sidebarContent: 'add-feature',
           }),
         );
       },
@@ -178,7 +178,12 @@ export default function LayerList() {
                         <span
                           className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
                           onClick={() => {
-                            dispatch(setSelectedLayer(layer));
+                            dispatch(
+                              setProjectMapState({
+                                selectedLayer: layer,
+                                sidebarContent: 'edit-style',
+                              }),
+                            );
                           }}
                         >
                           <MaterialIcon

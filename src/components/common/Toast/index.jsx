@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function Toast({ type, message, clearToast }) {
   useEffect(() => {
-    if (type && message) setTimeout(clearToast, 5000);
+    if (type && message) setTimeout(clearToast, 7000);
     switch (type) {
       case 'success':
         toast.success(` ${message}`);
@@ -25,7 +25,7 @@ function Toast({ type, message, clearToast }) {
 
   if (type && typeof message === 'string') {
     return (
-      <ToastContainer />
+      <ToastContainer style={{ zIndex: 111111 }} />
       // <div className={`alert alert-${type}`}>
       //   <p>{message}</p>
       // </div>

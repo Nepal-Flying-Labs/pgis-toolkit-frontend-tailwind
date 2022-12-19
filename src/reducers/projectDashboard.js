@@ -2,60 +2,160 @@ import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/projectDashboard';
 
 const initialState = {
-  themes: [],
-  layers: null,
-  zoomToLayerId: null,
-  selectedProjectTheme: null,
+  projectDetail: null,
+  data: {
+    layers: null,
+    uploadStatusCheckingIds: [],
+    selectedData: null,
+    uploadErrorResponse: null,
+  },
 };
 
-const getProjectThemesSuccess = (state, action) => ({
+const getProjectDetailSuccess = (state, action) => ({
   ...state,
-  themes: action.payload,
+  projectDetail: action.payload.data,
 });
 
-const getProjectThemeLayersSuccess = (state, action) => {
-  const { data, theme } = action.payload;
-  const layers = {
-    ...state.layers,
-    [theme]: data.map(item => ({ ...item, checked: false })),
-  };
+const getProjectLayersSuccess = (state, action) => {
   return {
     ...state,
-    layers,
+    data: {
+      ...state.data,
+      layers: action.payload,
+    },
   };
 };
 
-const handleCheckbox = (state, action) => {
-  const { layerId, themeId, checked } = action.payload;
-  const layers = {
-    ...state.layers,
-    [themeId]: state.layers[themeId].map(item =>
-      item.id === layerId ? { ...item, checked } : { ...item },
-    ),
-  };
-
+const uploadDatasetsSuccess = (state, action) => {
+  const layers = [...action.payload, ...state.data.layers];
   return {
     ...state,
-    layers,
+    data: {
+      ...state.data,
+      layers,
+    },
   };
 };
 
-const setZoomToLayerId = (state, action) => ({
-  ...state,
-  zoomToLayerId: action.payload,
-});
+const deleteDataSuccess = (state, action) => {
+  const { id: layerId } = action.payload;
+  const layers = state.data.layers.filter(item => item.id !== layerId);
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      layers,
+    },
+  };
+};
 
-const setSelectedProjectTheme = (state, action) => ({
-  ...state,
-  selectedProjectTheme: action.payload,
+const setUploadStatusCheckingId = (state, action) => {
+  const id = action.payload;
+  const uploadStatusCheckingIds = [...state.data.uploadStatusCheckingIds, id];
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      uploadStatusCheckingIds,
+    },
+  };
+};
+
+const checkUploadStatusSuccess = (state, action) => {
+  const data = action.payload;
+  const layers = state.data.layers.map(item =>
+    item.id === data.id ? data : { ...item },
+  );
+  const uploadStatusCheckingIds = state.data.uploadStatusCheckingIds.filter(
+    id => id !== data.id,
+  );
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      layers,
+      uploadStatusCheckingIds,
+    },
+  };
+};
+
+const setDataState = (state, action) => {
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      ...action.payload,
+    },
+  };
+};
+
+const getErrorDetailSuccess = (state, action) => {
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      uploadErrorResponse: action.payload,
+    },
+  };
+};
+
+const permanentDataDeleteSuccess = (state, action) => {
+  const layers = state.data.layers.filter(item => item.id !== action.payload);
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      layers,
+    },
+  };
+};
+
+const handleAddToMap = (state, action) => {
+  const { id, checked } = action.payload;
+  const layers = state.data.layers.map(item =>
+    item.id === id ? { ...item, display_on_map: checked } : { ...item },
+  );
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      layers,
+    },
+  };
+};
+
+const updateDataFailure = (state, action) => {
+  const layers = state.data.layers.map(item =>
+    item.id === action.payload
+      ? { ...item, display_on_map: !item.display_on_map }
+      : { ...item },
+  );
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      layers,
+    },
+  };
+};
+
+const resetProjectDashboardState = () => ({
+  ...initialState,
 });
 
 const projectDashboardReducer = createReducer(initialState, {
-  [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
-  [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
-  [Types.HANDLE_CHECKBOX]: handleCheckbox,
-  [Types.SET_ZOOM_TO_LAYER_ID]: setZoomToLayerId,
-  [Types.SET_SELECTED_PROJECT_THEME]: setSelectedProjectTheme,
+  [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
+  [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
+  [Types.UPLOAD_DATASETS_SUCCESS]: uploadDatasetsSuccess,
+  [Types.DELETE_DATA_SUCCESS]: deleteDataSuccess,
+  [Types.SET_UPLOAD_STATUS_CHECKING_ID]: setUploadStatusCheckingId,
+  [Types.CHECK_UPLOAD_STATUS_SUCCESS]: checkUploadStatusSuccess,
+  [Types.SET_DATA_STATE]: setDataState,
+  [Types.GET_ERROR_DETAIL_SUCCESS]: getErrorDetailSuccess,
+  [Types.PERMANENT_DATA_DELETE_SUCCESS]: permanentDataDeleteSuccess,
+  [Types.HANDLE_ADD_TO_MAP]: handleAddToMap,
+  [Types.UPDATE_DATA_FAILURE]: updateDataFailure,
+  [Types.RESET_PROJECT_DASHBOARD_STATE]: resetProjectDashboardState,
 });
 
 export default projectDashboardReducer;

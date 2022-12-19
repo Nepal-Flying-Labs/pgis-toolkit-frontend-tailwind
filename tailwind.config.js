@@ -47,17 +47,17 @@ module.exports = {
       },
       fontSize: {
         'body-lg': [
-          '1rem',
+          '0.938rem',
           {
-            lineHeight: '1.375',
+            lineHeight: '1.25',
             fontWeight: '400',
             letterSpacing: '0',
           },
         ],
         'body-md': [
-          '0.875rem',
+          '0.813rem',
           {
-            lineHeight: '1.25',
+            lineHeight: '1.125',
             fontWeight: '400',
             letterSpacing: '0',
           },
@@ -65,7 +65,32 @@ module.exports = {
         'body-sm': [
           '0.75rem',
           {
+            lineHeight: '1',
+            fontWeight: '700',
+            letterSpacing: '0',
+          },
+        ],
+        'body-btn': [
+          '0.938rem',
+          {
             lineHeight: '1.25',
+            fontWeight: '700',
+            letterSpacing: '0',
+          },
+        ],
+
+        'icon-md': [
+          '1.5rem',
+          {
+            fontFamily: 'Material Icons Outlined',
+            fontWeight: '400',
+            lineHeight: '24px',
+          },
+        ],
+        'icon-sm': [
+          '1.125rem',
+          {
+            lineHeight: '1.125',
             fontWeight: '400',
             letterSpacing: '0',
           },
@@ -73,6 +98,14 @@ module.exports = {
       },
       boxShadow: {
         '3xl': '0px 2px 20px 4px rgba(0, 0, 0, 0.12)',
+        light: {
+          background: '#D9D9D9',
+          boxShadow: '0px 2px 20px 4px rgba(0, 0, 0, 0.12)',
+        },
+        dark: {
+          background: '#D9D9D9',
+          boxShadow: '0px 4px 16px 8px rgba(0, 0, 0, 0.28)',
+        },
       },
     },
   },

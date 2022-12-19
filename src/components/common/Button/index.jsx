@@ -14,7 +14,11 @@ export default function Button({
   loaderClassName,
 }) {
   return (
-    <button type={type} className={`naxatw-btn ${className}`} onClick={onClick}>
+    <button
+      type={type}
+      className={`naxatw-btn naxatw-group ${className}`}
+      onClick={onClick}
+    >
       {iconLeft && (
         <i className="material-icons naxatw-mr-2 naxatw-text-[22px]">
           {iconLeft}
@@ -25,7 +29,7 @@ export default function Button({
           <svg
             key={loaderClassName}
             aria-hidden="true"
-            className={`naxatw-mr-2 naxatw-w-[22px] naxatw-h-[22px] naxatw-text-gray-200 naxatw-animate-spin ${loaderClassName}`}
+            className={`naxatw-mr-2 naxatw-w-[22px] naxatw-h-[22px] naxatw-text-grey-200 naxatw-animate-spin ${loaderClassName}`}
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +47,10 @@ export default function Button({
         </div>
       ) : (
         <>
-          {children}
+          <p className="group-hover:naxatw-underline naxatw-text-inherit">
+            {children}
+          </p>
+
           {iconRight && (
             <i className="material-icons naxatw-mr-2 naxatw-text-[22px]">
               {iconRight}
@@ -63,7 +70,7 @@ Button.defaultProps = {
   iconRight: null,
   onClick: () => {},
   isLoading: false,
-  loaderClassName: 'naxatw-fill-blue-600',
+  loaderClassName: 'naxatw-fill-secondary-400',
 };
 
 Button.propTypes = {

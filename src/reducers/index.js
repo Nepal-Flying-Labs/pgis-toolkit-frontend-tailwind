@@ -8,6 +8,7 @@ import common from './common';
 import organizations from './organizations';
 import organizationDashboard from './organizationDashboard';
 import projectDashboard from './projectDashboard';
+import projectMap from './projectMap';
 
 export default combineReducers({
   router: connectRouter(history),
@@ -18,4 +19,5 @@ export default combineReducers({
   organizations,
   organizationDashboard,
   projectDashboard,
+  projectMap,
 });

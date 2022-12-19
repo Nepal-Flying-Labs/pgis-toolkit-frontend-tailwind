@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
-import { useParams } from 'react-router';
+import React, { useEffect, useRef } from 'react';
+import { useHistory, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { projectHeaderHeight } from '@src/constants';
+// import { projectHeaderHeight } from '@src/constants';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
+import ManageDataCollection from '@Components/ProjectDashboard/ManageDataCollection/index';
 import ProjectHeader from '@Components/common/ProjectHeader';
 import Map from '@Components/ProjectDashboard/Map';
 import Data from '@Components/ProjectDashboard/Data';
@@ -12,13 +13,26 @@ import Gallery from '@Components/ProjectDashboard/Gallery';
 import Users from '@Components/ProjectDashboard/Users';
 import Info from '@Components/ProjectDashboard/Info';
 import Settings from '@Components/ProjectDashboard/Settings';
-import { isEmpty } from '@Utils/commonUtils';
 import Modal from '@Components/common/Modal';
-import { getModalContent, getModalTitle } from '@src/constants/modalContents';
+import {
+  getModalContent,
+  getPromptDialogContent,
+} from '@src/constants/modalContents';
+import PromptDialog from '@Components/common/PromptDialog';
+import AppLoader from '@Components/common/AppLoader';
+import { isEmpty } from '@Utils/commonUtils';
 
-const { getProjectThemesRequest, getProjectThemeLayersRequest } =
-  ProjectDashboardCreators;
-const { toggleModal } = CommonCreators;
+const {
+  toggleModal,
+  togglePromptDialog,
+  setModalContent,
+  setPromptDialogContent,
+} = CommonCreators;
+const {
+  getProjectLayersRequest,
+  getProjectDetailRequest,
+  resetProjectDashboardState,
+} = ProjectDashboardCreators;
 
 function getTabContent(tabname) {
   switch (tabname) {
@@ -42,33 +56,62 @@ function getTabContent(tabname) {
 }
 
 export default function ProjectDashboard() {
-  const { projectId, tabname } = useParams();
-  const themes = useSelector(state => state.projectDashboard.themes);
+  const { tabname, projectId, organizationId } = useParams();
+  const history = useHistory();
+  const showModal = useSelector(state => state.common.showModal);
   const modalContent = useSelector(state => state.common.modalContent);
+  const showPromptDialog = useSelector(state => state.common.showPromptDialog);
+  const promptDialogContent = useSelector(
+    state => state.common.promptDialogContent,
+  );
+  const projectHeaderHeight = useSelector(
+    state => state.common.projectHeaderHeight,
+  );
+  const layers = useSelector(state => state.projectDashboard.data.layers);
+  const pushedToManageDataPage = useRef(false);
   const dispatch = useDispatch();
 
-  // project map section
+  useEffect(
+    () => () => {
+      dispatch(resetProjectDashboardState());
+    },
+    [dispatch],
+  );
+
   useEffect(() => {
-    dispatch(getProjectThemesRequest({ project: projectId }));
+    dispatch(getProjectDetailRequest({ project: projectId }));
+    dispatch(getProjectLayersRequest({ project: projectId }));
   }, [dispatch, projectId]);
 
-  useEffect(() => {
-    if (isEmpty(themes)) return;
-    themes.forEach(({ id }) => {
-      dispatch(getProjectThemeLayersRequest({ theme: id }));
-    });
-  }, [dispatch, themes]);
+  if (!layers) {
+    return <AppLoader />;
+  }
 
-  return (
+  if (isEmpty(layers) && !pushedToManageDataPage.current) {
+    pushedToManageDataPage.current = true;
+    history.push(
+      `/organizations/${organizationId}/projects/${projectId}/manage-data`,
+    );
+  }
+
+  return tabname !== 'manage-data' ? (
     <div>
       <ProjectHeader />
 
+      <PromptDialog
+        show={showPromptDialog}
+        title={getPromptDialogContent(promptDialogContent)?.title}
+        onClose={() => dispatch(togglePromptDialog())}
+      >
+        {getPromptDialogContent(promptDialogContent)?.content}
+      </PromptDialog>
+
       <Modal
-        show={!!modalContent}
-        title={getModalTitle(modalContent)}
+        show={showModal}
+        title={getModalContent(modalContent)?.title}
         onClose={() => dispatch(toggleModal())}
       >
-        {getModalContent(modalContent)}
+        {getModalContent(modalContent)?.content}
       </Modal>
 
       <div
@@ -79,5 +122,7 @@ export default function ProjectDashboard() {
         {getTabContent(tabname)}
       </div>
     </div>
+  ) : (
+    <ManageDataCollection />
   );
 }

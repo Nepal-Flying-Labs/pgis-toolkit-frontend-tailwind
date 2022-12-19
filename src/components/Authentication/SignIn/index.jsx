@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/authentication';
 import InfoDialog from '@Components/common/InfoDialog';
@@ -10,7 +10,7 @@ import ButtonLink from '@Components/common/ButtonLink';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import './styles.css';
 
-const { loginRequest } = Creators;
+const { loginRequest, getLandingPageRequest } = Creators;
 
 const initialState = {
   username: '',
@@ -34,6 +34,13 @@ export default function SignIn() {
     },
   });
 
+  useEffect(() => {
+    const token = localStorage.getItem('userToken');
+    if (token) {
+      dispatch(getLandingPageRequest());
+    }
+  }, [dispatch]);
+
   return (
     <>
       <div className="naxatw-mb-[3.125rem]">
@@ -52,8 +59,10 @@ export default function SignIn() {
           ''
         )}
         <Button className="naxatw-btn-secondary naxatw-w-full ">
-          <img className="naxatw-mr-3" src={GoogleIcon} alt="google-icon" />
-          <p>Sign in with Google</p>
+          <div className="naxatw-flex naxatw-items-center">
+            <img className="naxatw-mr-3" src={GoogleIcon} alt="google-icon" />
+            <p className="naxatw-text-inherit">Sign in with Google</p>
+          </div>
         </Button>
 
         <div className="naxatw-my-[28px] naxatw-flex naxatw-items-center">
@@ -61,70 +70,75 @@ export default function SignIn() {
           <p className="naxatw-mx-3 naxatw-text-sm">or</p>
           <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
         </div>
-
-        <div className="mb-6 naxatw-space-y-[1.125rem]">
-          <div className="naxatw-space-y-2">
-            <label className="naxatw-label">Username</label>
-            <input
-              type="text"
-              className="naxatw-input"
-              name="username"
-              placeholder="Username"
-              value={values.username}
-              onChange={handleChange}
-              {...inputProps}
-            />
-          </div>
-          <div className="naxatw-space-y-2 naxatw-relative">
-            <label className="naxatw-label">Password</label>
-            <input
-              type={!isVisible ? 'password' : 'text'}
-              className="naxatw-input "
-              name="password"
-              placeholder="**********"
-              value={values.password}
-              onChange={handleChange}
-              {...inputProps}
-            />
-            <span
-              onClick={() => setIsVisible(!isVisible)}
-              className="material-icons naxatw-absolute naxatw-right-3 naxatw-top-9 naxatw-cursor-pointer"
-            >
-              {!isVisible ? 'visibility' : 'visibility_off'}
-            </span>
-          </div>
-
-          <div className="naxatw-flex naxatw-items-center naxatw-mb-6 naxatw-justify-between">
-            <div className="naxatw-flex naxatw-items-start naxatw-gap-3">
+        <form onSubmit={handleSubmit}>
+          <div className="mb-6 naxatw-space-y-[1.125rem]">
+            <div className="naxatw-space-y-2">
+              <label className="naxatw-label">Username</label>
               <input
-                id="keep-me"
-                type="checkbox"
-                value=""
-                className="naxatw-w-4 naxatw-h-4"
-                required
+                type="text"
+                className="naxatw-input"
+                name="username"
+                placeholder="Username"
+                value={values.username}
+                onChange={handleChange}
+                {...inputProps}
               />
-              <label
-                htmlFor="keep-me"
-                className="naxatw-text-body-md naxatw-text-grey-800"
-              >
-                Keep me signed in
-              </label>
             </div>
-            <div>
-              <ButtonLink to="/forgot-password">
-                Forgot your password?
-              </ButtonLink>
+            <div className="naxatw-space-y-2 naxatw-relative">
+              <label className="naxatw-label">Password</label>
+              <input
+                type={!isVisible ? 'password' : 'text'}
+                className="naxatw-input "
+                name="password"
+                placeholder="**********"
+                value={values.password}
+                onChange={handleChange}
+                {...inputProps}
+              />
+              <span
+                onClick={() => setIsVisible(!isVisible)}
+                className="material-icons naxatw-absolute naxatw-right-3 naxatw-top-9 naxatw-cursor-pointer"
+              >
+                {!isVisible ? 'visibility' : 'visibility_off'}
+              </span>
+            </div>
+
+            <div className="naxatw-flex naxatw-items-center naxatw-mb-6 naxatw-justify-between">
+              <div className="naxatw-flex naxatw-items-start naxatw-gap-3">
+                <input
+                  id="keep-me"
+                  type="checkbox"
+                  value=""
+                  className="naxatw-w-4 naxatw-h-4"
+                />
+                <label
+                  htmlFor="keep-me"
+                  className="naxatw-text-body-md naxatw-text-grey-800"
+                >
+                  Keep me signed in
+                </label>
+              </div>
+              <div>
+                <ButtonLink to="/forgot-password">
+                  Forgot your password?
+                </ButtonLink>
+              </div>
             </div>
           </div>
-        </div>
-        <Button
-          className="naxatw-btn-primary naxatw-mt-[1.625rem] naxatw-w-full"
-          isLoading={loading}
-          loaderClassName="naxatw-fill-secondary-400"
-          onClick={handleSubmit}
-        >
-          Sign In
-        </Button>
+
+          <Button
+            className="naxatw-btn-primary naxatw-mt-[1.625rem] naxatw-w-full"
+            isLoading={loading}
+            loaderClassName="naxatw-fill-secondary-400"
+            onClick={e => {
+              e.preventDefault();
+              handleSubmit(e);
+            }}
+            type="Submit"
+          >
+            Sign In
+          </Button>
+        </form>
       </div>
     </>
   );

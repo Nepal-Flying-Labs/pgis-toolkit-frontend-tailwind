@@ -11,7 +11,7 @@ import Overlay from 'ol/Overlay';
 import { siteId, regionId } from '@src/constants/map';
 import { getCenter } from 'ol/extent';
 import '../../Popup/popup.scss';
-import Button from '@Components/common/Button/index';
+import Button from '@Components/common/Button';
 
 function hasKey(obj, key) {
   return Object.keys(obj).some(item => item === key);
@@ -39,6 +39,7 @@ const AsyncPopup = ({
   const [coordinates, setCoordinates] = useState(null);
   const [overlay, setOverlay] = useState(null);
   const [properties, setProperties] = useState(null);
+  const [feature, setFeature] = useState(null);
   const [popupHTML, setPopupHTML] = useState('');
 
   // add overlay to popupRef
@@ -62,6 +63,7 @@ const AsyncPopup = ({
     // onPopupClose();
     setPopupHTML('');
     setProperties(null);
+    setFeature(null);
     popupCloserRef.current.blur();
   }, [overlay, popupCloserRef]);
 
@@ -80,6 +82,7 @@ const AsyncPopup = ({
         closePopupFn();
         return;
       }
+      setFeature(features[0]);
       const featureProperties = features[0].getProperties();
       const { layerId } = featureProperties;
       if (
@@ -131,24 +134,24 @@ const AsyncPopup = ({
     <div ref={popupRef} id="popup" className="ol-popup">
       <a
         ref={popupCloserRef}
-        href={() => {}}
+        // href={() => {}}
         id="popup-closer"
-        className="ol-popup-closer"
+        className="ol-popup-closer naxatw-text-grey-800"
         onClick={closePopupFn}
       />
-      <div id="popup-content" dangerouslySetInnerHTML={{ __html: popupHTML }} />
-      {properties?.layer === 'site' && !loading && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '1rem',
-            right: '1rem',
-          }}
-        >
+      <div
+        id="popup-content"
+        style={{ marginTop: '0.5rem' }}
+        dangerouslySetInnerHTML={{ __html: popupHTML }}
+      />
+      {!loading && (
+        <div className="naxatw-mt-2">
           <Button
-            label={buttonText}
-            onClick={() => onButtonClick(properties)}
-          />
+            className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
+            onClick={() => onButtonClick(properties, feature)}
+          >
+            {buttonText}
+          </Button>
         </div>
       )}
     </div>

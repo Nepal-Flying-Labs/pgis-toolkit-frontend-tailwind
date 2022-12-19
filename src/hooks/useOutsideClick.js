@@ -11,7 +11,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
  * Toggle handler on the element to trigger the toggle.
  *
  */
-const useOutsideClick = () => {
+const useOutsideClick = (type = 'single') => {
   const ref = useRef();
   const [toggle, setToggle] = useState(false);
 
@@ -33,7 +33,13 @@ const useOutsideClick = () => {
     };
   }, [toggle, onOutsideClick]);
 
-  const handleToggle = () => setToggle(prev => !prev);
+  const handleToggle = () => {
+    if (type === 'multiple') {
+      setToggle(true);
+    } else {
+      setToggle(prev => !prev);
+    }
+  };
 
   return [ref, toggle, handleToggle];
 };

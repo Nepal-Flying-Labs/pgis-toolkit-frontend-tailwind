@@ -53,7 +53,6 @@ export const defaultStyles = {
   labelMaxAngleDegree: 0.7853981633974483,
   labelOverflow: false,
   labelLineHeight: 1,
-  visibleOnMap: true,
   icon: {},
   showSublayer: false,
   sublayerColumnName: '',
@@ -247,7 +246,11 @@ export function getStyles({ style, feature, resolution }) {
   switch (geometryType) {
     case 'Point':
       return generateLayerStylePoint(style, feature, resolution);
+    case 'MultiPoint':
+      return generateLayerStylePoint(style, feature, resolution);
     case 'Polygon':
+      return generateLayerStylePolygon(style, feature, resolution);
+    case 'MultiPolygon':
       return generateLayerStylePolygon(style, feature, resolution);
     case 'LineString':
       return generateLayerStyleLine(style, feature, resolution);

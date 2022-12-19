@@ -1,9 +1,10 @@
 .naxatw-btn {
-  @apply naxatw-px-5 naxatw-py-3 naxatw-font-bold naxatw-rounded-lg naxatw-text-[15px] 
-  naxatw-flex naxatw-items-start naxatw-justify-center;
+  @apply naxatw-px-5 naxatw-py-3 naxatw-font-bold naxatw-rounded-lg naxatw-text-[0.938rem]
+  naxatw-leading-[1.25rem] naxatw-flex naxatw-items-center naxatw-justify-center naxatw-h-[48px] 
+  naxatw-transition-colors naxatw-duration-150;
 }
 .naxatw-btn.naxatw-btn-sm {
-  @apply naxatw-px-4 naxatw-py-2;
+  @apply naxatw-px-4 naxatw-py-2 naxatw-h-[40px];
 }
 .naxatw-btn.naxatw-btn-primary {
   @apply naxatw-text-white naxatw-bg-primary-400 hover:naxatw-bg-primary-800;
@@ -21,4 +22,18 @@
 }
 .naxatw-btn.naxatw-btn-transparent {
   @apply naxatw-bg-transparent;
+}
+
+.naxatw-icon-btn {
+  @apply hover:naxatw-bg-[#F5F5F5] naxatw-rounded-lg;
+}
+
+.naxatw-icon-btn.naxatw-icon-btn-md {
+  @apply naxatw-p-3 naxatw-h-[48px] naxatw-w-[48px];
+}
+.naxatw-icon-btn.naxatw-icon-btn-sm {
+  @apply naxatw-p-2 naxatw-h-[40px] naxatw-w-[40px];
+}
+.naxatw-icon-btn.naxatw-icon-btn-border {
+  @apply naxatw-p-2 naxatw-border naxatw-border-[#D7D7D7] naxatw-h-[40px] naxatw-w-[40px];
 }

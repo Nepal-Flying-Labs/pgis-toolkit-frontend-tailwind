@@ -47,6 +47,15 @@ const useForm = ({
     });
   };
 
+  const handleCustomChange = (name, value) => {
+    // console.log(name, value);
+    // const { name, value } = event.target;
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
+  };
+
   const handleBlur = e => {
     const { name, value } = e.target;
 
@@ -99,6 +108,7 @@ const useForm = ({
     values: inputs,
     inputProps,
     handleChange,
+    handleCustomChange,
     handleBlur,
     handleSubmit,
     meta,

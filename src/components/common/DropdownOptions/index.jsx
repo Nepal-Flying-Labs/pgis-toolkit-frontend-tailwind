@@ -1,36 +1,49 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import useOutsideClick from '@Hooks/useOutsideClick';
+import MaterialIcon from '../MaterialIcon/index';
 
-export default function DropdownOptions({ options, data }) {
+export default function DropdownOptions({ options, data, stopPropagation }) {
   const [toggleRef, toggle, handleToggle] = useOutsideClick();
 
   return (
-    <div className="naxatw-relative naxatw-w-10 naxatw-flex">
+    <div className="naxatw-relative naxatw-w-10 naxatw-flex naxatw-justify-end">
       <a
         ref={toggleRef}
-        href={() => {}}
-        className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-gray-800 naxatw-bg-white naxatw-rounded-lg hover:naxatw-bg-gray-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-gray-50 naxatw-select-none"
-        onClick={handleToggle}
+        className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-grey-800  naxatw-rounded-lg hover:naxatw-bg-grey-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-grey-50 naxatw-select-none"
+        onClick={e => {
+          if (stopPropagation) e.stopPropagation();
+          handleToggle();
+        }}
       >
-        <i className="material-icons">more_vert</i>
+        <MaterialIcon
+          className="naxatw-text-icon-md"
+          name="more_vert"
+          wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
+        />
       </a>
       <div
         id="dropdownDots"
         className={`${
           toggle ? '' : 'naxatw-hidden'
-        } naxatw-absolute naxatw-top-[2px] naxatw-right-[42px] naxatw-z-10 naxatw-w-[12.5rem] naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-gray-100 naxatw-shadow-3xl`}
+        } naxatw-absolute naxatw-top-[2px] naxatw-right-[40px] naxatw-z-10 naxatw-w-[12.5rem] naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100 naxatw-shadow-3xl`}
       >
         <ul
-          className="naxatw-py-2 naxatw-text-sm naxatw-text-gray-700"
+          className="naxatw-py-2 naxatw-text-sm naxatw-text-grey-700"
           aria-labelledby="dropdownMenuIconButton"
         >
           {options.map(({ id, label, onClick }) => (
             <li
               key={id}
-              className="naxatw-block naxatw-py-[13px] naxatw-px-3 hover:naxatw-bg-gray-100"
+              className="naxatw-block naxatw-py-2.5 naxatw-px-3 hover:naxatw-bg-grey-100 naxatw-cursor-pointer"
             >
-              <a href={() => {}} onClick={() => onClick(data)}>
+              <a
+                onClick={e => {
+                  onClick(data);
+                  e.stopPropagation();
+                }}
+              >
                 {label}
               </a>
             </li>

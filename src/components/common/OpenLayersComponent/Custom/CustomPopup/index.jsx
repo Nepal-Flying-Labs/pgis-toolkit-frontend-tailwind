@@ -80,7 +80,7 @@ const CustomPopup = ({ map, fetchPopupData, popupUI }) => {
       />
       <div
         id="popup-content"
-        className="is-overflow"
+        className="naxatw-overflow-auto scrollbar"
         dangerouslySetInnerHTML={{ __html: popupHTML }}
       />
     </div>

@@ -30,6 +30,18 @@ export const { Types, Creators } = createActions({
   getUserPermissionsRequest: ['params'],
   getUserPermissionsSuccess: ['payload'],
   getUserPermissionsFailure: null,
+
+  getUserGroupRequest: ['params'],
+  getUserGroupSuccess: ['payload'],
+  getUserGroupFailure: null,
+
+  getUserProfileRequest: null,
+  getUserProfileSuccess: ['payload'],
+  getUserProfileFailure: null,
+
+  getLandingPageRequest: null,
+  getLandingPageSuccess: ['payload'],
+  getLandingPageFailure: null,
 });
 
 export default Creators;

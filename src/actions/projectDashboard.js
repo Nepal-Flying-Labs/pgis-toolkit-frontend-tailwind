@@ -2,21 +2,49 @@ import { createActions } from 'reduxsauce';
 
 export const { Types, Creators } = createActions(
   {
-    getProjectThemesRequest: ['params'],
-    getProjectThemesSuccess: ['payload'],
-    getProjectThemesFailure: null,
+    getProjectDetailRequest: ['params'],
+    getProjectDetailSuccess: ['payload'],
+    getProjectDetailFailure: null,
 
-    getProjectThemeLayersRequest: ['params'],
-    getProjectThemeLayersSuccess: ['payload'],
-    getProjectThemeLayersFailure: null,
+    getProjectLayersRequest: ['params'],
+    getProjectLayersSuccess: ['payload'],
+    getProjectLayersFailure: null,
 
-    handleCheckbox: ['payload'],
-    setZoomToLayerId: ['payload'],
-    setSelectedProjectTheme: ['payload'],
+    getCategoryListRequest: ['params'],
+    getCategoryListSuccess: ['payload'],
+    getCategoryListFailure: null,
 
-    uploadLayerRequest: ['payload'],
-    uploadLayerSuccess: ['payload'],
-    uploadLayerFailure: null,
+    uploadDatasetsRequest: ['payload'],
+    uploadDatasetsSuccess: ['payload'],
+    uploadDatasetsFailure: null,
+
+    deleteDataRequest: ['id', 'payload'],
+    deleteDataSuccess: ['payload'],
+    deleteDataFailure: null,
+
+    setUploadStatusCheckingId: ['payload'],
+
+    checkUploadStatusRequest: ['id'],
+    checkUploadStatusSuccess: ['payload'],
+    checkUploadStatusFailure: null,
+
+    getErrorDetailRequest: ['params'],
+    getErrorDetailSuccess: ['payload'],
+    getErrorDetailFailure: null,
+
+    setDataState: ['payload'],
+
+    permanentDataDeleteRequest: ['id'],
+    permanentDataDeleteSuccess: ['payload'],
+    permanentDataDeleteFailure: null,
+
+    handleAddToMap: ['payload'],
+
+    updateDataRequest: ['id', 'payload'],
+    updateDataSuccess: ['payload'],
+    updateDataFailure: ['payload'],
+
+    resetProjectDashboardState: null,
   },
   { prefix: 'projectDashboard/' },
 );

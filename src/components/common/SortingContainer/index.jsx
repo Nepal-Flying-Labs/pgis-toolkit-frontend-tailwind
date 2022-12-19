@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-export default function SortingContainer({ name, handleSort }) {
+export default function SortingContainer({ name, handleSort, className }) {
   const [iconChange, setIconChange] = useState(false);
   const toggleIcon = () => {
     handleSort();
@@ -9,7 +9,9 @@ export default function SortingContainer({ name, handleSort }) {
   };
   return (
     <div className="naxatw-flex naxatw-items-center">
-      <span className="naxatw-font-bold naxatw-text-grey-500 naxatw-text-sm">
+      <span
+        className={`naxatw-font-bold ${className} naxatw-text-grey-500 naxatw-text-body-sm`}
+      >
         {name}
       </span>
       <span className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-center">
@@ -30,9 +32,11 @@ export default function SortingContainer({ name, handleSort }) {
 SortingContainer.propTypes = {
   name: PropTypes.string,
   handleSort: PropTypes.func,
+  className: PropTypes.string,
 };
 
 SortingContainer.defaultProps = {
   name: '',
+  className: '',
   handleSort: () => {},
 };

@@ -8,7 +8,10 @@ export default function MaterialIcon({
   wrapperClassName,
 }) {
   return (
-    <button type="button" className={` ${wrapperClassName}`}>
+    <button
+      type="button"
+      className={`naxatw-flex naxatw-items-center ${wrapperClassName}`}
+    >
       <i className={`material-icons ${className}`} style={style}>
         {name}
       </i>

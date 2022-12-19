@@ -1,0 +1,73 @@
+/* eslint-disable arrow-body-style */
+import React from 'react';
+import { useHistory, useParams } from 'react-router';
+import UserIcon from '@Assets/images/user-icon.png';
+import Button from '@Components/common/Button/index';
+import Searchbar from '@Components/common/Searchbar/index';
+import Select from '@Components/common/Select/index';
+import UserCard from '../UserCard/index';
+
+const roles = [
+  {
+    id: 1,
+    value: '1',
+    name: 'Project Manager',
+  },
+  {
+    id: 2,
+    value: '2',
+    name: 'Organization Admin',
+  },
+  {
+    id: 3,
+    value: '3',
+    name: 'Medical Assistant',
+  },
+];
+
+const UserInfo = () => {
+  const { organizationId } = useParams();
+  const history = useHistory();
+  return (
+    <div className="naxatw-w-[440px] naxatw-bg-white naxatw-rounded-xl naxatw-border naxatw-border-[#D7D7D7]">
+      <div className="naxatw-flex naxatw-p-2 naxatw-justify-between naxatw-items-center naxatw-border-b-[1px] naxatw-rounded-t-xl naxatw-pl-4">
+        <div>
+          <div className="naxatw-flex naxatw-gap-x-5">
+            <img
+              src={UserIcon}
+              alt="user-icon"
+              className="naxatw-h-[60px] naxatw-w-[60px] naxatw-rounded-full"
+            />
+
+            <div>
+              <h5>Users</h5>
+              <h3>106</h3>
+            </div>
+          </div>
+        </div>
+        <Button
+          className="naxatw-btn-secondary naxatw-btn-noborder"
+          iconRight="chevron_right"
+          onClick={() => history.push(`/organizations/${organizationId}/user`)}
+        >
+          View all
+        </Button>
+      </div>
+      <div className="naxatw-overflow-y-auto scrollbar naxatw-h-full">
+        <div className="naxatw-py-3 naxatw-pl-5 naxatw-pr-1 naxatw-flex naxatw-gap-x-2">
+          <Searchbar isSmall className="naxatw-w-[312px]" />
+          <Select
+            options={roles}
+            className="naxatw-h-[40px]"
+            placeholder="Role"
+          />
+        </div>
+        <div>
+          <UserCard />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UserInfo;

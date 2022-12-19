@@ -106,7 +106,7 @@ export default function OrganizationList() {
         <Searchbar placeholder="Search" value={value} onChange={handleSearch} />
       </div>
 
-      <div className="naxatw-overflow-x-auto scrollbar naxatw-relative naxatw-mt-[1.875rem]">
+      <div className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative naxatw-mt-[1.875rem]">
         {!loading ? (
           <Table
             data={organizationData?.results || []}

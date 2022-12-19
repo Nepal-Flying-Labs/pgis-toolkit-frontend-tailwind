@@ -70,6 +70,9 @@ export default function EditFeatureSection() {
               setProjectMapState({
                 selectedLayer: null,
                 sidebarContent: '',
+                drawType: '',
+                individualAttributeData: '',
+                drawnFeatureWkt: '',
               }),
             );
           }}

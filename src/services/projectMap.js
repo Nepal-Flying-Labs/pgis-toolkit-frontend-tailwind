@@ -17,3 +17,9 @@ export const getMapPopupData = params =>
 
 export const saveMapConfig = (params, data) =>
   authenticated(api).patch(`/maps/map_config/`, data, { params });
+
+export const getLayerAttributeFields = params =>
+  authenticated(api).get(`/maps/layer_attribute/`, { params });
+
+export const postNewLayerFeature = data =>
+  authenticated(api).post(`/maps/feature_collection/`, data);

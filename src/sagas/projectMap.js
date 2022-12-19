@@ -1,9 +1,11 @@
 import { call, put, takeLatest, takeEvery, all } from 'redux-saga/effects';
 import chroma from 'chroma-js';
 import {
+  getLayerAttributeFields,
   getMapPopupData,
   getProjectThemeLayers,
   getProjectThemes,
+  postNewLayerFeature,
   saveMapConfig,
   updateLayer,
   uploadLayer,
@@ -145,6 +147,26 @@ export function* saveMapConfigRequest({ params, payload }) {
   }
 }
 
+export function* getLayerAttributeFieldsRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttributeFields, params);
+    yield put(projectMapActions.getLayerAttributeFieldsSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getLayerAttributeFieldsFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
+export function* postNewLayerFeatureRequest({ payload }) {
+  try {
+    const response = yield call(postNewLayerFeature, payload);
+    yield put(projectMapActions.postNewLayerFeatureSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.postNewLayerFeatureFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -166,6 +188,14 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.SAVE_MAP_CONFIG_REQUEST,
     withLoader(saveMapConfigRequest),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+    withLoader(getLayerAttributeFieldsRequest),
+  );
+  yield takeLatest(
+    Types.POST_NEW_LAYER_FEATURE_REQUEST,
+    withLoader(postNewLayerFeatureRequest),
   );
 }
 

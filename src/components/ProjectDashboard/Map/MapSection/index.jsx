@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useCallback, useEffect } from 'react';
+import { stringify } from 'wkt';
 import { useDispatch, useSelector } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
+import VectorTile from 'ol/layer/VectorTile';
 import { Creators, Types } from '@Actions/projectMap';
 import { mapStateSelector } from '@Selectors/projectMap';
 import {
@@ -41,7 +43,8 @@ export default function MapSection() {
   const popupData = useSelector(state => state.projectMap.popupData);
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const hideSidebar = useSelector(state => state.projectMap.hideSidebar);
-  const addFeatureTo = useSelector(state => state.projectMap.addFeatureTo);
+  const drawType = useSelector(state => state.projectMap.drawType);
+  const refreshLayerId = useSelector(state => state.projectMap.refreshLayerId);
   const editFeatureGeojson = useSelector(
     state => state.projectMap.editFeatureGeojson,
   );
@@ -106,6 +109,20 @@ export default function MapSection() {
     dispatch(setZoomToLayerId(null));
   }, [dispatch, map, mapState, zoomToLayerId]);
 
+  useEffect(() => {
+    if (!map || !refreshLayerId) return;
+    const layers = map.getLayers();
+    layers.forEach(layer => {
+      if (layer instanceof VectorTile) {
+        const properties = layer.getProperties();
+        if (properties.layerId === refreshLayerId) {
+          layer.getSource().refresh();
+          dispatch(setProjectMapState({ refreshLayerId: null }));
+        }
+      }
+    });
+  }, [dispatch, map, refreshLayerId]);
+
   const getPopupUI = useCallback(
     properties => {
       const { id } = properties;
@@ -164,6 +181,7 @@ export default function MapSection() {
                   : item?.style || { ...defaultStyles }
               }
               zIndex={mapState.length + 10 - index}
+              properties={{ layerId: item.id }}
             />
           ) : (
             ''
@@ -171,25 +189,26 @@ export default function MapSection() {
         )}
 
         <AddFeature
-          enable={!!addFeatureTo}
-          geometryType={addFeatureTo?.geom_type}
+          enable={drawType === 'add-feature'}
+          geometryType={selectedLayer?.geom_type}
           style={
-            addFeatureTo?.style
-              ? { ...addFeatureTo.style }
+            selectedLayer?.style
+              ? { ...selectedLayer.style }
               : { ...defaultStyles }
           }
           onDrawFinish={geojson => {
-            console.log(geojson, 'geojsonx');
+            const wktString = stringify(geojson);
             dispatch(
               setProjectMapState({
-                addFeatureTo: null,
+                drawnFeatureWkt: wktString,
+                drawType: null,
               }),
             );
           }}
           onCancel={() => {
             dispatch(
               setProjectMapState({
-                addFeatureTo: null,
+                selectedLayer: null,
               }),
             );
           }}
@@ -247,7 +266,7 @@ export default function MapSection() {
             );
           }}
           loading={isPopupDataFetching}
-          closePopup={!!addFeatureTo || !!editFeatureGeojson}
+          closePopup={!!selectedLayer || !!editFeatureGeojson}
         />
 
         <MapFooter loading={isMapLoading} />

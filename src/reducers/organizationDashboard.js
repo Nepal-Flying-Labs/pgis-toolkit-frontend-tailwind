@@ -16,7 +16,7 @@ const initialState = {
     stepFour: {},
   },
   organizationDetail: null,
-  users: [],
+  users: null,
   usersFilter: {
     searchText: '',
     userRole: null,

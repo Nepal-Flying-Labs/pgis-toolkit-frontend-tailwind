@@ -78,7 +78,6 @@ module.exports = {
             letterSpacing: '0',
           },
         ],
-
         'icon-md': [
           '1.5rem',
           {
@@ -97,15 +96,9 @@ module.exports = {
         ],
       },
       boxShadow: {
-        '3xl': '0px 2px 20px 4px rgba(0, 0, 0, 0.12)',
-        light: {
-          background: '#D9D9D9',
-          boxShadow: '0px 2px 20px 4px rgba(0, 0, 0, 0.12)',
-        },
-        dark: {
-          background: '#D9D9D9',
-          boxShadow: '0px 4px 16px 8px rgba(0, 0, 0, 0.28)',
-        },
+        '3xl': '0px 2px 20px 4px rgba(217, 217, 217, 0.12)',
+        light: '0px 2px 20px 4px rgba(217, 217, 217, 0.12)',
+        dark: '0px 4px 16px 8px rgba(217, 217, 217, 0.28)',
       },
     },
   },

@@ -69,6 +69,7 @@
 - [ ] update map config after layer upload success
 - [ ] error details in error dialog
 - [ ] pull feature geojson before edit
+- [ ] add setRequiredFields in useForm
 
 ### Backend
 

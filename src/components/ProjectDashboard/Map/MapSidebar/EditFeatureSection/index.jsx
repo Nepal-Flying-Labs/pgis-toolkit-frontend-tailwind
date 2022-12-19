@@ -39,6 +39,16 @@ export default function EditFeatureSection() {
   });
 
   useEffect(() => {
+    if (!selectedLayer) return;
+    dispatch(
+      getLayerAttributeFieldsRequest({
+        layer: selectedLayer.id,
+        check_mandatory: 'True',
+      }),
+    );
+  }, [dispatch, selectedLayer]);
+
+  useEffect(() => {
     if (!individualAttributeData) return;
     const formState = individualAttributeData.reduce(
       (obj, item) => ({
@@ -49,16 +59,6 @@ export default function EditFeatureSection() {
     );
     setValues(formState);
   }, [individualAttributeData, setValues]);
-
-  useEffect(() => {
-    if (!selectedLayer) return;
-    dispatch(
-      getLayerAttributeFieldsRequest({
-        layer: selectedLayer.id,
-        check_mandatory: 'True',
-      }),
-    );
-  }, [dispatch, selectedLayer]);
 
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-5">

@@ -4,6 +4,7 @@ import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const {
   setProjectMapState,
@@ -19,6 +20,9 @@ export default function EditFeatureSection() {
   );
   const individualAttributeData = useSelector(
     state => state.projectMap.individualAttributeData,
+  );
+  const isPosting = useSelector(state =>
+    checkIfLoading(state, [Types.POST_NEW_LAYER_FEATURE_REQUEST]),
   );
   const dispatch = useDispatch();
 
@@ -125,7 +129,7 @@ export default function EditFeatureSection() {
               <Button
                 className="naxatw-btn-primary"
                 onClick={handleSubmit}
-                // isLoading={loading}
+                isLoading={isPosting}
               >
                 Save
               </Button>

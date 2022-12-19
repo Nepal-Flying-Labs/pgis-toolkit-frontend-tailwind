@@ -22,6 +22,8 @@ const initialState = {
   editFeatureGeojson: null,
   selectedLayerForEdit: null,
   individualAttributeData: [],
+  drawType: null,
+  drawnFeatureWkt: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({

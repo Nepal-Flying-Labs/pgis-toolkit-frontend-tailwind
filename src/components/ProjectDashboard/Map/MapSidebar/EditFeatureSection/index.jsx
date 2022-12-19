@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import Button from '@Components/common/Button';
+import useForm from '@Hooks/useForm';
 
 const { setProjectMapState, getLayerAttributeFieldsRequest } =
   ProjectMapCreators;
@@ -10,10 +11,32 @@ const { setProjectMapState, getLayerAttributeFieldsRequest } =
 export default function EditFeatureSection() {
   const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
+  const drawnFeatureWkt = useSelector(
+    state => state.projectMap.drawnFeatureWkt,
+  );
   const individualAttributeData = useSelector(
     state => state.projectMap.individualAttributeData,
   );
   const dispatch = useDispatch();
+
+  const { values, handleChange, handleSubmit, setValues } = useForm({
+    initialValues: {},
+    onSubmit: data => {
+      console.log(data, 'datax');
+    },
+  });
+
+  useEffect(() => {
+    if (!individualAttributeData) return;
+    const formState = individualAttributeData.reduce(
+      (obj, item) => ({
+        ...obj,
+        [item.name]: item.value,
+      }),
+      {},
+    );
+    setValues(formState);
+  }, [individualAttributeData, setValues]);
 
   useEffect(() => {
     if (!selectedLayer) return;
@@ -48,33 +71,59 @@ export default function EditFeatureSection() {
         <div className="naxatw-flex naxatw-items-center">
           <div className="naxatw-w-full naxatw-space-y-2">
             <label className="naxatw-label">Draw Feature</label>
-            <Button className="naxatw-btn-secondary naxatw-btn-sm">Draw</Button>
+            <Button
+              className="naxatw-btn-secondary naxatw-btn-sm"
+              onClick={() => {
+                if (drawnFeatureWkt) return;
+                dispatch(
+                  setProjectMapState({
+                    drawType: 'add-feature',
+                  }),
+                );
+              }}
+            >
+              Draw on Map
+            </Button>
           </div>
         </div>
 
-        <div className="naxatw-flex naxatw-items-center">
-          <div className="naxatw-w-full naxatw-space-y-2">
-            <label className="naxatw-label">Attributes</label>
-          </div>
-        </div>
-
-        {individualAttributeData.map(item => (
-          <div key={item.id} className="naxatw-flex naxatw-items-center">
-            <div className="naxatw-w-full naxatw-space-y-2">
-              <label className="naxatw-label">
-                {item.alias || item.name}
-                {item.mandatory ? '*' : ''}
-              </label>
-              <input
-                type="text"
-                className="naxatw-input"
-                name="item.name"
-                // value={item.value}
-                // onChange={e => setLayerName(e.target.value)}
-              />
+        {drawnFeatureWkt && (
+          <>
+            <div className="naxatw-flex naxatw-items-center">
+              <div className="naxatw-w-full naxatw-space-y-2">
+                <label className="naxatw-label">Attributes</label>
+              </div>
             </div>
-          </div>
-        ))}
+
+            {individualAttributeData.map(item => (
+              <div key={item.id} className="naxatw-flex naxatw-items-center">
+                <div className="naxatw-w-full naxatw-space-y-2">
+                  <label className="naxatw-label">
+                    {item.alias || item.name}
+                    {item.mandatory ? '*' : ''}
+                  </label>
+                  <input
+                    type="text"
+                    className="naxatw-input"
+                    name={item.name}
+                    value={values.name}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            ))}
+
+            <div className="naxatw-fixed naxatw-bottom-0 naxatw-w-full naxatw-py-4 naxatw-bg-grey-100">
+              <Button
+                className="naxatw-btn-primary"
+                onClick={handleSubmit}
+                // isLoading={loading}
+              >
+                Save
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

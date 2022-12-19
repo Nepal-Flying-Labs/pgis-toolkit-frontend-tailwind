@@ -5,8 +5,11 @@ import MaterialIcon from '@Components/common/MaterialIcon';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 
-const { setProjectMapState, getLayerAttributeFieldsRequest } =
-  ProjectMapCreators;
+const {
+  setProjectMapState,
+  getLayerAttributeFieldsRequest,
+  postNewLayerFeatureRequest,
+} = ProjectMapCreators;
 
 export default function EditFeatureSection() {
   const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
@@ -22,7 +25,12 @@ export default function EditFeatureSection() {
   const { values, handleChange, handleSubmit, setValues } = useForm({
     initialValues: {},
     onSubmit: data => {
-      console.log(data, 'datax');
+      const payloadData = {
+        layer: selectedLayer.id,
+        attributes: data,
+        geometry: drawnFeatureWkt,
+      };
+      dispatch(postNewLayerFeatureRequest(payloadData));
     },
   });
 

@@ -5,6 +5,7 @@ import {
   getMapPopupData,
   getProjectThemeLayers,
   getProjectThemes,
+  postNewLayerFeature,
   saveMapConfig,
   updateLayer,
   uploadLayer,
@@ -156,6 +157,16 @@ export function* getLayerAttributeFieldsRequest({ params }) {
   }
 }
 
+export function* postNewLayerFeatureRequest({ payload }) {
+  try {
+    const response = yield call(postNewLayerFeature, payload);
+    yield put(projectMapActions.postNewLayerFeatureSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.postNewLayerFeatureFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -181,6 +192,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
     withLoader(getLayerAttributeFieldsRequest),
+  );
+  yield takeLatest(
+    Types.POST_NEW_LAYER_FEATURE_REQUEST,
+    withLoader(postNewLayerFeatureRequest),
   );
 }
 

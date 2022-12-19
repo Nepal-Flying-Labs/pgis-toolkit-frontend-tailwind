@@ -18,7 +18,7 @@ export default function EditStyleSection() {
   );
   const [styleTab, setStyleTab] = useState('Advance');
   const dispatch = useDispatch();
-  const [layerName, setLayerName] = useState(selectedLayer.name);
+  const [layerName, setLayerName] = useState(selectedLayer?.name);
 
   useEffect(() => {
     if (!selectedLayer?.style?.icon?.url) {
@@ -75,7 +75,7 @@ export default function EditStyleSection() {
           <div className="naxatw-w-full naxatw-space-y-2">
             <label className="naxatw-label">Styling</label>
 
-            {selectedLayer.style?.geometryType === 'Point' && (
+            {selectedLayer?.style?.geometryType === 'Point' && (
               <div className="naxatw-flex naxatw-gap-2">
                 {tabData.map(({ label }) => (
                   <div

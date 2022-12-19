@@ -327,7 +327,7 @@ Table.defaultProps = {
   rowColSpanNum: [],
   rowcolSpanName: [],
   headClassName: [],
-  rowClassName: 'naxatw-py-[0.500rem] naxatw-px-3',
+  rowClassName: 'naxatw-px-3 ',
   noColumnCondition: null,
   onBtnClick: () => {},
   onDeleteBtnClick: () => {},

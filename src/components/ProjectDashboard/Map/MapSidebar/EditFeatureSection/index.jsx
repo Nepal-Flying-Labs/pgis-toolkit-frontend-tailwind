@@ -113,15 +113,16 @@ export default function EditFeatureSection() {
             {individualAttributeData.map(item => (
               <div key={item.id} className="naxatw-flex naxatw-items-center">
                 <div className="naxatw-w-full naxatw-space-y-2">
-                  <label className="naxatw-label">
+                  <label htmlFor={item.id} className="naxatw-label">
                     {item.alias || item.name}
                     {item.mandatory ? '*' : ''}
                   </label>
                   <input
+                    id={item.id}
                     type="text"
                     className="naxatw-input"
                     name={item.name}
-                    value={values.name}
+                    value={values[`${item.name}`]}
                     onChange={handleChange}
                   />
                 </div>

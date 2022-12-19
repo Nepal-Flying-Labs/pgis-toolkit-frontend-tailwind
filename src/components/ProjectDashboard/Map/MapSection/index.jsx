@@ -3,6 +3,7 @@ import React, { useCallback, useEffect } from 'react';
 import { stringify } from 'wkt';
 import { useDispatch, useSelector } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
+import VectorTile from 'ol/layer/VectorTile';
 import { Creators, Types } from '@Actions/projectMap';
 import { mapStateSelector } from '@Selectors/projectMap';
 import {
@@ -43,6 +44,7 @@ export default function MapSection() {
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const hideSidebar = useSelector(state => state.projectMap.hideSidebar);
   const drawType = useSelector(state => state.projectMap.drawType);
+  const refreshLayerId = useSelector(state => state.projectMap.refreshLayerId);
   const editFeatureGeojson = useSelector(
     state => state.projectMap.editFeatureGeojson,
   );
@@ -107,6 +109,20 @@ export default function MapSection() {
     dispatch(setZoomToLayerId(null));
   }, [dispatch, map, mapState, zoomToLayerId]);
 
+  useEffect(() => {
+    if (!map || !refreshLayerId) return;
+    const layers = map.getLayers();
+    layers.forEach(layer => {
+      if (layer instanceof VectorTile) {
+        const properties = layer.getProperties();
+        if (properties.layerId === refreshLayerId) {
+          layer.getSource().refresh();
+          dispatch(setProjectMapState({ refreshLayerId: null }));
+        }
+      }
+    });
+  }, [dispatch, map, refreshLayerId]);
+
   const getPopupUI = useCallback(
     properties => {
       const { id } = properties;
@@ -165,6 +181,7 @@ export default function MapSection() {
                   : item?.style || { ...defaultStyles }
               }
               zIndex={mapState.length + 10 - index}
+              properties={{ layerId: item.id }}
             />
           ) : (
             ''

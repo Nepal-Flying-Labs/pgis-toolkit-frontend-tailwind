@@ -23,3 +23,6 @@ export const getLayerAttributeFields = params =>
 
 export const postNewLayerFeature = data =>
   authenticated(api).post(`/maps/feature_collection/`, data);
+
+export const getFeatureCollection = id =>
+  authenticated(api).get(`/maps/feature_collection/${id}/`);

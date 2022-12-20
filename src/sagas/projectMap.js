@@ -1,6 +1,7 @@
 import { call, put, takeLatest, takeEvery, all } from 'redux-saga/effects';
 import chroma from 'chroma-js';
 import {
+  getFeatureCollection,
   getLayerAttributeFields,
   getMapPopupData,
   getProjectThemeLayers,
@@ -167,6 +168,16 @@ export function* postNewLayerFeatureRequest({ payload }) {
   }
 }
 
+export function* getFeatureCollectionRequest({ id }) {
+  try {
+    const response = yield call(getFeatureCollection, id);
+    yield put(projectMapActions.getFeatureCollectionSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getFeatureCollectionFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -196,6 +207,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.POST_NEW_LAYER_FEATURE_REQUEST,
     withLoader(postNewLayerFeatureRequest),
+  );
+  yield takeLatest(
+    Types.GET_FEATURE_COLLECTION_REQUEST,
+    withLoader(getFeatureCollectionRequest),
   );
 }
 

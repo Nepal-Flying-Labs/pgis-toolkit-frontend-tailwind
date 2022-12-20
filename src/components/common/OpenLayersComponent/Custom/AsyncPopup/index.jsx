@@ -39,7 +39,6 @@ const AsyncPopup = ({
   const [coordinates, setCoordinates] = useState(null);
   const [overlay, setOverlay] = useState(null);
   const [properties, setProperties] = useState(null);
-  const [feature, setFeature] = useState(null);
   const [popupHTML, setPopupHTML] = useState('');
 
   // add overlay to popupRef
@@ -63,7 +62,6 @@ const AsyncPopup = ({
     // onPopupClose();
     setPopupHTML('');
     setProperties(null);
-    setFeature(null);
     popupCloserRef.current.blur();
   }, [overlay, popupCloserRef]);
 
@@ -82,7 +80,6 @@ const AsyncPopup = ({
         closePopupFn();
         return;
       }
-      setFeature(features[0]);
       const featureProperties = features[0].getProperties();
       const { layerId } = featureProperties;
       if (
@@ -148,7 +145,7 @@ const AsyncPopup = ({
         <div className="naxatw-mt-2">
           <Button
             className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
-            onClick={() => onButtonClick(properties, feature)}
+            onClick={() => onButtonClick(properties)}
           >
             {buttonText}
           </Button>

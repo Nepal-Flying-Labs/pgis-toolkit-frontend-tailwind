@@ -35,8 +35,6 @@ const VectorTileLayer = ({
     [],
   );
 
-  vectorTileLayer.setProperties({ name: 'site' });
-
   // add source to layer
   useEffect(() => {
     if (!map) return;
@@ -47,9 +45,7 @@ const VectorTileLayer = ({
     }
 
     const vectorTileSource = new VectorTileSource({
-      format: new MVT({
-        featureClass: Feature,
-      }),
+      format: new MVT(),
       maxZoom: 19,
       url,
       transition: 0,

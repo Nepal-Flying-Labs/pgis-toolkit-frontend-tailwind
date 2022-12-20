@@ -1,4 +1,5 @@
 import { createReducer } from 'reduxsauce';
+import { parse } from 'wkt';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
@@ -18,13 +19,14 @@ const initialState = {
   searchText: '',
   toggleMapExport: false,
   addFeatureTo: null,
-  editFeatureGeojson: null,
+  featureGeojson: null, // feature geojson for edit
   selectedLayerForEdit: null,
   sidebarContent: '', // 'layer-order', 'edit-style', 'edit-feature', 'add-feature'
   individualAttributeData: [],
   drawType: null,
   drawnFeatureWkt: null,
   refreshLayerId: null,
+  layerAttributes: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -286,9 +288,10 @@ const setProjectMapState = (state, action) => ({
 });
 
 const getLayerAttributeFieldsSuccess = (state, action) => {
+  const { layerAttributes } = state;
   const individualAttributeData = action.payload.map(item => ({
     ...item,
-    value: '',
+    value: layerAttributes?.[`${item.name}`] || '',
   }));
   return {
     ...state,
@@ -316,6 +319,18 @@ const postNewLayerFeatureSuccess = (state, action) => {
   };
 };
 
+const getFeatureCollectionSuccess = (state, action) => {
+  const { geometry, attributes } = action.payload;
+  const wktString = geometry.split(';')[1];
+  const featureGeojson = parse(wktString);
+  return {
+    ...state,
+    featureGeojson,
+    sidebarContent: 'edit-feature',
+    layerAttributes: attributes,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -338,6 +353,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.SET_PROJECT_MAP_STATE]: setProjectMapState,
   [Types.GET_LAYER_ATTRIBUTE_FIELDS_SUCCESS]: getLayerAttributeFieldsSuccess,
   [Types.POST_NEW_LAYER_FEATURE_SUCCESS]: postNewLayerFeatureSuccess,
+  [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
 });
 
 export default projectMapReducer;

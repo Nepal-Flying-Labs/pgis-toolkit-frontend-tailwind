@@ -1,10 +1,18 @@
 /* eslint-disable arrow-body-style */
 import React from 'react';
+import { useSelector } from 'react-redux';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import AvatarImage from '@Assets/images/user-avatar.png';
 import ProjectIcon from '@Assets/images/project-icon.png';
 
+const getWidth = (value, totalProject) => {
+  return Math.floor((value / totalProject) * 100);
+};
+
 const OrganizationInfo = () => {
+  const organizationDetails = useSelector(
+    state => state.organizationDashboard.organizationDetail,
+  );
   return (
     <div className="naxatw-w-full naxatw-bg-white naxatw-rounded-xl naxatw-h-full naxatw-border naxatw-border-[#D7D7D7]">
       {/* Header */}
@@ -17,9 +25,9 @@ const OrganizationInfo = () => {
           />
         </div>
         <div>
-          <h3>World Bicycle Relief</h3>
+          <h3>{organizationDetails?.name || 'N/A'}</h3>
           <p className="naxatw-mt-[4px] naxatw-text-body-lg">
-            23 Saint Street, Columbia, North America
+            {organizationDetails?.address || 'N/A'}
           </p>
           <div className="naxatw-mt-5 naxatw-flex naxatw-gap-x-7">
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
@@ -27,14 +35,18 @@ const OrganizationInfo = () => {
                 name="phone"
                 className="naxatw-text-icon-md naxatw-text-primary-400 "
               />
-              <span className="naxatw-text-body-lg">+61 920 2973 99</span>
+              <span className="naxatw-text-body-lg">
+                {organizationDetails?.contact || 'N/A'}
+              </span>
             </div>
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
               <MaterialIcon
                 name="mail_outline"
                 className="naxatw-text-icon-md naxatw-text-primary-400"
               />
-              <span className="naxatw-text-body-lg">email@gmail.com</span>
+              <span className="naxatw-text-body-lg">
+                {organizationDetails?.email || 'N/A'}
+              </span>
             </div>
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
               <MaterialIcon
@@ -42,7 +54,7 @@ const OrganizationInfo = () => {
                 className="naxatw-text-icon-md naxatw-text-primary-400"
               />
               <span className="naxatw-text-body-lg">
-                www.worldbicyclereleif.com
+                {organizationDetails?.link || 'N/A'}
               </span>
             </div>
           </div>
@@ -58,7 +70,7 @@ const OrganizationInfo = () => {
           />
           <div>
             <h5>Projects</h5>
-            <h3>47</h3>
+            <h3>{organizationDetails?.projects || 'N/A'}</h3>
           </div>
         </div>
         <div className="naxatw-space-y-2.5">
@@ -68,7 +80,7 @@ const OrganizationInfo = () => {
               className={`naxatw-bg-[#0076FF] naxatw-w-2 naxatw-h-2 naxatw-rounded-full`}
             />
             <p className={` naxatw-capitalize naxatw-text-body-md `}>Ongoing</p>
-            <h5>32</h5>
+            <h5>{organizationDetails?.ongoing || 'N/A'}</h5>
           </div>
           <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
             <div
@@ -78,17 +90,26 @@ const OrganizationInfo = () => {
             <p className={` naxatw-capitalize naxatw-text-body-md `}>
               Completed
             </p>
-            <h5>19</h5>
+            <h5>{organizationDetails?.completed}</h5>
           </div>
         </div>
-
         <div className="naxatw-flex naxatw-w-[450px]">
           <div
-            style={{ width: '40%' }}
+            style={{
+              width: `${getWidth(
+                organizationDetails?.ongoing,
+                organizationDetails?.projects,
+              )}%`,
+            }}
             className="naxatw-h-[20px] naxatw-bg-[#0076FF] naxatw-rounded-l-md"
           />
           <div
-            style={{ width: '60%' }}
+            style={{
+              width: `${getWidth(
+                organizationDetails?.completed,
+                organizationDetails?.projects,
+              )}%`,
+            }}
             className="naxatw-h-[20px] naxatw-bg-[#40B449] naxatw-rounded-r-md"
           />
         </div>
@@ -107,37 +128,30 @@ const OrganizationInfo = () => {
               Thematic focus areas
             </span>
             <span className="naxatw-text-body-lg">
-              Climate change and energy, Ecosystem services, Planetary Health,
-              Sustainable Development
+              {organizationDetails?.thematicAreas?.toString() || 'N/A'}
             </span>
           </div>
         </div>
         <div className="naxatw-mt-7">
           <h4>About</h4>
           <p className="naxatw-text-body-lg naxatw-mt-2">
-            World Bicycle Relief is an international, non-profit organization
-            based in Chicago, IL that specializes in large-scale, comprehensive
-            bicycle distribution programs to aid poverty relief in developing
-            countries around the world. Their programs focus primarily on
-            education, economic development, and health care. We specializes in
-            large-scale, comprehensive bicycle distribution programs to aid
-            poverty relief in developing countries around the world. Their
-            programs focus primarily on education, economic development, and
-            health care. World Bicycle Relief is an international, non-profit
-            organization based in Chicago, IL that specializes in large-scale,
-            comprehensive bicycle distribution programs to aid poverty relief in
-            developing countries around the world. Their programs focus
-            primarily on education, economic development, and health care. We
-            specializes in large-scale, comprehensive bicycle distribution
-            programs to aid poverty relief in developing countries around the
-            world. Their programs focus primarily on education, economic
-            development, and health care.
+            {organizationDetails?.description || 'N/A'}
           </p>
         </div>
         <div className="naxatw-mt-7">
           <h4 className="naxatw-mb-3">Focal Contact Person</h4>
-          <p className="naxatw-text-body-btn naxatw-mb-1">Harry Smith</p>
-          <p className="naxatw-text-body-lg">harry_smith@mail.com</p>
+          {organizationDetails?.contact_person?.length > 0 ? (
+            organizationDetails?.contact_person?.map(person => (
+              <div>
+                <p className="naxatw-text-body-btn naxatw-mb-1">
+                  {person.name}
+                </p>
+                <p className="naxatw-text-body-lg">{person.email}</p>
+              </div>
+            ))
+          ) : (
+            <span className="naxatw-text-body-lg">N/A</span>
+          )}
         </div>
       </div>
     </div>

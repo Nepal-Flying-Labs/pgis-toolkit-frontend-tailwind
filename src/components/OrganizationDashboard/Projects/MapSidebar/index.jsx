@@ -12,6 +12,7 @@ import { Creators as CommonCreators } from '@Actions/common';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar';
+import Chip from '@Components/common/Chip';
 import { projectHeaderHeight } from '@src/constants';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import ProjectCard from './ProjectCard';
@@ -21,6 +22,7 @@ const { getProjectsRequest } = OrganizationDashboardCreators;
 const { toggleModal } = CommonCreators;
 
 export default function MapSidebar() {
+  const [chipStatus, setChipStatus] = useState('all');
   const [sidebarToggle, setSidebarToggle] = useState(false);
   const [toggleId, setToggleId] = useState(null);
   const { organizationId } = useParams();
@@ -78,14 +80,30 @@ export default function MapSidebar() {
         </div>
 
         <div className="naxatw-flex naxatw-mt-2 naxatw-gap-2">
-          <div className="naxatw-px-5 naxatw-py-2.5 naxatw-bg-white naxatw-border naxatw-border-grey-800 naxatw-rounded-full">
+          <Chip
+            name={`All( ${organizationDetail?.projects || '-'} )`}
+            status={chipStatus}
+            value="all"
+            onClick={() => {
+              setChipStatus('all');
+            }}
+          />
+          <Chip
+            name={`Ongoing( ${organizationDetail?.ongoing || '-'} )`}
+            status={chipStatus}
+            value="ongoing"
+            onClick={() => {
+              setChipStatus('ongoing');
+            }}
+          />
+          {/* <div className="naxatw-px-5 naxatw-py-2.5 naxatw-bg-white naxatw-border naxatw-border-grey-800 naxatw-rounded-full">
             {organizationDetail ? `All(${organizationDetail.projects})` : 'All'}
           </div>
           <div className="naxatw-px-5 naxatw-py-2.5 naxatw-bg-white naxatw-border naxatw-bonaxatw-bg-grey-300 naxatw-rounded-full">
             {organizationDetail
               ? `Ongoing(${organizationDetail.ongoing})`
               : 'Ongoing'}
-          </div>
+          </div> */}
         </div>
 
         <div

@@ -3,8 +3,9 @@ import React from 'react';
 import DropdownOptions from '@Components/common/DropdownOptions/index';
 import Status from '@Components/common/Status/index';
 import AvatarImage from '@Assets/images/user-avatar.png';
+import PropTypes from 'prop-types';
 
-const UserCard = () => {
+const UserCard = ({ name, role, image, active, id }) => {
   const dropdownOptions = [
     {
       id: 1,
@@ -31,21 +32,39 @@ const UserCard = () => {
     <div className="naxatw-p-2 hover:naxatw-bg-[#F5F5F5] hover:naxatw-cursor-pointer naxatw-flex naxatw-justify-between naxatw-gap-x-3">
       <div className="naxatw-flex naxatw-gap-x-3 naxatw-pl-3">
         <img
-          src={AvatarImage}
+          src={image || AvatarImage}
           alt="user-img"
           className="naxatw-w-10 naxatw-h-10 naxatw-rounded-full"
         />
         <div>
-          <p className="naxatw-text-body-btn">Annette Black</p>
+          <p className="naxatw-text-body-btn">{name || 'N/A'}</p>
           <div className="naxatw-flex naxatw-gap-x-2">
-            <span className="naxatw-text-body-lg">Project manager</span>
-            <Status status="active" />
+            <span className="naxatw-text-body-lg naxatw-capitalize">
+              {role?.replace('_', ' ').toLowerCase() || 'N/A'}
+            </span>
+            <Status status={active} />
           </div>
         </div>
       </div>
-      <DropdownOptions options={dropdownOptions} stopPropagation />
+      <DropdownOptions options={dropdownOptions} id={id} stopPropagation />
     </div>
   );
 };
 
 export default UserCard;
+
+UserCard.propTypes = {
+  name: PropTypes.string,
+  id: PropTypes.number,
+  role: PropTypes.string,
+  image: PropTypes.string,
+  active: PropTypes.bool,
+};
+
+UserCard.defaultProps = {
+  name: '',
+  id: '',
+  role: '',
+  image: '',
+  active: false,
+};

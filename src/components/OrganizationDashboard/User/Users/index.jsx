@@ -83,14 +83,16 @@ const Users = () => {
   });
 
   useEffect(() => {
-    dispatch(
-      getUsersRequest({
-        organization: organizationId,
-        search: searchText,
-        group: userRole,
-      }),
-    );
-  }, [dispatch, searchText, organizationId, userRole]);
+    if (!users) {
+      dispatch(
+        getUsersRequest({
+          organization: organizationId,
+          search: searchText,
+          group: userRole,
+        }),
+      );
+    }
+  }, [dispatch, searchText, organizationId, userRole, users]);
   return (
     <div className="naxatw-mt-3 ">
       <div className="naxatw-flex naxatw-gap-x-3 naxatw-justify-start ">

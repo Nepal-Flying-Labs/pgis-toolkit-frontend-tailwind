@@ -179,7 +179,7 @@ export default function ProjectCard({
       </div>
 
       <div className=" naxatw-pt-4 naxatw-pl-4 naxatw-pr-2 naxatw-pb-3 naxatw-flex  naxatw-w-full naxatw-justify-between naxatw-rounded-r-xl">
-        <div className="naxatw-w-[426px]">
+        <div className="">
           <h5>{title || 'N/A'}</h5>
           <div className="naxatw-flex naxatw-flex-wrap naxatw-mt-2.5 naxatw-gap-x-3">
             <span className="naxatw-text-body-md">{`${startDate || 'N/A'} - ${
@@ -205,7 +205,7 @@ export default function ProjectCard({
             </span>
           </div>
         </div>
-        <div className="naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-items-end naxatw-w-[300px]  ">
+        <div className="naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-items-end  ">
           <DropdownOptions
             options={dropdownOptions}
             data={id}
@@ -222,7 +222,7 @@ export default function ProjectCard({
                 Info
               </Button>
               <Button
-                className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]"
+                className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-w-[124px]"
                 onClick={e => {
                   e.stopPropagation();
                 }}

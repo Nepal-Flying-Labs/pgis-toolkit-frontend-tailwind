@@ -274,22 +274,25 @@ const EditableLayer = ({
         >
           <i className="material-icons">undo</i>
         </button>
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Save"
-          onClick={handleSave}
-        >
-          <i className="material-symbols-outlined">save</i>
-        </button>
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Cancel"
-          onClick={onCancel}
-        >
-          <i className="material-icons">close</i>
-        </button>
+
+        {/*
+          <button
+            className="naxatw-icon-btn naxatw-icon-btn-sm"
+            type="button"
+            title="Save"
+            onClick={handleSave}
+          >
+            <i className="material-symbols-outlined">save</i>
+          </button>
+          <button
+            className="naxatw-icon-btn naxatw-icon-btn-sm"
+            type="button"
+            title="Cancel"
+            onClick={onCancel}
+          >
+            <i className="material-icons">close</i>
+          </button>
+        */}
       </div>
     </div>
   );

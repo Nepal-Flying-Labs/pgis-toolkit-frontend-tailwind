@@ -13,7 +13,10 @@ import {
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
-import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import {
+  defaultStyles,
+  getStyles,
+} from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import Spinner from '@Components/common/Spinner';
 import PopupUI from '@Components/common/OpenLayersComponent/Custom/PopupUI';
 import { checkIfLoading } from '@Utils/loaderSelector';
@@ -49,9 +52,7 @@ export default function MapSection() {
   const drawType = useSelector(state => state.projectMap.drawType);
   const refreshLayerId = useSelector(state => state.projectMap.refreshLayerId);
   const featureGeojson = useSelector(state => state.projectMap.featureGeojson);
-  const selectedLayerForEdit = useSelector(
-    state => state.projectMap.selectedLayerForEdit,
-  );
+  const editFeatureId = useSelector(state => state.projectMap.editFeatureId);
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
@@ -145,6 +146,25 @@ export default function MapSection() {
     [popupData, isPopupDataFetching], // eslint-disable-line
   );
 
+  const setLayerStyle = useCallback(
+    (style, feature, resolution) => {
+      const stylex = { ...style };
+      const properties = feature.getProperties();
+      const { id: featureId } = properties;
+      if (editFeatureId === featureId) {
+        stylex.fillOpacity = 0;
+        stylex.lineOpacity = 0;
+        stylex.icon = {};
+      }
+      return getStyles({
+        style: stylex,
+        feature,
+        resolution,
+      });
+    },
+    [editFeatureId],
+  );
+
   return (
     <div className="naxatw-w-full naxatw-relative">
       {isMapDataLoading && (
@@ -176,11 +196,20 @@ export default function MapSection() {
               url={`${API_URL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
               authToken={localStorage.getItem('userToken')}
               visibleOnMap={item.checked}
-              style={
-                item.id === selectedLayer?.id
-                  ? selectedLayer.style
-                  : item?.style || { ...defaultStyles }
+              setStyle={(feature, resolution) =>
+                setLayerStyle(
+                  item.id === selectedLayer?.id
+                    ? selectedLayer.style
+                    : item?.style || { ...defaultStyles },
+                  feature,
+                  resolution,
+                )
               }
+              // style={
+              //   item.id === selectedLayer?.id
+              //     ? selectedLayer.style
+              //     : item?.style || { ...defaultStyles }
+              // }
               zIndex={mapState.length + 10 - index}
               properties={{ layerId: item.id }}
             />
@@ -218,27 +247,11 @@ export default function MapSection() {
         <EditableLayer
           geojson={featureGeojson}
           zIndex={100}
-          style={selectedLayerForEdit?.style || { ...defaultStyles }}
+          style={selectedLayer?.style || { ...defaultStyles }}
           onChange={modifiedGeojson => {
             dispatch(
               setProjectMapState({
                 modifiedFeatureGeojson: modifiedGeojson,
-              }),
-            );
-          }}
-          onSave={modifiedGeojson => {
-            dispatch(
-              setProjectMapState({
-                featureGeojson: null,
-                selectedLayerForEdit: null,
-              }),
-            );
-          }}
-          onCancel={() => {
-            dispatch(
-              setProjectMapState({
-                featureGeojson: null,
-                selectedLayerForEdit: null,
               }),
             );
           }}

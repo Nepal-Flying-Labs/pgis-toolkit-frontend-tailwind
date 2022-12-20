@@ -1,6 +1,8 @@
+/* eslint-disable camelcase */
 /* eslint-disable arrow-body-style */
 import React from 'react';
 import { useHistory, useParams } from 'react-router';
+import { useSelector } from 'react-redux';
 import UserIcon from '@Assets/images/user-icon.png';
 import Button from '@Components/common/Button/index';
 import Searchbar from '@Components/common/Searchbar/index';
@@ -28,6 +30,7 @@ const roles = [
 const UserInfo = () => {
   const { organizationId } = useParams();
   const history = useHistory();
+  const users = useSelector(state => state.organizationDashboard.users);
   return (
     <div className="naxatw-w-[440px] naxatw-bg-white naxatw-rounded-xl naxatw-border naxatw-border-[#D7D7D7]">
       <div className="naxatw-flex naxatw-p-2 naxatw-justify-between naxatw-items-center naxatw-border-b-[1px] naxatw-rounded-t-xl naxatw-pl-4">
@@ -41,7 +44,7 @@ const UserInfo = () => {
 
             <div>
               <h5>Users</h5>
-              <h3>106</h3>
+              <h3>{users?.length || 'N/A'}</h3>
             </div>
           </div>
         </div>
@@ -63,7 +66,18 @@ const UserInfo = () => {
           />
         </div>
         <div>
-          <UserCard />
+          {users?.map(
+            ({ full_name, image_thumbnail, group, active, user_id }) => (
+              <UserCard
+                key={user_id}
+                id={user_id}
+                name={full_name}
+                image={image_thumbnail}
+                role={group}
+                active={active}
+              />
+            ),
+          )}
         </div>
       </div>
     </div>

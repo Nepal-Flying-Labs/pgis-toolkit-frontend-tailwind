@@ -1,12 +1,14 @@
 import { call, put, takeLatest, takeEvery, all } from 'redux-saga/effects';
 import chroma from 'chroma-js';
 import {
+  getFeatureCollection,
   getLayerAttributeFields,
   getMapPopupData,
   getProjectThemeLayers,
   getProjectThemes,
   postNewLayerFeature,
   saveMapConfig,
+  updateFeatureCollection,
   updateLayer,
   uploadLayer,
 } from '@Services/projectMap';
@@ -167,6 +169,26 @@ export function* postNewLayerFeatureRequest({ payload }) {
   }
 }
 
+export function* getFeatureCollectionRequest({ id }) {
+  try {
+    const response = yield call(getFeatureCollection, id);
+    yield put(projectMapActions.getFeatureCollectionSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getFeatureCollectionFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
+export function* updateFeatureCollectionRequest({ id, payload }) {
+  try {
+    const response = yield call(updateFeatureCollection, id, payload);
+    yield put(projectMapActions.updateFeatureCollectionSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.updateFeatureCollectionFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -196,6 +218,14 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.POST_NEW_LAYER_FEATURE_REQUEST,
     withLoader(postNewLayerFeatureRequest),
+  );
+  yield takeLatest(
+    Types.GET_FEATURE_COLLECTION_REQUEST,
+    withLoader(getFeatureCollectionRequest),
+  );
+  yield takeLatest(
+    Types.UPDATE_FEATURE_COLLECTION_REQUEST,
+    withLoader(updateFeatureCollectionRequest),
   );
 }
 

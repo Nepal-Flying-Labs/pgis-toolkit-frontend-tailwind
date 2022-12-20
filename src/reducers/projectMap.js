@@ -1,4 +1,5 @@
 import { createReducer } from 'reduxsauce';
+import { parse } from 'wkt';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
@@ -18,13 +19,16 @@ const initialState = {
   searchText: '',
   toggleMapExport: false,
   addFeatureTo: null,
-  editFeatureGeojson: null,
+  featureGeojson: null, // feature geojson for edit
   selectedLayerForEdit: null,
   sidebarContent: '', // 'layer-order', 'edit-style', 'edit-feature', 'add-feature'
   individualAttributeData: [],
   drawType: null,
   drawnFeatureWkt: null,
   refreshLayerId: null,
+  layerAttributes: null,
+  modifiedFeatureGeojson: null,
+  editFeatureId: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -286,9 +290,10 @@ const setProjectMapState = (state, action) => ({
 });
 
 const getLayerAttributeFieldsSuccess = (state, action) => {
+  const { layerAttributes } = state;
   const individualAttributeData = action.payload.map(item => ({
     ...item,
-    value: '',
+    value: layerAttributes?.[`${item.name}`] || '',
   }));
   return {
     ...state,
@@ -316,6 +321,46 @@ const postNewLayerFeatureSuccess = (state, action) => {
   };
 };
 
+const getFeatureCollectionSuccess = (state, action) => {
+  const { geometry, attributes, id: featureId } = action.payload;
+  const wktString = geometry.split(';')[1];
+  const featureGeojson = parse(wktString);
+  return {
+    ...state,
+    featureGeojson,
+    modifiedFeatureGeojson: featureGeojson,
+    editFeatureId: featureId,
+    sidebarContent: 'edit-feature',
+    layerAttributes: attributes,
+  };
+};
+
+const updateFeatureCollectionSuccess = (state, action) => {
+  const refreshLayerId = action.payload.layer;
+  const {
+    sidebarContent,
+    drawType,
+    selectedLayer,
+    individualAttributeData,
+    modifiedFeatureGeojson,
+    featureGeojson,
+    layerAttributes,
+    editFeatureId,
+  } = initialState;
+  return {
+    ...state,
+    refreshLayerId,
+    sidebarContent,
+    drawType,
+    selectedLayer,
+    individualAttributeData,
+    modifiedFeatureGeojson,
+    featureGeojson,
+    layerAttributes,
+    editFeatureId,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -338,6 +383,8 @@ const projectMapReducer = createReducer(initialState, {
   [Types.SET_PROJECT_MAP_STATE]: setProjectMapState,
   [Types.GET_LAYER_ATTRIBUTE_FIELDS_SUCCESS]: getLayerAttributeFieldsSuccess,
   [Types.POST_NEW_LAYER_FEATURE_SUCCESS]: postNewLayerFeatureSuccess,
+  [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
+  [Types.UPDATE_FEATURE_COLLECTION_SUCCESS]: updateFeatureCollectionSuccess,
 });
 
 export default projectMapReducer;

@@ -13,7 +13,10 @@ import {
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
-import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import {
+  defaultStyles,
+  getStyles,
+} from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import Spinner from '@Components/common/Spinner';
 import PopupUI from '@Components/common/OpenLayersComponent/Custom/PopupUI';
 import { checkIfLoading } from '@Utils/loaderSelector';
@@ -23,14 +26,17 @@ import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import AddFeature from '@Components/common/OpenLayersComponent/CustomLayer/AddFeature';
 import EditableLayer from '@Components/common/OpenLayersComponent/CustomLayer/EditableLayer';
-import getFeatureGeojson from '@Components/common/OpenLayersComponent/helpers/getFeatureGeojson';
 import SidebarToggle from '../SidebarToggle';
 import Toolbox from '../Toolbox';
 
 const { API_URL } = process.env;
 
-const { setZoomToLayerId, getMapPopupDataRequest, setProjectMapState } =
-  Creators;
+const {
+  setZoomToLayerId,
+  getMapPopupDataRequest,
+  setProjectMapState,
+  getFeatureCollectionRequest,
+} = Creators;
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -45,12 +51,8 @@ export default function MapSection() {
   const hideSidebar = useSelector(state => state.projectMap.hideSidebar);
   const drawType = useSelector(state => state.projectMap.drawType);
   const refreshLayerId = useSelector(state => state.projectMap.refreshLayerId);
-  const editFeatureGeojson = useSelector(
-    state => state.projectMap.editFeatureGeojson,
-  );
-  const selectedLayerForEdit = useSelector(
-    state => state.projectMap.selectedLayerForEdit,
-  );
+  const featureGeojson = useSelector(state => state.projectMap.featureGeojson);
+  const editFeatureId = useSelector(state => state.projectMap.editFeatureId);
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
@@ -144,6 +146,25 @@ export default function MapSection() {
     [popupData, isPopupDataFetching], // eslint-disable-line
   );
 
+  const setLayerStyle = useCallback(
+    (style, feature, resolution) => {
+      const stylex = { ...style };
+      const properties = feature.getProperties();
+      const { id: featureId } = properties;
+      if (editFeatureId === featureId) {
+        stylex.fillOpacity = 0;
+        stylex.lineOpacity = 0;
+        stylex.icon = {};
+      }
+      return getStyles({
+        style: stylex,
+        feature,
+        resolution,
+      });
+    },
+    [editFeatureId],
+  );
+
   return (
     <div className="naxatw-w-full naxatw-relative">
       {isMapDataLoading && (
@@ -175,11 +196,20 @@ export default function MapSection() {
               url={`${API_URL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
               authToken={localStorage.getItem('userToken')}
               visibleOnMap={item.checked}
-              style={
-                item.id === selectedLayer?.id
-                  ? selectedLayer.style
-                  : item?.style || { ...defaultStyles }
+              setStyle={(feature, resolution) =>
+                setLayerStyle(
+                  item.id === selectedLayer?.id
+                    ? selectedLayer.style
+                    : item?.style || { ...defaultStyles },
+                  feature,
+                  resolution,
+                )
               }
+              // style={
+              //   item.id === selectedLayer?.id
+              //     ? selectedLayer.style
+              //     : item?.style || { ...defaultStyles }
+              // }
               zIndex={mapState.length + 10 - index}
               properties={{ layerId: item.id }}
             />
@@ -215,22 +245,13 @@ export default function MapSection() {
         />
 
         <EditableLayer
-          geojson={editFeatureGeojson}
+          geojson={featureGeojson}
           zIndex={100}
-          style={selectedLayerForEdit?.style || { ...defaultStyles }}
-          onSave={modifiedGeojson => {
+          style={selectedLayer?.style || { ...defaultStyles }}
+          onChange={modifiedGeojson => {
             dispatch(
               setProjectMapState({
-                editFeatureGeojson: null,
-                selectedLayerForEdit: null,
-              }),
-            );
-          }}
-          onCancel={() => {
-            dispatch(
-              setProjectMapState({
-                editFeatureGeojson: null,
-                selectedLayerForEdit: null,
+                modifiedFeatureGeojson: modifiedGeojson,
               }),
             );
           }}
@@ -253,20 +274,19 @@ export default function MapSection() {
             // console.log('closex');
           }}
           buttonText="Edit Feature"
-          onButtonClick={(properties, feature) => {
-            const geojson = getFeatureGeojson(feature);
+          onButtonClick={properties => {
             const selectedFeature = mapState.find(
               layer => layer.id === properties.layer_id,
             );
             dispatch(
               setProjectMapState({
-                editFeatureGeojson: geojson,
-                selectedLayerForEdit: selectedFeature,
+                selectedLayer: selectedFeature,
               }),
             );
+            dispatch(getFeatureCollectionRequest(properties.id));
           }}
           loading={isPopupDataFetching}
-          closePopup={!!selectedLayer || !!editFeatureGeojson}
+          closePopup={!!selectedLayer || !!featureGeojson}
         />
 
         <MapFooter loading={isMapLoading} />

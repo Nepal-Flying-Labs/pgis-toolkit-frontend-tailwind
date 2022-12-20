@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { stringify } from 'wkt';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
+import toastActions from '@Actions/common';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
@@ -11,6 +13,7 @@ const {
   setProjectMapState,
   getLayerAttributeFieldsRequest,
   postNewLayerFeatureRequest,
+  updateFeatureCollectionRequest,
 } = ProjectMapCreators;
 
 export default function EditFeatureSection() {
@@ -20,11 +23,18 @@ export default function EditFeatureSection() {
     state => state.projectMap.drawnFeatureWkt,
   );
   const featureGeojson = useSelector(state => state.projectMap.featureGeojson);
+  const editFeatureId = useSelector(state => state.projectMap.editFeatureId);
+  const modifiedFeatureGeojson = useSelector(
+    state => state.projectMap.modifiedFeatureGeojson,
+  );
   const individualAttributeData = useSelector(
     state => state.projectMap.individualAttributeData,
   );
   const isPosting = useSelector(state =>
-    checkIfLoading(state, [Types.POST_NEW_LAYER_FEATURE_REQUEST]),
+    checkIfLoading(state, [
+      Types.POST_NEW_LAYER_FEATURE_REQUEST,
+      Types.UPDATE_FEATURE_COLLECTION_REQUEST,
+    ]),
   );
   const dispatch = useDispatch();
 
@@ -32,11 +42,19 @@ export default function EditFeatureSection() {
     initialValues: {},
     onSubmit: data => {
       const payloadData = {
-        layer: selectedLayer.id,
         attributes: data,
-        geometry: drawnFeatureWkt,
       };
-      dispatch(postNewLayerFeatureRequest(payloadData));
+      if (sidebarContent === 'add-feature') {
+        payloadData.layer = selectedLayer.id;
+        payloadData.geometry = drawnFeatureWkt;
+        dispatch(postNewLayerFeatureRequest(payloadData));
+      } else if (modifiedFeatureGeojson) {
+        const modifiedFeatureWkt = stringify(modifiedFeatureGeojson);
+        payloadData.geometry = modifiedFeatureWkt;
+        dispatch(updateFeatureCollectionRequest(editFeatureId, payloadData));
+      } else {
+        dispatch(toastActions.error({ message: 'Please draw a geometry' }));
+      }
     },
   });
 

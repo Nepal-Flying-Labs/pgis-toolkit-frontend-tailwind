@@ -26,3 +26,6 @@ export const postNewLayerFeature = data =>
 
 export const getFeatureCollection = id =>
   authenticated(api).get(`/maps/feature_collection/${id}/`);
+
+export const updateFeatureCollection = (id, data) =>
+  authenticated(api).patch(`/maps/feature_collection/${id}/`, data);

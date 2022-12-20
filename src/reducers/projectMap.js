@@ -27,6 +27,8 @@ const initialState = {
   drawnFeatureWkt: null,
   refreshLayerId: null,
   layerAttributes: null,
+  modifiedFeatureGeojson: null,
+  editFeatureId: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -320,14 +322,42 @@ const postNewLayerFeatureSuccess = (state, action) => {
 };
 
 const getFeatureCollectionSuccess = (state, action) => {
-  const { geometry, attributes } = action.payload;
+  const { geometry, attributes, id: featureId } = action.payload;
   const wktString = geometry.split(';')[1];
   const featureGeojson = parse(wktString);
   return {
     ...state,
     featureGeojson,
+    modifiedFeatureGeojson: featureGeojson,
+    editFeatureId: featureId,
     sidebarContent: 'edit-feature',
     layerAttributes: attributes,
+  };
+};
+
+const updateFeatureCollectionSuccess = (state, action) => {
+  const refreshLayerId = action.payload.layer;
+  const {
+    sidebarContent,
+    drawType,
+    selectedLayer,
+    individualAttributeData,
+    modifiedFeatureGeojson,
+    featureGeojson,
+    layerAttributes,
+    editFeatureId,
+  } = initialState;
+  return {
+    ...state,
+    refreshLayerId,
+    sidebarContent,
+    drawType,
+    selectedLayer,
+    individualAttributeData,
+    modifiedFeatureGeojson,
+    featureGeojson,
+    layerAttributes,
+    editFeatureId,
   };
 };
 
@@ -354,6 +384,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_LAYER_ATTRIBUTE_FIELDS_SUCCESS]: getLayerAttributeFieldsSuccess,
   [Types.POST_NEW_LAYER_FEATURE_SUCCESS]: postNewLayerFeatureSuccess,
   [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
+  [Types.UPDATE_FEATURE_COLLECTION_SUCCESS]: updateFeatureCollectionSuccess,
 });
 
 export default projectMapReducer;

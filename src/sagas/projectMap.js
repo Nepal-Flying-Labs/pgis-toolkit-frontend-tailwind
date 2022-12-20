@@ -8,6 +8,7 @@ import {
   getProjectThemes,
   postNewLayerFeature,
   saveMapConfig,
+  updateFeatureCollection,
   updateLayer,
   uploadLayer,
 } from '@Services/projectMap';
@@ -178,6 +179,16 @@ export function* getFeatureCollectionRequest({ id }) {
   }
 }
 
+export function* updateFeatureCollectionRequest({ id, payload }) {
+  try {
+    const response = yield call(updateFeatureCollection, id, payload);
+    yield put(projectMapActions.updateFeatureCollectionSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.updateFeatureCollectionFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -211,6 +222,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_FEATURE_COLLECTION_REQUEST,
     withLoader(getFeatureCollectionRequest),
+  );
+  yield takeLatest(
+    Types.UPDATE_FEATURE_COLLECTION_REQUEST,
+    withLoader(updateFeatureCollectionRequest),
   );
 }
 

@@ -26,6 +26,7 @@ const EditableLayer = ({
   onSave,
   onCancel,
   onError,
+  onChange = () => {},
 }) => {
   const [vectorLayer, setVectorLayer] = useState(null);
   const [modifiedStates, setModifiedStates] = useState([]);
@@ -109,7 +110,7 @@ const EditableLayer = ({
     setVectorLayer(vectorLyr);
     select.getFeatures().push(features[0]);
     setModifiedStates([geojson]);
-  }, [map, geojson, zIndex, select]);
+  }, [map, geojson, zIndex, select, style]);
 
   // add select interaction
   useEffect(() => {
@@ -152,8 +153,9 @@ const EditableLayer = ({
       const featureGeojson = getFeatureGeojson(features[0]);
       setModifiedStates(prev => [...prev, featureGeojson]);
       setModifiedFeature(features[0]);
+      onChange(featureGeojson);
     });
-  }, [translate]);
+  }, [translate]); // eslint-disable-line
 
   // on modify finish
   useEffect(() => {
@@ -162,8 +164,9 @@ const EditableLayer = ({
       const featureGeojson = getFeatureGeojson(features[0]);
       setModifiedStates(prev => [...prev, featureGeojson]);
       setModifiedFeature(features[0]);
+      onChange(featureGeojson);
     });
-  }, [modify]);
+  }, [modify]); // eslint-disable-line
 
   // on draw end
   useEffect(() => {
@@ -175,8 +178,9 @@ const EditableLayer = ({
       map.removeInteraction(draw);
       map.removeInteraction(snap);
       setDrawType(null);
+      onChange(featureGeojson);
     });
-  }, [draw, snap, map]);
+  }, [draw, snap, map]); // eslint-disable-line
 
   // on undo click
   const handleUndo = () => {
@@ -204,6 +208,7 @@ const EditableLayer = ({
     // setModifiedStates((prev) => [...prev, null]);
     setModifiedFeature(null);
     setDrawType('add-polygon');
+    onChange(null);
   };
 
   const handleDrag = () => {

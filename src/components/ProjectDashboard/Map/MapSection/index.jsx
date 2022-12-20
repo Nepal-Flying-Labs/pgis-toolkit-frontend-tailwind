@@ -219,6 +219,13 @@ export default function MapSection() {
           geojson={featureGeojson}
           zIndex={100}
           style={selectedLayerForEdit?.style || { ...defaultStyles }}
+          onChange={modifiedGeojson => {
+            dispatch(
+              setProjectMapState({
+                modifiedFeatureGeojson: modifiedGeojson,
+              }),
+            );
+          }}
           onSave={modifiedGeojson => {
             dispatch(
               setProjectMapState({

@@ -27,6 +27,7 @@ const EditableLayer = ({
   onCancel,
   onError,
   onChange = () => {},
+  geometryType,
 }) => {
   const [vectorLayer, setVectorLayer] = useState(null);
   const [modifiedStates, setModifiedStates] = useState([]);
@@ -68,9 +69,9 @@ const EditableLayer = ({
     () =>
       new Draw({
         source: vectorLayer?.getSource(),
-        type: 'Polygon',
+        type: geometryType,
       }),
-    [vectorLayer],
+    [vectorLayer, geometryType],
   );
 
   const snap = useMemo(
@@ -234,9 +235,10 @@ const EditableLayer = ({
 
   return (
     <div
-      className="naxatw-absolute naxatw-py-1 naxatw-px-[1px] naxatw-rounded-lg naxatw-top-28 naxatw-left-4 naxatw-bg-white naxatw-z-10
-                 naxatw-shadow-3xl naxatw-text-grey-800 naxatw-flex naxatw-flex-col"
-      // style={{ display: !geojson ? 'none' : '' }}
+      className="naxatw-absolute naxatw-py-1 naxatw-px-[1px] naxatw-rounded-lg naxatw-top-28 naxatw-left-4
+      naxatw-bg-white naxatw-z-10 naxatw-shadow-3xl naxatw-text-grey-800 naxatw-flex naxatw-flex-col
+      naxatw-border naxatw-border-grey-300"
+      style={{ display: !geojson ? 'none' : '' }}
     >
       <button
         className="naxatw-icon-btn naxatw-icon-btn-sm"

@@ -101,7 +101,7 @@ export default function ProjectGridCard({
 
   return (
     <div
-      className={` naxatw-border naxatw-rounded-xl naxatw-cursor-pointer naxatw-min-h-[408px] naxatw-max-h-[408px] naxatw-w-[321px] naxatw-flex naxatw-flex-col naxatw-justify-between  ${
+      className={` naxatw-border naxatw-rounded-xl hover:naxatw-bg-[#F5F5F5] naxatw-shadow-3xl naxatw-cursor-pointer naxatw-min-h-[408px] naxatw-max-h-[415px] naxatw-w-[321px] naxatw-flex naxatw-flex-col naxatw-justify-between  ${
         status === 'draft' ? 'naxatw-bg-[#F5F5F5]' : 'naxatw-bg-white'
       }`}
       onClick={onClick}

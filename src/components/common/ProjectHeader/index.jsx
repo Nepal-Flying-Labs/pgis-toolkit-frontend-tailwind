@@ -56,8 +56,8 @@ export default function ProjectHeader() {
       id="project-header"
       className={`naxatw-h-[${projectHeaderHeight}] naxatw-fixed naxatw-w-full naxatw-z-[999] naxatw-top-0 naxatw-border-b naxatw-border-grey-300 naxatw-bg-white`}
     >
-      <div className="naxatw-flex naxatw-justify-between naxatw-px-8  naxatw-h-full">
-        <div className="naxatw-flex naxatw-items-center naxatw-gap-5 ">
+      <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-px-8  naxatw-h-full">
+        {/* <div className="naxatw-flex naxatw-items-center naxatw-gap-5 ">
           <Link
             className=""
             to={`${
@@ -73,11 +73,47 @@ export default function ProjectHeader() {
             />
           </Link>
           <h4>{headerTitle}</h4>
-        </div>
+        </div> */}
+        {projectId ? (
+          <div>
+            <nav>
+              <ul className="naxatw-font-bold  naxatw-text-grey-500 naxatw-text-[0.9375rem]  naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-2 naxatw-h-full">
+                <li>
+                  <Link
+                    className="naxatw-py-2.5 hover:naxatw-text-[#484848] naxatw-text-body-btn"
+                    to={`/organizations/${organizationId}/projects`}
+                  >
+                    {projectDetail?.organization_name}
+                  </Link>
+                </li>
+                <li className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                  <MaterialIcon
+                    name="chevron_right"
+                    className="naxatw-text-[#484848] naxatw-pb-1"
+                  />
+                  <Link className=" naxatw-text-[#484848] naxatw-py-2.5  naxatw-text-body-btn">
+                    {projectDetail?.name}
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        ) : (
+          <div className="naxatw-flex naxatw-items-center naxatw-gap-5 ">
+            <Link className="" to="/organizations">
+              <MaterialIcon
+                name="arrow_back"
+                className="naxatw-text-icon-md"
+                wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
+              />
+            </Link>
+            <h4>{headerTitle}</h4>
+          </div>
+        )}
 
         <div className="naxatw-flex naxatw-gap-10 ">
           <nav className="">
-            <ul className="naxatw-font-bold naxatw-block naxatw-text-grey-500 naxatw-text-[0.9375rem] naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-2 naxatw-h-full">
+            <ul className="naxatw-font-bold  naxatw-text-grey-500 naxatw-text-[0.9375rem] naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-2 naxatw-h-full">
               {headerData.map(({ label, route, disabled }) => (
                 <li key={label}>
                   <Link

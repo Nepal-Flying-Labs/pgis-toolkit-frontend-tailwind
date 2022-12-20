@@ -27,6 +27,7 @@ const EditableLayer = ({
   onCancel,
   onError,
   onChange = () => {},
+  geometryType,
 }) => {
   const [vectorLayer, setVectorLayer] = useState(null);
   const [modifiedStates, setModifiedStates] = useState([]);
@@ -68,9 +69,9 @@ const EditableLayer = ({
     () =>
       new Draw({
         source: vectorLayer?.getSource(),
-        type: 'Polygon',
+        type: geometryType,
       }),
-    [vectorLayer],
+    [vectorLayer, geometryType],
   );
 
   const snap = useMemo(
@@ -234,48 +235,45 @@ const EditableLayer = ({
 
   return (
     <div
-      className="naxatw-absolute naxatw-p-2 naxatw-rounded-lg naxatw-bottom-10 naxatw-right-4 naxatw-bg-white naxatw-z-10
-                 naxatw-shadow-3xl"
+      className="naxatw-absolute naxatw-py-1 naxatw-px-[1px] naxatw-rounded-lg naxatw-top-28 naxatw-left-4
+      naxatw-bg-white naxatw-z-10 naxatw-shadow-3xl naxatw-text-grey-800 naxatw-flex naxatw-flex-col
+      naxatw-border naxatw-border-grey-300"
       style={{ display: !geojson ? 'none' : '' }}
     >
-      <div className="">
-        <h5>Edit Toolbar</h5>
-      </div>
-      <div className="naxatw-text-grey-800 naxatw-mt-2">
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Drag"
-          onClick={handleDrag}
-        >
-          <i className="material-symbols-outlined">open_with</i>
-        </button>
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Edit"
-          onClick={handleEdit}
-        >
-          <i className="material-icons">timeline</i>
-        </button>
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Delete"
-          onClick={handleDelete}
-        >
-          <i className="material-icons">delete_outline</i>
-        </button>
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Undo"
-          onClick={handleUndo}
-        >
-          <i className="material-icons">undo</i>
-        </button>
+      <button
+        className="naxatw-icon-btn naxatw-icon-btn-sm"
+        type="button"
+        title="Drag"
+        onClick={handleDrag}
+      >
+        <i className="material-symbols-outlined">open_with</i>
+      </button>
+      <button
+        className="naxatw-icon-btn naxatw-icon-btn-sm"
+        type="button"
+        title="Edit"
+        onClick={handleEdit}
+      >
+        <i className="material-icons">timeline</i>
+      </button>
+      <button
+        className="naxatw-icon-btn naxatw-icon-btn-sm"
+        type="button"
+        title="Delete"
+        onClick={handleDelete}
+      >
+        <i className="material-icons">delete_outline</i>
+      </button>
+      <button
+        className="naxatw-icon-btn naxatw-icon-btn-sm"
+        type="button"
+        title="Undo"
+        onClick={handleUndo}
+      >
+        <i className="material-icons">undo</i>
+      </button>
 
-        {/*
+      {/*
           <button
             className="naxatw-icon-btn naxatw-icon-btn-sm"
             type="button"
@@ -293,7 +291,6 @@ const EditableLayer = ({
             <i className="material-icons">close</i>
           </button>
         */}
-      </div>
     </div>
   );
 };

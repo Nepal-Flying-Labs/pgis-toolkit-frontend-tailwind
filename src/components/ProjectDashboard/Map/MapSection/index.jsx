@@ -246,6 +246,7 @@ export default function MapSection() {
 
         <EditableLayer
           geojson={featureGeojson}
+          geometryType={selectedLayer?.geom_type || 'Polygon'}
           zIndex={100}
           style={selectedLayer?.style || { ...defaultStyles }}
           onChange={modifiedGeojson => {

@@ -77,7 +77,13 @@ export function* signUpRequest({ payload }) {
     // yield put(push('/login'));
   } catch (error) {
     yield put(authActions.signUpFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    yield put(
+      toastActions.error({
+        message:
+          error?.response?.data?.Error?.[0]?.details ||
+          error?.response?.data?.message,
+      }),
+    );
   }
 }
 function* logoutRequest() {

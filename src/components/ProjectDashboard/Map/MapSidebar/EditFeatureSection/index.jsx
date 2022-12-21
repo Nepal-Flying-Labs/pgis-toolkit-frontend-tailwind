@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { stringify } from 'wkt';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import toastActions from '@Actions/toast';
-import MaterialIcon from '@Components/common/MaterialIcon';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
+import { isEmpty } from '@Utils/commonUtils';
 
 const {
   setProjectMapState,
@@ -24,6 +24,9 @@ export default function EditFeatureSection() {
   );
   const featureGeojson = useSelector(state => state.projectMap.featureGeojson);
   const editFeatureId = useSelector(state => state.projectMap.editFeatureId);
+  const isFeatureModified = useSelector(
+    state => state.projectMap.isFeatureModified,
+  );
   const modifiedFeatureGeojson = useSelector(
     state => state.projectMap.modifiedFeatureGeojson,
   );
@@ -38,22 +41,52 @@ export default function EditFeatureSection() {
   );
   const dispatch = useDispatch();
 
+  const handleCancel = () => {
+    dispatch(
+      setProjectMapState({
+        selectedLayer: null,
+        sidebarContent: '',
+        drawType: null,
+        drawnFeatureWkt: null,
+        featureGeojson: null,
+        modifiedFeatureGeojson: null,
+        individualAttributeData: [],
+        layerAttributes: null,
+        editFeatureId: null,
+      }),
+    );
+  };
+
   const { values, handleChange, handleSubmit, setValues } = useForm({
     initialValues: {},
-    onSubmit: data => {
-      const payloadData = {
-        attributes: data,
-      };
+    onSubmit: (data, isFieldsChanged) => {
+      const payloadData = {};
       if (sidebarContent === 'add-feature') {
+        if (!drawnFeatureWkt) {
+          dispatch(toastActions.error({ message: 'Please draw a geometry' }));
+          return;
+        }
         payloadData.layer = selectedLayer.id;
         payloadData.geometry = drawnFeatureWkt;
+        payloadData.attributes = data;
         dispatch(postNewLayerFeatureRequest(payloadData));
-      } else if (modifiedFeatureGeojson) {
+        return;
+      }
+      if (!modifiedFeatureGeojson) {
+        dispatch(toastActions.error({ message: 'Please draw a geometry' }));
+        return;
+      }
+      if (isFeatureModified) {
         const modifiedFeatureWkt = stringify(modifiedFeatureGeojson);
         payloadData.geometry = modifiedFeatureWkt;
+      }
+      if (isFieldsChanged) {
+        payloadData.attributes = data;
+      }
+      if (!isEmpty(payloadData)) {
         dispatch(updateFeatureCollectionRequest(editFeatureId, payloadData));
       } else {
-        dispatch(toastActions.error({ message: 'Please draw a geometry' }));
+        handleCancel();
       }
     },
   });
@@ -83,43 +116,14 @@ export default function EditFeatureSection() {
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-5">
       <div className="naxatw-flex naxatw-items-center">
-        <a
-          className="naxatw-flex naxatw-p-2"
-          onClick={() => {
-            dispatch(
-              setProjectMapState({
-                selectedLayer: null,
-                sidebarContent: '',
-                drawType: '',
-                individualAttributeData: '',
-                drawnFeatureWkt: '',
-              }),
-            );
-          }}
-        >
-          <MaterialIcon name="arrow_back" />
-        </a>
         <h4>{sidebarContent === 'add-feature' ? 'Add' : 'Edit'} Feature</h4>
       </div>
 
       <div className="naxatw-overflow-auto scrollbar naxatw-h-[32rem] naxatw-flex naxatw-flex-col naxatw-gap-5">
-        {sidebarContent === 'add-feature' && (
+        {sidebarContent === 'add-feature' && !drawnFeatureWkt && (
           <div className="naxatw-flex naxatw-items-center">
             <div className="naxatw-w-full naxatw-space-y-2">
-              <label className="naxatw-label">Draw Feature</label>
-              <Button
-                className="naxatw-btn-secondary naxatw-btn-sm"
-                onClick={() => {
-                  if (drawnFeatureWkt) return;
-                  dispatch(
-                    setProjectMapState({
-                      drawType: 'add-feature',
-                    }),
-                  );
-                }}
-              >
-                Draw on Map
-              </Button>
+              <label className="naxatw-label">Draw Feature on Map</label>
             </div>
           </div>
         )}
@@ -164,18 +168,25 @@ export default function EditFeatureSection() {
                 </div>
               </div>
             ))}
-
-            <div className="naxatw-fixed naxatw-bottom-0 naxatw-w-full naxatw-py-4 naxatw-bg-grey-100">
-              <Button
-                className="naxatw-btn-primary"
-                onClick={handleSubmit}
-                isLoading={isPosting}
-              >
-                Save
-              </Button>
-            </div>
           </>
         )}
+
+        <div className="naxatw-fixed naxatw-flex naxatw-bottom-0 naxatw-w-full naxatw-py-4 naxatw-bg-grey-100 naxatw-gap-3">
+          <Button
+            className="naxatw-btn-primary"
+            onClick={handleSubmit}
+            isLoading={isPosting}
+          >
+            Save
+          </Button>
+
+          <Button
+            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent"
+            onClick={handleCancel}
+          >
+            Cancel
+          </Button>
+        </div>
       </div>
     </div>
   );

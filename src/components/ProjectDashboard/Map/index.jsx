@@ -8,8 +8,11 @@ import MapSection from './MapSection';
 import MapExportSidebar from './MapExportSection/MapExportSidebar';
 import MapExport from './MapExportSection/MapExport';
 
-const { getProjectThemesRequest, getProjectThemeLayersRequest } =
-  ProjectMapCreators;
+const {
+  getProjectThemesRequest,
+  getProjectThemeLayersRequest,
+  getProjectGeojsonRequest,
+} = ProjectMapCreators;
 
 export default function Map() {
   const { projectId } = useParams();
@@ -29,6 +32,7 @@ export default function Map() {
   useEffect(() => {
     if (!projectDetail) return;
     dispatch(getProjectThemesRequest({ project: projectId }));
+    dispatch(getProjectGeojsonRequest({ project: projectId }));
   }, [dispatch, projectId, projectDetail]);
 
   useEffect(() => {

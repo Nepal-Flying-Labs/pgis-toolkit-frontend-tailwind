@@ -26,6 +26,7 @@ import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import AddFeature from '@Components/common/OpenLayersComponent/CustomLayer/AddFeature';
 import EditableLayer from '@Components/common/OpenLayersComponent/CustomLayer/EditableLayer';
+import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import SidebarToggle from '../SidebarToggle';
 import Toolbox from '../Toolbox';
 
@@ -53,6 +54,7 @@ export default function MapSection() {
   const refreshLayerId = useSelector(state => state.projectMap.refreshLayerId);
   const featureGeojson = useSelector(state => state.projectMap.featureGeojson);
   const editFeatureId = useSelector(state => state.projectMap.editFeatureId);
+  const projectGeojson = useSelector(state => state.projectMap.projectGeojson);
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
@@ -63,6 +65,7 @@ export default function MapSection() {
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,
       Types.GET_PROJECT_THEME_LAYERS_REQUEST,
+      Types.GET_PROJECT_GEOJSON_REQUEST,
     ]),
   );
   const isPopupDataFetching = useSelector(state =>
@@ -70,20 +73,20 @@ export default function MapSection() {
   );
   const dispatch = useDispatch();
 
-  // zoom to project location on initial map load
-  useEffect(() => {
-    if (!map || !projectDetail) return;
-    const bbox = projectDetail?.bbox;
-    if (!bbox) return;
-    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
-    if (isExtentValid(zoomExtent)) {
-      map.getView().fit(zoomExtent, {
-        padding: [50, 50, 50, 50],
-        duration: 3500,
-        constrainResolution: true,
-      });
-    }
-  }, [map, projectDetail]);
+  // // zoom to project location on initial map load
+  // useEffect(() => {
+  //   if (!map || !projectDetail) return;
+  //   const bbox = projectDetail?.bbox;
+  //   if (!bbox) return;
+  //   const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+  //   if (isExtentValid(zoomExtent)) {
+  //     map.getView().fit(zoomExtent, {
+  //       padding: [50, 50, 50, 50],
+  //       duration: 3500,
+  //       constrainResolution: true,
+  //     });
+  //   }
+  // }, [map, projectDetail]);
 
   // update map size on sidebar toggle
   useEffect(() => {
@@ -111,6 +114,7 @@ export default function MapSection() {
     dispatch(setZoomToLayerId(null));
   }, [dispatch, map, mapState, zoomToLayerId]);
 
+  // refresh vectortile after layer edit
   useEffect(() => {
     if (!map || !refreshLayerId) return;
     const layers = map.getLayers();
@@ -253,6 +257,7 @@ export default function MapSection() {
             dispatch(
               setProjectMapState({
                 modifiedFeatureGeojson: modifiedGeojson,
+                isFeatureModified: true,
               }),
             );
           }}
@@ -260,6 +265,8 @@ export default function MapSection() {
             // dispatch(toastActions.error({ message }));
           }}
         />
+
+        <MaskedLayer geojson={projectGeojson} />
 
         <AsyncPopup
           fetchPopupData={properties => {

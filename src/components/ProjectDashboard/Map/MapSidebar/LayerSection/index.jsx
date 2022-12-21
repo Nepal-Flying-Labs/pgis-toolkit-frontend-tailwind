@@ -5,12 +5,20 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
+import { Creators as CommonCreators } from '@Actions/common';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar';
 import LayerOrder from './LayerOrder';
 import LayerList from './LayerList';
 
-const { setSidebarContent, setSearchText } = ProjectMapCreators;
+const {
+  setSidebarContent,
+  setSearchText,
+  setZoomToLayerId,
+  setDeleteLayer,
+  setProjectMapState,
+} = ProjectMapCreators;
+const { togglePromptDialog } = CommonCreators;
 
 export default function LayerSection() {
   const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
@@ -20,6 +28,52 @@ export default function LayerSection() {
   const searchText = useSelector(state => state.projectMap.searchText);
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const dropdownOptions = [
+    {
+      id: 1,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">zoom_in</i>
+          <p className="naxatw-text-body-lg">Zoom To Layer</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setZoomToLayerId(data.id));
+      },
+    },
+    {
+      id: 2,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">add</i>
+          <p className="naxatw-text-body-lg">Add Feature</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(
+          setProjectMapState({
+            selectedLayer: data,
+            sidebarContent: 'add-feature',
+            drawType: 'add-feature',
+          }),
+        );
+      },
+    },
+    {
+      id: 3,
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setDeleteLayer(data));
+        dispatch(togglePromptDialog('delete-layer'));
+      },
+    },
+  ];
 
   return (
     <>
@@ -66,7 +120,11 @@ export default function LayerSection() {
           height: `calc(100vh - ${projectHeaderHeight}px - 7.7rem)`,
         }}
       >
-        {sidebarContent === 'layer-order' ? <LayerOrder /> : <LayerList />}
+        {sidebarContent === 'layer-order' ? (
+          <LayerOrder dropdownOptions={dropdownOptions} />
+        ) : (
+          <LayerList dropdownOptions={dropdownOptions} />
+        )}
       </div>
     </>
   );

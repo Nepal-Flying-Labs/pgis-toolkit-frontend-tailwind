@@ -29,3 +29,6 @@ export const getFeatureCollection = id =>
 
 export const updateFeatureCollection = (id, data) =>
   authenticated(api).patch(`/maps/feature_collection/${id}/`, data);
+
+export const getProjectGeojson = params =>
+  authenticated(api).get(`/projects/project_location_geojson/`, { params });

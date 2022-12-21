@@ -51,7 +51,7 @@ export function* postProjectInviteRequest({ payload }) {
     yield put(
       organizationDashboardActions.postProjectInviteSuccess(response.data),
     );
-    yield put(organizationDashboardActions.toggleModal(''));
+    yield put(commonActions.toggleModal(''));
     yield put(toastActions.success({ message: 'Invitation sent success' }));
     yield put(
       organizationDashboardActions.getProjectsRequest({ organization }),

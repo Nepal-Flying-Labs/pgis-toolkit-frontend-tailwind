@@ -1,15 +1,19 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { stringify } from 'wkt';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
+import toastActions from '@Actions/toast';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import CustomCalendar from '@Components/common/CustomCalendar/index';
 
 const {
   setProjectMapState,
   getLayerAttributeFieldsRequest,
   postNewLayerFeatureRequest,
+  updateFeatureCollectionRequest,
 } = ProjectMapCreators;
 
 export default function EditFeatureSection() {
@@ -18,11 +22,19 @@ export default function EditFeatureSection() {
   const drawnFeatureWkt = useSelector(
     state => state.projectMap.drawnFeatureWkt,
   );
+  const featureGeojson = useSelector(state => state.projectMap.featureGeojson);
+  const editFeatureId = useSelector(state => state.projectMap.editFeatureId);
+  const modifiedFeatureGeojson = useSelector(
+    state => state.projectMap.modifiedFeatureGeojson,
+  );
   const individualAttributeData = useSelector(
     state => state.projectMap.individualAttributeData,
   );
   const isPosting = useSelector(state =>
-    checkIfLoading(state, [Types.POST_NEW_LAYER_FEATURE_REQUEST]),
+    checkIfLoading(state, [
+      Types.POST_NEW_LAYER_FEATURE_REQUEST,
+      Types.UPDATE_FEATURE_COLLECTION_REQUEST,
+    ]),
   );
   const dispatch = useDispatch();
 
@@ -30,11 +42,19 @@ export default function EditFeatureSection() {
     initialValues: {},
     onSubmit: data => {
       const payloadData = {
-        layer: selectedLayer.id,
         attributes: data,
-        geometry: drawnFeatureWkt,
       };
-      dispatch(postNewLayerFeatureRequest(payloadData));
+      if (sidebarContent === 'add-feature') {
+        payloadData.layer = selectedLayer.id;
+        payloadData.geometry = drawnFeatureWkt;
+        dispatch(postNewLayerFeatureRequest(payloadData));
+      } else if (modifiedFeatureGeojson) {
+        const modifiedFeatureWkt = stringify(modifiedFeatureGeojson);
+        payloadData.geometry = modifiedFeatureWkt;
+        dispatch(updateFeatureCollectionRequest(editFeatureId, payloadData));
+      } else {
+        dispatch(toastActions.error({ message: 'Please draw a geometry' }));
+      }
     },
   });
 
@@ -83,26 +103,28 @@ export default function EditFeatureSection() {
       </div>
 
       <div className="naxatw-overflow-auto scrollbar naxatw-h-[32rem] naxatw-flex naxatw-flex-col naxatw-gap-5">
-        <div className="naxatw-flex naxatw-items-center">
-          <div className="naxatw-w-full naxatw-space-y-2">
-            <label className="naxatw-label">Draw Feature</label>
-            <Button
-              className="naxatw-btn-secondary naxatw-btn-sm"
-              onClick={() => {
-                if (drawnFeatureWkt) return;
-                dispatch(
-                  setProjectMapState({
-                    drawType: 'add-feature',
-                  }),
-                );
-              }}
-            >
-              Draw on Map
-            </Button>
+        {sidebarContent === 'add-feature' && (
+          <div className="naxatw-flex naxatw-items-center">
+            <div className="naxatw-w-full naxatw-space-y-2">
+              <label className="naxatw-label">Draw Feature</label>
+              <Button
+                className="naxatw-btn-secondary naxatw-btn-sm"
+                onClick={() => {
+                  if (drawnFeatureWkt) return;
+                  dispatch(
+                    setProjectMapState({
+                      drawType: 'add-feature',
+                    }),
+                  );
+                }}
+              >
+                Draw on Map
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
 
-        {drawnFeatureWkt && (
+        {(drawnFeatureWkt || featureGeojson) && (
           <>
             <div className="naxatw-flex naxatw-items-center">
               <div className="naxatw-w-full naxatw-space-y-2">
@@ -117,14 +139,28 @@ export default function EditFeatureSection() {
                     {item.alias || item.name}
                     {item.mandatory ? '*' : ''}
                   </label>
-                  <input
-                    id={item.id}
-                    type="text"
-                    className="naxatw-input"
-                    name={item.name}
-                    value={values[`${item.name}`]}
-                    onChange={handleChange}
-                  />
+                  {item.data_type === 'date' ? (
+                    <CustomCalendar
+                      startDate={new Date()}
+                      onChange={date => {
+                        // handleCustomChange(
+                        //   'start_date',
+                        //   format(date, 'yyyy-MM-dd'),
+                        // );
+                      }}
+                      selected={values[`${item.name}`] || ''}
+                    />
+                  ) : (
+                    <input
+                      id={item.id}
+                      type={item.data_type === 'str' ? 'text' : 'number'}
+                      className="naxatw-input"
+                      step={item.data_type === 'float' ? 'any' : ''}
+                      name={item.name}
+                      value={values[`${item.name}`] || ''}
+                      onChange={handleChange}
+                    />
+                  )}
                 </div>
               </div>
             ))}

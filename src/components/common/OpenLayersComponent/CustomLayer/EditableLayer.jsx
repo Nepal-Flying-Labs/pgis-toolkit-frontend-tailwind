@@ -26,6 +26,8 @@ const EditableLayer = ({
   onSave,
   onCancel,
   onError,
+  onChange = () => {},
+  geometryType,
 }) => {
   const [vectorLayer, setVectorLayer] = useState(null);
   const [modifiedStates, setModifiedStates] = useState([]);
@@ -67,9 +69,9 @@ const EditableLayer = ({
     () =>
       new Draw({
         source: vectorLayer?.getSource(),
-        type: 'Polygon',
+        type: geometryType,
       }),
-    [vectorLayer],
+    [vectorLayer, geometryType],
   );
 
   const snap = useMemo(
@@ -109,7 +111,7 @@ const EditableLayer = ({
     setVectorLayer(vectorLyr);
     select.getFeatures().push(features[0]);
     setModifiedStates([geojson]);
-  }, [map, geojson, zIndex, select]);
+  }, [map, geojson, zIndex, select, style]);
 
   // add select interaction
   useEffect(() => {
@@ -152,8 +154,9 @@ const EditableLayer = ({
       const featureGeojson = getFeatureGeojson(features[0]);
       setModifiedStates(prev => [...prev, featureGeojson]);
       setModifiedFeature(features[0]);
+      onChange(featureGeojson);
     });
-  }, [translate]);
+  }, [translate]); // eslint-disable-line
 
   // on modify finish
   useEffect(() => {
@@ -162,8 +165,9 @@ const EditableLayer = ({
       const featureGeojson = getFeatureGeojson(features[0]);
       setModifiedStates(prev => [...prev, featureGeojson]);
       setModifiedFeature(features[0]);
+      onChange(featureGeojson);
     });
-  }, [modify]);
+  }, [modify]); // eslint-disable-line
 
   // on draw end
   useEffect(() => {
@@ -175,8 +179,9 @@ const EditableLayer = ({
       map.removeInteraction(draw);
       map.removeInteraction(snap);
       setDrawType(null);
+      onChange(featureGeojson);
     });
-  }, [draw, snap, map]);
+  }, [draw, snap, map]); // eslint-disable-line
 
   // on undo click
   const handleUndo = () => {
@@ -204,6 +209,7 @@ const EditableLayer = ({
     // setModifiedStates((prev) => [...prev, null]);
     setModifiedFeature(null);
     setDrawType('add-polygon');
+    onChange(null);
   };
 
   const handleDrag = () => {
@@ -229,63 +235,62 @@ const EditableLayer = ({
 
   return (
     <div
-      className="naxatw-absolute naxatw-p-2 naxatw-rounded-lg naxatw-bottom-10 naxatw-right-4 naxatw-bg-white naxatw-z-10
-                 naxatw-shadow-3xl"
+      className="naxatw-absolute naxatw-py-1 naxatw-px-[1px] naxatw-rounded-lg naxatw-top-28 naxatw-left-4
+      naxatw-bg-white naxatw-z-10 naxatw-shadow-3xl naxatw-text-grey-800 naxatw-flex naxatw-flex-col
+      naxatw-border naxatw-border-grey-300"
       style={{ display: !geojson ? 'none' : '' }}
     >
-      <div className="">
-        <h5>Edit Toolbar</h5>
-      </div>
-      <div className="naxatw-text-grey-800 naxatw-mt-2">
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Drag"
-          onClick={handleDrag}
-        >
-          <i className="material-symbols-outlined">open_with</i>
-        </button>
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Edit"
-          onClick={handleEdit}
-        >
-          <i className="material-icons">timeline</i>
-        </button>
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Delete"
-          onClick={handleDelete}
-        >
-          <i className="material-icons">delete_outline</i>
-        </button>
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Undo"
-          onClick={handleUndo}
-        >
-          <i className="material-icons">undo</i>
-        </button>
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Save"
-          onClick={handleSave}
-        >
-          <i className="material-symbols-outlined">save</i>
-        </button>
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Cancel"
-          onClick={onCancel}
-        >
-          <i className="material-icons">close</i>
-        </button>
-      </div>
+      <button
+        className="naxatw-icon-btn naxatw-icon-btn-sm"
+        type="button"
+        title="Drag"
+        onClick={handleDrag}
+      >
+        <i className="material-symbols-outlined">open_with</i>
+      </button>
+      <button
+        className="naxatw-icon-btn naxatw-icon-btn-sm"
+        type="button"
+        title="Edit"
+        onClick={handleEdit}
+      >
+        <i className="material-icons">timeline</i>
+      </button>
+      <button
+        className="naxatw-icon-btn naxatw-icon-btn-sm"
+        type="button"
+        title="Delete"
+        onClick={handleDelete}
+      >
+        <i className="material-icons">delete_outline</i>
+      </button>
+      <button
+        className="naxatw-icon-btn naxatw-icon-btn-sm"
+        type="button"
+        title="Undo"
+        onClick={handleUndo}
+      >
+        <i className="material-icons">undo</i>
+      </button>
+
+      {/*
+          <button
+            className="naxatw-icon-btn naxatw-icon-btn-sm"
+            type="button"
+            title="Save"
+            onClick={handleSave}
+          >
+            <i className="material-symbols-outlined">save</i>
+          </button>
+          <button
+            className="naxatw-icon-btn naxatw-icon-btn-sm"
+            type="button"
+            title="Cancel"
+            onClick={onCancel}
+          >
+            <i className="material-icons">close</i>
+          </button>
+        */}
     </div>
   );
 };

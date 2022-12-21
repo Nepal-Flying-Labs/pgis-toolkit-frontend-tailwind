@@ -51,7 +51,7 @@ export default function Organizations() {
 
       <div className="naxatw-mt-24 naxatw-px-10">
         <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
-          <h3>Organizations</h3>
+          <h3>List of Organizations</h3>
           {userPermissions?.includes('add_organization') && (
             <Button
               className="naxatw-btn-primary"

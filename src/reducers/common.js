@@ -11,7 +11,7 @@ const initialState = {
 
 const toggleModal = (state, action) => ({
   ...state,
-  showModal: !state.showModal,
+  showModal: !!action.payload || !state.showModal,
   modalContent: action.payload || state.modalContent,
 });
 
@@ -22,7 +22,7 @@ const setModalContent = (state, action) => ({
 
 const togglePromptDialog = (state, action) => ({
   ...state,
-  showPromptDialog: !state.showPromptDialog,
+  showPromptDialog: !!action.payload || !state.showPromptDialog,
   promptDialogContent: action.payload || state.promptDialogContent,
 });
 

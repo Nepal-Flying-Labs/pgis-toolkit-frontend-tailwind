@@ -19,6 +19,7 @@ import prepareFormData from '@Utils/prepareFormData';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
 import { getCSVHeaders } from '@Utils/convertLayerUtils';
+import useWindowDimensions from '@Hooks/useWindowDimentions';
 
 const { getProjectThemesRequest } = ProjectMapCreators;
 const { uploadDatasetsRequest } = ProjectDashboardCreators;
@@ -31,6 +32,7 @@ export default function UploadDataset() {
   const isUploading = useSelector(state =>
     checkIfLoading(state, [Types.UPLOAD_DATASETS_REQUEST]),
   );
+  const { height } = useWindowDimensions();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -161,7 +163,7 @@ export default function UploadDataset() {
 
       <div
         className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-auto scrollbar naxatw-max-h-96"
-        style={{ overflow: 'unset' }}
+        style={{ maxHeight: `${height / 16 - 22}rem` }}
       >
         <Dropzone
           label="Please upload your datasets (shp, csv, geojson or gpkg file format)"

@@ -30,6 +30,7 @@ const initialState = {
   modifiedFeatureGeojson: null,
   editFeatureId: null,
   isFeatureModified: false,
+  projectGeojson: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -362,6 +363,13 @@ const updateFeatureCollectionSuccess = (state, action) => {
   };
 };
 
+const getProjectGeojsonSuccess = (state, action) => {
+  return {
+    ...state,
+    projectGeojson: action.payload,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -386,6 +394,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.POST_NEW_LAYER_FEATURE_SUCCESS]: postNewLayerFeatureSuccess,
   [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
   [Types.UPDATE_FEATURE_COLLECTION_SUCCESS]: updateFeatureCollectionSuccess,
+  [Types.GET_PROJECT_GEOJSON_SUCCESS]: getProjectGeojsonSuccess,
 });
 
 export default projectMapReducer;

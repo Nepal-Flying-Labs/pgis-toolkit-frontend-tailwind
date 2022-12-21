@@ -70,8 +70,7 @@
 - [ ] error details in error dialog
 - [ ] pull feature geojson before edit
 - [ ] add setRequiredFields in useForm
-- [ ] mandatory validation/ actual data type
-- [ ] remove draw on map
+- [ ] mandatory validation/actual data type
 - [ ] note: we only support wgs 84
 - [ ] show active button while editing
 - [ ] data catalogue not showing

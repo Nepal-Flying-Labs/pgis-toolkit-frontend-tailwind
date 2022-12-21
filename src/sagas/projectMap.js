@@ -4,6 +4,7 @@ import {
   getFeatureCollection,
   getLayerAttributeFields,
   getMapPopupData,
+  getProjectGeojson,
   getProjectThemeLayers,
   getProjectThemes,
   postNewLayerFeature,
@@ -189,6 +190,16 @@ export function* updateFeatureCollectionRequest({ id, payload }) {
   }
 }
 
+export function* getProjectGeojsonRequest({ params }) {
+  try {
+    const response = yield call(getProjectGeojson, params);
+    yield put(projectMapActions.getProjectGeojsonSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getProjectGeojsonFailure());
+    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -226,6 +237,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.UPDATE_FEATURE_COLLECTION_REQUEST,
     withLoader(updateFeatureCollectionRequest),
+  );
+  yield takeLatest(
+    Types.GET_PROJECT_GEOJSON_REQUEST,
+    withLoader(getProjectGeojsonRequest),
   );
 }
 

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { stringify } from 'wkt';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import toastActions from '@Actions/toast';
-import MaterialIcon from '@Components/common/MaterialIcon';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import { checkIfLoading } from '@Utils/loaderSelector';

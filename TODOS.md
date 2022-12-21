@@ -73,6 +73,7 @@
 - [ ] mandatory validation/ actual data type
 - [ ] remove draw on map
 - [ ] note: we only support wgs 84
+- [ ] show active button while editing
 
 ### Backend
 

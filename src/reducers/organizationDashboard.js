@@ -55,6 +55,11 @@ const getIndividualProjectSuccess = (state, action) => {
 
   const fileNameArray = file?.split('/');
   const fileName = fileNameArray ? fileNameArray[fileNameArray.length - 1] : '';
+
+  const imageNameArray = cover_image?.split('/');
+  const imageName = imageNameArray
+    ? imageNameArray[imageNameArray.length - 1]
+    : '';
   return {
     ...state,
     individualProject: {
@@ -63,14 +68,14 @@ const getIndividualProjectSuccess = (state, action) => {
       stepOne: {
         name,
         cover_image: cover_image
-          ? [
-              {
-                image: cover_image,
-                fileName: getFileExtension(cover_image),
-                existedData: true,
-              },
-            ]
-          : [],
+          ? {
+              name: imageName,
+              image: cover_image,
+              lastModifiedDate: last_updated,
+              type: getFileExtension(cover_image),
+              existedData: true,
+            }
+          : '',
         description,
         thematic_areas,
         start_date,

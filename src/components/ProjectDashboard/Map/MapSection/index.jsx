@@ -55,6 +55,9 @@ export default function MapSection() {
   const featureGeojson = useSelector(state => state.projectMap.featureGeojson);
   const editFeatureId = useSelector(state => state.projectMap.editFeatureId);
   const projectGeojson = useSelector(state => state.projectMap.projectGeojson);
+  const projectAreaLayerId = useSelector(
+    state => state.projectMap.projectAreaLayerId,
+  );
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
@@ -295,6 +298,7 @@ export default function MapSection() {
           }}
           loading={isPopupDataFetching}
           closePopup={!!selectedLayer || !!featureGeojson}
+          layerExceptionIds={[projectAreaLayerId]}
         />
 
         <MapFooter loading={isMapLoading} />

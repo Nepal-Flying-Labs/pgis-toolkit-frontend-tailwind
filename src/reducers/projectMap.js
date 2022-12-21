@@ -31,6 +31,7 @@ const initialState = {
   editFeatureId: null,
   isFeatureModified: false,
   projectGeojson: null,
+  projectAreaLayerId: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -40,6 +41,9 @@ const getProjectThemesSuccess = (state, action) => ({
 
 const getProjectThemeLayersSuccess = (state, action) => {
   const { data: layerData, theme } = action.payload;
+  const projectAreaLayerId = !state.projectAreaLayerId
+    ? layerData.find(item => item.name === 'Boundary')?.id || null
+    : state.projectAreaLayerId;
   const data = layerData.filter(item => item.upload_status === 'successful');
   const notPresentLayers = data
     .filter(item => !state.mapSettings.layerOrder.includes(item.id))
@@ -72,6 +76,7 @@ const getProjectThemeLayersSuccess = (state, action) => {
       ...state.mapSettings,
       layerOrder,
     },
+    projectAreaLayerId,
   };
 };
 

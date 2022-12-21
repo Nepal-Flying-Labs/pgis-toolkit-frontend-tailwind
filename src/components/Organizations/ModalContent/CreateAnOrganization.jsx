@@ -68,7 +68,7 @@ export default function CreateAnOrganization() {
     <div className="">
       <div className="naxatw-p-4 naxatw-space-y-7">
         <Input
-          label="Name of Organization"
+          label="Name of Organization *"
           type="text"
           name="organizationName"
           placeholder="Enter name of organization"
@@ -122,14 +122,14 @@ export default function CreateAnOrganization() {
 
         <div className="naxatw-space-y-2">
           <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
-            Email Invite
+            Invite User by Email *
           </label>
           <div className="naxatw-flex naxatw-items-center naxatw-relative">
             <input
               type="text"
               className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-pr-3 naxatw-pl-[50px] naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gregrey-700 naxatw-focus:bg-white focus:naxatw-border-gray-600 focus:naxatw-outline-none"
               name="email"
-              placeholder="Enter email address to invite organization admin"
+              placeholder="Enter email address of organization admin"
               value={email}
               onChange={e => {
                 setEmail(e.target.value);

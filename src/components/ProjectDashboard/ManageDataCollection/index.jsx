@@ -28,26 +28,40 @@ const linkOptions = [
   },
 ];
 
-const getContent = step => {
-  switch (step) {
-    case 1:
-      return <StepOne />;
-    case 2:
-      return <StepTwo />;
-    case 3:
-      return <StepThree />;
-    default:
-      return '';
-  }
-};
+// const getContent = step => {
+//   switch (step) {
+//     case 1:
+//       return <StepOne option={option} setOption={setOption}/>;
+//     case 2:
+//       return <StepTwo />;
+//     case 3:
+//       return <StepThree />;
+//     default:
+//       return '';
+//   }
+// };
 
 const ManageDataCollection = () => {
+  const [option, setOption] = useState(null);
   const { projectId, organizationId } = useParams();
   const dispatch = useDispatch();
   const showModal = useSelector(state => state.common.showModal);
   const modalContent = useSelector(state => state.common.modalContent);
   const [active, setActive] = useState(1);
   const history = useHistory();
+  const getContent = step => {
+    switch (step) {
+      case 1:
+        return <StepOne option={option} setOption={setOption} />;
+      case 2:
+        return <StepTwo />;
+      case 3:
+        return <StepThree />;
+      default:
+        return '';
+    }
+  };
+
   return (
     <div>
       <Modal
@@ -147,7 +161,14 @@ const ManageDataCollection = () => {
             {active < linkOptions.length ? (
               <Button
                 className="naxatw-btn-primary naxatw-w-[71px]"
-                onClick={() => setActive(prev => prev + 1)}
+                onClick={
+                  option === 'have-dataset'
+                    ? () =>
+                        history.push(
+                          `/organizations/${organizationId}/projects/${projectId}/data`,
+                        )
+                    : () => setActive(prev => prev + 1)
+                }
               >
                 Next
               </Button>

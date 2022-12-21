@@ -4,6 +4,9 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import PropTypes from 'prop-types';
+import useCustomUpload from '@Hooks/useCustomUpload';
+import Dropzone from '../Dropzone/index';
+
 import MaterialIcon from '../MaterialIcon/index';
 import Button from '../Button/index';
 
@@ -18,7 +21,8 @@ function UploadPhotos({
   isDropzone,
 }) {
   //   console.log(uploadedFile, 'file');
-  const onFileUpload = e => {
+  const [inputRef, onFileUpload] = useCustomUpload();
+  const onChangeFileUpload = e => {
     const { files } = e.target;
     const uploadedFileObject =
       // eslint-disable-next-line no-nested-ternary
@@ -51,52 +55,37 @@ function UploadPhotos({
   };
   return (
     <div className="naxatw-mb-2">
-      {!isDropzone ? (
-        <div className="naxatw-relative naxatw-flex naxatw-items-center naxatw-gap-x-2 ">
-          <Button className="naxatw-flex naxatw-items-center naxatw-gap-x-2  ">
+      {/* <div
+        className="naxatw-flex naxatw-justify-start naxatw-items-center naxatw-w-full naxatw-h-[144px] naxatw-mb-2 "
+        onClick={onFileUpload}
+      >
+        <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-w-full naxatw-h-full">
+          <label className=" naxatw-flex naxatw-flex-col naxatw-gap-y-3 naxatw-justify-center naxatw-w-full naxatw-h-full naxatw-items-center naxatw-bg-[#F5F5F5] naxatw-rounded-lg naxatw-border-2 naxatw-border-[#BDBDBD] naxatw-border-dashed naxatw-cursor-pointer">
             <MaterialIcon
-              name="upload"
-              className="naxatw-2xl naxatw-text-[#00A699]"
+              name="cloud_upload"
+              className="naxatw-text-red-400 naxatw-text-[32px] naxatw-font-normal"
             />
-            <span className="naxatw-text-[15px] naxatw-font-bold naxatw-text-[#00A699]">
-              Upload
+            <span className="naxatw-text-body-md naxatw-text-[#757575]">
+              Please Upload Documents (DOCX,PDF,Excel or CSV file format)
             </span>
-          </Button>
-          <div>
-            <span className="naxatw-text-body-md naxatw-text-[#484848]">
-              SHP or GEOJSON format supported
-            </span>
-          </div>
-          <input
-            type="file"
-            className="naxatw-absolute naxatw-inset-0 naxatw-block naxatw-w-[118px] naxatw-h-[48px] naxatw-cursor-pointer naxatw-opacity-0 file:naxatw-cursor-pointer"
-            onChange={onFileUpload}
-            multiple={multiple}
-            accept={accept}
-          />
-        </div>
-      ) : (
-        <div className="naxatw-flex naxatw-justify-start naxatw-items-center naxatw-w-full naxatw-h-[144px] naxatw-mb-2 ">
-          <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-w-full naxatw-h-full">
-            <label className=" naxatw-flex naxatw-flex-col naxatw-gap-y-3 naxatw-justify-center naxatw-w-full naxatw-h-full naxatw-items-center naxatw-bg-[#F5F5F5] naxatw-rounded-lg naxatw-border-2 naxatw-border-[#BDBDBD] naxatw-border-dashed naxatw-cursor-pointer">
-              <MaterialIcon
-                name="cloud_upload"
-                className="naxatw-text-red-400 naxatw-text-[32px] naxatw-font-normal"
-              />
-              <span className="naxatw-text-body-md naxatw-text-[#757575]">
-                Please Upload Documents (DOCX,PDF,Excel or CSV file format)
-              </span>
-              <input
-                type="file"
-                className="naxatw-hidden"
-                onChange={onFileUpload}
-                multiple={multiple}
-                accept={accept}
-              />
-            </label>
-          </div>{' '}
-        </div>
-      )}
+            <input
+              ref={inputRef}
+              type="file"
+              className="naxatw-hidden"
+              onChange={onChangeFileUpload}
+              multiple={multiple}
+              accept={accept}
+            />
+          </label>
+        </div>{' '}
+      </div> */}
+
+      <Dropzone
+        label=" Please Upload Documents (DOCX,PDF,Excel or CSV file format)"
+        accept={accept}
+        multiple={multiple}
+        onChange={onChangeFileUpload}
+      />
 
       <div className="">
         {uploadedFile &&

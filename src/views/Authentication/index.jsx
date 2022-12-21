@@ -46,12 +46,12 @@ export default function Authentication() {
           <SignInBanner />
 
           <div className="naxatw-grow naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-center naxatw-relative">
-            <div className="naxatw-absolute naxatw-right-0 naxatw-top-0 naxatw-flex naxatw-gap-4 naxatw-items-center">
+            {/* <div className="naxatw-absolute naxatw-right-0 naxatw-top-0 naxatw-flex naxatw-gap-4 naxatw-items-center">
               <p className="naxatw-text-body-lg">Don&apos;t have an account?</p>
               <Button className="naxatw-btn-secondary hover:naxatw-underline">
                 Get Started
               </Button>
-            </div>
+            </div> */}
             <div className="naxatw-mx-auto naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-center naxatw-text-center naxatw-w-[27.5rem]">
               {getContent()}
             </div>

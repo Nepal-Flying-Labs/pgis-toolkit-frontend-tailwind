@@ -29,6 +29,7 @@ const initialState = {
   layerAttributes: null,
   modifiedFeatureGeojson: null,
   editFeatureId: null,
+  isFeatureModified: false,
 };
 
 const getProjectThemesSuccess = (state, action) => ({

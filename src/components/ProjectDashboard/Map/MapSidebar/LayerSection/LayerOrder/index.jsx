@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/no-unstable-nested-components */
@@ -5,7 +6,6 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { arrayMove } from '@dnd-kit/sortable';
-import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import DropdownOptions from '@Components/common/DropdownOptions';
@@ -15,15 +15,12 @@ import { mapStateSelector } from '@Selectors/projectMap';
 
 const {
   handleCheckbox,
-  setZoomToLayerId,
   setSelectedLayer,
-  setDeleteLayer,
   saveMapConfigRequest,
   setProjectMapState,
 } = ProjectMapCreators;
-const { togglePromptDialog } = CommonCreators;
 
-export default function LayerOrder() {
+export default function LayerOrder({ dropdownOptions }) {
   const { projectId } = useParams();
   const [hoverId, setHoverId] = useState(null);
   const mapState = useSelector(mapStateSelector);
@@ -52,51 +49,6 @@ export default function LayerOrder() {
       ),
     );
   };
-
-  const dropdownOptions = [
-    {
-      id: 1,
-      label: (
-        <span className="naxatw-flex naxatw-items-center">
-          <i className="material-icons naxatw-mr-2">zoom_in</i>
-          <p className="naxatw-text-body-lg">Zoom To Layer</p>
-        </span>
-      ),
-      onClick: data => {
-        dispatch(setZoomToLayerId(data.id));
-      },
-    },
-    {
-      id: 2,
-      label: (
-        <span className="naxatw-flex naxatw-items-center">
-          <i className="material-icons naxatw-mr-2">add</i>
-          <p className="naxatw-text-body-lg">Add Feature</p>
-        </span>
-      ),
-      onClick: data => {
-        dispatch(
-          setProjectMapState({
-            selectedLayer: data,
-            sidebarContent: 'add-feature',
-          }),
-        );
-      },
-    },
-    {
-      id: 3,
-      label: (
-        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
-          <i className="material-icons naxatw-mr-2">delete_outline</i>
-          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
-        </span>
-      ),
-      onClick: data => {
-        dispatch(setDeleteLayer(data));
-        dispatch(togglePromptDialog('delete-layer'));
-      },
-    },
-  ];
 
   const handleLayerSort = event => {
     const { active, over } = event;

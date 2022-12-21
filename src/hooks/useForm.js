@@ -22,6 +22,7 @@ const useForm = ({
 }) => {
   const [inputs, setInputs] = useState(initialValues);
   const [meta, setMeta] = useState(getMetaState(initialValues, required));
+  const [fieldsChanged, setFieldsChanged] = useState(false);
 
   const isValid = (name, value) =>
     Object.prototype.hasOwnProperty.call(validationSchema, name)
@@ -30,9 +31,8 @@ const useForm = ({
 
   const handleChange = e => {
     const { name, value, type, files } = e.target;
-
+    setFieldsChanged(true);
     setInputs(prev => ({ ...prev, [name]: type === 'file' ? files : value }));
-
     if (!required.includes(name)) return;
     setMeta(prev => {
       const valid = isValid(name, value);
@@ -91,7 +91,7 @@ const useForm = ({
         ),
       );
     } else {
-      onSubmit(inputs);
+      onSubmit(inputs, fieldsChanged);
     }
   };
 

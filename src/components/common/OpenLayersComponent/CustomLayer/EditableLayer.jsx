@@ -8,8 +8,10 @@ import { get } from 'ol/proj';
 import { getUid } from 'ol/util';
 import { Modify, Select, Translate, Draw, Snap } from 'ol/interaction';
 import { shiftKeyOnly, singleClick } from 'ol/events/condition';
+import Tooltip from '@Components/common/Tooltip';
 import getFeatureGeojson from '../helpers/getFeatureGeojson';
 import { getStyles } from '../helpers/styleUtils';
+import { pointTypes } from '../Legend/LegendItem';
 
 // import './styles.scss';
 
@@ -214,12 +216,20 @@ const EditableLayer = ({
 
   const handleDrag = () => {
     if (drawType === 'add-polygon') return;
-    setDrawType('drag');
+    if (drawType === 'drag') {
+      setDrawType(null);
+    } else {
+      setDrawType('drag');
+    }
   };
 
   const handleEdit = () => {
     if (drawType === 'add-polygon') return;
-    setDrawType('edit');
+    if (drawType === 'edit') {
+      setDrawType(null);
+    } else {
+      setDrawType('edit');
+    }
   };
 
   // on save click
@@ -240,38 +250,53 @@ const EditableLayer = ({
       naxatw-border naxatw-border-grey-300"
       style={{ display: !geojson ? 'none' : '' }}
     >
-      <button
-        className="naxatw-icon-btn naxatw-icon-btn-sm"
-        type="button"
-        title="Drag"
-        onClick={handleDrag}
-      >
-        <i className="material-symbols-outlined">open_with</i>
-      </button>
-      <button
-        className="naxatw-icon-btn naxatw-icon-btn-sm"
-        type="button"
-        title="Edit"
-        onClick={handleEdit}
-      >
-        <i className="material-icons">timeline</i>
-      </button>
-      <button
-        className="naxatw-icon-btn naxatw-icon-btn-sm"
-        type="button"
-        title="Delete"
-        onClick={handleDelete}
-      >
-        <i className="material-icons">delete_outline</i>
-      </button>
-      <button
-        className="naxatw-icon-btn naxatw-icon-btn-sm"
-        type="button"
-        title="Undo"
-        onClick={handleUndo}
-      >
-        <i className="material-icons">undo</i>
-      </button>
+      <Tooltip content="Drag" direction="right">
+        <button
+          className={`naxatw-icon-btn naxatw-icon-btn-sm ${
+            drawType === 'drag' ? 'naxatw-text-secondary-400' : ''
+          }`}
+          type="button"
+          onClick={handleDrag}
+        >
+          <i className="material-symbols-outlined">open_with</i>
+        </button>
+      </Tooltip>
+
+      {!pointTypes.includes(geometryType) && (
+        <Tooltip content="Edit" direction="right">
+          <button
+            className={`naxatw-icon-btn naxatw-icon-btn-sm ${
+              drawType === 'edit' ? 'naxatw-text-secondary-400' : ''
+            }`}
+            type="button"
+            title="Edit"
+            onClick={handleEdit}
+          >
+            <i className="material-icons">timeline</i>
+          </button>
+        </Tooltip>
+      )}
+
+      <Tooltip content="Delete" direction="right">
+        <button
+          className="naxatw-icon-btn naxatw-icon-btn-sm"
+          type="button"
+          title="Delete"
+          onClick={handleDelete}
+        >
+          <i className="material-icons">delete_outline</i>
+        </button>
+      </Tooltip>
+
+      <Tooltip content="Undo" direction="right">
+        <button
+          className="naxatw-icon-btn naxatw-icon-btn-sm"
+          type="button"
+          onClick={handleUndo}
+        >
+          <i className="material-icons">undo</i>
+        </button>
+      </Tooltip>
 
       {/*
           <button

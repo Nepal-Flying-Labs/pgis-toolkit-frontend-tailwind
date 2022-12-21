@@ -45,6 +45,8 @@ export const { Types, Creators } = createActions(
     updateDataFailure: ['payload'],
 
     resetProjectDashboardState: null,
+
+    setSearchText: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

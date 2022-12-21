@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import Button from '@Components/common/Button';
+// import Tooltip from '@Components/common/Tooltip';
+// import { comingSoonMessage } from '@src/constants';
 
 const { toggleModal } = CommonCreators;
 const { setProjectMapState } = ProjectMapCreators;

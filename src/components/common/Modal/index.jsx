@@ -32,7 +32,7 @@ export default function Modal({ title, show, onClose, children }) {
           ref={nodeRef}
           className="naxatw-fixed naxatw-inset-0 naxatw-overflow-y-auto"
         >
-          <div className="naxatw-flex naxatw-min-h-full naxatw-items-center naxatw-justify-center naxatw-p-4 naxatw-text-center">
+          <div className="naxatw-flex naxatw-min-h-full naxatw-items-center naxatw-justify-center naxatw-p-4">
             <div className="naxatw-relative naxatw-flex naxatw-flex-col naxatw-justify-center naxatw-items-center naxatw-w-full naxatw-max-w-2xl naxatw-h-full md:naxatw-h-auto">
               <div className="naxatw-relative naxatw-bg-white naxatw-rounded-3xl naxatw-shadow naxatw-py-5 naxatw-px-6 naxatw-w-[42rem]">
                 <div className="naxatw-flex naxatw-justify-between naxatw-items-start naxatw-rounded-t naxatw-p-1">

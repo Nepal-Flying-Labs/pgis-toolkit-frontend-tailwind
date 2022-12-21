@@ -29,7 +29,7 @@ export const defaultStyles = {
   lineColor: '#2C675A',
   lineOpacity: 40,
   fillColor: '#2C675A',
-  fillOpacity: 50,
+  fillOpacity: 0,
   lineThickness: 1,
   circleRadius: 5,
   dashline: 0,

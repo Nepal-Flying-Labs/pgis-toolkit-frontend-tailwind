@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 /* eslint-disable react/no-danger */
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/anchor-has-content */
@@ -33,6 +32,7 @@ const AsyncPopup = ({
   onButtonClick,
   closePopup = false,
   loading = false,
+  layerExceptionIds = [],
 }) => {
   const popupRef = useRef(null);
   const popupCloserRef = useRef(null);
@@ -40,6 +40,11 @@ const AsyncPopup = ({
   const [overlay, setOverlay] = useState(null);
   const [properties, setProperties] = useState(null);
   const [popupHTML, setPopupHTML] = useState('');
+  const exceptionIds = useRef([]);
+
+  useEffect(() => {
+    exceptionIds.current = layerExceptionIds;
+  }, [layerExceptionIds]);
 
   // add overlay to popupRef
   useEffect(() => {
@@ -81,13 +86,9 @@ const AsyncPopup = ({
         return;
       }
       const featureProperties = features[0].getProperties();
-      const { layerId } = featureProperties;
-      if (
-        layerIds.includes(layerId) ||
-        (hasKey(featureProperties, 'layer') &&
-          !featureProperties?.code &&
-          !layerExceptionKeys.includes(featureProperties.layer))
-      ) {
+      const { layer_id: layerId } = featureProperties;
+      if (!exceptionIds.current.includes(layerId)) {
+        console.log('propertiesx');
         setProperties(featureProperties);
         setCoordinates(coordinate);
       } else {

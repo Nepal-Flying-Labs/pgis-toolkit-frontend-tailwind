@@ -69,6 +69,10 @@ export const { Types, Creators } = createActions(
     updateFeatureCollectionRequest: ['id', 'payload'],
     updateFeatureCollectionSuccess: ['payload'],
     updateFeatureCollectionFailure: null,
+
+    getProjectGeojsonRequest: ['params'],
+    getProjectGeojsonSuccess: ['payload'],
+    getProjectGeojsonFailure: null,
   },
   { prefix: 'projectMap/' },
 );

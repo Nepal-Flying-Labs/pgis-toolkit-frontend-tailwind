@@ -1,0 +1,141 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-underscore-dangle */
+import { useEffect, useState } from 'react';
+import GeoJSON from 'ol/format/GeoJSON';
+import { get } from 'ol/proj';
+
+import Mask from 'ol-ext/filter/Mask';
+import { Fill } from 'ol/style';
+// import { useSelector } from 'react-redux';
+import { isEmpty } from '@src/utils/commonUtils';
+import { Feature, View } from 'ol';
+import { MultiPolygon } from 'ol/geom';
+import LayerGroup from 'ol/layer/Group';
+import TileLayer from 'ol/layer/Tile';
+
+export default function MaskedLayer({ map, geojson }) {
+  const [tileLayers, setTileLayers] = useState([]);
+
+  useEffect(() => {
+    if (!map) return () => {};
+    map.once('rendercomplete', () => {
+      const data = map
+        .getLayers()
+        .getArray()
+        .filter(item => item instanceof LayerGroup)[0]
+        .getLayers()
+        .getArray()
+        .filter(tiles => tiles instanceof TileLayer);
+      setTileLayers(data);
+    });
+
+    return () => {
+      setTileLayers([]);
+    };
+  }, [map]);
+
+  useEffect(() => {
+    if (isEmpty(tileLayers) || !geojson) return;
+    const feature = new GeoJSON().readFeatures(geojson, {
+      featureProjection: get('EPSG:3857'),
+    });
+    if (isEmpty(feature));
+    const coords = feature.map(feat => feat.getGeometry().getCoordinates());
+    // const coords = dep.geometry.coordinates;
+    const f = new Feature(new MultiPolygon(coords));
+    const maskedLayer = new Mask({
+      feature: f,
+      fill: new Fill({
+        // color: [58, 109, 255, 0.7],
+        color: [255, 255, 255, 0.7],
+        // monochrome
+        // color: [197, 222, 246, 0.8],
+        // monochrome midnight
+        // color: [11, 27, 107, 0.6],
+      }),
+      inner: false,
+    });
+
+    maskedLayer.set('active', true);
+
+    const featureExtent = f.getGeometry().getExtent();
+    map.getView().fit(featureExtent, {
+      padding: [50, 50, 50, 50],
+      constrainResolution: true,
+    });
+    const currentZoom = map.getView().getZoom();
+    map.setView(
+      new View({
+        center: map.getView().getCenter(),
+        extent: [
+          featureExtent[0] - 30000,
+          featureExtent[1] - 30000,
+          featureExtent[2] + 30000,
+          featureExtent[3] + 30000,
+        ],
+        zoom: currentZoom,
+        minZoom: currentZoom - 1,
+      }),
+    );
+
+    tileLayers.map(tiles => tiles.addFilter(maskedLayer));
+
+    return () => {
+      if (!isEmpty(tileLayers)) {
+        tileLayers.map(item => item.removeFilter(maskedLayer));
+      }
+    };
+  }, [map, tileLayers, geojson]);
+
+  return null;
+}
+
+// /* eslint-disable react/prop-types */
+// import { useEffect } from 'react';
+// import LayerGroup from 'ol/layer/Group';
+// import GeoJSON from 'ol/format/GeoJSON';
+// import { get } from 'ol/proj';
+// import { Fill, Style } from 'ol/style';
+// import { OSM, Stamen, Vector as VectorSource } from 'ol/source';
+// import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
+// import { fromLonLat } from 'ol/proj';
+// import { getVectorContext } from 'ol/render';
+//
+// export default function MaskedLayer({ map, geojson }) {
+//   useEffect(() => {
+//     if (!map || !geojson) return;
+//     const clipLayer = new VectorLayer({
+//       style: null,
+//       source: new VectorSource({
+//         features: new GeoJSON().readFeatures(geojson, {
+//           featureProjection: get('EPSG:3857'),
+//         }),
+//       }),
+//     });
+//
+//     const layers = map.getLayers().getArray();
+//     const layerGroup = layers.find(layer => layer instanceof LayerGroup);
+//     const layersx = layerGroup.getLayersArray();
+//     const base = layersx.find(layer => layer.getProperties().visible);
+//
+//     clipLayer.getSource().on('addfeature', () => {
+//       base.setExtent(clipLayer.getSource().getExtent());
+//     });
+//     const style = new Style({
+//       fill: new Fill({
+//         color: 'black',
+//       }),
+//     });
+//
+//     base.on('postrender', e => {
+//       const vectorContext = getVectorContext(e);
+//       e.context.globalCompositeOperation = 'destination-in';
+//       clipLayer.getSource().forEachFeature(feature => {
+//         vectorContext.drawFeature(feature, style);
+//       });
+//       e.context.globalCompositeOperation = 'source-over';
+//     });
+//   }, [map, geojson]);
+//
+//   return null;
+// }

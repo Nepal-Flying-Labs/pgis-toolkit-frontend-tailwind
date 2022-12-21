@@ -22,12 +22,7 @@ import PromptDialog from '@Components/common/PromptDialog';
 import AppLoader from '@Components/common/AppLoader';
 import { isEmpty } from '@Utils/commonUtils';
 
-const {
-  toggleModal,
-  togglePromptDialog,
-  setModalContent,
-  setPromptDialogContent,
-} = CommonCreators;
+const { toggleModal, togglePromptDialog } = CommonCreators;
 const {
   getProjectLayersRequest,
   getProjectDetailRequest,

@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import Accordion from '@Components/common/Accordion';
 import MaterialIcon from '@Components/common/MaterialIcon';
@@ -17,16 +16,10 @@ import {
 } from '@Selectors/projectMap';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
-const {
-  handleCheckbox,
-  setZoomToLayerId,
-  setDeleteLayer,
-  saveMapConfigRequest,
-  setProjectMapState,
-} = ProjectMapCreators;
-const { togglePromptDialog } = CommonCreators;
+const { handleCheckbox, saveMapConfigRequest, setProjectMapState } =
+  ProjectMapCreators;
 
-export default function LayerList() {
+export default function LayerList({ dropdownOptions }) {
   const { projectId } = useParams();
   const [hoverId, setHoverId] = useState(null);
   const themes = useSelector(filteredThemesSelector);
@@ -39,51 +32,6 @@ export default function LayerList() {
     ]),
   );
   const dispatch = useDispatch();
-
-  const dropdownOptions = [
-    {
-      id: 1,
-      label: (
-        <span className="naxatw-flex naxatw-items-center">
-          <i className="material-icons naxatw-mr-2">zoom_in</i>
-          <p className="naxatw-text-body-lg">Zoom To Layer</p>
-        </span>
-      ),
-      onClick: data => {
-        dispatch(setZoomToLayerId(data.id));
-      },
-    },
-    {
-      id: 2,
-      label: (
-        <span className="naxatw-flex naxatw-items-center">
-          <i className="material-icons naxatw-mr-2">add</i>
-          <p className="naxatw-text-body-lg">Add Feature</p>
-        </span>
-      ),
-      onClick: data => {
-        dispatch(
-          setProjectMapState({
-            selectedLayer: data,
-            sidebarContent: 'add-feature',
-          }),
-        );
-      },
-    },
-    {
-      id: 3,
-      label: (
-        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
-          <i className="material-icons naxatw-mr-2">delete_outline</i>
-          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
-        </span>
-      ),
-      onClick: data => {
-        dispatch(setDeleteLayer(data));
-        dispatch(togglePromptDialog('delete-layer'));
-      },
-    },
-  ];
 
   const handleLayerCheck = ({ checked, layerId, themeId }) => {
     dispatch(

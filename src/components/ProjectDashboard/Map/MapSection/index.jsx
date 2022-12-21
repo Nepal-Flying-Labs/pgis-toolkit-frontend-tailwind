@@ -253,6 +253,7 @@ export default function MapSection() {
             dispatch(
               setProjectMapState({
                 modifiedFeatureGeojson: modifiedGeojson,
+                isFeatureModified: true,
               }),
             );
           }}

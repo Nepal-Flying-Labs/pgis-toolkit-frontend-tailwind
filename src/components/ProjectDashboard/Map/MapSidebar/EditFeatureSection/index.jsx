@@ -63,6 +63,10 @@ export default function EditFeatureSection() {
     onSubmit: (data, isFieldsChanged) => {
       const payloadData = {};
       if (sidebarContent === 'add-feature') {
+        if (!drawnFeatureWkt) {
+          dispatch(toastActions.error({ message: 'Please draw a geometry' }));
+          return;
+        }
         payloadData.layer = selectedLayer.id;
         payloadData.geometry = drawnFeatureWkt;
         payloadData.attributes = data;
@@ -113,9 +117,6 @@ export default function EditFeatureSection() {
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-5">
       <div className="naxatw-flex naxatw-items-center">
-        <a className="naxatw-flex naxatw-p-2" onClick={handleCancel}>
-          <MaterialIcon name="arrow_back" />
-        </a>
         <h4>{sidebarContent === 'add-feature' ? 'Add' : 'Edit'} Feature</h4>
       </div>
 
@@ -168,18 +169,25 @@ export default function EditFeatureSection() {
                 </div>
               </div>
             ))}
-
-            <div className="naxatw-fixed naxatw-bottom-0 naxatw-w-full naxatw-py-4 naxatw-bg-grey-100">
-              <Button
-                className="naxatw-btn-primary"
-                onClick={handleSubmit}
-                isLoading={isPosting}
-              >
-                Save
-              </Button>
-            </div>
           </>
         )}
+
+        <div className="naxatw-fixed naxatw-flex naxatw-bottom-0 naxatw-w-full naxatw-py-4 naxatw-bg-grey-100 naxatw-gap-3">
+          <Button
+            className="naxatw-btn-primary"
+            onClick={handleSubmit}
+            isLoading={isPosting}
+          >
+            Save
+          </Button>
+
+          <Button
+            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent"
+            onClick={handleCancel}
+          >
+            Cancel
+          </Button>
+        </div>
       </div>
     </div>
   );

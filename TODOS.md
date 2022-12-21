@@ -74,6 +74,8 @@
 - [ ] remove draw on map
 - [ ] note: we only support wgs 84
 - [ ] show active button while editing
+- [ ] data catalogue not showing
+- [ ] masking / zoom level
 
 ### Backend
 

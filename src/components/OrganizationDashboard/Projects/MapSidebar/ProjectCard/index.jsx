@@ -165,7 +165,7 @@ export default function ProjectCard({
     // </div>
 
     <div
-      className={`naxatw-flex naxatw-border naxatw-rounded-xl naxatw-cursor-pointer  ${
+      className={`naxatw-flex naxatw-border naxatw-rounded-xl naxatw-cursor-pointer hover:naxatw-bg-[#F8F8F8] hover:naxatw-border-[#484848]  ${
         status === 'draft' ? 'naxatw-bg-[#F5F5F5]' : 'naxatw-bg-white'
       }`}
       onClick={onClick}

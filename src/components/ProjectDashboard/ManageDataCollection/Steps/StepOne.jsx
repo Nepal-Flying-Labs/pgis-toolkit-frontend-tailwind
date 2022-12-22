@@ -1,11 +1,12 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable arrow-body-style */
 
-import React, { useState } from 'react';
+import React from 'react';
 import pcIcon from '@Assets/images/perspective_matte.png';
 import fileIcon from '@Assets/images/group.png';
 
-const StepOne = () => {
-  const [option, setOption] = useState(null);
+const StepOne = ({ option, setOption }) => {
+  // const [option, setOption] = useState(null);
   return (
     <div className="naxatw-container ">
       <div className="naxatw-w-[800px] naxatw-mx-auto">

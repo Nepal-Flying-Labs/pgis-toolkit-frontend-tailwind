@@ -23,7 +23,7 @@ import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer/i
 export function getModalContent(content) {
   switch (content) {
     // authentication
-    case 'signup-success':
+    case 'sign-up-success':
       return {
         title: '',
         content: <SignupSuccess />,

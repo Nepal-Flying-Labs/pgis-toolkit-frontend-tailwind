@@ -102,3 +102,13 @@
 - [ ] Remove Pagination
 - [ ] Search bar outline on select
 - [ ] Font issue in Safari
+
+### Organization Module
+
+- [ ] Display error message
+- [ ] Search Component design
+- [ ] Table Sorting Design
+- [ ] Select List Overflow Problem
+- [ ] Table Menu Functionalities(Edit/Delete)
+- [ ] Implement User Permission and role
+- [ ]

@@ -58,7 +58,7 @@ export default function UploadDataset() {
         name: filename,
         extension,
         category: null,
-        addToMap: false,
+        addToMap: true,
         file,
         latField: '',
         lonField: '',
@@ -156,9 +156,8 @@ export default function UploadDataset() {
   return (
     <div>
       <p>
-        USAFIRI allows you to do different sorts of analysis with your map
-        datasets. Below are some of the analysis functions we have in the tool
-        at the moment.
+        USAFIRI allows you to import data in different formats(shp, csv, geojson
+        or gpkg file format). Please upload your datasets below.
       </p>
 
       <div

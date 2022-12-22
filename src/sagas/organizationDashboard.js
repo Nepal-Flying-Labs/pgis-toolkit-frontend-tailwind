@@ -19,7 +19,7 @@ import organizationDashboardActions, {
 import commonActions from '@Actions/common';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
-import { withLoader } from '@Utils/sagaUtils';
+import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 
 export function* getOrganizationDetailRequest({ id }) {
   try {
@@ -29,7 +29,7 @@ export function* getOrganizationDetailRequest({ id }) {
     );
   } catch (error) {
     yield put(organizationDashboardActions.getOrganizationDetailFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -39,7 +39,7 @@ export function* getProjectsRequest({ params }) {
     yield put(organizationDashboardActions.getProjectsSuccess(response.data));
   } catch (error) {
     yield put(organizationDashboardActions.getProjectsFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    throw error;
   }
 }
 
@@ -58,7 +58,7 @@ export function* postProjectInviteRequest({ payload }) {
     );
   } catch (error) {
     yield put(organizationDashboardActions.postProjectInviteFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    throw error;
   }
 }
 
@@ -70,7 +70,7 @@ export function* getIndividualProjectRequest({ id }) {
     );
   } catch (error) {
     yield put(organizationDashboardActions.getIndividualProjectFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    throw error;
   }
 }
 
@@ -92,7 +92,7 @@ export function* patchProjectRequest({ id, payload }) {
     yield put(toastActions.success({ message: 'Data saved successfully' }));
   } catch (error) {
     yield put(organizationDashboardActions.patchProjectFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    throw error;
   }
 }
 
@@ -106,6 +106,7 @@ export function* getContactPersonRequest({ params }) {
     );
   } catch (error) {
     yield put(organizationDashboardActions.getContactPersonFailure());
+    throw error;
   }
 }
 
@@ -119,6 +120,7 @@ export function* postContactPersonRequest({ params, payload }) {
     );
   } catch (error) {
     yield put(organizationDashboardActions.postContactPersonFailure());
+    throw error;
   }
 }
 export function* patchContactPersonRequest({ params, id }) {
@@ -129,6 +131,7 @@ export function* patchContactPersonRequest({ params, id }) {
     );
   } catch (error) {
     yield put(organizationDashboardActions.patchContactPersonFailure());
+    throw error;
   }
 }
 
@@ -140,6 +143,7 @@ export function* getCountryListRequest() {
     );
   } catch (error) {
     yield put(organizationDashboardActions.getCountryListFailure());
+    throw error;
   }
 }
 
@@ -155,36 +159,39 @@ export function* getUsersRequest({ params }) {
 function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
-    withLoader(getOrganizationDetailRequest),
+    withLoader(withErrorHandler(getOrganizationDetailRequest)),
   );
-  yield takeLatest(Types.GET_PROJECTS_REQUEST, withLoader(getProjectsRequest));
+  yield takeLatest(
+    Types.GET_PROJECTS_REQUEST,
+    withLoader(withErrorHandler(getProjectsRequest)),
+  );
   yield takeLatest(
     Types.POST_PROJECT_INVITE_REQUEST,
-    withLoader(postProjectInviteRequest),
+    withLoader(withErrorHandler(postProjectInviteRequest)),
   );
   yield takeLatest(
     Types.GET_INDIVIDUAL_PROJECT_REQUEST,
-    withLoader(getIndividualProjectRequest),
+    withLoader(withErrorHandler(getIndividualProjectRequest)),
   );
   yield takeLatest(
     Types.PATCH_PROJECT_REQUEST,
-    withLoader(patchProjectRequest),
+    withLoader(withErrorHandler(patchProjectRequest)),
   );
   yield takeLatest(
     Types.GET_CONTACT_PERSON_REQUEST,
-    withLoader(getContactPersonRequest),
+    withLoader(withErrorHandler(getContactPersonRequest)),
   );
   yield takeLatest(
     Types.POST_CONTACT_PERSON_REQUEST,
-    withLoader(postContactPersonRequest),
+    withLoader(withErrorHandler(postContactPersonRequest)),
   );
   yield takeLatest(
     Types.PATCH_CONTACT_PERSON_REQUEST,
-    withLoader(patchContactPersonRequest),
+    withLoader(withErrorHandler(patchContactPersonRequest)),
   );
   yield takeLatest(
     Types.GET_COUNTRY_LIST_REQUEST,
-    withLoader(getCountryListRequest),
+    withLoader(withErrorHandler(getCountryListRequest)),
   );
   yield takeLatest(Types.GET_USERS_REQUEST, withLoader(getUsersRequest));
 }

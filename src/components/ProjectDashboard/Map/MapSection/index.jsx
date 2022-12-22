@@ -76,20 +76,20 @@ export default function MapSection() {
   );
   const dispatch = useDispatch();
 
-  // // zoom to project location on initial map load
-  // useEffect(() => {
-  //   if (!map || !projectDetail) return;
-  //   const bbox = projectDetail?.bbox;
-  //   if (!bbox) return;
-  //   const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
-  //   if (isExtentValid(zoomExtent)) {
-  //     map.getView().fit(zoomExtent, {
-  //       padding: [50, 50, 50, 50],
-  //       duration: 3500,
-  //       constrainResolution: true,
-  //     });
-  //   }
-  // }, [map, projectDetail]);
+  // zoom to project location on initial map load
+  useEffect(() => {
+    if (!map || !projectDetail) return;
+    const bbox = projectDetail?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        // duration: 3500,
+        constrainResolution: true,
+      });
+    }
+  }, [map, projectDetail]);
 
   // update map size on sidebar toggle
   useEffect(() => {

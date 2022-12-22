@@ -41,7 +41,7 @@ export default function DataQuery() {
         <div className="">
           <div className="naxatw-space-y-2">
             <label className="naxatw-label">
-              Select input data/ What do you want to buffer ?
+              Select the layer you want to query
             </label>
             <Select placeholder="Choose" />
           </div>

@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-export default function errorResponseHandler(error) {
+export default function errorResponseHandler(errorResponse) {
+  const error = errorResponse.response.data;
   const hasErrorField = Object.keys(error).includes('Error');
   if (hasErrorField) {
     return `
@@ -14,5 +15,5 @@ export default function errorResponseHandler(error) {
           </ul>
         `;
   }
-  return error.message;
+  return error.message || error.detail;
 }

@@ -59,7 +59,7 @@ function Select({
         </button>
         {toggle && (
           <div
-            className="naxatw-dropdown"
+            className="naxatw-dropdown naxatw-min-w-fit"
             // style={{
             //   display: toggle ? 'block' : 'none',
             // }}

@@ -6,7 +6,6 @@ import { get } from 'ol/proj';
 
 import Mask from 'ol-ext/filter/Mask';
 import { Fill } from 'ol/style';
-// import { useSelector } from 'react-redux';
 import { isEmpty } from '@src/utils/commonUtils';
 import { Feature, View } from 'ol';
 import { MultiPolygon } from 'ol/geom';
@@ -17,22 +16,30 @@ export default function MaskedLayer({ map, geojson }) {
   const [tileLayers, setTileLayers] = useState([]);
 
   useEffect(() => {
-    if (!map) return () => {};
-    map.once('rendercomplete', () => {
-      const data = map
-        .getLayers()
-        .getArray()
-        .filter(item => item instanceof LayerGroup)[0]
-        .getLayers()
-        .getArray()
-        .filter(tiles => tiles instanceof TileLayer);
-      setTileLayers(data);
-    });
+    if (!map || !geojson) return () => {};
+    // map.once('rendercomplete', () => {
+    //   const data = map
+    //     .getLayers()
+    //     .getArray()
+    //     .filter(item => item instanceof LayerGroup)[0]
+    //     .getLayers()
+    //     .getArray()
+    //     .filter(tiles => tiles instanceof TileLayer);
+    //   setTileLayers(data);
+    // });
+    const data = map
+      .getLayers()
+      .getArray()
+      .filter(item => item instanceof LayerGroup)[0]
+      .getLayers()
+      .getArray()
+      .filter(tiles => tiles instanceof TileLayer);
+    setTileLayers(data);
 
     return () => {
       setTileLayers([]);
     };
-  }, [map]);
+  }, [map, geojson]);
 
   useEffect(() => {
     if (isEmpty(tileLayers) || !geojson) return;

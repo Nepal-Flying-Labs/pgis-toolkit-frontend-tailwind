@@ -15,12 +15,11 @@ import authActions, { Types } from '@Actions/authentication';
 import commonActions from '@Actions/common';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
-import { withLoader } from '@Utils/sagaUtils';
+import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 
 export function* loginRequest({ payload }) {
   try {
     const response = yield call(loginUser, payload);
-
     localStorage.setItem('refreshToken', response.data.refresh);
     localStorage.setItem('userToken', response.data.access);
     yield put(authActions.loginSuccess(response.data));
@@ -64,8 +63,8 @@ export function* verifyUserRequest({ params }) {
     }
   } catch (error) {
     yield put(authActions.verifyUserFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
     yield put(push('/login'));
+    throw error;
   }
 }
 
@@ -77,13 +76,7 @@ export function* signUpRequest({ payload }) {
     // yield put(push('/login'));
   } catch (error) {
     yield put(authActions.signUpFailure());
-    yield put(
-      toastActions.error({
-        message:
-          error?.response?.data?.Error?.[0]?.details ||
-          error?.response?.data?.message,
-      }),
-    );
+    throw error;
   }
 }
 function* logoutRequest() {
@@ -96,7 +89,7 @@ function* logoutRequest() {
     );
   } catch (error) {
     yield put(authActions.logoutFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    throw error;
   }
 }
 function* forgotPasswordRequest({ payload }) {
@@ -151,7 +144,7 @@ function* getUserPermissionsRequest({ params }) {
     yield put(authActions.getUserPermissionsSuccess(response.data));
   } catch (error) {
     yield put(authActions.getUserPermissionsFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    throw error;
   }
 }
 
@@ -161,7 +154,7 @@ function* getUserGroupRequest() {
     yield put(authActions.getUserGroupSuccess(response.data));
   } catch (error) {
     yield put(authActions.getUserGroupFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    throw error;
   }
 }
 
@@ -183,15 +176,24 @@ function* getUserProfileRequest() {
     yield put(authActions.getUserProfileSuccess(response.data));
   } catch (error) {
     yield put(authActions.getUserProfileFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    throw error;
   }
 }
 
 function* authenticationWatcher() {
   yield takeLatest(Types.LOGIN_REQUEST, withLoader(loginRequest));
-  yield takeLatest(Types.SIGN_UP_REQUEST, withLoader(signUpRequest));
-  yield takeLatest(Types.VERIFY_USER_REQUEST, withLoader(verifyUserRequest));
-  yield takeLatest(Types.LOGOUT_REQUEST, withLoader(logoutRequest));
+  yield takeLatest(
+    Types.SIGN_UP_REQUEST,
+    withLoader(withErrorHandler(signUpRequest)),
+  );
+  yield takeLatest(
+    Types.VERIFY_USER_REQUEST,
+    withLoader(withErrorHandler(verifyUserRequest)),
+  );
+  yield takeLatest(
+    Types.LOGOUT_REQUEST,
+    withLoader(withErrorHandler(logoutRequest)),
+  );
   yield takeLatest(
     Types.FORGOT_PASSWORD_REQUEST,
     withLoader(forgotPasswordRequest),
@@ -202,11 +204,11 @@ function* authenticationWatcher() {
   );
   yield takeLatest(
     Types.GET_USER_PERMISSIONS_REQUEST,
-    withLoader(getUserPermissionsRequest),
+    withLoader(withErrorHandler(getUserPermissionsRequest)),
   );
   yield takeLatest(
     Types.GET_USER_GROUP_REQUEST,
-    withLoader(getUserGroupRequest),
+    withLoader(withErrorHandler(getUserGroupRequest)),
   );
   yield takeLatest(
     Types.GET_LANDING_PAGE_REQUEST,
@@ -214,7 +216,7 @@ function* authenticationWatcher() {
   );
   yield takeLatest(
     Types.GET_USER_PROFILE_REQUEST,
-    withLoader(getUserProfileRequest),
+    withLoader(withErrorHandler(getUserProfileRequest)),
   );
 }
 

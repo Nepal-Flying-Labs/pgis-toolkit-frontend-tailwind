@@ -54,7 +54,10 @@ const getProjectThemeLayersSuccess = (state, action) => {
     [theme]: data.map(item => ({
       ...item,
       theme,
-      checked: state.mapSettings.checkedLayers.includes(item.id),
+      checked:
+        item.id === projectAreaLayerId
+          ? true
+          : state.mapSettings.checkedLayers.includes(item.id),
       style: {
         ...defaultStyles,
         ...item.style,

@@ -1,5 +1,7 @@
 import { put, fork, take, cancel } from 'redux-saga/effects';
 import loaderActions from '@src/actions/loader';
+import toastActions from '@src/actions/toast';
+import errorResponseHandler from './errorResponseHandler';
 
 /**
  *
@@ -66,6 +68,33 @@ export function cancelable(workerSaga, cancelActionType) {
     // cancel the background task
     // this will cause the forked task to jump into its finally block
     yield cancel(cancelableTask);
+  };
+}
+
+/**
+ *
+ * Wrapper function for reducing toast action boilerplate in saga.
+ *
+ * @param {function} fn - worker saga function
+ *
+ * @returns {function} function that handles toast action start and stop.
+ *
+ * @example
+ * function loginWatcher() {
+ *   yield takeLatest(Types.LOGIN_REQUEST, withErrorHandler(loginRequest));
+ * }
+ */
+export function withErrorHandler(func) {
+  return function* errorHandlerWrapper(action) {
+    try {
+      yield func(action);
+    } catch (err) {
+      yield put(
+        toastActions.error({
+          message: errorResponseHandler(err),
+        }),
+      );
+    }
   };
 }
 

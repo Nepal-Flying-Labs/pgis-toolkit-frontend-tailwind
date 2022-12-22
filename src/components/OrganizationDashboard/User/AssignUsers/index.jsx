@@ -67,7 +67,7 @@ const AssignUsers = () => {
           <div className="naxatw-flex naxatw-items-center naxatw-relative">
             <input
               type="text"
-              className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-pr-3 naxatw-pl-[50px] naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white  naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded-md naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gregrey-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
+              className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-pr-3 naxatw-pl-[50px] naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white  naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded-md naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gregrey-700 naxatw-focus:bg-white focus:naxatw-border-gray-600 focus:naxatw-outline-none"
               name="email"
               placeholder="Select user's email or name"
               value={email}
@@ -117,7 +117,7 @@ const AssignUsers = () => {
             {emailList.map(item => (
               <div
                 key={item.id}
-                className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-gap-x-2 naxatw-rounded-3xl naxatw-bg-[#F5F5F5] naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-[7px]"
+                className="naxatw-flex naxatw-justify-between naxatw-items-center hover:naxatw-border-[#484848] naxatw-cursor-pointer naxatw-gap-x-2 naxatw-rounded-3xl naxatw-bg-[#F5F5F5] naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-[7px]"
               >
                 <p className="naxatw-text-[#484848]">{item.value}</p>
 
@@ -140,6 +140,7 @@ const AssignUsers = () => {
             </label>
             <div className="naxatw-space-y-2">
               <Searchbar
+                isSmall
                 className="naxatw-h-[40px]"
                 placeholder="Search Role"
               />
@@ -156,6 +157,7 @@ const AssignUsers = () => {
             </label>
             <div className="naxatw-space-y-2">
               <Searchbar
+                isSmall
                 className="naxatw-h-[40px]"
                 placeholder="Search Projects"
               />

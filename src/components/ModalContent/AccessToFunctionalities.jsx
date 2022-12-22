@@ -16,13 +16,13 @@ const AccessToFunctionalities = () => {
         </span>
         <h4 className="naxatw-font-normal">
           You are now logged in as a{' '}
-          <span className="naxatw-font-primary naxatw-text-primary-400 naxatw-text-[1.5rem] naxatw-font-bold naxatw-leading-[1.875rem] naxatw-tracking-normal">
+          <span className="naxatw-font-primary naxatw-text-primary-400 naxatw-text-[1.25rem] naxatw-font-bold naxatw-leading-[1.75rem] naxatw-tracking-normal">
             Super User
           </span>
         </h4>
       </div>
       <div className="naxatw-mt-7">
-        <span className="naxatw-text-body-lg">
+        <span className="naxatw-text-body-lg naxatw-flex naxatw-justify-start">
           You now have access to following functionalities:
         </span>
         <ul className="naxatw-mt-5 naxatw-flex naxatw-flex-col naxatw-gap-y-3.5 ">

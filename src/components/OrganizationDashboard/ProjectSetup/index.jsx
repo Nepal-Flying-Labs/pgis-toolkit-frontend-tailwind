@@ -99,7 +99,7 @@ const ProjectSetup = () => {
             <div>
               <h3>
                 {tabname === 'project-setup'
-                  ? 'Create a New Project'
+                  ? 'Complete your project profile'
                   : 'Edit a Project'}
               </h3>
               <span className="naxatw-text-body-lg naxatw-mt-1">

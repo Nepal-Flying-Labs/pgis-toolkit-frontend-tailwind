@@ -8,8 +8,10 @@ import { get } from 'ol/proj';
 import { getUid } from 'ol/util';
 import { Modify, Select, Translate, Draw, Snap } from 'ol/interaction';
 import { shiftKeyOnly, singleClick } from 'ol/events/condition';
+import Tooltip from '@Components/common/Tooltip';
 import getFeatureGeojson from '../helpers/getFeatureGeojson';
 import { getStyles } from '../helpers/styleUtils';
+import { pointTypes } from '../Legend/LegendItem';
 
 // import './styles.scss';
 
@@ -26,6 +28,8 @@ const EditableLayer = ({
   onSave,
   onCancel,
   onError,
+  onChange = () => {},
+  geometryType,
 }) => {
   const [vectorLayer, setVectorLayer] = useState(null);
   const [modifiedStates, setModifiedStates] = useState([]);
@@ -67,9 +71,9 @@ const EditableLayer = ({
     () =>
       new Draw({
         source: vectorLayer?.getSource(),
-        type: 'Polygon',
+        type: geometryType,
       }),
-    [vectorLayer],
+    [vectorLayer, geometryType],
   );
 
   const snap = useMemo(
@@ -109,7 +113,7 @@ const EditableLayer = ({
     setVectorLayer(vectorLyr);
     select.getFeatures().push(features[0]);
     setModifiedStates([geojson]);
-  }, [map, geojson, zIndex, select]);
+  }, [map, geojson, zIndex, select, style]);
 
   // add select interaction
   useEffect(() => {
@@ -152,8 +156,9 @@ const EditableLayer = ({
       const featureGeojson = getFeatureGeojson(features[0]);
       setModifiedStates(prev => [...prev, featureGeojson]);
       setModifiedFeature(features[0]);
+      onChange(featureGeojson);
     });
-  }, [translate]);
+  }, [translate]); // eslint-disable-line
 
   // on modify finish
   useEffect(() => {
@@ -162,8 +167,9 @@ const EditableLayer = ({
       const featureGeojson = getFeatureGeojson(features[0]);
       setModifiedStates(prev => [...prev, featureGeojson]);
       setModifiedFeature(features[0]);
+      onChange(featureGeojson);
     });
-  }, [modify]);
+  }, [modify]); // eslint-disable-line
 
   // on draw end
   useEffect(() => {
@@ -175,8 +181,9 @@ const EditableLayer = ({
       map.removeInteraction(draw);
       map.removeInteraction(snap);
       setDrawType(null);
+      onChange(featureGeojson);
     });
-  }, [draw, snap, map]);
+  }, [draw, snap, map]); // eslint-disable-line
 
   // on undo click
   const handleUndo = () => {
@@ -204,16 +211,25 @@ const EditableLayer = ({
     // setModifiedStates((prev) => [...prev, null]);
     setModifiedFeature(null);
     setDrawType('add-polygon');
+    onChange(null);
   };
 
   const handleDrag = () => {
     if (drawType === 'add-polygon') return;
-    setDrawType('drag');
+    if (drawType === 'drag') {
+      setDrawType(null);
+    } else {
+      setDrawType('drag');
+    }
   };
 
   const handleEdit = () => {
     if (drawType === 'add-polygon') return;
-    setDrawType('edit');
+    if (drawType === 'edit') {
+      setDrawType(null);
+    } else {
+      setDrawType('edit');
+    }
   };
 
   // on save click
@@ -229,30 +245,39 @@ const EditableLayer = ({
 
   return (
     <div
-      className="naxatw-absolute naxatw-p-2 naxatw-rounded-lg naxatw-bottom-10 naxatw-right-4 naxatw-bg-white naxatw-z-10
-                 naxatw-shadow-3xl"
+      className="naxatw-absolute naxatw-py-1 naxatw-px-[1px] naxatw-rounded-lg naxatw-top-28 naxatw-left-4
+      naxatw-bg-white naxatw-z-10 naxatw-shadow-3xl naxatw-text-grey-800 naxatw-flex naxatw-flex-col
+      naxatw-border naxatw-border-grey-300"
       style={{ display: !geojson ? 'none' : '' }}
     >
-      <div className="">
-        <h5>Edit Toolbar</h5>
-      </div>
-      <div className="naxatw-text-grey-800 naxatw-mt-2">
+      <Tooltip content="Drag" direction="right">
         <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
+          className={`naxatw-icon-btn naxatw-icon-btn-sm ${
+            drawType === 'drag' ? 'naxatw-text-secondary-400' : ''
+          }`}
           type="button"
-          title="Drag"
           onClick={handleDrag}
         >
           <i className="material-symbols-outlined">open_with</i>
         </button>
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Edit"
-          onClick={handleEdit}
-        >
-          <i className="material-icons">timeline</i>
-        </button>
+      </Tooltip>
+
+      {!pointTypes.includes(geometryType) && (
+        <Tooltip content="Edit" direction="right">
+          <button
+            className={`naxatw-icon-btn naxatw-icon-btn-sm ${
+              drawType === 'edit' ? 'naxatw-text-secondary-400' : ''
+            }`}
+            type="button"
+            title="Edit"
+            onClick={handleEdit}
+          >
+            <i className="material-icons">timeline</i>
+          </button>
+        </Tooltip>
+      )}
+
+      <Tooltip content="Delete" direction="right">
         <button
           className="naxatw-icon-btn naxatw-icon-btn-sm"
           type="button"
@@ -261,31 +286,36 @@ const EditableLayer = ({
         >
           <i className="material-icons">delete_outline</i>
         </button>
+      </Tooltip>
+
+      <Tooltip content="Undo" direction="right">
         <button
           className="naxatw-icon-btn naxatw-icon-btn-sm"
           type="button"
-          title="Undo"
           onClick={handleUndo}
         >
           <i className="material-icons">undo</i>
         </button>
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Save"
-          onClick={handleSave}
-        >
-          <i className="material-symbols-outlined">save</i>
-        </button>
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Cancel"
-          onClick={onCancel}
-        >
-          <i className="material-icons">close</i>
-        </button>
-      </div>
+      </Tooltip>
+
+      {/*
+          <button
+            className="naxatw-icon-btn naxatw-icon-btn-sm"
+            type="button"
+            title="Save"
+            onClick={handleSave}
+          >
+            <i className="material-symbols-outlined">save</i>
+          </button>
+          <button
+            className="naxatw-icon-btn naxatw-icon-btn-sm"
+            type="button"
+            title="Cancel"
+            onClick={onCancel}
+          >
+            <i className="material-icons">close</i>
+          </button>
+        */}
     </div>
   );
 };

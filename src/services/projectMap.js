@@ -17,3 +17,18 @@ export const getMapPopupData = params =>
 
 export const saveMapConfig = (params, data) =>
   authenticated(api).patch(`/maps/map_config/`, data, { params });
+
+export const getLayerAttributeFields = params =>
+  authenticated(api).get(`/maps/layer_attribute/`, { params });
+
+export const postNewLayerFeature = data =>
+  authenticated(api).post(`/maps/feature_collection/`, data);
+
+export const getFeatureCollection = id =>
+  authenticated(api).get(`/maps/feature_collection/${id}/`);
+
+export const updateFeatureCollection = (id, data) =>
+  authenticated(api).patch(`/maps/feature_collection/${id}/`, data);
+
+export const getProjectGeojson = params =>
+  authenticated(api).get(`/projects/project_location_geojson/`, { params });

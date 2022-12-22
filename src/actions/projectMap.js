@@ -53,6 +53,26 @@ export const { Types, Creators } = createActions(
 
     setMapConfig: ['payload'],
     setProjectMapState: ['payload'],
+
+    getLayerAttributeFieldsRequest: ['params'],
+    getLayerAttributeFieldsSuccess: ['payload'],
+    getLayerAttributeFieldsFailure: null,
+
+    postNewLayerFeatureRequest: ['payload'],
+    postNewLayerFeatureSuccess: ['payload'],
+    postNewLayerFeatureFailure: null,
+
+    getFeatureCollectionRequest: ['id'],
+    getFeatureCollectionSuccess: ['payload'],
+    getFeatureCollectionFailure: null,
+
+    updateFeatureCollectionRequest: ['id', 'payload'],
+    updateFeatureCollectionSuccess: ['payload'],
+    updateFeatureCollectionFailure: null,
+
+    getProjectGeojsonRequest: ['params'],
+    getProjectGeojsonSuccess: ['payload'],
+    getProjectGeojsonFailure: null,
   },
   { prefix: 'projectMap/' },
 );

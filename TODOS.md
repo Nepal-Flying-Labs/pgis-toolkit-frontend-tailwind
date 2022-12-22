@@ -1,7 +1,5 @@
 ### General
 
-- [ ] Scrollbar setup
-
 ### Authentication
 
 - [x] implement account popup
@@ -16,6 +14,7 @@
 - [ ] implement design template email
 - [ ] implement change password
 - [ ] implement keep me signed in
+- [ ] validation in edit feature
 
 ### Organization
 
@@ -67,6 +66,15 @@
 - [x] dont zoom to layer on layer on
 - [x] name auto fill in layer upload
 - [ ] update map config after layer upload success
+- [ ] error details in error dialog
+- [ ] pull feature geojson before edit
+- [ ] add setRequiredFields in useForm
+- [ ] mandatory validation/actual data type
+- [ ] note: we only support wgs 84
+- [ ] show active button while editing
+- [ ] data catalogue not showing
+- [ ] masking / zoom level
+- [ ] min width in select
 
 ### Backend
 
@@ -83,10 +91,10 @@
 
 ### Login
 
-- [ ] Loader in organization invite
+- [x] Loader in organization invite
 - [ ] organization modal in invitation success
-- [ ] splash screen for checking landing page
-- [ ] project card design
+- [x] splash screen for checking landing page
+- [x] project card design
 
 ### Styles
 
@@ -96,3 +104,14 @@
 - [ ] Remove Pagination
 - [ ] Search bar outline on select
 - [ ] Font issue in Safari
+
+### Organization Module
+
+- [ ] Display error message
+- [ ] Search Component design
+- [ ] Table Sorting Design
+- [ ] Select List Overflow Problem
+- [ ] Table Menu Functionalities(Edit/Delete)
+- [ ] Implement User Permission and role
+- [ ] Give max width to toast component
+- [ ] Validation on Forgot password module

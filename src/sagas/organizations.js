@@ -2,9 +2,9 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { createOrganization, getOrganizations } from '@Services/organizations';
 import commonActions from '@Actions/common';
 import organizationsActions, { Types } from '@Actions/organizations';
-import toastActions from '@Actions/toast';
+// import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
-import { withLoader } from '@Utils/sagaUtils';
+import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 
 export function* getOrganizationsRequest({ params }) {
   try {
@@ -12,7 +12,7 @@ export function* getOrganizationsRequest({ params }) {
     yield put(organizationsActions.getOrganizationsSuccess(response.data));
   } catch (error) {
     yield put(organizationsActions.getOrganizationsFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    throw error;
   }
 }
 
@@ -30,18 +30,18 @@ export function* createOrganizationRequest({ payload }) {
     yield put(organizationsActions.getOrganizationsRequest());
   } catch (error) {
     yield put(organizationsActions.createOrganizationFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    throw error;
   }
 }
 
 function* organizationsWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATIONS_REQUEST,
-    withLoader(getOrganizationsRequest),
+    withLoader(withErrorHandler(getOrganizationsRequest)),
   );
   yield takeLatest(
     Types.CREATE_ORGANIZATION_REQUEST,
-    withLoader(createOrganizationRequest),
+    withLoader(withErrorHandler(createOrganizationRequest)),
   );
 }
 

@@ -105,13 +105,8 @@ const LayerSwitcherControl = ({ map, visible = 'mapbox' }) => {
       title: 'Satellite',
       type: 'base',
       visible: visible === 'satellite',
-      source: new BingMaps({
-        key: 'AoTlmaazzog43ImdKts9HVztFzUI4PEOT0lmo2V4q7f20rfVorJGAgDREKmfQAgd',
-        imagerySet: 'Aerial',
-        // use maxZoom 19 to see stretched tiles instead of the BingMaps
-        // "no photos at this zoom level" tiles
-        maxZoom: 19,
-        crossOrigin: 'Anonymous',
+      source: new XYZ({
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       }),
     });
     const mapboxMap = () =>

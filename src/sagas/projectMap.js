@@ -1,17 +1,21 @@
 import { call, put, takeLatest, takeEvery, all } from 'redux-saga/effects';
 import chroma from 'chroma-js';
 import {
+  getFeatureCollection,
+  getLayerAttributeFields,
   getMapPopupData,
+  getProjectGeojson,
   getProjectThemeLayers,
   getProjectThemes,
+  postNewLayerFeature,
   saveMapConfig,
+  updateFeatureCollection,
   updateLayer,
   uploadLayer,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
-import toastActions from '@Actions/toast';
-import { withLoader } from '@Utils/sagaUtils';
+import { withLoader, withErrorHandler } from '@Utils/sagaUtils';
 import prepareFormData from '@Utils/prepareFormData';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { pointTypes } from '@Components/common/OpenLayersComponent/Legend/LegendItem';
@@ -23,7 +27,7 @@ export function* getProjectThemesRequest({ params }) {
     yield put(projectMapActions.getProjectThemesSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.getProjectThemesFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -61,7 +65,7 @@ export function* getProjectThemeLayersRequest({ params }) {
     );
   } catch (error) {
     yield put(projectMapActions.getProjectThemeLayersFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -71,7 +75,7 @@ export function* uploadLayerRequest({ payload }) {
     yield put(projectMapActions.uploadLayerSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.uploadLayerFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -81,7 +85,7 @@ export function* getMapPopupDataRequest({ params }) {
     yield put(projectMapActions.getMapPopupDataSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.getMapPopupDataFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -97,7 +101,7 @@ export function* updateLayerRequest({ id, payload }) {
     );
   } catch (error) {
     yield put(projectMapActions.updateLayerFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -109,7 +113,7 @@ export function* deleteLayerRequest({ id, payload }) {
     yield put(commonActions.togglePromptDialog());
   } catch (error) {
     yield put(projectMapActions.deleteLayerFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -120,7 +124,7 @@ export function* uploadIconRequest({ id, payload }) {
     yield put(projectMapActions.uploadIconSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.uploadIconFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -131,7 +135,7 @@ export function* deleteIconRequest({ id, payload }) {
     yield put(projectMapActions.deleteIconSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.deleteIconFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -141,31 +145,116 @@ export function* saveMapConfigRequest({ params, payload }) {
     yield put(projectMapActions.saveMapConfigSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.saveMapConfigFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
+  }
+}
+
+export function* getLayerAttributeFieldsRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttributeFields, params);
+    yield put(projectMapActions.getLayerAttributeFieldsSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getLayerAttributeFieldsFailure());
+    throw error;
+  }
+}
+
+export function* postNewLayerFeatureRequest({ payload }) {
+  try {
+    const response = yield call(postNewLayerFeature, payload);
+    yield put(projectMapActions.postNewLayerFeatureSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.postNewLayerFeatureFailure());
+    throw error;
+  }
+}
+
+export function* getFeatureCollectionRequest({ id }) {
+  try {
+    const response = yield call(getFeatureCollection, id);
+    yield put(projectMapActions.getFeatureCollectionSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getFeatureCollectionFailure());
+    throw error;
+  }
+}
+
+export function* updateFeatureCollectionRequest({ id, payload }) {
+  try {
+    const response = yield call(updateFeatureCollection, id, payload);
+    yield put(projectMapActions.updateFeatureCollectionSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.updateFeatureCollectionFailure());
+    throw error;
+  }
+}
+
+export function* getProjectGeojsonRequest({ params }) {
+  try {
+    const response = yield call(getProjectGeojson, params);
+    yield put(projectMapActions.getProjectGeojsonSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getProjectGeojsonFailure());
+    throw error;
   }
 }
 
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
-    withLoader(getProjectThemesRequest),
+    withLoader(withErrorHandler(getProjectThemesRequest)),
   );
   yield takeEvery(
     Types.GET_PROJECT_THEME_LAYERS_REQUEST,
-    withLoader(getProjectThemeLayersRequest),
+    withLoader(withErrorHandler(getProjectThemeLayersRequest)),
   );
-  yield takeLatest(Types.UPLOAD_LAYER_REQUEST, withLoader(uploadLayerRequest));
+  yield takeLatest(
+    Types.UPLOAD_LAYER_REQUEST,
+    withLoader(withErrorHandler(uploadLayerRequest)),
+  );
   yield takeLatest(
     Types.GET_MAP_POPUP_DATA_REQUEST,
-    withLoader(getMapPopupDataRequest),
+    withLoader(withErrorHandler(getMapPopupDataRequest)),
   );
-  yield takeLatest(Types.UPDATE_LAYER_REQUEST, withLoader(updateLayerRequest));
-  yield takeLatest(Types.DELETE_LAYER_REQUEST, withLoader(deleteLayerRequest));
-  yield takeLatest(Types.UPLOAD_ICON_REQUEST, withLoader(uploadIconRequest));
-  yield takeLatest(Types.DELETE_ICON_REQUEST, withLoader(deleteIconRequest));
+  yield takeLatest(
+    Types.UPDATE_LAYER_REQUEST,
+    withLoader(withErrorHandler(updateLayerRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_LAYER_REQUEST,
+    withLoader(withErrorHandler(deleteLayerRequest)),
+  );
+  yield takeLatest(
+    Types.UPLOAD_ICON_REQUEST,
+    withLoader(withErrorHandler(uploadIconRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_ICON_REQUEST,
+    withLoader(withErrorHandler(deleteIconRequest)),
+  );
   yield takeLatest(
     Types.SAVE_MAP_CONFIG_REQUEST,
-    withLoader(saveMapConfigRequest),
+    withLoader(withErrorHandler(saveMapConfigRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+    withLoader(withErrorHandler(getLayerAttributeFieldsRequest)),
+  );
+  yield takeLatest(
+    Types.POST_NEW_LAYER_FEATURE_REQUEST,
+    withLoader(withErrorHandler(postNewLayerFeatureRequest)),
+  );
+  yield takeLatest(
+    Types.GET_FEATURE_COLLECTION_REQUEST,
+    withLoader(withErrorHandler(getFeatureCollectionRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_FEATURE_COLLECTION_REQUEST,
+    withLoader(withErrorHandler(updateFeatureCollectionRequest)),
+  );
+  yield takeLatest(
+    Types.GET_PROJECT_GEOJSON_REQUEST,
+    withLoader(withErrorHandler(getProjectGeojsonRequest)),
   );
 }
 

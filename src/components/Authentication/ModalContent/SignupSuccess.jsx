@@ -2,6 +2,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Creators } from '@Actions/common';
+import authActions from '@Actions/authentication';
 import Button from '@Components/common/Button';
 import { useDispatch } from 'react-redux';
 
@@ -21,6 +22,13 @@ const SignupSuccess = () => {
           //   isLoading={loading}
           //   loaderClassName="naxatw-fill-secondary-400"
           onClick={() => {
+            dispatch(
+              authActions.setInfoDialogContent({
+                message:
+                  'To access your invited organization or project, please sign in.',
+                status: 'success',
+              }),
+            );
             history.push('/login');
             dispatch(toggleModal());
           }}

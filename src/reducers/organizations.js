@@ -5,6 +5,7 @@ const initialState = {
   organizationData: {},
   createOrganizationDetail: null,
   searchText: '',
+  ordering: 'name',
   pagination: {
     page: 1,
     rowSelect: 10,
@@ -81,6 +82,11 @@ const handleRowSelect = (state, action) => ({
   pagination: { ...state.pagination, page: 1, rowSelect: action.payload },
 });
 
+const handleOrdering = (state, action) => ({
+  ...state,
+  ordering: action.payload,
+});
+
 const organizationsReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATIONS_SUCCESS]: getOrganizationsSuccess,
   [Types.CREATE_ORGANIZATION_SUCCESS]: createOrganizationSuccess,
@@ -89,6 +95,7 @@ const organizationsReducer = createReducer(initialState, {
   [Types.HANDLE_PREVIOUS_CLICK]: handlePreviousClick,
   [Types.HANDLE_JUMPS_TO]: handleJumpsTo,
   [Types.HANDLE_ROW_SELECT]: handleRowSelect,
+  [Types.HANDLE_ORDERING]: handleOrdering,
 });
 
 export default organizationsReducer;

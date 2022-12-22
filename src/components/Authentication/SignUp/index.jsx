@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/authentication';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
+import InfoDialog from '@Components/common/InfoDialog';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { Avatar } from '@src/constants/svgIcons';
 
@@ -18,7 +19,11 @@ const initialState = {
 };
 
 export default function SignUp() {
+  const [isVisible, setIsVisible] = useState(false);
   const userDetail = useSelector(state => state.authentication.userDetail);
+  const infoDialogContent = useSelector(
+    state => state.authentication.infoDialogContent,
+  );
   const dispatch = useDispatch();
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.SIGN_UP_REQUEST]),
@@ -48,10 +53,20 @@ export default function SignUp() {
       <div className="naxatw-flex naxatw-flex-col naxatw-justify-center">
         <figure className="naxatw-flex naxatw-justify-center">{Avatar}</figure>
         <h3 className="naxatw-font-bold naxatw-mt-3 naxatw-tracking-wide">
-          Sign up
+          Complete Your Profile
         </h3>
       </div>
       <div className="naxatw-w-full naxatw-mt-[3.125rem]">
+        {infoDialogContent ? (
+          <InfoDialog
+            className="naxatw-bg-secondary-50"
+            status={infoDialogContent.status}
+          >
+            {infoDialogContent.message}
+          </InfoDialog>
+        ) : (
+          ''
+        )}
         <div className="mb-6 naxatw-space-y-[1.125rem]">
           <div className="naxatw-space-y-2">
             <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
@@ -113,12 +128,12 @@ export default function SignUp() {
                 </span>
               )}
             </div>
-            <div className="naxatw-space-y-2">
+            <div className="naxatw-space-y-2 naxatw-relative">
               <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
                 Password*
               </label>
               <input
-                type="password"
+                type={!isVisible ? 'password' : 'text'}
                 className="naxatw-block naxatw-w-full naxatw-px-4 naxatw-py-2 naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-grey-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
                 name="password"
                 placeholder="**********"
@@ -126,6 +141,12 @@ export default function SignUp() {
                 onChange={handleChange}
                 {...inputProps}
               />
+              <span
+                onClick={() => setIsVisible(!isVisible)}
+                className="material-icons  naxatw-absolute naxatw-right-3 naxatw-top-8 naxatw-cursor-pointer"
+              >
+                {!isVisible ? 'visibility' : 'visibility_off'}
+              </span>
               {meta.password.error && meta.password.touched && (
                 <span className="naxatw--mt-[10px] naxatw-text-red-500">
                   Password is required

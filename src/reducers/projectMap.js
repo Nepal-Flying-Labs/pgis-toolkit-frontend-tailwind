@@ -1,4 +1,5 @@
 import { createReducer } from 'reduxsauce';
+import { parse } from 'wkt';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
@@ -11,7 +12,6 @@ const initialState = {
   selectedLayer: null,
   deleteLayer: null,
   hideSidebar: false,
-  sidebarContent: '',
   mapSettings: {
     layerOrder: [],
     checkedLayers: [],
@@ -19,8 +19,19 @@ const initialState = {
   searchText: '',
   toggleMapExport: false,
   addFeatureTo: null,
-  editFeatureGeojson: null,
+  featureGeojson: null, // feature geojson for edit
   selectedLayerForEdit: null,
+  sidebarContent: '', // 'layer-order', 'edit-style', 'edit-feature', 'add-feature'
+  individualAttributeData: [],
+  drawType: null,
+  drawnFeatureWkt: null,
+  refreshLayerId: null,
+  layerAttributes: null,
+  modifiedFeatureGeojson: null,
+  editFeatureId: null,
+  isFeatureModified: false,
+  projectGeojson: null,
+  projectAreaLayerId: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -30,6 +41,9 @@ const getProjectThemesSuccess = (state, action) => ({
 
 const getProjectThemeLayersSuccess = (state, action) => {
   const { data: layerData, theme } = action.payload;
+  const projectAreaLayerId = !state.projectAreaLayerId
+    ? layerData.find(item => item.name === 'Boundary')?.id || null
+    : state.projectAreaLayerId;
   const data = layerData.filter(item => item.upload_status === 'successful');
   const notPresentLayers = data
     .filter(item => !state.mapSettings.layerOrder.includes(item.id))
@@ -40,7 +54,10 @@ const getProjectThemeLayersSuccess = (state, action) => {
     [theme]: data.map(item => ({
       ...item,
       theme,
-      checked: state.mapSettings.checkedLayers.includes(item.id),
+      checked:
+        item.id === projectAreaLayerId
+          ? true
+          : state.mapSettings.checkedLayers.includes(item.id),
       style: {
         ...defaultStyles,
         ...item.style,
@@ -62,6 +79,7 @@ const getProjectThemeLayersSuccess = (state, action) => {
       ...state.mapSettings,
       layerOrder,
     },
+    projectAreaLayerId,
   };
 };
 
@@ -172,10 +190,12 @@ const updateLayerSuccess = (state, action) => {
       item.id === responseData.id ? { ...item, style, name } : { ...item },
     ),
   };
+  const { selectedLayer, sidebarContent } = initialState;
   return {
     ...state,
     layers,
-    selectedLayer: null,
+    selectedLayer,
+    sidebarContent,
   };
 };
 
@@ -279,6 +299,85 @@ const setProjectMapState = (state, action) => ({
   ...action.payload,
 });
 
+const getLayerAttributeFieldsSuccess = (state, action) => {
+  const { layerAttributes } = state;
+  const individualAttributeData = action.payload.map(item => ({
+    ...item,
+    value: layerAttributes?.[`${item.name}`] || '',
+  }));
+  return {
+    ...state,
+    individualAttributeData,
+  };
+};
+
+const postNewLayerFeatureSuccess = (state, action) => {
+  const refreshLayerId = action.payload.layer;
+  const {
+    sidebarContent,
+    drawType,
+    selectedLayer,
+    individualAttributeData,
+    drawnFeatureWkt,
+  } = initialState;
+  return {
+    ...state,
+    refreshLayerId,
+    sidebarContent,
+    drawType,
+    selectedLayer,
+    individualAttributeData,
+    drawnFeatureWkt,
+  };
+};
+
+const getFeatureCollectionSuccess = (state, action) => {
+  const { geometry, attributes, id: featureId } = action.payload;
+  const wktString = geometry.split(';')[1];
+  const featureGeojson = parse(wktString);
+  return {
+    ...state,
+    featureGeojson,
+    modifiedFeatureGeojson: featureGeojson,
+    editFeatureId: featureId,
+    sidebarContent: 'edit-feature',
+    layerAttributes: attributes,
+  };
+};
+
+const updateFeatureCollectionSuccess = (state, action) => {
+  const refreshLayerId = action.payload.layer;
+  const {
+    sidebarContent,
+    drawType,
+    selectedLayer,
+    individualAttributeData,
+    modifiedFeatureGeojson,
+    featureGeojson,
+    layerAttributes,
+    editFeatureId,
+  } = initialState;
+  return {
+    ...state,
+    refreshLayerId,
+    sidebarContent,
+    drawType,
+    selectedLayer,
+    individualAttributeData,
+    modifiedFeatureGeojson,
+    featureGeojson,
+    layerAttributes,
+    editFeatureId,
+  };
+};
+
+const getProjectGeojsonSuccess = (state, action) => {
+  return {
+    ...state,
+    projectGeojson: action.payload,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -299,6 +398,11 @@ const projectMapReducer = createReducer(initialState, {
   [Types.SET_SEARCH_TEXT]: setSearchText,
   [Types.SET_MAP_CONFIG]: setMapConfig,
   [Types.SET_PROJECT_MAP_STATE]: setProjectMapState,
+  [Types.GET_LAYER_ATTRIBUTE_FIELDS_SUCCESS]: getLayerAttributeFieldsSuccess,
+  [Types.POST_NEW_LAYER_FEATURE_SUCCESS]: postNewLayerFeatureSuccess,
+  [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
+  [Types.UPDATE_FEATURE_COLLECTION_SUCCESS]: updateFeatureCollectionSuccess,
+  [Types.GET_PROJECT_GEOJSON_SUCCESS]: getProjectGeojsonSuccess,
 });
 
 export default projectMapReducer;

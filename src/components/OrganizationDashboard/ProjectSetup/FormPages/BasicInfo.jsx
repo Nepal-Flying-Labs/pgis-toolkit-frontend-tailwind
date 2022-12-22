@@ -192,7 +192,7 @@ const BasicInfo = ({ setPage }) => {
           {values?.partners?.map(item => (
             <li
               key={item.id}
-              className="naxatw-flex naxatw-p-3 naxatw-items-center naxatw-justify-between hover:naxatw-bg-gray-200"
+              className="naxatw-flex naxatw-p-3 naxatw-items-center naxatw-justify-between hover:naxatw-bg-[#F5F5F5]"
             >
               <span className="naxatw-text-body-lg">{item.value}</span>
               <a

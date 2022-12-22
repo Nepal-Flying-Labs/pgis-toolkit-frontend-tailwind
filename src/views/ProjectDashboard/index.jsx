@@ -22,12 +22,7 @@ import PromptDialog from '@Components/common/PromptDialog';
 import AppLoader from '@Components/common/AppLoader';
 import { isEmpty } from '@Utils/commonUtils';
 
-const {
-  toggleModal,
-  togglePromptDialog,
-  setModalContent,
-  setPromptDialogContent,
-} = CommonCreators;
+const { toggleModal, togglePromptDialog } = CommonCreators;
 const {
   getProjectLayersRequest,
   getProjectDetailRequest,
@@ -87,7 +82,7 @@ export default function ProjectDashboard() {
     return <AppLoader />;
   }
 
-  if (isEmpty(layers) && !pushedToManageDataPage.current) {
+  if (layers && layers.length < 2 && !pushedToManageDataPage.current) {
     pushedToManageDataPage.current = true;
     history.push(
       `/organizations/${organizationId}/projects/${projectId}/manage-data`,

@@ -24,7 +24,7 @@ const VectorTileLayer = ({
   setStyle,
   zoomToLayer = false,
   bbox = null,
-  // properties,
+  properties,
 }) => {
   const vectorTileLayer = useMemo(
     () =>
@@ -34,8 +34,6 @@ const VectorTileLayer = ({
       }),
     [],
   );
-
-  vectorTileLayer.setProperties({ name: 'site' });
 
   // add source to layer
   useEffect(() => {
@@ -47,9 +45,7 @@ const VectorTileLayer = ({
     }
 
     const vectorTileSource = new VectorTileSource({
-      format: new MVT({
-        featureClass: Feature,
-      }),
+      format: new MVT(),
       maxZoom: 19,
       url,
       transition: 0,
@@ -123,6 +119,12 @@ const VectorTileLayer = ({
     if (!map) return;
     vectorTileLayer.setZIndex(zIndex);
   }, [map, zIndex, vectorTileLayer]);
+
+  // set properties to layer
+  useEffect(() => {
+    if (!vectorTileLayer || !properties) return;
+    vectorTileLayer.setProperties(properties);
+  }, [vectorTileLayer, properties]);
 
   // // set properties to features for identifying popup
   // useEffect(() => {

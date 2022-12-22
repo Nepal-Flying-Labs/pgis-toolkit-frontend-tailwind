@@ -19,9 +19,12 @@ import prepareFormData from '@Utils/prepareFormData';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
 import { getCSVHeaders } from '@Utils/convertLayerUtils';
+import useWindowDimensions from '@Hooks/useWindowDimentions';
 
 const { getProjectThemesRequest } = ProjectMapCreators;
 const { uploadDatasetsRequest } = ProjectDashboardCreators;
+
+const currentDate = new Date();
 
 export default function UploadDataset() {
   const { projectId } = useParams();
@@ -31,6 +34,7 @@ export default function UploadDataset() {
   const isUploading = useSelector(state =>
     checkIfLoading(state, [Types.UPLOAD_DATASETS_REQUEST]),
   );
+  const { height } = useWindowDimensions();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -56,7 +60,7 @@ export default function UploadDataset() {
         name: filename,
         extension,
         category: null,
-        addToMap: false,
+        addToMap: true,
         file,
         latField: '',
         lonField: '',
@@ -154,14 +158,13 @@ export default function UploadDataset() {
   return (
     <div>
       <p>
-        USAFIRI allows you to do different sorts of analysis with your map
-        datasets. Below are some of the analysis functions we have in the tool
-        at the moment.
+        USAFIRI allows you to import data in different formats(shp, csv, geojson
+        or gpkg file format). Please upload your datasets below.
       </p>
 
       <div
         className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-auto scrollbar naxatw-max-h-96"
-        style={{ overflow: 'unset' }}
+        style={{ maxHeight: `${height / 16 - 22}rem` }}
       >
         <Dropzone
           label="Please upload your datasets (shp, csv, geojson or gpkg file format)"
@@ -195,7 +198,7 @@ export default function UploadDataset() {
                         {file.name}
                       </p>
                       <p className="naxatw-text-body-md naxatw-text-grey-600">
-                        Uploaded on 16/11/2022
+                        Uploaded on {currentDate.toLocaleDateString('en-US')}
                       </p>
                     </div>
                   </div>

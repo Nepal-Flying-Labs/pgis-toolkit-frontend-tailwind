@@ -10,7 +10,7 @@ import projectDashboardActions, { Types } from '@Actions/projectDashboard';
 import projectMapActions from '@Actions/projectMap';
 import toastActions from '@Actions/toast';
 import commonActions from '@Actions/common';
-import { withLoader } from '@Utils/sagaUtils';
+import { withLoader, withErrorHandler } from '@Utils/sagaUtils';
 import {
   getProjectDetail,
   getLayers,
@@ -32,7 +32,7 @@ export function* getProjectDetailRequest({ params }) {
     yield put(projectMapActions.setMapConfig(response.data.data.map_config));
   } catch (error) {
     yield put(projectDashboardActions.getProjectDetailFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -42,7 +42,7 @@ export function* getProjectLayersRequest({ params }) {
     yield put(projectDashboardActions.getProjectLayersSuccess(response.data));
   } catch (error) {
     yield put(projectDashboardActions.getProjectLayersFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -52,7 +52,7 @@ export function* getCategoryListRequest({ params }) {
     yield put(projectDashboardActions.getCategoryListSuccess(response.data));
   } catch (error) {
     yield put(projectDashboardActions.getCategoryListFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -74,7 +74,7 @@ export function* uploadDatasetsRequest({ payload }) {
     );
   } catch (error) {
     yield put(projectDashboardActions.uploadDatasetsFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    throw error;
   }
 }
 
@@ -86,7 +86,7 @@ export function* deleteDataRequest({ id, payload }) {
     yield put(commonActions.togglePromptDialog());
   } catch (error) {
     yield put(projectDashboardActions.deleteDataFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -116,7 +116,7 @@ export function* checkUploadStatusRequest({ id }) {
     yield put(commonActions.togglePromptDialog());
   } catch (error) {
     yield put(projectDashboardActions.checkUploadStatusFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -126,7 +126,7 @@ export function* getErrorDetailRequest({ params }) {
     yield put(projectDashboardActions.getErrorDetailSuccess(response.data));
   } catch (error) {
     yield put(projectDashboardActions.getErrorDetailFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -137,7 +137,7 @@ export function* permanentDataDeleteRequest({ id }) {
     yield put(toastActions.success({ message: 'Data deleted successfully.' }));
   } catch (error) {
     yield put(projectDashboardActions.permanentDataDeleteFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
@@ -148,41 +148,47 @@ export function* updateDataRequest({ id, payload }) {
     yield put(projectDashboardActions.updateDataSuccess());
   } catch (error) {
     yield put(projectDashboardActions.updateDataFailure(id));
-    yield put(toastActions.error({ message: error?.response?.data?.detail }));
+    throw error;
   }
 }
 
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
-    withLoader(getProjectDetailRequest),
+    withLoader(withErrorHandler(getProjectDetailRequest)),
   );
   yield takeLatest(
     Types.GET_PROJECT_LAYERS_REQUEST,
-    withLoader(getProjectLayersRequest),
+    withLoader(withErrorHandler(getProjectLayersRequest)),
   );
   yield takeLatest(
     Types.GET_CATEGORY_LIST_REQUEST,
-    withLoader(getCategoryListRequest),
+    withLoader(withErrorHandler(getCategoryListRequest)),
   );
   yield takeLatest(
     Types.UPLOAD_DATASETS_REQUEST,
-    withLoader(uploadDatasetsRequest),
+    withLoader(withErrorHandler(uploadDatasetsRequest)),
   );
-  yield takeLatest(Types.DELETE_DATA_REQUEST, withLoader(deleteDataRequest));
+  yield takeLatest(
+    Types.DELETE_DATA_REQUEST,
+    withLoader(withErrorHandler(deleteDataRequest)),
+  );
   yield takeEvery(
     Types.CHECK_UPLOAD_STATUS_REQUEST,
-    withLoader(checkUploadStatusRequest),
+    withLoader(withErrorHandler(checkUploadStatusRequest)),
   );
   yield takeLatest(
     Types.GET_ERROR_DETAIL_REQUEST,
-    withLoader(getErrorDetailRequest),
+    withLoader(withErrorHandler(getErrorDetailRequest)),
   );
   yield takeLatest(
     Types.PERMANENT_DATA_DELETE_REQUEST,
-    withLoader(permanentDataDeleteRequest),
+    withLoader(withErrorHandler(permanentDataDeleteRequest)),
   );
-  yield takeLatest(Types.UPDATE_DATA_REQUEST, withLoader(updateDataRequest));
+  yield takeLatest(
+    Types.UPDATE_DATA_REQUEST,
+    withLoader(withErrorHandler(updateDataRequest)),
+  );
 }
 
 export default projectDashboardWatcher;

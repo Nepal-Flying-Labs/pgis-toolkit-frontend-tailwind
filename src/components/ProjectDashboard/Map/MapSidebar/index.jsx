@@ -5,12 +5,13 @@ import { isEmpty } from '@Utils/commonUtils';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import EditStyleSection from './EditStyleSection';
 import EditFeatureSection from './EditFeatureSection';
 import LayerSection from './LayerSection';
 
 export default function MapSidebar() {
   const history = useHistory();
-  const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
+  const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
   const themes = useSelector(state => state.projectMap.themes);
   const hideSidebar = useSelector(state => state.projectMap.hideSidebar);
 
@@ -37,10 +38,13 @@ export default function MapSidebar() {
             Data
           </Button>
         </div>
-      ) : !selectedLayer ? (
-        <LayerSection />
-      ) : (
+      ) : sidebarContent === 'edit-feature' ||
+        sidebarContent === 'add-feature' ? (
         <EditFeatureSection />
+      ) : sidebarContent === 'edit-style' ? (
+        <EditStyleSection />
+      ) : (
+        <LayerSection />
       )}
     </div>
   );

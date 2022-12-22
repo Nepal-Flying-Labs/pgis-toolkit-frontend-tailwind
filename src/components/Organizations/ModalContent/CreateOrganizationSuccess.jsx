@@ -13,19 +13,34 @@ export default function CreateOrganizationSuccess() {
 
   return (
     <div className="">
-      <div className="naxatw-mb-10 naxatw-space-y-8">
+      <div className="naxatw-mb-10 naxatw-space-y-8 ">
         <h4 className="naxatw-font-light">
-          Organization successfully created.
+          An Organization has been successfully created.
         </h4>
         <p>Invite email has been sent to the following email addresses:</p>
         <div>
           {createOrganizationDetail?.email?.map(item => (
-            <p key={item}>{item}</p>
+            <div
+              className="naxatw-flex naxatw-gap-x-3 naxatw-items-center"
+              key={item}
+            >
+              <span className="material-icons naxatw-text-icon-md naxatw-text-secondary-400 ">
+                mail_outline
+              </span>
+              <p className="naxatw-text-body-btn">{item}</p>
+            </div>
           ))}
         </div>
-        <p>
+        <p className="">
           Please check your inbox and proceed ahead. If you didnt not recieve
-          any email, <a href={() => {}}>click here to resend email</a>.
+          any email,{' '}
+          <a
+            href={() => {}}
+            className="naxatw-underline naxatw-text-secondary-400"
+          >
+            click here to resend email
+          </a>
+          .
         </p>
       </div>
 

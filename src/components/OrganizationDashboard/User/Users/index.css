@@ -6,6 +6,9 @@
     @apply naxatw-sticky naxatw-top-0 naxatw-z-[1] naxatw-w-full naxatw-top-0  naxatw-bg-white ;
   }
   
+  .naxa-table table tr {
+    @apply hover:naxatw-bg-[#F5F5F5] ;
+  }
   
 
   

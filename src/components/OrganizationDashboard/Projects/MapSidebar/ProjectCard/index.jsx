@@ -6,6 +6,7 @@ import DropdownOptions from '@Components/common/DropdownOptions';
 import { useHistory, useParams } from 'react-router';
 import AvatarImage from '@Assets/images/img-sm-avatar.png';
 import Button from '@Components/common/Button/index';
+import { format } from 'date-fns';
 
 const getStatusColor = status => {
   switch (status) {
@@ -165,7 +166,7 @@ export default function ProjectCard({
     // </div>
 
     <div
-      className={`naxatw-flex naxatw-border naxatw-rounded-xl naxatw-cursor-pointer  ${
+      className={`naxatw-flex naxatw-border naxatw-rounded-xl naxatw-cursor-pointer hover:naxatw-bg-[#F8F8F8] hover:naxatw-border-[#484848]  ${
         status === 'draft' ? 'naxatw-bg-[#F5F5F5]' : 'naxatw-bg-white'
       }`}
       onClick={onClick}
@@ -179,12 +180,12 @@ export default function ProjectCard({
       </div>
 
       <div className=" naxatw-pt-4 naxatw-pl-4 naxatw-pr-2 naxatw-pb-3 naxatw-flex  naxatw-w-full naxatw-justify-between naxatw-rounded-r-xl">
-        <div className="naxatw-w-[426px]">
+        <div className="">
           <h5>{title || 'N/A'}</h5>
           <div className="naxatw-flex naxatw-flex-wrap naxatw-mt-2.5 naxatw-gap-x-3">
-            <span className="naxatw-text-body-md">{`${startDate || 'N/A'} - ${
-              endDate || 'N/A'
-            }`}</span>
+            <span className="naxatw-text-body-md">{`${
+              format(new Date(startDate), 'MMM dd, yyyy') || 'N/A'
+            } - ${format(new Date(endDate), 'MMM dd, yyyy') || 'N/A'}`}</span>
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
               <div
                 className={`naxatw-w-2 naxatw-h-2 naxatw-rounded-full  ${statusColor.bgColor}`}
@@ -205,7 +206,7 @@ export default function ProjectCard({
             </span>
           </div>
         </div>
-        <div className="naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-items-end naxatw-w-[300px]  ">
+        <div className="naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-items-end  ">
           <DropdownOptions
             options={dropdownOptions}
             data={id}
@@ -222,7 +223,7 @@ export default function ProjectCard({
                 Info
               </Button>
               <Button
-                className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]"
+                className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-w-[124px]"
                 onClick={e => {
                   e.stopPropagation();
                 }}

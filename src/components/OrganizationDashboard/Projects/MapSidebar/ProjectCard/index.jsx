@@ -6,6 +6,7 @@ import DropdownOptions from '@Components/common/DropdownOptions';
 import { useHistory, useParams } from 'react-router';
 import AvatarImage from '@Assets/images/img-sm-avatar.png';
 import Button from '@Components/common/Button/index';
+import { format } from 'date-fns';
 
 const getStatusColor = status => {
   switch (status) {
@@ -182,9 +183,9 @@ export default function ProjectCard({
         <div className="">
           <h5>{title || 'N/A'}</h5>
           <div className="naxatw-flex naxatw-flex-wrap naxatw-mt-2.5 naxatw-gap-x-3">
-            <span className="naxatw-text-body-md">{`${startDate || 'N/A'} - ${
-              endDate || 'N/A'
-            }`}</span>
+            <span className="naxatw-text-body-md">{`${
+              format(new Date(startDate), 'MMM dd, yyyy') || 'N/A'
+            } - ${format(new Date(endDate), 'MMM dd, yyyy') || 'N/A'}`}</span>
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
               <div
                 className={`naxatw-w-2 naxatw-h-2 naxatw-rounded-full  ${statusColor.bgColor}`}

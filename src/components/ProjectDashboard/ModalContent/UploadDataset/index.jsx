@@ -24,6 +24,8 @@ import useWindowDimensions from '@Hooks/useWindowDimentions';
 const { getProjectThemesRequest } = ProjectMapCreators;
 const { uploadDatasetsRequest } = ProjectDashboardCreators;
 
+const currentDate = new Date();
+
 export default function UploadDataset() {
   const { projectId } = useParams();
   const themes = useSelector(state => state.projectMap.themes);
@@ -196,7 +198,7 @@ export default function UploadDataset() {
                         {file.name}
                       </p>
                       <p className="naxatw-text-body-md naxatw-text-grey-600">
-                        Uploaded on 16/11/2022
+                        Uploaded on {currentDate.toLocaleDateString('en-US')}
                       </p>
                     </div>
                   </div>

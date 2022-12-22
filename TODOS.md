@@ -73,6 +73,7 @@
 - [ ] show active button while editing
 - [ ] data catalogue not showing
 - [ ] masking / zoom level
+- [ ] min width in select
 
 ### Backend
 
@@ -111,4 +112,3 @@
 - [ ] Select List Overflow Problem
 - [ ] Table Menu Functionalities(Edit/Delete)
 - [ ] Implement User Permission and role
-- [ ]

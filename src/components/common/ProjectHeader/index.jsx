@@ -23,7 +23,7 @@ const projectHeaderData = [
   { label: 'Gallery', route: 'gallery', disabled: false },
   { label: 'Users', route: 'users', disabled: true },
   { label: 'Info', route: 'info', disabled: false },
-  { label: 'Settings', route: 'settings', disabled: true },
+  { label: 'Settings', route: 'settings', disabled: false },
 ];
 
 const { setProjectHeaderHeight } = Creators;
@@ -123,7 +123,7 @@ export default function ProjectHeader() {
                         : ''
                     } `}
                     to={
-                      route === 'info'
+                      route === 'settings'
                         ? `/organizations/${organizationId}/project-edit/${projectId}`
                         : projectId
                         ? `/organizations/${organizationId}/projects/${projectId}/${route}`

@@ -81,7 +81,7 @@ const Location = ({ page, setPage }) => {
       const payloadData = diffObj?.file?.existedData
         ? removeObjectKeys(diffObj, ['file'])
         : { ...diffObj, file_type: getFileType(values.file) };
-      const finalPayloadData = payloadData?.cover_image?.[0]?.existedData
+      const finalPayloadData = payloadData?.cover_image?.existedData
         ? removeObjectKeys(payloadData, ['cover_image'])
         : payloadData;
 
@@ -144,7 +144,7 @@ const Location = ({ page, setPage }) => {
         placeholder="Enter name of Geographical Region"
       />
       <div className="naxatw-space-y-2">
-        <label className="naxatw-label">Choose the Geographic Boundary</label>
+        <label className="naxatw-label">Choose the Geographic Boundary*</label>
         <div className="naxatw-flex naxatw-gap-x-2">
           <Chip
             name="Upload Area"

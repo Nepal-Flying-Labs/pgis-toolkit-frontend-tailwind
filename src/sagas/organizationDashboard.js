@@ -51,7 +51,7 @@ export function* postProjectInviteRequest({ payload }) {
     yield put(
       organizationDashboardActions.postProjectInviteSuccess(response.data),
     );
-    yield put(organizationDashboardActions.toggleModal(''));
+    yield put(commonActions.toggleModal(''));
     yield put(toastActions.success({ message: 'Invitation sent success' }));
     yield put(
       organizationDashboardActions.getProjectsRequest({ organization }),
@@ -77,27 +77,7 @@ export function* getIndividualProjectRequest({ id }) {
 export function* patchProjectRequest({ id, payload }) {
   const { status, organization } = payload;
   try {
-    let filteredImagePayload;
-    if (payload?.cover_image) {
-      filteredImagePayload = {
-        ...payload,
-        cover_image:
-          payload?.cover_image && payload.cover_image.length > 0
-            ? payload?.cover_image?.filter(img => !img.isDeleted && img.file)
-                .length > 0
-              ? payload?.cover_image?.filter(
-                  img => !img.isDeleted && img.file,
-                )?.[0]?.file
-              : ''
-            : '',
-      };
-    } else {
-      filteredImagePayload = {
-        ...payload,
-      };
-    }
-
-    const formData = prepareFormData(filteredImagePayload);
+    const formData = prepareFormData(payload);
     const response = yield call(patchProject, id, formData);
     yield put(organizationDashboardActions.patchProjectSuccess(response.data));
     // yield put(organizationDashboardActions.toggleModal(''));

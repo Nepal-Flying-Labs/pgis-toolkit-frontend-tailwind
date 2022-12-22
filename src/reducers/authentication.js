@@ -1,6 +1,6 @@
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/authentication';
-import persist from '../utils/persist';
+// import persist from '../utils/persist';
 
 const initialState = {
   user: {},
@@ -50,4 +50,4 @@ const authenticationReducer = createReducer(initialState, {
   [Types.GET_USER_PROFILE_SUCCESS]: getUserProfileSuccess,
 });
 
-export default persist('user', ['user'], authenticationReducer);
+export default authenticationReducer;

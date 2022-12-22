@@ -16,7 +16,7 @@ import SortingContainer from '@Components/common/SortingContainer';
 import Searchbar from '@Components/common/Searchbar/index';
 import Pagination from '@Components/common/Pagination';
 import DropdownOptions from '@Components/common/DropdownOptions';
-import TableSkeleton from '../TableSkeleton/index';
+import TableSkeleton from '@Components/common/TableSkeleton';
 
 const {
   setSearchText,

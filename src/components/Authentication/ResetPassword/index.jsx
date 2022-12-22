@@ -1,13 +1,38 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button';
+import FormErrorMessage from '@Components/common/FormErrorMessage/index';
+import Input from '@Components/common/Input';
 import InfoDialog from '@Components/common/InfoDialog';
 import ButtonLink from '@Components/common/ButtonLink/index';
 import { Creators, Types } from '@Actions/authentication';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { resetPasswordRequest, setInfoDialogContent } = Creators;
+
+const validatePassword = word => {
+  const error = word.toString().length < 8;
+  const message = !error
+    ? ''
+    : !word
+    ? 'Required'
+    : 'Password should be more than 8 characters';
+  return {
+    error,
+    message,
+  };
+};
+
+const validateConfirmPassword = (pass1, pass2) => {
+  const error = !pass2 || pass1 !== pass2;
+  const message = !pass2 ? 'Required' : 'Passwords do not match';
+  return {
+    error,
+    message,
+  };
+};
 
 export default function ResetPassword() {
   const [token, setToken] = useState(null);
@@ -22,9 +47,14 @@ export default function ResetPassword() {
     new_password1: '',
     new_password2: '',
   };
-  const { values, inputProps, handleChange, handleSubmit } = useForm({
+  const { meta, values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: initialState,
     required: ['new_password1', 'new_password2'],
+    validationSchema: {
+      new_password1: validatePassword,
+      new_password2: value =>
+        validateConfirmPassword(values.new_password1, value),
+    },
     onSubmit: data => {
       dispatch(resetPasswordRequest({ token }, data));
     },
@@ -60,11 +90,11 @@ export default function ResetPassword() {
       ) : (
         ''
       )}
-      <div className="">
-        <div className="mb-6 naxatw-space-y-[1.25rem]">
-          <div className="naxatw-space-y-2">
-            <label className="naxatw-label">Password</label>
-            <input
+      <form onSubmit={handleSubmit}>
+        <div className="">
+          <div className="mb-6 naxatw-space-y-[1.25rem]">
+            <Input
+              label="Password"
               type="password"
               className="naxatw-input"
               name="new_password1"
@@ -73,10 +103,12 @@ export default function ResetPassword() {
               onChange={handleChange}
               {...inputProps}
             />
-          </div>
-          <div className="naxatw-space-y-2">
-            <label className="naxatw-label">Confirm Password</label>
-            <input
+            {meta.new_password1.error && meta.new_password1.touched && (
+              <FormErrorMessage message={meta.new_password1.message} />
+            )}
+
+            <Input
+              label="Confirm Password"
               type="password"
               className="naxatw-input"
               name="new_password2"
@@ -84,23 +116,30 @@ export default function ResetPassword() {
               onChange={handleChange}
               {...inputProps}
             />
+            {meta.new_password2.error && meta.new_password2.touched && (
+              <FormErrorMessage message={meta.new_password2.message} />
+            )}
           </div>
+          <Button
+            className="naxatw-btn-primary naxatw-mt-7 naxatw-w-full"
+            isLoading={loading}
+            loaderClassName="naxatw-fill-secondary-400"
+            onClick={e => {
+              e.preventDefault();
+              handleSubmit(e);
+            }}
+            type="Submit"
+          >
+            Set New Password
+          </Button>
+          <ButtonLink
+            to="/login"
+            onClick={() => dispatch(setInfoDialogContent(''))}
+          >
+            Back
+          </ButtonLink>
         </div>
-        <Button
-          className="naxatw-btn-primary naxatw-mt-7 naxatw-w-full"
-          isLoading={loading}
-          loaderClassName="naxatw-fill-secondary-400"
-          onClick={handleSubmit}
-        >
-          Set New Password
-        </Button>
-        <ButtonLink
-          to="/login"
-          onClick={() => dispatch(setInfoDialogContent(''))}
-        >
-          Back
-        </ButtonLink>
-      </div>
+      </form>
     </div>
   );
 }

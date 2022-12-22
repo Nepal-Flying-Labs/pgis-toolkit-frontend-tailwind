@@ -7,6 +7,7 @@ import Button from '@Components/common/Button';
 import Input from '@Components/common/Input/index';
 import Select from '@Components/common/Select/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import useWindowDimensions from '@Hooks/useWindowDimentions';
 
 const { createOrganizationRequest } = Creators;
 
@@ -41,6 +42,7 @@ export default function CreateAnOrganization() {
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.CREATE_ORGANIZATION_REQUEST]),
   );
+  const { height } = useWindowDimensions();
   const {
     values,
     meta,
@@ -66,7 +68,10 @@ export default function CreateAnOrganization() {
 
   return (
     <div className="">
-      <div className="naxatw-p-4 naxatw-space-y-7">
+      <div
+        className="naxatw-p-4 naxatw-space-y-7 naxatw-overflow-y-auto scrollbar"
+        style={{ maxHeight: `${height / 16 - 15}rem` }}
+      >
         <Input
           label="Name of Organization *"
           type="text"

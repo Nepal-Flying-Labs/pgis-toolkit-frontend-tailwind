@@ -24,7 +24,7 @@ export const { Types, Creators } = createActions(
 
     setContactPerson: ['payload'],
 
-    postContactPersonRequest: ['payload'],
+    postContactPersonRequest: ['payload', 'params'],
     postContactPersonSuccess: ['payload'],
     postContactPersonFailure: null,
 

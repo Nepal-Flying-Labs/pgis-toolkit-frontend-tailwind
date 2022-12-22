@@ -113,3 +113,5 @@
 - [ ] Select List Overflow Problem
 - [ ] Table Menu Functionalities(Edit/Delete)
 - [ ] Implement User Permission and role
+- [ ] Give max width to toast component
+- [ ] Validation on Forgot password module

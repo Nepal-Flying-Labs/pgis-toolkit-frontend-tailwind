@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/authentication';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
+import InfoDialog from '@Components/common/InfoDialog';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { Avatar } from '@src/constants/svgIcons';
 
@@ -20,6 +21,9 @@ const initialState = {
 export default function SignUp() {
   const [isVisible, setIsVisible] = useState(false);
   const userDetail = useSelector(state => state.authentication.userDetail);
+  const infoDialogContent = useSelector(
+    state => state.authentication.infoDialogContent,
+  );
   const dispatch = useDispatch();
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.SIGN_UP_REQUEST]),
@@ -53,6 +57,16 @@ export default function SignUp() {
         </h3>
       </div>
       <div className="naxatw-w-full naxatw-mt-[3.125rem]">
+        {infoDialogContent ? (
+          <InfoDialog
+            className="naxatw-bg-secondary-50"
+            status={infoDialogContent.status}
+          >
+            {infoDialogContent.message}
+          </InfoDialog>
+        ) : (
+          ''
+        )}
         <div className="mb-6 naxatw-space-y-[1.125rem]">
           <div className="naxatw-space-y-2">
             <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">

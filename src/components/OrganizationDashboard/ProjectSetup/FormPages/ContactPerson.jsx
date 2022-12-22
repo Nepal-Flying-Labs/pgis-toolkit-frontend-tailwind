@@ -36,7 +36,12 @@ const ContactPerson = () => {
     initialValues: initialContact,
     required: ['name', 'position'],
     onSubmit: data => {
-      dispatch(postContactPersonRequest(data, { project: projectId }));
+      dispatch(
+        postContactPersonRequest(
+          { ...data, project: projectId },
+          { project: projectId },
+        ),
+      );
       resetFormState();
     },
   });

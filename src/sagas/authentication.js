@@ -16,6 +16,7 @@ import commonActions from '@Actions/common';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
+import errorResponseHandler from '@Utils/errorResponseHandler';
 
 export function* loginRequest({ payload }) {
   try {
@@ -31,8 +32,7 @@ export function* loginRequest({ payload }) {
     yield put(authActions.loginFailure());
     yield put(
       authActions.setInfoDialogContent({
-        message:
-          error?.response?.data?.detail || error?.response?.data?.message,
+        message: errorResponseHandler(error),
         status: 'error',
       }),
     );
@@ -108,7 +108,7 @@ function* forgotPasswordRequest({ payload }) {
     yield put(authActions.forgotPasswordFailure());
     yield put(
       authActions.setInfoDialogContent({
-        message: error?.response?.data?.message,
+        message: errorResponseHandler(error),
         status: 'error',
       }),
     );
@@ -131,7 +131,7 @@ function* resetPasswordRequest({ params, payload }) {
     yield put(authActions.resetPasswordFailure());
     yield put(
       authActions.setInfoDialogContent({
-        message: error?.response?.data?.message,
+        message: errorResponseHandler(error),
         status: 'error',
       }),
     );
@@ -166,7 +166,7 @@ function* getLandingPageRequest() {
     yield put(push(`${response.data.page}`));
   } catch (error) {
     yield put(authActions.getLandingPageFailure());
-    yield put(toastActions.error({ message: error?.response?.data?.message }));
+    throw error;
   }
 }
 
@@ -212,7 +212,7 @@ function* authenticationWatcher() {
   );
   yield takeLatest(
     Types.GET_LANDING_PAGE_REQUEST,
-    withLoader(getLandingPageRequest),
+    withLoader(withErrorHandler(getLandingPageRequest)),
   );
   yield takeLatest(
     Types.GET_USER_PROFILE_REQUEST,

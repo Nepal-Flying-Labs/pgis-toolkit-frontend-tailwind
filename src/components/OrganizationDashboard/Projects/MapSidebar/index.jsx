@@ -170,7 +170,7 @@ export default function MapSidebar() {
                         ? () => history.push(`${url}/${id}/map`)
                         : () =>
                             history.push(
-                              `/organizations/${organizationId}/project-edit/${id}`,
+                              `/organizations/${organizationId}/project-setup/${id}`,
                             )
                     }
                   />
@@ -192,7 +192,7 @@ export default function MapSidebar() {
                         ? () => history.push(`${url}/${id}/map`)
                         : () =>
                             history.push(
-                              `/organizations/${organizationId}/project-edit/${id}`,
+                              `/organizations/${organizationId}/project-setup/${id}`,
                             )
                     }
                   />

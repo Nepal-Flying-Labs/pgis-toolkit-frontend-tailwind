@@ -11,6 +11,9 @@ const dotenv = require('dotenv').config();
 const esbuild = require('esbuild');
 // const colors = require('../src/constants/colors');
 
+// eslint-disable-next-line import/no-unresolved
+const { domToCodePlugin } = require('dom-to-code/webpack');
+
 const APP_DIR = path.resolve(__dirname, '../src');
 const { TITLE } = dotenv.parsed;
 module.exports = (env = {}) => {
@@ -132,6 +135,13 @@ module.exports = (env = {}) => {
         ],
       },
       plugins: [
+        ...(process.env.NODE_ENV === 'production'
+          ? []
+          : [
+              domToCodePlugin({
+                mode: 'react',
+              }),
+            ]),
         new HtmlWebpackPlugin({
           title: TITLE,
           template: 'public/index.html',

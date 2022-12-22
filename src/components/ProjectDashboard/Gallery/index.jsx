@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
@@ -6,8 +6,7 @@ import { Creators as CommonCreators } from '@Actions/common';
 import { isEmpty } from '@Utils/commonUtils';
 import Button from '@Components/common/Button/index';
 import GalleryList from './GalleryList/index';
-import { useState } from 'react';
-import GallerySidebar from './GallerySidebar/index';
+import AdditionalSidebar from '../Common/index';
 // import NoDataYet from './NoDataYet';
 // import LayerList from './LayerList';
 
@@ -89,7 +88,10 @@ export default function Gallery() {
         {getContent()}
       </div>
       {toggleRightBar && (
-        <GallerySidebar onCloseClick={() => setToggleRightBar(false)} />
+        <AdditionalSidebar
+          onCloseClick={() => setToggleRightBar(false)}
+          flag="gallery"
+        />
       )}
     </div>
   );

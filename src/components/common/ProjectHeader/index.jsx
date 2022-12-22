@@ -19,7 +19,7 @@ const organizationHeaderData = [
 const projectHeaderData = [
   { label: 'Map', route: 'map', disabled: false },
   { label: 'Data', route: 'data', disabled: false },
-  { label: 'Document', route: 'document', disabled: true },
+  { label: 'Document', route: 'document', disabled: false },
   { label: 'Gallery', route: 'gallery', disabled: false },
   { label: 'Users', route: 'users', disabled: true },
   { label: 'Info', route: 'info', disabled: false },

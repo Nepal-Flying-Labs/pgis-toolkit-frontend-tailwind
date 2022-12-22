@@ -1,8 +1,14 @@
+/* eslint-disable import/no-named-as-default */
 import React from 'react';
 import NoDataYetImg from '@Assets/images/no-data-yet.png';
 import Button from '@Components/common/Button/index';
+import Creators from '@Actions/common';
+import { useDispatch } from 'react-redux';
 
 export default function NoPhotosYet() {
+  const dispatch = useDispatch();
+  const { toggleModal } = Creators;
+
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-px-5 naxatw-py-10 naxatw-items-center">
       <img width={60} height={60} src={NoDataYetImg} alt="no-data-yet" />
@@ -15,7 +21,7 @@ export default function NoPhotosYet() {
           iconLeft="add"
           className="naxatw-btn-primary naxatw-flex"
           onClick={() => {
-            // dispatch(toggleModal('upload-dataset'));
+            dispatch(toggleModal('upload-image'));
           }}
         >
           Add Image

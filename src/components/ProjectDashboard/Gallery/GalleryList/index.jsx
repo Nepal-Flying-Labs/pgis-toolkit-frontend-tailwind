@@ -48,21 +48,23 @@ function GalleryList({ openSidebar }) {
           height: `calc(100vh - 234px)`,
           transition: 'ease-in-out 300ms',
         }}
-        className="naxatw-py-3 naxatw-flex naxatw-flex-wrap naxatw-gap-5 naxatw-overflow-hidden naxatw-overflow-y-auto scrollbar"
+        className="naxatw-py-3 naxatw-overflow-hidden naxatw-overflow-y-auto scrollbar"
       >
-        {Array.from({ length: 50 }).map(index => (
-          <GalleryCard
-            label="Construction site"
-            id={index}
-            status="5"
-            imgSrc={noImg}
-            checked={false}
-            onCardClick={id => {
-              console.log('Gallery card clicked id : ', id);
-              openSidebar(true);
-            }}
-          />
-        ))}
+        <div className="naxatw-flex naxatw-flex-wrap naxatw-gap-5">
+          {Array.from({ length: 15 }).map(index => (
+            <GalleryCard
+              label="Construction site"
+              id={index}
+              status="5"
+              imgSrc={noImg}
+              checked={false}
+              onCardClick={id => {
+                console.log('Gallery card clicked id : ', id);
+                openSidebar(true);
+              }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

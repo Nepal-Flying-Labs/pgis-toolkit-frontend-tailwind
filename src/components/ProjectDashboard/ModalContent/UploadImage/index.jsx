@@ -164,68 +164,60 @@ export default function UploadImage() {
       </p>
 
       <div
-        className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-auto scrollbar naxatw-max-h-96"
+        className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-5 naxatw-overflow-auto scrollbar naxatw-max-h-96"
         style={{ maxHeight: `${height / 16 - 22}rem` }}
       >
-        <Dropzone
-          label="Please upload an image (JPEG, PNG, GIF or PDF file format)"
-          accept=".jpeg, .png, .gif, .pdf"
-          multiple
-          onChange={handleUpload}
-        />
-
-        {uploadedFiles.map(({ id, file }) => (
-          <div key={id} className="naxatw-flex naxatw-flex-col naxatw-gap-2">
-            <div
-              className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-pr-5
+        <div className="naxatw-space-y-2">
+          <label className="naxatw-label">Upload an image</label>
+          <Dropzone
+            label="Please upload an image (JPEG, PNG, GIF or PDF file format)"
+            accept=".jpeg, .png, .gif, .pdf"
+            multiple
+            onChange={handleUpload}
+          />
+          {uploadedFiles.map(({ id, file }) => (
+            <div key={id} className="naxatw-flex naxatw-flex-col naxatw-gap-2">
+              <div
+                className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-pr-5
                 naxatw-flex naxatw-gap-y-2"
-            >
-              <div className="naxatw-flex naxatw-gap-5 naxatw-w-4/5 naxatw-pr-2">
-                <div className="">
-                  <img
-                    src={noImg}
-                    alt="file-icon"
-                    width="60px"
-                    className="naxatw-bg-slate-500 naxatw-rounded-tl-[8px] naxatw-rounded-bl-[8px] naxatw-h-full naxatw-object-cover"
-                  />
+              >
+                <div className="naxatw-flex naxatw-gap-5 naxatw-w-4/5 naxatw-pr-2">
+                  <div className="">
+                    <img
+                      src={noImg}
+                      alt="file-icon"
+                      width="60px"
+                      className="naxatw-bg-slate-500 naxatw-rounded-tl-[8px] naxatw-rounded-bl-[8px] naxatw-h-full naxatw-object-cover"
+                    />
+                  </div>
+                  <div className="naxatw-py-2">
+                    <p className="naxatw-font-bold naxatw-text-[15px]">
+                      {file.name}
+                    </p>
+                    <p className="naxatw-text-body-md naxatw-text-grey-600">
+                      Uploaded on 16/11/2022
+                    </p>
+                  </div>
                 </div>
-                <div className="naxatw-py-2">
-                  <p className="naxatw-font-bold naxatw-text-[15px]">
-                    {file.name}
-                  </p>
-                  <p className="naxatw-text-body-md naxatw-text-grey-600">
-                    Uploaded on 16/11/2022
-                  </p>
-                </div>
-              </div>
 
-              <div className="naxatw-flex naxatw-gap-5 naxatw-items-center naxatw-w-1/5">
-                <div className="">
-                  <button
-                    type="button"
-                    className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                    // onClick={() => handleDelete(id)}
-                  >
-                    <i className="material-icons naxatw-text-[22px]">
-                      file_download
-                    </i>
-                  </button>
-                </div>
-                <div className="">
-                  <button
-                    type="button"
-                    className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                    onClick={() => handleDelete(id)}
-                  >
-                    <i className="naxatw-text-[#FF0F0F] material-icons naxatw-text-[22px]">
-                      delete_outline
-                    </i>
-                  </button>
+                <div className="naxatw-flex naxatw-gap-5 naxatw-items-center naxatw-w-1/5">
+                  <MaterialIcon
+                    // onIconClick={() => handleDelete(id)}
+                    wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
+                    className="naxatw-text-[22px]"
+                    name="file_download"
+                  />
+                  <MaterialIcon
+                    // onIconClick={() => handleDelete(id)}
+                    wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
+                    className="naxatw-text-[22px] naxatw-text-[#FF0F0F]"
+                    name="delete_outline"
+                  />
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
 
         <Input
           id="tag"
@@ -239,7 +231,6 @@ export default function UploadImage() {
           type="text"
           iconRight="add"
         />
-
         <div className="tag-Chips naxatw-flex naxatw-mt-2 naxatw-gap-2">
           <Chip
             name="Maps"
@@ -258,32 +249,28 @@ export default function UploadImage() {
             onIconClick={() => {}}
           />
         </div>
-        <div className="naxatw-pt-5">
-          <Input
-            id="title"
-            label="Title of Image"
-            name="title"
-            value=""
-            placeholder="Enter title of image"
-            onChange={() => {}}
-            className=""
-            required={false}
-            type="text"
-          />
-        </div>
-        <div className="naxatw-pt-5">
-          <Input
-            id="caption"
-            label="Suitable Caption"
-            name="caption"
-            value=""
-            placeholder="Write a Suitable Caption"
-            onChange={() => {}}
-            className=""
-            required={false}
-            type="text"
-          />
-        </div>
+        <Input
+          id="title"
+          label="Title of Image"
+          name="title"
+          value=""
+          placeholder="Enter title of image"
+          onChange={() => {}}
+          className=""
+          required={false}
+          type="text"
+        />
+        <Input
+          id="caption"
+          label="Suitable Caption"
+          name="caption"
+          value=""
+          placeholder="Write a Suitable Caption"
+          onChange={() => {}}
+          className=""
+          required={false}
+          type="text"
+        />
       </div>
 
       {!isEmpty(uploadedFiles) && (

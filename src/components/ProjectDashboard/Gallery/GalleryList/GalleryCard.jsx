@@ -48,22 +48,12 @@ function GalleryCard({
     <div
       role="button"
       tabIndex="0"
-      className="naxatw-h-[190px] naxatw-w-[210px] naxatw-group hover:naxatw-cursor-pointer"
+      className="naxatw-min-h-[190px] naxatw-max-h-[190px] naxatw-min-w-[210px] naxatw-max-w-[210px] naxatw-group hover:naxatw-cursor-pointer"
       onClick={() => {
         onCardClick(id);
       }}
     >
       <div className="naxatw-mb-1 naxatw-relative">
-        <input
-          type="checkbox"
-          checked={checked}
-          onClick={() => onCheckSelected(id)}
-          className={`${
-            checked
-              ? 'naxatw-absolute naxatw-z-10'
-              : 'naxatw-hidden group-hover:naxatw-absolute group-hover:naxatw-z-10'
-          } naxatw-top-2 naxatw-right-2 naxatw-h-5 naxatw-w-5 hover:naxatw-border-5 hover:naxatw-border-white naxatw-outline-none naxatw-border-none`}
-        />
         <img
           src={imgSrc}
           alt="gallery"
@@ -72,6 +62,14 @@ function GalleryCard({
           className={`${
             activeCard ? 'naxatw-border-2 naxatw-border-[#FF5A5F]' : ''
           } naxatw-object-contain naxatw-rounded-lg naxatw-border-2`}
+        />
+        <input
+          type="checkbox"
+          checked={checked}
+          onClick={() => onCheckSelected(id)}
+          className={`${
+            checked ? 'naxatw-visible' : ''
+          } naxatw-absolute group-hover:naxatw-visible naxatw-invisible naxatw-z-10 naxatw-h-5 naxatw-w-5 naxatw-top-2 naxatw-left-2`}
         />
       </div>
       <div className=" naxatw-flex naxatw-justify-between">

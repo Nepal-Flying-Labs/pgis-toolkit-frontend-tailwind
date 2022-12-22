@@ -20,6 +20,7 @@ import DownloadLayer from '@Components/ProjectDashboard/ModalContent/DownloadLay
 import ManageAttributes from '@Components/ProjectDashboard/ModalContent/ManageAttributes/index';
 import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer/index';
 import UploadImage from '@Components/ProjectDashboard/ModalContent/UploadImage/index';
+import UploadDocument from '@Components/ProjectDashboard/ModalContent/UploadDocument/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -102,6 +103,13 @@ export function getModalContent(content) {
       return {
         title: 'Upload your image',
         content: <UploadImage />,
+      };
+
+    // project document
+    case 'upload-document':
+      return {
+        title: 'Upload your documents',
+        content: <UploadDocument />,
       };
 
     // manage data

@@ -91,10 +91,10 @@
 
 ### Login
 
-- [ ] Loader in organization invite
+- [x] Loader in organization invite
 - [ ] organization modal in invitation success
-- [ ] splash screen for checking landing page
-- [ ] project card design
+- [x] splash screen for checking landing page
+- [x] project card design
 
 ### Styles
 

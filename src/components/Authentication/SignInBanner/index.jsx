@@ -1,7 +1,7 @@
 import React from 'react';
 import LoginImg from '@Assets/images/sign-in-img.jpg';
 import LoginLogo from '@Assets/images/login-logo.png';
-import Button from '@Components/common/Button';
+// import Button from '@Components/common/Button';
 
 export default function SignInBanner() {
   return (
@@ -22,15 +22,15 @@ export default function SignInBanner() {
           </div>
           <div className="naxatw-mt-20">
             <h3 className="naxatw-text-white naxatw-mb-5 naxatw-font-bold">
-              Integrated Mapping tool for Spatial Data-driven Interventions
-              Planning
+              Integrated Data Managment Mapping and Analysis tool for data
+              driven project planning
             </h3>
             <p className="naxatw-text-white naxatw-text-lg naxatw-mb-10">
               Piloting the tool for Transport Mobility Assessment
             </p>
-            <Button className="naxatw-px-5 naxatw-py-3 naxatw-bg-white naxatw-rounded-lg naxatw-text-primary-400 naxatw-font-bold hover:naxatw-text-white hover:naxatw-bg-primary-700">
+            {/* <Button className="naxatw-px-5 naxatw-py-3 naxatw-bg-white naxatw-rounded-lg naxatw-text-primary-400 naxatw-font-bold hover:naxatw-text-white hover:naxatw-bg-primary-700">
               Request for Demo
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>

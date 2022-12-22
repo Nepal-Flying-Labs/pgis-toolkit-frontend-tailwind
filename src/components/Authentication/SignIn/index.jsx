@@ -4,7 +4,7 @@ import { Creators, Types } from '@Actions/authentication';
 import InfoDialog from '@Components/common/InfoDialog';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
-import GoogleIcon from '@Assets/images/icons/google-icon.svg';
+// import GoogleIcon from '@Assets/images/icons/google-icon.svg';
 import { Avatar } from '@src/constants/svgIcons';
 import ButtonLink from '@Components/common/ButtonLink';
 import { checkIfLoading } from '@Utils/loaderSelector';
@@ -58,7 +58,7 @@ export default function SignIn() {
         ) : (
           ''
         )}
-        <Button className="naxatw-btn-secondary naxatw-w-full ">
+        {/* <Button className="naxatw-btn-secondary naxatw-w-full ">
           <div className="naxatw-flex naxatw-items-center">
             <img className="naxatw-mr-3" src={GoogleIcon} alt="google-icon" />
             <p className="naxatw-text-inherit">Sign in with Google</p>
@@ -69,7 +69,7 @@ export default function SignIn() {
           <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
           <p className="naxatw-mx-3 naxatw-text-sm">or</p>
           <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
-        </div>
+        </div> */}
         <form onSubmit={handleSubmit}>
           <div className="mb-6 naxatw-space-y-[1.125rem]">
             <div className="naxatw-space-y-2">

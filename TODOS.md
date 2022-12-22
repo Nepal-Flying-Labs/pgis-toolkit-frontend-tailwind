@@ -1,7 +1,5 @@
 ### General
 
-- [ ] Scrollbar setup
-
 ### Authentication
 
 - [x] implement account popup
@@ -16,6 +14,7 @@
 - [ ] implement design template email
 - [ ] implement change password
 - [ ] implement keep me signed in
+- [ ] validation in edit feature
 
 ### Organization
 
@@ -75,6 +74,7 @@
 - [ ] show active button while editing
 - [ ] data catalogue not showing
 - [ ] masking / zoom level
+- [ ] min width in select
 
 ### Backend
 
@@ -104,3 +104,12 @@
 - [ ] Remove Pagination
 - [ ] Search bar outline on select
 - [ ] Font issue in Safari
+
+### Organization Module
+
+- [ ] Display error message
+- [ ] Search Component design
+- [ ] Table Sorting Design
+- [ ] Select List Overflow Problem
+- [ ] Table Menu Functionalities(Edit/Delete)
+- [ ] Implement User Permission and role

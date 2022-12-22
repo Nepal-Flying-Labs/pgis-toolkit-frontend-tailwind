@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DropdownSelect from './DropdownSelect';
+import MaterialIcon from '../MaterialIcon/index';
 
 export default function Pagination({
   // rowPerPage,
@@ -24,7 +25,7 @@ export default function Pagination({
   return (
     <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-mt-8">
       <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
-        <span className="row-text">Row per page</span>
+        <span className="naxatw-text-body-lg">Row per page</span>
         <DropdownSelect
           options={[
             { id: 1, value: 10 },
@@ -36,13 +37,15 @@ export default function Pagination({
           onChange={item => handleSelect(item.value)}
         />
       </div>
-      <div className="naxatw-flex naxatw-justify-end naxatw-items-center">
-        <p className="naxatw-flex naxatw-items-start">
-          <span className="show-row">{paginatedCounts}</span>
-          <span>of</span>
-          <span className="total-row">{count}</span>
+      <div className="naxatw-flex naxatw-gap-x-2 naxatw-justify-end naxatw-items-center">
+        <p className="naxatw-flex naxatw-items-start naxatw-gap-x-2">
+          <span className="naxatw-text-body-lg naxatw-font-bold">
+            {paginatedCounts}
+          </span>
+          <span className="naxatw-text-body-lg">of</span>
+          <span className="naxatw-text-body-lg naxatw-font-bold">{count}</span>
         </p>
-        <p className="naxatw-flex naxatw-items-start">
+        <p className="naxatw-flex naxatw-gap-x-2 naxatw-items-start">
           <span
             className="prev"
             tabIndex={0}
@@ -51,7 +54,11 @@ export default function Pagination({
             onKeyPress={() => previousPage()}
             onClick={() => previousPage()}
           >
-            <i className="material-icons">chevron_left</i>
+            <MaterialIcon
+              name="chevron_left"
+              className="naxatw-text-icon-md"
+              wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
+            />
           </span>
           <span
             className="next"
@@ -60,14 +67,18 @@ export default function Pagination({
             onKeyPress={() => nextPage()}
             onClick={() => nextPage()}
           >
-            <i className="material-icons">chevron_right</i>
+            <MaterialIcon
+              name="chevron_right"
+              className="naxatw-text-icon-md"
+              wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
+            />
           </span>
         </p>
-        <p className="naxatw-flex naxatw-justify-end naxatw-items-center">
-          <span>Jumps to</span>
+        <p className="naxatw-flex naxatw-gap-x-2 naxatw-justify-end naxatw-items-center">
+          <span className="naxatw-text-body-lg">Jumps to</span>
           <input
             type="number"
-            className="form-control naxatw-w-32"
+            className="naxatw-input naxatw-w-[60px]"
             value={currentPage}
             onChange={e => jumpTo(e.target.value)}
             min="1"

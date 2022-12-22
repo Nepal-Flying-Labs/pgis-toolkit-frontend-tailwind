@@ -88,7 +88,6 @@ const AsyncPopup = ({
       const featureProperties = features[0].getProperties();
       const { layer_id: layerId } = featureProperties;
       if (!exceptionIds.current.includes(layerId)) {
-        console.log('propertiesx');
         setProperties(featureProperties);
         setCoordinates(coordinate);
       } else {

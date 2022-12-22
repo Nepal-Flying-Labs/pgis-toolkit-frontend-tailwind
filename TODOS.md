@@ -14,6 +14,7 @@
 - [ ] implement design template email
 - [ ] implement change password
 - [ ] implement keep me signed in
+- [ ] validation in edit feature
 
 ### Organization
 

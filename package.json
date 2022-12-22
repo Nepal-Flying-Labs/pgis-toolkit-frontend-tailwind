@@ -24,6 +24,7 @@
     "connected-react-router": "^6.9.2",
     "csv2geojson": "^5.1.2",
     "date-fns": "^2.29.3",
+    "dom-to-code": "^1.5.4",
     "dotenv": "^14.3.2",
     "express": "^4.17.3",
     "file-loader": "^6.2.0",

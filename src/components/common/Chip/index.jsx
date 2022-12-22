@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 // import './MultiSelectDropdown.css';
 
-const Chip = ({ name, onClick, status, value }) => {
+const Chip = ({ name, onClick, status, value, iconRight, onIconClick }) => {
   const [activeChip, setActiveChip] = useState(false);
 
   useEffect(() => {
@@ -24,13 +24,24 @@ const Chip = ({ name, onClick, status, value }) => {
       tabIndex={0}
       role="button"
       onClick={onClick}
-      className={`naxatw-px-5 naxatw-py-2.5 hover:naxatw-bg-[#F5F5F5] naxatw-bg-white naxatw-rounded-3xl naxatw-border ${
+      className={`naxatw-px-5 naxatw-py-2.5 hover:naxatw-bg-[#F5F5F5] naxatw-bg-white naxatw-rounded-3xl naxatw-border naxatw-flex naxatw-items-center ${
         activeChip
           ? ' naxatw-border-[#484848] naxatw-bg-[#F5F5F5]'
           : 'naxatw-border-[#D7D7D7]'
       }`}
     >
       <span className="naxatw-text-body-lg">{name}</span>
+
+      {iconRight && (
+        <i
+          role="button"
+          tabIndex="0"
+          onClick={onIconClick}
+          className="material-icons naxatw-mr-2 naxatw-text-[22px]"
+        >
+          {iconRight}
+        </i>
+      )}
     </div>
   );
 };
@@ -39,10 +50,14 @@ Chip.propTypes = {
   status: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
   onClick: PropTypes.func,
   value: PropTypes.string.isRequired,
+  onIconClick: PropTypes.func,
+  iconRight: PropTypes.string,
 };
 
 Chip.defaultProps = {
   onClick: () => {},
+  onIconClick: () => {},
+  iconRight: null,
 };
 
 export default Chip;

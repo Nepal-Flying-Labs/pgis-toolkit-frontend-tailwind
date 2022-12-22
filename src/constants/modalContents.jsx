@@ -19,6 +19,8 @@ import UploadFailed from '@Components/ProjectDashboard/ModalContent/UploadFailed
 import DownloadLayer from '@Components/ProjectDashboard/ModalContent/DownloadLayer';
 import ManageAttributes from '@Components/ProjectDashboard/ModalContent/ManageAttributes/index';
 import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer/index';
+import UploadImage from '@Components/ProjectDashboard/ModalContent/UploadImage/index';
+import UploadDocument from '@Components/ProjectDashboard/ModalContent/UploadDocument/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -88,12 +90,28 @@ export function getModalContent(content) {
         title: 'Buffer Analysis',
         content: <BufferAnalysis />,
       };
+
     // project data
     case 'download-layer':
       return {
         title: 'Download Layer',
         content: <DownloadLayer />,
       };
+
+    // project gallery
+    case 'upload-image':
+      return {
+        title: 'Upload your image',
+        content: <UploadImage />,
+      };
+
+    // project document
+    case 'upload-document':
+      return {
+        title: 'Upload your documents',
+        content: <UploadDocument />,
+      };
+
     // manage data
     case 'add-wms-layer':
       return {

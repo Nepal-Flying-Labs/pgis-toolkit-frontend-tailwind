@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 import { hot } from 'react-hot-loader';
+import { initDomToCode } from 'dom-to-code';
 import { Switch, Route } from 'react-router-dom';
 import PrivateRoute from '@Components/common/PrivateRoute';
 import Toast from '@Components/common/Toast';
@@ -42,6 +43,7 @@ function generateRoutes(routes) {
 function App() {
   return (
     <div className="naxatw-font-primary">
+      {process.env.NODE_ENV === 'development' && initDomToCode()}
       <Toast />
       {generateRoutes(indexRoutes)}
     </div>

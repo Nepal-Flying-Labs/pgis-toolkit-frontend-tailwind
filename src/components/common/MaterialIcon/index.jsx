@@ -6,10 +6,12 @@ export default function MaterialIcon({
   className,
   style,
   wrapperClassName,
+  onIconClick,
 }) {
   return (
     <button
       type="button"
+      onClick={onIconClick}
       className={`naxatw-flex naxatw-items-center ${wrapperClassName}`}
     >
       <i className={`material-icons ${className}`} style={style}>
@@ -23,6 +25,7 @@ MaterialIcon.defaultProps = {
   className: '',
   style: {},
   wrapperClassName: '',
+  onIconClick: () => {},
 };
 
 MaterialIcon.propTypes = {
@@ -30,4 +33,5 @@ MaterialIcon.propTypes = {
   className: PropTypes.string,
   style: PropTypes.object,
   wrapperClassName: PropTypes.string,
+  onIconClick: PropTypes.func,
 };

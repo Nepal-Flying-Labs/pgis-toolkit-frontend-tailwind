@@ -17,6 +17,7 @@ export default function Organizations() {
   const userPermissions = useSelector(
     state => state.authentication.userPermissions,
   );
+  const ordering = useSelector(state => state.organizations.ordering);
   const showModal = useSelector(state => state.common.showModal);
   const modalContent = useSelector(state => state.common.modalContent);
   const searchText = useSelector(state => state.organizations.searchText);
@@ -29,9 +30,14 @@ export default function Organizations() {
 
   useEffect(() => {
     dispatch(
-      getOrganizationsRequest({ search: searchText, page, limit: rowSelect }),
+      getOrganizationsRequest({
+        search: searchText,
+        page,
+        limit: rowSelect,
+        ordering,
+      }),
     );
-  }, [dispatch, searchText, page, rowSelect]);
+  }, [dispatch, searchText, page, rowSelect, ordering]);
 
   useEffect(() => {
     dispatch(getUserPermissionsRequest());

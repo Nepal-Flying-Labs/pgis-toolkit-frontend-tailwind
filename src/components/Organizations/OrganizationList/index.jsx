@@ -24,6 +24,7 @@ const {
   handlePreviousClick,
   handleJumpsTo,
   handleRowSelect,
+  handleOrdering,
 } = Creators;
 const dataPerPage = 10;
 
@@ -46,6 +47,7 @@ export default function OrganizationList() {
   //   begin,
   //   end,
   // } = usePagination(organizationData?.results, 10);
+  const ordering = useSelector(state => state.organizations.ordering);
   const currentPage = useSelector(state => state.organizations.pagination.page);
   const rowPerPage = useSelector(
     state => state.organizations.pagination.rowSelect,
@@ -133,9 +135,28 @@ export default function OrganizationList() {
               dataField="Name"
               headerClassName="naxatw-py-1 naxatw-px-3 "
               rowcolSpan="rowSpan_2"
-              dataHeader={<SortingContainer name="Name" className="" />}
+              dataHeader={
+                <SortingContainer
+                  name="Name"
+                  className=""
+                  isActive={ordering === 'name'}
+                  handleSort={() =>
+                    dispatch(
+                      handleOrdering(ordering === 'name' ? null : 'name'),
+                    )
+                  }
+                />
+              }
               dataFormat={row => (
-                <span className="naxatw-text-body-lg ">{row.name}</span>
+                <span
+                  className={` ${
+                    ordering === 'name'
+                      ? 'naxatw-text-body-btn'
+                      : 'naxatw-text-body-lg'
+                  }`}
+                >
+                  {row.name}
+                </span>
               )}
             />
             <TableHeader
@@ -151,9 +172,29 @@ export default function OrganizationList() {
               dataField="Projects"
               headerClassName="naxatw-py-1 naxatw-px-3"
               rowcolSpan="rowSpan_2"
-              dataHeader={<SortingContainer name="Projects" />}
+              dataHeader={
+                <SortingContainer
+                  name="Projects"
+                  isActive={ordering === 'projects'}
+                  handleSort={() =>
+                    dispatch(
+                      handleOrdering(
+                        ordering === 'projects' ? null : 'projects',
+                      ),
+                    )
+                  }
+                />
+              }
               dataFormat={row => (
-                <span className="naxatw-text-body-lg">{row.projects}</span>
+                <span
+                  className={` ${
+                    ordering === 'projects'
+                      ? 'naxatw-text-body-btn'
+                      : 'naxatw-text-body-lg'
+                  }`}
+                >
+                  {row.projects}
+                </span>
               )}
             />
             <TableHeader

@@ -13,6 +13,7 @@ import Dropzone from '@Components/common/Dropzone';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import FileIcon from '@Assets/images/icons/file-icon.svg';
 import Select from '@Components/common/Select';
+import Input from '@Components/common/Input';
 import Toggle from '@Components/common/Toggle';
 import Button from '@Components/common/Button';
 import prepareFormData from '@Utils/prepareFormData';
@@ -20,11 +21,13 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
 import { getCSVHeaders } from '@Utils/convertLayerUtils';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
+import Chip from '@Components/common/Chip/index';
+import noImg from '@Assets/images/noImage.png';
 
 const { getProjectThemesRequest } = ProjectMapCreators;
 const { uploadDatasetsRequest } = ProjectDashboardCreators;
 
-export default function UploadDataset() {
+export default function UploadImage() {
   const { projectId } = useParams();
   const themes = useSelector(state => state.projectMap.themes);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -156,9 +159,8 @@ export default function UploadDataset() {
   return (
     <div>
       <p>
-        USAFIRI allows you to do different sorts of analysis with your map
-        datasets. Below are some of the analysis functions we have in the tool
-        at the moment.
+        You can add any sort of relevant photographs & images or maps, in file
+        format JPEG, PNG, GIF or PDF.
       </p>
 
       <div
@@ -166,131 +168,122 @@ export default function UploadDataset() {
         style={{ maxHeight: `${height / 16 - 22}rem` }}
       >
         <Dropzone
-          label="Please upload your datasets (shp, csv, geojson or gpkg file format)"
-          accept=".zip, .geojson, .csv, .gpkg"
+          label="Please upload an image (JPEG, PNG, GIF or PDF file format)"
+          accept=".jpeg, .png, .gif, .pdf"
           multiple
           onChange={handleUpload}
         />
 
-        {uploadedFiles.map(
-          ({
-            id,
-            name,
-            category,
-            addToMap,
-            file,
-            extension,
-            latField,
-            lonField,
-            latlngOptions,
-          }) => (
-            <div key={id} className="naxatw-flex naxatw-flex-col naxatw-gap-2">
-              <div
-                className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-px-5 naxatw-py-3
-                naxatw-flex naxatw-flex-col naxatw-gap-2"
-              >
-                <div className="naxatw-flex naxatw-justify-between">
-                  <div className="naxatw-flex naxatw-gap-5">
-                    <img src={FileIcon} alt="file-icon" />
-                    <div>
-                      <p className="naxatw-font-bold naxatw-text-[15px]">
-                        {file.name}
-                      </p>
-                      <p className="naxatw-text-body-md naxatw-text-grey-600">
-                        Uploaded on 16/11/2022
-                      </p>
-                    </div>
-                  </div>
-                  <a
-                    className="naxatw-flex naxatw-items-center naxatw-p-2"
+        {uploadedFiles.map(({ id, file }) => (
+          <div key={id} className="naxatw-flex naxatw-flex-col naxatw-gap-2">
+            <div
+              className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-pr-5
+                naxatw-flex naxatw-gap-y-2"
+            >
+              <div className="naxatw-flex naxatw-gap-5 naxatw-w-4/5 naxatw-pr-2">
+                <div className="">
+                  <img
+                    src={noImg}
+                    alt="file-icon"
+                    width="60px"
+                    className="naxatw-bg-slate-500 naxatw-rounded-tl-[8px] naxatw-rounded-bl-[8px] naxatw-h-full naxatw-object-cover"
+                  />
+                </div>
+                <div className="naxatw-py-2">
+                  <p className="naxatw-font-bold naxatw-text-[15px]">
+                    {file.name}
+                  </p>
+                  <p className="naxatw-text-body-md naxatw-text-grey-600">
+                    Uploaded on 16/11/2022
+                  </p>
+                </div>
+              </div>
+
+              <div className="naxatw-flex naxatw-gap-5 naxatw-items-center naxatw-w-1/5">
+                <div className="">
+                  <button
+                    type="button"
+                    className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
+                    // onClick={() => handleDelete(id)}
+                  >
+                    <i className="material-icons naxatw-text-[22px]">
+                      file_download
+                    </i>
+                  </button>
+                </div>
+                <div className="">
+                  <button
+                    type="button"
+                    className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
                     onClick={() => handleDelete(id)}
                   >
-                    <MaterialIcon
-                      className="naxatw-text-[#FF0F0F]"
-                      name="delete_outline"
-                    />
-                  </a>
+                    <i className="naxatw-text-[#FF0F0F] material-icons naxatw-text-[22px]">
+                      delete_outline
+                    </i>
+                  </button>
                 </div>
-
-                <div className="naxatw-flex naxatw-gap-3">
-                  <div className="naxatw-space-y-2 naxatw-grow">
-                    <label className="naxatw-label">Data name*</label>
-                    <input
-                      type="text"
-                      className="naxatw-input"
-                      id={id}
-                      name="name"
-                      value={name}
-                      placeholder="Enter Data Name"
-                      onChange={handleChange}
-                    />
-                  </div>
-
-                  <div className="naxatw-space-y-2">
-                    <label className="naxatw-label">Category</label>
-                    <Select
-                      options={themes || []}
-                      labelKey="name"
-                      valueKey="id"
-                      placeholder="Category"
-                      onChange={selectedItem =>
-                        handleCategorySelect(id, selectedItem)
-                      }
-                      selectedValue={category}
-                    />
-                  </div>
-                  <div className="naxatw-space-y-2">
-                    <label className="naxatw-label">Add To Map</label>
-                    <div className="naxatw-pt-3">
-                      <Toggle
-                        id={id}
-                        checked={addToMap}
-                        onChange={handleAddToMap}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {extension === 'csv' && (
-                  <div className="naxatw-flex naxatw-gap-3">
-                    <div className="naxatw-space-y-2 naxatw-w-full">
-                      <label className="naxatw-label">Latitude field</label>
-                      <Select
-                        options={latlngOptions}
-                        labelKey="name"
-                        valueKey="id"
-                        placeholder="Latitude field"
-                        selectedValue={latField?.id}
-                        onChange={selectedItem =>
-                          handleLatLngSelect(id, {
-                            name: 'latField',
-                            value: selectedItem,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="naxatw-space-y-2 naxatw-w-full">
-                      <label className="naxatw-label">Longitude field</label>
-                      <Select
-                        options={latlngOptions}
-                        labelKey="name"
-                        valueKey="id"
-                        placeholder="longitude field"
-                        selectedValue={lonField?.id}
-                        onChange={selectedItem =>
-                          handleLatLngSelect(id, {
-                            name: 'lonField',
-                            value: selectedItem,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
-          ),
-        )}
+          </div>
+        ))}
+
+        <Input
+          id="tag"
+          label="Tags"
+          name="tag"
+          value=""
+          placeholder="Add your own tags"
+          onChange={() => {}}
+          className=""
+          required={false}
+          type="text"
+          iconRight="add"
+        />
+
+        <div className="tag-Chips naxatw-flex naxatw-mt-2 naxatw-gap-2">
+          <Chip
+            name="Maps"
+            onClick={() => {}}
+            status=""
+            value=""
+            iconRight="close"
+            onIconClick={() => {}}
+          />
+          <Chip
+            name="Maps"
+            onClick={() => {}}
+            status=""
+            value=""
+            iconRight="close"
+            onIconClick={() => {}}
+          />
+        </div>
+        <div className="naxatw-pt-5">
+          <Input
+            id="title"
+            label="Title of Image"
+            name="title"
+            value=""
+            placeholder="Enter title of image"
+            onChange={() => {}}
+            className=""
+            required={false}
+            type="text"
+          />
+        </div>
+        <div className="naxatw-pt-5">
+          <Input
+            id="caption"
+            label="Suitable Caption"
+            name="caption"
+            value=""
+            placeholder="Write a Suitable Caption"
+            onChange={() => {}}
+            className=""
+            required={false}
+            type="text"
+          />
+        </div>
       </div>
 
       {!isEmpty(uploadedFiles) && (
@@ -300,7 +293,7 @@ export default function UploadDataset() {
             onClick={handleSubmit}
             isLoading={isUploading}
           >
-            Add To Catalogue
+            Upload
           </Button>
         </div>
       )}

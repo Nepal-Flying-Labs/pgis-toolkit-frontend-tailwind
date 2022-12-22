@@ -19,6 +19,7 @@ import UploadFailed from '@Components/ProjectDashboard/ModalContent/UploadFailed
 import DownloadLayer from '@Components/ProjectDashboard/ModalContent/DownloadLayer';
 import ManageAttributes from '@Components/ProjectDashboard/ModalContent/ManageAttributes/index';
 import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer/index';
+import UploadImage from '@Components/ProjectDashboard/ModalContent/UploadImage/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -100,7 +101,7 @@ export function getModalContent(content) {
     case 'upload-image':
       return {
         title: 'Upload your image',
-        content: <DownloadLayer />,
+        content: <UploadImage />,
       };
 
     // manage data

@@ -5,8 +5,9 @@ import useDebouncedInput from '@Hooks/useDebouncedInput';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import GalleryCard from './GalleryCard';
 import Button from '@Components/common/Button/index';
+import noImg from '@Assets/images/noImage.png';
+import GalleryCard from './GalleryCard';
 
 function GalleryList({ openSidebar }) {
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ function GalleryList({ openSidebar }) {
             label="Construction site"
             id={index}
             status="5"
+            imgSrc={noImg}
             checked={false}
             onCardClick={id => {
               console.log('Gallery card clicked id : ', id);

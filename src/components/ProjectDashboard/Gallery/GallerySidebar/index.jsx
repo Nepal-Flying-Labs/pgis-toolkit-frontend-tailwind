@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 function GallerySidebar({ data, onCloseClick }) {
   return (
     <div
-      style={{ transition: 'ease-in-out 300ms' }}
+      style={{ height: `calc(100vh - 52px)`, transition: 'ease-in-out 300ms' }}
       className="naxatw-min-w-[364px] naxatw-max-w-[364px] naxatw-px-5 naxatw-bg-[#F5F5F5] naxatw-border-[#D7D7D7] naxatw-border-l-[1px] naxatw-border-b-[1px]"
     >
       <div className="naxatw-flex naxatw-justify-between naxatw-items-center">

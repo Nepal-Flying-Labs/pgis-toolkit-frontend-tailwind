@@ -88,12 +88,21 @@ export function getModalContent(content) {
         title: 'Buffer Analysis',
         content: <BufferAnalysis />,
       };
+
     // project data
     case 'download-layer':
       return {
         title: 'Download Layer',
         content: <DownloadLayer />,
       };
+
+    // project gallery
+    case 'upload-image':
+      return {
+        title: 'Upload your image',
+        content: <DownloadLayer />,
+      };
+
     // manage data
     case 'add-wms-layer':
       return {

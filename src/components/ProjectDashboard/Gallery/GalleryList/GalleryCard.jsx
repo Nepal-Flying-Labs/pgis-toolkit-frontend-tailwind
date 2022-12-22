@@ -53,14 +53,16 @@ function GalleryCard({
         onCardClick(id);
       }}
     >
-      <div className="naxatw-mb-1">
+      <div className="naxatw-mb-1 naxatw-relative">
         <input
           type="checkbox"
           checked={checked}
           onClick={() => onCheckSelected(id)}
           className={`${
-            checked ? 'naxatw-z-10' : 'naxatw-z-0'
-          } group-hover:naxatw-absolute naxatw-top-2 naxatw-right-2 group-hover:naxatw-z-10`}
+            checked
+              ? 'naxatw-absolute naxatw-z-10'
+              : 'naxatw-hidden group-hover:naxatw-absolute group-hover:naxatw-z-10'
+          } naxatw-top-2 naxatw-right-2 naxatw-h-5 naxatw-w-5 hover:naxatw-border-5 hover:naxatw-border-white naxatw-outline-none naxatw-border-none`}
         />
         <img
           src={imgSrc}

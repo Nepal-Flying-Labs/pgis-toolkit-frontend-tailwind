@@ -4,9 +4,11 @@ import Searchbar from '@Components/common/Searchbar/index';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import GalleryCard from './GalleryCard';
+import Button from '@Components/common/Button/index';
 
-export default function GalleryList() {
+function GalleryList({ openSidebar }) {
   const dispatch = useDispatch();
   const { setSearchText } = Creators;
   const searchText = useSelector(state => state?.projectDashboard?.searchText);
@@ -28,20 +30,47 @@ export default function GalleryList() {
           />
         </div>
         <div className="">
-          <a className="naxatw-flex naxatw-items-center naxatw-gap-x-2 ">
-            <span className="material-icons naxatw-text-[#00A699]">
-              download
+          <Button
+            className="naxatw-btn-secondary naxatw-btn-noborder "
+            iconLeft="download"
+            // onClick={onFileUpload}
+          >
+            <span className="naxatw-text-[15px] naxatw-font-bold naxatw-text-[#00A699]">
+              Download All
             </span>
-            <span className="naxatw-text-[#00A699]">Download All</span>
-          </a>
+          </Button>
         </div>
       </div>
 
-      <div className="naxatw-py-3 naxatw-flex naxatw-flex-wrap naxatw-gap-5">
-        {Array.from({ length: 10 }).map(index => (
-          <GalleryCard label="Construction site" id={index} status="5" />
+      <div
+        style={{
+          height: `calc(100vh - 234px)`,
+          transition: 'ease-in-out 300ms',
+        }}
+        className="naxatw-py-3 naxatw-flex naxatw-flex-wrap naxatw-gap-5 naxatw-overflow-hidden naxatw-overflow-y-auto scrollbar"
+      >
+        {Array.from({ length: 50 }).map(index => (
+          <GalleryCard
+            label="Construction site"
+            id={index}
+            status="5"
+            checked={false}
+            onCardClick={id => {
+              console.log('Gallery card clicked id : ', id);
+              openSidebar(true);
+            }}
+          />
         ))}
       </div>
     </div>
   );
 }
+
+GalleryList.propTypes = {
+  openSidebar: PropTypes.func,
+};
+
+GalleryList.defaultProps = {
+  openSidebar: () => {},
+};
+export default GalleryList;

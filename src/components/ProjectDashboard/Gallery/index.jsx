@@ -27,7 +27,7 @@ export default function Gallery() {
   );
   const dispatch = useDispatch();
 
-  const [toggleRightBar, setToggleRightBar] = useState(true);
+  const [toggleRightBar, setToggleRightBar] = useState(false);
 
   useEffect(() => {
     if (!projectDetail) return;
@@ -51,7 +51,7 @@ export default function Gallery() {
   const getContent = () => (
     // if (!layers) return '';
     // if (isEmpty(layers)) return <NoDataYet />;
-    <GalleryList />
+    <GalleryList openSidebar={setToggleRightBar} />
   );
   return (
     <div
@@ -78,7 +78,7 @@ export default function Gallery() {
               iconLeft="add"
               className="naxatw-btn-primary naxatw-flex"
               onClick={() => {
-                dispatch(toggleModal('upload-dataset'));
+                dispatch(toggleModal('upload-image'));
               }}
             >
               Add Image

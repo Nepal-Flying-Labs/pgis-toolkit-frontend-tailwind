@@ -28,11 +28,11 @@ const roles = [
 ];
 
 const LocationInfo = () => {
-  const { organizationId } = useParams();
-  const history = useHistory();
-  const users = useSelector(state => state.organizationDashboard.users);
+  // const { organizationId } = useParams();
+  // const history = useHistory();
+  // const users = useSelector(state => state.organizationDashboard.users);
   return (
-    <div className="naxatw-w-[440px] naxatw-bg-white naxatw-rounded-[20px] naxatw-border naxatw-border-[#D7D7D7]">
+    <div className="naxatw-w-[440px] naxatw-bg-white naxatw-rounded-[20px] naxatw-border naxatw-border-grey-300">
       <div className="naxatw-flex naxatw-py-3 naxatw-px-4 naxatw-justify-between naxatw-items-center naxatw-border-b-[1px] naxatw-rounded-t-xl naxatw-pl-4">
         <div className="naxatw-flex naxatw-gap-x-5">
           <img

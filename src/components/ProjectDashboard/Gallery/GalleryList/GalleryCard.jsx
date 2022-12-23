@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions/index';
+import CustomCheckbox from '@Components/common/CustomCheckbox/index';
 
 function GalleryCard({
   id,
@@ -9,7 +10,7 @@ function GalleryCard({
   onCardClick,
   checked,
   status,
-  onCheckSelected,
+  // onCheckSelected,
 }) {
   const [activeCard, setActiveCard] = useState(false);
 
@@ -34,9 +35,9 @@ function GalleryCard({
     {
       id: 2,
       label: (
-        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+        <span className="naxatw-flex naxatw-items-center naxatw-text-delete_btn">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
-          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+          <p className="naxatw-text-body-lg naxatw-text-delete_btn">Delete</p>
         </span>
       ),
       //   logic for delete item
@@ -60,16 +61,22 @@ function GalleryCard({
           width="210px"
           height="140px"
           className={`${
-            activeCard ? 'naxatw-border-2 naxatw-border-[#FF5A5F]' : ''
+            activeCard ? 'naxatw-border-2 naxatw-border-primary-400' : ''
           } naxatw-object-contain naxatw-rounded-lg naxatw-border-2`}
         />
-        <input
+        {/* <input
           type="checkbox"
           checked={checked}
           onClick={() => onCheckSelected(id)}
           className={`${
             checked ? 'naxatw-visible' : ''
           } naxatw-absolute group-hover:naxatw-visible naxatw-invisible naxatw-z-10 naxatw-h-5 naxatw-w-5 naxatw-top-2 naxatw-left-2`}
+        /> */}
+        <CustomCheckbox
+          wrapperClassName={`${
+            checked ? 'naxatw-visible' : ''
+          } naxatw-absolute naxatw-border-white group-hover:naxatw-visible naxatw-ring-2 naxatw-ring-offset-0 naxatw-ring-white naxatw-invisible naxatw-z-50 naxatw-top-2 naxatw-left-2`}
+          iconClassName="naxatw-text-white"
         />
       </div>
       <div className=" naxatw-flex naxatw-justify-between">

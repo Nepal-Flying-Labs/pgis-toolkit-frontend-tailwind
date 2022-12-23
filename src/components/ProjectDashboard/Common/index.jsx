@@ -7,7 +7,7 @@ function AdditionalSidebar({ data, onCloseClick, flag }) {
   return (
     <div
       style={{ height: `calc(100vh - 52px)`, transition: 'ease-in-out 300ms' }}
-      className="naxatw-min-w-[364px] naxatw-max-w-[364px] naxatw-px-5 naxatw-bg-[#F5F5F5] naxatw-border-[#D7D7D7] naxatw-border-l-[1px] naxatw-border-b-[1px]"
+      className="naxatw-min-w-[364px] naxatw-max-w-[364px] naxatw-px-5 naxatw-bg-grey-100 naxatw-border-grey-300 naxatw-border-l-[1px] naxatw-border-b-[1px]"
     >
       <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
         <h4 className="">{data?.label}</h4>

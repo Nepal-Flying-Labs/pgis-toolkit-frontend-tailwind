@@ -61,7 +61,7 @@ export default function Document() {
       } naxatw-absolute naxatw-w-full  `}
     >
       <div
-        style={{ width: `${toggleRightBar ? 'calc(100vw - 364px )' : '100%'}` }}
+        style={{ width: `${toggleRightBar ? 'calc(100vw - 404px )' : '100%'}` }}
         className={`${toggleRightBar ? 'naxatw-pr-5' : ''}`}
       >
         <div className="naxatw-flex naxatw-justify-between">

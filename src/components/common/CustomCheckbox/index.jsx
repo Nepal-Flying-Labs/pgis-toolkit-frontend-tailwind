@@ -10,23 +10,21 @@ function CustomCheckbox({
   icon,
 }) {
   return (
-    <div>
-      <div
-        onClick={onClick}
-        className={`naxatw-relative ${
-          status ? `${activeClassName}` : ''
-        } ${wrapperClassName} naxatw-h-6 naxatw-w-6 naxatw-cursor-pointer naxatw-border-2 naxatw-border-[#989898] naxatw-rounded-[4px]`}
-      >
-        {status ? (
-          <i
-            className={`${iconClassName} material-icons naxatw-flex naxatw-items-center naxatw-mt-[-1px] naxatw-m-[4px] naxatw-justify-center naxatw-text-[20px] naxatw-font-normal `}
-          >
-            {icon}
-          </i>
-        ) : (
-          ''
-        )}
-      </div>
+    <div
+      onClick={onClick}
+      className={`${
+        status ? `${activeClassName}` : ''
+      } ${wrapperClassName} naxatw-h-6 naxatw-w-6 naxatw-cursor-pointer naxatw-border-2 naxatw-border-[#989898] naxatw-rounded-[4px]`}
+    >
+      {status ? (
+        <i
+          className={`${iconClassName} material-icons naxatw-flex naxatw-items-center naxatw-mt-[-1px] naxatw-m-[4px] naxatw-justify-center naxatw-text-[20px] naxatw-font-normal `}
+        >
+          {icon}
+        </i>
+      ) : (
+        ''
+      )}
     </div>
   );
 }
@@ -41,7 +39,7 @@ CustomCheckbox.propTypes = {
 };
 
 CustomCheckbox.defaultProps = {
-  wrapperClassName: '',
+  wrapperClassName: 'naxatw-relative',
   activeClassName: 'naxatw-bg-[#484848]',
   status: false,
   iconClassName: 'naxatw-text-white',

@@ -1,21 +1,19 @@
 /* eslint-disable arrow-body-style */
 import React from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
-import AvatarImage from '@Assets/images/user-avatar.png';
-import ProjectIcon from '@Assets/images/project-icon.png';
 import noImg from '@Assets/images/noImage.png';
 
-const getWidth = (value, totalProject) => {
-  return Math.floor((value / totalProject) * 100);
-};
+// const getWidth = (value, totalProject) => {
+//   return Math.floor((value / totalProject) * 100);
+// };
 
 const ProjectInfo = () => {
-  const organizationDetails = useSelector(
-    state => state.organizationDashboard.organizationDetail,
-  );
+  // const organizationDetails = useSelector(
+  //   state => state.organizationDashboard.organizationDetail,
+  // );
   return (
-    <div className="naxatw-w-full naxatw-bg-white naxatw-rounded-[20px] naxatw-h-full naxatw-border naxatw-border-[#D7D7D7]">
+    <div className="naxatw-w-full naxatw-bg-white naxatw-rounded-[20px] naxatw-h-full naxatw-border naxatw-border-grey-300">
       {/* Header */}
       <div className="naxatw-p-7  naxatw-rounded-t-lg xl:naxatw-flex">
         <div className="naxatw-w-full xl:naxatw-w-3/4 naxatw-pr-5">
@@ -23,7 +21,7 @@ const ProjectInfo = () => {
           <div className="naxatw-flex naxatw-mb-5">
             <span className="naxatw-text-body-md naxatw-mr-1">
               Jan 04, 2020
-            </span>{' '}
+            </span>
             <span className="naxatw-mr-1">-</span>
             <span className="naxatw-text-body-md naxatw-mr-2">
               Jan 04, 2020
@@ -56,7 +54,7 @@ const ProjectInfo = () => {
         </div>
         <div className="naxatw-mt-5 naxatw-flex naxatw-justify-center xl:naxatw-mt-0 xl:naxatw-block">
           <img
-            className="naxatw-rounded-lg naxatw-h-[195px] naxatw-w-[297px] naxatw-border naxatw-border-[#D7D7D7] naxatw-object-contain"
+            className="naxatw-rounded-lg naxatw-h-[195px] naxatw-w-[297px] naxatw-border naxatw-border-grey-300 naxatw-object-contain"
             src={noImg}
             alt=""
           />

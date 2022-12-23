@@ -1,26 +1,46 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable arrow-body-style */
 import React from 'react';
+import Tooltip from '../Tooltip/index';
+import MaterialIcon from '../MaterialIcon/index';
 
 const getColor = status => {
   switch (status) {
     case true:
-      return { bg: 'naxatw-bg-green-500', text: 'naxatw-text-green-500' };
+      return { bg: 'naxatw-bg-[#40B449]', text: 'naxatw-text-[#40B449]' };
     case false:
-      return { bg: 'naxatw-bg-red-500', text: 'naxatw-text-red-500' };
+      return { bg: 'naxatw-bg-[#FF0F0F]', text: 'naxatw-text-[#FF0F05]' };
     default:
-      return { bg: 'naxatw-bg-blue-500', text: 'naxatw-text-blue-500' };
+      return { bg: 'naxatw-bg-[#0076FF]', text: 'naxatw-text-[#0076FF]' };
   }
 };
 
-const Status = ({ status }) => {
+const getInvitationStatus = inviteStatus => {
+  switch (inviteStatus) {
+    case 'pending':
+      return { name: 'update', color: 'naxatw-text-[#0076FF]' };
+    case 'expire':
+      return { name: 'report', color: 'naxatw-text-[#FF0F05]' };
+    default:
+      return '';
+  }
+};
+
+const Status = ({ status, invitationStatus }) => {
   const stat = getColor(status);
+  const inviteStat = getInvitationStatus(invitationStatus.toLowerCase());
   return (
     <div className=" naxatw-flex naxatw-items-center naxatw-gap-x-2">
       <div className={`naxatw-w-2 naxatw-h-2 ${stat.bg} naxatw-rounded-full`} />
       <span className={`naxatw-text-body-md ${stat.text}`}>
         {status ? 'Active' : 'Inactive'}
       </span>
+      <Tooltip content={invitationStatus} direction="right">
+        <MaterialIcon
+          name={inviteStat.name}
+          className={`naxatw-text-icon-md ${inviteStat.color}`}
+        />
+      </Tooltip>
     </div>
   );
 };

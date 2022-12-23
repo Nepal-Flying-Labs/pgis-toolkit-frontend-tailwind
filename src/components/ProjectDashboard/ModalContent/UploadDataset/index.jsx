@@ -136,6 +136,7 @@ export default function UploadDataset() {
         [item.id]: fields,
       };
     }, {});
+    setErrorFields(errors);
     if (errorCount === 0) {
       const payloadData = uploadedFiles.map(item => {
         const data = {
@@ -155,7 +156,6 @@ export default function UploadDataset() {
       dispatch(
         toastActions.error({ message: 'Please fill all the required fields.' }),
       );
-      setErrorFields(errors);
     }
   };
 

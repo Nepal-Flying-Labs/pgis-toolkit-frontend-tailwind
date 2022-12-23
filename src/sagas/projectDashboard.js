@@ -176,6 +176,26 @@ export function* getContactPersonInfoRequest({ params }) {
   }
 }
 
+export function* getGalleryItemRequest({ params }) {
+  try {
+    const response = yield call(getContactPersonInfo, params);
+    yield put(projectDashboardActions.getGalleryItemSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getGalleryItemFailure());
+    throw error;
+  }
+}
+
+export function* getDocumentItemRequest({ params }) {
+  try {
+    const response = yield call(getContactPersonInfo, params);
+    yield put(projectDashboardActions.getDocumentItemSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getDocumentItemFailure());
+    throw error;
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -220,6 +240,14 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_CONTACT_PERSON_INFO_REQUEST,
     withLoader(withErrorHandler(getContactPersonInfoRequest)),
+  );
+  yield takeLatest(
+    Types.GET_GALLERY_ITEM_REQUEST,
+    withLoader(withErrorHandler(getGalleryItemRequest)),
+  );
+  yield takeLatest(
+    Types.GET_DOCUMENT_ITEM_REQUEST,
+    withLoader(withErrorHandler(getDocumentItemRequest)),
   );
 }
 

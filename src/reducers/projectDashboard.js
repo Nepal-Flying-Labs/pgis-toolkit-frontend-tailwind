@@ -10,14 +10,16 @@ const initialState = {
     selectedData: null,
     uploadErrorResponse: null,
   },
-  // gallery: {
-  //   list: [],
-  // },
+  gallery: {
+    list: [],
+  },
   info: {
     details: [],
     location: [],
   },
-
+  document: {
+    list: [],
+  },
   contactPerson: [],
 };
 
@@ -162,6 +164,16 @@ const getContactPersonInfoSuccess = (state, action) => ({
   contactPerson: action.payload,
 });
 
+const getGalleryItemSuccess = (state, action) => ({
+  ...state,
+  gallery: { ...state.gallery, list: action.payload },
+});
+
+const getDocumentItemSuccess = (state, action) => ({
+  ...state,
+  document: { ...state.document, list: action.payload },
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -178,6 +190,8 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.SET_SEARCH_TEXT]: setSearchText,
   [Types.GET_PROJECT_INFO_SUCCESS]: getProjectInfoSuccess,
   [Types.GET_CONTACT_PERSON_INFO_SUCCESS]: getContactPersonInfoSuccess,
+  [Types.GET_GALLERY_ITEM_SUCCESS]: getGalleryItemSuccess,
+  [Types.GET_DOCUMENT_ITEM_SUCCESS]: getDocumentItemSuccess,
 });
 
 export default projectDashboardReducer;

@@ -71,10 +71,11 @@
 - [x] show active button while editing
 - [x] data catalogue not showing
 - [x] masking / zoom level
+- [x] min width in select
 - [ ] mandatory validation/actual data type
-- [ ] min width in select
 - [ ] add setRequiredFields in useForm
 - [ ] dynamic height for sidebar contents
+- [ ] do not let user change boundary
 
 ### Backend
 

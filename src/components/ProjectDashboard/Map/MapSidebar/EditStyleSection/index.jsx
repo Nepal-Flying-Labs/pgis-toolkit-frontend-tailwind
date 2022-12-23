@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import Button from '@Components/common/Button';
+import useWindowDimensions from '@Hooks/useWindowDimentions';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import AdvanceStyling from './AdvanceStyling';
 import StandardStyling from './StandardStyling';
@@ -17,6 +18,7 @@ export default function EditStyleSection() {
     checkIfLoading(state, [Types.UPDATE_LAYER_REQUEST]),
   );
   const [styleTab, setStyleTab] = useState('Advance');
+  const { height } = useWindowDimensions();
   const dispatch = useDispatch();
   const [layerName, setLayerName] = useState(selectedLayer?.name);
 
@@ -56,7 +58,12 @@ export default function EditStyleSection() {
         <h4>Edit Feature</h4>
       </div>
 
-      <div className="naxatw-overflow-auto scrollbar naxatw-h-[32rem] naxatw-flex naxatw-flex-col naxatw-gap-5">
+      <div
+        className="naxatw-overflow-auto scrollbar naxatw-h-[32rem] naxatw-flex naxatw-flex-col naxatw-gap-5"
+        style={{
+          height: `${height / 16 - 13}rem`,
+        }}
+      >
         <div className="naxatw-flex naxatw-items-center">
           <div className="naxatw-w-full naxatw-space-y-2">
             <label className="naxatw-label">Layer</label>

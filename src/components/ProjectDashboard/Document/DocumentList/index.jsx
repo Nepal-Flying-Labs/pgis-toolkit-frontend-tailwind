@@ -27,16 +27,7 @@ function DocumentList({ openSidebar }) {
   });
 
   //   table data
-  const users = [
-    {
-      id: 1,
-      name: 'name 1',
-      role: 'role',
-      phone: '-',
-      email: 'example@mail.com',
-      status: 'onGoing',
-    },
-  ];
+  const users = [];
 
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.SET_SEARCH_TEXT]),

@@ -63,7 +63,9 @@ export default function Data() {
       title: 'Import from OSM',
       description:
         'The selected data will be downloaded from OSM. But the downloaded data will be filled.',
-      onClick: () => {},
+      onClick: () => {
+        dispatch(toggleModal('import-osm'));
+      },
     },
     {
       id: 3,
@@ -71,7 +73,9 @@ export default function Data() {
       title: 'Add WMS Layer',
       description:
         'The selected data will be downloaded from OSM. But the downloaded data will be filled.',
-      onClick: () => {},
+      onClick: () => {
+        dispatch(toggleModal('add-wms-layer'));
+      },
     },
   ];
 

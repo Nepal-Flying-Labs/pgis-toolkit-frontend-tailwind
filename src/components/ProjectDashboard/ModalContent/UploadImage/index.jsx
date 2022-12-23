@@ -210,7 +210,7 @@ export default function UploadImage() {
                   <MaterialIcon
                     // onIconClick={() => handleDelete(id)}
                     wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                    className="naxatw-text-[22px] naxatw-text-[#FF0F0F]"
+                    className="naxatw-text-[22px] naxatw-text-delete_btn"
                     name="delete_outline"
                   />
                 </div>
@@ -231,7 +231,7 @@ export default function UploadImage() {
           type="text"
           iconRight="add"
         />
-        <div className="tag-Chips naxatw-flex naxatw-mt-2 naxatw-gap-2">
+        <div className="tag-Chips naxatw-flex naxatw-gap-2">
           <Chip
             name="Maps"
             onClick={() => {}}

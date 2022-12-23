@@ -21,6 +21,7 @@ import ManageAttributes from '@Components/ProjectDashboard/ModalContent/ManageAt
 import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer/index';
 import UploadImage from '@Components/ProjectDashboard/ModalContent/UploadImage/index';
 import UploadDocument from '@Components/ProjectDashboard/ModalContent/UploadDocument/index';
+import ImportOSM from '@Components/ProjectDashboard/ModalContent/ImportOSM/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -96,6 +97,12 @@ export function getModalContent(content) {
       return {
         title: 'Download Layer',
         content: <DownloadLayer />,
+      };
+
+    case 'import-osm':
+      return {
+        title: 'Import from OSM',
+        content: <ImportOSM />,
       };
 
     // project gallery

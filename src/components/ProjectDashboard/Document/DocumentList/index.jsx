@@ -12,8 +12,6 @@ import TableSkeleton from '@Components/common/TableSkeleton/index';
 import SortingContainer from '@Components/common/SortingContainer/index';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 import { checkIfLoading } from '@Utils/loaderSelector';
-import AvatarIcon from '@Assets/images/icons/avatar-icon.svg';
-import Status from '@Components/common/Status/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 
 function DocumentList({ openSidebar }) {
@@ -72,7 +70,7 @@ function DocumentList({ openSidebar }) {
           height: `calc(100vh - 234px)`,
           transition: 'ease-in-out 300ms',
         }}
-        className="naxatw-py-3 naxatw-flex naxatw-overflow-hidden naxatw-overflow-y-auto scrollbar"
+        className="naxatw-py-3 naxatw-flex naxatw-overflow-auto scrollbar"
       >
         <div className="naxatw-mt-3 ">
           <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-h-[600px]">
@@ -154,7 +152,7 @@ function DocumentList({ openSidebar }) {
                   dataFormat={row => (
                     <div className="naxatw-flex naxatw-gap-3 naxatw-py-2">
                       <MaterialIcon
-                        onIconClick={() => console.log('icon clicked')}
+                        onIconClick={() => console.log('icon clicked', row.id)}
                         wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
                         className="naxatw-text-[22px]"
                         name="edit"
@@ -162,7 +160,7 @@ function DocumentList({ openSidebar }) {
                       <MaterialIcon
                         onIconClick={() => console.log('icon clicked')}
                         wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                        className="naxatw-text-[22px] naxatw-text-[#FF0F0F]"
+                        className="naxatw-text-[22px] naxatw-text-delete_btn"
                         name="delete_outline"
                       />
                       <MaterialIcon

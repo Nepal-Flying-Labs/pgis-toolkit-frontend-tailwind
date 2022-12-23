@@ -7,6 +7,7 @@ import { isEmpty } from '@Utils/commonUtils';
 import Button from '@Components/common/Button/index';
 import AdditionalSidebar from '../Common/index';
 import DocumentList from './DocumentList/index';
+import NoDocumentYet from './NoDocumentYet/index';
 
 // import NoDataYet from './NoDataYet';
 // import LayerList from './LayerList';
@@ -48,11 +49,13 @@ export default function Document() {
     });
   }, [dispatch, layers, uploadStatusCheckingIds]);
 
-  const getContent = () => (
+  const [noData, setNoData] = useState(true);
+
+  const getContent = () => {
     // if (!layers) return '';
-    // if (isEmpty(layers)) return <NoDataYet />;
-    <DocumentList openSidebar={setToggleRightBar} />
-  );
+    if (noData) return <NoDocumentYet />;
+    return <DocumentList openSidebar={setToggleRightBar} />;
+  };
 
   return (
     <div
@@ -61,7 +64,7 @@ export default function Document() {
       } naxatw-absolute naxatw-w-full  `}
     >
       <div
-        style={{ width: `${toggleRightBar ? 'calc(100vw - 364px )' : '100%'}` }}
+        style={{ width: `${toggleRightBar ? 'calc(100vw - 404px )' : '100%'}` }}
         className={`${toggleRightBar ? 'naxatw-pr-5' : ''}`}
       >
         <div className="naxatw-flex naxatw-justify-between">

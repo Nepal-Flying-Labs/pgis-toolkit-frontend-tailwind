@@ -1,5 +1,5 @@
 /* eslint-disable react/button-has-type */
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -13,10 +13,21 @@ export default function Button({
   isLoading,
   loaderClassName,
 }) {
+  const btnRef = useRef();
+  const [btnWidth, setBtnWidth] = useState(null);
+
+  useEffect(() => {
+    const btnElement = btnRef.current;
+    const { width } = btnElement.getBoundingClientRect();
+    setBtnWidth(width);
+  }, [children]);
+
   return (
     <button
+      ref={btnRef}
       type={type}
       className={`naxatw-btn naxatw-group ${className}`}
+      style={{ minWidth: isLoading ? btnWidth : '' }}
       onClick={onClick}
     >
       {iconLeft && (
@@ -29,7 +40,7 @@ export default function Button({
           <svg
             key={loaderClassName}
             aria-hidden="true"
-            className={`naxatw-mr-2 naxatw-w-[22px] naxatw-h-[22px] naxatw-text-grey-200 naxatw-animate-spin ${loaderClassName}`}
+            className={`naxatw-w-[22px] naxatw-h-[22px] naxatw-text-grey-200 naxatw-animate-spin ${loaderClassName}`}
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

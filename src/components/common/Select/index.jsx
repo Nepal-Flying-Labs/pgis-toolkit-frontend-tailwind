@@ -24,6 +24,7 @@ function Select({
   labelKey,
   valueKey,
   selectedValue,
+  style,
 }) {
   const [divRef, toggle, handleToggle] = useOutsideClick();
   const handleSelect = item => {
@@ -50,6 +51,7 @@ function Select({
           className={`naxatw-select  ${className}  ${
             toggle ? 'naxatw-bg-[#F5F5F5] naxatw-border-[#484848]' : ''
           }`}
+          style={style}
         >
           <span className="naxatw-text-body-lg">{getSelectedValue()}</span>
           <MaterialIcon
@@ -113,6 +115,7 @@ Select.defaultProps = {
   labelKey: 'label',
   valueKey: 'id',
   selectedValue: '',
+  style: {},
 };
 
 Select.propTypes = {
@@ -129,6 +132,7 @@ Select.propTypes = {
   labelKey: PropTypes.string,
   valueKey: PropTypes.string,
   selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  style: PropTypes.object,
 };
 
 export default Select;

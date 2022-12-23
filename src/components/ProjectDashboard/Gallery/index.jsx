@@ -7,16 +7,15 @@ import { isEmpty } from '@Utils/commonUtils';
 import Button from '@Components/common/Button/index';
 import GalleryList from './GalleryList/index';
 import AdditionalSidebar from '../Common/index';
-// import NoDataYet from './NoDataYet';
-// import LayerList from './LayerList';
+import NoPhotosYet from './NoPhotosYet/index';
 
 const { getProjectLayersRequest, checkUploadStatusRequest } =
   ProjectDashboardCreators;
 const { toggleModal } = CommonCreators;
 
 export default function Gallery() {
-  const { projectId, organizationId } = useParams();
-  const history = useHistory();
+  const { projectId } = useParams();
+  // const history = useHistory(); organizationId
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
@@ -47,11 +46,13 @@ export default function Gallery() {
     });
   }, [dispatch, layers, uploadStatusCheckingIds]);
 
-  const getContent = () => (
+  const nophoto = true;
+
+  const getContent = () => {
     // if (!layers) return '';
-    // if (isEmpty(layers)) return <NoDataYet />;
-    <GalleryList openSidebar={setToggleRightBar} />
-  );
+    if (nophoto) return <NoPhotosYet />;
+    return <GalleryList openSidebar={setToggleRightBar} />;
+  };
   return (
     <div
       className={`${
@@ -72,7 +73,7 @@ export default function Gallery() {
               in file format JPEG, PNG, GIF or PDF.
             </p>
           </div>
-          <div className="naxatw-flex naxatw-py-[26px]">
+          <div className="naxatw-flex naxatw-py-[26px] ">
             <Button
               iconLeft="add"
               className="naxatw-btn-primary naxatw-flex"

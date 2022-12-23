@@ -1,6 +1,32 @@
-/* eslint-disable prettier/prettier */
+/*
+const errorTypeOne = {'message': 'Params is missing'}
+const errorTypeTwo = {
+  "message": "Error Occured",
+  "Error": [
+      {
+          "errorName": "username",
+          "details": "A user with that username already exists."
+      },
+      {
+          "errorName": "full_name",
+          "details": "This field may not be blank."
+      },
+      {
+          "errorName": "email",
+          "details": "Enter a valid email address."
+      }
+  ]
+}
+const errorTypeThree1 = {
+  non_field_errors: ['Default Theme name must be unique'],
+};
+const errorTypeThree2 = {
+  image: ['No file was submitted.'],
+};
+*/
 export default function errorResponseHandler(errorResponse) {
   const error = errorResponse.response.data;
+  // handle error type two
   const hasErrorField = Object.keys(error).includes('Error');
   if (hasErrorField) {
     return `
@@ -15,5 +41,24 @@ export default function errorResponseHandler(errorResponse) {
           </ul>
         `;
   }
-  return error.message || error.detail;
+  // handle error type one
+  if (error.message) return error.message;
+  if (error.detail) return error.detail;
+  // handle error type three
+  if (typeof error === 'object') {
+    const errorStrings = [];
+    Object.values(error).forEach(value => {
+      if (Array.isArray(value)) {
+        value.forEach(item => errorStrings.push(item));
+      } else {
+        errorStrings.push(value);
+      }
+    });
+    return `
+          <ul>
+          ${errorStrings.map(err => `<li>${err}</li> `).join('')}
+          </ul>
+        `;
+  }
+  return 'Something went wrong!';
 }

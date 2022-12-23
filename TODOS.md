@@ -65,7 +65,7 @@
 - [x] remove notification icon from header
 - [x] dont zoom to layer on layer on
 - [x] name auto fill in layer upload
-- [ ] error details in error dialog
+- [x] error details in error dialog
 - [ ] pull feature geojson before edit
 - [ ] add setRequiredFields in useForm
 - [ ] mandatory validation/actual data type

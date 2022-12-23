@@ -18,6 +18,9 @@ const {
 
 export default function EditFeatureSection() {
   const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
+  const projectHeaderHeight = useSelector(
+    state => state.common.projectHeaderHeight,
+  );
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const drawnFeatureWkt = useSelector(
     state => state.projectMap.drawnFeatureWkt,
@@ -119,7 +122,12 @@ export default function EditFeatureSection() {
         <h4>{sidebarContent === 'add-feature' ? 'Add' : 'Edit'} Feature</h4>
       </div>
 
-      <div className="naxatw-overflow-auto scrollbar naxatw-h-[32rem] naxatw-flex naxatw-flex-col naxatw-gap-5">
+      <div
+        className="naxatw-overflow-auto scrollbar naxatw-flex naxatw-flex-col naxatw-gap-5"
+        style={{
+          height: `calc(100vh - ${projectHeaderHeight}px - 9rem)`,
+        }}
+      >
         {sidebarContent === 'add-feature' && !drawnFeatureWkt && (
           <div className="naxatw-flex naxatw-items-center">
             <div className="naxatw-w-full naxatw-space-y-2">

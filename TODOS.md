@@ -65,16 +65,17 @@
 - [x] remove notification icon from header
 - [x] dont zoom to layer on layer on
 - [x] name auto fill in layer upload
-- [ ] update map config after layer upload success
-- [ ] error details in error dialog
-- [ ] pull feature geojson before edit
-- [ ] add setRequiredFields in useForm
+- [x] error details in error dialog
+- [x] pull feature geojson before edit
+- [x] note: we only support wgs 84
+- [x] show active button while editing
+- [x] data catalogue not showing
+- [x] masking / zoom level
+- [x] min width in select
+- [x] do not let user change boundary
+- [x] dynamic height for sidebar contents - project header height
 - [ ] mandatory validation/actual data type
-- [ ] note: we only support wgs 84
-- [ ] show active button while editing
-- [ ] data catalogue not showing
-- [ ] masking / zoom level
-- [ ] min width in select
+- [ ] add setRequiredFields in useForm
 
 ### Backend
 

@@ -20,6 +20,7 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
 import { getCSVHeaders } from '@Utils/convertLayerUtils';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
+import FormErrorMessage from '@Components/common/FormErrorMessage';
 
 const { getProjectThemesRequest } = ProjectMapCreators;
 const { uploadDatasetsRequest } = ProjectDashboardCreators;
@@ -135,6 +136,7 @@ export default function UploadDataset() {
         [item.id]: fields,
       };
     }, {});
+    setErrorFields(errors);
     if (errorCount === 0) {
       const payloadData = uploadedFiles.map(item => {
         const data = {
@@ -151,7 +153,11 @@ export default function UploadDataset() {
       });
       dispatch(uploadDatasetsRequest(payloadData));
     } else {
-      setErrorFields(errors);
+      dispatch(
+        toastActions.error({
+          message: 'Please fill out all the required fields.',
+        }),
+      );
     }
   };
 
@@ -161,6 +167,7 @@ export default function UploadDataset() {
         USAFIRI allows you to import data in different formats(shp, csv, geojson
         or gpkg file format). Please upload your datasets below.
       </p>
+      <p>Note: System supports WGS84 Coordinate System only.</p>
 
       <div
         className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-auto scrollbar naxatw-max-h-96"
@@ -225,6 +232,9 @@ export default function UploadDataset() {
                       placeholder="Enter Data Name"
                       onChange={handleChange}
                     />
+                    {errorFields?.[id]?.includes('name') && (
+                      <FormErrorMessage message="Required" />
+                    )}
                   </div>
 
                   <div className="naxatw-space-y-2">
@@ -238,7 +248,11 @@ export default function UploadDataset() {
                         handleCategorySelect(id, selectedItem)
                       }
                       selectedValue={category}
+                      style={{ minWidth: '10rem' }}
                     />
+                    {errorFields?.[id]?.includes('category') && (
+                      <FormErrorMessage message="Required" />
+                    )}
                   </div>
                   <div className="naxatw-space-y-2">
                     <label className="naxatw-label">Add To Map</label>
@@ -269,6 +283,9 @@ export default function UploadDataset() {
                           })
                         }
                       />
+                      {errorFields?.[id]?.includes('latField') && (
+                        <FormErrorMessage message="Required" />
+                      )}
                     </div>
                     <div className="naxatw-space-y-2 naxatw-w-full">
                       <label className="naxatw-label">Longitude field</label>
@@ -285,6 +302,9 @@ export default function UploadDataset() {
                           })
                         }
                       />
+                      {errorFields?.[id]?.includes('lonField') && (
+                        <FormErrorMessage message="Required" />
+                      )}
                     </div>
                   </div>
                 )}

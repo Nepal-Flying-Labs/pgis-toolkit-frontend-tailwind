@@ -2,16 +2,15 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
+import toastActions from '@Actions/toast';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 import SortingContainer from '@Components/common/SortingContainer';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import Button from '@Components/common/Button';
 import Toggle from '@Components/common/Toggle';
-import Spinner from '@Components/common/Spinner';
-import MaterialIcon from '@Components/common/MaterialIcon';
 
 const currentPage = 1;
 const dataPerPage = 10;
@@ -27,6 +26,9 @@ const { togglePromptDialog, toggleModal } = CommonCreators;
 
 export default function LayerList() {
   const layers = useSelector(state => state.projectDashboard.data.layers);
+  const projectAreaLayerId = useSelector(
+    state => state.projectDashboard.data.projectAreaLayerId,
+  );
   const dispatch = useDispatch();
 
   const dropdownOptions = [
@@ -62,6 +64,12 @@ export default function LayerList() {
         </span>
       ),
       onClick: data => {
+        if (data.id === projectAreaLayerId) {
+          dispatch(
+            toastActions.error({ message: 'Project Area cannot be removed.' }),
+          );
+          return;
+        }
         dispatch(setDeleteLayer({ ...data, deleteType: 'data' }));
         dispatch(togglePromptDialog('delete-layer'));
       },

@@ -372,6 +372,10 @@ const getProjectGeojsonSuccess = (state, action) => ({
   projectGeojson: action.payload,
 });
 
+const resetProjectMapState = () => ({
+  ...initialState,
+});
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -397,6 +401,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
   [Types.UPDATE_FEATURE_COLLECTION_SUCCESS]: updateFeatureCollectionSuccess,
   [Types.GET_PROJECT_GEOJSON_SUCCESS]: getProjectGeojsonSuccess,
+  [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 
 export default projectMapReducer;

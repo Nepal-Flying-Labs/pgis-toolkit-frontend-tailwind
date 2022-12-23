@@ -5,7 +5,6 @@ import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
-import useWindowDimensions from '@Hooks/useWindowDimentions';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
 import { isEmpty } from '@Utils/commonUtils';
@@ -19,6 +18,9 @@ const {
 
 export default function EditFeatureSection() {
   const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
+  const projectHeaderHeight = useSelector(
+    state => state.common.projectHeaderHeight,
+  );
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const drawnFeatureWkt = useSelector(
     state => state.projectMap.drawnFeatureWkt,
@@ -34,7 +36,6 @@ export default function EditFeatureSection() {
   const individualAttributeData = useSelector(
     state => state.projectMap.individualAttributeData,
   );
-  const { height } = useWindowDimensions();
   const isPosting = useSelector(state =>
     checkIfLoading(state, [
       Types.POST_NEW_LAYER_FEATURE_REQUEST,
@@ -124,7 +125,7 @@ export default function EditFeatureSection() {
       <div
         className="naxatw-overflow-auto scrollbar naxatw-flex naxatw-flex-col naxatw-gap-5"
         style={{
-          height: `${height / 16 - 13}rem`,
+          height: `calc(100vh - ${projectHeaderHeight}px - 9rem)`,
         }}
       >
         {sidebarContent === 'add-feature' && !drawnFeatureWkt && (

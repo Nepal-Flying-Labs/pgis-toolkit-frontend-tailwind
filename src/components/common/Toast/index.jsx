@@ -8,26 +8,26 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function Toast({ type, message, clearToast, delay }) {
   useEffect(() => {
-    if (type && message)
-      switch (type) {
-        case 'success':
-          toast.success(` ${message}`);
-          break;
-        case 'danger':
-          toast.error(<div dangerouslySetInnerHTML={{ __html: message }} />);
-          break;
-        case 'warning':
-          toast.warn(`${message}`);
-          break;
-        default:
-          break;
-      }
-  }, [type, message, clearToast]);
+    if (type && message) setTimeout(clearToast, delay);
+    switch (type) {
+      case 'success':
+        toast.success(` ${message}`);
+        break;
+      case 'danger':
+        toast.error(<div dangerouslySetInnerHTML={{ __html: message }} />);
+        break;
+      case 'warning':
+        toast.warn(`${message}`);
+        break;
+      default:
+        break;
+    }
+  }, [type, message, clearToast, delay]);
 
   if (type && typeof message === 'string') {
     return (
       <ToastContainer
-        style={{ zIndex: 111111, minWidth: '20rem' }}
+        style={{ zIndex: 111111, minWidth: '20rem', maxWidth: '30rem' }}
         autoClose={delay}
         className="naxatw-w-fit "
       />

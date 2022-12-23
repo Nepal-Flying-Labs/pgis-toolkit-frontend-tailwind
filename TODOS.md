@@ -72,8 +72,8 @@
 - [x] data catalogue not showing
 - [x] masking / zoom level
 - [x] min width in select
-- [ ] dynamic height for sidebar contents - project header height
-- [ ] do not let user change boundary
+- [x] do not let user change boundary
+- [x] dynamic height for sidebar contents - project header height
 - [ ] mandatory validation/actual data type
 - [ ] add setRequiredFields in useForm
 

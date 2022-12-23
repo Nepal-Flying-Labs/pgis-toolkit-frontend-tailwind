@@ -1,31 +1,10 @@
 /* eslint-disable camelcase */
 /* eslint-disable arrow-body-style */
 import React from 'react';
-import { useHistory, useParams } from 'react-router';
-import { useSelector } from 'react-redux';
-import UserIcon from '@Assets/images/user-icon.png';
-import Button from '@Components/common/Button/index';
-import Searchbar from '@Components/common/Searchbar/index';
-import Select from '@Components/common/Select/index';
+// import { useHistory, useParams } from 'react-router';
+// import { useSelector } from 'react-redux';
+import LocationIcon from '@Assets/images/info-location.png';
 import MapCard from './MapCard/index';
-
-const roles = [
-  {
-    id: 1,
-    value: '1',
-    name: 'Project Manager',
-  },
-  {
-    id: 2,
-    value: '2',
-    name: 'Organization Admin',
-  },
-  {
-    id: 3,
-    value: '3',
-    name: 'Medical Assistant',
-  },
-];
 
 const LocationInfo = () => {
   // const { organizationId } = useParams();
@@ -36,7 +15,7 @@ const LocationInfo = () => {
       <div className="naxatw-flex naxatw-py-3 naxatw-px-4 naxatw-justify-between naxatw-items-center naxatw-border-b-[1px] naxatw-rounded-t-xl naxatw-pl-4">
         <div className="naxatw-flex naxatw-gap-x-5">
           <img
-            src={UserIcon}
+            src={LocationIcon}
             alt="user-icon"
             className="naxatw-h-[60px] naxatw-w-[60px] naxatw-rounded-full"
           />

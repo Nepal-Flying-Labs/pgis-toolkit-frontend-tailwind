@@ -13,7 +13,7 @@ const ProjectInfo = () => {
   //   state => state.organizationDashboard.organizationDetail,
   // );
   return (
-    <div className="naxatw-w-full naxatw-bg-white naxatw-rounded-[20px] naxatw-h-full naxatw-border naxatw-border-grey-300">
+    <div className="naxatw-w-full naxatw-bg-white naxatw-rounded-[20px] naxatw-h-full naxatw-overflow-y-auto scrollbar naxatw-border naxatw-border-grey-300">
       {/* Header */}
       <div className="naxatw-p-7  naxatw-rounded-t-lg xl:naxatw-flex">
         <div className="naxatw-w-full xl:naxatw-w-3/4 naxatw-pr-5">
@@ -77,7 +77,7 @@ const ProjectInfo = () => {
         </p>
       </div>
       {/* contact person */}
-      <div className="naxatw-px-7 ">
+      <div className="naxatw-px-7 naxatw-pb-5">
         <h4 className="naxatw-mb-3">Contact person </h4>
         <p className="naxatw-text-body-btn naxatw-mb-1">Harry Smith</p>
         <p className="naxatw-text-body-lg naxatw-mb-2">Project Manager</p>

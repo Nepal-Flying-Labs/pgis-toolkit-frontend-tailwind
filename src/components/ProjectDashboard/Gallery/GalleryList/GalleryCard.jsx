@@ -10,7 +10,7 @@ function GalleryCard({
   onCardClick,
   checked,
   status,
-  // onCheckSelected,
+  onCheckSelected,
 }) {
   const [activeCard, setActiveCard] = useState(false);
 
@@ -73,6 +73,7 @@ function GalleryCard({
           } naxatw-absolute group-hover:naxatw-visible naxatw-invisible naxatw-z-10 naxatw-h-5 naxatw-w-5 naxatw-top-2 naxatw-left-2`}
         /> */}
         <CustomCheckbox
+          onClick={() => onCheckSelected()}
           wrapperClassName={`${
             checked ? 'naxatw-visible' : ''
           } naxatw-absolute naxatw-border-white group-hover:naxatw-visible naxatw-ring-2 naxatw-ring-offset-0 naxatw-ring-white naxatw-invisible naxatw-z-50 naxatw-top-2 naxatw-left-2`}

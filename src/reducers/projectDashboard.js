@@ -10,9 +10,12 @@ const initialState = {
     selectedData: null,
     uploadErrorResponse: null,
   },
-  // gallery:{
-
-  // }
+  gallery: {
+    list: [],
+  },
+  // info: {
+  //   details: [],
+  // },
 };
 
 const getProjectDetailSuccess = (state, action) => ({

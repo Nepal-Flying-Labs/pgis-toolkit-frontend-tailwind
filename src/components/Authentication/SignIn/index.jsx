@@ -4,13 +4,15 @@ import { Creators, Types } from '@Actions/authentication';
 import InfoDialog from '@Components/common/InfoDialog';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
+import Input from '@Components/common/Input';
+import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 // import GoogleIcon from '@Assets/images/icons/google-icon.svg';
 import { Avatar } from '@src/constants/svgIcons';
 import ButtonLink from '@Components/common/ButtonLink';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import './styles.css';
 
-const { loginRequest, getLandingPageRequest } = Creators;
+const { loginRequest, getLandingPageRequest, setInfoDialogContent } = Creators;
 
 const initialState = {
   username: '',
@@ -26,7 +28,7 @@ export default function SignIn() {
     state => state.authentication.infoDialogContent,
   );
   const dispatch = useDispatch();
-  const { values, inputProps, handleChange, handleSubmit } = useForm({
+  const { values, inputProps, handleChange, handleSubmit, meta } = useForm({
     initialValues: initialState,
     required: ['username', 'password'],
     onSubmit: data => {
@@ -72,21 +74,22 @@ export default function SignIn() {
         </div> */}
         <form onSubmit={handleSubmit}>
           <div className="mb-6 naxatw-space-y-[1.125rem]">
-            <div className="naxatw-space-y-2">
-              <label className="naxatw-label">Username</label>
-              <input
-                type="text"
-                className="naxatw-input"
-                name="username"
-                placeholder="Username"
-                value={values.username}
-                onChange={handleChange}
-                {...inputProps}
-              />
-            </div>
-            <div className="naxatw-space-y-2 naxatw-relative">
-              <label className="naxatw-label">Password</label>
-              <input
+            <Input
+              label="Username"
+              type="text"
+              className="naxatw-input"
+              name="username"
+              placeholder="Username"
+              value={values.username}
+              onChange={handleChange}
+              {...inputProps}
+            />
+            {meta.username.error && meta.username.touched && (
+              <FormErrorMessage message="Username is required" />
+            )}
+            <div className="naxatw-relative">
+              <Input
+                label="Password"
                 type={!isVisible ? 'password' : 'text'}
                 className="naxatw-input "
                 name="password"
@@ -95,9 +98,12 @@ export default function SignIn() {
                 onChange={handleChange}
                 {...inputProps}
               />
+              {meta.password.error && meta.password.touched && (
+                <FormErrorMessage message="Password is required" />
+              )}
               <span
                 onClick={() => setIsVisible(!isVisible)}
-                className="material-icons naxatw-absolute naxatw-right-3 naxatw-top-9 naxatw-cursor-pointer"
+                className="material-icons naxatw-absolute naxatw-right-3 naxatw-top-10 naxatw-cursor-pointer"
               >
                 {!isVisible ? 'visibility' : 'visibility_off'}
               </span>
@@ -119,7 +125,10 @@ export default function SignIn() {
                 </label>
               </div>
               <div>
-                <ButtonLink to="/forgot-password">
+                <ButtonLink
+                  to="/forgot-password"
+                  onClick={() => dispatch(setInfoDialogContent(''))}
+                >
                   Forgot your password?
                 </ButtonLink>
               </div>

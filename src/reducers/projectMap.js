@@ -269,19 +269,15 @@ const deleteIconSuccess = (state, action) => {
   };
 };
 
-const setSidebarContent = (state, action) => {
-  return {
-    ...state,
-    sidebarContent: action.payload || '',
-  };
-};
+const setSidebarContent = (state, action) => ({
+  ...state,
+  sidebarContent: action.payload || '',
+});
 
-const setSearchText = (state, action) => {
-  return {
-    ...state,
-    searchText: action.payload,
-  };
-};
+const setSearchText = (state, action) => ({
+  ...state,
+  searchText: action.payload,
+});
 
 const setMapConfig = (state, action) => ({
   ...state,
@@ -371,12 +367,10 @@ const updateFeatureCollectionSuccess = (state, action) => {
   };
 };
 
-const getProjectGeojsonSuccess = (state, action) => {
-  return {
-    ...state,
-    projectGeojson: action.payload,
-  };
-};
+const getProjectGeojsonSuccess = (state, action) => ({
+  ...state,
+  projectGeojson: action.payload,
+});
 
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,

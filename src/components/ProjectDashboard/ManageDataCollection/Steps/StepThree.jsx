@@ -30,8 +30,8 @@ const StepThree = () => {
             </Button>
             <div className="naxatw-flex naxatw-pt-3 naxatw-items-center naxatw-gap-x-3">
               <div className="naxatw-w-[567px] naxatw-h-2  naxatw-rounded-3xl naxatw-flex">
-                <div className="naxatw-w-[40%] naxatw-h-2 naxatw-bg-primary-400"/>
-                <div className="naxatw-w-[60%] naxatw-h-2 naxatw-bg-grey-400"/>
+                <div className="naxatw-w-[40%] naxatw-h-2 naxatw-bg-primary-400" />
+                <div className="naxatw-w-[60%] naxatw-h-2 naxatw-bg-grey-400" />
               </div>
               <span>40%</span>
             </div>
@@ -65,9 +65,9 @@ const StepThree = () => {
           </div>
         </div>
         <Button className="hover:naxatw-bg-[#F5F5F5] hover:naxatw-underline naxatw-mt-3 naxatw-text-secondary-400">
-           <span className=" naxatw-text-[15px] naxatw-text-secondary-400 naxatw-font-bold">
-                I want to download later
-              </span>
+          <span className=" naxatw-text-[15px] naxatw-text-secondary-400 naxatw-font-bold">
+            I want to download later
+          </span>
         </Button>
       </div>
     </div>

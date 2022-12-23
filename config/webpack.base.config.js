@@ -16,6 +16,7 @@ const { domToCodePlugin } = require('dom-to-code/webpack');
 
 const APP_DIR = path.resolve(__dirname, '../src');
 const { TITLE } = dotenv.parsed;
+
 module.exports = (env = {}) => {
   const { NODE_ENV } = env;
   return merge([
@@ -135,13 +136,13 @@ module.exports = (env = {}) => {
         ],
       },
       plugins: [
-        ...(process.env.NODE_ENV === 'production'
-          ? []
-          : [
+        ...(process.env.DOM_TO_CODE === 'true'
+          ? [
               domToCodePlugin({
                 mode: 'react',
               }),
-            ]),
+            ]
+          : []),
         new HtmlWebpackPlugin({
           title: TITLE,
           template: 'public/index.html',

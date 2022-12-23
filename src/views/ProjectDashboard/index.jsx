@@ -20,7 +20,6 @@ import {
 } from '@src/constants/modalContents';
 import PromptDialog from '@Components/common/PromptDialog';
 import AppLoader from '@Components/common/AppLoader';
-import { isEmpty } from '@Utils/commonUtils';
 
 const { toggleModal, togglePromptDialog } = CommonCreators;
 const {

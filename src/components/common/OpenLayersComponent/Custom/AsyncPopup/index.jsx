@@ -41,6 +41,11 @@ const AsyncPopup = ({
   const [properties, setProperties] = useState(null);
   const [popupHTML, setPopupHTML] = useState('');
   const exceptionIds = useRef([]);
+  const disabled = useRef(false);
+
+  useEffect(() => {
+    disabled.current = closePopup;
+  }, [closePopup]);
 
   useEffect(() => {
     exceptionIds.current = layerExceptionIds;
@@ -79,6 +84,7 @@ const AsyncPopup = ({
   useEffect(() => {
     if (!map) return;
     map.on('click', evt => {
+      if (disabled.current) return;
       const { coordinate } = evt;
       const features = map.getFeaturesAtPixel(evt.pixel);
       if (features.length < 1) {

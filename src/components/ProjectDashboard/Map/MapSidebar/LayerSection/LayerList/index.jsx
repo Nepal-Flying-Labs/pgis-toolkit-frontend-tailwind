@@ -25,6 +25,9 @@ export default function LayerList({ dropdownOptions }) {
   const themes = useSelector(filteredThemesSelector);
   const layers = useSelector(filteredLayersSelector);
   const mapSettings = useSelector(state => state.projectMap.mapSettings);
+  const projectAreaLayerId = useSelector(
+    state => state.projectMap.projectAreaLayerId,
+  );
   const isLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,
@@ -141,7 +144,14 @@ export default function LayerList({ dropdownOptions }) {
                           />
                         </span>
                       )}
-                      <DropdownOptions options={dropdownOptions} data={layer} />
+                      <DropdownOptions
+                        options={
+                          layer.id === projectAreaLayerId
+                            ? dropdownOptions.filter(item => item.id !== 3)
+                            : dropdownOptions
+                        }
+                        data={layer}
+                      />
                     </div>
                   </div>
                 ))}

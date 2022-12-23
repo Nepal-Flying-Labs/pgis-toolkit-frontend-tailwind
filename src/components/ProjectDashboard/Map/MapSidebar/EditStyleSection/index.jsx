@@ -59,9 +59,9 @@ export default function EditStyleSection() {
       </div>
 
       <div
-        className="naxatw-overflow-auto scrollbar naxatw-h-[32rem] naxatw-flex naxatw-flex-col naxatw-gap-5"
+        className="naxatw-overflow-auto scrollbar naxatw-flex naxatw-flex-col naxatw-gap-5"
         style={{
-          height: `${height / 16 - 13}rem`,
+          height: `${height / 16 - 10}rem`,
         }}
       >
         <div className="naxatw-flex naxatw-items-center">

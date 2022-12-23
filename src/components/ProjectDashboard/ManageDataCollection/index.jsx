@@ -6,6 +6,7 @@ import { useHistory, useParams } from 'react-router';
 import Button from '@Components/common/Button';
 import { Creators as CommonCreators } from '@Actions/common';
 import Modal from '@Components/common/Modal';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { getModalContent } from '@src/constants/modalContents';
 import StepOne from './Steps/StepOne';
 import StepTwo from './Steps/StepTwo';
@@ -96,24 +97,24 @@ const ManageDataCollection = () => {
           </button>
         </div>
       </div>
-      <div className="naxatw-flex naxatw-gap-x-[21px] naxatw-mt-5  naxatw-px-10 ">
+      <div className="naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-x-[21px] naxatw-mt-5  naxatw-px-10 ">
         <div className="">
-          <div className="naxatw-rounded-xl naxatw-border naxatw-py-3 fl naxatw-w-[325px]">
+          <div className="naxatw-rounded-xl naxatw-border naxatw-py-3 fl md:naxatw-w-[325px]">
             <ul>
               {linkOptions.map(link => (
                 <li
                   key={link.id}
                   onClick={() => setActive(link.id)}
-                  className={`naxatw-p-4 naxatw-flex naxatw-justify-between naxatw-gap-x-3 naxatw-items-center naxatw-cursor-pointer  ${
-                    active === link.id ? 'naxatw-bg-[#F5F5F5]' : ''
+                  className={`naxatw-p-4 naxatw-flex naxatw-justify-between naxatw-gap-x-3 naxatw-items-center hover:naxatw-bg-grey-100 naxatw-cursor-pointer  ${
+                    active === link.id ? 'naxatw-bg-grey-100' : ''
                   } `}
                 >
                   <div className="naxatw-flex naxatw-items-center naxatw-gap-x-3">
                     <h4
                       className={`${
                         active === link.id
-                          ? 'naxatw-text-[#FF5A5F]'
-                          : 'naxatw-text-[#757575]'
+                          ? 'naxatw-text-primary-400'
+                          : 'naxatw-text-grey-600'
                       }`}
                     >
                       {link.id}
@@ -121,15 +122,20 @@ const ManageDataCollection = () => {
                     <span
                       className={`naxatw-text-[13px] naxatw-font-bold ${
                         active === link.id
-                          ? 'naxatw-text-[#FF5A5F]'
-                          : 'naxatw-text-[#757575]'
+                          ? 'naxatw-text-primary-400'
+                          : 'naxatw-text-grey-600'
                       }`}
                     >
                       {link.name}
                     </span>
                   </div>
 
-                  <span className="material-icons">chevron_right</span>
+                  {active === link.id && (
+                    <MaterialIcon
+                      name="chevron_right"
+                      className="naxatw-text-icon-md"
+                    />
+                  )}
                 </li>
               ))}
             </ul>
@@ -146,7 +152,7 @@ const ManageDataCollection = () => {
             {active > 1 ? (
               <Button
                 iconLeft="arrow_back"
-                className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-group hover:naxatw-bg-[#F5F5F5]"
+                className=" naxatw-w-[8.875rem]  naxatw-text-secondary-400 naxatw-group hover:naxatw-bg-grey-100"
                 onClick={() => {
                   setActive(prev => prev - 1);
                 }}

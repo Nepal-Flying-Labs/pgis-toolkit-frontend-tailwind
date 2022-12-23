@@ -25,9 +25,6 @@ export default function LayerOrder({ dropdownOptions }) {
   const [hoverId, setHoverId] = useState(null);
   const mapState = useSelector(mapStateSelector);
   const mapSettings = useSelector(state => state.projectMap.mapSettings);
-  const projectAreaLayerId = useSelector(
-    state => state.projectMap.projectAreaLayerId,
-  );
   const dispatch = useDispatch();
 
   const handleLayerCheck = ({ checked, layerId, themeId }) => {
@@ -141,14 +138,7 @@ export default function LayerOrder({ dropdownOptions }) {
                         />
                       </span>
                     )}
-                    <DropdownOptions
-                      options={
-                        layer.id === projectAreaLayerId
-                          ? dropdownOptions.filter(item => item.id !== 3)
-                          : dropdownOptions
-                      }
-                      data={layer}
-                    />
+                    <DropdownOptions options={dropdownOptions} data={layer} />
                   </div>
                 </div>
               )}

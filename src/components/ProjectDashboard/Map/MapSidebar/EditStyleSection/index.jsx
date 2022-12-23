@@ -14,6 +14,9 @@ const tabData = [{ label: 'Standard' }, { label: 'Advance' }];
 
 export default function EditStyleSection() {
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
+  const projectAreaLayerId = useSelector(
+    state => state.projectMap.projectAreaLayerId,
+  );
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.UPDATE_LAYER_REQUEST]),
   );
@@ -66,14 +69,19 @@ export default function EditStyleSection() {
       >
         <div className="naxatw-flex naxatw-items-center">
           <div className="naxatw-w-full naxatw-space-y-2">
-            <label className="naxatw-label">Layer</label>
+            <label className="naxatw-label">Layer Name</label>
             <input
               type="text"
-              className="naxatw-input"
+              className={`naxatw-input ${
+                selectedLayer?.id === projectAreaLayerId
+                  ? 'naxatw-cursor-not-allowed'
+                  : ''
+              }`}
               name="layerName"
               placeholder="Layer Name"
               value={layerName}
               onChange={e => setLayerName(e.target.value)}
+              disabled={selectedLayer?.id === projectAreaLayerId}
             />
           </div>
         </div>
@@ -86,6 +94,7 @@ export default function EditStyleSection() {
               <div className="naxatw-flex naxatw-gap-2">
                 {tabData.map(({ label }) => (
                   <div
+                    key={label}
                     className={`naxatw-w-fit naxatw-bg-white naxatw-border naxatw-rounded-2xl naxatw-px-3 naxatw-py-2 naxatw-cursor-pointer ${
                       styleTab === label
                         ? 'naxatw-border-grey-800'

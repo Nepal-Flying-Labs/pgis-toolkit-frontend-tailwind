@@ -154,7 +154,9 @@ export default function UploadDataset() {
       dispatch(uploadDatasetsRequest(payloadData));
     } else {
       dispatch(
-        toastActions.error({ message: 'Please fill all the required fields.' }),
+        toastActions.error({
+          message: 'Please fill out all the required fields.',
+        }),
       );
     }
   };
@@ -246,6 +248,7 @@ export default function UploadDataset() {
                         handleCategorySelect(id, selectedItem)
                       }
                       selectedValue={category}
+                      style={{ minWidth: '10rem' }}
                     />
                     {errorFields?.[id]?.includes('category') && (
                       <FormErrorMessage message="Required" />

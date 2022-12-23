@@ -161,6 +161,7 @@ export default function UploadDataset() {
         USAFIRI allows you to import data in different formats(shp, csv, geojson
         or gpkg file format). Please upload your datasets below.
       </p>
+      <p>Note: System supports WGS84 Coordinate System only.</p>
 
       <div
         className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-auto scrollbar naxatw-max-h-96"

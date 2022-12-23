@@ -20,6 +20,14 @@ export default function AddFeature({
   const [drawnFeature, setDrawnFeature] = useState(null);
 
   useEffect(() => {
+    if (!geometryType && vectorLayer) {
+      vectorLayer.getSource().clear();
+      setVectorLayer(null);
+      setDrawType(null);
+    }
+  }, [geometryType, vectorLayer]);
+
+  useEffect(() => {
     if (!map || !enable || !geometryType) return;
     setDrawType(geometryType);
     const source = new VectorSource({ wrapX: false });
@@ -56,30 +64,8 @@ export default function AddFeature({
       setDrawType(null);
       const featureGeojson = getFeatureGeojson(feature);
       onDrawFinish(featureGeojson);
-      // const extent = feature.getGeometry().getExtent();
-      // const center = getCenter(extent);
-      // overlay.setPosition(center);
-      // map.addOverlay(overlay);
     });
   }, [draw, map, onDrawFinish]);
-
-  // const handleSave = () => {
-  //   const featureGeojson = getFeatureGeojson(drawnFeature);
-  //   map.removeInteraction(draw);
-  //   map.removeOverlay(overlay);
-  //   setDrawType(null);
-  //   onDrawFinish(featureGeojson);
-  // };
-
-  // const handleCancel = () => {
-  //   map.removeInteraction(draw);
-  //   map.removeOverlay(overlay);
-  //   map.removeLayer(vectorLayer);
-  //   setVectorLayer(null);
-  //   setDrawType(null);
-  //   setDrawnFeature(null);
-  //   onCancel();
-  // };
 
   return null;
 }

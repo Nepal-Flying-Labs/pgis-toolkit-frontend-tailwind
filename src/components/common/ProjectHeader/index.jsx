@@ -91,9 +91,9 @@ export default function ProjectHeader() {
                     name="chevron_right"
                     className="naxatw-text-[#484848] naxatw-pb-1"
                   />
-                  <Link className=" naxatw-text-[#484848] naxatw-py-2.5  naxatw-text-body-btn">
+                  <a className=" naxatw-text-[#484848] naxatw-py-2.5 naxatw-text-body-btn">
                     {projectDetail?.name}
-                  </Link>
+                  </a>
                 </li>
               </ul>
             </nav>

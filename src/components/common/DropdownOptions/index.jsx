@@ -28,7 +28,7 @@ export default function DropdownOptions({ options, data, stopPropagation }) {
       <div
         className={`${
           toggle ? '' : 'naxatw-hidden'
-        } naxatw-absolute naxatw-top-[2px] naxatw-right-[40px] naxatw-z-10 naxatw-w-[12.5rem]
+        } naxatw-absolute naxatw-top-[2px] naxatw-right-[40px] naxatw-z-50 naxatw-w-[12.5rem]
           naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100 naxatw-shadow-3xl`}
       >
         <ul

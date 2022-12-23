@@ -44,6 +44,7 @@ module.exports = {
           800: '#484848',
           900: '#212121',
         },
+        delete_btn: '#FF0F0F',
       },
       fontSize: {
         'body-lg': [

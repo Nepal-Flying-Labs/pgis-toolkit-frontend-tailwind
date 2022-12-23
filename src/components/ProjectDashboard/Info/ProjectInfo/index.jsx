@@ -3,6 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import noImg from '@Assets/images/noImage.png';
+import { isEmpty } from '@Utils/commonUtils';
 
 const ProjectInfo = () => {
   const info = useSelector(state => state.projectDashboard.info.details);
@@ -92,7 +93,7 @@ const ProjectInfo = () => {
       {/* contact person */}
       <div className="naxatw-px-7 naxatw-pb-5">
         <h4 className="naxatw-mb-3">Contact person </h4>
-        {contactPerson?.length > 0 ? (
+        {!isEmpty(contactPerson) ? (
           contactPerson?.map(item => (
             <div className="naxatw-mb-5" key={item.id}>
               <p className="naxatw-text-body-btn naxatw-mb-1">
@@ -121,7 +122,7 @@ const ProjectInfo = () => {
             </div>
           ))
         ) : (
-          <div className="">No data</div>
+          <div className="naxatw-text-body-lg">No data</div>
         )}
       </div>
     </div>

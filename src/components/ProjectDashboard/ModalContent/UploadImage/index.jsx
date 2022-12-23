@@ -119,41 +119,50 @@ export default function UploadImage() {
     setUploadedFiles(prev => prev.filter(item => item.id !== id));
   };
 
+  const [tags, setTags] = useState('');
+
+  const handleAddTag = ({ id, name, value }) => {
+    setTags('');
+  };
+
+  console.log('form data ', uploadedFiles);
+
   const handleSubmit = () => {
     if (isUploading) return;
-    let errorCount = 0;
-    const errors = uploadedFiles.reduce((obj, item) => {
-      const fields = [];
-      if (!item.name) fields.push('name');
-      if (!item.category) fields.push('category');
-      if (item.extension === 'csv') {
-        if (!item.latField) fields.push('latField');
-        if (!item.lonField) fields.push('lonField');
-      }
-      if (fields.length) errorCount += 1;
-      return {
-        ...obj,
-        [item.id]: fields,
-      };
-    }, {});
-    if (errorCount === 0) {
-      const payloadData = uploadedFiles.map(item => {
-        const data = {
-          name: item.name,
-          theme: item.category,
-          display_on_map: item.addToMap,
-          file: item.file,
-          layer_type: 'Vector',
-          source: 'computer',
-          lat_field: item.latField.name,
-          lon_field: item.lonField.name,
-        };
-        return prepareFormData(data);
-      });
-      dispatch(uploadDatasetsRequest(payloadData));
-    } else {
-      setErrorFields(errors);
-    }
+    console.log('submited');
+    // let errorCount = 0;
+    // const errors = uploadedFiles.reduce((obj, item) => {
+    //   const fields = [];
+    //   if (!item.name) fields.push('name');
+    //   if (!item.category) fields.push('category');
+    //   if (item.extension === 'csv') {
+    //     if (!item.latField) fields.push('latField');
+    //     if (!item.lonField) fields.push('lonField');
+    //   }
+    //   if (fields.length) errorCount += 1;
+    //   return {
+    //     ...obj,
+    //     [item.id]: fields,
+    //   };
+    // }, {});
+    // if (errorCount === 0) {
+    //   const payloadData = uploadedFiles.map(item => {
+    //     const data = {
+    //       name: item.name,
+    //       theme: item.category,
+    //       display_on_map: item.addToMap,
+    //       file: item.file,
+    //       layer_type: 'Vector',
+    //       source: 'computer',
+    //       lat_field: item.latField.name,
+    //       lon_field: item.lonField.name,
+    //     };
+    //     return prepareFormData(data);
+    //   });
+    //   dispatch(uploadDatasetsRequest(payloadData));
+    // } else {
+    //   setErrorFields(errors);
+    // }
   };
 
   return (
@@ -175,7 +184,7 @@ export default function UploadImage() {
             multiple
             onChange={handleUpload}
           />
-          {uploadedFiles.map(({ id, file }) => (
+          {uploadedFiles?.map(({ id, file }) => (
             <div key={id} className="naxatw-flex naxatw-flex-col naxatw-gap-2">
               <div
                 className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-pr-5
@@ -192,7 +201,7 @@ export default function UploadImage() {
                   </div>
                   <div className="naxatw-py-2">
                     <p className="naxatw-font-bold naxatw-text-[15px]">
-                      {file.name}
+                      {file?.name}
                     </p>
                     <p className="naxatw-text-body-md naxatw-text-grey-600">
                       Uploaded on 16/11/2022
@@ -223,13 +232,20 @@ export default function UploadImage() {
           id="tag"
           label="Tags"
           name="tag"
-          value=""
+          value={tags || ''}
           placeholder="Add your own tags"
-          onChange={() => {}}
+          onChange={e => {
+            console.log(e.target.value);
+            setTags(e.target.value);
+          }}
           className=""
           required={false}
           type="text"
           iconRight="add"
+          onIconClick={data => {
+            console.log(data);
+            handleAddTag({ id: data.id, name: data.name, value: data.value });
+          }}
         />
         <div className="tag-Chips naxatw-flex naxatw-gap-2">
           <Chip

@@ -74,6 +74,7 @@
 - [ ] mandatory validation/actual data type
 - [ ] min width in select
 - [ ] add setRequiredFields in useForm
+- [ ] dynamic height for sidebar contents
 
 ### Backend
 

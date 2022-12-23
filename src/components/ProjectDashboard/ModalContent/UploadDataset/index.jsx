@@ -20,6 +20,7 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
 import { getCSVHeaders } from '@Utils/convertLayerUtils';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
+import FormErrorMessage from '@Components/common/FormErrorMessage';
 
 const { getProjectThemesRequest } = ProjectMapCreators;
 const { uploadDatasetsRequest } = ProjectDashboardCreators;
@@ -151,6 +152,9 @@ export default function UploadDataset() {
       });
       dispatch(uploadDatasetsRequest(payloadData));
     } else {
+      dispatch(
+        toastActions.error({ message: 'Please fill all the required fields.' }),
+      );
       setErrorFields(errors);
     }
   };
@@ -226,6 +230,9 @@ export default function UploadDataset() {
                       placeholder="Enter Data Name"
                       onChange={handleChange}
                     />
+                    {errorFields?.[id]?.includes('name') && (
+                      <FormErrorMessage message="Required" />
+                    )}
                   </div>
 
                   <div className="naxatw-space-y-2">
@@ -240,6 +247,9 @@ export default function UploadDataset() {
                       }
                       selectedValue={category}
                     />
+                    {errorFields?.[id]?.includes('category') && (
+                      <FormErrorMessage message="Required" />
+                    )}
                   </div>
                   <div className="naxatw-space-y-2">
                     <label className="naxatw-label">Add To Map</label>
@@ -270,6 +280,9 @@ export default function UploadDataset() {
                           })
                         }
                       />
+                      {errorFields?.[id]?.includes('latField') && (
+                        <FormErrorMessage message="Required" />
+                      )}
                     </div>
                     <div className="naxatw-space-y-2 naxatw-w-full">
                       <label className="naxatw-label">Longitude field</label>
@@ -286,6 +299,9 @@ export default function UploadDataset() {
                           })
                         }
                       />
+                      {errorFields?.[id]?.includes('lonField') && (
+                        <FormErrorMessage message="Required" />
+                      )}
                     </div>
                   </div>
                 )}

@@ -146,7 +146,7 @@ export default function EditFeatureSection() {
                   {item.data_type === 'date' ? (
                     <CustomCalendar
                       startDate={new Date()}
-                      onChange={date => {
+                      onChange={() => {
                         // handleCustomChange(
                         //   'start_date',
                         //   format(date, 'yyyy-MM-dd'),

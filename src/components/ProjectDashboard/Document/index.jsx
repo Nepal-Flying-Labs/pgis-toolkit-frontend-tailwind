@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
 import { isEmpty } from '@Utils/commonUtils';
 import Button from '@Components/common/Button/index';
-import { useState } from 'react';
 import AdditionalSidebar from '../Common/index';
 import DocumentList from './DocumentList/index';
 

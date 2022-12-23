@@ -1,8 +1,23 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { restrictToVerticalAxis, restrictToFirstScrollableAncestor, restrictToParentElement } from '@dnd-kit/modifiers';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import {
+  restrictToVerticalAxis,
+  restrictToFirstScrollableAncestor,
+  restrictToParentElement,
+} from '@dnd-kit/modifiers';
 
 const SortableList = ({ onDragEnd, items, children }) => {
   const sensors = useSensors(
@@ -15,7 +30,11 @@ const SortableList = ({ onDragEnd, items, children }) => {
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
-      modifiers={[restrictToVerticalAxis, restrictToFirstScrollableAncestor, restrictToParentElement]}
+      modifiers={[
+        restrictToVerticalAxis,
+        restrictToFirstScrollableAncestor,
+        restrictToParentElement,
+      ]}
       onDragEnd={onDragEnd}
     >
       <SortableContext items={items} strategy={verticalListSortingStrategy}>

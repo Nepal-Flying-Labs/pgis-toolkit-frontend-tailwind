@@ -17,15 +17,13 @@ const getProjectDetailSuccess = (state, action) => ({
   projectDetail: action.payload.data,
 });
 
-const getProjectLayersSuccess = (state, action) => {
-  return {
-    ...state,
-    data: {
-      ...state.data,
-      layers: action.payload,
-    },
-  };
-};
+const getProjectLayersSuccess = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    layers: action.payload,
+  },
+});
 
 const uploadDatasetsSuccess = (state, action) => {
   const layers = [...action.payload, ...state.data.layers];
@@ -80,25 +78,21 @@ const checkUploadStatusSuccess = (state, action) => {
   };
 };
 
-const setDataState = (state, action) => {
-  return {
-    ...state,
-    data: {
-      ...state.data,
-      ...action.payload,
-    },
-  };
-};
+const setDataState = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    ...action.payload,
+  },
+});
 
-const getErrorDetailSuccess = (state, action) => {
-  return {
-    ...state,
-    data: {
-      ...state.data,
-      uploadErrorResponse: action.payload,
-    },
-  };
-};
+const getErrorDetailSuccess = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    uploadErrorResponse: action.payload,
+  },
+});
 
 const permanentDataDeleteSuccess = (state, action) => {
   const layers = state.data.layers.filter(item => item.id !== action.payload);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Creators } from '@Actions/common';
 import Select from '@Components/common/Select';
 import Button from '@Components/common/Button';
@@ -6,6 +7,8 @@ import Button from '@Components/common/Button';
 const { toggleModal } = Creators;
 
 export default function BufferAnalysis() {
+  const dispatch = useDispatch();
+
   return (
     <div>
       <p>Baseline Datasets contains different levels of boundaries.</p>

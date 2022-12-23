@@ -17,6 +17,8 @@ import {
   getLayerById,
   getUploadErrorResponse,
   permanentDataDelete,
+  getProjectInfo,
+  getContactPersonInfo,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -152,6 +154,28 @@ export function* updateDataRequest({ id, payload }) {
   }
 }
 
+export function* getProjectInfoRequest({ id }) {
+  try {
+    const response = yield call(getProjectInfo, id);
+    yield put(projectDashboardActions.getProjectInfoSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getProjectInfoFailure());
+    throw error;
+  }
+}
+
+export function* getContactPersonInfoRequest({ params }) {
+  try {
+    const response = yield call(getContactPersonInfo, params);
+    yield put(
+      projectDashboardActions.getContactPersonInfoSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.getContactPersonInfoFailure());
+    throw error;
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -188,6 +212,14 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.UPDATE_DATA_REQUEST,
     withLoader(withErrorHandler(updateDataRequest)),
+  );
+  yield takeLatest(
+    Types.GET_PROJECT_INFO_REQUEST,
+    withLoader(withErrorHandler(getProjectInfoRequest)),
+  );
+  yield takeLatest(
+    Types.GET_CONTACT_PERSON_INFO_REQUEST,
+    withLoader(withErrorHandler(getContactPersonInfoRequest)),
   );
 }
 

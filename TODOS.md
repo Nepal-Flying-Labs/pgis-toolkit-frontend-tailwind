@@ -58,6 +58,9 @@
 - [ ] attribute edit
 - [ ] add feature
 
+- [ ] map export
+- [ ] data query
+
 ### ISSUES
 
 - [x] login redirect to projects tab organization dashboard

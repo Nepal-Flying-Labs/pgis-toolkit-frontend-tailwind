@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 function getMetaState(data, required) {
   return required.reduce(
@@ -17,12 +17,25 @@ function getMetaState(data, required) {
 const useForm = ({
   initialValues = {},
   onSubmit = () => {},
+  onErrorSubmit = () => {},
   required = [],
   validationSchema = {},
 }) => {
   const [inputs, setInputs] = useState(initialValues);
+  const [requiredFields, setRequiredFields] = useState(required);
   const [meta, setMeta] = useState(getMetaState(initialValues, required));
   const [fieldsChanged, setFieldsChanged] = useState(false);
+  const isRequiredFieldsChanged = useRef(false);
+
+  useEffect(() => {
+    isRequiredFieldsChanged.current = true;
+  }, [requiredFields]);
+
+  useEffect(() => {
+    if (!isRequiredFieldsChanged.current) return;
+    setMeta(getMetaState(inputs, requiredFields));
+    isRequiredFieldsChanged.current = false;
+  }, [inputs, requiredFields]);
 
   const isValid = (name, value) =>
     Object.prototype.hasOwnProperty.call(validationSchema, name)
@@ -33,7 +46,7 @@ const useForm = ({
     const { name, value, type, files } = e.target;
     setFieldsChanged(true);
     setInputs(prev => ({ ...prev, [name]: type === 'file' ? files : value }));
-    if (!required.includes(name)) return;
+    if (!requiredFields.includes(name)) return;
     setMeta(prev => {
       const valid = isValid(name, value);
       return {
@@ -48,7 +61,6 @@ const useForm = ({
   };
 
   const handleCustomChange = (name, value) => {
-    // console.log(name, value);
     // const { name, value } = event.target;
     setInputs({
       ...inputs,
@@ -59,7 +71,7 @@ const useForm = ({
   const handleBlur = e => {
     const { name, value } = e.target;
 
-    if (!required.includes(name)) return;
+    if (!requiredFields.includes(name)) return;
     setMeta(prev => {
       const valid = isValid(name, value);
       return {
@@ -90,6 +102,7 @@ const useForm = ({
           {},
         ),
       );
+      onErrorSubmit();
     } else {
       onSubmit(inputs, fieldsChanged);
     }
@@ -101,7 +114,7 @@ const useForm = ({
 
   const resetFormState = useCallback(() => {
     setInputs(initialValues);
-    setMeta(getMetaState(initialValues, required));
+    setMeta(getMetaState(initialValues, requiredFields));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
@@ -113,6 +126,7 @@ const useForm = ({
     handleSubmit,
     meta,
     setValues: setInputs,
+    setRequiredFields,
     resetFormState,
   };
 };

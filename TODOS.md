@@ -79,6 +79,7 @@
 - [x] dynamic height for sidebar contents - project header height
 - [ ] mandatory validation/actual data type
 - [ ] add setRequiredFields in useForm
+- [ ] remove add feature to boundary
 
 ### Backend
 

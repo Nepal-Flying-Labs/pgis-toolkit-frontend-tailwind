@@ -55,6 +55,14 @@ export default function LayerSection() {
         </span>
       ),
       onClick: data => {
+        if (data.id === projectAreaLayerId) {
+          dispatch(
+            toastActions.error({
+              message: 'Cannot add feature to Project Area.',
+            }),
+          );
+          return;
+        }
         dispatch(
           setProjectMapState({
             selectedLayer: data,

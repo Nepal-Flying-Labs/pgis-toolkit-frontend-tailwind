@@ -58,6 +58,9 @@
 - [ ] attribute edit
 - [ ] add feature
 
+- [ ] map export
+- [ ] data query
+
 ### ISSUES
 
 - [x] login redirect to projects tab organization dashboard
@@ -74,8 +77,9 @@
 - [x] min width in select
 - [x] do not let user change boundary
 - [x] dynamic height for sidebar contents - project header height
-- [ ] mandatory validation/actual data type
-- [ ] add setRequiredFields in useForm
+- [x] mandatory validation/actual data type
+- [x] add setRequiredFields in useForm
+- [x] remove add feature to boundary
 
 ### Backend
 

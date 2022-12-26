@@ -6,6 +6,7 @@ const initialState = {
   searchText: '',
   data: {
     layers: null,
+    projectAreaLayerId: null,
     uploadStatusCheckingIds: [],
     selectedData: null,
     uploadErrorResponse: null,
@@ -28,13 +29,19 @@ const getProjectDetailSuccess = (state, action) => ({
   projectDetail: action.payload.data,
 });
 
-const getProjectLayersSuccess = (state, action) => ({
-  ...state,
-  data: {
-    ...state.data,
-    layers: action.payload,
-  },
-});
+const getProjectLayersSuccess = (state, action) => {
+  const data = action.payload;
+  const projectAreaLayerId =
+    data.find(item => item.name === 'Boundary')?.id || null;
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      layers: data,
+      projectAreaLayerId,
+    },
+  };
+};
 
 const uploadDatasetsSuccess = (state, action) => {
   const layers = [...action.payload, ...state.data.layers];

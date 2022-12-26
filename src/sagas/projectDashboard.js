@@ -115,7 +115,7 @@ export function* checkUploadStatusRequest({ id }) {
         }),
       );
     }
-    yield put(commonActions.togglePromptDialog());
+    // yield put(commonActions.togglePromptDialog());
   } catch (error) {
     yield put(projectDashboardActions.checkUploadStatusFailure());
     throw error;

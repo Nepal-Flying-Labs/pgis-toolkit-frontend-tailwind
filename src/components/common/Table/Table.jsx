@@ -224,17 +224,17 @@ export default class Table extends Component {
         ) : noColumnCondition && row[noColumnCondition.key] === 'failed' ? (
           <>
             <td className={rowClassName}>
-              <span className="naxatw-text-base naxatw-flex naxatw-gap-10 naxatw-py-2 naxatw-items-center">
+              <span className="naxatw-text-base naxatw-flex naxatw-gap-10  naxatw-items-center">
                 {index + 1}
               </span>
             </td>
             <td className={rowClassName}>
-              <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-10 naxatw-py-2 naxatw-items-center">
+              <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-10  naxatw-items-center">
                 {row.name}
               </span>
             </td>
             <td colSpan={7} className={rowClassName}>
-              <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-10 naxatw-py-2 naxatw-items-center">
+              <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-10  naxatw-items-center">
                 <div className="naxatw-flex naxatw-items-center naxatw-gap-5 naxatw-text-[#FF0F0F]">
                   <i className="material-icons">error_outline</i>
                   Upload Failed

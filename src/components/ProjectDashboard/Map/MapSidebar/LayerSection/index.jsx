@@ -6,6 +6,7 @@ import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import { Creators as CommonCreators } from '@Actions/common';
+import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar';
 import LayerOrder from './LayerOrder';
@@ -24,6 +25,9 @@ export default function LayerSection() {
   const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
+  );
+  const projectAreaLayerId = useSelector(
+    state => state.projectMap.projectAreaLayerId,
   );
   const searchText = useSelector(state => state.projectMap.searchText);
   const history = useHistory();
@@ -51,6 +55,14 @@ export default function LayerSection() {
         </span>
       ),
       onClick: data => {
+        if (data.id === projectAreaLayerId) {
+          dispatch(
+            toastActions.error({
+              message: 'Cannot add feature to Project Area.',
+            }),
+          );
+          return;
+        }
         dispatch(
           setProjectMapState({
             selectedLayer: data,
@@ -69,6 +81,12 @@ export default function LayerSection() {
         </span>
       ),
       onClick: data => {
+        if (data.id === projectAreaLayerId) {
+          dispatch(
+            toastActions.error({ message: 'Project Area cannot be removed.' }),
+          );
+          return;
+        }
         dispatch(setDeleteLayer(data));
         dispatch(togglePromptDialog('delete-layer'));
       },

@@ -73,6 +73,8 @@ export const { Types, Creators } = createActions(
     getProjectGeojsonRequest: ['params'],
     getProjectGeojsonSuccess: ['payload'],
     getProjectGeojsonFailure: null,
+
+    resetProjectMapState: null,
   },
   { prefix: 'projectMap/' },
 );

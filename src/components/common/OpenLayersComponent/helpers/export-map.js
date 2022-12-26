@@ -71,14 +71,15 @@ function calculateFrom150(input, dpi) {
 
 export function exportMap(map, options = exportOptions) {
   return new Promise(resolve => {
-    const dims = {
-      a0: [1189, 841],
-      a1: [841, 594],
-      a2: [594, 420],
-      a3: [420, 297],
-      a4: [297, 210],
-      a5: [210, 148],
-    };
+    // const dims = {
+    //   a0: [1189, 841],
+    //   a1: [841, 594],
+    //   a2: [594, 420],
+    //   a3: [420, 297],
+    //   a4: [297, 210],
+    //   a5: [210, 148],
+    // };
+    const { dims } = options;
     const format = options.pageSize;
     const dpi = options.resolution;
     const dim = dims[format];
@@ -128,107 +129,107 @@ export function exportMap(map, options = exportOptions) {
       async function prepareMap() {
         window.scrollTo(0, 0);
         // padding
-        mapContext.lineWidth = borderWidth;
-        mapContext.strokeStyle = '#ffffff';
-        mapContext.strokeRect(0, 0, transformedWidth, transformedHeight);
+        // mapContext.lineWidth = borderWidth;
+        // mapContext.strokeStyle = '#ffffff';
+        // mapContext.strokeRect(0, 0, transformedWidth, transformedHeight);
 
-        // neatline
-        mapContext.lineWidth = neatlineWidth;
-        mapContext.strokeStyle = 'rgba(89,89,89,0.3)';
-        mapContext.strokeRect(
-          borderWidth * 0.5 - neatlineOffset,
-          borderWidth * 0.5 - neatlineOffset,
-          transformedWidth - borderWidth + neatlineOffset * 2,
-          transformedHeight - borderWidth + neatlineOffset * 2,
-        );
+        // // neatline
+        // mapContext.lineWidth = neatlineWidth;
+        // mapContext.strokeStyle = 'rgba(89,89,89,0.3)';
+        // mapContext.strokeRect(
+        //   borderWidth * 0.5 - neatlineOffset,
+        //   borderWidth * 0.5 - neatlineOffset,
+        //   transformedWidth - borderWidth + neatlineOffset * 2,
+        //   transformedHeight - borderWidth + neatlineOffset * 2,
+        // );
 
-        // map title
-        if (options.title) {
-          mapContext.font = `bold ${titleFontSize}px Poppins, sans-serif`;
-          const titleWidth = mapContext.measureText(options.title).width;
-          const textDims = mapContext.measureText(options);
-          const { actualBoundingBoxAscent, actualBoundingBoxDescent } =
-            textDims;
+        // // map title
+        // if (options.title) {
+        //   mapContext.font = `bold ${titleFontSize}px Poppins, sans-serif`;
+        //   const titleWidth = mapContext.measureText(options.title).width;
+        //   const textDims = mapContext.measureText(options);
+        //   const { actualBoundingBoxAscent, actualBoundingBoxDescent } =
+        //     textDims;
 
-          // title background
-          mapContext.fillStyle = 'rgba(255,255,255,0.85)';
-          mapContext.fillRect(
-            transformedWidth * 0.5 - titleWidth * 0.5 - titlePadding,
-            titleTextHeightOffset +
-              titleFontSize -
-              actualBoundingBoxAscent -
-              titlePadding * 0.8,
-            titleWidth + titlePadding * 2,
-            titleFontSize - actualBoundingBoxDescent + titlePadding * 2.8,
-          );
-          // title text
-          mapContext.fillStyle = 'black';
-          mapContext.fillText(
-            options.title,
-            transformedWidth * 0.5 - titleWidth * 0.5,
-            titleTextHeightOffset + titleFontSize,
-          );
-        }
+        //   // title background
+        //   mapContext.fillStyle = 'rgba(255,255,255,0.85)';
+        //   mapContext.fillRect(
+        //     transformedWidth * 0.5 - titleWidth * 0.5 - titlePadding,
+        //     titleTextHeightOffset +
+        //       titleFontSize -
+        //       actualBoundingBoxAscent -
+        //       titlePadding * 0.8,
+        //     titleWidth + titlePadding * 2,
+        //     titleFontSize - actualBoundingBoxDescent + titlePadding * 2.8,
+        //   );
+        //   // title text
+        //   mapContext.fillStyle = 'black';
+        //   mapContext.fillText(
+        //     options.title,
+        //     transformedWidth * 0.5 - titleWidth * 0.5,
+        //     titleTextHeightOffset + titleFontSize,
+        //   );
+        // }
 
-        // legend
-        if (options.legend) {
-          const legend = document.getElementById('map-legend');
-          const legendCanvas = await html2canvas(legend, {
-            scale: legendScale,
-            useCORS: true,
-            onclone: () => new Promise(res => setTimeout(() => res(), 400)),
-          });
-          mapContext.drawImage(
-            legendCanvas,
-            legendOffset,
-            transformedHeight - legendCanvas.height - legendOffset,
-          );
-        }
+        // // legend
+        // if (options.legend) {
+        //   const legend = document.getElementById('map-legend');
+        //   const legendCanvas = await html2canvas(legend, {
+        //     scale: legendScale,
+        //     useCORS: true,
+        //     onclone: () => new Promise(res => setTimeout(() => res(), 400)),
+        //   });
+        //   mapContext.drawImage(
+        //     legendCanvas,
+        //     legendOffset,
+        //     transformedHeight - legendCanvas.height - legendOffset,
+        //   );
+        // }
 
-        // scalebar
-        const scaleBar = document.querySelector('.ol-scale-line');
-        if (options.scaleBar) {
-          const scaleBarCanvas = await html2canvas(scaleBar, {
-            scale: legendScale,
-            backgroundColor: 'transparent',
-            onclone: () => new Promise(res => setTimeout(() => res(), 400)),
-          });
-          mapContext.drawImage(
-            scaleBarCanvas,
-            transformedWidth / 2 - scaleBarCanvas.width / 2,
-            transformedHeight - scaleBarCanvas.height - scaleBarHeightOffset,
-          );
-          // scalebar text
-          // const scaleBarText = document.querySelector('.ol-scale-text');
-          // const scaleBarTextCanvas = await html2canvas(scaleBarText, {
-          //   scale: legendScale,
-          //   backgroundColor: 'transparent',
-          //   onclone: () => new Promise(res => setTimeout(() => res(), 400)),
-          // });
-          // mapContext.drawImage(
-          //   scaleBarTextCanvas,
-          //   transformedWidth / 2 - scaleBarTextCanvas.width / 2,
-          //   transformedHeight -
-          //     scaleBarTextCanvas.height -
-          //     scaleBarCanvas.height -
-          //     scaleBarHeightOffset,
-          // );
-        }
+        // // scalebar
+        // const scaleBar = document.querySelector('.ol-scale-line');
+        // if (options.scaleBar) {
+        //   const scaleBarCanvas = await html2canvas(scaleBar, {
+        //     scale: legendScale,
+        //     backgroundColor: 'transparent',
+        //     onclone: () => new Promise(res => setTimeout(() => res(), 400)),
+        //   });
+        //   mapContext.drawImage(
+        //     scaleBarCanvas,
+        //     transformedWidth / 2 - scaleBarCanvas.width / 2,
+        //     transformedHeight - scaleBarCanvas.height - scaleBarHeightOffset,
+        //   );
+        //   // scalebar text
+        //   // const scaleBarText = document.querySelector('.ol-scale-text');
+        //   // const scaleBarTextCanvas = await html2canvas(scaleBarText, {
+        //   //   scale: legendScale,
+        //   //   backgroundColor: 'transparent',
+        //   //   onclone: () => new Promise(res => setTimeout(() => res(), 400)),
+        //   // });
+        //   // mapContext.drawImage(
+        //   //   scaleBarTextCanvas,
+        //   //   transformedWidth / 2 - scaleBarTextCanvas.width / 2,
+        //   //   transformedHeight -
+        //   //     scaleBarTextCanvas.height -
+        //   //     scaleBarCanvas.height -
+        //   //     scaleBarHeightOffset,
+        //   // );
+        // }
 
-        // north arrow
-        if (options.northArrow) {
-          const img = new Image();
-          // img.crossOrigin = 'anonymous';
-          img.src = NorthArrow;
-          await img.decode();
-          mapContext.drawImage(
-            img,
-            transformedWidth - northArrowWidthOffset,
-            northArrowHeightOffset,
-            northArrowWidth * 0.88,
-            (northArrowWidth * img.height) / img.width,
-          );
-        }
+        // // north arrow
+        // if (options.northArrow) {
+        //   const img = new Image();
+        //   // img.crossOrigin = 'anonymous';
+        //   img.src = NorthArrow;
+        //   await img.decode();
+        //   mapContext.drawImage(
+        //     img,
+        //     transformedWidth - northArrowWidthOffset,
+        //     northArrowHeightOffset,
+        //     northArrowWidth * 0.88,
+        //     (northArrowWidth * img.height) / img.width,
+        //   );
+        // }
 
         // // watermark
         // const logo = new Image();
@@ -253,23 +254,24 @@ export function exportMap(map, options = exportOptions) {
         //   transformedHeight - watermarkTextHeightOffset,
         // );
 
-        if (navigator.msSaveBlob) {
-          // link download attribuute does not work on MS browsers
-          navigator.msSaveBlob(mapCanvas.msToBlob(), `${filename}.png`);
-        } else {
-          mapCanvas.toBlob(blob => {
-            const file = new File([blob], `${filename}.png`, {
-              type: 'image/png',
-            });
-            saveAs(file);
-            resolve();
-          });
-        }
+        // if (navigator.msSaveBlob) {
+        // link download attribuute does not work on MS browsers
+        // navigator.msSaveBlob(mapCanvas.msToBlob(), `${filename}.png`);
+        // } else {
+        // mapCanvas.toBlob(blob => {
+        //   const file = new File([blob], `${filename}.png`, {
+        //     type: 'image/png',
+        //   });
+        //   saveAs(file);
+        //   resolve();
+        // });
+        // }
 
         // Reset original map size
         map.setSize(size);
         map.getView().setResolution(viewResolution);
         document.body.style.cursor = 'auto';
+        resolve(mapCanvas);
       }
 
       Array.prototype.forEach.call(olCanvasEl, canvas => {

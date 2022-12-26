@@ -92,6 +92,7 @@ export function withErrorHandler(func) {
       yield put(
         toastActions.error({
           message: errorResponseHandler(err),
+          delay: 20 * 1000,
         }),
       );
     }

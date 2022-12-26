@@ -8,6 +8,7 @@ import useForm from '@Hooks/useForm';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
 import { isEmpty } from '@Utils/commonUtils';
+import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 
 const {
   setProjectMapState,
@@ -18,6 +19,9 @@ const {
 
 export default function EditFeatureSection() {
   const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
+  const projectHeaderHeight = useSelector(
+    state => state.common.projectHeaderHeight,
+  );
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const drawnFeatureWkt = useSelector(
     state => state.projectMap.drawnFeatureWkt,
@@ -57,8 +61,23 @@ export default function EditFeatureSection() {
     );
   };
 
-  const { values, handleChange, handleSubmit, setValues } = useForm({
+  const {
+    values,
+    meta,
+    handleChange,
+    handleSubmit,
+    setValues,
+    setRequiredFields,
+    inputProps,
+  } = useForm({
     initialValues: {},
+    onErrorSubmit: () => {
+      dispatch(
+        toastActions.error({
+          message: 'Please fill out all the required fields.',
+        }),
+      );
+    },
     onSubmit: (data, isFieldsChanged) => {
       const payloadData = {};
       if (sidebarContent === 'add-feature') {
@@ -110,8 +129,12 @@ export default function EditFeatureSection() {
       }),
       {},
     );
+    const mandatoryFields = individualAttributeData
+      .filter(item => item.mandatory)
+      .map(item => item.name);
     setValues(formState);
-  }, [individualAttributeData, setValues]);
+    setRequiredFields(mandatoryFields);
+  }, [individualAttributeData, setValues, setRequiredFields]);
 
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-5">
@@ -119,7 +142,12 @@ export default function EditFeatureSection() {
         <h4>{sidebarContent === 'add-feature' ? 'Add' : 'Edit'} Feature</h4>
       </div>
 
-      <div className="naxatw-overflow-auto scrollbar naxatw-h-[32rem] naxatw-flex naxatw-flex-col naxatw-gap-5">
+      <div
+        className="naxatw-overflow-auto scrollbar naxatw-flex naxatw-flex-col naxatw-gap-5"
+        style={{
+          height: `calc(100vh - ${projectHeaderHeight}px - 9rem)`,
+        }}
+      >
         {sidebarContent === 'add-feature' && !drawnFeatureWkt && (
           <div className="naxatw-flex naxatw-items-center">
             <div className="naxatw-w-full naxatw-space-y-2">
@@ -163,7 +191,12 @@ export default function EditFeatureSection() {
                       name={item.name}
                       value={values[`${item.name}`] || ''}
                       onChange={handleChange}
+                      {...inputProps}
                     />
+                  )}
+
+                  {meta[item.name]?.touched && meta[item.name]?.error && (
+                    <FormErrorMessage message="Required" />
                   )}
                 </div>
               </div>

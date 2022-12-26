@@ -1,64 +1,136 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 /* eslint-disable arrow-body-style */
-import React, { useState } from 'react';
-import useForm from '@Hooks/useForm';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
+import { Creators, Types } from '@Actions/organizationDashboard';
+import {
+  assignProjectListSelector,
+  assignRoleListSelector,
+} from '@Selectors/organizationDashboard';
+import { checkIfLoading } from '@Utils/loaderSelector';
 import Searchbar from '@Components/common/Searchbar/index';
 import Button from '@Components/common/Button/index';
+import FormErrorMessage from '@Components/common/FormErrorMessage/index';
+import Spinner from '@Components/common/Spinner';
 import Checkbox from './Checkbox/index';
 
-const initialState = {
-  email: '',
-  group: '',
-  organization: '',
+const { getAllProjectRequest, setAssignList, postAssignUserRequest } = Creators;
+
+const validation = data => {
+  const errors = {};
+
+  if (data.email.length < 1) {
+    errors.email = 'Please add a email';
+  }
+
+  if (data.group.length < 1) {
+    errors.group = 'Please select a role';
+  }
+
+  // if (data?.project.length < 1) {
+  //   errors.project = 'Please select project';
+  // }
+
+  return errors;
 };
 
-// const userRoles = [
-//   {
-//     id: 'manager',
-//     name: 'Manager',
-//   },
-//   {
-//     id: 'editor',
-//     name: 'Editor',
-//   },
-//   {
-//     id: 'owner',
-//     name: 'Owner',
-//   },
-//   {
-//     id: 'admin ',
-//     name: 'Admin',
-//   },
-// ];
-
-const projects = [
-  {
-    id: 1,
-    name: 'Transportation Management',
-  },
-  {
-    id: 2,
-    name: 'Disaster Relief',
-  },
-  {
-    id: 3,
-    name: 'Bicycle for educational Empowerment',
-  },
-  {
-    id: 4,
-    name: 'Bicycle for transportation',
-  },
-];
-
 const AssignUsers = () => {
+  const { organizationId } = useParams();
+  const assignList = useSelector(assignProjectListSelector);
+  const userRoles = useSelector(assignRoleListSelector);
+  const organizationDetails = useSelector(
+    state => state.organizationDashboard.organizationDetail,
+  );
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.POST_ASSIGN_USER_REQUEST]),
+  );
+  const userListLoading = useSelector(state =>
+    checkIfLoading(state, [
+      Types.GET_ALL_PROJECT_REQUEST,
+      Types.SET_ASSIGN_LIST,
+    ]),
+  );
+  const dispatch = useDispatch();
+  const [errors, setErrors] = useState(null);
   const [email, setEmail] = useState('');
+  const [selectedRolesList, setSelectedRolesList] = useState(userRoles);
+  const [selectedProjectList, setSelectedProjectList] = useState(assignList);
   const [emailList, setEmailList] = useState([]);
-  const userRoles = useSelector(state => state.organizationDashboard.userGroup);
-  const { values, inputProps, handleChange, handleCustomChange, handleSubmit } =
-    useForm({
-      initialValues: initialState,
+
+  const handleSubmit = () => {
+    const data = {
+      email: emailList,
+      group: selectedRolesList.filter(list => list.checked),
+    };
+    const error = validation(data);
+    setErrors(error);
+
+    if (Object.keys(error).length < 1) {
+      const userRole = selectedRolesList.filter(list => list.checked)[0].id;
+      const projectList = selectedProjectList
+        .filter(list => list.checked)
+        .map(i => i.id);
+      if (userRole === 2) {
+        dispatch(
+          postAssignUserRequest({
+            organization: organizationDetails.id,
+            group: userRole,
+            email: emailList.map(i => i.value),
+          }),
+        );
+      } else {
+        dispatch(
+          postAssignUserRequest({
+            organization: organizationDetails.id,
+            group: userRole,
+            project: projectList,
+            email: emailList.map(i => i.value),
+          }),
+        );
+      }
+    }
+  };
+
+  const handleCheckboxClick = data => {
+    const newData = selectedRolesList.map(list => {
+      const { checked } = list;
+      return list.id === data.id
+        ? { ...list, checked: !checked }
+        : { ...list, checked: false };
     });
+    setSelectedRolesList(newData);
+    if (data.id !== 2) {
+      dispatch(
+        getAllProjectRequest({
+          organization: organizationId,
+          paginate: 'False',
+        }),
+      );
+    } else {
+      dispatch(
+        setAssignList({
+          id: organizationDetails?.id,
+          name: organizationDetails?.name,
+        }),
+      );
+    }
+  };
+
+  useEffect(() => {
+    setSelectedProjectList(assignList);
+  }, [assignList]);
+
+  const handleProjectCheckboxClick = data => {
+    const newData = selectedProjectList.map(list => {
+      const { checked } = list;
+      return list.id === data.id ? { ...list, checked: !checked } : { ...list };
+    });
+    setSelectedProjectList(newData);
+  };
+
   return (
     <div className="naxatw-w-[670px] naxatw-mx-auto ">
       <div className="naxatw-space-y-7">
@@ -88,8 +160,8 @@ const AssignUsers = () => {
                   }
                 }
               }}
-              {...inputProps}
             />
+
             <span className="material-icons naxatw-absolute naxatw-left-[13px]">
               mail_outline
             </span>
@@ -114,7 +186,7 @@ const AssignUsers = () => {
               </i>
             </a>
           </div>
-
+          {errors && <FormErrorMessage message={errors.email} />}
           <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-2 ">
             {emailList.map(item => (
               <div
@@ -147,14 +219,18 @@ const AssignUsers = () => {
                 placeholder="Search Role"
               />
               <div className="naxatw-w-full naxatw-space-y-5  naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-2 naxatw-min-h-[200px] naxatw-max-h-[200px] naxatw-overflow-x-auto scrollbar">
-                {userRoles.map(roles => (
+                {selectedRolesList.map(roles => (
                   <Checkbox
+                    key={roles.id}
                     id={roles.id}
                     label={roles.name?.replaceAll('_', ' ')}
+                    onClick={() => handleCheckboxClick(roles)}
+                    checked={roles.checked}
                   />
                 ))}
               </div>
             </div>
+            {errors && <FormErrorMessage message={errors.group} />}
           </div>
           <div className="naxatw-space-y-2 naxatw-pt-5 naxatw-basis-1/2">
             <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
@@ -167,15 +243,44 @@ const AssignUsers = () => {
                 placeholder="Search Projects"
               />
               <div className="naxatw-w-full naxatw-space-y-5  naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-2 naxatw-max-h-[200px] naxatw-min-h-[200px] naxatw-overflow-x-auto scrollbar">
-                {projects.map(project => (
-                  <Checkbox id={project.id} label={project.name} />
-                ))}
+                {!userListLoading ? (
+                  selectedRolesList
+                    ?.map(list => list.checked)
+                    ?.includes(true) ? (
+                    selectedProjectList.map(project => (
+                      <Checkbox
+                        key={project.id}
+                        id={project.id}
+                        label={project.name}
+                        checked={project.checked}
+                        onClick={() => handleProjectCheckboxClick(project)}
+                      />
+                    ))
+                  ) : (
+                    <div className="naxatw-h-full naxatw-w-full naxatw-flex naxatw-items-center naxatw-justify-center">
+                      <span className="naxatw-text-body-lg ">
+                        Select User Role
+                      </span>
+                    </div>
+                  )
+                ) : (
+                  <div className="naxatw-flex naxatw-h-full naxatw-items-center naxatw-justify-center">
+                    <Spinner className="naxatw-w-8 naxatw-h-8 naxatw-fill-primary-400" />
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
         <div className="naxatw-mt-5 naxatw-flex naxatw-justify-center">
-          <Button className="naxatw-w-[86px] naxatw-btn-primary">Assign</Button>
+          <Button
+            className="naxatw-w-[86px] naxatw-btn-primary"
+            isLoading={loading}
+            loaderClassName="naxatw-fill-secondary-400"
+            onClick={handleSubmit}
+          >
+            Assign
+          </Button>
         </div>
       </div>
     </div>

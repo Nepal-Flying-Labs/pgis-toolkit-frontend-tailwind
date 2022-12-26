@@ -113,7 +113,6 @@ export function* getContactPersonRequest({ params }) {
 
 export function* postContactPersonRequest({ params, payload }) {
   try {
-    console.log(payload);
     const formData = prepareFormData(payload);
     const response = yield call(postContactPerson, formData, params);
     yield put(
@@ -166,6 +165,32 @@ export function* getUserGroupRequest({ params }) {
   }
 }
 
+export function* getAllProjectRequest({ params }) {
+  try {
+    const response = yield call(getProjects, params);
+    yield put(organizationDashboardActions.getAllProjectSuccess(response.data));
+  } catch (error) {
+    yield put(organizationDashboardActions.getAllProjectFailure());
+    throw error;
+  }
+}
+
+export function* postAssignUserRequest({ payload }) {
+  const { organization } = payload;
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(postProjectInvite, formdata);
+    yield put(
+      organizationDashboardActions.postProjectInviteSuccess(response.data),
+    );
+    yield put(push(`/organizations/${organization}/user`));
+    yield put(toastActions.success({ message: 'User assigned successful' }));
+  } catch (error) {
+    yield put(organizationDashboardActions.postProjectInviteFailure());
+    throw error;
+  }
+}
+
 function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
@@ -207,6 +232,14 @@ function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_USER_GROUP_REQUEST,
     withLoader(getUserGroupRequest),
+  );
+  yield takeLatest(
+    Types.GET_ALL_PROJECT_REQUEST,
+    withLoader(getAllProjectRequest),
+  );
+  yield takeLatest(
+    Types.POST_ASSIGN_USER_REQUEST,
+    withLoader(withErrorHandler(postAssignUserRequest)),
   );
 }
 

@@ -24,6 +24,7 @@ const initialState = {
     userRole: null,
     ordering: null,
   },
+  assignList: [],
 };
 
 const getOrganizationDetailSuccess = (state, action) => ({
@@ -204,6 +205,16 @@ const getUserGroupSuccess = (state, action) => ({
   userGroup: action.payload,
 });
 
+const getAllProjectSuccess = (state, action) => ({
+  ...state,
+  assignList: action.payload,
+});
+
+const setAssignList = (state, action) => ({
+  ...state,
+  assignList: [action.payload],
+});
+
 const resetOrganizationDashboardState = () => ({
   ...initialState,
 });
@@ -224,6 +235,8 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.SET_USERS_ORDERING]: setUsersOrdering,
   [Types.CLEAR_USERS_FILTER]: clearUsersFilter,
   [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
+  [Types.GET_ALL_PROJECT_SUCCESS]: getAllProjectSuccess,
+  [Types.SET_ASSIGN_LIST]: setAssignList,
   [Types.RESET_ORGANIZATION_DASHBOARD_STATE]: resetOrganizationDashboardState,
 });
 

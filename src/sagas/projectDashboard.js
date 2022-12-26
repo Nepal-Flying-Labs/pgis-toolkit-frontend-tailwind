@@ -227,11 +227,10 @@ export function* downloadDocumentRequest({ params }) {
     throw error;
   }
 }
-export function* uploadDocumentDataRequest({ payload }) {
+export function* uploadDocumentDataRequest({ id, payload }) {
   try {
-    const payloadData = prepareFormData(payload);
-    yield call(uploadDocument, payloadData);
-    const res = yield call(getDocumentItem, { project: payload?.project });
+    yield all(payload.map(data => call(uploadDocument, data)));
+    const res = yield call(getDocumentItem, { project: id });
     yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
     yield put(commonActions.toggleModal());
     yield put(

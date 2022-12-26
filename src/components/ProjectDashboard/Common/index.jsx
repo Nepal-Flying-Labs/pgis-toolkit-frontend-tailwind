@@ -11,11 +11,9 @@ function AdditionalSidebar({ onCloseClick, flag }) {
   // console.log(tabname);
 
   const documentData = useSelector(
-    state => state?.projectDashboard?.document?.item,
+    state => state.projectDashboard.document.item,
   );
-  const galleryData = useSelector(
-    state => state?.projectDashboard?.gallery?.item,
-  );
+  const galleryData = useSelector(state => state.projectDashboard.gallery.item);
 
   const [sidebarData, setSidebarData] = useState([]);
 
@@ -29,7 +27,7 @@ function AdditionalSidebar({ onCloseClick, flag }) {
     return setSidebarData([]);
   }, [tabname, documentData, galleryData]);
 
-  // console.log('sidebar data ', sidebarData);
+  console.log('sidebar data ', sidebarData);
 
   return (
     <div
@@ -84,7 +82,9 @@ function AdditionalSidebar({ onCloseClick, flag }) {
       <div className="naxatw-mb-5">
         <div className="naxatw-text-body-btn naxatw-mb-2">Uploaded on</div>
         <div className="naxatw-text-body-lg">
-          {format(new Date(sidebarData?.uploaded_date), 'MMM dd, yyyy') || '-'}
+          {(sidebarData?.uploaded_date &&
+            format(new Date(sidebarData.uploaded_date), 'MMM dd, yyyy')) ||
+            '-'}
         </div>
       </div>
       <div className="naxatw-py-3 naxatw-gap-1 naxatw-flex naxatw-justify-center naxatw-items-center">

@@ -78,7 +78,7 @@ export const { Types, Creators } = createActions(
     downloadDocumentSuccess: ['payload'],
     downloadDocumentFailure: ['payload'],
 
-    uploadDocumentDataRequest: ['payload'],
+    uploadDocumentDataRequest: ['id', 'payload'],
     uploadDocumentDataSuccess: ['payload'],
     uploadDocumentDataFailure: ['payload'],
   },

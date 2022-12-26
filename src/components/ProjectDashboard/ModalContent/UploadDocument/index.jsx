@@ -8,18 +8,18 @@ import {
   Creators as ProjectDashboardCreators,
   Types,
 } from '@Actions/projectDashboard';
+import toastActions from '@Actions/toast';
 import Dropzone from '@Components/common/Dropzone';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import FileIcon from '@Assets/images/icons/file-icon.svg';
-import Input from '@Components/common/Input';
 import Button from '@Components/common/Button';
 import prepareFormData from '@Utils/prepareFormData';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
-import useForm from '@Hooks/useForm';
 import { format, getDate, getMonth, getYear } from 'date-fns';
+import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 
 const { uploadDocumentDataRequest } = ProjectDashboardCreators;
 
@@ -47,36 +47,22 @@ export default function UploadDocument() {
     'Dec',
   ];
 
-  const initialValue = {
-    title: '',
-    description: '',
-    created_on: '',
-  };
+  const currentDate = new Date();
 
-  const postDocument = () => {
-    const dataToSend = {
-      name: values.title,
-      project: projectId,
-      description: values.description,
-      published_year: getYear(new Date(values.created_on)),
-      published_month: monthNames[getMonth(new Date(values.created_on))],
-      published_day: getDate(new Date(values.created_on)),
-      file: uploadedFiles[0].file,
-    };
-    // console.log(dataToSend);
-    // const payloadData = prepareFormData(dataToSend);
-    dispatch(uploadDocumentDataRequest(dataToSend));
+  const handleDelete = id => {
+    setUploadedFiles(prev => prev.filter(item => item.id !== id));
   };
-
-  const { values, inputProps, handleChange, handleCustomChange, handleSubmit } =
-    useForm({
-      initialValues: initialValue,
-      // required: ['title'],
-      onSubmit: postDocument,
-    });
 
   const handleUpload = e => {
     const { files } = e.target;
+    if (files.length + uploadedFiles.length > 5) {
+      dispatch(
+        toastActions.error({
+          message: 'Only 5 files can be uploaded at a time.',
+        }),
+      );
+      return;
+    }
     Array.from(files).forEach((file, index) => {
       const [filename, extension] = file.name.split('.');
       const prevId = uploadedFiles.at(-1)?.id || 0;
@@ -85,51 +71,67 @@ export default function UploadDocument() {
         name: filename,
         extension,
         file,
+        description: '',
+        created_on: '',
+        // initial states
       };
-      return setUploadedFiles([fileObj]);
+      setUploadedFiles(prev => [...prev, fileObj]);
     });
   };
 
-  const handleDelete = id => {
-    setUploadedFiles(prev => prev.filter(item => item.id !== id));
+  const handleChange = e => {
+    const { id, name, value } = e.target;
+    setUploadedFiles(prev =>
+      prev.map(item =>
+        item.id === +id ? { ...item, [name]: value } : { ...item },
+      ),
+    );
   };
 
-  // const handleSubmit = () => {
-  //   if (isUploading) return;
-  //   let errorCount = 0;
-  //   const errors = uploadedFiles.reduce((obj, item) => {
-  //     const fields = [];
-  //     if (!item.name) fields.push('name');
-  //     if (!item.category) fields.push('category');
-  //     if (item.extension === 'csv') {
-  //       if (!item.latField) fields.push('latField');
-  //       if (!item.lonField) fields.push('lonField');
-  //     }
-  //     if (fields.length) errorCount += 1;
-  //     return {
-  //       ...obj,
-  //       [item.id]: fields,
-  //     };
-  //   }, {});
-  //   if (errorCount === 0) {
-  //     const payloadData = uploadedFiles.map(item => {
-  //       const data = {
-  //         name: item.name,
-  //         theme: item.category,
-  //         display_on_map: item.addToMap,
-  //         file: item.file,
-  //         layer_type: 'Vector',
-  //         source: 'computer',
-  //         lat_field: item.latField.name,
-  //         lon_field: item.lonField.name,
-  //       };
-  //       return prepareFormData(data);
-  //     });
-  //     dispatch(uploadDatasetsRequest(payloadData));
-  //   } else {
-  //     setErrorFields(errors);
-  //   }
-  // };
+  const handleDateSelect = (id, name, value) => {
+    setUploadedFiles(prev =>
+      prev.map(item =>
+        item.id === +id ? { ...item, [name]: value } : { ...item },
+      ),
+    );
+  };
+
+  const handleSubmit = () => {
+    if (isUploading) return;
+    let errorCount = 0;
+    const errors = uploadedFiles.reduce((obj, item) => {
+      const fields = [];
+      // form validation
+      if (!item.name) fields.push('name');
+      if (fields.length) errorCount += 1;
+      return {
+        ...obj,
+        [item.id]: fields,
+      };
+    }, {});
+    setErrorFields(errors);
+    if (errorCount === 0) {
+      const payloadData = uploadedFiles.map(item => {
+        const data = {
+          name: item.name,
+          project: projectId,
+          description: item.description,
+          published_year: getYear(new Date(item.created_on)),
+          published_month: monthNames[getMonth(new Date(item.created_on))],
+          published_day: getDate(new Date(item.created_on)),
+          file: item.file,
+        };
+        return prepareFormData(data);
+      });
+      dispatch(uploadDocumentDataRequest(projectId, payloadData));
+    } else {
+      dispatch(
+        toastActions.error({
+          message: 'Please fill out all the required fields.',
+        }),
+      );
+    }
+  };
 
   return (
     <div>
@@ -142,99 +144,119 @@ export default function UploadDocument() {
         className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-5 naxatw-overflow-auto scrollbar naxatw-max-h-96"
         style={{ maxHeight: `${height / 16 - 22}rem` }}
       >
-        <Input
-          id="title"
-          label="Title of Document"
-          name="title"
-          value={values?.title || ''}
-          placeholder="Enter title of document"
-          onChange={handleChange}
-          className=""
-          required={false}
-          type="text"
-          {...inputProps}
-        />
-
-        <Input
-          id="document"
-          label="About the Document"
-          name="description"
-          value={values?.description || ''}
-          placeholder="Write a short description about document"
-          onChange={handleChange}
-          className=""
-          required={false}
-          type="text"
-          {...inputProps}
-        />
-
         <div className="naxatw-space-y-2">
           <label className="naxatw-label">Upload a document</label>
           <Dropzone
             label="Please upload a document (DOCX, PDF, Excel or CSV file format)"
             accept=".docx, .pdf, .csv, .pdf, .xlxs"
-            multiple={false}
+            multiple
             onChange={handleUpload}
           />
-
-          {uploadedFiles?.map(({ id, file }) => (
-            <div key={id} className="naxatw-flex naxatw-flex-col naxatw-gap-2">
+          {uploadedFiles?.map(
+            ({
+              id,
+              name,
+              description,
+              // eslint-disable-next-line camelcase
+              created_on,
+              file,
+            }) => (
               <div
-                className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-pr-5
-                naxatw-flex naxatw-gap-y-2"
+                key={id}
+                className="naxatw-flex naxatw-flex-col naxatw-gap-2"
               >
-                <div className="naxatw-flex naxatw-gap-5 naxatw-w-4/5 naxatw-pr-2">
-                  <div className="naxatw-flex naxatw-items-center naxatw-pl-4">
-                    {/* <img
-                    src={noImg}
-                    alt="file-icon"
-                    width="60px"
-                    className="naxatw-bg-slate-500 naxatw-rounded-tl-[8px] naxatw-rounded-bl-[8px] naxatw-h-full naxatw-object-cover"
-                  /> */}
-                    <img src={FileIcon} alt="file-icon" />
+                <div
+                  className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-px-5 naxatw-py-3
+                naxatw-flex naxatw-flex-col naxatw-gap-2"
+                >
+                  <div className="naxatw-flex naxatw-justify-between">
+                    <div className="naxatw-flex naxatw-gap-5">
+                      <img src={FileIcon} alt="file-icon" />
+                      <div>
+                        <p className="naxatw-font-bold naxatw-text-[15px]">
+                          {file.name}
+                        </p>
+                        <p className="naxatw-text-body-md naxatw-text-grey-600">
+                          Uploaded on {currentDate.toLocaleDateString('en-US')}
+                        </p>
+                      </div>
+                    </div>
+                    <a
+                      className="naxatw-flex naxatw-items-center naxatw-p-2"
+                      onClick={() => handleDelete(id)}
+                    >
+                      <MaterialIcon
+                        className="naxatw-text-delete_btn"
+                        name="delete_outline"
+                      />
+                    </a>
                   </div>
-                  <div className="naxatw-py-2">
-                    <p className="naxatw-font-bold naxatw-text-[15px]">
-                      {file.name}
-                    </p>
-                    <p className="naxatw-text-body-md naxatw-text-grey-600">
-                      Uploaded on 16/11/2022
-                    </p>
-                  </div>
-                </div>
 
-                <div className="naxatw-flex naxatw-gap-5 naxatw-items-center naxatw-w-1/5">
-                  <MaterialIcon
-                    // onIconClick={() => handleDelete(id)}
-                    wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                    className="naxatw-text-[22px]"
-                    name="file_download"
-                  />
-                  <MaterialIcon
-                    onIconClick={() => handleDelete(id)}
-                    wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                    className="naxatw-text-[22px] naxatw-text-[#FF0F0F]"
-                    name="delete_outline"
-                  />
+                  <div className="naxatw-flex naxatw-gap-3">
+                    <div className="naxatw-space-y-2 naxatw-grow">
+                      <label className="naxatw-label">Title*</label>
+                      <input
+                        type="text"
+                        className="naxatw-input"
+                        id={id}
+                        name="name"
+                        value={name || ''}
+                        placeholder="Enter Data Name"
+                        onChange={handleChange}
+                      />
+                      {errorFields?.[id]?.includes('name') && (
+                        <FormErrorMessage message="Required" />
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="naxatw-flex naxatw-gap-3">
+                    <div className="naxatw-space-y-2 naxatw-grow">
+                      <label className="naxatw-label">About the Document</label>
+                      <textarea
+                        type="text"
+                        rows="3"
+                        className="naxatw-input naxatw-h-[100px]"
+                        id={id}
+                        name="description"
+                        value={description || ''}
+                        placeholder="Write a short description about document"
+                        onChange={handleChange}
+                      />
+                      {errorFields?.[id]?.includes('description') && (
+                        <FormErrorMessage message="Required" />
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="naxatw-flex naxatw-gap-3">
+                    <div className="naxatw-space-y-2 naxatw-grow">
+                      <label className="naxatw-label">Created on</label>
+                      <CustomCalendar
+                        onChange={date => {
+                          handleDateSelect(
+                            id,
+                            'created_on',
+                            format(date, 'yyyy-MM-dd'),
+                          );
+                        }}
+                        startDate={new Date()}
+                        // eslint-disable-next-line camelcase
+                        selected={created_on}
+                      />
+                      {errorFields?.[id]?.includes('created_on') && (
+                        <FormErrorMessage message="Required" />
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="naxatw-space-y-2">
-          <label className="naxatw-label">Created on</label>
-          <CustomCalendar
-            onChange={date => {
-              handleCustomChange('created_on', format(date, 'yyyy-MM-dd'));
-            }}
-            startDate={new Date()}
-            selected={values?.created_on}
-          />
+            ),
+          )}
         </div>
       </div>
 
-      {!isEmpty(uploadedFiles) && Object.keys(values).length !== 0 && (
+      {!isEmpty(uploadedFiles) && (
         <div className="naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
           <Button
             className="naxatw-btn-primary"

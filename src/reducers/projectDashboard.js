@@ -187,6 +187,14 @@ const getDocumentByIdSuccess = (state, action) => ({
   document: { ...state.document, item: action.payload },
 });
 
+const uploadDocumentDataSuccess = (state, action) => ({
+  ...state,
+  document: {
+    ...state.document,
+    list: [...state.document.list, action.payload],
+  },
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -206,6 +214,7 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_GALLERY_ITEM_SUCCESS]: getGalleryItemSuccess,
   [Types.GET_DOCUMENT_ITEM_SUCCESS]: getDocumentItemSuccess,
   [Types.GET_DOCUMENT_BY_ID_SUCCESS]: getDocumentByIdSuccess,
+  [Types.UPLOAD_DOCUMENT_DATA_SUCCESS]: uploadDocumentDataSuccess,
 });
 
 export default projectDashboardReducer;

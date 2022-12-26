@@ -20,6 +20,7 @@ const initialState = {
   },
   document: {
     list: [],
+    item: [],
   },
   contactPerson: [],
 };
@@ -181,6 +182,11 @@ const getDocumentItemSuccess = (state, action) => ({
   document: { ...state.document, list: action.payload },
 });
 
+const getDocumentByIdSuccess = (state, action) => ({
+  ...state,
+  document: { ...state.document, item: action.payload },
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -199,6 +205,7 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_CONTACT_PERSON_INFO_SUCCESS]: getContactPersonInfoSuccess,
   [Types.GET_GALLERY_ITEM_SUCCESS]: getGalleryItemSuccess,
   [Types.GET_DOCUMENT_ITEM_SUCCESS]: getDocumentItemSuccess,
+  [Types.GET_DOCUMENT_BY_ID_SUCCESS]: getDocumentByIdSuccess,
 });
 
 export default projectDashboardReducer;

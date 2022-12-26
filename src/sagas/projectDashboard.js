@@ -21,6 +21,8 @@ import {
   getContactPersonInfo,
   getDocumentItem,
   getGalleryItem,
+  getIndividualDocument,
+  downloadDocument,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -198,6 +200,32 @@ export function* getDocumentItemRequest({ params }) {
   }
 }
 
+export function* getDocumentByIdRequest({ id }) {
+  try {
+    const response = yield call(getIndividualDocument, id);
+    yield put(projectDashboardActions.getDocumentByIdSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getDocumentByIdFailure());
+    throw error;
+  }
+}
+
+export function* downloadDocumentRequest({ params }) {
+  try {
+    const response = yield call(downloadDocument, params);
+    const responseData = response.data;
+    const url = window.URL.createObjectURL(new Blob([responseData]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Documents'); // or any other extension
+    document.body.appendChild(link);
+    link.click();
+    yield put(toastActions.success({ message: 'Export Completed.' }));
+  } catch (error) {
+    yield put(projectDashboardActions.downloadDocumentFailure());
+    throw error;
+  }
+}
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -250,6 +278,14 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_DOCUMENT_ITEM_REQUEST,
     withLoader(withErrorHandler(getDocumentItemRequest)),
+  );
+  yield takeLatest(
+    Types.GET_DOCUMENT_BY_ID_REQUEST,
+    withLoader(withErrorHandler(getDocumentByIdRequest)),
+  );
+  yield takeLatest(
+    Types.DOWNLOAD_DOCUMENT_REQUEST,
+    withLoader(withErrorHandler(downloadDocumentRequest)),
   );
 }
 

@@ -67,6 +67,16 @@ export const { Types, Creators } = createActions(
     getDocumentItemRequest: ['params'],
     getDocumentItemSuccess: ['payload'],
     getDocumentItemFailure: ['payload'],
+
+    // project-individual-document
+    getDocumentByIdRequest: ['id'],
+    getDocumentByIdSuccess: ['payload'],
+    getDocumentByIdFailure: ['payload'],
+
+    // project-individual-document
+    downloadDocumentRequest: ['params'],
+    downloadDocumentSuccess: ['payload'],
+    downloadDocumentFailure: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

@@ -16,10 +16,14 @@ import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { format } from 'date-fns';
 import CustomCheckbox from '@Components/common/CustomCheckbox/index';
 import { isEmpty } from '@Utils/commonUtils';
+import { useParams } from 'react-router';
 
 function DocumentList({ openSidebar }) {
+  const { projectId } = useParams();
+
   const dispatch = useDispatch();
-  const { setSearchText } = Creators;
+  const { setSearchText, getDocumentByIdRequest, downloadDocumentRequest } =
+    Creators;
   const searchText = useSelector(state => state?.projectDashboard?.searchText);
   const documents = useSelector(
     state => state?.projectDashboard?.document?.list,
@@ -45,7 +49,20 @@ function DocumentList({ openSidebar }) {
     return setDownloadIdList([...downloadIdList, id]);
   };
 
-  const handleDownload = id => {};
+  const handleDownload = id => {
+    dispatch(
+      downloadDocumentRequest({ document: [id].join(), project: projectId }),
+    );
+  };
+
+  const handleDownloadAll = () => {
+    dispatch(
+      downloadDocumentRequest({
+        document: isEmpty(downloadIdList) ? 'all' : downloadIdList?.join(),
+        project: projectId,
+      }),
+    );
+  };
 
   return (
     <div className="">
@@ -61,11 +78,11 @@ function DocumentList({ openSidebar }) {
           <Button
             className="naxatw-btn-secondary naxatw-btn-noborder "
             iconLeft="download"
-            // onClick={onFileUpload}
+            onClick={handleDownloadAll}
           >
             <span className="naxatw-text-[15px] naxatw-font-bold naxatw-text-[#00A699]">
               Download
-              {isEmpty(downloadIdList) ? ' All' : ` ${downloadIdList?.length}`}
+              {isEmpty(downloadIdList) ? ' All' : ` Selected`}
             </span>
           </Button>
         </div>
@@ -83,7 +100,9 @@ function DocumentList({ openSidebar }) {
             {!loading ? (
               <Table
                 data={documents || []}
-                onRowClick={() => {
+                onRowClick={data => {
+                  console.log(data);
+                  dispatch(getDocumentByIdRequest(data.id));
                   openSidebar(true);
                 }}
                 className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"

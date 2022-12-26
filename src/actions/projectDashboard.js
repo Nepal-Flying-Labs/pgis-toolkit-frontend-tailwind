@@ -47,6 +47,26 @@ export const { Types, Creators } = createActions(
     resetProjectDashboardState: null,
 
     setSearchText: ['payload'],
+
+    // project-info
+    getProjectInfoRequest: ['id'],
+    getProjectInfoSuccess: ['payload'],
+    getProjectInfoFailure: ['payload'],
+
+    // project-contact-person
+    getContactPersonInfoRequest: ['params'],
+    getContactPersonInfoSuccess: ['payload'],
+    getContactPersonInfoFailure: ['payload'],
+
+    // project-gallery
+    getGalleryItemRequest: ['params'],
+    getGalleryItemSuccess: ['payload'],
+    getGalleryItemFailure: ['payload'],
+
+    // project-document
+    getDocumentItemRequest: ['params'],
+    getDocumentItemSuccess: ['payload'],
+    getDocumentItemFailure: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

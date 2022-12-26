@@ -1,19 +1,20 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
-import { Creators } from '@Actions/organizationDashboard';
+import { Creators } from '@Actions/projectDashboard';
 import ProjectInfo from './ProjectInfo/index';
 import LocationInfo from './LocationInfo/index';
 
-const { getUsersRequest } = Creators;
+const { getProjectInfoRequest, getContactPersonInfoRequest } = Creators;
 
 export default function Info() {
-  const { organizationId } = useParams();
-  const users = useSelector(state => state.organizationDashboard.users);
+  const { projectId } = useParams();
+
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!users) dispatch(getUsersRequest({ organization: organizationId }));
-  }, [dispatch, organizationId, users]);
+    dispatch(getProjectInfoRequest(projectId));
+    dispatch(getContactPersonInfoRequest({ project: projectId }));
+  }, [dispatch, projectId]);
   return (
     <div className="naxatw-h-[93vh] naxatw-bg-[#F5F5F5]   naxatw-flex naxatw-gap-x-5 naxatw-py-3 naxatw-px-10">
       <ProjectInfo />

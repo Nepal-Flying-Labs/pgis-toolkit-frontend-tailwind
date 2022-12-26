@@ -9,7 +9,7 @@ export default function MaterialIcon({
   onIconClick,
 }) {
   return (
-    <button
+    <span
       type="button"
       onClick={onIconClick}
       className={`naxatw-flex naxatw-items-center ${wrapperClassName}`}
@@ -17,7 +17,7 @@ export default function MaterialIcon({
       <i className={`material-icons ${className}`} style={style}>
         {name}
       </i>
-    </button>
+    </span>
   );
 }
 

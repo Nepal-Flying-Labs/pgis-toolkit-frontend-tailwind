@@ -80,7 +80,7 @@ export default function MapSidebar() {
         />
 
         <Button
-          className="naxatw-btn-primary naxatw-btn-sm naxatw-w-[185px]"
+          className="naxatw-btn-primary naxatw-btn-sm naxatw-min-w-fit"
           iconLeft="add"
           onClick={() => dispatch(toggleModal('create-project'))}
         >
@@ -136,7 +136,7 @@ export default function MapSidebar() {
         className={`naxatw-mt-5 naxatw-overflow-y-auto scrollbar ${
           viewType === 'list'
             ? ' naxatw-flex naxatw-flex-col naxatw-gap-2 '
-            : 'naxatw-grid naxatw-grid-cols-2 naxatw-gap-y-4'
+            : 'naxatw-flex naxatw-flex-wrap naxatw-gap-2'
         }`}
         style={{
           height: `calc(100vh - ${projectHeaderHeight}px - 9rem)`,

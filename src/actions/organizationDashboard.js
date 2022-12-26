@@ -53,6 +53,10 @@ export const { Types, Creators } = createActions(
     clearUsersFilter: null,
 
     resetOrganizationDashboardState: null,
+
+    getUserGroupRequest: ['params'],
+    getUserGroupSuccess: ['payload'],
+    getUserGroupFailure: null,
   },
   { prefix: 'organizationDashboard/' },
 );

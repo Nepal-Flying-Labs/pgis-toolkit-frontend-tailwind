@@ -2,6 +2,7 @@
 /* eslint-disable arrow-body-style */
 
 import React from 'react';
+import Button from '@Components/common/Button/index';
 import pcIcon from '@Assets/images/perspective_matte.png';
 import fileIcon from '@Assets/images/group.png';
 
@@ -9,37 +10,47 @@ const StepOne = ({ option, setOption }) => {
   // const [option, setOption] = useState(null);
   return (
     <div className="naxatw-container ">
-      <div className="naxatw-w-[800px] naxatw-mx-auto">
+      <div className="md:naxatw-w-[800px] md:naxatw-mx-auto">
         <h4 className="naxatw-mb-2">Get Started & Manage Data</h4>
         <p className="naxatw-text-body-lg">
           USAFIRI allows you to import data in two different ways. Prior to data
           management, please make sure you go through the data requirement
           document and necessary list of datasets and templates.
         </p>
-        <div className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-my-5">
-          <div className="naxatw-w-[490px]">
+        <div className="naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-items-center naxatw-gap-x-3 naxatw-my-5">
+          <div className="">
             <p className="naxatw-text-body-btn">Data Requirement document </p>
             <span className="naxatw-text-body-md">
               USAFIRI allows you to import data from multiple sources. Prior to
               data management, please make sure you
             </span>
           </div>
-          <a className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
+          <Button
+            iconLeft="description"
+            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm naxatw-w-[198px]"
+          >
+            Read Document
+          </Button>
+          <Button
+            iconLeft="download"
+            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm "
+          >
+            Download
+          </Button>
+          {/* <a className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
             <span className="material-icons naxatw-text-[#00A699]">
               description
             </span>
             <span className="naxatw-text-[#00A699]">Read Document</span>
-          </a>
-          <a className="naxatw-flex naxatw-items-center naxatw-gap-x-2 ">
-            <span className="material-icons naxatw-text-[#00A699]">
-              download
-            </span>
+          </a> */}
+          {/* <a className="naxatw-flex naxatw-items-center naxatw-gap-x-2 ">
+            <span className="material-icons naxatw-text">download</span>
             <span className="naxatw-text-[#00A699]">Read Document</span>
-          </a>
+          </a> */}
         </div>
-        <div className="naxatw-py-5 naxatw-flex naxatw-gap-x-3">
+        <div className="naxatw-py-5 naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-x-3">
           <div
-            className={`naxatw-basis-2/4 naxatw-border naxatw-rounded-md naxatw-py-3 naxatw-pl-4 naxatw-pr-2  ${
+            className={`naxatw-basis-2/4 naxatw-border naxatw-rounded-md naxatw-py-3 naxatw-pl-4 naxatw-pr-2 hover:naxatw-bg-grey-100  ${
               option === 'collect-dataset'
                 ? 'naxatw-bg-[#F5F5F5] naxatw-border-[#484848]'
                 : ''
@@ -69,9 +80,9 @@ const StepOne = ({ option, setOption }) => {
           </div>
           <div
             onClick={() => setOption('have-dataset')}
-            className={`naxatw-basis-2/4 naxatw-border naxatw-rounded-md naxatw-py-3 naxatw-pl-4 naxatw-pr-2 ${
+            className={`naxatw-basis-2/4 naxatw-border naxatw-rounded-md naxatw-py-3 naxatw-pl-4 naxatw-pr-2 hover:naxatw-bg-grey-100  ${
               option === 'have-dataset'
-                ? 'naxatw-bg-[#F5F5F5] naxatw-border-[#484848]'
+                ? 'naxatw-bg-grey-100 naxatw-border-grey-800'
                 : ''
             }`}
           >

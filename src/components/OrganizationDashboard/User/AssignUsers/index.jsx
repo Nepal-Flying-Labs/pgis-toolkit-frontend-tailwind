@@ -2,34 +2,35 @@
 /* eslint-disable arrow-body-style */
 import React, { useState } from 'react';
 import useForm from '@Hooks/useForm';
+import { useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import Button from '@Components/common/Button/index';
 import Checkbox from './Checkbox/index';
 
 const initialState = {
   email: '',
-  assignAs: '',
-  assignTo: '',
+  group: '',
+  organization: '',
 };
 
-const userRoles = [
-  {
-    id: 'manager',
-    name: 'Manager',
-  },
-  {
-    id: 'editor',
-    name: 'Editor',
-  },
-  {
-    id: 'owner',
-    name: 'Owner',
-  },
-  {
-    id: 'admin ',
-    name: 'Admin',
-  },
-];
+// const userRoles = [
+//   {
+//     id: 'manager',
+//     name: 'Manager',
+//   },
+//   {
+//     id: 'editor',
+//     name: 'Editor',
+//   },
+//   {
+//     id: 'owner',
+//     name: 'Owner',
+//   },
+//   {
+//     id: 'admin ',
+//     name: 'Admin',
+//   },
+// ];
 
 const projects = [
   {
@@ -53,6 +54,7 @@ const projects = [
 const AssignUsers = () => {
   const [email, setEmail] = useState('');
   const [emailList, setEmailList] = useState([]);
+  const userRoles = useSelector(state => state.organizationDashboard.userGroup);
   const { values, inputProps, handleChange, handleCustomChange, handleSubmit } =
     useForm({
       initialValues: initialState,
@@ -144,16 +146,19 @@ const AssignUsers = () => {
                 className="naxatw-h-[40px]"
                 placeholder="Search Role"
               />
-              <div className="naxatw-w-full naxatw-space-y-5  naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-2 naxatw-max-h-[300px] naxatw-overflow-x-auto scrollbar">
+              <div className="naxatw-w-full naxatw-space-y-5  naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-2 naxatw-min-h-[200px] naxatw-max-h-[200px] naxatw-overflow-x-auto scrollbar">
                 {userRoles.map(roles => (
-                  <Checkbox id={roles.id} label={roles.name} />
+                  <Checkbox
+                    id={roles.id}
+                    label={roles.name?.replaceAll('_', ' ')}
+                  />
                 ))}
               </div>
             </div>
           </div>
           <div className="naxatw-space-y-2 naxatw-pt-5 naxatw-basis-1/2">
             <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
-              Assign as
+              Assign to
             </label>
             <div className="naxatw-space-y-2">
               <Searchbar
@@ -161,7 +166,7 @@ const AssignUsers = () => {
                 className="naxatw-h-[40px]"
                 placeholder="Search Projects"
               />
-              <div className="naxatw-w-full naxatw-space-y-5  naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-2 naxatw-max-h-[300px] naxatw-overflow-x-auto scrollbar">
+              <div className="naxatw-w-full naxatw-space-y-5  naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-2 naxatw-max-h-[200px] naxatw-min-h-[200px] naxatw-overflow-x-auto scrollbar">
                 {projects.map(project => (
                   <Checkbox id={project.id} label={project.name} />
                 ))}

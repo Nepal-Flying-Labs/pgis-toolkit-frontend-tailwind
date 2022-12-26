@@ -12,6 +12,7 @@ import {
   patchContactPerson,
   getCountryList,
   getUsers,
+  getUserGroup,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
@@ -156,6 +157,15 @@ export function* getUsersRequest({ params }) {
   }
 }
 
+export function* getUserGroupRequest({ params }) {
+  try {
+    const response = yield call(getUserGroup, params);
+    yield put(organizationDashboardActions.getUserGroupSuccess(response.data));
+  } catch (error) {
+    yield put(organizationDashboardActions.getUserGroupFailure());
+  }
+}
+
 function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
@@ -194,6 +204,10 @@ function* organizationDashboardWatcher() {
     withLoader(withErrorHandler(getCountryListRequest)),
   );
   yield takeLatest(Types.GET_USERS_REQUEST, withLoader(getUsersRequest));
+  yield takeLatest(
+    Types.GET_USER_GROUP_REQUEST,
+    withLoader(getUserGroupRequest),
+  );
 }
 
 export default organizationDashboardWatcher;

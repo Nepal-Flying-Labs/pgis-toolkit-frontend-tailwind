@@ -27,9 +27,11 @@ export default function DropdownOptions({ options, data, stopPropagation }) {
       </a>
       <div
         className={`${
-          toggle ? '' : 'naxatw-hidden'
-        } naxatw-absolute naxatw-top-[2px] naxatw-right-[40px] naxatw-z-50 naxatw-w-[12.5rem]
-          naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100 naxatw-shadow-3xl`}
+          toggle
+            ? '-naxatw-translate-x-1'
+            : 'naxatw-invisible naxatw-translate-x-3'
+        } naxatw-absolute naxatw-top-[2px] naxatw-right-[40px] naxatw-z-10 naxatw-w-[12.5rem]
+          naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100 naxatw-shadow-3xl naxatw-transition-all naxatw-ease-in-out naxatw-duration-200`}
       >
         <ul
           className="naxatw-py-2 naxatw-text-sm naxatw-text-grey-700"
@@ -39,7 +41,7 @@ export default function DropdownOptions({ options, data, stopPropagation }) {
             <li
               role="presentation"
               key={id}
-              className="naxatw-block naxatw-py-2.5 naxatw-px-3 hover:naxatw-bg-grey-100 naxatw-cursor-pointer"
+              className="naxatw-block naxatw-py-2 naxatw-px-3 hover:naxatw-bg-grey-100 naxatw-cursor-pointer"
               onClick={e => {
                 onClick(data);
                 if (stopPropagation) e.stopPropagation();

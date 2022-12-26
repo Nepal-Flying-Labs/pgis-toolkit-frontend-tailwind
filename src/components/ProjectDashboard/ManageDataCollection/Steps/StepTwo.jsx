@@ -4,9 +4,10 @@
 import Searchbar from '@Components/common/Searchbar/index';
 import { useDispatch } from 'react-redux';
 import Table, { TableHeader } from '@Components/common/Table/Table';
+import Button from '@Components/common/Button/index';
 import { Creators as CommonCreators } from '@Actions/common';
 import SortingContainer from '@Components/common/SortingContainer/index';
-import React from 'react';
+import React, { useState } from 'react';
 
 const { toggleModal } = CommonCreators;
 
@@ -47,7 +48,7 @@ const StepTwo = () => {
           <Searchbar />
         </div>
       </div>
-      <div className="naxa-table ">
+      <div className="naxa-table naxatw-overflow-x-auto scrollbar">
         <Table
           data={data || []}
           className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
@@ -98,28 +99,36 @@ const StepTwo = () => {
             rowcolSpan="rowSpan_3"
             dataFormat={row => (
               <div className="naxatw-flex naxatw-justify-end naxatw-gap-x-2 naxatw-items-center">
-                <a className="naxatw-px-2 naxatw-py-[11px]">
+                {/* <a className="naxatw-px-2 naxatw-py-[11px]">
                   <span
                     className="naxatw-text-secondary-400 naxatw-text-body-btn"
                     onClick={() => dispatch(toggleModal('add-wms-layer'))}
                   >
                     Import From OSM
                   </span>
-                </a>
-
-                <a
+                </a> */}
+                <Button className="naxatw-btn-secondary naxatw-btn-noborder ">
+                  Import From OSM
+                </Button>
+                <Button className="naxatw-btn-secondary naxatw-btn-noborder">
+                  Manage Attributes
+                </Button>
+                <Button className="naxatw-btn-secondary naxatw-btn-noborder">
+                  Map
+                </Button>
+                {/* <a
                   className="naxatw-px-2 naxatw-py-[11px]"
                   onClick={() => dispatch(toggleModal('manage-attributes'))}
                 >
                   <span className="naxatw-text-secondary-400 naxatw-text-body-btn">
                     Manage attributes
                   </span>
-                </a>
-                <a className="naxatw-px-2 naxatw-py-[11px]">
+                </a> */}
+                {/* <a className="naxatw-px-2 naxatw-py-[11px]">
                   <span className="material-icons naxatw-text-[24px] naxatw-leading-[24px] naxatw-text-secondary-400">
                     map
                   </span>
-                </a>
+                </a> */}
               </div>
             )}
           />

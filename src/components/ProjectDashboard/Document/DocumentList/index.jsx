@@ -45,6 +45,8 @@ function DocumentList({ openSidebar }) {
     return setDownloadIdList([...downloadIdList, id]);
   };
 
+  const handleDownload = id => {};
+
   return (
     <div className="">
       <div className="naxatw-py-2 naxatw-flex naxatw-justify-between">
@@ -180,7 +182,6 @@ function DocumentList({ openSidebar }) {
                     <div className="naxatw-flex naxatw-gap-3 naxatw-py-2">
                       <MaterialIcon
                         onIconClick={e => {
-                          console.log('icon clicked', row.id, 'event :', e);
                           e.stopPropagation();
                         }}
                         wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
@@ -188,13 +189,18 @@ function DocumentList({ openSidebar }) {
                         name="edit"
                       />
                       <MaterialIcon
-                        // onIconClick={() => console.log('icon clicked')}
+                        onIconClick={e => {
+                          e.stopPropagation();
+                        }}
                         wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
                         className="naxatw-text-[22px] naxatw-text-delete_btn"
                         name="delete_outline"
                       />
                       <MaterialIcon
-                        // onIconClick={() => console.log('icon clicked')}
+                        onIconClick={e => {
+                          handleDownload(row.id);
+                          e.stopPropagation();
+                        }}
                         wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
                         className="naxatw-text-[22px]"
                         name="file_download"

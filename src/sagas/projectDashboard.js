@@ -17,6 +17,10 @@ import {
   getLayerById,
   getUploadErrorResponse,
   permanentDataDelete,
+  getProjectInfo,
+  getContactPersonInfo,
+  getDocumentItem,
+  getGalleryItem,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -152,6 +156,48 @@ export function* updateDataRequest({ id, payload }) {
   }
 }
 
+export function* getProjectInfoRequest({ id }) {
+  try {
+    const response = yield call(getProjectInfo, id);
+    yield put(projectDashboardActions.getProjectInfoSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getProjectInfoFailure());
+    throw error;
+  }
+}
+
+export function* getContactPersonInfoRequest({ params }) {
+  try {
+    const response = yield call(getContactPersonInfo, params);
+    yield put(
+      projectDashboardActions.getContactPersonInfoSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.getContactPersonInfoFailure());
+    throw error;
+  }
+}
+
+export function* getGalleryItemRequest({ params }) {
+  try {
+    const response = yield call(getGalleryItem, params);
+    yield put(projectDashboardActions.getGalleryItemSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getGalleryItemFailure());
+    throw error;
+  }
+}
+
+export function* getDocumentItemRequest({ params }) {
+  try {
+    const response = yield call(getDocumentItem, params);
+    yield put(projectDashboardActions.getDocumentItemSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getDocumentItemFailure());
+    throw error;
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -188,6 +234,22 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.UPDATE_DATA_REQUEST,
     withLoader(withErrorHandler(updateDataRequest)),
+  );
+  yield takeLatest(
+    Types.GET_PROJECT_INFO_REQUEST,
+    withLoader(withErrorHandler(getProjectInfoRequest)),
+  );
+  yield takeLatest(
+    Types.GET_CONTACT_PERSON_INFO_REQUEST,
+    withLoader(withErrorHandler(getContactPersonInfoRequest)),
+  );
+  yield takeLatest(
+    Types.GET_GALLERY_ITEM_REQUEST,
+    withLoader(withErrorHandler(getGalleryItemRequest)),
+  );
+  yield takeLatest(
+    Types.GET_DOCUMENT_ITEM_REQUEST,
+    withLoader(withErrorHandler(getDocumentItemRequest)),
   );
 }
 

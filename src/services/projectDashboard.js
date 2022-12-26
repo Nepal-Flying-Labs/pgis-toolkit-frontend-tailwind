@@ -13,3 +13,19 @@ export const getUploadErrorResponse = params =>
 
 export const permanentDataDelete = id =>
   authenticated(api).delete(`maps/layer/${id}/`);
+
+// project-dashboard-info
+export const getProjectInfo = id =>
+  authenticated(api).get(`/projects/project/${id}/`);
+
+// contact-person-info
+export const getContactPersonInfo = params =>
+  authenticated(api).get(`/projects/contact_person/`, { params });
+
+// gallery-item
+export const getGalleryItem = params =>
+  authenticated(api).get(`/projects/image/`, { params });
+
+// Document-item
+export const getDocumentItem = params =>
+  authenticated(api).get(`/projects/document/`, { params });

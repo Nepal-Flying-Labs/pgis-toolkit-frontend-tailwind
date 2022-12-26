@@ -37,7 +37,7 @@ const Input = ({
         <button
           type="button"
           className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center  naxatw-absolute naxatw-z-10 naxatw-top-[31px] naxatw-right-4"
-          onClick={onIconClick}
+          onClick={() => onIconClick({ id, name, value })}
         >
           <i className={`material-icons ${iconClassName} naxatw-text-[22px]`}>
             {iconRight}

@@ -57,6 +57,9 @@
 - [ ] boundary in Baseline data automatic
 - [ ] attribute edit
 - [ ] add feature
+- [ ] draw rectangle, draw polygon
+- [ ] view attribute table 
+- [ ] manage attribute (attribute type/delete/add)
 
 - [ ] map export
 - [ ] data query

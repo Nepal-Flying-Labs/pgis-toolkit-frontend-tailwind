@@ -5,34 +5,25 @@ import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import { mapStateSelector } from '@Selectors/projectMap';
 import Select from '@Components/common/Select';
 import Button from '@Components/common/Button';
-
-const options = [
-  { id: 1, label: 'Street', value: 'Street' },
-  { id: 2, label: 'Obstacles', value: 'obstacles' },
-  { id: 3, label: 'School', value: 'School' },
-  { id: 4, label: 'Street', value: 'obstacles' },
-  { id: 5, label: 'Street', value: 'obstacles' },
-  { id: 6, label: 'Street', value: 'obstacles' },
-];
+import { dataQueryOperators } from '@src/constants/map';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
 
 const btnClassname =
   'naxatw-p-2 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-items-center naxatw-rounded-lg naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-flex naxatw-items-center naxatw-justify-center naxatw-font-bold naxatw-text-[13px] naxatw-text-grey-800';
 
-const operators = [
-  { id: 1, label: '=', value: '=' },
-  { id: 2, label: '!=', value: '=' },
-  { id: 3, label: 'Like', value: '=' },
-  { id: 4, label: '>', value: '=' },
-  { id: 5, label: '>=', value: '=' },
-  { id: 6, label: 'And', value: '=' },
-  { id: 7, label: '<', value: '=' },
-  { id: 8, label: '<=', value: '=' },
-  { id: 9, label: 'Or', value: '=' },
-];
-
 const { toggleModal } = CommonCreators;
 const { getDataQueryFieldsRequest, getDataQueryValuesRequest } =
   ProjectMapCreators;
+
+function stringifyQuery(data) {
+  return data.reduce((str, item) => {
+    const { field, operator, value, join } = item;
+    if (join) {
+      return `${str} ${join}`;
+    }
+    return `${str} "${field}" ${operator || ''} ${value ? `"${value}"` : ''}`;
+  }, '');
+}
 
 export default function DataQuery() {
   const [selectedLayer, setSelectedLayer] = useState(null);
@@ -40,6 +31,13 @@ export default function DataQuery() {
   const fields = useSelector(state => state.projectMap.dataQuery.fields);
   const values = useSelector(state => state.projectMap.dataQuery.values);
   const [selectedField, setSelectedField] = useState(null);
+  const [query, setQuery] = useState([
+    {
+      field: '',
+      operator: null,
+      value: null,
+    },
+  ]);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -56,6 +54,44 @@ export default function DataQuery() {
       }),
     );
   };
+
+  const handleQuerySelect = (val, type) => {
+    setQuery(prev => {
+      const lastItem = prev[prev.length - 1];
+      const { field, operator, value, join } = lastItem;
+      if (type === 'join' && !!field && !!operator && !!value) {
+        return [
+          ...prev,
+          {
+            [type]: val,
+          },
+        ];
+      }
+      if (type !== 'join' && !!join) {
+        return [
+          ...prev,
+          {
+            field: '',
+            operator: null,
+            value: null,
+            [type]: val,
+          },
+        ];
+      }
+      if (prev.length === 1) {
+        return [{ ...lastItem, [type]: val }];
+      }
+      return [
+        ...prev.filter((_, idx) => idx !== prev.length - 1),
+        {
+          ...lastItem,
+          [type]: val,
+        },
+      ];
+    });
+  };
+
+  console.log(JSON.stringify(query, null, 2), 'queryx');
 
   return (
     <div>
@@ -88,7 +124,10 @@ export default function DataQuery() {
                       key={name}
                       role="presentation"
                       className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800"
-                      onClick={() => handleFieldSelect(name)}
+                      onClick={() => {
+                        handleFieldSelect(name);
+                        handleQuerySelect(name, 'field');
+                      }}
                     >
                       {alias || name}
                     </li>
@@ -97,8 +136,14 @@ export default function DataQuery() {
               </div>
               <div className="naxatw-h-[12.5rem] naxatw-w-full">
                 <div className="naxatw-grid naxatw-grid-cols-3 naxatw-items-center naxatw-justify-items-center naxatw-gap-2">
-                  {operators.map(({ id, label }) => (
-                    <a key={id} className={btnClassname} onClick={() => {}}>
+                  {dataQueryOperators.map(({ id, label, type }) => (
+                    <a
+                      key={id}
+                      className={btnClassname}
+                      onClick={() => {
+                        handleQuerySelect(label, type);
+                      }}
+                    >
                       {label}
                     </a>
                   ))}
@@ -109,7 +154,11 @@ export default function DataQuery() {
                   {values?.map(item => (
                     <li
                       key={item}
+                      role="presentation"
                       className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800"
+                      onClick={() => {
+                        handleQuerySelect(item, 'value');
+                      }}
                     >
                       {item}
                     </li>
@@ -121,13 +170,18 @@ export default function DataQuery() {
             <div className="">
               <div className="naxatw-space-y-2">
                 <label className="naxatw-label">Result</label>
-                <textarea
-                  type="text"
-                  className="naxatw-block naxatw-w-full naxatw-px-3 naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-grey-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none"
-                  name="about"
-                  // value={values.about}
-                  // onChange={handleChange}
-                />
+                <span className="naxatw-flex">
+                  <textarea
+                    type="text"
+                    className="naxatw-block naxatw-w-full naxatw-px-3 naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-grey-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none naxatw-pointer-events-none"
+                    name="about"
+                    value={stringifyQuery(query)}
+                    // onChange={handleChange}
+                  />
+                  <Button className="naxatw-btn naxatw-btn-sm naxatw-btn-secondary naxatw-btn-noborder naxatw-h-fit">
+                    <i className="material-symbols-outlined">backspace</i>
+                  </Button>
+                </span>
               </div>
             </div>
           </>

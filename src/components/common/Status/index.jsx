@@ -28,19 +28,21 @@ const getInvitationStatus = inviteStatus => {
 
 const Status = ({ status, invitationStatus }) => {
   const stat = getColor(status);
-  const inviteStat = getInvitationStatus(invitationStatus.toLowerCase());
+  const inviteStat = getInvitationStatus(invitationStatus?.toLowerCase());
   return (
     <div className=" naxatw-flex naxatw-items-center naxatw-gap-x-2">
       <div className={`naxatw-w-2 naxatw-h-2 ${stat.bg} naxatw-rounded-full`} />
       <span className={`naxatw-text-body-md ${stat.text}`}>
         {status ? 'Active' : 'Inactive'}
       </span>
-      <Tooltip content={invitationStatus} direction="right">
-        <MaterialIcon
-          name={inviteStat.name}
-          className={`naxatw-text-icon-md ${inviteStat.color}`}
-        />
-      </Tooltip>
+      {inviteStat && (
+        <Tooltip content={invitationStatus} direction="right">
+          <MaterialIcon
+            name={inviteStat.name}
+            className={`naxatw-text-icon-md ${inviteStat.color}`}
+          />
+        </Tooltip>
+      )}
     </div>
   );
 };

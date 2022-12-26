@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '@Components/common/Button/index';
 import { useParams } from 'react-router';
 import { useSelector } from 'react-redux';
+import { format } from 'date-fns';
 
 function AdditionalSidebar({ onCloseClick, flag }) {
   const { tabname } = useParams();
@@ -36,7 +37,11 @@ function AdditionalSidebar({ onCloseClick, flag }) {
       className="naxatw-min-w-[364px] naxatw-max-w-[364px] naxatw-px-5 naxatw-bg-grey-100 naxatw-border-grey-300 naxatw-border-l-[1px] naxatw-border-b-[1px]"
     >
       <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-        <h4 className="">{sidebarData?.name || '-'}</h4>
+        <h4 className="">
+          {flag?.toLowerCase() === 'gallery'
+            ? sidebarData?.title
+            : sidebarData?.name || '-'}
+        </h4>
         <div
           onClick={onCloseClick}
           className="naxatw-my-3 naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center"
@@ -50,7 +55,7 @@ function AdditionalSidebar({ onCloseClick, flag }) {
       {flag?.toLowerCase() === 'gallery' && (
         <div className="">
           <img
-            src={sidebarData?.imgSrc}
+            src={sidebarData?.image}
             alt="sidebar"
             width="324px"
             height="160px"
@@ -79,8 +84,7 @@ function AdditionalSidebar({ onCloseClick, flag }) {
       <div className="naxatw-mb-5">
         <div className="naxatw-text-body-btn naxatw-mb-2">Uploaded on</div>
         <div className="naxatw-text-body-lg">
-          {`${sidebarData.published_month}  ${sidebarData?.published_day} , ${sidebarData?.published_year}` ||
-            '-'}
+          {format(new Date(sidebarData?.uploaded_date), 'MMM dd, yyyy') || '-'}
         </div>
       </div>
       <div className="naxatw-py-3 naxatw-gap-1 naxatw-flex naxatw-justify-center naxatw-items-center">

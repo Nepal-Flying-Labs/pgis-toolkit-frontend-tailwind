@@ -23,6 +23,7 @@ import {
   getGalleryItem,
   getIndividualDocument,
   downloadDocument,
+  uploadDocument,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -226,6 +227,23 @@ export function* downloadDocumentRequest({ params }) {
     throw error;
   }
 }
+export function* uploadDocumentDataRequest({ payload }) {
+  try {
+    const payloadData = prepareFormData(payload);
+    yield call(uploadDocument, payloadData);
+    const res = yield call(getDocumentItem, { project: payload?.project });
+    yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
+    yield put(commonActions.toggleModal());
+    yield put(
+      toastActions.success({
+        message: 'Data uploaded successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.uploadDocumentDataFailure());
+    throw error;
+  }
+}
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -286,6 +304,10 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.DOWNLOAD_DOCUMENT_REQUEST,
     withLoader(withErrorHandler(downloadDocumentRequest)),
+  );
+  yield takeLatest(
+    Types.UPLOAD_DOCUMENT_DATA_REQUEST,
+    withLoader(withErrorHandler(uploadDocumentDataRequest)),
   );
 }
 

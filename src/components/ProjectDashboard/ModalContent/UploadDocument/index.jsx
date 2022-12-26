@@ -1,10 +1,9 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-array-index-key */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators as ProjectMapCreators } from '@Actions/projectMap';
-import toastActions from '@Actions/toast';
 import {
   Creators as ProjectDashboardCreators,
   Types,
@@ -12,48 +11,72 @@ import {
 import Dropzone from '@Components/common/Dropzone';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import FileIcon from '@Assets/images/icons/file-icon.svg';
-import Select from '@Components/common/Select';
 import Input from '@Components/common/Input';
-import Toggle from '@Components/common/Toggle';
 import Button from '@Components/common/Button';
 import prepareFormData from '@Utils/prepareFormData';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
-import { getCSVHeaders } from '@Utils/convertLayerUtils';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
-import Chip from '@Components/common/Chip/index';
-import noImg from '@Assets/images/noImage.png';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
+import useForm from '@Hooks/useForm';
+import { format, getDate, getMonth, getYear } from 'date-fns';
 
-const { getProjectThemesRequest } = ProjectMapCreators;
-const { uploadDatasetsRequest } = ProjectDashboardCreators;
+const { uploadDocumentDataRequest } = ProjectDashboardCreators;
 
 export default function UploadDocument() {
   const { projectId } = useParams();
-  const themes = useSelector(state => state.projectMap.themes);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [errorFields, setErrorFields] = useState({});
   const isUploading = useSelector(state =>
-    checkIfLoading(state, [Types.UPLOAD_DATASETS_REQUEST]),
+    checkIfLoading(state, [Types.UPLOAD_DOCUMENT_DATA_REQUEST]),
   );
   const { height } = useWindowDimensions();
   const dispatch = useDispatch();
+  const monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
 
-  useEffect(() => {
-    if (themes) return;
-    dispatch(getProjectThemesRequest({ project: projectId }));
-  }, [dispatch, themes, projectId]);
+  const initialValue = {
+    title: '',
+    description: '',
+    created_on: '',
+  };
+
+  const postDocument = () => {
+    const dataToSend = {
+      name: values.title,
+      project: projectId,
+      description: values.description,
+      published_year: getYear(new Date(values.created_on)),
+      published_month: monthNames[getMonth(new Date(values.created_on))],
+      published_day: getDate(new Date(values.created_on)),
+      file: uploadedFiles[0].file,
+    };
+    // console.log(dataToSend);
+    // const payloadData = prepareFormData(dataToSend);
+    dispatch(uploadDocumentDataRequest(dataToSend));
+  };
+
+  const { values, inputProps, handleChange, handleCustomChange, handleSubmit } =
+    useForm({
+      initialValues: initialValue,
+      // required: ['title'],
+      onSubmit: postDocument,
+    });
 
   const handleUpload = e => {
     const { files } = e.target;
-    if (files.length + uploadedFiles.length > 5) {
-      dispatch(
-        toastActions.error({
-          message: 'Only 5 files can be uploaded at a time.',
-        }),
-      );
-      return;
-    }
     Array.from(files).forEach((file, index) => {
       const [filename, extension] = file.name.split('.');
       const prevId = uploadedFiles.at(-1)?.id || 0;
@@ -61,76 +84,52 @@ export default function UploadDocument() {
         id: prevId + 1 + index,
         name: filename,
         extension,
-        category: null,
-        addToMap: false,
         file,
-        latField: '',
-        lonField: '',
-        latlngOptions: [],
       };
-      if (extension === 'csv') {
-        getCSVHeaders(file).then(headers => {
-          const latlngOptions = headers.map((item, idx) => ({
-            id: idx + 1,
-            name: item,
-          }));
-          setUploadedFiles(prev => [...prev, { ...fileObj, latlngOptions }]);
-        });
-      } else {
-        setUploadedFiles(prev => [...prev, fileObj]);
-      }
+      return setUploadedFiles([fileObj]);
     });
-  };
-
-  const handleChange = e => {
-    const { id, name, value } = e.target;
-    setUploadedFiles(prev =>
-      prev.map(item =>
-        item.id === +id ? { ...item, [name]: value } : { ...item },
-      ),
-    );
   };
 
   const handleDelete = id => {
     setUploadedFiles(prev => prev.filter(item => item.id !== id));
   };
 
-  const handleSubmit = () => {
-    if (isUploading) return;
-    let errorCount = 0;
-    const errors = uploadedFiles.reduce((obj, item) => {
-      const fields = [];
-      if (!item.name) fields.push('name');
-      if (!item.category) fields.push('category');
-      if (item.extension === 'csv') {
-        if (!item.latField) fields.push('latField');
-        if (!item.lonField) fields.push('lonField');
-      }
-      if (fields.length) errorCount += 1;
-      return {
-        ...obj,
-        [item.id]: fields,
-      };
-    }, {});
-    if (errorCount === 0) {
-      const payloadData = uploadedFiles.map(item => {
-        const data = {
-          name: item.name,
-          theme: item.category,
-          display_on_map: item.addToMap,
-          file: item.file,
-          layer_type: 'Vector',
-          source: 'computer',
-          lat_field: item.latField.name,
-          lon_field: item.lonField.name,
-        };
-        return prepareFormData(data);
-      });
-      dispatch(uploadDatasetsRequest(payloadData));
-    } else {
-      setErrorFields(errors);
-    }
-  };
+  // const handleSubmit = () => {
+  //   if (isUploading) return;
+  //   let errorCount = 0;
+  //   const errors = uploadedFiles.reduce((obj, item) => {
+  //     const fields = [];
+  //     if (!item.name) fields.push('name');
+  //     if (!item.category) fields.push('category');
+  //     if (item.extension === 'csv') {
+  //       if (!item.latField) fields.push('latField');
+  //       if (!item.lonField) fields.push('lonField');
+  //     }
+  //     if (fields.length) errorCount += 1;
+  //     return {
+  //       ...obj,
+  //       [item.id]: fields,
+  //     };
+  //   }, {});
+  //   if (errorCount === 0) {
+  //     const payloadData = uploadedFiles.map(item => {
+  //       const data = {
+  //         name: item.name,
+  //         theme: item.category,
+  //         display_on_map: item.addToMap,
+  //         file: item.file,
+  //         layer_type: 'Vector',
+  //         source: 'computer',
+  //         lat_field: item.latField.name,
+  //         lon_field: item.lonField.name,
+  //       };
+  //       return prepareFormData(data);
+  //     });
+  //     dispatch(uploadDatasetsRequest(payloadData));
+  //   } else {
+  //     setErrorFields(errors);
+  //   }
+  // };
 
   return (
     <div>
@@ -147,24 +146,26 @@ export default function UploadDocument() {
           id="title"
           label="Title of Document"
           name="title"
-          value=""
+          value={values?.title || ''}
           placeholder="Enter title of document"
-          onChange={() => {}}
+          onChange={handleChange}
           className=""
           required={false}
           type="text"
+          {...inputProps}
         />
 
         <Input
           id="document"
           label="About the Document"
-          name="document"
-          value=""
+          name="description"
+          value={values?.description || ''}
           placeholder="Write a short description about document"
-          onChange={() => {}}
+          onChange={handleChange}
           className=""
           required={false}
           type="text"
+          {...inputProps}
         />
 
         <div className="naxatw-space-y-2">
@@ -172,11 +173,11 @@ export default function UploadDocument() {
           <Dropzone
             label="Please upload a document (DOCX, PDF, Excel or CSV file format)"
             accept=".docx, .pdf, .csv, .pdf, .xlxs"
-            multiple
+            multiple={false}
             onChange={handleUpload}
           />
 
-          {uploadedFiles.map(({ id, file }) => (
+          {uploadedFiles?.map(({ id, file }) => (
             <div key={id} className="naxatw-flex naxatw-flex-col naxatw-gap-2">
               <div
                 className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-pr-5
@@ -210,7 +211,7 @@ export default function UploadDocument() {
                     name="file_download"
                   />
                   <MaterialIcon
-                    // onIconClick={() => handleDelete(id)}
+                    onIconClick={() => handleDelete(id)}
                     wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
                     className="naxatw-text-[22px] naxatw-text-[#FF0F0F]"
                     name="delete_outline"
@@ -224,16 +225,16 @@ export default function UploadDocument() {
         <div className="naxatw-space-y-2">
           <label className="naxatw-label">Created on</label>
           <CustomCalendar
+            onChange={date => {
+              handleCustomChange('created_on', format(date, 'yyyy-MM-dd'));
+            }}
             startDate={new Date()}
-            // onChange={date => {
-            //   handleCustomChange('start_date', format(date, 'yyyy-MM-dd'));
-            // }}
-            // selected={values?.start_date}
+            selected={values?.created_on}
           />
         </div>
       </div>
 
-      {!isEmpty(uploadedFiles) && (
+      {!isEmpty(uploadedFiles) && Object.keys(values).length !== 0 && (
         <div className="naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
           <Button
             className="naxatw-btn-primary"

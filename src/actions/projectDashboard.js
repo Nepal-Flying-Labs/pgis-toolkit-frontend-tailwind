@@ -77,6 +77,10 @@ export const { Types, Creators } = createActions(
     downloadDocumentRequest: ['params'],
     downloadDocumentSuccess: ['payload'],
     downloadDocumentFailure: ['payload'],
+
+    uploadDocumentDataRequest: ['payload'],
+    uploadDocumentDataSuccess: ['payload'],
+    uploadDocumentDataFailure: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

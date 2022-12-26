@@ -23,6 +23,7 @@ import { getCSVHeaders } from '@Utils/convertLayerUtils';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
 import Chip from '@Components/common/Chip/index';
 import noImg from '@Assets/images/noImage.png';
+import { v4 as uuidv4 } from 'uuid';
 
 const { getProjectThemesRequest } = ProjectMapCreators;
 const { uploadDatasetsRequest } = ProjectDashboardCreators;
@@ -63,9 +64,6 @@ export default function UploadImage() {
         category: null,
         addToMap: false,
         file,
-        latField: '',
-        lonField: '',
-        latlngOptions: [],
       };
       if (extension === 'csv') {
         getCSVHeaders(file).then(headers => {
@@ -120,12 +118,20 @@ export default function UploadImage() {
   };
 
   const [tags, setTags] = useState('');
+  const [tagList, setTagList] = useState([]);
 
   const handleAddTag = ({ id, name, value }) => {
+    setTagList([...tagList, { id, value }]);
     setTags('');
   };
 
-  console.log('form data ', uploadedFiles);
+  const handleRemoveTag = id => {
+    const newTagList = tagList.filter(d => d.id !== id);
+    return setTagList(newTagList);
+  };
+
+  // console.log('form data ', uploadedFiles);
+  // console.log('tag list data ', tagList);
 
   const handleSubmit = () => {
     if (isUploading) return;
@@ -229,7 +235,7 @@ export default function UploadImage() {
         </div>
 
         <Input
-          id="tag"
+          id={uuidv4()}
           label="Tags"
           name="tag"
           value={tags || ''}
@@ -247,24 +253,22 @@ export default function UploadImage() {
             handleAddTag({ id: data.id, name: data.name, value: data.value });
           }}
         />
-        <div className="tag-Chips naxatw-flex naxatw-gap-2">
-          <Chip
-            name="Maps"
-            onClick={() => {}}
-            status=""
-            value=""
-            iconRight="close"
-            onIconClick={() => {}}
-          />
-          <Chip
-            name="Maps"
-            onClick={() => {}}
-            status=""
-            value=""
-            iconRight="close"
-            onIconClick={() => {}}
-          />
-        </div>
+        {!isEmpty(tagList) && (
+          <div className="tag-Chips naxatw-flex naxatw-gap-2">
+            {tagList?.map(d => (
+              <Chip
+                name={d?.value}
+                onClick={() => {}}
+                status=""
+                value=""
+                iconRight="close"
+                onIconClick={() => {
+                  handleRemoveTag(d.id);
+                }}
+              />
+            ))}
+          </div>
+        )}
         <Input
           id="title"
           label="Title of Image"

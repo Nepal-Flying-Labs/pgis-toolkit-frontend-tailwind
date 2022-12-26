@@ -19,6 +19,8 @@ import {
   permanentDataDelete,
   getProjectInfo,
   getContactPersonInfo,
+  getDocumentItem,
+  getGalleryItem,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -178,7 +180,7 @@ export function* getContactPersonInfoRequest({ params }) {
 
 export function* getGalleryItemRequest({ params }) {
   try {
-    const response = yield call(getContactPersonInfo, params);
+    const response = yield call(getGalleryItem, params);
     yield put(projectDashboardActions.getGalleryItemSuccess(response.data));
   } catch (error) {
     yield put(projectDashboardActions.getGalleryItemFailure());
@@ -188,7 +190,7 @@ export function* getGalleryItemRequest({ params }) {
 
 export function* getDocumentItemRequest({ params }) {
   try {
-    const response = yield call(getContactPersonInfo, params);
+    const response = yield call(getDocumentItem, params);
     yield put(projectDashboardActions.getDocumentItemSuccess(response.data));
   } catch (error) {
     yield put(projectDashboardActions.getDocumentItemFailure());

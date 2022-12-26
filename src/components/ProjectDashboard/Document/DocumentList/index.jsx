@@ -18,6 +18,7 @@ function DocumentList({ openSidebar }) {
   const dispatch = useDispatch();
   const { setSearchText } = Creators;
   const searchText = useSelector(state => state?.projectDashboard?.searchText);
+  const documents = useSelector(state => state?.projectDashboard?.searchText);
   const [value, handleSearch] = useDebouncedInput({
     ms: 300,
     init: searchText,
@@ -25,9 +26,6 @@ function DocumentList({ openSidebar }) {
       dispatch(setSearchText(debouncedEvent.target.value));
     },
   });
-
-  //   table data
-  const users = [];
 
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.SET_SEARCH_TEXT]),
@@ -67,7 +65,7 @@ function DocumentList({ openSidebar }) {
           <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-h-[600px]">
             {!loading ? (
               <Table
-                data={users || []}
+                data={documents || []}
                 onRowClick={() => openSidebar(true)}
                 className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"

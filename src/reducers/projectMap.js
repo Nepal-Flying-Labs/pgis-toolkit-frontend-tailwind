@@ -32,6 +32,10 @@ const initialState = {
   isFeatureModified: false,
   projectGeojson: null,
   projectAreaLayerId: null,
+  dataQuery: {
+    fields: null,
+    values: null,
+  },
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -372,6 +376,28 @@ const getProjectGeojsonSuccess = (state, action) => ({
   projectGeojson: action.payload,
 });
 
+const getDataQueryFieldsSuccess = (state, action) => {
+  const fields = action.payload;
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      fields,
+    },
+  };
+};
+
+const getDataQueryValuesSuccess = (state, action) => {
+  const values = action.payload;
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      values,
+    },
+  };
+};
+
 const resetProjectMapState = () => ({
   ...initialState,
 });
@@ -401,6 +427,8 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
   [Types.UPDATE_FEATURE_COLLECTION_SUCCESS]: updateFeatureCollectionSuccess,
   [Types.GET_PROJECT_GEOJSON_SUCCESS]: getProjectGeojsonSuccess,
+  [Types.GET_DATA_QUERY_FIELDS_SUCCESS]: getDataQueryFieldsSuccess,
+  [Types.GET_DATA_QUERY_VALUES_SUCCESS]: getDataQueryValuesSuccess,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

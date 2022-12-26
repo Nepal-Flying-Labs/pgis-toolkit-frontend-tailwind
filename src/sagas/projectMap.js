@@ -1,6 +1,7 @@
 import { call, put, takeLatest, takeEvery, all } from 'redux-saga/effects';
 import chroma from 'chroma-js';
 import {
+  getAdvanceQueryValues,
   getFeatureCollection,
   getLayerAttributeFields,
   getMapPopupData,
@@ -199,6 +200,26 @@ export function* getProjectGeojsonRequest({ params }) {
   }
 }
 
+export function* getDataQueryFieldsRequest({ params }) {
+  try {
+    const response = yield call(getAdvanceQueryValues, params);
+    yield put(projectMapActions.getDataQueryFieldsSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getDataQueryFieldsFailure());
+    throw error;
+  }
+}
+
+export function* getDataQueryValuesRequest({ params }) {
+  try {
+    const response = yield call(getAdvanceQueryValues, params);
+    yield put(projectMapActions.getDataQueryValuesSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getDataQueryValuesFailure());
+    throw error;
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -255,6 +276,14 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_GEOJSON_REQUEST,
     withLoader(withErrorHandler(getProjectGeojsonRequest)),
+  );
+  yield takeLatest(
+    Types.GET_DATA_QUERY_FIELDS_REQUEST,
+    withLoader(withErrorHandler(getDataQueryFieldsRequest)),
+  );
+  yield takeLatest(
+    Types.GET_DATA_QUERY_VALUES_REQUEST,
+    withLoader(withErrorHandler(getDataQueryValuesRequest)),
   );
 }
 

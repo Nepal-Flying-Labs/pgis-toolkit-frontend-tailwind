@@ -75,6 +75,14 @@ export const { Types, Creators } = createActions(
     getProjectGeojsonFailure: null,
 
     resetProjectMapState: null,
+
+    getDataQueryFieldsRequest: ['params'],
+    getDataQueryFieldsSuccess: ['payload'],
+    getDataQueryFieldsFailure: null,
+
+    getDataQueryValuesRequest: ['params'],
+    getDataQueryValuesSuccess: ['payload'],
+    getDataQueryValuesFailure: null,
   },
   { prefix: 'projectMap/' },
 );

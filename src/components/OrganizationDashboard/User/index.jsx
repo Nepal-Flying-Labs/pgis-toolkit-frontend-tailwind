@@ -6,11 +6,13 @@ import { Creators as OrganizationDashboardCreators } from '@Actions/organization
 import { Creators as CommonCreators } from '@Actions/common';
 import Users from '@Components/OrganizationDashboard/User/Users';
 import AssignUsers from '@Components/OrganizationDashboard/User/AssignUsers';
+import { useParams } from 'react-router';
 
-const { clearUsersFilter } = OrganizationDashboardCreators;
+const { clearUsersFilter, getUserGroupRequest } = OrganizationDashboardCreators;
 const { toggleModal } = CommonCreators;
 
 const User = () => {
+  const { organizationId } = useParams();
   const dispatch = useDispatch();
   const [active, setActive] = useState('users');
   const handleTabChange = name => {
@@ -18,10 +20,11 @@ const User = () => {
   };
 
   useEffect(() => {
+    dispatch(getUserGroupRequest({ organization: organizationId }));
     return () => {
       dispatch(clearUsersFilter());
     };
-  }, [dispatch]);
+  }, [dispatch, organizationId]);
   return (
     <div className="naxatw-mx-10">
       <div className="naxatw-flex naxatw-justify-between naxatw-py-5 ">

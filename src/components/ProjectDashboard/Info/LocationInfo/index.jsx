@@ -7,11 +7,11 @@ import LocationIcon from '@Assets/images/info-location.png';
 import MapCard from './MapCard/index';
 
 const LocationInfo = () => {
-  // const { organizationId } = useParams();
+  // const { organizationId, projectId } = useParams();
   // const history = useHistory();
   // const users = useSelector(state => state.organizationDashboard.users);
   return (
-    <div className="naxatw-w-[440px] naxatw-bg-white naxatw-rounded-[20px] naxatw-border naxatw-border-grey-300">
+    <div className="naxatw-w-1/3 naxatw-min-w-[440px] naxatw-bg-white naxatw-rounded-[20px] naxatw-border naxatw-overflow-hidden naxatw-border-grey-300">
       <div className="naxatw-flex naxatw-py-3 naxatw-px-4 naxatw-justify-between naxatw-items-center naxatw-border-b-[1px] naxatw-rounded-t-xl naxatw-pl-4">
         <div className="naxatw-flex naxatw-gap-x-5">
           <img
@@ -30,8 +30,8 @@ const LocationInfo = () => {
       </div>
 
       <div
-        style={{ height: `calc(100vh - 185px)` }}
-        className="naxatw-overflow-hidden"
+        // style={{ height: `calc(100vh - 115px)` }}
+        className=""
       >
         <MapCard />
       </div>

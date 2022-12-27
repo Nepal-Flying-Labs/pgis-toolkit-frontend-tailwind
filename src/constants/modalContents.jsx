@@ -23,6 +23,7 @@ import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer/i
 import UploadImage from '@Components/ProjectDashboard/ModalContent/UploadImage/index';
 import UploadDocument from '@Components/ProjectDashboard/ModalContent/UploadDocument/index';
 import ImportOSM from '@Components/ProjectDashboard/ModalContent/ImportOSM/index';
+import EditDocument from '@Components/ProjectDashboard/ModalContent/EditDocument/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -120,6 +121,12 @@ export function getModalContent(content) {
         content: <UploadDocument />,
       };
 
+    case 'edit-document':
+      return {
+        title: 'Edit your documents',
+        content: <EditDocument />,
+      };
+
     // manage data
     case 'add-wms-layer':
       return {
@@ -162,6 +169,11 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <UploadFailed />,
+      };
+    case 'delete-document':
+      return {
+        title: '',
+        content: <DeleteLayer />,
       };
     default:
       return '';

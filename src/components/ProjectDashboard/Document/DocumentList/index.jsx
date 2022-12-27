@@ -2,6 +2,8 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable import/no-named-as-default */
 import { Types, Creators } from '@Actions/projectDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
+
 import Searchbar from '@Components/common/Searchbar/index';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import React, { useState } from 'react';
@@ -17,13 +19,16 @@ import { format } from 'date-fns';
 import CustomCheckbox from '@Components/common/CustomCheckbox/index';
 import { isEmpty } from '@Utils/commonUtils';
 import { useParams } from 'react-router';
+import { baseURL } from '@Services';
+import { saveAs } from 'file-saver';
 
 function DocumentList({ openSidebar }) {
   const { projectId } = useParams();
 
   const dispatch = useDispatch();
-  const { setSearchText, getDocumentByIdRequest, downloadDocumentRequest } =
-    Creators;
+  const { setSearchText, getDocumentByIdRequest } = Creators;
+  const { toggleModal } = CommonCreators;
+
   const searchText = useSelector(state => state?.projectDashboard?.searchText);
   const documents = useSelector(
     state => state?.projectDashboard?.document?.list,
@@ -49,19 +54,33 @@ function DocumentList({ openSidebar }) {
     return setDownloadIdList([...downloadIdList, id]);
   };
 
+  // const handleDownload = id => {
+  //   dispatch(
+  //     downloadDocumentRequest({ document: [id].join(), project: projectId }),
+  //   );
+  // };
+
+  // const handleDownloadAll = () => {
+  //   dispatch(
+  //     downloadDocumentRequest({
+  //       document: isEmpty(downloadIdList) ? 'all' : downloadIdList?.join(),
+  //       project: projectId,
+  //     }),
+  //   );
+  // };
+
   const handleDownload = id => {
-    dispatch(
-      downloadDocumentRequest({ document: [id].join(), project: projectId }),
-    );
+    const downloadLink = `${baseURL}/api/projects/document_download/?document=${id}&project=${projectId}`;
+    saveAs(downloadLink);
   };
 
+  // &output_format=${selectedOption.value}
+
   const handleDownloadAll = () => {
-    dispatch(
-      downloadDocumentRequest({
-        document: isEmpty(downloadIdList) ? 'all' : downloadIdList?.join(),
-        project: projectId,
-      }),
-    );
+    const downloadLink = `${baseURL}/api/projects/document_download/?document=${
+      isEmpty(downloadIdList) ? 'all' : downloadIdList?.join()
+    }&project=${projectId}`;
+    saveAs(downloadLink);
   };
 
   return (
@@ -95,8 +114,8 @@ function DocumentList({ openSidebar }) {
         }}
         className="naxatw-py-3 naxatw-flex naxatw-overflow-auto scrollbar"
       >
-        <div className="naxatw-mt-3 ">
-          <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-h-[600px]">
+        <div className="naxatw-mt-3 naxatw-w-full">
+          <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-h-[600px] naxatw-w-full">
             {!loading ? (
               <Table
                 data={documents || []}
@@ -202,6 +221,7 @@ function DocumentList({ openSidebar }) {
                       <MaterialIcon
                         onIconClick={e => {
                           e.stopPropagation();
+                          dispatch(toggleModal('edit-document'));
                         }}
                         wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
                         className="naxatw-text-[22px]"
@@ -217,8 +237,8 @@ function DocumentList({ openSidebar }) {
                       />
                       <MaterialIcon
                         onIconClick={e => {
-                          handleDownload(row.id);
                           e.stopPropagation();
+                          handleDownload(row.id);
                         }}
                         wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
                         className="naxatw-text-[22px]"

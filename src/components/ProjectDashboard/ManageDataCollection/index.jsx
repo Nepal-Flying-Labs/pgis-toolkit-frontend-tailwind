@@ -14,6 +14,8 @@ import StepThree from './Steps/StepThree';
 
 const { toggleModal } = CommonCreators;
 
+const headerContents = ['manage-attributes', 'add-attributes'];
+
 const linkOptions = [
   {
     id: 1,
@@ -63,11 +65,38 @@ const ManageDataCollection = () => {
     }
   };
 
+  const headerContent = modalContents => {
+    switch (modalContents) {
+      case 'manage-attributes':
+        return <h3>Road Attributes</h3>;
+      case 'add-attributes':
+        return (
+          <div className="naxatw-flex naxatw-items-center naxatw-gap-x-3">
+            <MaterialIcon
+              name="arrow_back"
+              className="naxatw-text-icon-md"
+              wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer"
+              onIconClick={() => dispatch(toggleModal('manage-attributes'))}
+            />
+            <h4>Add attributes</h4>
+          </div>
+        );
+      default:
+        return '';
+    }
+  };
+
   return (
     <div>
       <Modal
         show={showModal}
         title={getModalContent(modalContent)?.title}
+        className={getModalContent(modalContent)?.className || ''}
+        headerContent={
+          headerContents.includes(modalContent)
+            ? headerContent(modalContent)
+            : null
+        }
         onClose={() => dispatch(toggleModal())}
       >
         {getModalContent(modalContent)?.content}

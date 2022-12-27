@@ -48,6 +48,9 @@ const ManageDataCollection = () => {
   const [option, setOption] = useState(null);
   const { projectId, organizationId } = useParams();
   const dispatch = useDispatch();
+  const selectedLayer = useSelector(
+    state => state.projectDashboard.data.manageData.selectedData,
+  );
   const showModal = useSelector(state => state.common.showModal);
   const modalContent = useSelector(state => state.common.modalContent);
   const [active, setActive] = useState(1);
@@ -68,7 +71,7 @@ const ManageDataCollection = () => {
   const headerContent = modalContents => {
     switch (modalContents) {
       case 'manage-attributes':
-        return <h3>Road Attributes</h3>;
+        return <h3>{`${selectedLayer?.name} Attributes`}</h3>;
       case 'add-attributes':
         return (
           <div className="naxatw-flex naxatw-items-center naxatw-gap-x-3">
@@ -78,7 +81,7 @@ const ManageDataCollection = () => {
               wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer"
               onIconClick={() => dispatch(toggleModal('manage-attributes'))}
             />
-            <h4>Add attributes</h4>
+            <h4>{`Add ${selectedLayer?.name} attributes`}</h4>
           </div>
         );
       default:

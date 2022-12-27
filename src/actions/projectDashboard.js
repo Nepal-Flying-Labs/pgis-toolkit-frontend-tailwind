@@ -93,6 +93,8 @@ export const { Types, Creators } = createActions(
     postImportTemplateRequest: ['payload'],
     postImportTemplateSuccess: ['payload'],
     postImportTemplateFailure: null,
+
+    setSelectedLayer: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

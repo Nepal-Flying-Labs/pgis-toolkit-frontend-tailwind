@@ -12,6 +12,7 @@ const initialState = {
     uploadErrorResponse: null,
     manageData: {
       layerTemplate: [],
+      selectedLayer: null,
     },
   },
   gallery: {
@@ -226,6 +227,17 @@ const patchLayerTemplateSuccess = (state, action) => {
   };
 };
 
+const setSelectedLayer = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      selectedData: action.payload,
+    },
+  },
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -248,6 +260,7 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.UPLOAD_DOCUMENT_DATA_SUCCESS]: uploadDocumentDataSuccess,
   [Types.GET_LAYER_TEMPLATE_SUCCESS]: getLayerTemplateSuccess,
   [Types.PATCH_LAYER_TEMPLATE_SUCCESS]: patchLayerTemplateSuccess,
+  [Types.SET_SELECTED_LAYER]: setSelectedLayer,
 });
 
 export default projectDashboardReducer;

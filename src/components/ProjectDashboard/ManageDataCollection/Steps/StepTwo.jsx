@@ -13,7 +13,8 @@ import { Creators as CommonCreators } from '@Actions/common';
 import SortingContainer from '@Components/common/SortingContainer/index';
 
 const { toggleModal } = CommonCreators;
-const { getLayerTemplateRequest, patchLayerTemplateRequest } = Creators;
+const { getLayerTemplateRequest, patchLayerTemplateRequest, setSelectedLayer } =
+  Creators;
 
 const data = [
   {
@@ -128,6 +129,7 @@ const StepTwo = () => {
                   className="naxatw-btn-secondary naxatw-btn-noborder naxatw-min-w-fit"
                   onClick={e => {
                     e.stopPropagation();
+                    dispatch(setSelectedLayer(row));
                     dispatch(toggleModal('manage-attributes'));
                   }}
                 >

@@ -67,6 +67,38 @@ export const { Types, Creators } = createActions(
     getDocumentItemRequest: ['params'],
     getDocumentItemSuccess: ['payload'],
     getDocumentItemFailure: ['payload'],
+
+    // project-individual-document
+    getDocumentByIdRequest: ['id'],
+    getDocumentByIdSuccess: ['payload'],
+    getDocumentByIdFailure: ['payload'],
+
+    // project-individual-document
+    downloadDocumentRequest: ['params'],
+    downloadDocumentSuccess: ['payload'],
+    downloadDocumentFailure: ['payload'],
+
+    uploadDocumentDataRequest: ['id', 'payload'],
+    uploadDocumentDataSuccess: ['payload'],
+    uploadDocumentDataFailure: ['payload'],
+
+    getLayerTemplateRequest: ['id'],
+    getLayerTemplateSuccess: ['payload'],
+    getLayerTemplateFailure: null,
+
+    patchLayerTemplateRequest: ['id', 'payload'],
+    patchLayerTemplateSuccess: ['payload'],
+    patchLayerTemplateFailure: null,
+
+    postImportTemplateRequest: ['payload'],
+    postImportTemplateSuccess: ['payload'],
+    postImportTemplateFailure: null,
+
+    setSelectedLayer: ['payload'],
+
+    getLayerAttributeRequest: ['params'],
+    getLayerAttributeSuccess: ['payload'],
+    getLayerAttributeFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

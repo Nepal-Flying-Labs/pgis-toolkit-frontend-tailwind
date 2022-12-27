@@ -29,3 +29,27 @@ export const getGalleryItem = params =>
 // Document-item
 export const getDocumentItem = params =>
   authenticated(api).get(`/projects/document/`, { params });
+
+// individual-Document-item
+export const getIndividualDocument = id =>
+  authenticated(api).get(`/projects/document/${id}/`);
+
+// Document-download
+export const downloadDocument = params =>
+  authenticated(api).get(`/projects/document_download/`, { params });
+
+// upload-document
+export const uploadDocument = payload =>
+  authenticated(api).post(`/projects/document/`, payload);
+
+export const getLayerTemplate = id =>
+  authenticated(api).get(`/maps/project_layer_template/?project=${id}`);
+
+export const patchLayerTemplate = (id, payload) =>
+  authenticated(api).patch(`/maps/project_layer_template/${id}/`, payload);
+
+export const postImportTemplate = payload =>
+  authenticated(api).post(`/maps/import_template/`, payload);
+
+export const getLayerAttribute = params =>
+  authenticated(api).get(`/maps/project_layer_template_attribute/`, { params });

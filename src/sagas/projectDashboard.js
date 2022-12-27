@@ -21,6 +21,13 @@ import {
   getContactPersonInfo,
   getDocumentItem,
   getGalleryItem,
+  getIndividualDocument,
+  downloadDocument,
+  uploadDocument,
+  getLayerTemplate,
+  patchLayerTemplate,
+  postImportTemplate,
+  getLayerAttribute,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -198,6 +205,99 @@ export function* getDocumentItemRequest({ params }) {
   }
 }
 
+export function* getDocumentByIdRequest({ id }) {
+  try {
+    const response = yield call(getIndividualDocument, id);
+    yield put(projectDashboardActions.getDocumentByIdSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getDocumentByIdFailure());
+    throw error;
+  }
+}
+
+export function* downloadDocumentRequest({ params }) {
+  try {
+    const response = yield call(downloadDocument, params);
+    const responseData = response.data;
+    const url = window.URL.createObjectURL(new Blob([responseData]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Documents'); // or any other extension
+    document.body.appendChild(link);
+    link.click();
+    yield put(toastActions.success({ message: 'Export Completed.' }));
+  } catch (error) {
+    yield put(projectDashboardActions.downloadDocumentFailure());
+    throw error;
+  }
+}
+export function* uploadDocumentDataRequest({ id, payload }) {
+  try {
+    yield all(payload.map(data => call(uploadDocument, data)));
+    const res = yield call(getDocumentItem, { project: id });
+    yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
+    yield put(commonActions.toggleModal());
+    yield put(
+      toastActions.success({
+        message: 'Data uploaded successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.uploadDocumentDataFailure());
+    throw error;
+  }
+}
+
+export function* getLayerTemplateRequest({ id }) {
+  try {
+    const response = yield call(getLayerTemplate, id);
+
+    yield put(
+      response.data.length < 1
+        ? projectDashboardActions.postImportTemplateRequest({
+            project: id,
+            templates: 'all',
+          })
+        : projectDashboardActions.getLayerTemplateSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.getLayerTemplateFailure());
+    throw error;
+  }
+}
+
+export function* patchLayerTemplateRequest({ id, payload }) {
+  try {
+    const response = yield call(patchLayerTemplate, id, payload);
+
+    yield put(projectDashboardActions.patchLayerTemplateSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.patchLayerTemplateFailure());
+    throw error;
+  }
+}
+
+export function* postImportTemplateRequest({ payload }) {
+  const { project } = payload;
+  try {
+    yield call(postImportTemplate, payload);
+    yield put(projectDashboardActions.getLayerTemplateRequest(project));
+  } catch (error) {
+    yield put(projectDashboardActions.postImportTemplateFailure());
+    throw error;
+  }
+}
+
+export function* getLayerAttributeRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttribute, params);
+    yield put(projectDashboardActions.getLayerAttributeSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getLayerAttributeFailure());
+    throw error;
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -250,6 +350,34 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_DOCUMENT_ITEM_REQUEST,
     withLoader(withErrorHandler(getDocumentItemRequest)),
+  );
+  yield takeLatest(
+    Types.GET_DOCUMENT_BY_ID_REQUEST,
+    withLoader(withErrorHandler(getDocumentByIdRequest)),
+  );
+  yield takeLatest(
+    Types.DOWNLOAD_DOCUMENT_REQUEST,
+    withLoader(withErrorHandler(downloadDocumentRequest)),
+  );
+  yield takeLatest(
+    Types.UPLOAD_DOCUMENT_DATA_REQUEST,
+    withLoader(withErrorHandler(uploadDocumentDataRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_TEMPLATE_REQUEST,
+    withLoader(withErrorHandler(getLayerTemplateRequest)),
+  );
+  yield takeLatest(
+    Types.PATCH_LAYER_TEMPLATE_REQUEST,
+    withLoader(withErrorHandler(patchLayerTemplateRequest)),
+  );
+  yield takeLatest(
+    Types.POST_IMPORT_TEMPLATE_REQUEST,
+    withLoader(withErrorHandler(postImportTemplateRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(getLayerAttributeRequest)),
   );
 }
 

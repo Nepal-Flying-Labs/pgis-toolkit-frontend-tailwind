@@ -1,7 +1,15 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import Table, { TableHeader } from '@Components/common/Table/Table';
+import { useDispatch } from 'react-redux';
 import SortingContainer from '@Components/common/SortingContainer/index';
 import Button from '@Components/common/Button/index';
+import { Creators as CommonCreators } from '@Actions/common';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
+
+const { toggleModal } = CommonCreators;
 
 const data = [
   {
@@ -27,105 +35,108 @@ const data = [
   },
 ];
 
-const ManageAttributes = () => (
-  <div className="">
-    <div className="naxatw-flex naxatw-justify-end ">
-      <Button
-        iconLeft="add"
-        className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-group"
-      >
-        <span className=" naxatw-text-secondary-400 group-hover:naxatw-underline">
+const ManageAttributes = () => {
+  const dispatch = useDispatch();
+  return (
+    <div className="">
+      <div className="naxatw-flex naxatw-justify-end ">
+        <Button
+          iconLeft="add"
+          className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-group"
+          onClick={() => dispatch(toggleModal('add-attributes'))}
+        >
           Attribute
-        </span>
-      </Button>
-    </div>
-    <div>
-      <Table
-        data={data || []}
-        className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
-        headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-        headerWidths={['50px', '200px', '150px', '150px', '50px']}
-        // eslint-disable-next-line
+        </Button>
+      </div>
+      <div>
+        <Table
+          data={data || []}
+          className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
+          headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+          headerWidths={['50px', '200px', '150px', '150px', '50px']}
+          // eslint-disable-next-line
           onRowClick={row => {}}
-      >
-        <TableHeader
-          dataField=""
-          headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-          rowcolSpan="rowSpan_2"
-          dataHeader=""
-          dataFormat={row => (
-            <span className="naxatw-text-base">
-              <input type="checkbox" />
-            </span>
-          )}
-        />
-        <TableHeader
-          dataField="Attribute"
-          headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
-          rowcolSpan="rowSpan_2"
-          dataHeader={
-            <SortingContainer name="Attribute" className="naxatw-text-black" />
-          }
-          dataFormat={row => (
-            <span className="naxatw-text-base naxatw-font-bold">
-              {row.attribute}
-            </span>
-          )}
-        />
-        <TableHeader
-          dataField="Alias"
-          headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-          rowcolSpan="rowSpan_2"
-          dataHeader={<span>Alias</span>}
-          dataFormat={row => (
-            <span className="naxatw-text-base">{row.alias}</span>
-          )}
-        />
-        <TableHeader
-          dataField="Type"
-          headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-          rowcolSpan="rowSpan_2"
-          dataHeader={<span>Type</span>}
-          dataFormat={row => (
-            <span className="naxatw-text-base">{row.type}</span>
-          )}
-        />
-        <TableHeader
-          dataField="Source"
-          headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-          rowcolSpan="rowSpan_2"
-          dataHeader={<span>Source</span>}
-          dataFormat={row => (
-            <span className="naxatw-text-base">{row.source}</span>
-          )}
-        />
-        {/* <TableHeader
-           dataField=""
-            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
-            rowcolSpan=""
+        >
+          <TableHeader
+            dataField=""
+            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+            rowcolSpan="rowSpan_2"
             dataHeader=""
             dataFormat={row => (
-              <div className="">
-                <a className="">
-                  <span className="material-icons">
-                    edit
-                  </span>
-                </a>
-                <a className="">
-                    hello
-                  <span className="material-icons">
-                    delete
-                  </span>
-                </a>
+              <span className="naxatw-text-base">
+                <input type="checkbox" />
+              </span>
+            )}
+          />
+          <TableHeader
+            dataField="Attribute"
+            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+            rowcolSpan="rowSpan_2"
+            dataHeader={
+              <SortingContainer
+                name="Attribute"
+                className="naxatw-text-black"
+              />
+            }
+            dataFormat={row => (
+              <span className="naxatw-text-base naxatw-font-bold">
+                {row.attribute}
+              </span>
+            )}
+          />
+          <TableHeader
+            dataField="Alias"
+            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+            rowcolSpan="rowSpan_2"
+            dataHeader={<span>Alias</span>}
+            dataFormat={row => (
+              <span className="naxatw-text-base">{row.alias}</span>
+            )}
+          />
+          <TableHeader
+            dataField="Type"
+            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+            rowcolSpan="rowSpan_2"
+            dataHeader={<span>Type</span>}
+            dataFormat={row => (
+              <span className="naxatw-text-base">{row.type}</span>
+            )}
+          />
+          <TableHeader
+            dataField="Source"
+            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+            rowcolSpan="rowSpan_2"
+            dataHeader={<span>Source</span>}
+            dataFormat={row => (
+              <span className="naxatw-text-base">{row.source}</span>
+            )}
+          />
+          <TableHeader
+            dataField="."
+            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
+            rowcolSpan=""
+            dataFormat={row => (
+              <div className="naxatw-flex naxatw-gap-x-1">
+                <MaterialIcon
+                  name="edit"
+                  className="naxatw-text-icon-md"
+                  wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
+                />
+                <MaterialIcon
+                  name="delete"
+                  className="naxatw-text-icon-md"
+                  wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
+                />
               </div>
             )}
-          /> */}
-      </Table>
+          />
+        </Table>
+      </div>
+      <div className="naxatw-flex naxatw-justify-center naxatw-mt-5">
+        <Button className="naxatw-btn-primary naxatw-w-[77px]">Done</Button>
+      </div>
     </div>
-    <div className="naxatw-flex naxatw-justify-center naxatw-mt-5">
-      <Button className="naxatw-btn-primary naxatw-w-[77px]">Done</Button>
-    </div>
-  </div>
-);
+  );
+};
 
 export default ManageAttributes;

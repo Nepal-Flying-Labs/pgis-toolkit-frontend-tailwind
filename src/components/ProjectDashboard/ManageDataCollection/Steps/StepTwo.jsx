@@ -1,39 +1,60 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable arrow-body-style */
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
 import Searchbar from '@Components/common/Searchbar/index';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 import Button from '@Components/common/Button/index';
+import CustomCheckbox from '@Components/common/CustomCheckbox/index';
+import { Creators } from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
 import SortingContainer from '@Components/common/SortingContainer/index';
-import React, { useState } from 'react';
 
 const { toggleModal } = CommonCreators;
+const { getLayerTemplateRequest, patchLayerTemplateRequest } = Creators;
 
 const data = [
   {
     id: 1,
-    checked: true,
+    checked: false,
     layer_name: 'Road',
     category: 'Transportation',
   },
   {
     id: 2,
-    checked: true,
+    checked: false,
     layer_name: 'Road Accidents',
     category: 'Obstacle',
   },
   {
     id: 3,
-    checked: true,
+    checked: false,
     layer_name: 'Street',
     category: 'Street',
   },
 ];
 
 const StepTwo = () => {
+  const { projectId } = useParams();
   const dispatch = useDispatch();
+  const layerTemplate = useSelector(
+    state => state.projectDashboard.data.manageData.layerTemplate,
+  );
+
+  useEffect(() => {
+    if (layerTemplate.length < 1) dispatch(getLayerTemplateRequest(projectId));
+  }, [dispatch, projectId, layerTemplate]);
+
+  const handleRowClick = row => {
+    dispatch(
+      patchLayerTemplateRequest(row.id, {
+        selected: !row.selected,
+      }),
+    );
+  };
+
   return (
     <div>
       <h4>Preparation for data collection</h4>
@@ -50,22 +71,20 @@ const StepTwo = () => {
       </div>
       <div className="naxa-table naxatw-overflow-x-auto scrollbar">
         <Table
-          data={data || []}
+          data={layerTemplate || []}
           className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
           headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
           headerWidths={['50px', '200px', '150px', '150px', '50px']}
           // eslint-disable-next-line
-          onRowClick={row => {}}
+          onRowClick={row => {
+            handleRowClick(row);
+          }}
         >
           <TableHeader
             dataField=""
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
             rowcolSpan="rowSpan_2"
-            dataFormat={row => (
-              <span className="naxatw-text-base">
-                <input type="checkbox" />
-              </span>
-            )}
+            dataFormat={row => <CustomCheckbox status={row.selected} />}
           />
           <TableHeader
             dataField="Layer Name"
@@ -79,17 +98,17 @@ const StepTwo = () => {
             }
             dataFormat={row => (
               <span className="naxatw-text-base naxatw-font-bold">
-                {row.layer_name}
+                {row.name}
               </span>
             )}
           />
           <TableHeader
-            dataField="Category"
+            dataField="Geometry Type"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
             rowcolSpan="rowSpan_2"
-            dataHeader={<SortingContainer name="Category" />}
+            dataHeader={<SortingContainer name="Geometry Type" />}
             dataFormat={row => (
-              <span className="naxatw-text-base">{row.category}</span>
+              <span className="naxatw-text-base">{row.geometry_type}</span>
             )}
           />
           <TableHeader
@@ -98,37 +117,25 @@ const StepTwo = () => {
             dataHeader={<SortingContainer name="Data Import" />}
             rowcolSpan="rowSpan_3"
             dataFormat={row => (
-              <div className="naxatw-flex naxatw-justify-end naxatw-gap-x-2 naxatw-items-center">
-                {/* <a className="naxatw-px-2 naxatw-py-[11px]">
-                  <span
-                    className="naxatw-text-secondary-400 naxatw-text-body-btn"
-                    onClick={() => dispatch(toggleModal('add-wms-layer'))}
-                  >
-                    Import From OSM
-                  </span>
-                </a> */}
-                <Button className="naxatw-btn-secondary naxatw-btn-noborder ">
+              <div className=" naxatw-gap-x-2 naxatw-items-center">
+                {/* <Button
+                  className="naxatw-btn-secondary naxatw-btn-noborder naxatw-min-w-fit"
+                  onClick={() => dispatch(toggleModal('add-wms-layer'))}
+                >
                   Import From OSM
-                </Button>
-                <Button className="naxatw-btn-secondary naxatw-btn-noborder">
+                </Button> */}
+                <Button
+                  className="naxatw-btn-secondary naxatw-btn-noborder naxatw-min-w-fit"
+                  onClick={e => {
+                    e.stopPropagation();
+                    dispatch(toggleModal('manage-attributes'));
+                  }}
+                >
                   Manage Attributes
                 </Button>
-                <Button className="naxatw-btn-secondary naxatw-btn-noborder">
+                {/* <Button className="naxatw-btn-secondary naxatw-btn-noborder naxatw-min-w-fit">
                   Map
-                </Button>
-                {/* <a
-                  className="naxatw-px-2 naxatw-py-[11px]"
-                  onClick={() => dispatch(toggleModal('manage-attributes'))}
-                >
-                  <span className="naxatw-text-secondary-400 naxatw-text-body-btn">
-                    Manage attributes
-                  </span>
-                </a> */}
-                {/* <a className="naxatw-px-2 naxatw-py-[11px]">
-                  <span className="material-icons naxatw-text-[24px] naxatw-leading-[24px] naxatw-text-secondary-400">
-                    map
-                  </span>
-                </a> */}
+                </Button> */}
               </div>
             )}
           />

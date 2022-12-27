@@ -27,7 +27,7 @@ const StepOne = ({ option, setOption }) => {
           </div>
           <Button
             iconLeft="description"
-            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm naxatw-w-[198px]"
+            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm naxatw-min-w-fit"
           >
             Read Document
           </Button>

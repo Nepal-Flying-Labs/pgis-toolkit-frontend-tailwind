@@ -35,3 +35,6 @@ export const getProjectGeojson = params =>
 
 export const getAdvanceQueryValues = params =>
   authenticated(api).get(`/maps/advance_query/`, { params });
+
+export const postAdvanceQuery = data =>
+  authenticated(api).post(`/maps/advance_query/`, data);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import { mapStateSelector } from '@Selectors/projectMap';
 import Select from '@Components/common/Select';
@@ -10,9 +10,15 @@ import { dataQueryOperators } from '@src/constants/map';
 const btnClassname =
   'naxatw-p-2 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-items-center naxatw-rounded-lg naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-flex naxatw-items-center naxatw-justify-center naxatw-font-bold naxatw-text-[13px] naxatw-text-grey-800';
 
-const { toggleModal } = CommonCreators;
-const { getDataQueryFieldsRequest, getDataQueryValuesRequest } =
-  ProjectMapCreators;
+const {
+  getDataQueryFieldsRequest,
+  getDataQueryValuesRequest,
+  postAdvanceQueryRequest,
+} = ProjectMapCreators;
+
+function getOperatorLabel(value) {
+  return dataQueryOperators.find(item => item.value === value)?.label;
+}
 
 function stringifyQuery(data) {
   return data.reduce((str, item) => {
@@ -20,9 +26,9 @@ function stringifyQuery(data) {
     if (join) {
       return `${str} ${join}`;
     }
-    return `${str} ${field ? `"${field}"` : ''} ${operator || ''} ${
-      value ? `"${value}"` : ''
-    }`;
+    return `${str} ${field ? `"${field}"` : ''} ${
+      getOperatorLabel(operator) || ''
+    } ${value ? `"${value}"` : ''}`;
   }, '');
 }
 
@@ -97,6 +103,15 @@ export default function DataQuery() {
     });
   };
 
+  const handleApply = () => {
+    const payloadData = {
+      layer: selectedLayer.id,
+      name: `query-${uuidv4()}`,
+      expression: JSON.stringify(query),
+    };
+    dispatch(postAdvanceQueryRequest(payloadData));
+  };
+
   return (
     <div>
       <p>Baseline Datasets contains different levels of boundaries.</p>
@@ -140,12 +155,12 @@ export default function DataQuery() {
               </div>
               <div className="naxatw-h-[12.5rem] naxatw-w-full">
                 <div className="naxatw-grid naxatw-grid-cols-3 naxatw-items-center naxatw-justify-items-center naxatw-gap-2">
-                  {dataQueryOperators.map(({ id, label, type }) => (
+                  {dataQueryOperators.map(({ id, label, value, type }) => (
                     <a
                       key={id}
                       className={btnClassname}
                       onClick={() => {
-                        handleQuerySelect(label, type);
+                        handleQuerySelect(value, type);
                       }}
                     >
                       {label}
@@ -206,13 +221,8 @@ export default function DataQuery() {
         </div> */}
 
       <div className="naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
-        <Button
-          className="naxatw-btn-primary"
-          onClick={() => {
-            dispatch(toggleModal());
-          }}
-        >
-          Save
+        <Button className="naxatw-btn-primary" onClick={handleApply}>
+          Apply
         </Button>
       </div>
     </div>

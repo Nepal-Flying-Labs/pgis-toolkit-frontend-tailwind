@@ -35,6 +35,7 @@ const initialState = {
   dataQuery: {
     fields: null,
     values: null,
+    queryResults: [],
   },
 };
 
@@ -398,6 +399,17 @@ const getDataQueryValuesSuccess = (state, action) => {
   };
 };
 
+const postAdvanceQuerySuccess = (state, action) => {
+  const queryResults = [...state.dataQuery.queryResults, action.payload];
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      queryResults,
+    },
+  };
+};
+
 const resetProjectMapState = () => ({
   ...initialState,
 });
@@ -429,6 +441,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_GEOJSON_SUCCESS]: getProjectGeojsonSuccess,
   [Types.GET_DATA_QUERY_FIELDS_SUCCESS]: getDataQueryFieldsSuccess,
   [Types.GET_DATA_QUERY_VALUES_SUCCESS]: getDataQueryValuesSuccess,
+  [Types.POST_ADVANCE_QUERY_SUCCESS]: postAdvanceQuerySuccess,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

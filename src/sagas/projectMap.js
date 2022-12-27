@@ -8,6 +8,7 @@ import {
   getProjectGeojson,
   getProjectThemeLayers,
   getProjectThemes,
+  postAdvanceQuery,
   postNewLayerFeature,
   saveMapConfig,
   updateFeatureCollection,
@@ -220,6 +221,16 @@ export function* getDataQueryValuesRequest({ params }) {
   }
 }
 
+export function* postAdvanceQueryRequest({ payload }) {
+  try {
+    const response = yield call(postAdvanceQuery, payload);
+    yield put(projectMapActions.postAdvanceQuerySuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.postAdvanceQueryFailure());
+    throw error;
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -284,6 +295,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_DATA_QUERY_VALUES_REQUEST,
     withLoader(withErrorHandler(getDataQueryValuesRequest)),
+  );
+  yield takeLatest(
+    Types.POST_ADVANCE_QUERY_REQUEST,
+    withLoader(withErrorHandler(postAdvanceQueryRequest)),
   );
 }
 

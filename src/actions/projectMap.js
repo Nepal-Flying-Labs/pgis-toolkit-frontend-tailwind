@@ -83,6 +83,10 @@ export const { Types, Creators } = createActions(
     getDataQueryValuesRequest: ['params'],
     getDataQueryValuesSuccess: ['payload'],
     getDataQueryValuesFailure: null,
+
+    postAdvanceQueryRequest: ['payload'],
+    postAdvanceQuerySuccess: ['payload'],
+    postAdvanceQueryFailure: null,
   },
   { prefix: 'projectMap/' },
 );

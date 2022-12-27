@@ -30,7 +30,7 @@ export function withLoader(func) {
       yield func(action);
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.log(err);
+      // console.log(err);
     } finally {
       yield put(
         loaderActions.stopAction({

@@ -44,7 +44,6 @@ const User = () => {
           <li className="">
             {' '}
             <a
-              href={() => {}}
               className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-[13px] naxatw-leading-[18px] naxatw-font-bold ${
                 active === 'users'
                   ? 'naxatw-border-b-[2px] naxatw-border-[#484848] naxatw-text-[#484848]'
@@ -58,7 +57,6 @@ const User = () => {
           <li className="">
             {' '}
             <a
-              href={() => {}}
               className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-[13px] naxatw-leading-[18px] naxatw-font-bold ${
                 active === 'assign-users'
                   ? 'naxatw-border-b-[2px] naxatw-border-[#484848] naxatw-text-[#484848]'

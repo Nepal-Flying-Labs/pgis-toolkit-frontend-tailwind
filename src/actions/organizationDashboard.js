@@ -57,6 +57,16 @@ export const { Types, Creators } = createActions(
     getUserGroupRequest: ['params'],
     getUserGroupSuccess: ['payload'],
     getUserGroupFailure: null,
+
+    getAllProjectRequest: ['params'],
+    getAllProjectSuccess: ['payload'],
+    getAllProjectFailure: null,
+
+    postAssignUserRequest: ['payload'],
+    postAssignUserSuccess: ['payload'],
+    postAssignUserFailure: null,
+
+    setAssignList: ['payload'],
   },
   { prefix: 'organizationDashboard/' },
 );

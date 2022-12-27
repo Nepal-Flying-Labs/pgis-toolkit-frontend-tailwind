@@ -1,0 +1,13 @@
+.naxatw-toggle-label {
+  @apply naxatw-inline-flex naxatw-relative naxatw-items-center naxatw-cursor-pointer;
+}
+.naxatw-toggle {
+  @apply naxatw-bg-grey-400 naxatw-rounded-full after:naxatw-content-['']
+  after:naxatw-absolute after:naxatw-top-[2px] after:naxatw-left-[2px]
+  after:naxatw-bg-white after:naxatw-border after:naxatw-rounded-full after:naxatw-h-5
+  after:naxatw-w-5 after:naxatw-transition-all naxatw-w-11 naxatw-h-6;
+}
+
+.naxatw-toggle.naxatw-toggle-sm {
+  @apply naxatw-w-[2.3rem] naxatw-h-5 after:naxatw-h-4 after:naxatw-w-4;
+}

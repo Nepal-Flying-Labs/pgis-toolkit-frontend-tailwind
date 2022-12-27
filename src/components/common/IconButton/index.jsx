@@ -14,7 +14,7 @@ export default function IconButton({
       onClick={onClick}
       className={`naxatw-flex naxatw-items-center naxatw-cursor-pointer naxatw-select-none ${wrapperClassName}`}
     >
-      <i className={`material-icons ${className}`} style={style}>
+      <i className={className} style={style}>
         {name}
       </i>
     </span>
@@ -22,7 +22,7 @@ export default function IconButton({
 }
 
 IconButton.defaultProps = {
-  className: '',
+  className: 'material-icons',
   style: {},
   wrapperClassName: '',
   onClick: () => {},

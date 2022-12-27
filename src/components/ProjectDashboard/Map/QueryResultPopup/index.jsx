@@ -12,6 +12,9 @@ import IconButton from '@Components/common/IconButton/index';
 
 export default function QueryResultPopup() {
   const [collapsed, setCollapsed] = useState(false);
+  const projectHeaderHeight = useSelector(
+    state => state.common.projectHeaderHeight,
+  );
   const queryResults = useSelector(
     state => state.projectMap.dataQuery.queryResults,
   );
@@ -46,7 +49,12 @@ export default function QueryResultPopup() {
       </div>
 
       {!collapsed && (
-        <ul className="">
+        <ul
+          className="naxatw-overflow-y-auto scrollbar"
+          style={{
+            maxHeight: `calc(100vh - ${projectHeaderHeight}px - 14rem)`,
+          }}
+        >
           {queryResults.map(item => (
             <li
               key={item.id}
@@ -54,7 +62,13 @@ export default function QueryResultPopup() {
                 naxatw-border-b-grey-300 last:naxatw-border-b-0"
             >
               <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
-                <p className="naxatw-btn-text">{item.name}</p>
+                <span className="naxatw-flex naxatw-items-center naxatw-space-x-1">
+                  <p className="naxatw-btn-text">{item.name}</p>
+                  <IconButton
+                    name="table"
+                    className="material-symbols-outlined naxatw-text-sm" // onClick={() => setCollapsed(!collapsed)}
+                  />
+                </span>
                 <p className="naxatw-text-xl">32</p>
               </div>
               <div className="naxatw-space-y-1">

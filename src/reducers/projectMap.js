@@ -38,6 +38,8 @@ const initialState = {
     queryResults: [
       { id: 1, name: 'Road Accident' },
       { id: 2, name: 'Road Accident' },
+      { id: 3, name: 'Road Accident' },
+      { id: 4, name: 'Road Accident' },
     ],
   },
 };

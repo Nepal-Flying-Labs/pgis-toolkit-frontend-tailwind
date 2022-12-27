@@ -35,7 +35,10 @@ const initialState = {
   dataQuery: {
     fields: null,
     values: null,
-    queryResults: [{ id: 1, name: 'road' }],
+    queryResults: [
+      { id: 1, name: 'Road Accident' },
+      { id: 2, name: 'Road Accident' },
+    ],
   },
 };
 

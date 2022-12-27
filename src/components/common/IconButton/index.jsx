@@ -12,7 +12,7 @@ export default function IconButton({
     <span
       type="button"
       onClick={onClick}
-      className={`naxatw-flex naxatw-items-center naxatw-cursor-pointer ${wrapperClassName}`}
+      className={`naxatw-flex naxatw-items-center naxatw-cursor-pointer naxatw-select-none ${wrapperClassName}`}
     >
       <i className={`material-icons ${className}`} style={style}>
         {name}

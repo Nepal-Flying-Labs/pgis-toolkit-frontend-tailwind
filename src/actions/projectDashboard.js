@@ -95,6 +95,10 @@ export const { Types, Creators } = createActions(
     postImportTemplateFailure: null,
 
     setSelectedLayer: ['payload'],
+
+    getLayerAttributeRequest: ['params'],
+    getLayerAttributeSuccess: ['payload'],
+    getLayerAttributeFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

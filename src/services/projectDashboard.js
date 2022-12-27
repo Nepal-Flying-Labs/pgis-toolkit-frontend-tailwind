@@ -50,3 +50,6 @@ export const patchLayerTemplate = (id, payload) =>
 
 export const postImportTemplate = payload =>
   authenticated(api).post(`/maps/import_template/`, payload);
+
+export const getLayerAttribute = params =>
+  authenticated(api).get(`/maps/project_layer_template_attribute/`, { params });

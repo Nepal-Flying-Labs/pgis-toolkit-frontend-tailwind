@@ -8,9 +8,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 import Button from '@Components/common/Button/index';
 import CustomCheckbox from '@Components/common/CustomCheckbox/index';
-import { Creators } from '@Actions/projectDashboard';
+import { Creators, Types } from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
 import SortingContainer from '@Components/common/SortingContainer/index';
+import { checkIfLoading } from '@Utils/loaderSelector';
+import TableSkeleton from '@Components/common/TableSkeleton/index';
 
 const { toggleModal } = CommonCreators;
 const { getLayerTemplateRequest, patchLayerTemplateRequest, setSelectedLayer } =
@@ -48,6 +50,10 @@ const StepTwo = () => {
     if (layerTemplate.length < 1) dispatch(getLayerTemplateRequest(projectId));
   }, [dispatch, projectId, layerTemplate]);
 
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.GET_LAYER_TEMPLATE_REQUEST]),
+  );
+
   const handleRowClick = row => {
     dispatch(
       patchLayerTemplateRequest(row.id, {
@@ -71,77 +77,81 @@ const StepTwo = () => {
         </div>
       </div>
       <div className="naxa-table naxatw-overflow-x-auto scrollbar">
-        <Table
-          data={layerTemplate || []}
-          className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
-          headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-          headerWidths={['50px', '200px', '150px', '150px', '50px']}
-          // eslint-disable-next-line
-          onRowClick={row => {
-            handleRowClick(row);
-          }}
-        >
-          <TableHeader
-            dataField=""
+        {!loading ? (
+          <Table
+            data={layerTemplate || []}
+            className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            rowcolSpan="rowSpan_2"
-            dataFormat={row => <CustomCheckbox status={row.selected} />}
-          />
-          <TableHeader
-            dataField="Layer Name"
-            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
-            rowcolSpan="rowSpan_2"
-            dataHeader={
-              <SortingContainer
-                name="Layer Name"
-                className="naxatw-text-black"
-              />
-            }
-            dataFormat={row => (
-              <span className="naxatw-text-base naxatw-font-bold">
-                {row.name}
-              </span>
-            )}
-          />
-          <TableHeader
-            dataField="Geometry Type"
-            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            rowcolSpan="rowSpan_2"
-            dataHeader={<SortingContainer name="Geometry Type" />}
-            dataFormat={row => (
-              <span className="naxatw-text-base">{row.geometry_type}</span>
-            )}
-          />
-          <TableHeader
-            dataField="Data Import"
-            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
-            dataHeader={<SortingContainer name="Data Import" />}
-            rowcolSpan="rowSpan_3"
-            dataFormat={row => (
-              <div className=" naxatw-gap-x-2 naxatw-items-center">
-                {/* <Button
+            headerWidths={['50px', '200px', '150px', '150px', '50px']}
+            // eslint-disable-next-line
+            onRowClick={row => {
+              handleRowClick(row);
+            }}
+          >
+            <TableHeader
+              dataField=""
+              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+              rowcolSpan="rowSpan_2"
+              dataFormat={row => <CustomCheckbox status={row.selected} />}
+            />
+            <TableHeader
+              dataField="Layer Name"
+              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+              rowcolSpan="rowSpan_2"
+              dataHeader={
+                <SortingContainer
+                  name="Layer Name"
+                  className="naxatw-text-black"
+                />
+              }
+              dataFormat={row => (
+                <span className="naxatw-text-base naxatw-font-bold">
+                  {row.name}
+                </span>
+              )}
+            />
+            <TableHeader
+              dataField="Geometry Type"
+              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+              rowcolSpan="rowSpan_2"
+              dataHeader={<SortingContainer name="Geometry Type" />}
+              dataFormat={row => (
+                <span className="naxatw-text-base">{row.geometry_type}</span>
+              )}
+            />
+            <TableHeader
+              dataField="Data Import"
+              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
+              dataHeader={<SortingContainer name="Data Import" />}
+              rowcolSpan="rowSpan_3"
+              dataFormat={row => (
+                <div className=" naxatw-gap-x-2 naxatw-items-center">
+                  {/* <Button
                   className="naxatw-btn-secondary naxatw-btn-noborder naxatw-min-w-fit"
                   onClick={() => dispatch(toggleModal('add-wms-layer'))}
                 >
                   Import From OSM
                 </Button> */}
-                <Button
-                  className="naxatw-btn-secondary naxatw-btn-noborder naxatw-min-w-fit"
-                  onClick={e => {
-                    e.stopPropagation();
-                    dispatch(setSelectedLayer(row));
-                    dispatch(toggleModal('manage-attributes'));
-                  }}
-                >
-                  Manage Attributes
-                </Button>
-                {/* <Button className="naxatw-btn-secondary naxatw-btn-noborder naxatw-min-w-fit">
+                  <Button
+                    className="naxatw-btn-secondary naxatw-btn-noborder naxatw-min-w-fit"
+                    onClick={e => {
+                      e.stopPropagation();
+                      dispatch(setSelectedLayer(row));
+                      dispatch(toggleModal('manage-attributes'));
+                    }}
+                  >
+                    Manage Attributes
+                  </Button>
+                  {/* <Button className="naxatw-btn-secondary naxatw-btn-noborder naxatw-min-w-fit">
                   Map
                 </Button> */}
-              </div>
-            )}
-          />
-        </Table>
+                </div>
+              )}
+            />
+          </Table>
+        ) : (
+          <TableSkeleton />
+        )}
       </div>
       <p className="naxatw-text-body-md naxatw-text-[#484848] naxatw-py-3">
         Are you confused? Please check our guide document,{' '}

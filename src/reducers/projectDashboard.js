@@ -13,6 +13,7 @@ const initialState = {
     manageData: {
       layerTemplate: [],
       selectedLayer: null,
+      attributeList: [],
     },
   },
   gallery: {
@@ -238,6 +239,17 @@ const setSelectedLayer = (state, action) => ({
   },
 });
 
+const getLayerAttributeSuccess = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      attributeList: action.payload,
+    },
+  },
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -261,6 +273,7 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_LAYER_TEMPLATE_SUCCESS]: getLayerTemplateSuccess,
   [Types.PATCH_LAYER_TEMPLATE_SUCCESS]: patchLayerTemplateSuccess,
   [Types.SET_SELECTED_LAYER]: setSelectedLayer,
+  [Types.GET_LAYER_ATTRIBUTE_SUCCESS]: getLayerAttributeSuccess,
 });
 
 export default projectDashboardReducer;

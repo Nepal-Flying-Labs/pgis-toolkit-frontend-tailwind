@@ -66,6 +66,9 @@ export default function MapSection() {
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
+  const queryResults = useSelector(
+    state => state.projectMap.dataQuery.queryResults,
+  );
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,
@@ -228,6 +231,20 @@ export default function MapSection() {
             ''
           ),
         )}
+
+        {queryResults.map(item => (
+          <VectorTileLayer
+            key={item.id}
+            url={`${API_URL}maps/advance_filter_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+            authToken={localStorage.getItem('userToken')}
+            visibleOnMap={item.checked}
+            style={item?.style || { ...defaultStyles }}
+            zIndex={100}
+            zoomToLayer
+            bbox={item.bbox}
+            // properties={{ layerId: item.id }}
+          />
+        ))}
 
         <AddFeature
           enable={drawType === 'add-feature'}

@@ -109,13 +109,19 @@ function DocumentList({ openSidebar }) {
 
       <div
         style={{
-          height: `calc(100vh - 234px)`,
+          height: `calc(100vh - 230px)`,
           transition: 'ease-in-out 300ms',
         }}
         className="naxatw-py-3 naxatw-flex naxatw-overflow-auto scrollbar"
       >
         <div className="naxatw-mt-3 naxatw-w-full">
-          <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-h-[600px] naxatw-w-full">
+          <div
+            style={{
+              height: `calc(100vh - 270px)`,
+              transition: 'ease-in-out 300ms',
+            }}
+            className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-w-full"
+          >
             {!loading ? (
               <Table
                 data={documents || []}

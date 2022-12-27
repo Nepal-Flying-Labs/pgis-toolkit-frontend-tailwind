@@ -2,7 +2,14 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
-export default function Modal({ title, show, onClose, children }) {
+export default function Modal({
+  title,
+  show,
+  onClose,
+  children,
+  className,
+  headerContent,
+}) {
   const nodeRef = useRef();
 
   return (
@@ -34,11 +41,16 @@ export default function Modal({ title, show, onClose, children }) {
         >
           <div className="naxatw-flex naxatw-min-h-full naxatw-items-center naxatw-justify-center naxatw-p-4">
             <div className="naxatw-relative naxatw-flex naxatw-flex-col naxatw-justify-center naxatw-items-center naxatw-w-full naxatw-max-w-2xl naxatw-h-full md:naxatw-h-auto">
-              <div className="naxatw-relative naxatw-bg-white naxatw-rounded-3xl naxatw-shadow naxatw-py-5 naxatw-px-6 naxatw-w-[42rem]">
+              <div
+                className={`naxatw-relative naxatw-bg-white naxatw-rounded-3xl naxatw-shadow naxatw-py-5 naxatw-px-6 naxatw-w-[42rem] ${className}`}
+              >
                 <div className="naxatw-flex naxatw-justify-between naxatw-items-start naxatw-rounded-t naxatw-p-1">
-                  <h3 className="naxatw-font-bold naxatw-tracking-wider">
-                    {title}
-                  </h3>
+                  {headerContent || (
+                    <h3 className="naxatw-font-bold naxatw-tracking-wider">
+                      {title}
+                    </h3>
+                  )}
+
                   <button
                     type="button"
                     className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
@@ -63,6 +75,8 @@ Modal.defaultProps = {
   show: false,
   onClose: () => {},
   children: '',
+  className: '',
+  headerContent: null,
 };
 
 Modal.propTypes = {
@@ -70,4 +84,6 @@ Modal.propTypes = {
   show: PropTypes.bool,
   onClose: PropTypes.func,
   children: PropTypes.node,
+  className: PropTypes.string,
+  headerContent: PropTypes.node,
 };

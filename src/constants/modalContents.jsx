@@ -18,6 +18,7 @@ import BufferAnalysis from '@Components/ProjectDashboard/ModalContent/Analysis/B
 import UploadFailed from '@Components/ProjectDashboard/ModalContent/UploadFailed';
 import DownloadLayer from '@Components/ProjectDashboard/ModalContent/DownloadLayer';
 import ManageAttributes from '@Components/ProjectDashboard/ModalContent/ManageAttributes/index';
+import AddAttributes from '@Components/ProjectDashboard/ModalContent/AddAttributes/index';
 import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer/index';
 import UploadImage from '@Components/ProjectDashboard/ModalContent/UploadImage/index';
 import UploadDocument from '@Components/ProjectDashboard/ModalContent/UploadDocument/index';
@@ -136,6 +137,13 @@ export function getModalContent(content) {
       return {
         title: 'Manage Attributes',
         content: <ManageAttributes />,
+        className: 'naxatw-w-[50rem]',
+      };
+    case 'add-attributes':
+      return {
+        title: 'Add Attributes',
+        content: <AddAttributes />,
+        className: 'naxatw-w-[50rem]',
       };
     default:
       return {

@@ -27,6 +27,10 @@ import {
   updateDocument,
   getProjectCountry,
   getProjectState,
+  getLayerTemplate,
+  patchLayerTemplate,
+  postImportTemplate,
+  getLayerAttribute,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -230,6 +234,7 @@ export function* downloadDocumentRequest({ params }) {
     throw error;
   }
 }
+
 export function* uploadDocumentDataRequest({ id, payload }) {
   try {
     yield all(payload.map(data => call(uploadDocument, data)));
@@ -262,6 +267,23 @@ export function* updateDocumentDataRequest({ payload }) {
     );
   } catch (error) {
     yield put(projectDashboardActions.updateDocumentDataFailure());
+  }
+}
+
+export function* getLayerTemplateRequest({ id }) {
+  try {
+    const response = yield call(getLayerTemplate, id);
+
+    yield put(
+      response.data.length < 1
+        ? projectDashboardActions.postImportTemplateRequest({
+            project: id,
+            templates: 'all',
+          })
+        : projectDashboardActions.getLayerTemplateSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.getLayerTemplateFailure());
     throw error;
   }
 }
@@ -280,6 +302,16 @@ export function* deleteDocumentRequest({ id, payload }) {
     );
   } catch (error) {
     yield put(projectDashboardActions.deleteDocumentFailure());
+  }
+}
+
+export function* patchLayerTemplateRequest({ id, payload }) {
+  try {
+    const response = yield call(patchLayerTemplate, id, payload);
+
+    yield put(projectDashboardActions.patchLayerTemplateSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.patchLayerTemplateFailure());
     throw error;
   }
 }
@@ -293,12 +325,33 @@ export function* getProjectCountryRequest({ id }) {
     throw error;
   }
 }
+
 export function* getProjectStateRequest({ id }) {
   try {
     const response = yield call(getProjectState, id);
     yield put(projectDashboardActions.getProjectStateSuccess(response.data));
   } catch (error) {
     yield put(projectDashboardActions.deleteDocumentFailure());
+  }
+}
+
+export function* postImportTemplateRequest({ payload }) {
+  const { project } = payload;
+  try {
+    yield call(postImportTemplate, payload);
+    yield put(projectDashboardActions.getLayerTemplateRequest(project));
+  } catch (error) {
+    yield put(projectDashboardActions.postImportTemplateFailure());
+    throw error;
+  }
+}
+
+export function* getLayerAttributeRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttribute, params);
+    yield put(projectDashboardActions.getLayerAttributeSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getLayerAttributeFailure());
     throw error;
   }
 }
@@ -383,6 +436,22 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_STATE_REQUEST,
     withLoader(withErrorHandler(getProjectStateRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_TEMPLATE_REQUEST,
+    withLoader(withErrorHandler(getLayerTemplateRequest)),
+  );
+  yield takeLatest(
+    Types.PATCH_LAYER_TEMPLATE_REQUEST,
+    withLoader(withErrorHandler(patchLayerTemplateRequest)),
+  );
+  yield takeLatest(
+    Types.POST_IMPORT_TEMPLATE_REQUEST,
+    withLoader(withErrorHandler(postImportTemplateRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(getLayerAttributeRequest)),
   );
 }
 

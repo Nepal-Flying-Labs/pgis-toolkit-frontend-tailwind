@@ -81,6 +81,24 @@ export const { Types, Creators } = createActions(
     uploadDocumentDataRequest: ['id', 'payload'],
     uploadDocumentDataSuccess: ['payload'],
     uploadDocumentDataFailure: ['payload'],
+
+    updateDocumentDataRequest: ['payload'],
+    updateDocumentDataSuccess: ['payload'],
+    updateDocumentDataFailure: ['payload'],
+
+    setDeleteDocument: ['payload'],
+
+    deleteDocumentRequest: ['id', 'payload'],
+    deleteDocumentSuccess: ['payload'],
+    deleteDocumentFailure: null,
+
+    getProjectCountryRequest: ['id'],
+    getProjectCountrySuccess: ['payload'],
+    getProjectCountryFailure: ['payload'],
+
+    getProjectStateRequest: ['id'],
+    getProjectStateSuccess: ['payload'],
+    getProjectStateFailure: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

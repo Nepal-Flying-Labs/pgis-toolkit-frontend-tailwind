@@ -41,3 +41,15 @@ export const downloadDocument = params =>
 // upload-document
 export const uploadDocument = payload =>
   authenticated(api).post(`/projects/document/`, payload);
+
+// update-document-item
+export const updateDocument = (id, payload) =>
+  authenticated(api).patch(`/projects/document/${id}/`, payload);
+
+// project-location-item
+export const getProjectCountry = id =>
+  authenticated(api).get(`/projects/country/${id}/`);
+
+// project-location-item
+export const getProjectState = params =>
+  authenticated(api).get(`/projects/state/`, { params });

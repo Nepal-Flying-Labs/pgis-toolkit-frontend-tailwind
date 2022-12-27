@@ -24,6 +24,9 @@ import {
   getIndividualDocument,
   downloadDocument,
   uploadDocument,
+  updateDocument,
+  getProjectCountry,
+  getProjectState,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -243,6 +246,63 @@ export function* uploadDocumentDataRequest({ id, payload }) {
     throw error;
   }
 }
+
+export function* updateDocumentDataRequest({ payload }) {
+  const { documentId, projectId, data } = payload;
+  console.log('update docx ', payload);
+  try {
+    yield call(updateDocument, documentId, data);
+    const res = yield call(getDocumentItem, { project: projectId });
+    yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
+    yield put(commonActions.toggleModal());
+    yield put(
+      toastActions.success({
+        message: 'Data uploaded successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.updateDocumentDataFailure());
+    throw error;
+  }
+}
+
+export function* deleteDocumentRequest({ id, payload }) {
+  try {
+    const response = yield call(updateDocument, id, payload);
+    console.log('deleted item ', response);
+    // const res = yield call(getDocumentItem, { project: projectId });
+    // yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
+    yield put(commonActions.toggleModal());
+    yield put(
+      toastActions.success({
+        message: 'Data deleted successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.deleteDocumentFailure());
+    throw error;
+  }
+}
+
+export function* getProjectCountryRequest({ id }) {
+  try {
+    const response = yield call(getProjectCountry, id);
+    yield put(projectDashboardActions.getProjectCountrySuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.deleteDocumentFailure());
+    throw error;
+  }
+}
+export function* getProjectStateRequest({ id }) {
+  try {
+    const response = yield call(getProjectState, id);
+    yield put(projectDashboardActions.getProjectStateSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.deleteDocumentFailure());
+    throw error;
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -307,6 +367,22 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.UPLOAD_DOCUMENT_DATA_REQUEST,
     withLoader(withErrorHandler(uploadDocumentDataRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_DOCUMENT_DATA_REQUEST,
+    withLoader(withErrorHandler(updateDocumentDataRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_DOCUMENT_REQUEST,
+    withLoader(withErrorHandler(deleteDocumentRequest)),
+  );
+  yield takeLatest(
+    Types.GET_PROJECT_COUNTRY_REQUEST,
+    withLoader(withErrorHandler(getProjectCountryRequest)),
+  );
+  yield takeLatest(
+    Types.GET_PROJECT_STATE_REQUEST,
+    withLoader(withErrorHandler(getProjectStateRequest)),
   );
 }
 

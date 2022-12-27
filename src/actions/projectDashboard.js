@@ -81,6 +81,24 @@ export const { Types, Creators } = createActions(
     uploadDocumentDataRequest: ['id', 'payload'],
     uploadDocumentDataSuccess: ['payload'],
     uploadDocumentDataFailure: ['payload'],
+
+    getLayerTemplateRequest: ['id'],
+    getLayerTemplateSuccess: ['payload'],
+    getLayerTemplateFailure: null,
+
+    patchLayerTemplateRequest: ['id', 'payload'],
+    patchLayerTemplateSuccess: ['payload'],
+    patchLayerTemplateFailure: null,
+
+    postImportTemplateRequest: ['payload'],
+    postImportTemplateSuccess: ['payload'],
+    postImportTemplateFailure: null,
+
+    setSelectedLayer: ['payload'],
+
+    getLayerAttributeRequest: ['params'],
+    getLayerAttributeSuccess: ['payload'],
+    getLayerAttributeFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

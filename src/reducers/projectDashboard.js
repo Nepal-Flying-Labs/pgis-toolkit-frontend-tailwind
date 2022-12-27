@@ -10,6 +10,11 @@ const initialState = {
     uploadStatusCheckingIds: [],
     selectedData: null,
     uploadErrorResponse: null,
+    manageData: {
+      layerTemplate: [],
+      selectedLayer: null,
+      attributeList: [],
+    },
   },
   gallery: {
     list: [],
@@ -195,6 +200,56 @@ const uploadDocumentDataSuccess = (state, action) => ({
   },
 });
 
+const getLayerTemplateSuccess = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      layerTemplate: action.payload,
+    },
+  },
+});
+
+const patchLayerTemplateSuccess = (state, action) => {
+  const { data } = action.payload;
+  const newData = state.data.manageData.layerTemplate.map(obj =>
+    data.id === obj.id ? data : obj,
+  );
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      manageData: {
+        ...state.data.manageData,
+        layerTemplate: newData,
+      },
+    },
+  };
+};
+
+const setSelectedLayer = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      selectedData: action.payload,
+    },
+  },
+});
+
+const getLayerAttributeSuccess = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      attributeList: action.payload,
+    },
+  },
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -215,6 +270,10 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_DOCUMENT_ITEM_SUCCESS]: getDocumentItemSuccess,
   [Types.GET_DOCUMENT_BY_ID_SUCCESS]: getDocumentByIdSuccess,
   [Types.UPLOAD_DOCUMENT_DATA_SUCCESS]: uploadDocumentDataSuccess,
+  [Types.GET_LAYER_TEMPLATE_SUCCESS]: getLayerTemplateSuccess,
+  [Types.PATCH_LAYER_TEMPLATE_SUCCESS]: patchLayerTemplateSuccess,
+  [Types.SET_SELECTED_LAYER]: setSelectedLayer,
+  [Types.GET_LAYER_ATTRIBUTE_SUCCESS]: getLayerAttributeSuccess,
 });
 
 export default projectDashboardReducer;

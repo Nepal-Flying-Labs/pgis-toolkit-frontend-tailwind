@@ -12,6 +12,7 @@ import {
 } from '@Selectors/organizationDashboard';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Searchbar from '@Components/common/Searchbar/index';
+import MultiSelect from '@Components/common/MultiSelect/index';
 import Button from '@Components/common/Button/index';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import Spinner from '@Components/common/Spinner';
@@ -40,6 +41,7 @@ const validation = data => {
 const AssignUsers = () => {
   const { organizationId } = useParams();
   const assignList = useSelector(assignProjectListSelector);
+  const userList = useSelector(state => state.organizationDashboard.users);
   const userRoles = useSelector(assignRoleListSelector);
   const organizationDetails = useSelector(
     state => state.organizationDashboard.organizationDetail,
@@ -56,6 +58,8 @@ const AssignUsers = () => {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState(null);
   const [email, setEmail] = useState('');
+  const [roleSearchText, setRoleSearchText] = useState('');
+  const [projectSearchText, setProjectSearchText] = useState('');
   const [selectedRolesList, setSelectedRolesList] = useState(userRoles);
   const [selectedProjectList, setSelectedProjectList] = useState(assignList);
   const [emailList, setEmailList] = useState([]);
@@ -70,15 +74,15 @@ const AssignUsers = () => {
 
     if (Object.keys(error).length < 1) {
       const userRole = selectedRolesList.filter(list => list.checked)[0].id;
-      const projectList = selectedProjectList
-        .filter(list => list.checked)
-        .map(i => i.id);
+      const projectList = selectedProjectList.filter(list => list.checked)[0]
+        .id;
+
       if (userRole === 2) {
         dispatch(
           postAssignUserRequest({
             organization: organizationDetails.id,
             group: userRole,
-            email: emailList.map(i => i.value),
+            email: emailList,
           }),
         );
       } else {
@@ -87,7 +91,7 @@ const AssignUsers = () => {
             organization: organizationDetails.id,
             group: userRole,
             project: projectList,
-            email: emailList.map(i => i.value),
+            email: emailList,
           }),
         );
       }
@@ -126,7 +130,9 @@ const AssignUsers = () => {
   const handleProjectCheckboxClick = data => {
     const newData = selectedProjectList.map(list => {
       const { checked } = list;
-      return list.id === data.id ? { ...list, checked: !checked } : { ...list };
+      return list.id === data.id
+        ? { ...list, checked: !checked }
+        : { ...list, checked: false };
     });
     setSelectedProjectList(newData);
   };
@@ -138,7 +144,7 @@ const AssignUsers = () => {
           <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
             Assign User
           </label>
-          <div className="naxatw-flex naxatw-items-center naxatw-relative">
+          {/* <div className="naxatw-flex naxatw-items-center naxatw-relative">
             <input
               type="text"
               className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-pr-3 naxatw-pl-[50px] naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white  naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded-md naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gregrey-700 naxatw-focus:bg-white focus:naxatw-border-gray-600 focus:naxatw-outline-none"
@@ -185,9 +191,19 @@ const AssignUsers = () => {
                 add
               </i>
             </a>
-          </div>
+          </div> */}
+          <MultiSelect
+            options={userList.filter(i => i.active)}
+            placeholder="Choose User"
+            field="full_name"
+            onChange={data => {
+              const newData = data.map(i => i.email);
+              setEmailList(newData);
+            }}
+            selected={userList.filter(item => emailList.includes(item.email))}
+          />
           {errors && <FormErrorMessage message={errors.email} />}
-          <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-2 ">
+          {/* <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-2 ">
             {emailList.map(item => (
               <div
                 key={item.id}
@@ -205,7 +221,7 @@ const AssignUsers = () => {
                 </i>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
         <div className="naxatw-flex naxatw-gap-x-5">
           <div className="naxatw-space-y-2 naxatw-pt-5 naxatw-basis-1/2">
@@ -217,17 +233,21 @@ const AssignUsers = () => {
                 isSmall
                 className="naxatw-h-[40px]"
                 placeholder="Search Role"
+                value={roleSearchText}
+                onChange={e => setRoleSearchText(e.target.value)}
               />
               <div className="naxatw-w-full naxatw-space-y-5  naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-2 naxatw-min-h-[200px] naxatw-max-h-[200px] naxatw-overflow-x-auto scrollbar">
-                {selectedRolesList.map(roles => (
-                  <Checkbox
-                    key={roles.id}
-                    id={roles.id}
-                    label={roles.name?.replaceAll('_', ' ')}
-                    onClick={() => handleCheckboxClick(roles)}
-                    checked={roles.checked}
-                  />
-                ))}
+                {selectedRolesList
+                  .filter(i => i.name?.toLowerCase()?.includes(roleSearchText))
+                  .map(roles => (
+                    <Checkbox
+                      key={roles.id}
+                      id={roles.id}
+                      label={roles.name?.replaceAll('_', ' ')?.toLowerCase()}
+                      onClick={() => handleCheckboxClick(roles)}
+                      checked={roles.checked}
+                    />
+                  ))}
               </div>
             </div>
             {errors && <FormErrorMessage message={errors.group} />}
@@ -241,21 +261,27 @@ const AssignUsers = () => {
                 isSmall
                 className="naxatw-h-[40px]"
                 placeholder="Search Projects"
+                value={projectSearchText}
+                onChange={e => setProjectSearchText(e.target.value)}
               />
               <div className="naxatw-w-full naxatw-space-y-5  naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-2 naxatw-max-h-[200px] naxatw-min-h-[200px] naxatw-overflow-x-auto scrollbar">
                 {!userListLoading ? (
                   selectedRolesList
                     ?.map(list => list.checked)
                     ?.includes(true) ? (
-                    selectedProjectList.map(project => (
-                      <Checkbox
-                        key={project.id}
-                        id={project.id}
-                        label={project.name}
-                        checked={project.checked}
-                        onClick={() => handleProjectCheckboxClick(project)}
-                      />
-                    ))
+                    selectedProjectList
+                      .filter(i =>
+                        i.name?.toLowerCase()?.includes(projectSearchText),
+                      )
+                      .map(project => (
+                        <Checkbox
+                          key={project.id}
+                          id={project.id}
+                          label={project.name}
+                          checked={project.checked}
+                          onClick={() => handleProjectCheckboxClick(project)}
+                        />
+                      ))
                   ) : (
                     <div className="naxatw-h-full naxatw-w-full naxatw-flex naxatw-items-center naxatw-justify-center">
                       <span className="naxatw-text-body-lg ">

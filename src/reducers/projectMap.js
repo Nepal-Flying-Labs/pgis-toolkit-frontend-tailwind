@@ -400,7 +400,27 @@ const getDataQueryValuesSuccess = (state, action) => {
 };
 
 const postAdvanceQuerySuccess = (state, action) => {
-  const queryResults = [...state.dataQuery.queryResults, action.payload];
+  const queryResults = [
+    ...state.dataQuery.queryResults,
+    {
+      ...action.payload,
+      checked: true,
+    },
+  ];
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      queryResults,
+    },
+  };
+};
+
+const handleDataQueryCheckbox = (state, action) => {
+  const { id, checked } = action.payload;
+  const queryResults = state.dataQuery.queryResults.map(item =>
+    item.id === id ? { ...item, checked } : { ...item },
+  );
   return {
     ...state,
     dataQuery: {
@@ -442,6 +462,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_DATA_QUERY_FIELDS_SUCCESS]: getDataQueryFieldsSuccess,
   [Types.GET_DATA_QUERY_VALUES_SUCCESS]: getDataQueryValuesSuccess,
   [Types.POST_ADVANCE_QUERY_SUCCESS]: postAdvanceQuerySuccess,
+  [Types.HANDLE_DATA_QUERY_CHECKBOX]: handleDataQueryCheckbox,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

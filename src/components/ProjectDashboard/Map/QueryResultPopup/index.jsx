@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { Creators as CommonCreators } from '@Actions/common';
-// import { Creators as ProjectMapCreators } from '@Actions/projectMap';
+import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import Button from '@Components/common/Button';
 import { isEmpty } from '@Utils/commonUtils';
 import Toggle from '@Components/common/Toggle/index';
@@ -9,7 +9,7 @@ import IconButton from '@Components/common/IconButton/index';
 import { stringifyQuery } from '@Components/ProjectDashboard/ModalContent/DataQuery/index';
 
 // const { toggleModal } = CommonCreators;
-// const { setProjectMapState } = ProjectMapCreators;
+const { handleDataQueryCheckbox } = ProjectMapCreators;
 
 export default function QueryResultPopup() {
   const [collapsed, setCollapsed] = useState(false);
@@ -19,7 +19,7 @@ export default function QueryResultPopup() {
   const queryResults = useSelector(
     state => state.projectMap.dataQuery.queryResults,
   );
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   if (isEmpty(queryResults)) return '';
 
@@ -79,7 +79,18 @@ export default function QueryResultPopup() {
                 <p>{stringifyQuery(item.query)}</p>
               </div>
               <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
-                <Toggle isSm checked />
+                <Toggle
+                  isSm
+                  checked={item.checked}
+                  onChange={e =>
+                    dispatch(
+                      handleDataQueryCheckbox({
+                        id: item.id,
+                        checked: e.target.checked,
+                      }),
+                    )
+                  }
+                />
                 <div className="naxatw-flex">
                   <Button className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm">
                     Save

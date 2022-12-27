@@ -60,9 +60,13 @@
 - [ ] draw rectangle, draw polygon
 - [ ] view attribute table 
 - [ ] manage attribute (attribute type/delete/add)
-
 - [ ] map export
+
 - [ ] data query
+- [ ] clustering on organization dashboard map 
+- [ ] draw on map project setup (sudeep) 
+- [ ] map display on info page
+
 
 ### ISSUES
 

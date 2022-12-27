@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators as ProjectMapCreators } from '@Actions/projectMap';
+import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import { mapStateSelector } from '@Selectors/projectMap';
 import Select from '@Components/common/Select';
 import Button from '@Components/common/Button';
+import Spinner from '@Components/common/Spinner';
 import { dataQueryOperators } from '@src/constants/map';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const btnClassname =
   'naxatw-p-2 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-items-center naxatw-rounded-lg naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-flex naxatw-items-center naxatw-justify-center naxatw-font-bold naxatw-text-[13px] naxatw-text-grey-800';
@@ -45,6 +47,12 @@ export default function DataQuery() {
   const values = useSelector(state => state.projectMap.dataQuery.values);
   const [selectedField, setSelectedField] = useState(null);
   const [query, setQuery] = useState([initialQuery]);
+  const isValuesFetching = useSelector(state =>
+    checkIfLoading(state, [Types.GET_DATA_QUERY_VALUES_REQUEST]),
+  );
+  const isPosting = useSelector(state =>
+    checkIfLoading(state, [Types.POST_ADVANCE_QUERY_REQUEST]),
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -169,6 +177,11 @@ export default function DataQuery() {
                 </div>
               </div>
               <div className="naxatw-h-[12.5rem] naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-overflow-y-auto scrollbar">
+                {isValuesFetching && (
+                  <div className="naxatw-h-full naxatw-flex naxatw-items-center naxatw-justify-center">
+                    <Spinner className="!naxatw-h-7 !naxatw-w-7 naxatw-fill-grey-500" />
+                  </div>
+                )}
                 <ul>
                   {values?.map(item => (
                     <li
@@ -221,7 +234,11 @@ export default function DataQuery() {
         </div> */}
 
       <div className="naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
-        <Button className="naxatw-btn-primary" onClick={handleApply}>
+        <Button
+          className="naxatw-btn-primary"
+          onClick={handleApply}
+          isLoading={isPosting}
+        >
           Apply
         </Button>
       </div>

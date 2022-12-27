@@ -117,7 +117,7 @@ export default function DataQuery() {
       name: `query-${uuidv4()}`,
       expression: JSON.stringify(query),
     };
-    dispatch(postAdvanceQueryRequest(payloadData));
+    // dispatch(postAdvanceQueryRequest(payloadData));
   };
 
   return (

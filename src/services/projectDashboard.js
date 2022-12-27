@@ -29,3 +29,15 @@ export const getGalleryItem = params =>
 // Document-item
 export const getDocumentItem = params =>
   authenticated(api).get(`/projects/document/`, { params });
+
+// individual-Document-item
+export const getIndividualDocument = id =>
+  authenticated(api).get(`/projects/document/${id}/`);
+
+// Document-download
+export const downloadDocument = params =>
+  authenticated(api).get(`/projects/document_download/`, { params });
+
+// upload-document
+export const uploadDocument = payload =>
+  authenticated(api).post(`/projects/document/`, payload);

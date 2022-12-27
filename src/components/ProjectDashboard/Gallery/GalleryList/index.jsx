@@ -8,11 +8,14 @@ import PropTypes from 'prop-types';
 import Button from '@Components/common/Button/index';
 import noImg from '@Assets/images/noImage.png';
 import GalleryCard from './GalleryCard';
+import { isEmpty } from '@Utils/commonUtils';
 
 function GalleryList({ openSidebar }) {
   const dispatch = useDispatch();
   const { setSearchText } = Creators;
   const searchText = useSelector(state => state?.projectDashboard?.searchText);
+  const gallery = useSelector(state => state.projectDashboard.gallery.list);
+
   const [value, handleSearch] = useDebouncedInput({
     ms: 300,
     init: searchText,
@@ -51,19 +54,20 @@ function GalleryList({ openSidebar }) {
         className="naxatw-py-3 naxatw-overflow-hidden naxatw-overflow-y-auto scrollbar"
       >
         <div className="naxatw-flex naxatw-flex-wrap naxatw-gap-5">
-          {Array.from({ length: 15 }).map(index => (
-            <GalleryCard
-              label="Construction site"
-              id={index}
-              status="5"
-              imgSrc={noImg}
-              checked={false}
-              onCardClick={id => {
-                console.log('Gallery card clicked id : ', id);
-                openSidebar(true);
-              }}
-            />
-          ))}
+          {!isEmpty(gallery) &&
+            gallery.map(item => (
+              <GalleryCard
+                label={item.title}
+                id={item.id}
+                status=""
+                imgSrc={item.image}
+                checked={false}
+                onCardClick={id => {
+                  console.log('Gallery card clicked id : ', id);
+                  openSidebar(true);
+                }}
+              />
+            ))}
         </div>
       </div>
     </div>

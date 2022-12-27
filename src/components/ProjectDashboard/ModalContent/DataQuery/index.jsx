@@ -6,7 +6,6 @@ import { mapStateSelector } from '@Selectors/projectMap';
 import Select from '@Components/common/Select';
 import Button from '@Components/common/Button';
 import { dataQueryOperators } from '@src/constants/map';
-import MaterialIcon from '@Components/common/MaterialIcon/index';
 
 const btnClassname =
   'naxatw-p-2 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-items-center naxatw-rounded-lg naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-flex naxatw-items-center naxatw-justify-center naxatw-font-bold naxatw-text-[13px] naxatw-text-grey-800';
@@ -21,9 +20,17 @@ function stringifyQuery(data) {
     if (join) {
       return `${str} ${join}`;
     }
-    return `${str} "${field}" ${operator || ''} ${value ? `"${value}"` : ''}`;
+    return `${str} ${field ? `"${field}"` : ''} ${operator || ''} ${
+      value ? `"${value}"` : ''
+    }`;
   }, '');
 }
+
+const initialQuery = {
+  field: null,
+  operator: null,
+  value: null,
+};
 
 export default function DataQuery() {
   const [selectedLayer, setSelectedLayer] = useState(null);
@@ -31,13 +38,7 @@ export default function DataQuery() {
   const fields = useSelector(state => state.projectMap.dataQuery.fields);
   const values = useSelector(state => state.projectMap.dataQuery.values);
   const [selectedField, setSelectedField] = useState(null);
-  const [query, setQuery] = useState([
-    {
-      field: '',
-      operator: null,
-      value: null,
-    },
-  ]);
+  const [query, setQuery] = useState([initialQuery]);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -78,20 +79,23 @@ export default function DataQuery() {
           },
         ];
       }
-      if (prev.length === 1) {
-        return [{ ...lastItem, [type]: val }];
-      }
+      // if (prev.length === 1) {
+      // return [{ ...lastItem, [type]: val }];
+      // }
       return [
         ...prev.filter((_, idx) => idx !== prev.length - 1),
-        {
-          ...lastItem,
-          [type]: val,
-        },
+        type === 'field' && !!field && !!operator && !!value
+          ? {
+              ...initialQuery,
+              [type]: val,
+            }
+          : {
+              ...lastItem,
+              [type]: val,
+            },
       ];
     });
   };
-
-  console.log(JSON.stringify(query, null, 2), 'queryx');
 
   return (
     <div>

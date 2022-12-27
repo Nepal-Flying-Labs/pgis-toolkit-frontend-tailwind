@@ -7,13 +7,13 @@ const queryResult = [
 export const dataQueryOperators = [
   { id: 1, label: '=', value: 1, type: 'operator' },
   { id: 2, label: '!=', value: 4, type: 'operator' },
-  { id: 3, label: 'Like', value: 7, type: 'operator' },
+  { id: 3, label: 'LIKE', value: 7, type: 'operator' },
   { id: 4, label: '>', value: 3, type: 'operator' },
   { id: 5, label: '>=', value: 6, type: 'operator' },
-  { id: 6, label: 'And', value: 8, type: 'join' },
+  { id: 6, label: 'AND', value: 'AND', type: 'join' },
   { id: 7, label: '<', value: 2, type: 'operator' },
   { id: 8, label: '<=', value: 5, type: 'operator' },
-  { id: 9, label: 'Or', value: 9, type: 'join' },
+  { id: 9, label: 'OR', value: 'OR', type: 'join' },
 ];
 
 export const nothing = '';

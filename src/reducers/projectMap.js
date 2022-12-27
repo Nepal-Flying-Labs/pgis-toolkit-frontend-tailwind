@@ -35,7 +35,7 @@ const initialState = {
   dataQuery: {
     fields: null,
     values: null,
-    queryResults: [],
+    queryResults: [{ id: 1, name: 'road' }],
   },
 };
 

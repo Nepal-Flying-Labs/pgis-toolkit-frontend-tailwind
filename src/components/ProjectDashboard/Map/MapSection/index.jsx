@@ -30,6 +30,7 @@ import DrawTool from '@Components/common/OpenLayersComponent/DrawTool/index';
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import SidebarToggle from '../SidebarToggle';
 import Toolbox from '../Toolbox';
+import QueryResultPopup from '../QueryResultPopup';
 
 const { API_URL } = process.env;
 
@@ -194,6 +195,8 @@ export default function MapSection() {
         <SidebarToggle />
 
         <Toolbox />
+
+        <QueryResultPopup />
 
         <LayerSwitcherControl />
 

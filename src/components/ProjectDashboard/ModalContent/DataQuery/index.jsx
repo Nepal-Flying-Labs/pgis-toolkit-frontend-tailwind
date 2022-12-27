@@ -10,7 +10,7 @@ import { dataQueryOperators } from '@src/constants/map';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
 const btnClassname =
-  'naxatw-p-2 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-items-center naxatw-rounded-lg naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-flex naxatw-items-center naxatw-justify-center naxatw-font-bold naxatw-text-[13px] naxatw-text-grey-800';
+  'naxatw-p-2 naxatw-h-10 naxatw-w-10 naxatw-rounded-lg naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-flex naxatw-items-center naxatw-justify-center naxatw-font-bold naxatw-text-[13px] naxatw-text-grey-800';
 
 const {
   getDataQueryFieldsRequest,
@@ -22,7 +22,7 @@ function getOperatorLabel(value) {
   return dataQueryOperators.find(item => item.value === value)?.label;
 }
 
-function stringifyQuery(data) {
+export function stringifyQuery(data) {
   return data.reduce((str, item) => {
     const { field, operator, value, join } = item;
     if (join) {
@@ -117,7 +117,12 @@ export default function DataQuery() {
       name: `query-${uuidv4()}`,
       expression: JSON.stringify(query),
     };
-    dispatch(postAdvanceQueryRequest(payloadData));
+    dispatch(
+      postAdvanceQueryRequest(payloadData, {
+        layerName: selectedLayer.name,
+        query,
+      }),
+    );
   };
 
   return (

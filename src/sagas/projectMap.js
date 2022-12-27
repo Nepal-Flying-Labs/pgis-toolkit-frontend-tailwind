@@ -221,10 +221,16 @@ export function* getDataQueryValuesRequest({ params }) {
   }
 }
 
-export function* postAdvanceQueryRequest({ payload }) {
+export function* postAdvanceQueryRequest({ payload, data }) {
   try {
     const response = yield call(postAdvanceQuery, payload);
-    yield put(projectMapActions.postAdvanceQuerySuccess(response.data));
+    yield put(
+      projectMapActions.postAdvanceQuerySuccess({
+        ...response.data,
+        ...data,
+      }),
+    );
+    yield put(commonActions.toggleModal());
   } catch (error) {
     yield put(projectMapActions.postAdvanceQueryFailure());
     throw error;

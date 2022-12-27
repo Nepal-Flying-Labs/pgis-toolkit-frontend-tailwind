@@ -6,6 +6,7 @@ import Button from '@Components/common/Button';
 import { isEmpty } from '@Utils/commonUtils';
 import Toggle from '@Components/common/Toggle/index';
 import IconButton from '@Components/common/IconButton/index';
+import { stringifyQuery } from '@Components/ProjectDashboard/ModalContent/DataQuery/index';
 
 // const { toggleModal } = CommonCreators;
 // const { setProjectMapState } = ProjectMapCreators;
@@ -63,19 +64,19 @@ export default function QueryResultPopup() {
             >
               <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
                 <span className="naxatw-flex naxatw-items-center naxatw-space-x-1">
-                  <p className="naxatw-btn-text">{item.name}</p>
+                  <p className="naxatw-btn-text">{item.layerName}</p>
                   <IconButton
                     name="table"
                     className="material-symbols-outlined naxatw-text-sm" // onClick={() => setCollapsed(!collapsed)}
                   />
                 </span>
-                <p className="naxatw-text-xl">32</p>
+                <p className="naxatw-text-xl">{item.features_count}</p>
               </div>
               <div className="naxatw-space-y-1">
                 <p className="naxatw-font-bold naxatw-text-xs naxatw-uppercase">
                   Filter results
                 </p>
-                <p>Road = Gravel and Lane = 2</p>
+                <p>{stringifyQuery(item.query)}</p>
               </div>
               <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
                 <Toggle isSm checked />

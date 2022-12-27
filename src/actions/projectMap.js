@@ -84,7 +84,7 @@ export const { Types, Creators } = createActions(
     getDataQueryValuesSuccess: ['payload'],
     getDataQueryValuesFailure: null,
 
-    postAdvanceQueryRequest: ['payload'],
+    postAdvanceQueryRequest: ['payload', 'data'],
     postAdvanceQuerySuccess: ['payload'],
     postAdvanceQueryFailure: null,
   },

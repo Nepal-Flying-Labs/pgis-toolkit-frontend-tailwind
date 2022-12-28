@@ -129,7 +129,12 @@ export default function DataQuery() {
     <div>
       <p>Baseline Datasets contains different levels of boundaries.</p>
 
-      <div className="naxatw-mt-10 naxatw-space-y-5 naxatw-max-h-[28rem] naxatw-min-h-[16rem] naxatw-overflow-y-auto scrollbar">
+      <div
+        className="naxatw-mt-10 naxatw-space-y-5 naxatw-min-h-[16rem] naxatw-overflow-y-auto scrollbar"
+        style={{
+          maxHeight: `calc(100vh - 18rem)`,
+        }}
+      >
         <div className="">
           <div className="naxatw-space-y-2">
             <label className="naxatw-label">
@@ -149,13 +154,17 @@ export default function DataQuery() {
         {fields !== null && (
           <>
             <div className="naxatw-flex naxatw-gap-2">
-              <div className="naxatw-h-[12.5rem] naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-overflow-y-auto scrollbar">
+              <div
+                className="naxatw-h-[12.5rem] naxatw-w-full naxatw-border naxatw-border-grey-400 
+                  naxatw-rounded-lg naxatw-overflow-y-auto scrollbar"
+              >
                 <ul>
                   {fields.map(({ name, alias }) => (
                     <li
                       key={name}
                       role="presentation"
-                      className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800"
+                      className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
+                        naxatw-cursor-pointer hover:naxatw-bg-grey-100"
                       onClick={() => {
                         handleFieldSelect(name);
                         handleQuerySelect(name, 'field');
@@ -167,7 +176,10 @@ export default function DataQuery() {
                 </ul>
               </div>
               <div className="naxatw-h-[12.5rem] naxatw-w-full">
-                <div className="naxatw-grid naxatw-grid-cols-3 naxatw-items-center naxatw-justify-items-center naxatw-gap-2">
+                <div
+                  className="naxatw-grid naxatw-grid-cols-3 naxatw-items-center naxatw-justify-items-center
+                    naxatw-gap-2"
+                >
                   {dataQueryOperators.map(({ id, label, value, type }) => (
                     <a
                       key={id}
@@ -192,7 +204,8 @@ export default function DataQuery() {
                     <li
                       key={item}
                       role="presentation"
-                      className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800"
+                      className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
+                        naxatw-cursor-pointer hover:naxatw-bg-grey-100"
                       onClick={() => {
                         handleQuerySelect(item, 'value');
                       }}

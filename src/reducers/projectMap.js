@@ -431,30 +431,36 @@ const handleDataQueryCheckbox = (state, action) => {
   };
 };
 
-const setDataQueryState = (state, action) => {
-  return {
-    ...state,
-    dataQuery: {
-      ...state.dataQuery,
-      ...action.payload,
-    },
-  };
-};
+const setDataQueryState = (state, action) => ({
+  ...state,
+  dataQuery: {
+    ...state.dataQuery,
+    ...action.payload,
+  },
+});
 
 const saveDataQuerySuccess = (state, action) => {
   const { style, id: queryLayerId } = state.dataQuery.selectedData;
-  const { layer: id, theme } = action.payload;
+  const { layer: id, theme, geom_type: geometryType } = action.payload;
+  const newLayer = {
+    ...action.payload,
+    id,
+    checked: true,
+    layer_type: 'Vector',
+    style: {
+      ...defaultStyles,
+      geometryType,
+      ...style,
+    },
+  };
   const layers = {
     ...state.layers,
-    [theme]: [
-      ...state.layers[theme],
-      {
-        ...action.payload,
-        id,
-        checked: true,
-        style,
-      },
-    ],
+    [theme]: [...state.layers[theme], newLayer],
+  };
+  const mapSettings = {
+    ...state.mapSettings,
+    layerOrder: [id, ...state.mapSettings.layerOrder],
+    checkedLayers: [...state.mapSettings.checkedLayers, id],
   };
   const queryResults = state.dataQuery.queryResults.filter(
     item => item.id !== queryLayerId,
@@ -462,6 +468,7 @@ const saveDataQuerySuccess = (state, action) => {
   return {
     ...state,
     layers,
+    mapSettings,
     dataQuery: {
       ...state.dataQuery,
       queryResults,

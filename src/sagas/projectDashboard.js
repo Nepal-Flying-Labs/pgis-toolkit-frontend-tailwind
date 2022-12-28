@@ -254,7 +254,7 @@ export function* uploadDocumentDataRequest({ id, payload }) {
 
 export function* updateDocumentDataRequest({ payload }) {
   const { documentId, projectId, data } = payload;
-  console.log('update docx ', payload);
+  // console.log('update docx ', payload);
   try {
     yield call(updateDocument, documentId, data);
     const res = yield call(getDocumentItem, { project: projectId });
@@ -290,8 +290,9 @@ export function* getLayerTemplateRequest({ id }) {
 
 export function* deleteDocumentRequest({ id, payload }) {
   try {
+    // eslint-disable-next-line no-unused-vars
     const response = yield call(updateDocument, id, payload);
-    console.log('deleted item ', response);
+    // console.log('deleted item ', response);
     // const res = yield call(getDocumentItem, { project: projectId });
     // yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
     yield put(commonActions.toggleModal());

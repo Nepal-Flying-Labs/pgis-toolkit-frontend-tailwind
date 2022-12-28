@@ -24,7 +24,7 @@ const LocationInfo = () => {
   const dispatch = useDispatch();
 
   const { getProjectCountryRequest, getProjectStateRequest } = Creators;
-  console.log('project info', info);
+  // console.log('project info', info);
   useEffect(() => {
     if (!isEmpty(info)) {
       if (info.country) {

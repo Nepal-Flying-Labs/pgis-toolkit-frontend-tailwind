@@ -172,7 +172,7 @@ export default function ProjectGridCard({
           <Button
             className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-w-[160.5px]"
             onClick={e => {
-              console.log('clicked');
+              // console.log('clicked');
               e.stopPropagation();
             }}
           >

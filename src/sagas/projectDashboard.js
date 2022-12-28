@@ -28,6 +28,7 @@ import {
   patchLayerTemplate,
   postImportTemplate,
   getLayerAttribute,
+  postAttributeSelection,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -298,6 +299,20 @@ export function* getLayerAttributeRequest({ params }) {
   }
 }
 
+export function* postAttributeSelectionRequest({ payload }) {
+  try {
+    const response = yield call(postAttributeSelection, payload);
+    yield put(
+      projectDashboardActions.postAttributeSelectionSuccess(response.data),
+    );
+    yield put(commonActions.toggleModal());
+    yield put(projectDashboardActions.clearAttributeListData());
+  } catch (error) {
+    yield put(projectDashboardActions.postAttributeSelectionFailure());
+    throw error;
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -378,6 +393,10 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_LAYER_ATTRIBUTE_REQUEST,
     withLoader(withErrorHandler(getLayerAttributeRequest)),
+  );
+  yield takeLatest(
+    Types.POST_ATTRIBUTE_SELECTION_REQUEST,
+    withLoader(withErrorHandler(postAttributeSelectionRequest)),
   );
 }
 

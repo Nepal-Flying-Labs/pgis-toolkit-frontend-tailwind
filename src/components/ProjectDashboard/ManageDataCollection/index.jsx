@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable arrow-body-style */
 import React, { useState } from 'react';
@@ -5,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import Button from '@Components/common/Button';
 import { Creators as CommonCreators } from '@Actions/common';
+import { Creators } from '@Actions/projectDashboard';
 import Modal from '@Components/common/Modal';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { getModalContent } from '@src/constants/modalContents';
@@ -13,6 +15,7 @@ import StepTwo from './Steps/StepTwo';
 import StepThree from './Steps/StepThree';
 
 const { toggleModal } = CommonCreators;
+const { clearAttributeListData } = Creators;
 
 const headerContents = ['manage-attributes', 'add-attributes'];
 
@@ -100,7 +103,10 @@ const ManageDataCollection = () => {
             ? headerContent(modalContent)
             : null
         }
-        onClose={() => dispatch(toggleModal())}
+        onClose={() => {
+          dispatch(toggleModal());
+          dispatch(clearAttributeListData());
+        }}
       >
         {getModalContent(modalContent)?.content}
       </Modal>
@@ -136,7 +142,11 @@ const ManageDataCollection = () => {
               {linkOptions.map(link => (
                 <li
                   key={link.id}
-                  onClick={() => setActive(link.id)}
+                  onClick={
+                    option === 'collect-dataset'
+                      ? () => setActive(link.id)
+                      : () => {}
+                  }
                   className={`naxatw-p-4 naxatw-flex naxatw-justify-between naxatw-gap-x-3 naxatw-items-center hover:naxatw-bg-grey-100 naxatw-cursor-pointer  ${
                     active === link.id ? 'naxatw-bg-grey-100' : ''
                   } `}
@@ -205,7 +215,9 @@ const ManageDataCollection = () => {
                         history.push(
                           `/organizations/${organizationId}/projects/${projectId}/data`,
                         )
-                    : () => setActive(prev => prev + 1)
+                    : option === 'collect-dataset'
+                    ? () => setActive(prev => prev + 1)
+                    : () => {}
                 }
               >
                 Next

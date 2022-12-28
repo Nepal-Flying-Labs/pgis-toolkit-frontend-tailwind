@@ -18,27 +18,6 @@ const { toggleModal } = CommonCreators;
 const { getLayerTemplateRequest, patchLayerTemplateRequest, setSelectedLayer } =
   Creators;
 
-const data = [
-  {
-    id: 1,
-    checked: false,
-    layer_name: 'Road',
-    category: 'Transportation',
-  },
-  {
-    id: 2,
-    checked: false,
-    layer_name: 'Road Accidents',
-    category: 'Obstacle',
-  },
-  {
-    id: 3,
-    checked: false,
-    layer_name: 'Street',
-    category: 'Street',
-  },
-];
-
 const StepTwo = () => {
   const { projectId } = useParams();
   const dispatch = useDispatch();

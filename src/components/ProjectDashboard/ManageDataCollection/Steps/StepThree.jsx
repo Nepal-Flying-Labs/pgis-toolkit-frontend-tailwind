@@ -21,20 +21,11 @@ const StepThree = () => {
           </p>
           <div className="naxatw-mt-2 naxatw-flex naxatw-items-center naxatw-gap-x-3">
             <Button
-              iconLeft="rotate_right"
-              className="hover:naxatw-bg-grey-100 naxatw-group naxatw-mt-3 naxatw-text-secondary-400"
+              iconLeft="download"
+              className="naxatw-btn-secondary naxatw-btn-noborder naxatw-mt-3 "
             >
-              <span className="group-hover:naxatw-underline naxatw-text-[15px] naxatw-text-secondary-400 naxatw-font-bold">
-                Downloading
-              </span>
+              Download
             </Button>
-            {/* <div className="naxatw-flex naxatw-pt-3 naxatw-items-center naxatw-gap-x-3">
-              <div className="naxatw-w-[567px] naxatw-h-2  naxatw-rounded-3xl naxatw-flex">
-                <div className="naxatw-w-[40%] naxatw-h-2 naxatw-bg-primary-400" />
-                <div className="naxatw-w-[60%] naxatw-h-2 naxatw-bg-grey-400" />
-              </div>
-              <span>40%</span>
-            </div> */}
           </div>
         </div>
         <span className="naxatw-flex naxatw-justify-center naxatw-text-body-sm naxatw-mt-3">
@@ -52,11 +43,9 @@ const StepThree = () => {
           <div className="naxatw-mt-2 naxatw-flex naxatw-items-center naxatw-gap-x-3 ">
             <Button
               iconLeft="download"
-              className="hover:naxatw-bg-grey-100 naxatw-group naxatw-mt-3 naxatw-text-secondary-400"
+              className="naxatw-btn-secondary naxatw-btn-noborder naxatw-mt-3 "
             >
-              <span className="group-hover:naxatw-underline naxatw-text-[15px] naxatw-text-secondary-400 naxatw-font-bold">
-                Download
-              </span>
+              Download
             </Button>
             {/* <div className="naxatw-flex naxatw-items-center naxatw-gap-x-3">
               <div className="naxatw-w-[567px] naxatw-h-2 naxatw-bg-primary-400 naxatw-rounded-3xl" />

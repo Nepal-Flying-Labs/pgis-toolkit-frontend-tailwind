@@ -6,6 +6,7 @@ import {
   all,
   delay,
 } from 'redux-saga/effects';
+
 import projectDashboardActions, { Types } from '@Actions/projectDashboard';
 import projectMapActions from '@Actions/projectMap';
 import toastActions from '@Actions/toast';
@@ -317,8 +318,7 @@ export function* postAttributeSelectionRequest({ payload }) {
 export function* downloadBulkTemplateRequest({ params }) {
   try {
     const response = yield call(downloadBulkTemplate, params);
-    const responseData = response.data;
-    const url = window.URL.createObjectURL(new Blob([responseData]));
+    const url = response.request.responseURL;
     const link = document.createElement('a');
     link.href = url;
     link.setAttribute('download', 'template.zip'); // or any other extension

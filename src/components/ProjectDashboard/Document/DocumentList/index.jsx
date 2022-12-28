@@ -124,7 +124,7 @@ function DocumentList({ openSidebar }) {
               <Table
                 data={documents || []}
                 onRowClick={data => {
-                  console.log(data);
+                  // console.log(data);
                   dispatch(getDocumentByIdRequest(data.id));
                   openSidebar(true);
                 }}

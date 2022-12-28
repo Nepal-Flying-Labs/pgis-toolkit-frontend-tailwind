@@ -60,7 +60,7 @@ export default function EditDocument() {
     setErrorFields(errors);
 
     if (isEmpty(errorFields)) {
-      console.log(values);
+      // console.log(values);
       const formData = {
         name: values.name,
         description: values.description,

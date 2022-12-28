@@ -21,7 +21,10 @@ const initialState = {
   },
   info: {
     details: {},
-    location: {},
+    location: {
+      state: {},
+      country: {},
+    },
   },
   document: {
     list: [],

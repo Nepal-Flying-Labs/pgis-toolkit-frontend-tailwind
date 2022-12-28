@@ -134,8 +134,9 @@ export default function UploadImage() {
   // console.log('tag list data ', tagList);
 
   const handleSubmit = () => {
+    // eslint-disable-next-line no-useless-return
     if (isUploading) return;
-    console.log('submited');
+    // console.log('submited');
     // let errorCount = 0;
     // const errors = uploadedFiles.reduce((obj, item) => {
     //   const fields = [];
@@ -241,7 +242,7 @@ export default function UploadImage() {
           value={tags || ''}
           placeholder="Add your own tags"
           onChange={e => {
-            console.log(e.target.value);
+            // console.log(e.target.value);
             setTags(e.target.value);
           }}
           className=""
@@ -249,7 +250,7 @@ export default function UploadImage() {
           type="text"
           iconRight="add"
           onIconClick={data => {
-            console.log(data);
+            // console.log(data);
             handleAddTag({ id: data.id, name: data.name, value: data.value });
           }}
         />

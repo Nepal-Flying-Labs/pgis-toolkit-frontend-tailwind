@@ -1,5 +1,6 @@
 import VerifyUser from '@Components/Authentication/VerifyUser';
 import ResetPassword from '@Components/Authentication/ResetPassword';
+import Users from '../views/Users';
 import Authentication from '../views/Authentication';
 import Home from '../views/Home';
 import Organizations from '../views/Organizations';
@@ -7,6 +8,12 @@ import OrganizationDashboard from '../views/OrganizationDashboard';
 import ProjectDashboard from '../views/ProjectDashboard';
 
 const indexRoutes = [
+  {
+    path: '/users',
+    name: 'Users',
+    component: Users,
+    authenticated: true,
+  },
   {
     path: '/organizations/:organizationId/projects/:projectId/:tabname',
     name: 'Project Dashboard',

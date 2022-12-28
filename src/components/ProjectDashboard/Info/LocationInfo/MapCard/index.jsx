@@ -38,7 +38,7 @@ export default function MapCard({ isDraw, geojson }) {
     if (isExtentValid(zoomExtent)) {
       map.getView().fit(zoomExtent, {
         padding: [50, 50, 50, 50],
-        duration: 3500,
+        // duration: 3500,
         constrainResolution: true,
       });
     }

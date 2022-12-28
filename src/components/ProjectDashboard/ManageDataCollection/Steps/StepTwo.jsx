@@ -30,7 +30,10 @@ const StepTwo = () => {
   }, [dispatch, projectId, layerTemplate]);
 
   const loading = useSelector(state =>
-    checkIfLoading(state, [Types.GET_LAYER_TEMPLATE_REQUEST]),
+    checkIfLoading(state, [
+      Types.GET_LAYER_TEMPLATE_REQUEST,
+      Types.POST_IMPORT_TEMPLATE_REQUEST,
+    ]),
   );
 
   const handleRowClick = row => {

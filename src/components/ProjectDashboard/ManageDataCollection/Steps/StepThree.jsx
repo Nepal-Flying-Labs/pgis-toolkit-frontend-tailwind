@@ -1,8 +1,40 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable arrow-body-style */
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
+import { saveAs } from 'file-saver';
+import { baseURL } from '@Services';
 import Button from '@Components/common/Button/index';
+import { checkIfLoading } from '@Utils/loaderSelector';
+import { Creators, Types } from '@Actions/projectDashboard';
+
+// const { downloadBulkTemplateRequest } = Creators;
 
 const StepThree = () => {
+  const token = localStorage.getItem('userToken');
+  const { projectId } = useParams();
+  // const dispatch = useDispatch();
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.DOWNLOAD_BULK_TEMPLATE_REQUEST]),
+  );
+  const handleStandardDownload = () => {
+    // dispatch(downloadBulkTemplateRequest({ project: projectId }));
+
+    // fetch(`${baseURL}/api/maps/bulk_template_download/?project=${projectId}`, {
+    //   method: 'GET',
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // });
+    const downloadLink = `${baseURL}/api/maps/bulk_template_download/?project=${projectId}`;
+    saveAs(downloadLink, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  };
   return (
     <div className="naxatw-container ">
       <div className="md:naxatw-w-[800px] naxatw-mx-auto">
@@ -23,6 +55,9 @@ const StepThree = () => {
             <Button
               iconLeft="download"
               className="naxatw-btn-secondary naxatw-btn-noborder naxatw-mt-3 "
+              isLoading={loading}
+              loaderClassName="naxatw-fill-secondary-400"
+              onClick={handleStandardDownload}
             >
               Download
             </Button>

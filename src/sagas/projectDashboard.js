@@ -29,6 +29,7 @@ import {
   postImportTemplate,
   getLayerAttribute,
   postAttributeSelection,
+  downloadBulkTemplate,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -313,6 +314,25 @@ export function* postAttributeSelectionRequest({ payload }) {
   }
 }
 
+export function* downloadBulkTemplateRequest({ params }) {
+  try {
+    const response = yield call(downloadBulkTemplate, params);
+    const responseData = response.data;
+    const url = window.URL.createObjectURL(new Blob([responseData]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'template.zip'); // or any other extension
+    document.body.appendChild(link);
+    link.click();
+    yield put(
+      projectDashboardActions.downloadBulkTemplateSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.downloadBulkTemplateFailure());
+    throw error;
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -397,6 +417,10 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.POST_ATTRIBUTE_SELECTION_REQUEST,
     withLoader(withErrorHandler(postAttributeSelectionRequest)),
+  );
+  yield takeLatest(
+    Types.DOWNLOAD_BULK_TEMPLATE_REQUEST,
+    withLoader(withErrorHandler(downloadBulkTemplateRequest)),
   );
 }
 

@@ -105,6 +105,10 @@ export const { Types, Creators } = createActions(
     postAttributeSelectionRequest: ['payload'],
     postAttributeSelectionSuccess: ['payload'],
     postAttributeSelectionFailure: null,
+
+    downloadBulkTemplateRequest: ['params'],
+    downloadBulkTemplateSuccess: ['payload'],
+    downloadBulkTemplateFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

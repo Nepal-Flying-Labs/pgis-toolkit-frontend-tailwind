@@ -142,11 +142,11 @@ const ManageDataCollection = () => {
               {linkOptions.map(link => (
                 <li
                   key={link.id}
-                  onClick={
-                    option === 'collect-dataset'
-                      ? () => setActive(link.id)
-                      : () => {}
-                  }
+                  // onClick={
+                  //   option === 'collect-dataset'
+                  //     ? () => setActive(link.id)
+                  //     : () => {}
+                  // }
                   className={`naxatw-p-4 naxatw-flex naxatw-justify-between naxatw-gap-x-3 naxatw-items-center hover:naxatw-bg-grey-100 naxatw-cursor-pointer  ${
                     active === link.id ? 'naxatw-bg-grey-100' : ''
                   } `}

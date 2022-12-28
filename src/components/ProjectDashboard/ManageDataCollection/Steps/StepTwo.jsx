@@ -12,32 +12,11 @@ import { Creators, Types } from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
 import SortingContainer from '@Components/common/SortingContainer/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
-import TableSkeleton from '@Components/common/TableSkeleton/index';
+import TableSkeleton from '@Components/common/TableSkeleton';
 
 const { toggleModal } = CommonCreators;
 const { getLayerTemplateRequest, patchLayerTemplateRequest, setSelectedLayer } =
   Creators;
-
-const data = [
-  {
-    id: 1,
-    checked: false,
-    layer_name: 'Road',
-    category: 'Transportation',
-  },
-  {
-    id: 2,
-    checked: false,
-    layer_name: 'Road Accidents',
-    category: 'Obstacle',
-  },
-  {
-    id: 3,
-    checked: false,
-    layer_name: 'Street',
-    category: 'Street',
-  },
-];
 
 const StepTwo = () => {
   const { projectId } = useParams();
@@ -51,7 +30,10 @@ const StepTwo = () => {
   }, [dispatch, projectId, layerTemplate]);
 
   const loading = useSelector(state =>
-    checkIfLoading(state, [Types.GET_LAYER_TEMPLATE_REQUEST]),
+    checkIfLoading(state, [
+      Types.GET_LAYER_TEMPLATE_REQUEST,
+      Types.POST_IMPORT_TEMPLATE_REQUEST,
+    ]),
   );
 
   const handleRowClick = row => {
@@ -150,7 +132,7 @@ const StepTwo = () => {
             />
           </Table>
         ) : (
-          <TableSkeleton />
+          <TableSkeleton itemNumber={3} />
         )}
       </div>
       <p className="naxatw-text-body-md naxatw-text-[#484848] naxatw-py-3">

@@ -267,6 +267,17 @@ const setSelectedLayer = (state, action) => ({
   },
 });
 
+const clearAttributeListData = state => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      attributeList: [],
+    },
+  },
+});
+
 const getLayerAttributeSuccess = (state, action) => ({
   ...state,
   data: {
@@ -304,6 +315,7 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_LAYER_TEMPLATE_SUCCESS]: getLayerTemplateSuccess,
   [Types.PATCH_LAYER_TEMPLATE_SUCCESS]: patchLayerTemplateSuccess,
   [Types.SET_SELECTED_LAYER]: setSelectedLayer,
+  [Types.CLEAR_ATTRIBUTE_LIST_DATA]: clearAttributeListData,
   [Types.GET_LAYER_ATTRIBUTE_SUCCESS]: getLayerAttributeSuccess,
 });
 

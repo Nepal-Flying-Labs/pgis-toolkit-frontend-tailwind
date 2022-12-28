@@ -137,13 +137,13 @@ export function getModalContent(content) {
       return {
         title: 'Manage Attributes',
         content: <ManageAttributes />,
-        className: 'naxatw-w-[50rem]',
+        className: 'naxatw-w-[50rem] naxatw-max-w-[50rem]',
       };
     case 'add-attributes':
       return {
         title: 'Add Attributes',
         content: <AddAttributes />,
-        className: 'naxatw-w-[50rem]',
+        className: 'naxatw-w-[50rem] naxatw-max-w-[50rem]',
       };
     default:
       return {

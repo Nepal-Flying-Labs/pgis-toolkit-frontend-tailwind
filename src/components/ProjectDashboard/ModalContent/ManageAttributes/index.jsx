@@ -1,7 +1,7 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import SortingContainer from '@Components/common/SortingContainer/index';
@@ -11,35 +11,13 @@ import { Creators as CommonCreators } from '@Actions/common';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import TableSkeleton from '@Components/common/TableSkeleton/index';
+import CustomCheckbox from '@Components/common/CustomCheckbox/index';
 
 const { toggleModal } = CommonCreators;
-const { getLayerAttributeRequest } = Creators;
-
-const data = [
-  {
-    id: 1,
-    attribute: 'Name',
-    alias: 'Name',
-    type: 'Text',
-    source: 'OSM',
-  },
-  {
-    id: 2,
-    attribute: 'Length',
-    alias: 'Length',
-    type: 'Integer',
-    source: 'USAFIRI',
-  },
-  {
-    id: 3,
-    attribute: 'Tot_Area',
-    alias: 'Total Area',
-    type: 'Float',
-    source: 'Custom',
-  },
-];
+const { getLayerAttributeRequest, postAttributeSelectionRequest } = Creators;
 
 const ManageAttributes = () => {
+  const [checkedData, setCheckedData] = useState([]);
   const dispatch = useDispatch();
   const selectedData = useSelector(
     state => state.projectDashboard.data.manageData.selectedData,
@@ -49,13 +27,42 @@ const ManageAttributes = () => {
   );
 
   useEffect(() => {
+    setCheckedData(attributeList);
+  }, [attributeList]);
+
+  useEffect(() => {
     if (attributeList.length < 1)
       dispatch(getLayerAttributeRequest({ layer_template: selectedData?.id }));
-  }, [dispatch, selectedData, attributeList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, selectedData]);
 
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_LAYER_ATTRIBUTE_REQUEST]),
   );
+
+  const submitLoading = useSelector(state =>
+    checkIfLoading(state, [Types.POST_ATTRIBUTE_SELECTION_REQUEST]),
+  );
+
+  const handleCheckedData = datas => {
+    const { selected } = datas;
+    const newData = checkedData.map(list =>
+      list.id === datas.id ? { ...list, selected: !selected } : { ...list },
+    );
+    setCheckedData(newData);
+  };
+
+  const handleSubmit = () => {
+    const initialValue = {};
+    const data = checkedData.reduce((obj, item) => {
+      return {
+        ...obj,
+        [item.id]: item.selected,
+      };
+    }, initialValue);
+    dispatch(postAttributeSelectionRequest(data));
+  };
+
   return (
     <div className="">
       <div className="naxatw-flex naxatw-justify-end ">
@@ -67,26 +74,24 @@ const ManageAttributes = () => {
           Attribute
         </Button>
       </div>
-      <div>
+      <div className=" naxatw-overflow-x-hidden naxatw-relative naxatw-mt-[1.875rem]">
         {!loading ? (
           <Table
-            data={attributeList || []}
+            data={checkedData || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
             headerWidths={['50px', '200px', '150px', '150px', '50px']}
             // eslint-disable-next-line
-            onRowClick={row => {}}
+            onRowClick={row => {
+              handleCheckedData(row);
+            }}
           >
             <TableHeader
               dataField=""
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowSpan_2"
               dataHeader=""
-              dataFormat={row => (
-                <span className="naxatw-text-base">
-                  <input type="checkbox" />
-                </span>
-              )}
+              dataFormat={row => <CustomCheckbox status={row.selected} />}
             />
             <TableHeader
               dataField="Attribute"
@@ -138,13 +143,13 @@ const ManageAttributes = () => {
               dataFormat={row => (
                 <div className="naxatw-flex naxatw-gap-x-1">
                   <MaterialIcon
-                    name="edit"
+                    name="edit_outline"
                     className="naxatw-text-icon-md"
                     wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
                   />
                   <MaterialIcon
-                    name="delete"
-                    className="naxatw-text-icon-md"
+                    name="delete_outline"
+                    className="naxatw-text-icon-md naxatw-text-[#FF0F0F]"
                     wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
                   />
                 </div>
@@ -152,11 +157,18 @@ const ManageAttributes = () => {
             />
           </Table>
         ) : (
-          <TableSkeleton />
+          <TableSkeleton itemNumber={4} />
         )}
       </div>
       <div className="naxatw-flex naxatw-justify-center naxatw-mt-5">
-        <Button className="naxatw-btn-primary naxatw-w-[77px]">Done</Button>
+        <Button
+          className="naxatw-btn-primary naxatw-w-[77px]"
+          isLoading={submitLoading}
+          loaderClassName="naxatw-fill-secondary-400"
+          onClick={handleSubmit}
+        >
+          Done
+        </Button>
       </div>
     </div>
   );

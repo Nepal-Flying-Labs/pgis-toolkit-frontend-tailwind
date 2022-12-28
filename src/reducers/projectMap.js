@@ -35,7 +35,28 @@ const initialState = {
   dataQuery: {
     fields: null,
     values: null,
-    queryResults: [],
+    queryResults: [
+      {
+        id: 18,
+        name: 'query-daffaeef-7c59-4d94-8a5a-d160700dcdf4',
+        display_on_map: true,
+        bbox: [34.7519779, 0.2643187, 34.7601978, 0.290996],
+        geom_type: 'LineString',
+        features_count: 3,
+        icon: '',
+        std_icon: '',
+        style: {},
+        layerName: 'Kakamega Highway Openstreet Maps - Smaller Version',
+        query: [
+          {
+            field: 'highway',
+            operator: 1,
+            value: 'trunk_link',
+          },
+        ],
+        checked: true,
+      },
+    ],
   },
 };
 

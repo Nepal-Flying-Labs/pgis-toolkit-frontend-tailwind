@@ -24,6 +24,7 @@ import UploadImage from '@Components/ProjectDashboard/ModalContent/UploadImage/i
 import UploadDocument from '@Components/ProjectDashboard/ModalContent/UploadDocument/index';
 import ImportOSM from '@Components/ProjectDashboard/ModalContent/ImportOSM/index';
 import EditDocument from '@Components/ProjectDashboard/ModalContent/EditDocument/index';
+import SaveDataQuery from '@Components/ProjectDashboard/ModalContent/SaveDataQuery/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -174,6 +175,11 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <DeleteLayer />,
+      };
+    case 'save-data-query':
+      return {
+        title: 'Save Data Query',
+        content: <SaveDataQuery />,
       };
     default:
       return '';

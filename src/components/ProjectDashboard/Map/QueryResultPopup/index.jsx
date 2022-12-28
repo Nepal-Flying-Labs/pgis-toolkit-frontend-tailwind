@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import Button from '@Components/common/Button';
 import { isEmpty } from '@Utils/commonUtils';
@@ -8,7 +8,7 @@ import Toggle from '@Components/common/Toggle/index';
 import IconButton from '@Components/common/IconButton/index';
 import { stringifyQuery } from '@Components/ProjectDashboard/ModalContent/DataQuery/index';
 
-// const { toggleModal } = CommonCreators;
+const { togglePromptDialog } = CommonCreators;
 const { handleDataQueryCheckbox } = ProjectMapCreators;
 
 export default function QueryResultPopup() {
@@ -92,7 +92,12 @@ export default function QueryResultPopup() {
                   }
                 />
                 <div className="naxatw-flex">
-                  <Button className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm">
+                  <Button
+                    className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
+                    onClick={() =>
+                      dispatch(togglePromptDialog('save-data-query'))
+                    }
+                  >
                     Save
                   </Button>
                   <IconButton name="close" onClick={() => {}} />

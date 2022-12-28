@@ -17,14 +17,15 @@ import Analysis from '@Components/ProjectDashboard/ModalContent/Analysis';
 import BufferAnalysis from '@Components/ProjectDashboard/ModalContent/Analysis/BufferAnalysis';
 import UploadFailed from '@Components/ProjectDashboard/ModalContent/UploadFailed';
 import DownloadLayer from '@Components/ProjectDashboard/ModalContent/DownloadLayer';
-import ManageAttributes from '@Components/ProjectDashboard/ModalContent/ManageAttributes/index';
-import AddAttributes from '@Components/ProjectDashboard/ModalContent/AddAttributes/index';
-import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer/index';
-import UploadImage from '@Components/ProjectDashboard/ModalContent/UploadImage/index';
-import UploadDocument from '@Components/ProjectDashboard/ModalContent/UploadDocument/index';
-import ImportOSM from '@Components/ProjectDashboard/ModalContent/ImportOSM/index';
-import EditDocument from '@Components/ProjectDashboard/ModalContent/EditDocument/index';
-import SaveDataQuery from '@Components/ProjectDashboard/ModalContent/SaveDataQuery/index';
+import ManageAttributes from '@Components/ProjectDashboard/ModalContent/ManageAttributes';
+import AddAttributes from '@Components/ProjectDashboard/ModalContent/AddAttributes';
+import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer';
+import UploadImage from '@Components/ProjectDashboard/ModalContent/UploadImage';
+import UploadDocument from '@Components/ProjectDashboard/ModalContent/UploadDocument';
+import ImportOSM from '@Components/ProjectDashboard/ModalContent/ImportOSM';
+import EditDocument from '@Components/ProjectDashboard/ModalContent/EditDocument';
+import SaveDataQuery from '@Components/ProjectDashboard/ModalContent/SaveDataQuery';
+import DeleteDataQuery from '@Components/ProjectDashboard/ModalContent/DeleteDataQuery';
 
 export function getModalContent(content) {
   switch (content) {
@@ -180,6 +181,11 @@ export function getPromptDialogContent(content) {
       return {
         title: 'Save Data Query',
         content: <SaveDataQuery />,
+      };
+    case 'delete-data-query':
+      return {
+        title: '',
+        content: <DeleteDataQuery />,
       };
     default:
       return '';

@@ -102,7 +102,13 @@ export default function QueryResultPopup() {
                   >
                     Save
                   </Button>
-                  <IconButton name="close" onClick={() => {}} />
+                  <IconButton
+                    name="close"
+                    onClick={() => {
+                      dispatch(setDataQueryState({ selectedData: item }));
+                      dispatch(togglePromptDialog('delete-data-query'));
+                    }}
+                  />
                 </div>
               </div>
             </li>

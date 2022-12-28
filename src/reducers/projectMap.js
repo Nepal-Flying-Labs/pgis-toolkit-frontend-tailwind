@@ -477,6 +477,21 @@ const saveDataQuerySuccess = (state, action) => {
   };
 };
 
+const deleteDataQuery = (state, action) => {
+  const queryLayerId = action.payload;
+  const queryResults = state.dataQuery.queryResults.filter(
+    item => item.id !== queryLayerId,
+  );
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      queryResults,
+      selectedData: null,
+    },
+  };
+};
+
 const resetProjectMapState = () => ({
   ...initialState,
 });
@@ -512,6 +527,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.HANDLE_DATA_QUERY_CHECKBOX]: handleDataQueryCheckbox,
   [Types.SET_DATA_QUERY_STATE]: setDataQueryState,
   [Types.SAVE_DATA_QUERY_SUCCESS]: saveDataQuerySuccess,
+  [Types.DELETE_DATA_QUERY]: deleteDataQuery,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

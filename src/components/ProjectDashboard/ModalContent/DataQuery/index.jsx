@@ -45,7 +45,6 @@ export default function DataQuery() {
   const mapState = useSelector(mapStateSelector);
   const fields = useSelector(state => state.projectMap.dataQuery.fields);
   const values = useSelector(state => state.projectMap.dataQuery.values);
-  const [selectedField, setSelectedField] = useState(null);
   const [query, setQuery] = useState([initialQuery]);
   const isValuesFetching = useSelector(state =>
     checkIfLoading(state, [Types.GET_DATA_QUERY_VALUES_REQUEST]),
@@ -61,7 +60,6 @@ export default function DataQuery() {
   }, [dispatch, selectedLayer]);
 
   const handleFieldSelect = name => {
-    setSelectedField(name);
     dispatch(
       getDataQueryValuesRequest({
         layer: selectedLayer.id,

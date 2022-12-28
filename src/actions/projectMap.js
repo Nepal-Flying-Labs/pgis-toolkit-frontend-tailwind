@@ -94,6 +94,8 @@ export const { Types, Creators } = createActions(
     saveDataQueryRequest: ['payload'],
     saveDataQuerySuccess: ['payload'],
     saveDataQueryFailure: null,
+
+    deleteDataQuery: ['payload'],
   },
   { prefix: 'projectMap/' },
 );

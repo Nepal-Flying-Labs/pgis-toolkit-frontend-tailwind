@@ -74,7 +74,7 @@ const ManageAttributes = () => {
           Attribute
         </Button>
       </div>
-      <div>
+      <div className=" naxatw-overflow-x-hidden naxatw-relative naxatw-mt-[1.875rem]">
         {!loading ? (
           <Table
             data={checkedData || []}
@@ -157,7 +157,7 @@ const ManageAttributes = () => {
             />
           </Table>
         ) : (
-          <TableSkeleton />
+          <TableSkeleton itemNumber={4} />
         )}
       </div>
       <div className="naxatw-flex naxatw-justify-center naxatw-mt-5">

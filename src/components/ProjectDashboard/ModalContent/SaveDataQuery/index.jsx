@@ -1,16 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Creators as ProjectMapCreators,
-  Types as ProjectMapTypes,
-} from '@Actions/projectMap';
+import { Creators, Types } from '@Actions/projectMap';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button';
 import Select from '@Components/common/Select';
 import FormErrorMessage from '@Components/common/FormErrorMessage';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
-const { saveDataQueryRequest } = ProjectMapCreators;
+const { saveDataQueryRequest } = Creators;
 
 const initialValues = {
   name: '',
@@ -22,8 +19,8 @@ export default function SaveDataQuery() {
   const selectedData = useSelector(
     state => state.projectMap.dataQuery.selectedData,
   );
-  const isDeleting = useSelector(state =>
-    checkIfLoading(state, [ProjectMapTypes.DELETE_LAYER_REQUEST]),
+  const isSaving = useSelector(state =>
+    checkIfLoading(state, [Types.SAVE_DATA_QUERY_REQUEST]),
   );
   const dispatch = useDispatch();
 
@@ -85,7 +82,7 @@ export default function SaveDataQuery() {
       <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-mt-14 naxatw-gap-2">
         <Button
           className="naxatw-btn-primary"
-          isLoading={isDeleting}
+          isLoading={isSaving}
           loaderClassName="naxatw-fill-secondary-400"
           onClick={handleSubmit}
         >

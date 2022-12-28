@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
-import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
+import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import Button from '@Components/common/Button';
 import { isEmpty } from '@Utils/commonUtils';
 import Toggle from '@Components/common/Toggle';
 import IconButton from '@Components/common/IconButton';
 import { stringifyQuery } from '@Components/ProjectDashboard/ModalContent/DataQuery';
-import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { togglePromptDialog } = CommonCreators;
 const { handleDataQueryCheckbox, setDataQueryState } = ProjectMapCreators;
@@ -19,9 +18,6 @@ export default function QueryResultPopup() {
   );
   const queryResults = useSelector(
     state => state.projectMap.dataQuery.queryResults,
-  );
-  const isSaving = useSelector(state =>
-    checkIfLoading(state, [Types.SAVE_DATA_QUERY_REQUEST]),
   );
   const dispatch = useDispatch();
 
@@ -69,10 +65,11 @@ export default function QueryResultPopup() {
               <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
                 <span className="naxatw-flex naxatw-items-center naxatw-space-x-1">
                   <p className="naxatw-btn-text">{item.layerName}</p>
-                  <IconButton
+                  {/* <IconButton
                     name="table"
-                    className="material-symbols-outlined naxatw-text-sm" // onClick={() => setCollapsed(!collapsed)}
-                  />
+                    className="material-symbols-outlined naxatw-text-sm"
+                    // onClick={() => setCollapsed(!collapsed)}
+                  /> */}
                 </span>
                 <p className="naxatw-text-xl">{item.features_count}</p>
               </div>
@@ -98,7 +95,6 @@ export default function QueryResultPopup() {
                 <div className="naxatw-flex">
                   <Button
                     className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
-                    isLoading={isSaving}
                     onClick={() => {
                       dispatch(setDataQueryState({ selectedData: item }));
                       dispatch(togglePromptDialog('save-data-query'));

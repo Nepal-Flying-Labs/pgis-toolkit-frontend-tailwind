@@ -38,3 +38,6 @@ export const getAdvanceQueryValues = params =>
 
 export const postAdvanceQuery = data =>
   authenticated(api).post(`/maps/advance_query/`, data);
+
+export const saveDataQuery = data =>
+  authenticated(api).post(`/maps/layer_from_query/`, data);

@@ -35,28 +35,8 @@ const initialState = {
   dataQuery: {
     fields: null,
     values: null,
-    queryResults: [
-      {
-        id: 18,
-        name: 'query-daffaeef-7c59-4d94-8a5a-d160700dcdf4',
-        display_on_map: true,
-        bbox: [34.7519779, 0.2643187, 34.7601978, 0.290996],
-        geom_type: 'LineString',
-        features_count: 3,
-        icon: '',
-        std_icon: '',
-        style: {},
-        layerName: 'Kakamega Highway Openstreet Maps - Smaller Version',
-        query: [
-          {
-            field: 'highway',
-            operator: 1,
-            value: 'trunk_link',
-          },
-        ],
-        checked: true,
-      },
-    ],
+    queryResults: [],
+    selectedData: null,
   },
 };
 
@@ -451,6 +431,45 @@ const handleDataQueryCheckbox = (state, action) => {
   };
 };
 
+const setDataQueryState = (state, action) => {
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      ...action.payload,
+    },
+  };
+};
+
+const saveDataQuerySuccess = (state, action) => {
+  const { style, id: queryLayerId } = state.dataQuery.selectedData;
+  const { layer: id, theme } = action.payload;
+  const layers = {
+    ...state.layers,
+    [theme]: [
+      ...state.layers[theme],
+      {
+        ...action.payload,
+        id,
+        checked: true,
+        style,
+      },
+    ],
+  };
+  const queryResults = state.dataQuery.queryResults.filter(
+    item => item.id !== queryLayerId,
+  );
+  return {
+    ...state,
+    layers,
+    dataQuery: {
+      ...state.dataQuery,
+      queryResults,
+      selectedData: null,
+    },
+  };
+};
+
 const resetProjectMapState = () => ({
   ...initialState,
 });
@@ -484,6 +503,8 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_DATA_QUERY_VALUES_SUCCESS]: getDataQueryValuesSuccess,
   [Types.POST_ADVANCE_QUERY_SUCCESS]: postAdvanceQuerySuccess,
   [Types.HANDLE_DATA_QUERY_CHECKBOX]: handleDataQueryCheckbox,
+  [Types.SET_DATA_QUERY_STATE]: setDataQueryState,
+  [Types.SAVE_DATA_QUERY_SUCCESS]: saveDataQuerySuccess,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

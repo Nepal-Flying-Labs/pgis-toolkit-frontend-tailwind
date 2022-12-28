@@ -10,6 +10,7 @@ import {
   getProjectThemes,
   postAdvanceQuery,
   postNewLayerFeature,
+  saveDataQuery,
   saveMapConfig,
   updateFeatureCollection,
   updateLayer,
@@ -17,6 +18,7 @@ import {
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
+import toastActions from '@Actions/toast';
 import { withLoader, withErrorHandler } from '@Utils/sagaUtils';
 import prepareFormData from '@Utils/prepareFormData';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
@@ -237,6 +239,22 @@ export function* postAdvanceQueryRequest({ payload, data }) {
   }
 }
 
+export function* saveDataQueryRequest({ payload }) {
+  try {
+    const response = yield call(saveDataQuery, payload);
+    yield put(projectMapActions.saveDataQuerySuccess(response.data));
+    yield put(commonActions.togglePromptDialog());
+    yield put(
+      toastActions.success({
+        message: `${response.data.name} layer created successfully.`,
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.saveDataQueryFailure());
+    throw error;
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -305,6 +323,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.POST_ADVANCE_QUERY_REQUEST,
     withLoader(withErrorHandler(postAdvanceQueryRequest)),
+  );
+  yield takeLatest(
+    Types.SAVE_DATA_QUERY_REQUEST,
+    withLoader(withErrorHandler(saveDataQueryRequest)),
   );
 }
 

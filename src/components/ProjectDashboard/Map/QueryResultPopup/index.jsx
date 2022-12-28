@@ -9,7 +9,7 @@ import IconButton from '@Components/common/IconButton/index';
 import { stringifyQuery } from '@Components/ProjectDashboard/ModalContent/DataQuery/index';
 
 const { togglePromptDialog } = CommonCreators;
-const { handleDataQueryCheckbox } = ProjectMapCreators;
+const { handleDataQueryCheckbox, setDataQueryState } = ProjectMapCreators;
 
 export default function QueryResultPopup() {
   const [collapsed, setCollapsed] = useState(false);
@@ -26,8 +26,8 @@ export default function QueryResultPopup() {
   return (
     <div
       className="naxatw-absolute naxatw-top-20 naxatw-right-4  naxatw-z-10
-      naxatw-bg-white naxatw-text-grey-800 naxatw-rounded-[20px] naxatw-border naxatw-border-grey-300 
-      naxatw-shadow-3xl naxatw-w-[20.3rem]"
+        naxatw-bg-white naxatw-text-grey-800 naxatw-rounded-[20px] naxatw-border naxatw-border-grey-300 
+        naxatw-shadow-3xl naxatw-w-[20.3rem]"
     >
       <div
         className="naxatw-px-5 naxatw-py-3.5 naxatw-flex naxatw-items-center naxatw-justify-between"
@@ -94,9 +94,10 @@ export default function QueryResultPopup() {
                 <div className="naxatw-flex">
                   <Button
                     className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
-                    onClick={() =>
-                      dispatch(togglePromptDialog('save-data-query'))
-                    }
+                    onClick={() => {
+                      dispatch(setDataQueryState({ selectedData: item }));
+                      dispatch(togglePromptDialog('save-data-query'));
+                    }}
                   >
                     Save
                   </Button>

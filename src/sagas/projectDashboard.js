@@ -316,9 +316,9 @@ export function* patchLayerTemplateRequest({ id, payload }) {
   }
 }
 
-export function* getProjectCountryRequest({ id }) {
+export function* getProjectCountryRequest({ params }) {
   try {
-    const response = yield call(getProjectCountry, id);
+    const response = yield call(getProjectCountry, params);
     yield put(projectDashboardActions.getProjectCountrySuccess(response.data));
   } catch (error) {
     yield put(projectDashboardActions.deleteDocumentFailure());
@@ -326,9 +326,9 @@ export function* getProjectCountryRequest({ id }) {
   }
 }
 
-export function* getProjectStateRequest({ id }) {
+export function* getProjectStateRequest({ params }) {
   try {
-    const response = yield call(getProjectState, id);
+    const response = yield call(getProjectState, params);
     yield put(projectDashboardActions.getProjectStateSuccess(response.data));
   } catch (error) {
     yield put(projectDashboardActions.deleteDocumentFailure());

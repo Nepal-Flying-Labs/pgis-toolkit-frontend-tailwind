@@ -218,6 +218,9 @@ export default function ProjectCard({
                 className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]"
                 onClick={e => {
                   e.stopPropagation();
+                  history.push(
+                    `/organizations/${organizationId}/projects/${id}/info`,
+                  );
                 }}
               >
                 Info

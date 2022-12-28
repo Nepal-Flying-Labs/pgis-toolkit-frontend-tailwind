@@ -82,6 +82,24 @@ export const { Types, Creators } = createActions(
     uploadDocumentDataSuccess: ['payload'],
     uploadDocumentDataFailure: ['payload'],
 
+    updateDocumentDataRequest: ['payload'],
+    updateDocumentDataSuccess: ['payload'],
+    updateDocumentDataFailure: ['payload'],
+
+    setDeleteDocument: ['payload'],
+
+    deleteDocumentRequest: ['id', 'payload'],
+    deleteDocumentSuccess: ['payload'],
+    deleteDocumentFailure: null,
+
+    getProjectCountryRequest: ['id'],
+    getProjectCountrySuccess: ['payload'],
+    getProjectCountryFailure: ['payload'],
+
+    getProjectStateRequest: ['id'],
+    getProjectStateSuccess: ['payload'],
+    getProjectStateFailure: ['payload'],
+
     getLayerTemplateRequest: ['id'],
     getLayerTemplateSuccess: ['payload'],
     getLayerTemplateFailure: null,

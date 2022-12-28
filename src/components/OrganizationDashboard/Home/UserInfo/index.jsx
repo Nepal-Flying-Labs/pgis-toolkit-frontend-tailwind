@@ -32,7 +32,7 @@ const UserInfo = () => {
   const history = useHistory();
   const users = useSelector(state => state.organizationDashboard.users);
   return (
-    <div className="naxatw-w-[440px] naxatw-bg-white naxatw-rounded-xl naxatw-border naxatw-border-[#D7D7D7]">
+    <div className="naxatw-w-1/3 naxatw-min-w-[440px] naxatw-bg-white naxatw-rounded-xl naxatw-border naxatw-border-[#D7D7D7]">
       <div className="naxatw-flex naxatw-p-2 naxatw-justify-between naxatw-items-center naxatw-border-b-[1px] naxatw-rounded-t-xl naxatw-pl-4">
         <div>
           <div className="naxatw-flex naxatw-gap-x-5">

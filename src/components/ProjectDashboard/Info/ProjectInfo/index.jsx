@@ -1,15 +1,18 @@
 /* eslint-disable arrow-body-style */
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import noImg from '@Assets/images/noImage.png';
 import { isEmpty } from '@Utils/commonUtils';
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 
 const ProjectInfo = () => {
   const info = useSelector(state => state.projectDashboard.info.details);
   const contactPerson = useSelector(
     state => state.projectDashboard.contactPerson,
   );
+  const [open, setOpen] = useState(false);
 
   const getStatusColor = status => {
     switch (status?.toLowerCase()) {
@@ -66,12 +69,26 @@ const ProjectInfo = () => {
             </p>
           </div>
         </div>
-        <div className="naxatw-mt-5 naxatw-flex naxatw-justify-center xl:naxatw-mt-0 xl:naxatw-block">
+        <div
+          className="naxatw-mt-5 naxatw-flex naxatw-justify-center xl:naxatw-mt-0 xl:naxatw-block"
+          role="button"
+          onKeyDown={() => {}}
+          tabIndex="0"
+          onClick={() => setOpen(true)}
+        >
           <img
             className="naxatw-rounded-lg naxatw-h-[195px] naxatw-w-[297px] naxatw-border naxatw-border-grey-300 naxatw-object-cover"
             src={info?.cover_image || noImg}
             alt=""
           />
+          {open && (
+            <Lightbox
+              mainSrc={info?.cover_image}
+              enableZoom
+              onCloseRequest={() => setOpen(false)}
+              reactModalStyle={{ overlay: { zIndex: '999999999' } }}
+            />
+          )}
         </div>
       </div>
 
@@ -79,15 +96,7 @@ const ProjectInfo = () => {
       <div className="naxatw-pt-3 naxatw-px-7 naxatw-mb-7">
         <h4 className="naxatw-mb-2">Objectives</h4>
         <p className="naxatw-text-body-lg naxatw-text-justify">
-          World Bicycle Relief is an international, non-profit organization
-          based in Chicago, IL that specializes in large-scale, comprehensive
-          bicycle distribution programs to aid poverty relief in developing
-          countries around the world. Their programs focus primarily on
-          education, economic development, and health care. We specializes in
-          large-scale, comprehensive bicycle distribution programs to aid
-          poverty relief in developing countries around the world. Their
-          programs focus primarily on education, economic development, and
-          health care.
+          {info?.description || '-'}
         </p>
       </div>
       {/* contact person */}

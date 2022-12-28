@@ -20,12 +20,13 @@ const initialState = {
     list: [],
   },
   info: {
-    details: [],
-    location: [],
+    details: {},
+    location: {},
   },
   document: {
     list: [],
-    item: [],
+    item: {},
+    delete: {},
   },
   contactPerson: [],
 };
@@ -200,6 +201,30 @@ const uploadDocumentDataSuccess = (state, action) => ({
   },
 });
 
+const setDeleteDocument = (state, action) => ({
+  ...state,
+  document: {
+    ...state.document,
+    delete: action.payload,
+  },
+});
+
+const getProjectCountrySuccess = (state, action) => ({
+  ...state,
+  info: {
+    ...state.info,
+    location: { ...state.info.location, country: action.payload },
+  },
+});
+
+const getProjectStateSuccess = (state, action) => ({
+  ...state,
+  info: {
+    ...state.info,
+    location: { ...state.info.location, state: action.payload },
+  },
+});
+
 const getLayerTemplateSuccess = (state, action) => ({
   ...state,
   data: {
@@ -281,6 +306,9 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_DOCUMENT_ITEM_SUCCESS]: getDocumentItemSuccess,
   [Types.GET_DOCUMENT_BY_ID_SUCCESS]: getDocumentByIdSuccess,
   [Types.UPLOAD_DOCUMENT_DATA_SUCCESS]: uploadDocumentDataSuccess,
+  [Types.SET_DELETE_DOCUMENT]: setDeleteDocument,
+  [Types.GET_PROJECT_COUNTRY_SUCCESS]: getProjectCountrySuccess,
+  [Types.GET_PROJECT_STATE_SUCCESS]: getProjectStateSuccess,
   [Types.GET_LAYER_TEMPLATE_SUCCESS]: getLayerTemplateSuccess,
   [Types.PATCH_LAYER_TEMPLATE_SUCCESS]: patchLayerTemplateSuccess,
   [Types.SET_SELECTED_LAYER]: setSelectedLayer,

@@ -25,6 +25,9 @@ import {
   getIndividualDocument,
   downloadDocument,
   uploadDocument,
+  updateDocument,
+  getProjectCountry,
+  getProjectState,
   getLayerTemplate,
   patchLayerTemplate,
   postImportTemplate,
@@ -234,6 +237,7 @@ export function* downloadDocumentRequest({ params }) {
     throw error;
   }
 }
+
 export function* uploadDocumentDataRequest({ id, payload }) {
   try {
     yield all(payload.map(data => call(uploadDocument, data)));
@@ -248,6 +252,24 @@ export function* uploadDocumentDataRequest({ id, payload }) {
   } catch (error) {
     yield put(projectDashboardActions.uploadDocumentDataFailure());
     throw error;
+  }
+}
+
+export function* updateDocumentDataRequest({ payload }) {
+  const { documentId, projectId, data } = payload;
+  console.log('update docx ', payload);
+  try {
+    yield call(updateDocument, documentId, data);
+    const res = yield call(getDocumentItem, { project: projectId });
+    yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
+    yield put(commonActions.toggleModal());
+    yield put(
+      toastActions.success({
+        message: 'Data uploaded successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.updateDocumentDataFailure());
   }
 }
 
@@ -269,6 +291,23 @@ export function* getLayerTemplateRequest({ id }) {
   }
 }
 
+export function* deleteDocumentRequest({ id, payload }) {
+  try {
+    const response = yield call(updateDocument, id, payload);
+    console.log('deleted item ', response);
+    // const res = yield call(getDocumentItem, { project: projectId });
+    // yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
+    yield put(commonActions.toggleModal());
+    yield put(
+      toastActions.success({
+        message: 'Data deleted successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.deleteDocumentFailure());
+  }
+}
+
 export function* patchLayerTemplateRequest({ id, payload }) {
   try {
     const response = yield call(patchLayerTemplate, id, payload);
@@ -277,6 +316,25 @@ export function* patchLayerTemplateRequest({ id, payload }) {
   } catch (error) {
     yield put(projectDashboardActions.patchLayerTemplateFailure());
     throw error;
+  }
+}
+
+export function* getProjectCountryRequest({ id }) {
+  try {
+    const response = yield call(getProjectCountry, id);
+    yield put(projectDashboardActions.getProjectCountrySuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.deleteDocumentFailure());
+    throw error;
+  }
+}
+
+export function* getProjectStateRequest({ id }) {
+  try {
+    const response = yield call(getProjectState, id);
+    yield put(projectDashboardActions.getProjectStateSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.deleteDocumentFailure());
   }
 }
 
@@ -397,6 +455,22 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.UPLOAD_DOCUMENT_DATA_REQUEST,
     withLoader(withErrorHandler(uploadDocumentDataRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_DOCUMENT_DATA_REQUEST,
+    withLoader(withErrorHandler(updateDocumentDataRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_DOCUMENT_REQUEST,
+    withLoader(withErrorHandler(deleteDocumentRequest)),
+  );
+  yield takeLatest(
+    Types.GET_PROJECT_COUNTRY_REQUEST,
+    withLoader(withErrorHandler(getProjectCountryRequest)),
+  );
+  yield takeLatest(
+    Types.GET_PROJECT_STATE_REQUEST,
+    withLoader(withErrorHandler(getProjectStateRequest)),
   );
   yield takeLatest(
     Types.GET_LAYER_TEMPLATE_REQUEST,

@@ -7,7 +7,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { renderToString } from 'react-dom/server';
 import Overlay from 'ol/Overlay';
-import { siteId, regionId } from '@src/constants/map';
 import { getCenter } from 'ol/extent';
 import '../../Popup/popup.scss';
 import Button from '@Components/common/Button';
@@ -15,9 +14,6 @@ import Button from '@Components/common/Button';
 function hasKey(obj, key) {
   return Object.keys(obj).some(item => item === key);
 }
-
-const layerIds = [siteId, regionId, 'submission'];
-const layerExceptionKeys = ['secondary_data'];
 
 const popupId = 'popupx';
 

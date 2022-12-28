@@ -26,13 +26,11 @@ function DocumentList({ openSidebar }) {
   const { projectId } = useParams();
 
   const dispatch = useDispatch();
-  const { setSearchText, getDocumentByIdRequest } = Creators;
-  const { toggleModal } = CommonCreators;
+  const { setSearchText, getDocumentByIdRequest, setDeleteDocument } = Creators;
+  const { toggleModal, togglePromptDialog } = CommonCreators;
 
-  const searchText = useSelector(state => state?.projectDashboard?.searchText);
-  const documents = useSelector(
-    state => state?.projectDashboard?.document?.list,
-  );
+  const searchText = useSelector(state => state.projectDashboard.searchText);
+  const documents = useSelector(state => state.projectDashboard.document.list);
   const [value, handleSearch] = useDebouncedInput({
     ms: 300,
     init: searchText,
@@ -227,6 +225,7 @@ function DocumentList({ openSidebar }) {
                       <MaterialIcon
                         onIconClick={e => {
                           e.stopPropagation();
+                          dispatch(dispatch(getDocumentByIdRequest(row.id)));
                           dispatch(toggleModal('edit-document'));
                         }}
                         wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
@@ -236,6 +235,8 @@ function DocumentList({ openSidebar }) {
                       <MaterialIcon
                         onIconClick={e => {
                           e.stopPropagation();
+                          dispatch(setDeleteDocument(row));
+                          dispatch(togglePromptDialog('delete-document'));
                         }}
                         wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
                         className="naxatw-text-[22px] naxatw-text-delete_btn"

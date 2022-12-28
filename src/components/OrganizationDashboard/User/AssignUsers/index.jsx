@@ -284,7 +284,7 @@ const AssignUsers = () => {
             <div className="naxatw-space-y-2">
               <Searchbar
                 isSmall
-                className="naxatw-h-[40px]"
+                className="naxatw-h-[40px] naxatw-bg-grey-100"
                 placeholder="Search Role"
                 value={roleSearchText}
                 onChange={e => setRoleSearchText(e.target.value)}
@@ -312,7 +312,7 @@ const AssignUsers = () => {
             <div className="naxatw-space-y-2">
               <Searchbar
                 isSmall
-                className="naxatw-h-[40px]"
+                className="naxatw-h-[40px] naxatw-bg-grey-100"
                 placeholder="Search Projects"
                 value={projectSearchText}
                 onChange={e => setProjectSearchText(e.target.value)}

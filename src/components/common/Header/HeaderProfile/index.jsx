@@ -65,7 +65,11 @@ export default function HeaderProfile() {
             </div>
           </div>
           <ul className="">
-            <li className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-p-3 naxatw-h-10 hover:naxatw-bg-grey-100 naxatw-cursor-pointer">
+            <li
+              role="presentation"
+              onClick={() => dispatch(toggleModal('account-settings'))}
+              className="naxatw-flex naxatw-items-center naxatw-gap-x-3 naxatw-p-3 naxatw-h-10 hover:naxatw-bg-grey-100 naxatw-cursor-pointer"
+            >
               <span className="material-icons naxatw-text-[#484848]">
                 settings
               </span>

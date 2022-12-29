@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-// import { projectHeaderHeight } from '@src/constants';
-import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
 import ManageDataCollection from '@Components/ProjectDashboard/ManageDataCollection/index';
 import ProjectHeader from '@Components/common/ProjectHeader';
@@ -13,15 +11,8 @@ import Gallery from '@Components/ProjectDashboard/Gallery';
 import Users from '@Components/ProjectDashboard/Users';
 import Info from '@Components/ProjectDashboard/Info';
 import Settings from '@Components/ProjectDashboard/Settings';
-import Modal from '@Components/common/Modal';
-import {
-  getModalContent,
-  getPromptDialogContent,
-} from '@src/constants/modalContents';
-import PromptDialog from '@Components/common/PromptDialog';
 import AppLoader from '@Components/common/AppLoader';
 
-const { toggleModal, togglePromptDialog } = CommonCreators;
 const {
   getProjectLayersRequest,
   getProjectDetailRequest,
@@ -52,12 +43,6 @@ function getTabContent(tabname) {
 export default function ProjectDashboard() {
   const { tabname, projectId, organizationId } = useParams();
   const history = useHistory();
-  const showModal = useSelector(state => state.common.showModal);
-  const modalContent = useSelector(state => state.common.modalContent);
-  const showPromptDialog = useSelector(state => state.common.showPromptDialog);
-  const promptDialogContent = useSelector(
-    state => state.common.promptDialogContent,
-  );
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
@@ -91,23 +76,6 @@ export default function ProjectDashboard() {
   return tabname !== 'manage-data' ? (
     <div>
       <ProjectHeader />
-
-      <PromptDialog
-        show={showPromptDialog}
-        title={getPromptDialogContent(promptDialogContent)?.title}
-        onClose={() => dispatch(togglePromptDialog())}
-      >
-        {getPromptDialogContent(promptDialogContent)?.content}
-      </PromptDialog>
-
-      <Modal
-        show={showModal}
-        title={getModalContent(modalContent)?.title}
-        onClose={() => dispatch(toggleModal())}
-      >
-        {getModalContent(modalContent)?.content}
-      </Modal>
-
       <div
         style={{
           marginTop: projectHeaderHeight,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/projectMap';
 import useForm from '@Hooks/useForm';
@@ -8,11 +8,6 @@ import FormErrorMessage from '@Components/common/FormErrorMessage';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { saveDataQueryRequest } = Creators;
-
-const initialValues = {
-  name: '',
-  category: null,
-};
 
 export default function SaveDataQuery() {
   const themes = useSelector(state => state.projectMap.themes);
@@ -25,7 +20,10 @@ export default function SaveDataQuery() {
   const dispatch = useDispatch();
 
   const { values, meta, inputProps, handleChange, handleSubmit } = useForm({
-    initialValues,
+    initialValues: {
+      name: selectedData?.name,
+      category: selectedData?.theme,
+    },
     required: ['name', 'category'],
     onSubmit: data => {
       const payloadData = {

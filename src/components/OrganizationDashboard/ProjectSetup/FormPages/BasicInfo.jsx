@@ -12,11 +12,12 @@ import CustomCalendar from '@Components/common/CustomCalendar/index';
 import { Creators as CommonCreators } from '@Actions/common';
 import Button from '@Components/common/Button';
 import UploadPhotos from '@Components/common/UploadPhotos/index';
+import removeObjectKeys from '@Utils/removeObjectKeys';
 import useForm from '@Hooks/useForm';
 import { format } from 'date-fns';
 import ContactPerson from './ContactPerson';
 
-const { setIndividualProject } = Creators;
+const { setIndividualProject, patchProjectRequest } = Creators;
 const { togglePromptDialog } = CommonCreators;
 
 const thematicFocusArea = [
@@ -47,9 +48,23 @@ const thematicFocusArea = [
   },
 ];
 
+function diffObject(a, b) {
+  const diffObj = Object.keys(b).reduce((diff, key) => {
+    if (a[key] === b[key]) return diff;
+    return {
+      ...diff,
+      [key]: b[key],
+    };
+  }, {});
+  return diffObj;
+}
+
 const BasicInfo = ({ setPage }) => {
-  const { tabname } = useParams();
+  const { tabname, organizationId, projectId } = useParams();
   const dispatch = useDispatch();
+  const project = useSelector(
+    state => state.organizationDashboard.individualProject.project,
+  );
   const stepOne = useSelector(
     state => state.organizationDashboard.individualProject.stepOne,
   );
@@ -76,6 +91,25 @@ const BasicInfo = ({ setPage }) => {
       ]);
       setPartner('');
     }
+  };
+
+  const handleSaveBasicInfo = () => {
+    const finalObj = {
+      ...values,
+      organization: organizationId,
+    };
+
+    const diffObj = diffObject(project, finalObj);
+
+    const payloadData = diffObj?.cover_image?.existedData
+      ? removeObjectKeys(diffObj, ['cover_image'])
+      : diffObj;
+    dispatch(
+      patchProjectRequest(projectId, {
+        ...payloadData,
+        page: tabname === 'settings',
+      }),
+    );
   };
 
   return (
@@ -127,15 +161,6 @@ const BasicInfo = ({ setPage }) => {
 
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Thematic Focus Area*</label>
-        {/* <Select
-          options={thematicFocusArea}
-          dataKey="displayName"
-          placeholder="Choose"
-          onChange={data => {
-            handleCustomChange('thematic_areas', [data.value]);
-          }}
-          selected={values?.thematic_areas || 'Choose'}
-        /> */}
         <MultiSelect
           options={thematicFocusArea}
           placeholder="Choose"
@@ -150,11 +175,13 @@ const BasicInfo = ({ setPage }) => {
         />
       </div>
 
-      <div className="naxatw-flex naxatw-justify-between">
-        <div className="naxatw-space-y-2 naxatw-w-[325px]">
+      <div className="naxatw-flex naxatw-gap-x-5">
+        <div className="naxatw-space-y-2 naxatw-basis-1/2">
           <label className="naxatw-label">Start Date</label>
           <CustomCalendar
-            startDate={new Date()}
+            startDate={
+              values?.start_date ? new Date(values?.start_date) : new Date()
+            }
             onChange={date => {
               handleCustomChange('start_date', format(date, 'yyyy-MM-dd'));
             }}
@@ -162,10 +189,12 @@ const BasicInfo = ({ setPage }) => {
           />
         </div>
 
-        <div className="naxatw-space-y-2 naxatw-w-[325px]">
+        <div className="naxatw-space-y-2 naxatw-basis-1/2">
           <label className="naxatw-label">End Date</label>
           <CustomCalendar
-            startDate={new Date()}
+            startDate={
+              values?.end_date ? new Date(values?.end_date) : new Date()
+            }
             onChange={date => {
               handleCustomChange('end_date', format(date, 'yyyy-MM-dd'));
             }}
@@ -232,15 +261,25 @@ const BasicInfo = ({ setPage }) => {
       >
         <div />
 
-        <Button
-          className="naxatw-btn-primary naxatw-w-[4.75rem]"
-          onClick={() => {
-            dispatch(setIndividualProject({ key: 'stepOne', value: values }));
-            setPage(prevPage => prevPage + 1);
-          }}
-        >
-          Next
-        </Button>
+        {tabname !== 'settings' ? (
+          <Button
+            className="naxatw-btn-primary naxatw-w-[4.75rem]"
+            onClick={() => {
+              dispatch(setIndividualProject({ key: 'stepOne', value: values }));
+              setPage(prevPage => prevPage + 1);
+            }}
+          >
+            Next
+          </Button>
+        ) : (
+          <Button
+            className="naxatw-btn-primary naxatw-w-[4.75rem]"
+            onClick={handleSaveBasicInfo}
+          >
+            Save
+          </Button>
+        )}
+
         {tabname !== 'settings' && (
           <Button
             onClick={() => {

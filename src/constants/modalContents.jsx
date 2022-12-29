@@ -93,6 +93,7 @@ export function getModalContent(content) {
       return {
         title: 'Layer Attribute',
         content: <ViewLayerAttribute />,
+        className: '!naxatw-w-[1000px]',
       };
     case 'data-query':
       return {

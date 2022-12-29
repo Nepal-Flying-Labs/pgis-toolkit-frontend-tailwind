@@ -15,6 +15,7 @@ import {
   updateFeatureCollection,
   updateLayer,
   uploadLayer,
+  getLayerAttribute,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -263,6 +264,16 @@ export function* saveDataQueryRequest({ payload }) {
   }
 }
 
+export function* getLayerAttributeRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttribute, params);
+    yield put(projectMapActions.getLayerAttributeSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getLayerAttributeFailure());
+    throw error;
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -335,6 +346,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.SAVE_DATA_QUERY_REQUEST,
     withLoader(withErrorHandler(saveDataQueryRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(getLayerAttributeRequest)),
   );
 }
 

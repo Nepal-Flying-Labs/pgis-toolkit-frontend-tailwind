@@ -38,6 +38,17 @@ const initialState = {
     queryResults: [],
     selectedData: null,
   },
+  layerAttributesList: {
+    attributeList: [],
+    searchTerm: '',
+    pagination: {
+      page: 1,
+      rowSelect: 10,
+      count: null,
+      next: null,
+      previous: null,
+    },
+  },
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -503,6 +514,30 @@ const deleteAllDataQuery = state => {
   };
 };
 
+const getLayerAttributeSuccess = (state, action) => {
+  const { counts, next, previous, results } = action.payload;
+  return {
+    ...state,
+    layerAttributesList: {
+      ...state.layerAttributesList,
+      attributeList: results,
+      pagination: {
+        ...state.layerAttributesList.pagination,
+        count: counts,
+        next,
+        previous,
+      },
+    },
+  };
+};
+const setAttributeTableSearchTerm = (state, action) => ({
+  ...state,
+  layerAttributesList: {
+    ...state.layerAttributesList,
+    searchTerm: action.payload,
+  },
+});
+
 const resetProjectMapState = () => ({
   ...initialState,
 });
@@ -540,6 +575,8 @@ const projectMapReducer = createReducer(initialState, {
   [Types.SAVE_DATA_QUERY_SUCCESS]: saveDataQuerySuccess,
   [Types.DELETE_DATA_QUERY]: deleteDataQuery,
   [Types.DELETE_ALL_DATA_QUERY]: deleteAllDataQuery,
+  [Types.GET_LAYER_ATTRIBUTE_SUCCESS]: getLayerAttributeSuccess,
+  [Types.SET_ATTRIBUTE_TABLE_SEARCH_TERM]: setAttributeTableSearchTerm,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

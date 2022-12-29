@@ -226,13 +226,21 @@ export function* getDataQueryValuesRequest({ params }) {
 export function* postAdvanceQueryRequest({ payload, data }) {
   try {
     const response = yield call(postAdvanceQuery, payload);
-    yield put(
-      projectMapActions.postAdvanceQuerySuccess({
-        ...response.data,
-        ...data,
-      }),
-    );
     yield put(commonActions.toggleModal());
+    if (!response.data.features_count) {
+      yield put(
+        toastActions.error({
+          message: 'The resulting query has no results.',
+        }),
+      );
+    } else {
+      yield put(
+        projectMapActions.postAdvanceQuerySuccess({
+          ...response.data,
+          ...data,
+        }),
+      );
+    }
   } catch (error) {
     yield put(projectMapActions.postAdvanceQueryFailure());
     throw error;

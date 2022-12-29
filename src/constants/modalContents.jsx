@@ -27,6 +27,7 @@ import EditDocument from '@Components/ProjectDashboard/ModalContent/EditDocument
 import SaveDataQuery from '@Components/ProjectDashboard/ModalContent/SaveDataQuery';
 import DeleteDataQuery from '@Components/ProjectDashboard/ModalContent/DeleteDataQuery';
 import AccountSettings from '@Components/Authentication/ModalContent/AccountSettings';
+import ViewLayerAttribute from '@Components/ProjectDashboard/ModalContent/ViewLayerAttribute';
 
 export function getModalContent(content) {
   switch (content) {
@@ -88,10 +89,16 @@ export function getModalContent(content) {
         title: 'Upload your datasets',
         content: <UploadDataset />,
       };
+    case 'view-layer-attribute':
+      return {
+        title: 'Layer Attribute',
+        content: <ViewLayerAttribute />,
+      };
     case 'data-query':
       return {
         title: 'Data Query',
         content: <DataQuery />,
+        // className: '!naxatw-w-[63.25rem]',
       };
     case 'analysis':
       return {

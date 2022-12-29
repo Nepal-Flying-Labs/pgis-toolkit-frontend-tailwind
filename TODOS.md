@@ -88,6 +88,9 @@
 - [x] mandatory validation/actual data type
 - [x] add setRequiredFields in useForm
 - [x] remove add feature to boundary
+- [ ] icon grey
+- [ ] value autofill query
+- [ ] checkbox min width height
 
 ### Backend
 

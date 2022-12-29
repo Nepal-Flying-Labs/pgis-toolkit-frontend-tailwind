@@ -5,18 +5,19 @@ import { initDomToCode } from 'dom-to-code';
 import { Switch, Route } from 'react-router-dom';
 import PrivateRoute from '@Components/common/PrivateRoute';
 import Toast from '@Components/common/Toast';
-import './assets/css/tailwind.css';
-import Modal from '@Components/common/Modal/index';
+import Modal from '@Components/common/Modal';
 import { useSelector, useDispatch } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
-import PromptDialog from '@Components/common/PromptDialog/index';
+import PromptDialog from '@Components/common/PromptDialog';
 import ManageAttributeHeader from '@Components/ProjectDashboard/ModalContent/HeaderContents/MangeAttributeHeader';
 import AddAttributeHeader from '@Components/ProjectDashboard/ModalContent/HeaderContents/AddAttributesHeader';
+import ViewLayerAttributeHeader from '@Components/ProjectDashboard/ModalContent/HeaderContents/ViewLayerAttributeHeader';
 import indexRoutes from './routes';
 import {
   getModalContent,
   getPromptDialogContent,
 } from './constants/modalContents';
+import './assets/css/tailwind.css';
 
 function generateRoutes(routes) {
   return (
@@ -57,16 +58,16 @@ const {
   setPromptDialogContent,
 } = CommonCreators;
 
-const headerContents = ['manage-attributes', 'add-attributes'];
-
 function getHeaderContent(modalContents) {
   switch (modalContents) {
     case 'manage-attributes':
       return <ManageAttributeHeader />;
     case 'add-attributes':
       return <AddAttributeHeader />;
+    case 'view-layer-attribute':
+      return <ViewLayerAttributeHeader />;
     default:
-      return '';
+      return null;
   }
 }
 
@@ -108,11 +109,7 @@ function App() {
       <Modal
         show={showModal}
         className={getModalContent(modalContent)?.className || ''}
-        headerContent={
-          headerContents.includes(modalContent)
-            ? getHeaderContent(modalContent)
-            : null
-        }
+        headerContent={getHeaderContent(modalContent)}
         title={getModalContent(modalContent)?.title}
         onClose={handleModalClose}
       >

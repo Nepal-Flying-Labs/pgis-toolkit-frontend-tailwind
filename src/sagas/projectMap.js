@@ -1,4 +1,11 @@
-import { call, put, takeLatest, takeEvery, all } from 'redux-saga/effects';
+import {
+  call,
+  put,
+  select,
+  takeLatest,
+  takeEvery,
+  all,
+} from 'redux-saga/effects';
 import chroma from 'chroma-js';
 import {
   getAdvanceQueryValues,
@@ -226,7 +233,6 @@ export function* getDataQueryValuesRequest({ params }) {
 export function* postAdvanceQueryRequest({ payload, data }) {
   try {
     const response = yield call(postAdvanceQuery, payload);
-    yield put(commonActions.toggleModal());
     if (!response.data.features_count) {
       yield put(
         toastActions.error({
@@ -241,6 +247,7 @@ export function* postAdvanceQueryRequest({ payload, data }) {
         }),
       );
     }
+    yield put(commonActions.toggleModal());
   } catch (error) {
     yield put(projectMapActions.postAdvanceQueryFailure());
     throw error;
@@ -250,6 +257,12 @@ export function* postAdvanceQueryRequest({ payload, data }) {
 export function* saveDataQueryRequest({ payload }) {
   try {
     const response = yield call(saveDataQuery, payload);
+    const { selectedData } = yield select(state => state.projectMap.dataQuery);
+    const layerData = {
+      style: selectedData.style,
+    };
+    const formdata = prepareFormData(layerData);
+    yield call(updateLayer, selectedData.layer, formdata);
     yield put(projectMapActions.saveDataQuerySuccess(response.data));
     yield put(commonActions.togglePromptDialog());
     yield put(

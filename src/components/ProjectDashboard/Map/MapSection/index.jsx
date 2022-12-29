@@ -26,7 +26,7 @@ import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import AddFeature from '@Components/common/OpenLayersComponent/CustomLayer/AddFeature';
 import EditableLayer from '@Components/common/OpenLayersComponent/CustomLayer/EditableLayer';
-import DrawTool from '@Components/common/OpenLayersComponent/DrawTool/index';
+// import DrawTool from '@Components/common/OpenLayersComponent/DrawTool/index';
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import SidebarToggle from '../SidebarToggle';
 import Toolbox from '../Toolbox';

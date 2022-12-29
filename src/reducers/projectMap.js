@@ -402,7 +402,12 @@ const getDataQueryValuesSuccess = (state, action) => {
 };
 
 const postAdvanceQuerySuccess = (state, action) => {
-  const { name: layerName, style, theme } = state.dataQuery.selectedLayer;
+  const {
+    name: layerName,
+    style,
+    theme,
+    id: layer,
+  } = state.dataQuery.selectedLayer;
   const queryResults = [
     ...state.dataQuery.queryResults,
     {
@@ -411,6 +416,7 @@ const postAdvanceQuerySuccess = (state, action) => {
       layerName,
       style,
       theme,
+      layer,
     },
   ];
   return {
@@ -453,9 +459,8 @@ const saveDataQuerySuccess = (state, action) => {
     checked: true,
     layer_type: 'Vector',
     style: {
-      ...defaultStyles,
-      geometryType,
       ...style,
+      geometryType,
     },
   };
   const layers = {

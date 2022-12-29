@@ -10,6 +10,8 @@ import Modal from '@Components/common/Modal/index';
 import { useSelector, useDispatch } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import PromptDialog from '@Components/common/PromptDialog/index';
+import ManageAttributeHeader from '@Components/ProjectDashboard/ModalContent/HeaderContents/MangeAttributeHeader';
+import AddAttributeHeader from '@Components/ProjectDashboard/ModalContent/HeaderContents/AddAttributesHeader';
 import indexRoutes from './routes';
 import {
   getModalContent,
@@ -55,6 +57,19 @@ const {
   setPromptDialogContent,
 } = CommonCreators;
 
+const headerContents = ['manage-attributes', 'add-attributes'];
+
+function getHeaderContent(modalContents) {
+  switch (modalContents) {
+    case 'manage-attributes':
+      return <ManageAttributeHeader />;
+    case 'add-attributes':
+      return <AddAttributeHeader />;
+    default:
+      return '';
+  }
+}
+
 function App() {
   const showModal = useSelector(state => state.common.showModal);
   const showPromptDialog = useSelector(state => state.common.showPromptDialog);
@@ -93,6 +108,11 @@ function App() {
       <Modal
         show={showModal}
         className={getModalContent(modalContent)?.className || ''}
+        headerContent={
+          headerContents.includes(modalContent)
+            ? getHeaderContent(modalContent)
+            : null
+        }
         title={getModalContent(modalContent)?.title}
         onClose={handleModalClose}
       >

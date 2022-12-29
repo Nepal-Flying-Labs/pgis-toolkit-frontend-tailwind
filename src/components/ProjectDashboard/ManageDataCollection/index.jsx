@@ -1,23 +1,18 @@
 /* eslint-disable no-nested-ternary */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable arrow-body-style */
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
+import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Button from '@Components/common/Button';
-import { Creators as CommonCreators } from '@Actions/common';
-import { Creators } from '@Actions/projectDashboard';
-import Modal from '@Components/common/Modal';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
-import { getModalContent } from '@src/constants/modalContents';
+import { Creators } from '@Actions/projectDashboard';
+
 import StepOne from './Steps/StepOne';
 import StepTwo from './Steps/StepTwo';
 import StepThree from './Steps/StepThree';
 
-const { toggleModal } = CommonCreators;
 const { clearAttributeListData } = Creators;
-
-const headerContents = ['manage-attributes', 'add-attributes'];
 
 const linkOptions = [
   {
@@ -34,26 +29,10 @@ const linkOptions = [
   },
 ];
 
-// const getContent = step => {
-//   switch (step) {
-//     case 1:
-//       return <StepOne option={option} setOption={setOption}/>;
-//     case 2:
-//       return <StepTwo />;
-//     case 3:
-//       return <StepThree />;
-//     default:
-//       return '';
-//   }
-// };
-
 const ManageDataCollection = () => {
+  const dispatch = useDispatch();
   const [option, setOption] = useState(null);
   const { projectId, organizationId } = useParams();
-  const dispatch = useDispatch();
-  const selectedLayer = useSelector(
-    state => state.projectDashboard.data.manageData.selectedData,
-  );
   const showModal = useSelector(state => state.common.showModal);
   const modalContent = useSelector(state => state.common.modalContent);
   const [active, setActive] = useState(1);
@@ -71,45 +50,20 @@ const ManageDataCollection = () => {
     }
   };
 
-  const headerContent = modalContents => {
-    switch (modalContents) {
-      case 'manage-attributes':
-        return <h3>{`${selectedLayer?.name} Attributes`}</h3>;
-      case 'add-attributes':
-        return (
-          <div className="naxatw-flex naxatw-items-center naxatw-gap-x-3">
-            <MaterialIcon
-              name="arrow_back"
-              className="naxatw-text-icon-md"
-              wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer"
-              onIconClick={() => dispatch(toggleModal('manage-attributes'))}
-            />
-            <h4>{`Add ${selectedLayer?.name} attributes`}</h4>
-          </div>
-        );
-      default:
-        return '';
-    }
-  };
+  // reset state on modal unmount
+  useEffect(() => {
+    if (
+      showModal &&
+      (modalContent === 'add-attributes' ||
+        modalContent === 'manage-attributes')
+    )
+      return;
+
+    dispatch(clearAttributeListData());
+  }, [dispatch, showModal, modalContent]);
 
   return (
     <div>
-      <Modal
-        show={showModal}
-        title={getModalContent(modalContent)?.title}
-        className={getModalContent(modalContent)?.className || ''}
-        headerContent={
-          headerContents.includes(modalContent)
-            ? headerContent(modalContent)
-            : null
-        }
-        onClose={() => {
-          dispatch(toggleModal());
-          dispatch(clearAttributeListData());
-        }}
-      >
-        {getModalContent(modalContent)?.content}
-      </Modal>
       <div className="naxatw-flex naxatw-justify-between naxatw-px-10 naxatw-py-5 naxatw-border naxatw-border-b">
         <div className="naxatw-w-[712px]">
           <h3>Manage Data Collection</h3>

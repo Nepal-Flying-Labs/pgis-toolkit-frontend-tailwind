@@ -123,9 +123,7 @@ export default function ProjectHeader() {
                         : ''
                     } `}
                     to={
-                      route === 'settings'
-                        ? `/organizations/${organizationId}/project-edit/${projectId}`
-                        : projectId
+                      projectId
                         ? `/organizations/${organizationId}/projects/${projectId}/${route}`
                         : `/organizations/${organizationId}/${route}`
                     }

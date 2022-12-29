@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import Input from '@Components/common/Input';
 import MultiSelect from '@Components/common/MultiSelect/index';
@@ -47,6 +48,7 @@ const thematicFocusArea = [
 ];
 
 const BasicInfo = ({ setPage }) => {
+  const { tabname } = useParams();
   const dispatch = useDispatch();
   const stepOne = useSelector(
     state => state.organizationDashboard.individualProject.stepOne,
@@ -78,8 +80,16 @@ const BasicInfo = ({ setPage }) => {
 
   return (
     <>
-      <div className="naxatw-px-[5.313rem] naxatw-flex">
-        <span className="naxatw-text-body-lg naxatw-text-center ">
+      <div
+        className={`${
+          tabname !== 'settings' ? 'naxatw-px-[5.313rem]' : ''
+        } naxatw-flex`}
+      >
+        <span
+          className={`naxatw-text-body-lg ${
+            tabname !== 'settings' ? 'naxatw-text-center' : ''
+          }`}
+        >
           As a user you cannot proceed forward with the basic setup.Fill up the
           basic info form to proceed ahead
         </span>
@@ -213,7 +223,13 @@ const BasicInfo = ({ setPage }) => {
       <hr />
       <ContactPerson />
 
-      <div className="naxatw-flex naxatw-justify-between  naxatw-pt-7 naxatw-pb-7 ">
+      <div
+        className={`naxatw-flex ${
+          tabname !== 'settings'
+            ? 'naxatw-justify-between'
+            : 'naxatw-justify-center'
+        }  naxatw-pt-7 naxatw-pb-7 `}
+      >
         <div />
 
         <Button
@@ -225,15 +241,17 @@ const BasicInfo = ({ setPage }) => {
         >
           Next
         </Button>
-        <Button
-          onClick={() => {
-            dispatch(setIndividualProject({ key: 'stepOne', value: values }));
-            dispatch(togglePromptDialog('save-as-draft'));
-          }}
-          className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
-        >
-          Save as Draft
-        </Button>
+        {tabname !== 'settings' && (
+          <Button
+            onClick={() => {
+              dispatch(setIndividualProject({ key: 'stepOne', value: values }));
+              dispatch(togglePromptDialog('save-as-draft'));
+            }}
+            className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
+          >
+            Save as Draft
+          </Button>
+        )}
       </div>
     </>
   );

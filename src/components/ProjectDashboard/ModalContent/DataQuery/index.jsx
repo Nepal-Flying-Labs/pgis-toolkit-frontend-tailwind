@@ -127,9 +127,11 @@ export default function DataQuery() {
   };
 
   const handleApply = () => {
+    const valuesArr = query.filter(item => item?.value).map(item => item.value);
+    const name = valuesArr.join('-');
     const payloadData = {
       layer: selectedLayer.id,
-      name: `query-${uuidv4()}`,
+      name,
       expression: JSON.stringify(query),
     };
     dispatch(

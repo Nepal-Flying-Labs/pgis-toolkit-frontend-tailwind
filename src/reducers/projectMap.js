@@ -402,7 +402,7 @@ const getDataQueryValuesSuccess = (state, action) => {
 };
 
 const postAdvanceQuerySuccess = (state, action) => {
-  const { name: layerName, style } = state.dataQuery.selectedLayer;
+  const { name: layerName, style, theme } = state.dataQuery.selectedLayer;
   const queryResults = [
     ...state.dataQuery.queryResults,
     {
@@ -410,6 +410,7 @@ const postAdvanceQuerySuccess = (state, action) => {
       checked: true,
       layerName,
       style,
+      theme,
     },
   ];
   return {

@@ -172,7 +172,13 @@ const Location = ({ page, setPage }) => {
       )}
 
       {values?.location_type === 'Custom Draw' && <MapSection />}
-      <div className="naxatw-flex naxatw-justify-between  naxatw-pt-7 naxatw-pb-7 ">
+      <div
+        className={`naxatw-flex ${
+          tabname !== 'settings'
+            ? 'naxatw-justify-between naxatw-pb-7'
+            : 'naxatw-justify-center'
+        }  naxatw-pt-7 `}
+      >
         {page > 1 ? (
           <Button
             iconLeft="arrow_back"

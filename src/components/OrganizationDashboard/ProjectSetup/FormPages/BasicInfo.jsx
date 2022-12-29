@@ -6,7 +6,7 @@ import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import Input from '@Components/common/Input';
 import MultiSelect from '@Components/common/MultiSelect/index';
-import { Creators } from '@Actions/organizationDashboard';
+import { Creators, Types } from '@Actions/organizationDashboard';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
 import { Creators as CommonCreators } from '@Actions/common';
@@ -14,6 +14,7 @@ import Button from '@Components/common/Button';
 import UploadPhotos from '@Components/common/UploadPhotos/index';
 import removeObjectKeys from '@Utils/removeObjectKeys';
 import useForm from '@Hooks/useForm';
+import { checkIfLoading } from '@Utils/loaderSelector';
 import { format } from 'date-fns';
 import ContactPerson from './ContactPerson';
 
@@ -72,6 +73,10 @@ const BasicInfo = ({ setPage }) => {
   const handlePartner = e => {
     setPartner(e.target.value);
   };
+
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.PATCH_PROJECT_REQUEST]),
+  );
 
   const { values, setValues, handleChange, handleCustomChange, handleSubmit } =
     useForm({
@@ -255,9 +260,9 @@ const BasicInfo = ({ setPage }) => {
       <div
         className={`naxatw-flex ${
           tabname !== 'settings'
-            ? 'naxatw-justify-between'
+            ? 'naxatw-justify-between naxatw-pb-7'
             : 'naxatw-justify-center'
-        }  naxatw-pt-7 naxatw-pb-7 `}
+        }  naxatw-pt-7  `}
       >
         <div />
 
@@ -275,6 +280,8 @@ const BasicInfo = ({ setPage }) => {
           <Button
             className="naxatw-btn-primary naxatw-w-[4.75rem]"
             onClick={handleSaveBasicInfo}
+            isLoading={loading}
+            loaderClassName="naxatw-fill-secondary-400"
           >
             Save
           </Button>

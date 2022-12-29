@@ -93,6 +93,8 @@ export function* patchProjectRequest({ id, payload }) {
         yield put(commonActions.togglePromptDialog(''));
         yield put(push(`/organizations/${organization}/projects`));
       }
+    } else {
+      yield put(organizationDashboardActions.getIndividualProjectRequest(id));
     }
 
     yield put(toastActions.success({ message: 'Data saved successfully' }));

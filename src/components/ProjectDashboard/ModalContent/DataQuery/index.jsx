@@ -10,7 +10,7 @@ import { dataQueryOperators } from '@src/constants/map';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
 const btnClassname =
-  'naxatw-p-2 naxatw-h-10 naxatw-w-10 naxatw-rounded-lg naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-flex naxatw-items-center naxatw-justify-center naxatw-font-bold naxatw-text-[13px] naxatw-text-grey-800';
+  'naxatw-p-2 naxatw-h-10 naxatw-w-10 naxatw-rounded-lg naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-flex naxatw-items-center naxatw-justify-center naxatw-font-bold naxatw-text-[13px] naxatw-text-grey-800 naxatw-bg-grey-100';
 
 const {
   getDataQueryFieldsRequest,
@@ -139,119 +139,123 @@ export default function DataQuery() {
   };
 
   return (
-    <div>
-      <p>Baseline Datasets contains different levels of boundaries.</p>
+    <div className="naxatw-flex">
+      <div>
+        <p>
+          This tool allows you to query on the layers and create a new layers
+          based on the query result.
+        </p>
 
-      <div
-        className="naxatw-mt-10 naxatw-space-y-5 naxatw-min-h-[16rem] naxatw-overflow-y-auto scrollbar"
-        style={{
-          maxHeight: `calc(100vh - 18rem)`,
-        }}
-      >
-        <div className="">
-          <div className="naxatw-space-y-2">
-            <label className="naxatw-label">
-              Select the layer you want to query
-            </label>
-            <Select
-              placeholder="Choose"
-              options={mapState}
-              labelKey="name"
-              valueKey="id"
-              onChange={item => setSelectedLayer(item)}
-              selectedValue={selectedLayer?.id}
-            />
+        <div
+          className="naxatw-mt-10 naxatw-space-y-5 naxatw-min-h-[16rem] naxatw-overflow-y-auto scrollbar"
+          style={{
+            maxHeight: `calc(100vh - 18rem)`,
+          }}
+        >
+          <div className="">
+            <div className="naxatw-space-y-2">
+              <label className="naxatw-label">
+                Select the layer you want to query
+              </label>
+              <Select
+                placeholder="Choose"
+                options={mapState}
+                labelKey="name"
+                valueKey="id"
+                onChange={item => setSelectedLayer(item)}
+                selectedValue={selectedLayer?.id}
+              />
+            </div>
           </div>
-        </div>
 
-        {fields !== null && (
-          <>
-            <div className="naxatw-flex naxatw-gap-2">
-              <div
-                className="naxatw-h-[12.5rem] naxatw-w-full naxatw-border naxatw-border-grey-400 
-                  naxatw-rounded-lg naxatw-overflow-y-auto scrollbar"
-              >
-                <ul>
-                  {fields.map(({ name, alias }) => (
-                    <li
-                      key={name}
-                      role="presentation"
-                      className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
-                        naxatw-cursor-pointer hover:naxatw-bg-grey-100"
-                      onClick={() => {
-                        handleFieldSelect(name);
-                        handleQuerySelect(name, 'field');
-                      }}
-                    >
-                      {alias || name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="naxatw-h-[12.5rem] naxatw-w-full">
+          {fields !== null && (
+            <>
+              <div className="naxatw-flex naxatw-gap-2">
                 <div
-                  className="naxatw-grid naxatw-grid-cols-3 naxatw-items-center naxatw-justify-items-center
-                    naxatw-gap-2"
+                  className="naxatw-h-[12.5rem] naxatw-w-full naxatw-border naxatw-border-grey-400 
+                  naxatw-rounded-lg naxatw-overflow-y-auto scrollbar"
                 >
-                  {dataQueryOperators.map(({ id, label, value, type }) => (
-                    <a
-                      key={id}
-                      className={btnClassname}
-                      onClick={() => {
-                        handleQuerySelect(value, type);
-                      }}
-                    >
-                      {label}
-                    </a>
-                  ))}
+                  <ul>
+                    {fields.map(({ name, alias }) => (
+                      <li
+                        key={name}
+                        role="presentation"
+                        className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
+                        naxatw-cursor-pointer hover:naxatw-bg-grey-100"
+                        onClick={() => {
+                          handleFieldSelect(name);
+                          handleQuerySelect(name, 'field');
+                        }}
+                      >
+                        {alias || name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="naxatw-h-[12.5rem] naxatw-w-full">
+                  <div
+                    className="naxatw-grid naxatw-grid-cols-3 naxatw-items-center naxatw-justify-items-center
+                    naxatw-gap-2"
+                  >
+                    {dataQueryOperators.map(({ id, label, value, type }) => (
+                      <a
+                        key={id}
+                        className={btnClassname}
+                        onClick={() => {
+                          handleQuerySelect(value, type);
+                        }}
+                      >
+                        {label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <div className="naxatw-h-[12.5rem] naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-overflow-y-auto scrollbar">
+                  {isValuesFetching && (
+                    <div className="naxatw-h-full naxatw-flex naxatw-items-center naxatw-justify-center">
+                      <Spinner className="!naxatw-h-7 !naxatw-w-7 naxatw-fill-grey-500" />
+                    </div>
+                  )}
+                  <ul>
+                    {values?.map(item => (
+                      <li
+                        key={item}
+                        role="presentation"
+                        className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
+                        naxatw-cursor-pointer hover:naxatw-bg-grey-100"
+                        onClick={() => {
+                          handleQuerySelect(item, 'value');
+                        }}
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-              <div className="naxatw-h-[12.5rem] naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-overflow-y-auto scrollbar">
-                {isValuesFetching && (
-                  <div className="naxatw-h-full naxatw-flex naxatw-items-center naxatw-justify-center">
-                    <Spinner className="!naxatw-h-7 !naxatw-w-7 naxatw-fill-grey-500" />
-                  </div>
-                )}
-                <ul>
-                  {values?.map(item => (
-                    <li
-                      key={item}
-                      role="presentation"
-                      className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
-                        naxatw-cursor-pointer hover:naxatw-bg-grey-100"
-                      onClick={() => {
-                        handleQuerySelect(item, 'value');
-                      }}
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
 
-            <div className="">
-              <div className="naxatw-space-y-2">
-                <label className="naxatw-label">Result</label>
-                <span className="naxatw-flex">
-                  <textarea
-                    type="text"
-                    className="naxatw-block naxatw-w-full naxatw-px-3 naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-grey-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none naxatw-pointer-events-none"
-                    name="about"
-                    value={stringifyQuery(query)}
-                    readOnly
-                  />
-                  <Button className="naxatw-btn naxatw-btn-sm naxatw-btn-secondary naxatw-btn-noborder naxatw-h-fit">
-                    <i className="material-symbols-outlined">backspace</i>
-                  </Button>
-                </span>
+              <div className="">
+                <div className="naxatw-space-y-2">
+                  <label className="naxatw-label">Result</label>
+                  <span className="naxatw-flex">
+                    <textarea
+                      type="text"
+                      className="naxatw-block naxatw-w-full naxatw-px-3 naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-grey-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none naxatw-pointer-events-none"
+                      name="about"
+                      value={stringifyQuery(query)}
+                      readOnly
+                    />
+                    <Button className="naxatw-btn naxatw-btn-sm naxatw-btn-secondary naxatw-btn-noborder naxatw-h-fit">
+                      <i className="material-symbols-outlined">backspace</i>
+                    </Button>
+                  </span>
+                </div>
               </div>
-            </div>
-          </>
-        )}
-      </div>
+            </>
+          )}
+        </div>
 
-      {/* <div className="">
+        {/* <div className="">
           <div className="naxatw-space-y-2">
             <label className="naxatw-label">Layer Name</label>
             <input
@@ -264,14 +268,19 @@ export default function DataQuery() {
           </div>
         </div> */}
 
-      <div className="naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
-        <Button
-          className="naxatw-btn-primary"
-          onClick={handleApply}
-          isLoading={isPosting}
-        >
-          Apply
-        </Button>
+        <div className="naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
+          <Button
+            className="naxatw-btn-primary"
+            onClick={handleApply}
+            isLoading={isPosting}
+          >
+            Apply
+          </Button>
+        </div>
+      </div>
+
+      <div className="naxatw-w-[21.4rem]">
+        <h4>Help</h4>
       </div>
     </div>
   );

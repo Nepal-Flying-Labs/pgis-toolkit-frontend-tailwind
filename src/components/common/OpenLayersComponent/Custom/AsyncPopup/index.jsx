@@ -103,10 +103,10 @@ const AsyncPopup = ({
   // fetch popup data when properties is set
   useEffect(() => {
     if (!map || !properties) return;
-    const { layerId } = properties;
-    if (layerIds.includes(layerId) || hasKey(properties, 'layer')) {
-      fetchPopupData(properties);
-    }
+    // const { layerId } = properties;
+    // if (layerIds.includes(layerId) || hasKey(properties, 'layer')) {
+    fetchPopupData(properties);
+    // }
     // eslint-disable-next-line
   }, [map, properties]);
 

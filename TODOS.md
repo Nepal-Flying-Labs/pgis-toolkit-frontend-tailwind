@@ -66,6 +66,7 @@
 - [ ] clustering on organization dashboard map 
 - [ ] draw on map project setup (sudeep) 
 - [ ] map display on info page
+- [ ] reset data query modal state on close
 
 
 ### ISSUES

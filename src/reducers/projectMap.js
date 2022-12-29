@@ -36,6 +36,7 @@ const initialState = {
     fields: null,
     values: null,
     queryResults: [],
+    selectedData: null,
   },
 };
 
@@ -400,7 +401,99 @@ const getDataQueryValuesSuccess = (state, action) => {
 };
 
 const postAdvanceQuerySuccess = (state, action) => {
-  const queryResults = [...state.dataQuery.queryResults, action.payload];
+  const queryResults = [
+    ...state.dataQuery.queryResults,
+    {
+      ...action.payload,
+      checked: true,
+    },
+  ];
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      queryResults,
+    },
+  };
+};
+
+const handleDataQueryCheckbox = (state, action) => {
+  const { id, checked } = action.payload;
+  const queryResults = state.dataQuery.queryResults.map(item =>
+    item.id === id ? { ...item, checked } : { ...item },
+  );
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      queryResults,
+    },
+  };
+};
+
+const setDataQueryState = (state, action) => ({
+  ...state,
+  dataQuery: {
+    ...state.dataQuery,
+    ...action.payload,
+  },
+});
+
+const saveDataQuerySuccess = (state, action) => {
+  const { style, id: queryLayerId } = state.dataQuery.selectedData;
+  const { layer: id, theme, geom_type: geometryType } = action.payload;
+  const newLayer = {
+    ...action.payload,
+    id,
+    checked: true,
+    layer_type: 'Vector',
+    style: {
+      ...defaultStyles,
+      geometryType,
+      ...style,
+    },
+  };
+  const layers = {
+    ...state.layers,
+    [theme]: [...state.layers[theme], newLayer],
+  };
+  const mapSettings = {
+    ...state.mapSettings,
+    layerOrder: [id, ...state.mapSettings.layerOrder],
+    checkedLayers: [...state.mapSettings.checkedLayers, id],
+  };
+  const queryResults = state.dataQuery.queryResults.filter(
+    item => item.id !== queryLayerId,
+  );
+  return {
+    ...state,
+    layers,
+    mapSettings,
+    dataQuery: {
+      ...state.dataQuery,
+      queryResults,
+      selectedData: null,
+    },
+  };
+};
+
+const deleteDataQuery = (state, action) => {
+  const queryLayerId = action.payload;
+  const queryResults = state.dataQuery.queryResults.filter(
+    item => item.id !== queryLayerId,
+  );
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      queryResults,
+      selectedData: null,
+    },
+  };
+};
+
+const deleteAllDataQuery = state => {
+  const { queryResults } = initialState.dataQuery;
   return {
     ...state,
     dataQuery: {
@@ -442,6 +535,11 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_DATA_QUERY_FIELDS_SUCCESS]: getDataQueryFieldsSuccess,
   [Types.GET_DATA_QUERY_VALUES_SUCCESS]: getDataQueryValuesSuccess,
   [Types.POST_ADVANCE_QUERY_SUCCESS]: postAdvanceQuerySuccess,
+  [Types.HANDLE_DATA_QUERY_CHECKBOX]: handleDataQueryCheckbox,
+  [Types.SET_DATA_QUERY_STATE]: setDataQueryState,
+  [Types.SAVE_DATA_QUERY_SUCCESS]: saveDataQuerySuccess,
+  [Types.DELETE_DATA_QUERY]: deleteDataQuery,
+  [Types.DELETE_ALL_DATA_QUERY]: deleteAllDataQuery,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

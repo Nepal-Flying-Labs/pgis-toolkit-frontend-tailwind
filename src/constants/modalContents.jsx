@@ -17,14 +17,17 @@ import Analysis from '@Components/ProjectDashboard/ModalContent/Analysis';
 import BufferAnalysis from '@Components/ProjectDashboard/ModalContent/Analysis/BufferAnalysis';
 import UploadFailed from '@Components/ProjectDashboard/ModalContent/UploadFailed';
 import DownloadLayer from '@Components/ProjectDashboard/ModalContent/DownloadLayer';
-import ManageAttributes from '@Components/ProjectDashboard/ModalContent/ManageAttributes/index';
-import AddAttributes from '@Components/ProjectDashboard/ModalContent/AddAttributes/index';
-import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer/index';
-import UploadImage from '@Components/ProjectDashboard/ModalContent/UploadImage/index';
-import UploadDocument from '@Components/ProjectDashboard/ModalContent/UploadDocument/index';
-import ImportOSM from '@Components/ProjectDashboard/ModalContent/ImportOSM/index';
-import EditDocument from '@Components/ProjectDashboard/ModalContent/EditDocument/index';
+import ManageAttributes from '@Components/ProjectDashboard/ModalContent/ManageAttributes';
+import AddAttributes from '@Components/ProjectDashboard/ModalContent/AddAttributes';
+import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer';
+import UploadImage from '@Components/ProjectDashboard/ModalContent/UploadImage';
+import UploadDocument from '@Components/ProjectDashboard/ModalContent/UploadDocument';
+import ImportOSM from '@Components/ProjectDashboard/ModalContent/ImportOSM';
+import EditDocument from '@Components/ProjectDashboard/ModalContent/EditDocument';
+import SaveDataQuery from '@Components/ProjectDashboard/ModalContent/SaveDataQuery';
+import DeleteDataQuery from '@Components/ProjectDashboard/ModalContent/DeleteDataQuery';
 import AccountSettings from '@Components/Authentication/ModalContent/AccountSettings';
+import ViewLayerAttribute from '@Components/ProjectDashboard/ModalContent/ViewLayerAttribute';
 
 export function getModalContent(content) {
   switch (content) {
@@ -85,10 +88,16 @@ export function getModalContent(content) {
         title: 'Upload your datasets',
         content: <UploadDataset />,
       };
+    case 'view-layer-attribute':
+      return {
+        title: 'Layer Attribute',
+        content: <ViewLayerAttribute />,
+      };
     case 'data-query':
       return {
         title: 'Data Query',
         content: <DataQuery />,
+        // className: '!naxatw-w-[63.25rem]',
       };
     case 'analysis':
       return {
@@ -144,13 +153,13 @@ export function getModalContent(content) {
       return {
         title: 'Manage Attributes',
         content: <ManageAttributes />,
-        className: 'naxatw-w-[50rem] naxatw-max-w-[50rem]',
+        className: '!naxatw-w-[56.25rem]',
       };
     case 'add-attributes':
       return {
         title: 'Add Attributes',
         content: <AddAttributes />,
-        className: 'naxatw-w-[50rem] naxatw-max-w-[50rem]',
+        className: '!naxatw-w-[56.25rem]',
       };
     default:
       return {
@@ -181,6 +190,21 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <DeleteLayer />,
+      };
+    case 'save-data-query':
+      return {
+        title: 'Save Data Query',
+        content: <SaveDataQuery />,
+      };
+    case 'delete-data-query':
+      return {
+        title: '',
+        content: <DeleteDataQuery />,
+      };
+    case 'delete-all-data-query':
+      return {
+        title: '',
+        content: <DeleteDataQuery />,
       };
     default:
       return '';

@@ -45,6 +45,9 @@
   .naxatw-label.naxatw-label-disabled{
     @apply naxatw-text-grey-300 naxatw-cursor-not-allowed naxatw-select-none
   }
+  .naxatw-btn-text {
+    @apply naxatw-font-bold naxatw-text-[15px];
+  }
 }
 
 @layer utilities {

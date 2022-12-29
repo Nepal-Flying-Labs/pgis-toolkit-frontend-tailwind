@@ -19,7 +19,7 @@ const {
   setDeleteLayer,
   setProjectMapState,
 } = ProjectMapCreators;
-const { togglePromptDialog } = CommonCreators;
+const { togglePromptDialog, toggleModal } = CommonCreators;
 
 export default function LayerSection() {
   const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
@@ -50,6 +50,23 @@ export default function LayerSection() {
       id: 2,
       label: (
         <span className="naxatw-flex naxatw-items-center">
+          <i className="material-symbols-outlined naxatw-mr-2">table_chart</i>
+          <p className="naxatw-text-body-lg">Attribute Table</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(
+          setProjectMapState({
+            selectedLayer: data,
+          }),
+        );
+        dispatch(toggleModal('view-layer-attribute'));
+      },
+    },
+    {
+      id: 3,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
           <i className="material-icons naxatw-mr-2">add</i>
           <p className="naxatw-text-body-lg">Add Feature</p>
         </span>
@@ -73,7 +90,7 @@ export default function LayerSection() {
       },
     },
     {
-      id: 3,
+      id: 4,
       label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>

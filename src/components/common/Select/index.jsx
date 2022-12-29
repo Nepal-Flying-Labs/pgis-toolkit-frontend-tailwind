@@ -25,6 +25,7 @@ function Select({
   valueKey,
   selectedValue,
   style,
+  ...rest
 }) {
   const [divRef, toggle, handleToggle] = useOutsideClick();
   const handleSelect = item => {
@@ -52,6 +53,7 @@ function Select({
             toggle ? 'naxatw-bg-[#F5F5F5] naxatw-border-[#484848]' : ''
           }`}
           style={style}
+          {...rest}
         >
           <span className="naxatw-text-body-lg">{getSelectedValue()}</span>
           <MaterialIcon

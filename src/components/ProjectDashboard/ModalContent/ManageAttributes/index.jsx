@@ -14,11 +14,17 @@ import TableSkeleton from '@Components/common/TableSkeleton/index';
 import CustomCheckbox from '@Components/common/CustomCheckbox/index';
 
 const { toggleModal } = CommonCreators;
-const { getLayerAttributeRequest, postAttributeSelectionRequest } = Creators;
+const {
+  getLayerAttributeRequest,
+  postAttributeSelectionRequest,
+  clearAttributeListData,
+} = Creators;
 
 const ManageAttributes = () => {
   const [checkedData, setCheckedData] = useState([]);
   const dispatch = useDispatch();
+  const showModal = useSelector(state => state.common.showModal);
+  const modalContent = useSelector(state => state.common.modalContent);
   const selectedData = useSelector(
     state => state.projectDashboard.data.manageData.selectedData,
   );

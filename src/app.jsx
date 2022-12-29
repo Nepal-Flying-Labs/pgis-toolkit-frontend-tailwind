@@ -48,7 +48,12 @@ function generateRoutes(routes) {
   );
 }
 
-const { toggleModal, togglePromptDialog } = CommonCreators;
+const {
+  toggleModal,
+  togglePromptDialog,
+  setModalContent,
+  setPromptDialogContent,
+} = CommonCreators;
 
 function App() {
   const showModal = useSelector(state => state.common.showModal);
@@ -59,6 +64,20 @@ function App() {
   );
   const dispatch = useDispatch();
 
+  const handlePromptDialogClose = () => {
+    dispatch(togglePromptDialog());
+    setTimeout(() => {
+      dispatch(setPromptDialogContent(''));
+    }, 150);
+  };
+
+  const handleModalClose = () => {
+    dispatch(toggleModal());
+    setTimeout(() => {
+      dispatch(setModalContent(''));
+    }, 150);
+  };
+
   return (
     <div className="naxatw-font-primary">
       {process.env.NODE_ENV === 'development' && initDomToCode()}
@@ -66,7 +85,7 @@ function App() {
       <PromptDialog
         show={showPromptDialog}
         title={getPromptDialogContent(promptDialogContent)?.title}
-        onClose={() => dispatch(togglePromptDialog())}
+        onClose={handlePromptDialogClose}
       >
         {getPromptDialogContent(promptDialogContent)?.content}
       </PromptDialog>
@@ -75,7 +94,7 @@ function App() {
         show={showModal}
         className={getModalContent(modalContent)?.className || ''}
         title={getModalContent(modalContent)?.title}
-        onClose={() => dispatch(toggleModal())}
+        onClose={handleModalClose}
       >
         {getModalContent(modalContent)?.content}
       </Modal>

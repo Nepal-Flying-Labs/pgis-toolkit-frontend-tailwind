@@ -1,0 +1,244 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable arrow-body-style */
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Searchbar from '@Components/common/Searchbar/index';
+import { Creators, Types } from '@Actions/organizationDashboard';
+import DropdownOptions from '@Components/common/DropdownOptions';
+import SortingContainer from '@Components/common/SortingContainer/index';
+import Status from '@Components/common/Status';
+import AvatarIcon from '@Assets/images/icons/avatar-icon.svg';
+import { checkIfLoading } from '@Utils/loaderSelector';
+import useDebouncedInput from '@Hooks/useDebouncedInput';
+import Select from '@Components/common/Select/index';
+import TableSkeleton from '@Components/common/TableSkeleton';
+import { useParams } from 'react-router';
+import Chip from '@Components/common/Chip/index';
+import Table, { TableHeader } from '@Components/common/Table/Table';
+import CustomAccordion from '../CustomAccordion/index';
+
+const { setUserRole, getUsersRequest, setSearchText } = Creators;
+
+const dummyData = [
+  {
+    id: 1,
+    value: '1',
+    name: 'Project Manager',
+    children: [
+      { id: 1, role: 'Project Manager', name: 'Project Manager children' },
+      { id: 2, role: 'Project Manager', name: 'Project Manager children' },
+      { id: 3, role: 'Project Manager', name: 'Project Manager children' },
+    ],
+  },
+  {
+    id: 2,
+    value: '1',
+    name: 'Project Manager 2',
+    children: [
+      { id: 1, role: 'Project Manager', name: 'Project Manager children' },
+      { id: 2, role: 'Project Manager', name: 'Project Manager children' },
+      { id: 3, role: 'Project Manager', name: 'Project Manager children' },
+    ],
+  },
+  {
+    id: 3,
+    value: '1',
+    name: 'Project Manager 3',
+    children: [
+      { id: 1, role: 'Project Manager', name: 'Project Manager children' },
+      { id: 2, role: 'Project Manager', name: 'Project Manager children' },
+      { id: 3, role: 'Project Manager', name: 'Project Manager children' },
+    ],
+  },
+];
+
+const roles = [
+  {
+    id: 1,
+    value: '1',
+    name: 'Project Manager',
+  },
+  {
+    id: 2,
+    value: '2',
+    name: 'Organization Admin',
+  },
+  {
+    id: 3,
+    value: '3',
+    name: 'Medical Assistant',
+  },
+];
+
+const groupBy = [
+  { id: 1, value: 'role', name: 'Role' },
+  { id: 2, value: 'project', name: 'Project' },
+];
+const dropdownOptions = [
+  {
+    id: 1,
+    label: (
+      <span className="naxatw-flex naxatw-items-center">
+        <i className="material-icons naxatw-mr-2">edit</i>
+        <p className="naxatw-text-body-lg">Edit</p>
+      </span>
+    ),
+    onClick: () => {},
+  },
+  {
+    id: 2,
+    label: (
+      <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+        <i className="material-icons naxatw-mr-2">delete_outline</i>
+        <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+      </span>
+    ),
+    onClick: () => {},
+  },
+];
+
+const UserList = () => {
+  const { organizationId } = useParams();
+  const dispatch = useDispatch();
+  const [byGroup, setByGroup] = useState('role');
+  const organizationList = useSelector(state => state.users.organizationData);
+  // console.log('organization list', organizationList);
+
+  const userRole = useSelector(
+    state => state.organizationDashboard.usersFilter.userRole,
+  );
+  const searchText = useSelector(
+    state => state.organizationDashboard.usersFilter.searchText,
+  );
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.GET_ORGANIZATION_REQUEST]),
+  );
+  const users = useSelector(state => state.organizationDashboard.users);
+
+  const [value, handleSearch] = useDebouncedInput({
+    ms: 300,
+    init: searchText,
+    onChange: debouncedEvent => {
+      dispatch(setSearchText(debouncedEvent.target.value));
+    },
+  });
+
+  useEffect(() => {
+    if (!users) {
+      dispatch(
+        getUsersRequest({
+          organization: organizationId,
+          search: searchText,
+          group: userRole,
+        }),
+      );
+    }
+  }, [dispatch, searchText, organizationId, userRole, users]);
+  return (
+    <div className="naxatw-mt-3 ">
+      <div className="naxatw-flex naxatw-gap-x-5 naxatw-justify-start ">
+        <div className="naxatw-w-[15rem]">
+          <Searchbar value={value} onChange={handleSearch} />
+        </div>
+        {/* <div className="naxatw-flex naxatw-gap-2">
+          {groupBy.map(item => (
+            <Chip
+              name={item.name}
+              status={byGroup}
+              value={item.value}
+              onClick={e => setByGroup(item.value)}
+            />
+          ))}
+        </div>
+        <div className="naxatw-w-fit naxatw-h-[48px]">
+          <Select
+            options={roles}
+            dataKey="name"
+            placeholder="Role"
+            onChange={data => {
+              dispatch(setUserRole(data.value));
+            }}
+            selected={roles.filter(role => role.value === userRole)[0]?.name}
+          />
+        </div> */}
+      </div>
+      <div className="naxatw-mt-3 ">
+        <div
+          style={{ height: `calc(100vh - 17rem)` }}
+          className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative"
+        >
+          {dummyData.map(item => (
+            <CustomAccordion
+              // key={theme.id}
+              // collapsed={hasNoLayer}
+              header={<div className="naxatw-text-body-btn"> {item.name}</div>}
+              body={
+                <div>
+                  <Table
+                    data={item.children || []}
+                    className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
+                    headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                    headerWidths={[
+                      '396px',
+                      '220px',
+                      '220px',
+                      '280px',
+                      '180px',
+                      '50px',
+                    ]}
+                    // eslint-disable-next-line
+                    // onRowClick={row => {}}
+                  >
+                    <TableHeader
+                      dataField="Name"
+                      headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                      rowcolSpan="rowSpan_2"
+                      dataHeader={
+                        <SortingContainer
+                          name="Name"
+                          className="naxatw-text-black"
+                        />
+                      }
+                      dataFormat={row => (
+                        <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
+                          <img
+                            src={row.image_thumbnail || AvatarIcon}
+                            alt="img"
+                            className="naxatw-w-7 naxatw-h-7 naxatw-rounded-full "
+                          />
+                          <span className="naxatw-text-base naxatw-font-bold">
+                            {row.name}
+                          </span>
+                        </div>
+                      )}
+                    />
+                    <TableHeader
+                      dataField="Role"
+                      headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+                      rowcolSpan="rowSpan_2"
+                      dataHeader={<SortingContainer name="Role" />}
+                      dataFormat={row => (
+                        <span className="text-base">{row.role}</span>
+                      )}
+                    />
+                    <TableHeader
+                      dataField=""
+                      headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
+                      rowcolSpan="rowSpan_3"
+                      dataFormat={row => (
+                        <DropdownOptions options={dropdownOptions} data={row} />
+                      )}
+                    />
+                  </Table>
+                </div>
+              }
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UserList;

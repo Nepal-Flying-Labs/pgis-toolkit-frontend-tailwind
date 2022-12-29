@@ -39,6 +39,9 @@
   .naxatw-label {
     @apply naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px];
   }
+  .naxatw-btn-text {
+    @apply naxatw-font-bold naxatw-text-[15px];
+  }
 }
 
 @layer utilities {

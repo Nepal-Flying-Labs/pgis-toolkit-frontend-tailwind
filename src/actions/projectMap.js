@@ -84,9 +84,19 @@ export const { Types, Creators } = createActions(
     getDataQueryValuesSuccess: ['payload'],
     getDataQueryValuesFailure: null,
 
-    postAdvanceQueryRequest: ['payload'],
+    postAdvanceQueryRequest: ['payload', 'data'],
     postAdvanceQuerySuccess: ['payload'],
     postAdvanceQueryFailure: null,
+
+    handleDataQueryCheckbox: ['payload'],
+    setDataQueryState: ['payload'],
+
+    saveDataQueryRequest: ['payload'],
+    saveDataQuerySuccess: ['payload'],
+    saveDataQueryFailure: null,
+
+    deleteDataQuery: ['payload'],
+    deleteAllDataQuery: null,
   },
   { prefix: 'projectMap/' },
 );

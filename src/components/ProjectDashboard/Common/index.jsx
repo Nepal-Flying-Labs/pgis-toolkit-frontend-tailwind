@@ -27,7 +27,7 @@ function AdditionalSidebar({ onCloseClick, flag }) {
     return setSidebarData([]);
   }, [tabname, documentData, galleryData]);
 
-  console.log('sidebar data ', sidebarData);
+  // console.log('sidebar data ', sidebarData);
 
   return (
     <div

@@ -47,8 +47,8 @@ export const updateDocument = (id, payload) =>
   authenticated(api).patch(`/projects/document/${id}/`, payload);
 
 // project-location-item
-export const getProjectCountry = id =>
-  authenticated(api).get(`/projects/country/${id}/`);
+export const getProjectCountry = params =>
+  authenticated(api).get(`/projects/country/`, { params });
 
 // project-location-item
 export const getProjectState = params =>

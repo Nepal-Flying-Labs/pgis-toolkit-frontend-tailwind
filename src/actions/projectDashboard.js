@@ -92,11 +92,11 @@ export const { Types, Creators } = createActions(
     deleteDocumentSuccess: ['payload'],
     deleteDocumentFailure: null,
 
-    getProjectCountryRequest: ['id'],
+    getProjectCountryRequest: ['params'],
     getProjectCountrySuccess: ['payload'],
     getProjectCountryFailure: ['payload'],
 
-    getProjectStateRequest: ['id'],
+    getProjectStateRequest: ['params'],
     getProjectStateSuccess: ['payload'],
     getProjectStateFailure: ['payload'],
 

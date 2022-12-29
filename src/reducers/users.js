@@ -2,7 +2,7 @@ import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/users';
 
 const initialState = {
-  userData: {},
+  userData: [],
   organizationData: [],
   //   createOrganizationDetail: null,
   searchText: '',
@@ -16,25 +16,22 @@ const initialState = {
   },
 };
 
-const getUsersSuccess = (state, action) => {
-  const { counts, next, previous } = action.payload;
-  return {
+const getUsersSuccess = (state, action) =>
+  // const { counts, next, previous } = action.payload;
+  ({
     ...state,
     userData: action.payload,
-    pagination: {
-      ...state.pagination,
-      count: counts,
-      next,
-      previous,
-    },
-  };
-};
-
+    // pagination: {
+    //   ...state.pagination,
+    //   count: counts,
+    //   next,
+    //   previous,
+    // },
+  });
 const getOrganizationSuccess = (state, action) => ({
   ...state,
   organizationData: action.payload?.map(d => ({
     ...d,
-    accordion: false,
     children: [],
   })),
 });

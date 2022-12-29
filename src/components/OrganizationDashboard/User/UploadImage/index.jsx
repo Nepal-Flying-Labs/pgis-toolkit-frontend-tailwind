@@ -7,6 +7,7 @@ import useCustomUpload from '@Hooks/useCustomUpload';
 import AvatarIcon from '@Assets/images/icons/avatar-icon.svg';
 import Button from '@Components/common/Button';
 import MaterialIcon from '@Components/common/MaterialIcon';
+import getImageSource from '@Utils/getImageSource';
 
 function UploadImage({ uploadedFile, setuploadedFile }) {
   const [error, setError] = useState(false);
@@ -29,11 +30,15 @@ function UploadImage({ uploadedFile, setuploadedFile }) {
             error ? 'naxatw-border naxatw-border-red-500' : ''
           }`}
         >
-          <div className="naxatw-w-[80px] naxatw-h-[80px] naxatw-rounded-full full naxatw-border naxatw-flex naxatw-items-center naxatw-justify-center">
+          <div className="naxatw-w-[80px] naxatw-h-[80px] naxatw-rounded-full naxatw-border naxatw-flex naxatw-items-center naxatw-justify-center">
             <img
-              src={uploadedFile?.image || AvatarIcon}
+              src={
+                uploadedFile?.image
+                  ? getImageSource(uploadedFile.image)
+                  : AvatarIcon
+              }
               alt="img"
-              className="naxatw-max-w-full naxatw-max-h-full naxatw-rounded-full"
+              className="naxatw-max-w-full naxatw-max-h-full naxatw-object-cover naxatw-rounded-full"
             />
           </div>
           <Button

@@ -42,6 +42,14 @@ export const { Types, Creators } = createActions({
   getLandingPageRequest: null,
   getLandingPageSuccess: ['payload'],
   getLandingPageFailure: null,
+
+  updateUserRequest: ['id', 'payload'],
+  updateUserSuccess: ['payload'],
+  updateUserFailure: ['payload'],
+
+  changePasswordRequest: ['payload'],
+  changePasswordSuccess: null,
+  changePasswordFailure: null,
 });
 
 export default Creators;

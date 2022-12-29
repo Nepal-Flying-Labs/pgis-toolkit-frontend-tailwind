@@ -4,6 +4,7 @@ import { Creators as AuthCreators } from '@Actions/authentication';
 import { Creators as CommonCreators } from '@Actions/common';
 import useOutsideClick from '@Hooks/useOutsideClick';
 import AvatarIcon from '@Assets/images/user-avatar.png';
+import getImageSource from '@Utils/getImageSource';
 
 const { logoutRequest, getUserProfileRequest } = AuthCreators;
 const { toggleModal } = CommonCreators;
@@ -22,7 +23,9 @@ export default function HeaderProfile() {
       <div onClick={() => handleToggle(!toggle)}>
         <figure className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-cursor-pointer naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
           <img
-            src={userProfile.image || AvatarIcon}
+            src={
+              userProfile.image ? getImageSource(userProfile.image) : AvatarIcon
+            }
             alt="avatar-placeholder"
             className="naxatw-rounded-full"
           />
@@ -35,7 +38,11 @@ export default function HeaderProfile() {
             <div className="naxatw-h-[2.875rem] naxatw-flex naxatw-mb-3 naxatw-gap-x-3 naxatw-items-center">
               <figure className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
                 <img
-                  src={userProfile.image || AvatarIcon}
+                  src={
+                    userProfile.image
+                      ? getImageSource(userProfile.image)
+                      : AvatarIcon
+                  }
                   alt="avatar-placeholder"
                   className="naxatw-rounded-full"
                 />

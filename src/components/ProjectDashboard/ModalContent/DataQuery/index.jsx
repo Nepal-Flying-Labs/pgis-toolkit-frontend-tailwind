@@ -42,8 +42,10 @@ const initialQuery = {
 };
 
 export default function DataQuery() {
-  const [selectedLayer, setSelectedLayer] = useState(null);
   const mapState = useSelector(mapStateSelector);
+  const selectedLayer = useSelector(
+    state => state.projectMap.dataQuery.selectedLayer,
+  );
   const fields = useSelector(state => state.projectMap.dataQuery.fields);
   const values = useSelector(state => state.projectMap.dataQuery.values);
   const showModal = useSelector(state => state.common.showModal);
@@ -60,9 +62,9 @@ export default function DataQuery() {
   // reset state on modal unmount
   useEffect(() => {
     if (showModal && modalContent !== 'data-query') return;
-    setSelectedLayer(false);
     dispatch(
       setDataQueryState({
+        selectedLayer: null,
         fields: null,
         values: null,
       }),
@@ -132,7 +134,6 @@ export default function DataQuery() {
     };
     dispatch(
       postAdvanceQueryRequest(payloadData, {
-        layerName: selectedLayer.name,
         query,
       }),
     );
@@ -161,7 +162,13 @@ export default function DataQuery() {
               options={mapState}
               labelKey="name"
               valueKey="id"
-              onChange={item => setSelectedLayer(item)}
+              onChange={item => {
+                dispatch(
+                  setDataQueryState({
+                    selectedLayer: item,
+                  }),
+                );
+              }}
               selectedValue={selectedLayer?.id}
             />
           </div>

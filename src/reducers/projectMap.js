@@ -33,6 +33,7 @@ const initialState = {
   projectGeojson: null,
   projectAreaLayerId: null,
   dataQuery: {
+    selectedLayer: null,
     fields: null,
     values: null,
     queryResults: [],
@@ -401,11 +402,14 @@ const getDataQueryValuesSuccess = (state, action) => {
 };
 
 const postAdvanceQuerySuccess = (state, action) => {
+  const { name: layerName, style } = state.dataQuery.selectedLayer;
   const queryResults = [
     ...state.dataQuery.queryResults,
     {
       ...action.payload,
       checked: true,
+      layerName,
+      style,
     },
   ];
   return {

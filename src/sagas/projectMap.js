@@ -226,7 +226,6 @@ export function* getDataQueryValuesRequest({ params }) {
 export function* postAdvanceQueryRequest({ payload, data }) {
   try {
     const response = yield call(postAdvanceQuery, payload);
-    yield put(commonActions.toggleModal());
     if (!response.data.features_count) {
       yield put(
         toastActions.error({
@@ -241,6 +240,7 @@ export function* postAdvanceQueryRequest({ payload, data }) {
         }),
       );
     }
+    yield put(commonActions.toggleModal());
   } catch (error) {
     yield put(projectMapActions.postAdvanceQueryFailure());
     throw error;
@@ -250,6 +250,7 @@ export function* postAdvanceQueryRequest({ payload, data }) {
 export function* saveDataQueryRequest({ payload }) {
   try {
     const response = yield call(saveDataQuery, payload);
+    console.log(response, 'resx');
     yield put(projectMapActions.saveDataQuerySuccess(response.data));
     yield put(commonActions.togglePromptDialog());
     yield put(

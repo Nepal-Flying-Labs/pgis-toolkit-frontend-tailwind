@@ -141,7 +141,7 @@ const AssignUsers = () => {
   return (
     <div className="naxatw-w-[670px] naxatw-mx-auto ">
       <div className="naxatw-space-y-7">
-        <div className=" naxatw-block naxatw-border-b">
+        <div className=" naxatw-block naxatw-border-b naxatw-w-fit">
           <ul className="naxatw-flex naxatw-gap-x-2 ">
             <li className="">
               {' '}

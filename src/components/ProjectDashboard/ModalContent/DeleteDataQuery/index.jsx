@@ -5,23 +5,34 @@ import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import Button from '@Components/common/Button';
 
 const { togglePromptDialog } = CommonCreators;
-const { deleteDataQuery } = ProjectMapCreators;
+const { deleteDataQuery, deleteAllDataQuery } = ProjectMapCreators;
 
 export default function DeleteDataQuery() {
+  const promptDialogContent = useSelector(
+    state => state.common.promptDialogContent,
+  );
   const selectedData = useSelector(
     state => state.projectMap.dataQuery.selectedData,
   );
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    dispatch(deleteDataQuery(selectedData.id));
+    if (promptDialogContent === 'delete-all-data-query') {
+      dispatch(deleteAllDataQuery());
+    } else {
+      dispatch(deleteDataQuery(selectedData.id));
+    }
     dispatch(togglePromptDialog());
   };
 
   return (
     <div>
       <div className="naxatw-my-5 naxatw-px-4">
-        <h4>Are you sure to delete this query result?</h4>
+        <h4>
+          {promptDialogContent === 'delete-all-data-query'
+            ? 'Are you sure to delete all query results?'
+            : 'Are you sure to delete this query result?'}
+        </h4>
       </div>
       <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-mt-12 naxatw-gap-2">
         <Button

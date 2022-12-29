@@ -38,7 +38,12 @@ export default function QueryResultPopup() {
         <h4>Data Query Results</h4>
         <div className="naxatw-flex naxatw-items-center">
           {!collapsed && (
-            <Button className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm">
+            <Button
+              className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
+              onClick={() => {
+                dispatch(togglePromptDialog('delete-all-data-query'));
+              }}
+            >
               Clear all
             </Button>
           )}

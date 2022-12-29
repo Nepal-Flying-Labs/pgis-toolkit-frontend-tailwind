@@ -492,6 +492,17 @@ const deleteDataQuery = (state, action) => {
   };
 };
 
+const deleteAllDataQuery = state => {
+  const { queryResults } = initialState.dataQuery;
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      queryResults,
+    },
+  };
+};
+
 const resetProjectMapState = () => ({
   ...initialState,
 });
@@ -528,6 +539,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.SET_DATA_QUERY_STATE]: setDataQueryState,
   [Types.SAVE_DATA_QUERY_SUCCESS]: saveDataQuerySuccess,
   [Types.DELETE_DATA_QUERY]: deleteDataQuery,
+  [Types.DELETE_ALL_DATA_QUERY]: deleteAllDataQuery,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

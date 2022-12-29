@@ -96,6 +96,7 @@ export const { Types, Creators } = createActions(
     saveDataQueryFailure: null,
 
     deleteDataQuery: ['payload'],
+    deleteAllDataQuery: null,
   },
   { prefix: 'projectMap/' },
 );

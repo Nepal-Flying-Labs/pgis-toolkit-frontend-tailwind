@@ -187,6 +187,11 @@ export function getPromptDialogContent(content) {
         title: '',
         content: <DeleteDataQuery />,
       };
+    case 'delete-all-data-query':
+      return {
+        title: '',
+        content: <DeleteDataQuery />,
+      };
     default:
       return '';
   }

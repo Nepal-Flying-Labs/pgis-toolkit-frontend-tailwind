@@ -47,8 +47,8 @@ export const updateDocument = (id, payload) =>
   authenticated(api).patch(`/projects/document/${id}/`, payload);
 
 // project-location-item
-export const getProjectCountry = id =>
-  authenticated(api).get(`/projects/country/${id}/`);
+export const getProjectCountry = params =>
+  authenticated(api).get(`/projects/country/`, { params });
 
 // project-location-item
 export const getProjectState = params =>
@@ -65,3 +65,9 @@ export const postImportTemplate = payload =>
 
 export const getLayerAttribute = params =>
   authenticated(api).get(`/maps/project_layer_template_attribute/`, { params });
+
+export const postAttributeSelection = payload =>
+  authenticated(api).post(`/maps/update_template_attributes/`, payload);
+
+export const downloadBulkTemplate = params =>
+  authenticated(api).get(`/maps/bulk_template_download/`, { params });

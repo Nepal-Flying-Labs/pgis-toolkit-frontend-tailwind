@@ -1,15 +1,15 @@
 /* eslint-disable arrow-body-style */
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import Button from '@Components/common/Button/index';
+// import Button from '@Components/common/Button/index';
 import { Creators as OrganizationDashboardCreators } from '@Actions/organizationDashboard';
-import { Creators as CommonCreators } from '@Actions/common';
+// import { Creators as CommonCreators } from '@Actions/common';
 import Users from '@Components/OrganizationDashboard/User/Users';
 import AssignUsers from '@Components/OrganizationDashboard/User/AssignUsers';
 import { useParams } from 'react-router';
 
 const { clearUsersFilter, getUserGroupRequest } = OrganizationDashboardCreators;
-const { toggleModal } = CommonCreators;
+// const { toggleModal } = CommonCreators;
 
 const User = () => {
   const { organizationId } = useParams();
@@ -29,7 +29,7 @@ const User = () => {
     <div className="naxatw-mx-10">
       <div className="naxatw-flex naxatw-justify-between naxatw-py-5 ">
         <h3>Users</h3>
-        <Button
+        {/* <Button
           onClick={() => dispatch(toggleModal('create-new-user'))}
           iconLeft="add"
           className=" naxatw-btn-secondary naxatw-group"
@@ -37,7 +37,7 @@ const User = () => {
           <span className=" naxatw-text-[13px] naxatw-leading-[18px] naxatw-text-[#00A699] naxatw-font-bold group-hover:naxatw-underline">
             Create New
           </span>
-        </Button>
+        </Button> */}
       </div>
       <div className=" naxatw-block naxatw-border-b">
         <ul className="naxatw-flex naxatw-gap-x-2 ">

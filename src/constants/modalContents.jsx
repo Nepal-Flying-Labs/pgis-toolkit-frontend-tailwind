@@ -26,6 +26,7 @@ import ImportOSM from '@Components/ProjectDashboard/ModalContent/ImportOSM';
 import EditDocument from '@Components/ProjectDashboard/ModalContent/EditDocument';
 import SaveDataQuery from '@Components/ProjectDashboard/ModalContent/SaveDataQuery';
 import DeleteDataQuery from '@Components/ProjectDashboard/ModalContent/DeleteDataQuery';
+import AccountSettings from '@Components/Authentication/ModalContent/AccountSettings';
 
 export function getModalContent(content) {
   switch (content) {
@@ -34,6 +35,13 @@ export function getModalContent(content) {
       return {
         title: '',
         content: <SignupSuccess />,
+      };
+    case 'account-settings':
+      return {
+        title: 'Account Settings',
+        content: <AccountSettings />,
+        // className:
+        //   '!naxatw-w-screen !naxatw-max-w-screen !naxatw-h-screen !naxatw-m-0 !naxatw-t-0 !naxatw-l-0 !-naxatw-m-4 !naxatw-rounded-none',
       };
     // organizations
     case 'create-organization':
@@ -139,13 +147,13 @@ export function getModalContent(content) {
       return {
         title: 'Manage Attributes',
         content: <ManageAttributes />,
-        className: 'naxatw-w-[50rem]',
+        className: 'naxatw-w-[50rem] naxatw-max-w-[50rem]',
       };
     case 'add-attributes':
       return {
         title: 'Add Attributes',
         content: <AddAttributes />,
-        className: 'naxatw-w-[50rem]',
+        className: 'naxatw-w-[50rem] naxatw-max-w-[50rem]',
       };
     default:
       return {

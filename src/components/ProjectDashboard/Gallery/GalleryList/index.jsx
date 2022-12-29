@@ -6,9 +6,8 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from '@Components/common/Button/index';
-import noImg from '@Assets/images/noImage.png';
-import GalleryCard from './GalleryCard';
 import { isEmpty } from '@Utils/commonUtils';
+import GalleryCard from './GalleryCard';
 
 function GalleryList({ openSidebar }) {
   const dispatch = useDispatch();
@@ -62,8 +61,9 @@ function GalleryList({ openSidebar }) {
                 status=""
                 imgSrc={item.image}
                 checked={false}
+                // eslint-disable-next-line no-unused-vars
                 onCardClick={id => {
-                  console.log('Gallery card clicked id : ', id);
+                  // console.log('Gallery card clicked id : ', id);
                   openSidebar(true);
                 }}
               />

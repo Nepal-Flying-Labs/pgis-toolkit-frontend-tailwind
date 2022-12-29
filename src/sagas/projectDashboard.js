@@ -6,6 +6,7 @@ import {
   all,
   delay,
 } from 'redux-saga/effects';
+
 import projectDashboardActions, { Types } from '@Actions/projectDashboard';
 import projectMapActions from '@Actions/projectMap';
 import toastActions from '@Actions/toast';
@@ -31,6 +32,8 @@ import {
   patchLayerTemplate,
   postImportTemplate,
   getLayerAttribute,
+  postAttributeSelection,
+  downloadBulkTemplate,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -254,7 +257,7 @@ export function* uploadDocumentDataRequest({ id, payload }) {
 
 export function* updateDocumentDataRequest({ payload }) {
   const { documentId, projectId, data } = payload;
-  console.log('update docx ', payload);
+  // console.log('update docx ', payload);
   try {
     yield call(updateDocument, documentId, data);
     const res = yield call(getDocumentItem, { project: projectId });
@@ -290,8 +293,9 @@ export function* getLayerTemplateRequest({ id }) {
 
 export function* deleteDocumentRequest({ id, payload }) {
   try {
+    // eslint-disable-next-line no-unused-vars
     const response = yield call(updateDocument, id, payload);
-    console.log('deleted item ', response);
+    // console.log('deleted item ', response);
     // const res = yield call(getDocumentItem, { project: projectId });
     // yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
     yield put(commonActions.toggleModal());
@@ -316,9 +320,9 @@ export function* patchLayerTemplateRequest({ id, payload }) {
   }
 }
 
-export function* getProjectCountryRequest({ id }) {
+export function* getProjectCountryRequest({ params }) {
   try {
-    const response = yield call(getProjectCountry, id);
+    const response = yield call(getProjectCountry, params);
     yield put(projectDashboardActions.getProjectCountrySuccess(response.data));
   } catch (error) {
     yield put(projectDashboardActions.deleteDocumentFailure());
@@ -326,9 +330,9 @@ export function* getProjectCountryRequest({ id }) {
   }
 }
 
-export function* getProjectStateRequest({ id }) {
+export function* getProjectStateRequest({ params }) {
   try {
-    const response = yield call(getProjectState, id);
+    const response = yield call(getProjectState, params);
     yield put(projectDashboardActions.getProjectStateSuccess(response.data));
   } catch (error) {
     yield put(projectDashboardActions.deleteDocumentFailure());
@@ -352,6 +356,38 @@ export function* getLayerAttributeRequest({ params }) {
     yield put(projectDashboardActions.getLayerAttributeSuccess(response.data));
   } catch (error) {
     yield put(projectDashboardActions.getLayerAttributeFailure());
+    throw error;
+  }
+}
+
+export function* postAttributeSelectionRequest({ payload }) {
+  try {
+    const response = yield call(postAttributeSelection, payload);
+    yield put(
+      projectDashboardActions.postAttributeSelectionSuccess(response.data),
+    );
+    yield put(commonActions.toggleModal());
+    yield put(projectDashboardActions.clearAttributeListData());
+  } catch (error) {
+    yield put(projectDashboardActions.postAttributeSelectionFailure());
+    throw error;
+  }
+}
+
+export function* downloadBulkTemplateRequest({ params }) {
+  try {
+    const response = yield call(downloadBulkTemplate, params);
+    const url = response.request.responseURL;
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'template.zip'); // or any other extension
+    document.body.appendChild(link);
+    link.click();
+    yield put(
+      projectDashboardActions.downloadBulkTemplateSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.downloadBulkTemplateFailure());
     throw error;
   }
 }
@@ -452,6 +488,14 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_LAYER_ATTRIBUTE_REQUEST,
     withLoader(withErrorHandler(getLayerAttributeRequest)),
+  );
+  yield takeLatest(
+    Types.POST_ATTRIBUTE_SELECTION_REQUEST,
+    withLoader(withErrorHandler(postAttributeSelectionRequest)),
+  );
+  yield takeLatest(
+    Types.DOWNLOAD_BULK_TEMPLATE_REQUEST,
+    withLoader(withErrorHandler(downloadBulkTemplateRequest)),
   );
 }
 

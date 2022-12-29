@@ -1,8 +1,26 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable arrow-body-style */
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
+// import { saveAs } from 'file-saver';
+// import { baseURL } from '@Services';
 import Button from '@Components/common/Button/index';
+import { checkIfLoading } from '@Utils/loaderSelector';
+import { Creators, Types } from '@Actions/projectDashboard';
+
+const { downloadBulkTemplateRequest } = Creators;
 
 const StepThree = () => {
+  const token = localStorage.getItem('userToken');
+  const { projectId } = useParams();
+  const dispatch = useDispatch();
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.DOWNLOAD_BULK_TEMPLATE_REQUEST]),
+  );
+  const handleStandardDownload = () => {
+    dispatch(downloadBulkTemplateRequest({ project: projectId }));
+  };
   return (
     <div className="naxatw-container ">
       <div className="md:naxatw-w-[800px] naxatw-mx-auto">
@@ -21,20 +39,14 @@ const StepThree = () => {
           </p>
           <div className="naxatw-mt-2 naxatw-flex naxatw-items-center naxatw-gap-x-3">
             <Button
-              iconLeft="rotate_right"
-              className="hover:naxatw-bg-grey-100 naxatw-group naxatw-mt-3 naxatw-text-secondary-400"
+              iconLeft="download"
+              className="naxatw-btn-secondary naxatw-btn-noborder naxatw-mt-3 "
+              isLoading={loading}
+              loaderClassName="naxatw-fill-secondary-400"
+              onClick={handleStandardDownload}
             >
-              <span className="group-hover:naxatw-underline naxatw-text-[15px] naxatw-text-secondary-400 naxatw-font-bold">
-                Downloading
-              </span>
+              Download
             </Button>
-            {/* <div className="naxatw-flex naxatw-pt-3 naxatw-items-center naxatw-gap-x-3">
-              <div className="naxatw-w-[567px] naxatw-h-2  naxatw-rounded-3xl naxatw-flex">
-                <div className="naxatw-w-[40%] naxatw-h-2 naxatw-bg-primary-400" />
-                <div className="naxatw-w-[60%] naxatw-h-2 naxatw-bg-grey-400" />
-              </div>
-              <span>40%</span>
-            </div> */}
           </div>
         </div>
         <span className="naxatw-flex naxatw-justify-center naxatw-text-body-sm naxatw-mt-3">
@@ -52,11 +64,9 @@ const StepThree = () => {
           <div className="naxatw-mt-2 naxatw-flex naxatw-items-center naxatw-gap-x-3 ">
             <Button
               iconLeft="download"
-              className="hover:naxatw-bg-grey-100 naxatw-group naxatw-mt-3 naxatw-text-secondary-400"
+              className="naxatw-btn-secondary naxatw-btn-noborder naxatw-mt-3 "
             >
-              <span className="group-hover:naxatw-underline naxatw-text-[15px] naxatw-text-secondary-400 naxatw-font-bold">
-                Download
-              </span>
+              Download
             </Button>
             {/* <div className="naxatw-flex naxatw-items-center naxatw-gap-x-3">
               <div className="naxatw-w-[567px] naxatw-h-2 naxatw-bg-primary-400 naxatw-rounded-3xl" />

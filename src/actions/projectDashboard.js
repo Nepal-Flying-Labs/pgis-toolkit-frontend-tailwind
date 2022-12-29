@@ -92,11 +92,11 @@ export const { Types, Creators } = createActions(
     deleteDocumentSuccess: ['payload'],
     deleteDocumentFailure: null,
 
-    getProjectCountryRequest: ['id'],
+    getProjectCountryRequest: ['params'],
     getProjectCountrySuccess: ['payload'],
     getProjectCountryFailure: ['payload'],
 
-    getProjectStateRequest: ['id'],
+    getProjectStateRequest: ['params'],
     getProjectStateSuccess: ['payload'],
     getProjectStateFailure: ['payload'],
 
@@ -114,9 +114,19 @@ export const { Types, Creators } = createActions(
 
     setSelectedLayer: ['payload'],
 
+    clearAttributeListData: null,
+
     getLayerAttributeRequest: ['params'],
     getLayerAttributeSuccess: ['payload'],
     getLayerAttributeFailure: null,
+
+    postAttributeSelectionRequest: ['payload'],
+    postAttributeSelectionSuccess: ['payload'],
+    postAttributeSelectionFailure: null,
+
+    downloadBulkTemplateRequest: ['params'],
+    downloadBulkTemplateSuccess: ['payload'],
+    downloadBulkTemplateFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

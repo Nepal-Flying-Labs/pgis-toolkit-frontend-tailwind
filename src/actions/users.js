@@ -11,6 +11,7 @@ export const { Types, Creators } = createActions(
     getOrganizationFailure: null,
 
     setSearchText: ['payload'],
+    // setUserState: ['payload'],
     // handleOrdering: ['payload'],
 
     // handleNextClick: null,

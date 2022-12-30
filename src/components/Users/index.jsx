@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 // import Button from '@Components/common/Button/index';
-// import { Creators as UserCreators } from '@Actions/users';
+import { Creators as UserCreators } from '@Actions/users';
 // import { Creators as CommonCreators } from '@Actions/common';
 // import AssignUsers from '@Components/OrganizationDashboard/User/AssignUsers';
 // import { useParams } from 'react-router';
 import UserList from '@Components/Users/UserList';
 
-// const { getUsersRequest } = UserCreators;
+const { getUsersRequest } = UserCreators;
 // const { toggleModal } = CommonCreators;
 
 const UserPanel = () => {
@@ -20,7 +20,7 @@ const UserPanel = () => {
   };
 
   useEffect(() => {
-    // dispatch(getUsersRequest());
+    dispatch(getUsersRequest());
   }, [dispatch]);
   return (
     <div className="">

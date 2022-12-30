@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable arrow-body-style */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import { Creators, Types } from '@Actions/users';
@@ -13,7 +13,7 @@ import useDebouncedInput from '@Hooks/useDebouncedInput';
 import TableSkeleton from '@Components/common/TableSkeleton';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 
-const { getUsersRequest, setSearchText } = Creators;
+const { setSearchText } = Creators;
 
 // const roles = [
 //   {
@@ -74,32 +74,12 @@ const UserList = () => {
   );
 
   const [value, handleSearch] = useDebouncedInput({
-    ms: 300,
+    ms: 800,
     init: searchText,
     onChange: debouncedEvent => {
       dispatch(setSearchText(debouncedEvent.target.value));
     },
   });
-
-  // useEffect(() => {
-  //   if (!users) {
-  //     dispatch(
-  //       getUsersRequest({
-  //         search: searchText,
-  //         // group: userRole,
-  //       }),
-  //     );
-  //   }
-  // }, [dispatch, users]);
-
-  useEffect(() => {
-    dispatch(
-      getUsersRequest({
-        search: searchText,
-        // group: userRole,
-      }),
-    );
-  }, [dispatch, searchText]);
 
   return (
     <div className="naxatw-mt-3 ">
@@ -136,7 +116,13 @@ const UserList = () => {
         >
           {!loading ? (
             <Table
-              data={users || []}
+              data={
+                users?.filter(item =>
+                  item?.full_name
+                    ?.toLowerCase()
+                    ?.includes(searchText.toLowerCase()),
+                ) || []
+              }
               className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               headerWidths={[

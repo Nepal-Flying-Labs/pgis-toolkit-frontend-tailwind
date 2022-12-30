@@ -97,6 +97,12 @@ export const { Types, Creators } = createActions(
 
     deleteDataQuery: ['payload'],
     deleteAllDataQuery: null,
+
+    getLayerAttributeRequest: ['params'],
+    getLayerAttributeSuccess: ['payload'],
+    getLayerAttributeFailure: null,
+
+    setAttributeTableSearchTerm: ['payload'],
   },
   { prefix: 'projectMap/' },
 );

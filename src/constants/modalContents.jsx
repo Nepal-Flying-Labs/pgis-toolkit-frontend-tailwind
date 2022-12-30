@@ -41,8 +41,7 @@ export function getModalContent(content) {
       return {
         title: 'Account Settings',
         content: <AccountSettings />,
-        // className:
-        //   '!naxatw-w-screen !naxatw-max-w-screen !naxatw-h-screen !naxatw-m-0 !naxatw-t-0 !naxatw-l-0 !-naxatw-m-4 !naxatw-rounded-none',
+        className: '!naxatw-w-[63.25rem] !naxatw-max-w-[63.25rem]',
       };
     // organizations
     case 'create-organization':
@@ -93,6 +92,7 @@ export function getModalContent(content) {
       return {
         title: 'Layer Attribute',
         content: <ViewLayerAttribute />,
+        className: '!naxatw-w-[1000px]',
       };
     case 'data-query':
       return {

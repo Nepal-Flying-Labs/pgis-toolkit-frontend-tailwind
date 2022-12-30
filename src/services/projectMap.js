@@ -41,3 +41,6 @@ export const postAdvanceQuery = data =>
 
 export const saveDataQuery = data =>
   authenticated(api).post(`/maps/layer_from_query/`, data);
+
+export const getLayerAttribute = params =>
+  authenticated(api).get(`/maps/feature_collection/`, { params });

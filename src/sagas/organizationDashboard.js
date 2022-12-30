@@ -76,20 +76,27 @@ export function* getIndividualProjectRequest({ id }) {
 }
 
 export function* patchProjectRequest({ id, payload }) {
-  const { status, organization } = payload;
+  const { status, organization, page } = payload;
+  const newPayload = payload;
+  delete newPayload.page;
   try {
-    const formData = prepareFormData(payload);
+    const formData = prepareFormData(newPayload);
     const response = yield call(patchProject, id, formData);
     yield put(organizationDashboardActions.patchProjectSuccess(response.data));
     // yield put(organizationDashboardActions.toggleModal(''));
-    yield put(push(`/organizations/${organization}/projects`));
-    if (status === 'ongoing') {
+    if (!page) {
       yield put(push(`/organizations/${organization}/projects`));
-      yield put(commonActions.toggleModal('create-project-success'));
+      if (status === 'ongoing') {
+        yield put(push(`/organizations/${organization}/projects`));
+        yield put(commonActions.toggleModal('create-project-success'));
+      } else {
+        yield put(commonActions.togglePromptDialog(''));
+        yield put(push(`/organizations/${organization}/projects`));
+      }
     } else {
-      yield put(commonActions.togglePromptDialog(''));
-      yield put(push(`/organizations/${organization}/projects`));
+      yield put(organizationDashboardActions.getIndividualProjectRequest(id));
     }
+
     yield put(toastActions.success({ message: 'Data saved successfully' }));
   } catch (error) {
     yield put(organizationDashboardActions.patchProjectFailure());

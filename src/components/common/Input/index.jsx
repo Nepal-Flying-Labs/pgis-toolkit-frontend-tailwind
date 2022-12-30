@@ -15,12 +15,16 @@ const Input = ({
   iconRight,
   onIconClick,
   iconClassName,
+  disabled,
   ...rest
 }) => {
   return (
     <div className="naxatw-space-y-2 naxatw-relative">
       {label && (
-        <label htmlFor={id} className="naxatw-label">
+        <label
+          htmlFor={id}
+          className={`${disabled ? 'naxatw-label-disabled' : 'naxatw-label'} `}
+        >
           {label}
         </label>
       )}
@@ -30,6 +34,7 @@ const Input = ({
         value={value || ''}
         className={`naxatw-input ${className} naxatw-pr-6`}
         onChange={onChange}
+        disabled={disabled}
         {...rest}
       />
 
@@ -62,6 +67,7 @@ Input.propTypes = {
   onIconClick: PropTypes.func,
   iconRight: PropTypes.string,
   iconClassName: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 Input.defaultProps = {
   name: 'label',
@@ -76,6 +82,7 @@ Input.defaultProps = {
   onIconClick: () => {},
   iconRight: null,
   iconClassName: 'naxatw-text-[#00A699]',
+  disabled: false,
 };
 
 export default Input;

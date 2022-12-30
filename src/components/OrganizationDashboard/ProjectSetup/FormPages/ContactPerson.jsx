@@ -114,7 +114,7 @@ const ContactPerson = () => {
         placeholder="Phone Number"
       />
       <Button
-        className="naxatw-bg-[#00A699] naxatw-text-white"
+        className="naxatw-btn-secondary naxatw-btn-noborder"
         onClick={handleSubmit}
       >
         Add

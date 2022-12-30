@@ -30,7 +30,9 @@ export default function QueryResultPopup() {
         naxatw-shadow-3xl naxatw-w-[20.3rem]"
     >
       <div
-        className="naxatw-px-5 naxatw-py-3.5 naxatw-flex naxatw-items-center naxatw-justify-between"
+        className={`naxatw-px-5 naxatw-py-3.5 naxatw-flex naxatw-items-center naxatw-justify-between naxatw-rounded-t-[20px] ${
+          collapsed ? 'naxatw-rounded-b-[20px]' : ''
+        }`}
         style={{
           boxShadow: '0px 2px 20px 4px rgb(0 0 0 / 12%)',
         }}
@@ -68,13 +70,13 @@ export default function QueryResultPopup() {
                 naxatw-border-b-grey-300 last:naxatw-border-b-0"
             >
               <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
-                <span className="naxatw-flex naxatw-items-center naxatw-space-x-1">
+                <span className="naxatw-flex naxatw-items-center naxatw-space-x-2">
                   <p className="naxatw-btn-text">{item.layerName}</p>
-                  {/* <IconButton
-                    name="table"
-                    className="material-symbols-outlined naxatw-text-sm"
+                  <IconButton
+                    name="table_chart"
+                    className="material-symbols-outlined naxatw-text-[1rem]"
                     // onClick={() => setCollapsed(!collapsed)}
-                  /> */}
+                  />
                 </span>
                 <p className="naxatw-text-xl">{item.features_count}</p>
               </div>

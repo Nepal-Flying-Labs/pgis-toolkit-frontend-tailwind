@@ -123,3 +123,6 @@
 - [ ] Implement User Permission and role
 - [ ] Give max width to toast component
 - [ ] Validation on Forgot password module
+
+### Need to fix
+- [ ] tooltip direction bottom prop

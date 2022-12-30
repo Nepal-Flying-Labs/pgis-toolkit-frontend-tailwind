@@ -8,6 +8,7 @@ import Button from '@Components/common/Button';
 import Spinner from '@Components/common/Spinner';
 import { dataQueryOperators } from '@src/constants/map';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import { isEmpty } from '@Utils/commonUtils';
 
 const btnClassname =
   'naxatw-p-2 naxatw-h-10 naxatw-w-10 naxatw-rounded-lg naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-flex naxatw-items-center naxatw-justify-center naxatw-font-bold naxatw-text-[13px] naxatw-text-grey-800 naxatw-bg-grey-100';
@@ -128,6 +129,7 @@ export default function DataQuery() {
 
   const handleApply = () => {
     const valuesArr = query.filter(item => item?.value).map(item => item.value);
+    if (isEmpty(valuesArr)) return;
     const name = valuesArr.join('-');
     const payloadData = {
       layer: selectedLayer.id,
@@ -139,6 +141,29 @@ export default function DataQuery() {
         query,
       }),
     );
+  };
+
+  const handleBackspace = () => {
+    setQuery(prev => {
+      const lastItem = prev[prev.length - 1];
+      return prev.reduce((arr, item, idx) => {
+        if (idx < prev.length - 1) return [...arr, item];
+        if (!lastItem) return [{ ...initialQuery }];
+        if (lastItem.join) {
+          return arr;
+        }
+        if (lastItem.value) {
+          return [...arr, { ...item, value: null }];
+        }
+        if (lastItem.operator) {
+          return [...arr, { ...item, operator: null }];
+        }
+        // if (lastItem.field) {
+        //   return arr;
+        // }
+        return [{ ...initialQuery }];
+      }, []);
+    });
   };
 
   const lastQueryItem = query[query.length - 1];
@@ -212,6 +237,14 @@ export default function DataQuery() {
                       key={id}
                       className={btnClassname}
                       onClick={() => {
+                        if (
+                          type === 'join' &&
+                          (!lastQueryItem?.field ||
+                            !lastQueryItem?.operator ||
+                            !lastQueryItem?.value)
+                        ) {
+                          return;
+                        }
                         if (!lastQueryItem?.field) {
                           dispatch(
                             toastActions.error({
@@ -271,7 +304,10 @@ export default function DataQuery() {
                     value={stringifyQuery(query)}
                     readOnly
                   />
-                  <Button className="naxatw-btn naxatw-btn-sm naxatw-btn-secondary naxatw-btn-noborder naxatw-h-fit">
+                  <Button
+                    className="naxatw-btn naxatw-btn-sm naxatw-btn-secondary naxatw-btn-noborder naxatw-h-fit"
+                    onClick={handleBackspace}
+                  >
                     <i className="material-symbols-outlined">backspace</i>
                   </Button>
                 </span>

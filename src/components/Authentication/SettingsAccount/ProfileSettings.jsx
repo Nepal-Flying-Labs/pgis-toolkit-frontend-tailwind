@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable import/no-named-as-default */
 import React, { useEffect } from 'react';
 import Input from '@Components/common/Input/index';
 import useForm from '@Hooks/useForm';
@@ -68,7 +68,7 @@ const ProfileSettings = () => {
   // console.log('form values ', values);
 
   return (
-    <div className="naxatw-mt-7">
+    <div className="naxatw-h-[calc(100vh-240px)] naxatw-overflow-hidden naxatw-overflow-y-auto scrollbar">
       <div className="naxatw-space-y-7 naxatw-mb-10">
         <UploadImage
           uploadedFile={values?.image}

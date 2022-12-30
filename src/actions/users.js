@@ -18,7 +18,7 @@ export const { Types, Creators } = createActions(
     // handleJumpsTo: ['payload'],
     // handleRowSelect: ['payload'],
   },
-  { prefix: '/organizations' },
+  { prefix: '/users' },
 );
 
 export default Creators;

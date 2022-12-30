@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable arrow-body-style */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import { Creators, Types } from '@Actions/users';
@@ -15,61 +15,28 @@ import Table, { TableHeader } from '@Components/common/Table/Table';
 
 const { getUsersRequest, setSearchText } = Creators;
 
-const dummyData = [
-  {
-    id: 1,
-    value: '1',
-    name: 'Project Manager',
-    children: [
-      { id: 1, role: 'Project Manager', name: 'Project Manager children' },
-      { id: 2, role: 'Project Manager', name: 'Project Manager children' },
-      { id: 3, role: 'Project Manager', name: 'Project Manager children' },
-    ],
-  },
-  {
-    id: 2,
-    value: '1',
-    name: 'Project Manager 2',
-    children: [
-      { id: 1, role: 'Project Manager', name: 'Project Manager children' },
-      { id: 2, role: 'Project Manager', name: 'Project Manager children' },
-      { id: 3, role: 'Project Manager', name: 'Project Manager children' },
-    ],
-  },
-  {
-    id: 3,
-    value: '1',
-    name: 'Project Manager 3',
-    children: [
-      { id: 1, role: 'Project Manager', name: 'Project Manager children' },
-      { id: 2, role: 'Project Manager', name: 'Project Manager children' },
-      { id: 3, role: 'Project Manager', name: 'Project Manager children' },
-    ],
-  },
-];
+// const roles = [
+//   {
+//     id: 1,
+//     value: '1',
+//     name: 'Project Manager',
+//   },
+//   {
+//     id: 2,
+//     value: '2',
+//     name: 'Organization Admin',
+//   },
+//   {
+//     id: 3,
+//     value: '3',
+//     name: 'Medical Assistant',
+//   },
+// ];
 
-const roles = [
-  {
-    id: 1,
-    value: '1',
-    name: 'Project Manager',
-  },
-  {
-    id: 2,
-    value: '2',
-    name: 'Organization Admin',
-  },
-  {
-    id: 3,
-    value: '3',
-    name: 'Medical Assistant',
-  },
-];
-
-const groupBy = [
-  { id: 1, value: 'role', name: 'Role' },
-  { id: 2, value: 'project', name: 'Project' },
-];
+// const groupBy = [
+//   { id: 1, value: 'role', name: 'Role' },
+//   { id: 2, value: 'project', name: 'Project' },
+// ];
 const dropdownOptions = [
   {
     id: 1,
@@ -123,7 +90,17 @@ const UserList = () => {
   //       }),
   //     );
   //   }
-  // }, [dispatch, searchText, users]);
+  // }, [dispatch, users]);
+
+  useEffect(() => {
+    dispatch(
+      getUsersRequest({
+        search: searchText,
+        // group: userRole,
+      }),
+    );
+  }, [dispatch, searchText]);
+
   return (
     <div className="naxatw-mt-3 ">
       <div className="naxatw-flex naxatw-gap-x-5 naxatw-justify-start ">

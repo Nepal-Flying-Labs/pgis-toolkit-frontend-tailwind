@@ -32,6 +32,12 @@ const initialState = {
     delete: {},
   },
   contactPerson: [],
+  user: {
+    list: [],
+    searchText: '',
+    userRole: null,
+    ordering: null,
+  },
 };
 
 const getProjectDetailSuccess = (state, action) => ({
@@ -289,6 +295,21 @@ const getLayerAttributeSuccess = (state, action) => ({
   },
 });
 
+const getUsersSuccess = (state, action) =>
+  // const { counts, next, previous } = action.payload;
+  ({
+    ...state,
+    user: { ...state.user, list: action.payload },
+  });
+
+const setUserState = (state, action) => {
+  console.log(action);
+  return {
+    ...state,
+    user: { ...state.user, ...action.payload },
+  };
+};
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -317,6 +338,8 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.SET_SELECTED_LAYER]: setSelectedLayer,
   [Types.CLEAR_ATTRIBUTE_LIST_DATA]: clearAttributeListData,
   [Types.GET_LAYER_ATTRIBUTE_SUCCESS]: getLayerAttributeSuccess,
+  [Types.GET_USERS_SUCCESS]: getUsersSuccess,
+  [Types.SET_USER_STATE]: setUserState,
 });
 
 export default projectDashboardReducer;

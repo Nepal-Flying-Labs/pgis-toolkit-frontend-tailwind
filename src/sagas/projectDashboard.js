@@ -34,6 +34,7 @@ import {
   getLayerAttribute,
   postAttributeSelection,
   downloadBulkTemplate,
+  getUsers,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -392,6 +393,16 @@ export function* downloadBulkTemplateRequest({ params }) {
   }
 }
 
+export function* getUsersRequest({ params }) {
+  try {
+    const response = yield call(getUsers, params);
+    yield put(projectDashboardActions.getUsersSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getUsersFailure());
+    throw error;
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -496,6 +507,10 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.DOWNLOAD_BULK_TEMPLATE_REQUEST,
     withLoader(withErrorHandler(downloadBulkTemplateRequest)),
+  );
+  yield takeLatest(
+    Types.GET_USERS_REQUEST,
+    withLoader(withErrorHandler(getUsersRequest)),
   );
 }
 

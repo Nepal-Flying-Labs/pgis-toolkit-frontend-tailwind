@@ -127,6 +127,12 @@ export const { Types, Creators } = createActions(
     downloadBulkTemplateRequest: ['params'],
     downloadBulkTemplateSuccess: ['payload'],
     downloadBulkTemplateFailure: null,
+
+    getUsersRequest: ['params'],
+    getUsersSuccess: ['payload'],
+    getUsersFailure: null,
+
+    setUserState: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

@@ -71,3 +71,6 @@ export const postAttributeSelection = payload =>
 
 export const downloadBulkTemplate = params =>
   authenticated(api).get(`/maps/bulk_template_download/`, { params });
+
+export const getUsers = params =>
+  authenticated(api).get('/users/user/', { params });

@@ -247,8 +247,8 @@ export function* postAdvanceQueryRequest({ payload, data }) {
           ...data,
         }),
       );
+      yield put(commonActions.toggleModal());
     }
-    yield put(commonActions.toggleModal());
   } catch (error) {
     yield put(projectMapActions.postAdvanceQueryFailure());
     throw error;

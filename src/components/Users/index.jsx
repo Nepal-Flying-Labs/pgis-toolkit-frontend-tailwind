@@ -8,7 +8,7 @@ import { Creators as UserCreators } from '@Actions/users';
 // import { useParams } from 'react-router';
 import UserList from '@Components/Users/UserList';
 
-const { getOrganizationRequest } = UserCreators;
+const { getUsersRequest } = UserCreators;
 // const { toggleModal } = CommonCreators;
 
 const UserPanel = () => {
@@ -20,7 +20,7 @@ const UserPanel = () => {
   };
 
   useEffect(() => {
-    dispatch(getOrganizationRequest());
+    dispatch(getUsersRequest());
   }, [dispatch]);
   return (
     <div className="">

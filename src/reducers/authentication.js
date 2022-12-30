@@ -9,6 +9,11 @@ const initialState = {
   infoDialogContent: null,
   userPermissions: null,
   userGroup: null,
+  settings: {
+    profile: {},
+    notification: {},
+    password: {},
+  },
 };
 
 const loginSuccess = (state, action) => ({
@@ -39,7 +44,33 @@ const getUserGroupSuccess = (state, action) => ({
 const getUserProfileSuccess = (state, action) => ({
   ...state,
   userProfile: action.payload,
+  settings: {
+    ...state.settings,
+    profile: {
+      ...action.payload,
+      image: {
+        image: action.payload.image ? action.payload.image : '',
+        existedData: true,
+      },
+    },
+  },
 });
+
+// const updateUserSuccess = (state, action) => ({
+//   ...state,
+//   userProfile: { ...state.userProfile, ...action.payload },
+//   settings: {
+//     ...state.settings,
+//     profile: {
+//       ...state.profile,
+//       ...action.payload,
+//       image: {
+//         image: action.payload.image ? action.payload.image : '',
+//         existedData: true,
+//       },
+//     },
+//   },
+// });
 
 const authenticationReducer = createReducer(initialState, {
   [Types.LOGIN_SUCCESS]: loginSuccess,
@@ -48,6 +79,7 @@ const authenticationReducer = createReducer(initialState, {
   [Types.GET_USER_PERMISSIONS_SUCCESS]: getUserPermissionsSuccess,
   [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
   [Types.GET_USER_PROFILE_SUCCESS]: getUserProfileSuccess,
+  // [Types.UPDATE_USER_SUCCESS]: updateUserSuccess,
 });
 
 export default authenticationReducer;

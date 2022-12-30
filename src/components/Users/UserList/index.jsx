@@ -1,24 +1,19 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable arrow-body-style */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
-import { Creators, Types } from '@Actions/organizationDashboard';
+import { Creators, Types } from '@Actions/users';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import SortingContainer from '@Components/common/SortingContainer/index';
 import Status from '@Components/common/Status';
 import AvatarIcon from '@Assets/images/icons/avatar-icon.svg';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
-import Select from '@Components/common/Select/index';
 import TableSkeleton from '@Components/common/TableSkeleton';
-import { useParams } from 'react-router';
-import Chip from '@Components/common/Chip/index';
 import Table, { TableHeader } from '@Components/common/Table/Table';
-import CustomAccordion from '../CustomAccordion/index';
 
-const { setUserRole, getUsersRequest, setSearchText } = Creators;
+const { getUsersRequest, setSearchText } = Creators;
 
 const dummyData = [
   {
@@ -99,22 +94,17 @@ const dropdownOptions = [
 ];
 
 const UserList = () => {
-  const { organizationId } = useParams();
   const dispatch = useDispatch();
-  const [byGroup, setByGroup] = useState('role');
-  const organizationList = useSelector(state => state.users.organizationData);
-  // console.log('organization list', organizationList);
+  // const [byGroup, setByGroup] = useState('role');
+  const users = useSelector(state => state.users.userData);
 
-  const userRole = useSelector(
-    state => state.organizationDashboard.usersFilter.userRole,
-  );
-  const searchText = useSelector(
-    state => state.organizationDashboard.usersFilter.searchText,
-  );
+  // const userRole = useSelector(
+  //   state => state.organizationDashboard.usersFilter.userRole,
+  // );
+  const searchText = useSelector(state => state.users.searchText);
   const loading = useSelector(state =>
-    checkIfLoading(state, [Types.GET_ORGANIZATION_REQUEST]),
+    checkIfLoading(state, [Types.GET_USERS_REQUEST]),
   );
-  const users = useSelector(state => state.organizationDashboard.users);
 
   const [value, handleSearch] = useDebouncedInput({
     ms: 300,
@@ -124,17 +114,16 @@ const UserList = () => {
     },
   });
 
-  useEffect(() => {
-    if (!users) {
-      dispatch(
-        getUsersRequest({
-          organization: organizationId,
-          search: searchText,
-          group: userRole,
-        }),
-      );
-    }
-  }, [dispatch, searchText, organizationId, userRole, users]);
+  // useEffect(() => {
+  //   if (!users) {
+  //     dispatch(
+  //       getUsersRequest({
+  //         search: searchText,
+  //         // group: userRole,
+  //       }),
+  //     );
+  //   }
+  // }, [dispatch, searchText, users]);
   return (
     <div className="naxatw-mt-3 ">
       <div className="naxatw-flex naxatw-gap-x-5 naxatw-justify-start ">
@@ -166,75 +155,113 @@ const UserList = () => {
       <div className="naxatw-mt-3 ">
         <div
           style={{ height: `calc(100vh - 17rem)` }}
-          className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative"
+          className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative"
         >
-          {dummyData.map(item => (
-            <CustomAccordion
-              // key={theme.id}
-              // collapsed={hasNoLayer}
-              header={<div className="naxatw-text-body-btn"> {item.name}</div>}
-              body={
-                <div>
-                  <Table
-                    data={item.children || []}
-                    className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
-                    headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-                    headerWidths={[
-                      '396px',
-                      '220px',
-                      '220px',
-                      '280px',
-                      '180px',
-                      '50px',
-                    ]}
-                    // eslint-disable-next-line
-                    // onRowClick={row => {}}
-                  >
-                    <TableHeader
-                      dataField="Name"
-                      headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-                      rowcolSpan="rowSpan_2"
-                      dataHeader={
-                        <SortingContainer
-                          name="Name"
-                          className="naxatw-text-black"
-                        />
-                      }
-                      dataFormat={row => (
-                        <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
-                          <img
-                            src={row.image_thumbnail || AvatarIcon}
-                            alt="img"
-                            className="naxatw-w-7 naxatw-h-7 naxatw-rounded-full "
-                          />
-                          <span className="naxatw-text-base naxatw-font-bold">
-                            {row.name}
-                          </span>
-                        </div>
-                      )}
+          {!loading ? (
+            <Table
+              data={users || []}
+              className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
+              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+              headerWidths={[
+                '396px',
+                '220px',
+                '220px',
+                '280px',
+                '180px',
+                '50px',
+              ]}
+              // eslint-disable-next-line
+              // onRowClick={row => {}}
+            >
+              <TableHeader
+                dataField="Name"
+                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                rowcolSpan="rowSpan_2"
+                dataHeader={
+                  <SortingContainer name="Name" className="naxatw-text-black" />
+                }
+                dataFormat={row => (
+                  <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
+                    <img
+                      src={row.image_thumbnail || AvatarIcon}
+                      alt="img"
+                      className="naxatw-w-7 naxatw-h-7 naxatw-rounded-full "
                     />
-                    <TableHeader
-                      dataField="Role"
-                      headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
-                      rowcolSpan="rowSpan_2"
-                      dataHeader={<SortingContainer name="Role" />}
-                      dataFormat={row => (
-                        <span className="text-base">{row.role}</span>
-                      )}
-                    />
-                    <TableHeader
-                      dataField=""
-                      headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
-                      rowcolSpan="rowSpan_3"
-                      dataFormat={row => (
-                        <DropdownOptions options={dropdownOptions} data={row} />
-                      )}
-                    />
-                  </Table>
-                </div>
-              }
-            />
-          ))}
+                    <span className="naxatw-text-base naxatw-font-bold">
+                      {row.full_name}
+                    </span>
+                  </div>
+                )}
+              />
+              <TableHeader
+                dataField="Organization Name"
+                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+                rowcolSpan="rowSpan_2"
+                dataHeader={<SortingContainer name="Organization Name" />}
+                dataFormat={row => (
+                  <span className="text-base">{row.organization || '-'}</span>
+                )}
+              />
+              <TableHeader
+                dataField="Project"
+                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+                rowcolSpan="rowSpan_2"
+                dataHeader={<SortingContainer name="Project" />}
+                dataFormat={row => (
+                  <span className="text-base">{row.project || '-'}</span>
+                )}
+              />
+              <TableHeader
+                dataField="Role"
+                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+                rowcolSpan="rowSpan_2"
+                dataHeader={<SortingContainer name="Role" />}
+                dataFormat={row => (
+                  <span className="text-base">{row.group}</span>
+                )}
+              />
+              <TableHeader
+                dataField="Phone"
+                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                rowcolSpan="rowSpan_2"
+                dataHeader={<SortingContainer name="Phone" />}
+                dataFormat={row => (
+                  <span className="naxatw-text-base">{row.contact || '-'}</span>
+                )}
+              />
+              <TableHeader
+                dataField="Email"
+                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                rowcolSpan="rowSpan_2"
+                dataHeader={<SortingContainer name="Email" />}
+                dataFormat={row => (
+                  <span className="naxatw-text-base">{row.email}</span>
+                )}
+              />
+              <TableHeader
+                dataField="Status"
+                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                rowcolSpan="rowSpan_2"
+                dataHeader={<SortingContainer name="Status" />}
+                dataFormat={row => (
+                  <Status
+                    status={row.active}
+                    invitationStatus={row.status || ''}
+                  />
+                )}
+              />
+              <TableHeader
+                dataField=""
+                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
+                rowcolSpan="rowSpan_3"
+                dataFormat={row => (
+                  <DropdownOptions options={dropdownOptions} data={row} />
+                )}
+              />
+            </Table>
+          ) : (
+            <TableSkeleton itemNumber={5} />
+          )}
         </div>
       </div>
     </div>

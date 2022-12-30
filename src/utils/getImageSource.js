@@ -14,7 +14,11 @@ other conditions can also be added
 */
 export default function getImageSource(object) {
   if (object instanceof File) return URL.createObjectURL(object);
-  if (object instanceof String || typeof object === 'string')
+  if (object instanceof String || typeof object === 'string') {
+    if (object?.includes('blob')) {
+      return object;
+    }
     return baseURL + object;
+  }
   return null;
 }

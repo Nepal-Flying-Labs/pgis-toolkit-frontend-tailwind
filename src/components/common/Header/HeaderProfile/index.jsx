@@ -27,7 +27,7 @@ export default function HeaderProfile() {
               userProfile.image ? getImageSource(userProfile.image) : AvatarIcon
             }
             alt="avatar-placeholder"
-            className="naxatw-rounded-full"
+            className="naxatw-rounded-full naxatw-h-full naxatw-w-full naxatw-object-cover"
           />
         </figure>
       </div>
@@ -44,7 +44,7 @@ export default function HeaderProfile() {
                       : AvatarIcon
                   }
                   alt="avatar-placeholder"
-                  className="naxatw-rounded-full"
+                  className="naxatw-rounded-full naxatw-w-[40px] naxatw-h-[40px] naxatw-object-cover"
                 />
               </figure>
               <div>

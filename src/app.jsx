@@ -19,38 +19,6 @@ import {
 } from './constants/modalContents';
 import './assets/css/tailwind.css';
 
-function generateRoutes(routes) {
-  return (
-    <Switch>
-      {routes.map(route =>
-        Array.isArray(route.component) ? (
-          <Route
-            path={route.path}
-            key={route.name}
-            exact={route.exact ?? false}
-          >
-            {generateRoutes(route.component)}
-          </Route>
-        ) : route.authenticated ? (
-          <PrivateRoute
-            component={route.component}
-            exact={route.exact ?? false}
-            path={route.path}
-            key={route.name}
-          />
-        ) : (
-          <Route
-            component={route.component}
-            exact={route.exact ?? false}
-            path={route.path}
-            key={route.name}
-          />
-        ),
-      )}
-    </Switch>
-  );
-}
-
 const {
   toggleModal,
   togglePromptDialog,
@@ -71,7 +39,8 @@ function getHeaderContent(modalContents) {
   }
 }
 
-function App() {
+// eslint-disable-next-line
+const ModalWrapper = ({ component }) => {
   const showModal = useSelector(state => state.common.showModal);
   const showPromptDialog = useSelector(state => state.common.showPromptDialog);
   const modalContent = useSelector(state => state.common.modalContent);
@@ -95,9 +64,7 @@ function App() {
   };
 
   return (
-    <div className="naxatw-font-primary">
-      {process.env.NODE_ENV === 'development' && initDomToCode()}
-      <Toast />
+    <>
       <PromptDialog
         show={showPromptDialog}
         title={getPromptDialogContent(promptDialogContent)?.title}
@@ -115,6 +82,51 @@ function App() {
       >
         {getModalContent(modalContent)?.content}
       </Modal>
+      {component()}
+    </>
+  );
+};
+
+function generateRoutes(routes) {
+  return (
+    <Switch>
+      {routes.map(route =>
+        Array.isArray(route.component) ? (
+          <Route
+            path={route.path}
+            key={route.name}
+            exact={route.exact ?? false}
+          >
+            {generateRoutes(route.component)}
+          </Route>
+        ) : route.authenticated ? (
+          <PrivateRoute
+            component={() => <ModalWrapper component={route.component} />}
+            exact={route.exact ?? false}
+            path={route.path}
+            key={route.name}
+          />
+        ) : (
+          <Route
+            // component={route.component}
+            render={() => <ModalWrapper component={route.component} />}
+            exact={route.exact ?? false}
+            path={route.path}
+            key={route.name}
+          />
+        ),
+      )}
+    </Switch>
+  );
+}
+
+function App() {
+  return (
+    <div className="naxatw-font-primary">
+      {process.env.NODE_ENV === 'development' && initDomToCode()}
+
+      <Toast />
+
       {generateRoutes(indexRoutes)}
     </div>
   );

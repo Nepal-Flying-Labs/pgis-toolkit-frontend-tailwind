@@ -88,22 +88,14 @@
 - [x] mandatory validation/actual data type
 - [x] add setRequiredFields in useForm
 - [x] remove add feature to boundary
+- [x] value autofill query
+- [x] checkbox min width height
 - [ ] icon grey
-- [ ] value autofill query
-- [ ] checkbox min width height
 
 ### Backend
 
-- [ ] download each data from layer list
+- [x] download each data from layer list
 
-### Figma changes
-
-- [ ] typography
-- [ ] button size
-- [ ] tooltip, navbar
-- [ ] date format setup
-- [ ] table row height
-- [ ] project dashboard
 
 ### Login
 

@@ -3,7 +3,7 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions';
-import { useHistory, useParams } from 'react-router';
+import { useHistory, useParams, useRouteMatch } from 'react-router';
 import AvatarImage from '@Assets/images/img-sm-avatar.png';
 import Button from '@Components/common/Button/index';
 import { format } from 'date-fns';
@@ -47,6 +47,8 @@ export default function ProjectGridCard({
   endDate,
   thematicAreas,
 }) {
+  const { url } = useRouteMatch();
+
   function ellipsify(str) {
     if (str?.length > 60) {
       return `${str.substring(0, 60)} ...`;
@@ -108,7 +110,7 @@ export default function ProjectGridCard({
 
   return (
     <div
-      className={` naxatw-border naxatw-rounded-xl hover:naxatw-bg-[#F5F5F5] naxatw-shadow-3xl naxatw-cursor-pointer naxatw-min-h-[408px] naxatw-max-h-[415px] naxatw-w-[321px] naxatw-flex naxatw-flex-col naxatw-justify-between  ${
+      className={` naxatw-border naxatw-rounded-xl hover:naxatw-bg-[#F5F5F5] hover:naxatw-border-grey-800 naxatw-shadow-3xl naxatw-cursor-pointer naxatw-min-h-[408px] naxatw-max-h-[415px] naxatw-min-w-[321px] naxatw-flex naxatw-flex-col naxatw-justify-between  ${
         status === 'draft' ? 'naxatw-bg-[#F5F5F5]' : 'naxatw-bg-white'
       }`}
       onClick={onClick}
@@ -160,6 +162,9 @@ export default function ProjectGridCard({
             className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-w-[160.5px]"
             onClick={e => {
               e.stopPropagation();
+              history.push(
+                `/organizations/${organizationId}/projects/${id}/info`,
+              );
             }}
           >
             Info
@@ -167,6 +172,7 @@ export default function ProjectGridCard({
           <Button
             className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-w-[160.5px]"
             onClick={e => {
+              // console.log('clicked');
               e.stopPropagation();
             }}
           >

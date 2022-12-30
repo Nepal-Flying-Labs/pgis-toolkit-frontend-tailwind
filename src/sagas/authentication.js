@@ -10,6 +10,8 @@ import {
   getLandingPage,
   getUserGroup,
   getUserProfile,
+  updateUser,
+  changePassword,
 } from '@Services/authentication';
 import authActions, { Types } from '@Actions/authentication';
 import commonActions from '@Actions/common';
@@ -180,6 +182,36 @@ function* getUserProfileRequest() {
   }
 }
 
+function* updateUserRequest({ id, payload }) {
+  const formdata = prepareFormData(payload);
+  try {
+    yield call(updateUser, id, formdata);
+    const response = yield call(getUserProfile);
+    yield put(authActions.getUserProfileSuccess(response.data));
+    yield put(
+      toastActions.success({ message: 'Profile updated successfully.' }),
+    );
+    yield put(commonActions.toggleModal());
+  } catch (error) {
+    yield put(authActions.updateUserFailure());
+    throw error;
+  }
+}
+
+function* changePasswordRequest({ payload }) {
+  const formdata = prepareFormData(payload);
+  try {
+    yield call(changePassword, formdata);
+    yield put(
+      toastActions.success({ message: 'Password changed successfully.' }),
+    );
+    yield put(commonActions.toggleModal());
+  } catch (error) {
+    yield put(authActions.changePasswordFailure());
+    throw error;
+  }
+}
+
 function* authenticationWatcher() {
   yield takeLatest(Types.LOGIN_REQUEST, withLoader(loginRequest));
   yield takeLatest(
@@ -217,6 +249,14 @@ function* authenticationWatcher() {
   yield takeLatest(
     Types.GET_USER_PROFILE_REQUEST,
     withLoader(withErrorHandler(getUserProfileRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_USER_REQUEST,
+    withLoader(withErrorHandler(updateUserRequest)),
+  );
+  yield takeLatest(
+    Types.CHANGE_PASSWORD_REQUEST,
+    withLoader(withErrorHandler(changePasswordRequest)),
   );
 }
 

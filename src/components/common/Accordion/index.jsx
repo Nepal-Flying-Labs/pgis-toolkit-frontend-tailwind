@@ -9,11 +9,7 @@ export default function Accordion({ collapsed: isCollapsed, header, body }) {
   }, [isCollapsed]);
 
   return (
-    <div
-      className={`naxatw-bg-white naxatw-border  naxatw-rounded-lg naxatw-p-5 ${
-        collapsed ? 'naxatw-border-grey-800' : 'naxatw-border-grey-300'
-      }`}
-    >
+    <div className="naxatw-bg-white naxatw-border naxatw-rounded-lg naxatw-p-5 naxatw-border-grey-300">
       <div className=" naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full naxatw-font-medium naxatw-gap-3">
         {header}
         <span className="naxatw-flex">

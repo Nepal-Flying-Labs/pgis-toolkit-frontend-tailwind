@@ -32,3 +32,15 @@ export const updateFeatureCollection = (id, data) =>
 
 export const getProjectGeojson = params =>
   authenticated(api).get(`/projects/project_location_geojson/`, { params });
+
+export const getAdvanceQueryValues = params =>
+  authenticated(api).get(`/maps/advance_query/`, { params });
+
+export const postAdvanceQuery = data =>
+  authenticated(api).post(`/maps/advance_query/`, data);
+
+export const saveDataQuery = data =>
+  authenticated(api).post(`/maps/layer_from_query/`, data);
+
+export const getLayerAttribute = params =>
+  authenticated(api).get(`/maps/feature_collection/`, { params });

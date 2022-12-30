@@ -6,10 +6,32 @@ const initialState = {
   searchText: '',
   data: {
     layers: null,
+    projectAreaLayerId: null,
     uploadStatusCheckingIds: [],
     selectedData: null,
     uploadErrorResponse: null,
+    manageData: {
+      layerTemplate: [],
+      selectedLayer: null,
+      attributeList: [],
+    },
   },
+  gallery: {
+    list: [],
+  },
+  info: {
+    details: {},
+    location: {
+      state: {},
+      country: {},
+    },
+  },
+  document: {
+    list: [],
+    item: {},
+    delete: {},
+  },
+  contactPerson: [],
 };
 
 const getProjectDetailSuccess = (state, action) => ({
@@ -18,11 +40,15 @@ const getProjectDetailSuccess = (state, action) => ({
 });
 
 const getProjectLayersSuccess = (state, action) => {
+  const data = action.payload;
+  const projectAreaLayerId =
+    data.find(item => item.name === 'Boundary')?.id || null;
   return {
     ...state,
     data: {
       ...state.data,
-      layers: action.payload,
+      layers: data,
+      projectAreaLayerId,
     },
   };
 };
@@ -80,25 +106,21 @@ const checkUploadStatusSuccess = (state, action) => {
   };
 };
 
-const setDataState = (state, action) => {
-  return {
-    ...state,
-    data: {
-      ...state.data,
-      ...action.payload,
-    },
-  };
-};
+const setDataState = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    ...action.payload,
+  },
+});
 
-const getErrorDetailSuccess = (state, action) => {
-  return {
-    ...state,
-    data: {
-      ...state.data,
-      uploadErrorResponse: action.payload,
-    },
-  };
-};
+const getErrorDetailSuccess = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    uploadErrorResponse: action.payload,
+  },
+});
 
 const permanentDataDeleteSuccess = (state, action) => {
   const layers = state.data.layers.filter(item => item.id !== action.payload);
@@ -149,6 +171,124 @@ const setSearchText = (state, action) => ({
   searchText: action.payload,
 });
 
+const getProjectInfoSuccess = (state, action) => ({
+  ...state,
+  info: { ...state.info, details: action.payload },
+});
+
+const getContactPersonInfoSuccess = (state, action) => ({
+  ...state,
+  contactPerson: action.payload,
+});
+
+const getGalleryItemSuccess = (state, action) => ({
+  ...state,
+  gallery: { ...state.gallery, list: action.payload },
+});
+
+const getDocumentItemSuccess = (state, action) => ({
+  ...state,
+  document: { ...state.document, list: action.payload },
+});
+
+const getDocumentByIdSuccess = (state, action) => ({
+  ...state,
+  document: { ...state.document, item: action.payload },
+});
+
+const uploadDocumentDataSuccess = (state, action) => ({
+  ...state,
+  document: {
+    ...state.document,
+    list: [...state.document.list, action.payload],
+  },
+});
+
+const setDeleteDocument = (state, action) => ({
+  ...state,
+  document: {
+    ...state.document,
+    delete: action.payload,
+  },
+});
+
+const getProjectCountrySuccess = (state, action) => ({
+  ...state,
+  info: {
+    ...state.info,
+    location: { ...state.info.location, country: action.payload },
+  },
+});
+
+const getProjectStateSuccess = (state, action) => ({
+  ...state,
+  info: {
+    ...state.info,
+    location: { ...state.info.location, state: action.payload },
+  },
+});
+
+const getLayerTemplateSuccess = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      layerTemplate: action.payload,
+    },
+  },
+});
+
+const patchLayerTemplateSuccess = (state, action) => {
+  const { data } = action.payload;
+  const newData = state.data.manageData.layerTemplate.map(obj =>
+    data.id === obj.id ? data : obj,
+  );
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      manageData: {
+        ...state.data.manageData,
+        layerTemplate: newData,
+      },
+    },
+  };
+};
+
+const setSelectedLayer = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      selectedData: action.payload,
+    },
+  },
+});
+
+const clearAttributeListData = state => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      attributeList: [],
+    },
+  },
+});
+
+const getLayerAttributeSuccess = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      attributeList: action.payload,
+    },
+  },
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -163,6 +303,20 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.UPDATE_DATA_FAILURE]: updateDataFailure,
   [Types.RESET_PROJECT_DASHBOARD_STATE]: resetProjectDashboardState,
   [Types.SET_SEARCH_TEXT]: setSearchText,
+  [Types.GET_PROJECT_INFO_SUCCESS]: getProjectInfoSuccess,
+  [Types.GET_CONTACT_PERSON_INFO_SUCCESS]: getContactPersonInfoSuccess,
+  [Types.GET_GALLERY_ITEM_SUCCESS]: getGalleryItemSuccess,
+  [Types.GET_DOCUMENT_ITEM_SUCCESS]: getDocumentItemSuccess,
+  [Types.GET_DOCUMENT_BY_ID_SUCCESS]: getDocumentByIdSuccess,
+  [Types.UPLOAD_DOCUMENT_DATA_SUCCESS]: uploadDocumentDataSuccess,
+  [Types.SET_DELETE_DOCUMENT]: setDeleteDocument,
+  [Types.GET_PROJECT_COUNTRY_SUCCESS]: getProjectCountrySuccess,
+  [Types.GET_PROJECT_STATE_SUCCESS]: getProjectStateSuccess,
+  [Types.GET_LAYER_TEMPLATE_SUCCESS]: getLayerTemplateSuccess,
+  [Types.PATCH_LAYER_TEMPLATE_SUCCESS]: patchLayerTemplateSuccess,
+  [Types.SET_SELECTED_LAYER]: setSelectedLayer,
+  [Types.CLEAR_ATTRIBUTE_LIST_DATA]: clearAttributeListData,
+  [Types.GET_LAYER_ATTRIBUTE_SUCCESS]: getLayerAttributeSuccess,
 });
 
 export default projectDashboardReducer;

@@ -12,6 +12,7 @@ import {
   patchContactPerson,
   getCountryList,
   getUsers,
+  getUserGroup,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
@@ -75,20 +76,27 @@ export function* getIndividualProjectRequest({ id }) {
 }
 
 export function* patchProjectRequest({ id, payload }) {
-  const { status, organization } = payload;
+  const { status, organization, page } = payload;
+  const newPayload = payload;
+  delete newPayload.page;
   try {
-    const formData = prepareFormData(payload);
+    const formData = prepareFormData(newPayload);
     const response = yield call(patchProject, id, formData);
     yield put(organizationDashboardActions.patchProjectSuccess(response.data));
     // yield put(organizationDashboardActions.toggleModal(''));
-    yield put(push(`/organizations/${organization}/projects`));
-    if (status === 'ongoing') {
+    if (!page) {
       yield put(push(`/organizations/${organization}/projects`));
-      yield put(commonActions.toggleModal('create-project-success'));
+      if (status === 'ongoing') {
+        yield put(push(`/organizations/${organization}/projects`));
+        yield put(commonActions.toggleModal('create-project-success'));
+      } else {
+        yield put(commonActions.togglePromptDialog(''));
+        yield put(push(`/organizations/${organization}/projects`));
+      }
     } else {
-      yield put(commonActions.togglePromptDialog(''));
-      yield put(push(`/organizations/${organization}/projects`));
+      yield put(organizationDashboardActions.getIndividualProjectRequest(id));
     }
+
     yield put(toastActions.success({ message: 'Data saved successfully' }));
   } catch (error) {
     yield put(organizationDashboardActions.patchProjectFailure());
@@ -112,7 +120,6 @@ export function* getContactPersonRequest({ params }) {
 
 export function* postContactPersonRequest({ params, payload }) {
   try {
-    console.log(payload);
     const formData = prepareFormData(payload);
     const response = yield call(postContactPerson, formData, params);
     yield put(
@@ -156,6 +163,41 @@ export function* getUsersRequest({ params }) {
   }
 }
 
+export function* getUserGroupRequest({ params }) {
+  try {
+    const response = yield call(getUserGroup, params);
+    yield put(organizationDashboardActions.getUserGroupSuccess(response.data));
+  } catch (error) {
+    yield put(organizationDashboardActions.getUserGroupFailure());
+  }
+}
+
+export function* getAllProjectRequest({ params }) {
+  try {
+    const response = yield call(getProjects, params);
+    yield put(organizationDashboardActions.getAllProjectSuccess(response.data));
+  } catch (error) {
+    yield put(organizationDashboardActions.getAllProjectFailure());
+    throw error;
+  }
+}
+
+export function* postAssignUserRequest({ payload }) {
+  const { organization } = payload;
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(postProjectInvite, formdata);
+    yield put(
+      organizationDashboardActions.postProjectInviteSuccess(response.data),
+    );
+    yield put(push(`/organizations/${organization}/user`));
+    yield put(toastActions.success({ message: 'User assigned successful' }));
+  } catch (error) {
+    yield put(organizationDashboardActions.postProjectInviteFailure());
+    throw error;
+  }
+}
+
 function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
@@ -194,6 +236,18 @@ function* organizationDashboardWatcher() {
     withLoader(withErrorHandler(getCountryListRequest)),
   );
   yield takeLatest(Types.GET_USERS_REQUEST, withLoader(getUsersRequest));
+  yield takeLatest(
+    Types.GET_USER_GROUP_REQUEST,
+    withLoader(getUserGroupRequest),
+  );
+  yield takeLatest(
+    Types.GET_ALL_PROJECT_REQUEST,
+    withLoader(getAllProjectRequest),
+  );
+  yield takeLatest(
+    Types.POST_ASSIGN_USER_REQUEST,
+    withLoader(withErrorHandler(postAssignUserRequest)),
+  );
 }
 
 export default organizationDashboardWatcher;

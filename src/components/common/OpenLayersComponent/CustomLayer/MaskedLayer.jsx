@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from 'react';

@@ -31,7 +31,7 @@ export default function Searchbar({
         </div>
         <input
           type="text"
-          className={`naxatw-border naxatw-border-grey-300 naxatw-text-grey-900 naxatw-bg-[#F5F5F5] naxatw-rounded-full focus:naxatw-outline-none  focus:naxatw-border-[#484848]
+          className={`naxatw-border naxatw-border-grey-300 naxatw-text-grey-900  naxatw-rounded-full focus:naxatw-outline-none  focus:naxatw-border-[#484848]
             naxatw-block naxatw-w-full naxatw-pl-[44px] naxatw-pr-3 ${
               isSmall
                 ? 'naxatw-py-2 naxatw-h-[40px]'
@@ -49,7 +49,7 @@ export default function Searchbar({
 }
 
 Searchbar.defaultProps = {
-  className: 'naxatw-bg-grey-100',
+  className: '',
   placeholder: 'Search',
   value: '',
   onChange: () => {},

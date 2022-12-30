@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import * as Sentry from '@sentry/react';
+import { BrowserTracing } from '@sentry/tracing';
 // import { PersistGate } from 'redux-persist/integration/react';
 import { ConnectedRouter } from 'connected-react-router';
 import ErrorBoundary from '@Components/common/ErrorBoundary/index';
@@ -11,6 +13,15 @@ import history from './utils/history';
 import './assets/css/index.css';
 
 const { store } = configureStore();
+
+Sentry.init({
+  dsn: process.env.SENTRY_DNS_URL,
+  integrations: [new BrowserTracing()],
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 0.2,
+});
 
 function render(Component) {
   ReactDOM.render(

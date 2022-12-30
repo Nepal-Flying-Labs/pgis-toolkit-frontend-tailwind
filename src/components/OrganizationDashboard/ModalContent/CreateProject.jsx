@@ -6,6 +6,7 @@ import { useParams } from 'react-router';
 import { Creators, Types } from '@Actions/organizationDashboard';
 import Input from '@Components/common/Input/index';
 import Button from '@Components/common/Button/index';
+import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import useForm from '@Hooks/useForm';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
@@ -53,22 +54,25 @@ const CreateProject = () => {
           The project manager can then complete the full details.
         </span>
       </div>
+      <div>
+        <Input
+          type="text"
+          label="Project Name*"
+          placeholder="Enter Project Name"
+          name="project_name"
+          value={values.project_name}
+          onChange={handleChange}
+          {...inputProps}
+        />
+        {meta.project_name.error && meta.project_name.touched && (
+          <FormErrorMessage message="Please Provide Project Name" />
+        )}
+      </div>
 
-      <Input
-        type="text"
-        label="Project Name*"
-        placeholder="Enter Project Name"
-        name="project_name"
-        value={values.project_name}
-        onChange={handleChange}
-        {...inputProps}
-      />
-      {meta.project_name.error && meta.project_name.touched && (
-        <span className="naxatw--mt-[10px] naxatw-text-red-500">
-          Required field
-        </span>
-      )}
-      <div className="naxatw-relative">
+      <div className="naxatw-relative naxatw-space-y-2">
+        <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
+          Invite User by Email *
+        </label>
         <input
           type="text"
           label="Email Invite"
@@ -91,7 +95,7 @@ const CreateProject = () => {
           }}
           {...inputProps}
         />
-        <span className="material-icons naxatw-absolute naxatw-left-[13px] naxatw-top-3">
+        <span className="material-icons naxatw-absolute naxatw-left-[13px] naxatw-top-9">
           mail_outline
         </span>
         <a
@@ -108,14 +112,10 @@ const CreateProject = () => {
         >
           <MaterialIcon
             name="add"
-            className="naxatw-text-[#40B449] naxatw-absolute naxatw-right-4 naxatw-top-3 naxatw-text-icon-md"
+            className="naxatw-text-[#40B449] naxatw-absolute naxatw-right-4 naxatw-top-11 naxatw-text-icon-md"
           />
         </a>
-        {emailError && (
-          <span className="naxatw--mt-[10px] naxatw-text-red-500">
-            Please add email
-          </span>
-        )}
+        {emailError && <FormErrorMessage message="Please add Email" />}
         <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-2 naxatw-mt-2  ">
           {emailList.map(item => (
             <div

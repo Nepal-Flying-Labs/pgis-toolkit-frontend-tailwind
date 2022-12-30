@@ -16,7 +16,7 @@ import SortingContainer from '@Components/common/SortingContainer';
 import Searchbar from '@Components/common/Searchbar/index';
 import Pagination from '@Components/common/Pagination';
 import DropdownOptions from '@Components/common/DropdownOptions';
-import TableSkeleton from '../TableSkeleton/index';
+import TableSkeleton from '@Components/common/TableSkeleton';
 
 const {
   setSearchText,
@@ -105,7 +105,12 @@ export default function OrganizationList() {
   return (
     <>
       <div className="naxatw-flex naxatw-items-center naxatw-w-60 naxatw-mt-4 ">
-        <Searchbar placeholder="Search" value={value} onChange={handleSearch} />
+        <Searchbar
+          placeholder="Search"
+          value={value}
+          onChange={handleSearch}
+          className="naxatw-bg-grey-100"
+        />
       </div>
 
       <div className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative naxatw-mt-[1.875rem]">

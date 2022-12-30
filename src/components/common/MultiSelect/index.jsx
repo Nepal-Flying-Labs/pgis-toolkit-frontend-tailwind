@@ -81,7 +81,7 @@ function MultiSelect({
           )}
         </div>
         <div
-          className="naxatw-absolute  naxatw-w-full naxatw-left-0 naxatw-z-10 naxatw-w-full naxatw-mt-2 naxatw-origin-top-right naxatw-bg-white naxatw-border naxatw-border-gray-300 naxatw-rounded-md naxatw-shadow-lg"
+          className="naxatw-absolute  naxatw-w-full naxatw-left-0 naxatw-z-10 naxatw-mt-2 naxatw-origin-top-right naxatw-bg-white naxatw-border naxatw-border-gray-300 naxatw-rounded-md naxatw-shadow-lg"
           style={{
             //  visibility: toggle ? 'visible' : 'hidden' ,
             display: toggle ? 'block' : 'none',

@@ -32,6 +32,25 @@ const initialState = {
   isFeatureModified: false,
   projectGeojson: null,
   projectAreaLayerId: null,
+  dataQuery: {
+    selectedLayer: null,
+    fields: null,
+    values: null,
+    queryResults: [],
+    selectedData: null,
+  },
+  layerAttributesList: {
+    attributeList: [],
+    searchTerm: '',
+    ordering: null,
+    pagination: {
+      page: 1,
+      rowSelect: 10,
+      count: null,
+      next: null,
+      previous: null,
+    },
+  },
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -269,19 +288,15 @@ const deleteIconSuccess = (state, action) => {
   };
 };
 
-const setSidebarContent = (state, action) => {
-  return {
-    ...state,
-    sidebarContent: action.payload || '',
-  };
-};
+const setSidebarContent = (state, action) => ({
+  ...state,
+  sidebarContent: action.payload || '',
+});
 
-const setSearchText = (state, action) => {
-  return {
-    ...state,
-    searchText: action.payload,
-  };
-};
+const setSearchText = (state, action) => ({
+  ...state,
+  searchText: action.payload,
+});
 
 const setMapConfig = (state, action) => ({
   ...state,
@@ -371,12 +386,255 @@ const updateFeatureCollectionSuccess = (state, action) => {
   };
 };
 
-const getProjectGeojsonSuccess = (state, action) => {
+const getProjectGeojsonSuccess = (state, action) => ({
+  ...state,
+  projectGeojson: action.payload,
+});
+
+const getDataQueryFieldsSuccess = (state, action) => {
+  const fields = action.payload;
   return {
     ...state,
-    projectGeojson: action.payload,
+    dataQuery: {
+      ...state.dataQuery,
+      fields,
+    },
   };
 };
+
+const getDataQueryValuesSuccess = (state, action) => {
+  const values = action.payload;
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      values,
+    },
+  };
+};
+
+const postAdvanceQuerySuccess = (state, action) => {
+  const {
+    name: layerName,
+    style,
+    theme,
+    id: layer,
+  } = state.dataQuery.selectedLayer;
+  const queryResults = [
+    ...state.dataQuery.queryResults,
+    {
+      ...action.payload,
+      checked: true,
+      layerName,
+      style,
+      theme,
+      layer,
+    },
+  ];
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      queryResults,
+    },
+  };
+};
+
+const handleDataQueryCheckbox = (state, action) => {
+  const { id, checked } = action.payload;
+  const queryResults = state.dataQuery.queryResults.map(item =>
+    item.id === id ? { ...item, checked } : { ...item },
+  );
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      queryResults,
+    },
+  };
+};
+
+const setDataQueryState = (state, action) => ({
+  ...state,
+  dataQuery: {
+    ...state.dataQuery,
+    ...action.payload,
+  },
+});
+
+const saveDataQuerySuccess = (state, action) => {
+  const { style, id: queryLayerId } = state.dataQuery.selectedData;
+  const { layer: id, theme, geom_type: geometryType } = action.payload;
+  const newLayer = {
+    ...action.payload,
+    id,
+    checked: true,
+    layer_type: 'Vector',
+    style: {
+      ...style,
+      geometryType,
+    },
+  };
+  const layers = {
+    ...state.layers,
+    [theme]: [...state.layers[theme], newLayer],
+  };
+  const mapSettings = {
+    ...state.mapSettings,
+    layerOrder: [id, ...state.mapSettings.layerOrder],
+    checkedLayers: [...state.mapSettings.checkedLayers, id],
+  };
+  const queryResults = state.dataQuery.queryResults.filter(
+    item => item.id !== queryLayerId,
+  );
+  return {
+    ...state,
+    layers,
+    mapSettings,
+    dataQuery: {
+      ...state.dataQuery,
+      queryResults,
+      selectedData: null,
+    },
+  };
+};
+
+const deleteDataQuery = (state, action) => {
+  const queryLayerId = action.payload;
+  const queryResults = state.dataQuery.queryResults.filter(
+    item => item.id !== queryLayerId,
+  );
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      queryResults,
+      selectedData: null,
+    },
+  };
+};
+
+const deleteAllDataQuery = state => {
+  const { queryResults } = initialState.dataQuery;
+  return {
+    ...state,
+    dataQuery: {
+      ...state.dataQuery,
+      queryResults,
+    },
+  };
+};
+
+const getLayerAttributeSuccess = (state, action) => {
+  const { counts, next, previous, results } = action.payload;
+  return {
+    ...state,
+    layerAttributesList: {
+      ...state.layerAttributesList,
+      attributeList: results,
+      pagination: {
+        ...state.layerAttributesList.pagination,
+        count: counts,
+        next,
+        previous,
+      },
+    },
+  };
+};
+const setAttributeTableSearchTerm = (state, action) => ({
+  ...state,
+  layerAttributesList: {
+    ...state.layerAttributesList,
+    searchTerm: action.payload,
+  },
+});
+
+const handleAttributeNextClick = state => {
+  if (state.layerAttributesList.pagination.next !== null) {
+    return {
+      ...state,
+      layerAttributesList: {
+        ...state.layerAttributesList,
+        pagination: {
+          ...state.layerAttributesList.pagination,
+          page: state.layerAttributesList.pagination.page + 1,
+        },
+      },
+    };
+  }
+  return {
+    ...state,
+  };
+};
+
+const handleAttributePreviousClick = state => {
+  if (state.layerAttributesList.pagination.previous !== null) {
+    return {
+      ...state,
+      layerAttributesList: {
+        ...state.layerAttributesList,
+        pagination: {
+          ...state.layerAttributesList.pagination,
+          page: state.layerAttributesList.pagination.page - 1,
+        },
+      },
+    };
+  }
+  return {
+    ...state,
+  };
+};
+
+const handleAttributeJumpsTo = (state, action) => ({
+  ...state,
+  layerAttributesList: {
+    ...state.layerAttributesList,
+    pagination: {
+      ...state.layerAttributesList.pagination,
+      page: action.payload,
+    },
+  },
+});
+
+const handleAttributeRowSelect = (state, action) => ({
+  ...state,
+  layerAttributesList: {
+    ...state.layerAttributesList,
+    pagination: {
+      ...state.layerAttributesList.pagination,
+      page: 1,
+      rowSelect: action.payload,
+    },
+  },
+});
+
+const handleAttributeOrdering = (state, action) => ({
+  ...state,
+  layerAttributesList: {
+    ...state.layerAttributesList,
+    ordering: action.payload,
+  },
+});
+
+const resetLayerAttributeListState = state => ({
+  ...state,
+  layerAttributesList: {
+    attributeList: [],
+    searchTerm: '',
+    ordering: null,
+    pagination: {
+      page: 1,
+      rowSelect: 10,
+      count: null,
+      next: null,
+      previous: null,
+    },
+  },
+});
+
+const resetProjectMapState = () => ({
+  ...initialState,
+});
 
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
@@ -403,6 +661,23 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
   [Types.UPDATE_FEATURE_COLLECTION_SUCCESS]: updateFeatureCollectionSuccess,
   [Types.GET_PROJECT_GEOJSON_SUCCESS]: getProjectGeojsonSuccess,
+  [Types.GET_DATA_QUERY_FIELDS_SUCCESS]: getDataQueryFieldsSuccess,
+  [Types.GET_DATA_QUERY_VALUES_SUCCESS]: getDataQueryValuesSuccess,
+  [Types.POST_ADVANCE_QUERY_SUCCESS]: postAdvanceQuerySuccess,
+  [Types.HANDLE_DATA_QUERY_CHECKBOX]: handleDataQueryCheckbox,
+  [Types.SET_DATA_QUERY_STATE]: setDataQueryState,
+  [Types.SAVE_DATA_QUERY_SUCCESS]: saveDataQuerySuccess,
+  [Types.DELETE_DATA_QUERY]: deleteDataQuery,
+  [Types.DELETE_ALL_DATA_QUERY]: deleteAllDataQuery,
+  [Types.GET_LAYER_ATTRIBUTE_SUCCESS]: getLayerAttributeSuccess,
+  [Types.SET_ATTRIBUTE_TABLE_SEARCH_TERM]: setAttributeTableSearchTerm,
+  [Types.HANDLE_ATTRIBUTE_NEXT_CLICK]: handleAttributeNextClick,
+  [Types.HANDLE_ATTRIBUTE_PREVIOUS_CLICK]: handleAttributePreviousClick,
+  [Types.HANDLE_ATTRIBUTE_JUMPS_TO]: handleAttributeJumpsTo,
+  [Types.HANDLE_ATTRIBUTE_ROW_SELECT]: handleAttributeRowSelect,
+  [Types.HANDLE_ATTRIBUTE_ORDERING]: handleAttributeOrdering,
+  [Types.RESET_LAYER_ATTRIBUTE_LIST_STATE]: resetLayerAttributeListState,
+  [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 
 export default projectMapReducer;

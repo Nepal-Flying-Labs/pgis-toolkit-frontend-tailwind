@@ -1,16 +1,18 @@
 /* eslint-disable arrow-body-style */
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import Button from '@Components/common/Button/index';
+// import Button from '@Components/common/Button/index';
 import { Creators as OrganizationDashboardCreators } from '@Actions/organizationDashboard';
-import { Creators as CommonCreators } from '@Actions/common';
+// import { Creators as CommonCreators } from '@Actions/common';
 import Users from '@Components/OrganizationDashboard/User/Users';
 import AssignUsers from '@Components/OrganizationDashboard/User/AssignUsers';
+import { useParams } from 'react-router';
 
-const { clearUsersFilter } = OrganizationDashboardCreators;
-const { toggleModal } = CommonCreators;
+const { clearUsersFilter, getUserGroupRequest } = OrganizationDashboardCreators;
+// const { toggleModal } = CommonCreators;
 
 const User = () => {
+  const { organizationId } = useParams();
   const dispatch = useDispatch();
   const [active, setActive] = useState('users');
   const handleTabChange = name => {
@@ -18,15 +20,16 @@ const User = () => {
   };
 
   useEffect(() => {
+    dispatch(getUserGroupRequest({ organization: organizationId }));
     return () => {
       dispatch(clearUsersFilter());
     };
-  }, [dispatch]);
+  }, [dispatch, organizationId]);
   return (
     <div className="naxatw-mx-10">
       <div className="naxatw-flex naxatw-justify-between naxatw-py-5 ">
         <h3>Users</h3>
-        <Button
+        {/* <Button
           onClick={() => dispatch(toggleModal('create-new-user'))}
           iconLeft="add"
           className=" naxatw-btn-secondary naxatw-group"
@@ -34,14 +37,13 @@ const User = () => {
           <span className=" naxatw-text-[13px] naxatw-leading-[18px] naxatw-text-[#00A699] naxatw-font-bold group-hover:naxatw-underline">
             Create New
           </span>
-        </Button>
+        </Button> */}
       </div>
       <div className=" naxatw-block naxatw-border-b">
         <ul className="naxatw-flex naxatw-gap-x-2 ">
           <li className="">
             {' '}
             <a
-              href={() => {}}
               className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-[13px] naxatw-leading-[18px] naxatw-font-bold ${
                 active === 'users'
                   ? 'naxatw-border-b-[2px] naxatw-border-[#484848] naxatw-text-[#484848]'
@@ -55,7 +57,6 @@ const User = () => {
           <li className="">
             {' '}
             <a
-              href={() => {}}
               className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-[13px] naxatw-leading-[18px] naxatw-font-bold ${
                 active === 'assign-users'
                   ? 'naxatw-border-b-[2px] naxatw-border-[#484848] naxatw-text-[#484848]'

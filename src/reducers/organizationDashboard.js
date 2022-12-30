@@ -3,6 +3,7 @@
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/organizationDashboard';
 import { getFileExtension } from '@Utils/commonUtils';
+import { getUserGroupRequest } from '@Sagas/organizationDashboard';
 
 const initialState = {
   projects: null,
@@ -17,11 +18,13 @@ const initialState = {
   },
   organizationDetail: null,
   users: null,
+  userGroup: [],
   usersFilter: {
     searchText: '',
     userRole: null,
     ordering: null,
   },
+  assignList: [],
 };
 
 const getOrganizationDetailSuccess = (state, action) => ({
@@ -197,6 +200,21 @@ const clearUsersFilter = state => ({
   },
 });
 
+const getUserGroupSuccess = (state, action) => ({
+  ...state,
+  userGroup: action.payload,
+});
+
+const getAllProjectSuccess = (state, action) => ({
+  ...state,
+  assignList: action.payload,
+});
+
+const setAssignList = (state, action) => ({
+  ...state,
+  assignList: [action.payload],
+});
+
 const resetOrganizationDashboardState = () => ({
   ...initialState,
 });
@@ -216,6 +234,9 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_USERS_SUCCESS]: getUsersSuccess,
   [Types.SET_USERS_ORDERING]: setUsersOrdering,
   [Types.CLEAR_USERS_FILTER]: clearUsersFilter,
+  [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
+  [Types.GET_ALL_PROJECT_SUCCESS]: getAllProjectSuccess,
+  [Types.SET_ASSIGN_LIST]: setAssignList,
   [Types.RESET_ORGANIZATION_DASHBOARD_STATE]: resetOrganizationDashboardState,
 });
 

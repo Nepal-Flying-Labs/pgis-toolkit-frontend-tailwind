@@ -43,7 +43,7 @@ export default function Header() {
               <Link
                 className="naxatw-inline-block naxatw-px-3 naxatw-py-[18.65px] naxatw-text-[0.9375rem]"
                 to="/users"
-                style={{ pointerEvents: 'none' }}
+                // style={{ pointerEvents: 'none' }}
               >
                 Users
               </Link>

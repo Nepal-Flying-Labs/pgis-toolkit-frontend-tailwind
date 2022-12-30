@@ -7,7 +7,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { renderToString } from 'react-dom/server';
 import Overlay from 'ol/Overlay';
-import { siteId, regionId } from '@src/constants/map';
 import { getCenter } from 'ol/extent';
 import '../../Popup/popup.scss';
 import Button from '@Components/common/Button';
@@ -15,9 +14,6 @@ import Button from '@Components/common/Button';
 function hasKey(obj, key) {
   return Object.keys(obj).some(item => item === key);
 }
-
-const layerIds = [siteId, regionId, 'submission'];
-const layerExceptionKeys = ['secondary_data'];
 
 const popupId = 'popupx';
 
@@ -41,6 +37,11 @@ const AsyncPopup = ({
   const [properties, setProperties] = useState(null);
   const [popupHTML, setPopupHTML] = useState('');
   const exceptionIds = useRef([]);
+  const disabled = useRef(false);
+
+  useEffect(() => {
+    disabled.current = closePopup;
+  }, [closePopup]);
 
   useEffect(() => {
     exceptionIds.current = layerExceptionIds;
@@ -79,6 +80,7 @@ const AsyncPopup = ({
   useEffect(() => {
     if (!map) return;
     map.on('click', evt => {
+      if (disabled.current) return;
       const { coordinate } = evt;
       const features = map.getFeaturesAtPixel(evt.pixel);
       if (features.length < 1) {
@@ -101,10 +103,10 @@ const AsyncPopup = ({
   // fetch popup data when properties is set
   useEffect(() => {
     if (!map || !properties) return;
-    const { layerId } = properties;
-    if (layerIds.includes(layerId) || hasKey(properties, 'layer')) {
-      fetchPopupData(properties);
-    }
+    // const { layerId } = properties;
+    // if (layerIds.includes(layerId) || hasKey(properties, 'layer')) {
+    fetchPopupData(properties);
+    // }
     // eslint-disable-next-line
   }, [map, properties]);
 

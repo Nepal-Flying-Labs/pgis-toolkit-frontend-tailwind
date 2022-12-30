@@ -73,6 +73,44 @@ export const { Types, Creators } = createActions(
     getProjectGeojsonRequest: ['params'],
     getProjectGeojsonSuccess: ['payload'],
     getProjectGeojsonFailure: null,
+
+    resetProjectMapState: null,
+
+    getDataQueryFieldsRequest: ['params'],
+    getDataQueryFieldsSuccess: ['payload'],
+    getDataQueryFieldsFailure: null,
+
+    getDataQueryValuesRequest: ['params'],
+    getDataQueryValuesSuccess: ['payload'],
+    getDataQueryValuesFailure: null,
+
+    postAdvanceQueryRequest: ['payload', 'data'],
+    postAdvanceQuerySuccess: ['payload'],
+    postAdvanceQueryFailure: null,
+
+    handleDataQueryCheckbox: ['payload'],
+    setDataQueryState: ['payload'],
+
+    saveDataQueryRequest: ['payload'],
+    saveDataQuerySuccess: ['payload'],
+    saveDataQueryFailure: null,
+
+    deleteDataQuery: ['payload'],
+    deleteAllDataQuery: null,
+
+    getLayerAttributeRequest: ['params'],
+    getLayerAttributeSuccess: ['payload'],
+    getLayerAttributeFailure: null,
+
+    setAttributeTableSearchTerm: ['payload'],
+
+    handleAttributeNextClick: null,
+    handleAttributePreviousClick: null,
+    handleAttributeJumpsTo: ['payload'],
+    handleAttributeRowSelect: ['payload'],
+    handleAttributeOrdering: ['payload'],
+
+    resetLayerAttributeListState: null,
   },
   { prefix: 'projectMap/' },
 );

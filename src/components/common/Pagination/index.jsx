@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import DropdownSelect from './DropdownSelect';
 import MaterialIcon from '../MaterialIcon/index';
@@ -22,6 +23,7 @@ export default function Pagination({
   rowSelect,
   handleSelect,
 }) {
+  const [jump, setJump] = useState('');
   return (
     <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-mt-8">
       <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
@@ -79,8 +81,11 @@ export default function Pagination({
           <input
             type="number"
             className="naxatw-input naxatw-w-[60px]"
-            value={currentPage}
-            onChange={e => jumpTo(e.target.value)}
+            value={jump}
+            onChange={e => setJump(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') jumpTo(e.target.value);
+            }}
             min="1"
             max={maxPage}
           />

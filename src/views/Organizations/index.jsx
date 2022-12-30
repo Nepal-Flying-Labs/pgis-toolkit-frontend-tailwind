@@ -5,9 +5,7 @@ import { Creators as AuthCreators } from '@Actions/authentication';
 import { Creators as OrganizationsCreators } from '@Actions/organizations';
 import Header from '@Components/common/Header';
 import Button from '@Components/common/Button';
-import Modal from '@Components/common/Modal';
 import OrganizationList from '@Components/Organizations/OrganizationList';
-import { getModalContent } from '@src/constants/modalContents';
 
 const { toggleModal } = CommonCreators;
 const { getOrganizationsRequest } = OrganizationsCreators;
@@ -18,8 +16,6 @@ export default function Organizations() {
     state => state.authentication.userPermissions,
   );
   const ordering = useSelector(state => state.organizations.ordering);
-  const showModal = useSelector(state => state.common.showModal);
-  const modalContent = useSelector(state => state.common.modalContent);
   const searchText = useSelector(state => state.organizations.searchText);
   const page = useSelector(state => state.organizations.pagination.page);
   const rowSelect = useSelector(
@@ -46,14 +42,6 @@ export default function Organizations() {
   return (
     <div>
       <Header />
-
-      <Modal
-        show={showModal}
-        title={getModalContent(modalContent)?.title}
-        onClose={() => dispatch(toggleModal())}
-      >
-        {getModalContent(modalContent)?.content}
-      </Modal>
 
       <div className="naxatw-mt-24 naxatw-px-10">
         <div className="naxatw-flex naxatw-items-center naxatw-justify-between">

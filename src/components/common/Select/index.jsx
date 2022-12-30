@@ -24,6 +24,8 @@ function Select({
   labelKey,
   valueKey,
   selectedValue,
+  style,
+  ...rest
 }) {
   const [divRef, toggle, handleToggle] = useOutsideClick();
   const handleSelect = item => {
@@ -50,6 +52,8 @@ function Select({
           className={`naxatw-select  ${className}  ${
             toggle ? 'naxatw-bg-[#F5F5F5] naxatw-border-[#484848]' : ''
           }`}
+          style={style}
+          {...rest}
         >
           <span className="naxatw-text-body-lg">{getSelectedValue()}</span>
           <MaterialIcon
@@ -59,7 +63,7 @@ function Select({
         </button>
         {toggle && (
           <div
-            className="naxatw-dropdown"
+            className="naxatw-dropdown naxatw-min-w-fit"
             // style={{
             //   display: toggle ? 'block' : 'none',
             // }}
@@ -113,6 +117,7 @@ Select.defaultProps = {
   labelKey: 'label',
   valueKey: 'id',
   selectedValue: '',
+  style: {},
 };
 
 Select.propTypes = {
@@ -129,6 +134,7 @@ Select.propTypes = {
   labelKey: PropTypes.string,
   valueKey: PropTypes.string,
   selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  style: PropTypes.object,
 };
 
 export default Select;

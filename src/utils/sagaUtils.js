@@ -30,7 +30,7 @@ export function withLoader(func) {
       yield func(action);
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.log(err);
+      // console.log(err);
     } finally {
       yield put(
         loaderActions.stopAction({
@@ -92,6 +92,7 @@ export function withErrorHandler(func) {
       yield put(
         toastActions.error({
           message: errorResponseHandler(err),
+          delay: 20 * 1000,
         }),
       );
     }

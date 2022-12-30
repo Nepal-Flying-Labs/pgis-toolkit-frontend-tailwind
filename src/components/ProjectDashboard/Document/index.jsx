@@ -1,59 +1,33 @@
-import React, { useEffect } from 'react';
-import { useParams, useHistory } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
 import { isEmpty } from '@Utils/commonUtils';
 import Button from '@Components/common/Button/index';
-import { useState } from 'react';
 import AdditionalSidebar from '../Common/index';
 import DocumentList from './DocumentList/index';
+import NoDocumentYet from './NoDocumentYet/index';
 
-// import NoDataYet from './NoDataYet';
-// import LayerList from './LayerList';
-
-const { getProjectLayersRequest, checkUploadStatusRequest } =
-  ProjectDashboardCreators;
+const { getDocumentItemRequest } = ProjectDashboardCreators;
 const { toggleModal } = CommonCreators;
 
 export default function Document() {
-  const { projectId, organizationId } = useParams();
-  const history = useHistory();
-  const projectDetail = useSelector(
-    state => state.projectDashboard.projectDetail,
-  );
-  const layers = useSelector(state => state.projectDashboard.data.layers);
-  const uploadStatusCheckingIds = useSelector(
-    state => state.projectDashboard.data.uploadStatusCheckingIds,
-  );
+  const { projectId } = useParams();
+  const document = useSelector(state => state.projectDashboard.document.list);
   const dispatch = useDispatch();
 
   const [toggleRightBar, setToggleRightBar] = useState(false);
 
   useEffect(() => {
-    if (!projectDetail) return;
-    dispatch(getProjectLayersRequest({ project: projectId }));
-  }, [dispatch, projectId, projectDetail]);
+    dispatch(getDocumentItemRequest({ project: projectId }));
+  }, [dispatch, projectId]);
 
-  // check upload status for data
-  useEffect(() => {
-    if (!layers) return;
-    const uploadingLayers = layers?.filter(
-      item =>
-        item.upload_status === 'uploading' &&
-        !uploadStatusCheckingIds.includes(item.id),
-    );
-
-    uploadingLayers?.forEach(layer => {
-      dispatch(checkUploadStatusRequest(layer.id));
-    });
-  }, [dispatch, layers, uploadStatusCheckingIds]);
-
-  const getContent = () => (
+  const getContent = () => {
     // if (!layers) return '';
-    // if (isEmpty(layers)) return <NoDataYet />;
-    <DocumentList openSidebar={setToggleRightBar} />
-  );
+    if (isEmpty(document)) return <NoDocumentYet />;
+    return <DocumentList openSidebar={setToggleRightBar} />;
+  };
 
   return (
     <div
@@ -62,7 +36,7 @@ export default function Document() {
       } naxatw-absolute naxatw-w-full  `}
     >
       <div
-        style={{ width: `${toggleRightBar ? 'calc(100vw - 364px )' : '100%'}` }}
+        style={{ width: `${toggleRightBar ? 'calc(100vw - 404px )' : '100%'}` }}
         className={`${toggleRightBar ? 'naxatw-pr-5' : ''}`}
       >
         <div className="naxatw-flex naxatw-justify-between">

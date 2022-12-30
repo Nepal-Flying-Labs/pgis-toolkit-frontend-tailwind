@@ -12,6 +12,7 @@ const {
   getProjectThemesRequest,
   getProjectThemeLayersRequest,
   getProjectGeojsonRequest,
+  resetProjectMapState,
 } = ProjectMapCreators;
 
 export default function Map() {
@@ -41,6 +42,14 @@ export default function Map() {
       dispatch(getProjectThemeLayersRequest({ theme: id }));
     });
   }, [dispatch, themes]);
+
+  // reset project map state
+  useEffect(
+    () => () => {
+      dispatch(resetProjectMapState());
+    },
+    [dispatch],
+  );
 
   return (
     <div

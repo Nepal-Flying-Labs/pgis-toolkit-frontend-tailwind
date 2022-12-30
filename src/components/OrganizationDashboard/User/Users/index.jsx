@@ -97,7 +97,11 @@ const Users = () => {
     <div className="naxatw-mt-3 ">
       <div className="naxatw-flex naxatw-gap-x-3 naxatw-justify-start ">
         <div className="naxatw-w-[15rem]">
-          <Searchbar value={value} onChange={handleSearch} />
+          <Searchbar
+            value={value}
+            onChange={handleSearch}
+            className="naxatw-bg-grey-100"
+          />
         </div>
         <div className="naxatw-w-fit naxatw-h-[48px]">
           <Select
@@ -181,7 +185,12 @@ const Users = () => {
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
                 dataHeader={<SortingContainer name="Status" />}
-                dataFormat={row => <Status status={row.active} />}
+                dataFormat={row => (
+                  <Status
+                    status={row.active}
+                    invitationStatus={row.status || ''}
+                  />
+                )}
               />
               <TableHeader
                 dataField=""

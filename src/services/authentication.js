@@ -24,3 +24,9 @@ export const getLandingPage = () =>
 export const getUserGroup = () => authenticated(api).get('/users/user_group/');
 
 export const getUserProfile = () => authenticated(api).get('/users/myprofile/');
+
+export const updateUser = (id, payload) =>
+  authenticated(api).patch(`/users/user/${id}/`, payload);
+
+export const changePassword = payload =>
+  authenticated(api).post(`/users/change_password/`, payload);

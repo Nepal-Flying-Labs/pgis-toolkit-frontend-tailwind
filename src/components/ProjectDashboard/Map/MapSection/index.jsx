@@ -26,9 +26,11 @@ import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import AddFeature from '@Components/common/OpenLayersComponent/CustomLayer/AddFeature';
 import EditableLayer from '@Components/common/OpenLayersComponent/CustomLayer/EditableLayer';
+// import DrawTool from '@Components/common/OpenLayersComponent/DrawTool/index';
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import SidebarToggle from '../SidebarToggle';
 import Toolbox from '../Toolbox';
+import QueryResultPopup from '../QueryResultPopup';
 
 const { API_URL } = process.env;
 
@@ -63,6 +65,9 @@ export default function MapSection() {
   );
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
+  );
+  const queryResults = useSelector(
+    state => state.projectMap.dataQuery.queryResults,
   );
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
@@ -194,6 +199,8 @@ export default function MapSection() {
 
         <Toolbox />
 
+        <QueryResultPopup />
+
         <LayerSwitcherControl />
 
         {mapState.map((item, index) =>
@@ -225,6 +232,20 @@ export default function MapSection() {
           ),
         )}
 
+        {queryResults.map(item => (
+          <VectorTileLayer
+            key={item.id}
+            url={`${API_URL}maps/advance_filter_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+            authToken={localStorage.getItem('userToken')}
+            visibleOnMap={item.checked}
+            style={item?.style || { ...defaultStyles }}
+            zIndex={100}
+            zoomToLayer
+            bbox={item.bbox}
+            // properties={{ layerId: item.id }}
+          />
+        ))}
+
         <AddFeature
           enable={drawType === 'add-feature'}
           geometryType={selectedLayer?.geom_type}
@@ -250,6 +271,29 @@ export default function MapSection() {
             );
           }}
         />
+
+        {/*
+          <DrawTool
+            geojson={featureGeojson}
+            geometryType={selectedLayer?.geom_type || 'Polygon'}
+            zIndex={100}
+            style={selectedLayer?.style || { ...defaultStyles }}
+            onChange={modifiedGeojson => {
+              dispatch(
+                setProjectMapState({
+                  modifiedFeatureGeojson: modifiedGeojson,
+                  isFeatureModified: true,
+                }),
+              );
+            }}
+            onCancel={() => {
+              // dispatch(cancelSitePolygonEdit());
+            }}
+            onError={message => {
+              // dispatch(toastActions.error({ message }));
+            }}
+          />
+        */}
 
         <EditableLayer
           geojson={featureGeojson}

@@ -1,20 +1,32 @@
-import { call, put, takeLatest, takeEvery, all } from 'redux-saga/effects';
+import {
+  call,
+  put,
+  select,
+  takeLatest,
+  takeEvery,
+  all,
+} from 'redux-saga/effects';
 import chroma from 'chroma-js';
 import {
+  getAdvanceQueryValues,
   getFeatureCollection,
   getLayerAttributeFields,
   getMapPopupData,
   getProjectGeojson,
   getProjectThemeLayers,
   getProjectThemes,
+  postAdvanceQuery,
   postNewLayerFeature,
+  saveDataQuery,
   saveMapConfig,
   updateFeatureCollection,
   updateLayer,
   uploadLayer,
+  getLayerAttribute,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
+import toastActions from '@Actions/toast';
 import { withLoader, withErrorHandler } from '@Utils/sagaUtils';
 import prepareFormData from '@Utils/prepareFormData';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
@@ -199,6 +211,82 @@ export function* getProjectGeojsonRequest({ params }) {
   }
 }
 
+export function* getDataQueryFieldsRequest({ params }) {
+  try {
+    const response = yield call(getAdvanceQueryValues, params);
+    yield put(projectMapActions.getDataQueryFieldsSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getDataQueryFieldsFailure());
+    throw error;
+  }
+}
+
+export function* getDataQueryValuesRequest({ params }) {
+  try {
+    const response = yield call(getAdvanceQueryValues, params);
+    yield put(projectMapActions.getDataQueryValuesSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getDataQueryValuesFailure());
+    throw error;
+  }
+}
+
+export function* postAdvanceQueryRequest({ payload, data }) {
+  try {
+    const response = yield call(postAdvanceQuery, payload);
+    if (!response.data.features_count) {
+      yield put(
+        toastActions.error({
+          message: 'The resulting query has no results.',
+        }),
+      );
+    } else {
+      yield put(
+        projectMapActions.postAdvanceQuerySuccess({
+          ...response.data,
+          ...data,
+        }),
+      );
+      yield put(commonActions.toggleModal());
+    }
+  } catch (error) {
+    yield put(projectMapActions.postAdvanceQueryFailure());
+    throw error;
+  }
+}
+
+export function* saveDataQueryRequest({ payload }) {
+  try {
+    const response = yield call(saveDataQuery, payload);
+    const { selectedData } = yield select(state => state.projectMap.dataQuery);
+    const layerData = {
+      style: selectedData.style,
+    };
+    const formdata = prepareFormData(layerData);
+    yield call(updateLayer, selectedData.layer, formdata);
+    yield put(projectMapActions.saveDataQuerySuccess(response.data));
+    yield put(commonActions.togglePromptDialog());
+    yield put(
+      toastActions.success({
+        message: `${response.data.name} layer created successfully.`,
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.saveDataQueryFailure());
+    throw error;
+  }
+}
+
+export function* getLayerAttributeRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttribute, params);
+    yield put(projectMapActions.getLayerAttributeSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getLayerAttributeFailure());
+    throw error;
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -255,6 +343,26 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_GEOJSON_REQUEST,
     withLoader(withErrorHandler(getProjectGeojsonRequest)),
+  );
+  yield takeLatest(
+    Types.GET_DATA_QUERY_FIELDS_REQUEST,
+    withLoader(withErrorHandler(getDataQueryFieldsRequest)),
+  );
+  yield takeLatest(
+    Types.GET_DATA_QUERY_VALUES_REQUEST,
+    withLoader(withErrorHandler(getDataQueryValuesRequest)),
+  );
+  yield takeLatest(
+    Types.POST_ADVANCE_QUERY_REQUEST,
+    withLoader(withErrorHandler(postAdvanceQueryRequest)),
+  );
+  yield takeLatest(
+    Types.SAVE_DATA_QUERY_REQUEST,
+    withLoader(withErrorHandler(saveDataQueryRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(getLayerAttributeRequest)),
   );
 }
 

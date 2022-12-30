@@ -6,6 +6,7 @@ import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import { Creators as CommonCreators } from '@Actions/common';
+import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar';
 import LayerOrder from './LayerOrder';
@@ -18,12 +19,15 @@ const {
   setDeleteLayer,
   setProjectMapState,
 } = ProjectMapCreators;
-const { togglePromptDialog } = CommonCreators;
+const { togglePromptDialog, toggleModal } = CommonCreators;
 
 export default function LayerSection() {
   const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
+  );
+  const projectAreaLayerId = useSelector(
+    state => state.projectMap.projectAreaLayerId,
   );
   const searchText = useSelector(state => state.projectMap.searchText);
   const history = useHistory();
@@ -46,11 +50,36 @@ export default function LayerSection() {
       id: 2,
       label: (
         <span className="naxatw-flex naxatw-items-center">
+          <i className="material-symbols-outlined naxatw-mr-2">table_chart</i>
+          <p className="naxatw-text-body-lg">Attribute Table</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(
+          setProjectMapState({
+            selectedLayer: data,
+          }),
+        );
+        dispatch(toggleModal('view-layer-attribute'));
+      },
+    },
+    {
+      id: 3,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
           <i className="material-icons naxatw-mr-2">add</i>
           <p className="naxatw-text-body-lg">Add Feature</p>
         </span>
       ),
       onClick: data => {
+        if (data.id === projectAreaLayerId) {
+          dispatch(
+            toastActions.error({
+              message: 'Cannot add feature to Project Area.',
+            }),
+          );
+          return;
+        }
         dispatch(
           setProjectMapState({
             selectedLayer: data,
@@ -61,7 +90,7 @@ export default function LayerSection() {
       },
     },
     {
-      id: 3,
+      id: 4,
       label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
@@ -69,6 +98,12 @@ export default function LayerSection() {
         </span>
       ),
       onClick: data => {
+        if (data.id === projectAreaLayerId) {
+          dispatch(
+            toastActions.error({ message: 'Project Area cannot be removed.' }),
+          );
+          return;
+        }
         dispatch(setDeleteLayer(data));
         dispatch(togglePromptDialog('delete-layer'));
       },

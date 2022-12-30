@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
+import toastActions from '@Actions/toast';
 import { mapStateSelector } from '@Selectors/projectMap';
 import Select from '@Components/common/Select';
 import Button from '@Components/common/Button';
@@ -141,6 +141,8 @@ export default function DataQuery() {
     );
   };
 
+  const lastQueryItem = query[query.length - 1];
+
   return (
     <div>
       <p>
@@ -210,6 +212,14 @@ export default function DataQuery() {
                       key={id}
                       className={btnClassname}
                       onClick={() => {
+                        if (!lastQueryItem?.field) {
+                          dispatch(
+                            toastActions.error({
+                              message: 'Please select field first.',
+                            }),
+                          );
+                          return;
+                        }
                         handleQuerySelect(value, type);
                       }}
                     >
@@ -232,6 +242,14 @@ export default function DataQuery() {
                       className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
                         naxatw-cursor-pointer hover:naxatw-bg-grey-100"
                       onClick={() => {
+                        if (!lastQueryItem?.operator) {
+                          dispatch(
+                            toastActions.error({
+                              message: 'Please select operator first.',
+                            }),
+                          );
+                          return;
+                        }
                         handleQuerySelect(item, 'value');
                       }}
                     >

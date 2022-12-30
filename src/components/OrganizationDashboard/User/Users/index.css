@@ -1,9 +1,9 @@
 .naxa-table {
-    @apply naxatw-block naxatw-w-full;
+    @apply naxatw-block naxatw-w-full ;
   }
   
   .naxa-table table th {
-    @apply naxatw-sticky naxatw-top-0 naxatw-z-[1] naxatw-w-full naxatw-top-0  naxatw-bg-white ;
+    @apply naxatw-sticky naxatw-top-0 naxatw-z-[1] naxatw-w-full   naxatw-bg-white ;
   }
   
   .naxa-table table tr {

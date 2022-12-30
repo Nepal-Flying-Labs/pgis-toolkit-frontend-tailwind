@@ -81,13 +81,13 @@ export default function ViewLayerAttribute() {
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-2 naxatw-mt-2">
       <div>
         <Searchbar
-          className="naxatw-w-[15rem]"
+          className="naxatw-w-[15rem] naxatw-bg-grey-100"
           value={value}
           onChange={handleSearch}
         />
       </div>
 
-      <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-h-[25rem] naxatw-w-full">
+      <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative  naxatw-w-full">
         {!loading ? (
           <Table
             data={attributeList || []}

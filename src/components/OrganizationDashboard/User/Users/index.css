@@ -1,5 +1,5 @@
 .naxa-table {
-    @apply naxatw-block naxatw-w-full naxatw-min-h-[20rem] naxatw-max-h-[calc(100%-4rem)];
+    @apply naxatw-block naxatw-w-full ;
   }
   
   .naxa-table table th {

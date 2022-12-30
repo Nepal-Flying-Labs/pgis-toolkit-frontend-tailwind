@@ -103,6 +103,14 @@ export const { Types, Creators } = createActions(
     getLayerAttributeFailure: null,
 
     setAttributeTableSearchTerm: ['payload'],
+
+    handleAttributeNextClick: null,
+    handleAttributePreviousClick: null,
+    handleAttributeJumpsTo: ['payload'],
+    handleAttributeRowSelect: ['payload'],
+    handleAttributeOrdering: ['payload'],
+
+    resetLayerAttributeListState: null,
   },
   { prefix: 'projectMap/' },
 );

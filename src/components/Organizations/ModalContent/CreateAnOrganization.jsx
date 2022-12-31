@@ -69,8 +69,8 @@ export default function CreateAnOrganization() {
   return (
     <div>
       <div
-        className="naxatw-px-4 naxatw-pb-4 naxatw-space-y-7 naxatw-overflow-y-auto scrollbar"
-        style={{ maxHeight: `${height / 16 - 15}rem` }}
+        className="naxatw-px-4 naxatw-pb-4 naxatw-space-y-7 naxatw-overflow-y-auto scrollbar
+          naxatw-max-h-[calc(100vh-19rem)]"
       >
         <Input
           label="Name of Organization *"

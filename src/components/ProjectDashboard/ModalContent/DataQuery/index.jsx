@@ -169,14 +169,9 @@ export default function DataQuery() {
   const lastQueryItem = query[query.length - 1];
 
   return (
-    <div>
-      <p>
-        This tool allows you to query on the layers and create a new layers
-        based on the query result.
-      </p>
-
+    <div className="naxatw-w-full">
       <div
-        className="naxatw-mt-10 naxatw-space-y-5 naxatw-min-h-[16rem] naxatw-overflow-y-auto scrollbar"
+        className="naxatw-space-y-5 naxatw-min-h-[16rem] naxatw-overflow-y-auto scrollbar"
         style={{
           maxHeight: `calc(100vh - 18rem)`,
         }}

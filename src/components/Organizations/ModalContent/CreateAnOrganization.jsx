@@ -67,9 +67,9 @@ export default function CreateAnOrganization() {
   });
 
   return (
-    <div className="">
+    <div>
       <div
-        className="naxatw-p-4 naxatw-space-y-7 naxatw-overflow-y-auto scrollbar"
+        className="naxatw-px-4 naxatw-pb-4 naxatw-space-y-7 naxatw-overflow-y-auto scrollbar"
         style={{ maxHeight: `${height / 16 - 15}rem` }}
       >
         <Input

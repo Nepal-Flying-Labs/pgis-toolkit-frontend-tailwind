@@ -88,6 +88,8 @@ export function getModalContent(content) {
       return {
         title: 'Upload your datasets',
         content: <UploadDataset />,
+        subtitle:
+          'USAFIRI allows you to import data in different formats(shp, csv, geojson or gpkg file format). Please upload your datasets below.',
       };
     case 'view-layer-attribute':
       return {
@@ -109,6 +111,8 @@ export function getModalContent(content) {
       return {
         title: 'Analysis',
         content: <Analysis />,
+        subtitle:
+          'USAFIRI allows you to do different sorts of analysis with your map datasets. Below are some of the analysis functions we have in the tool at the moment.',
       };
     case 'buffer-analysis':
       return {
@@ -127,6 +131,8 @@ export function getModalContent(content) {
       return {
         title: 'Import from OSM',
         content: <ImportOSM />,
+        subtitle:
+          'USAFIRI allows you to do different sorts of analysis with your map datasets. Below are some of the analysis functions we have in the tool at the moment.',
       };
 
     // project gallery
@@ -154,6 +160,8 @@ export function getModalContent(content) {
       return {
         title: 'Add WMS Layer',
         content: <AddWMSLayer />,
+        subtitle:
+          'USAFIRI allows you to do different sorts of analysis with your map datasets. Below are some of the analysis functions we have in the tool at the moment.',
       };
     case 'manage-attributes':
       return {

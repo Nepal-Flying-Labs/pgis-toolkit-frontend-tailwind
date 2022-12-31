@@ -52,13 +52,17 @@ export default function Modal({
             >
               <div
                 className={`naxatw-relative naxatw-bg-white naxatw-rounded-[20px] naxatw-shadow
-                   naxatw-w-[42rem] naxatw-overflow-hidden ${className}`}
+                   naxatw-w-[42rem] naxatw-overflow-hidden naxatw-max-h-[calc(100vh-4rem)] ${className}`}
               >
                 <div
-                  className="naxatw-flex naxatw-justify-between naxatw-items-center
-                  naxatw-rounded-t-[20px] naxatw-py-5 naxatw-px-7"
+                  className={`naxatw-flex naxatw-justify-between naxatw-items-start
+                    naxatw-rounded-t-[20px] naxatw-px-7 ${
+                      !subtitle ? 'naxatw-py-7' : 'naxatw-py-5'
+                    }`}
                   style={{
-                    boxShadow: '0px 2px 20px 4px rgba(0, 0, 0, 0.12)',
+                    boxShadow: helpContent
+                      ? '0px 2px 20px 4px rgba(0, 0, 0, 0.12)'
+                      : '',
                   }}
                 >
                   {headerContent || (
@@ -82,12 +86,18 @@ export default function Modal({
                   </button>
                 </div>
                 <div className="naxatw-flex">
-                  <div className="naxatw-py-5 naxatw-px-7 naxatw-grow">
+                  <div
+                    className="naxatw-grow naxatw-max-h-[calc(100vh-10rem)] naxatw-overflow-y-auto scrollbar
+                      naxatw-px-7 naxatw-py-5"
+                  >
                     {children}
                   </div>
 
                   {helpContent && (
-                    <div className="naxatw-w-[21.375rem] naxatw-bg-secondary-50 naxatw-ml-auto naxatw-p-5">
+                    <div
+                      className="naxatw-w-[21.375rem] naxatw-bg-secondary-50 naxatw-ml-auto naxatw-p-5
+                        naxatw-max-h-[calc(100vh-10rem)] naxatw-overflow-y-auto scrollbar"
+                    >
                       {helpContent}
                     </div>
                   )}

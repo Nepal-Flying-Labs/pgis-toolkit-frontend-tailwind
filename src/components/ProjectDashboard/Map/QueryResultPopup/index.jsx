@@ -8,7 +8,7 @@ import Toggle from '@Components/common/Toggle';
 import IconButton from '@Components/common/IconButton';
 import { stringifyQuery } from '@Components/ProjectDashboard/ModalContent/DataQuery';
 
-const { togglePromptDialog } = CommonCreators;
+const { togglePromptDialog, toggleModal } = CommonCreators;
 const { handleDataQueryCheckbox, setDataQueryState } = ProjectMapCreators;
 
 export default function QueryResultPopup() {
@@ -75,7 +75,10 @@ export default function QueryResultPopup() {
                   <IconButton
                     name="table_chart"
                     className="material-symbols-outlined naxatw-text-[1rem]"
-                    // onClick={() => setCollapsed(!collapsed)}
+                    onClick={() => {
+                      dispatch(setDataQueryState({ selectedData: item }));
+                      dispatch(toggleModal('view-query-attribute'));
+                    }}
                   />
                 </span>
                 <p className="naxatw-text-xl">{item.features_count}</p>

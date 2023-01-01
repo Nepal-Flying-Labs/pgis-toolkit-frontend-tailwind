@@ -36,7 +36,63 @@ const initialState = {
     selectedLayer: null,
     fields: null,
     values: null,
-    queryResults: [],
+    queryResults: [
+      {
+        id: 99,
+        name: 'residential',
+        display_on_map: true,
+        bbox: [34.5530077, 0.2051609, 34.936506, 0.4128796],
+        geom_type: 'LineString',
+        features_count: 2601,
+        icon: '',
+        std_icon: '',
+        style: {
+          lineColor: '#2C675A',
+          lineOpacity: 40,
+          fillColor: '#164cc0',
+          fillOpacity: 0,
+          lineThickness: 1,
+          circleRadius: 5,
+          dashline: 0,
+          showLabel: false,
+          labelField: '',
+          labelFont: 'Calibri',
+          labelFontSize: 14,
+          labelColor: '#000000',
+          labelOpacity: 100,
+          labelOutlineWidth: 3,
+          labelOutlineColor: '#ffffff',
+          labelOffsetX: 0,
+          labelOffsetY: 0,
+          labelText: 'normal',
+          labelMaxResolution: 1200,
+          labelAlign: 'center',
+          labelBaseline: 'middle',
+          labelRotationDegree: 0,
+          labelFontWeight: 'normal',
+          labelPlacement: 'point',
+          labelMaxAngleDegree: 0.7853981633974483,
+          labelOverflow: false,
+          labelLineHeight: 1,
+          icon: {},
+          showSublayer: false,
+          sublayerColumnName: '',
+          sublayer: {},
+          geometryType: 'LineString',
+        },
+        query: [
+          {
+            field: 'highway',
+            operator: 1,
+            value: 'residential',
+          },
+        ],
+        checked: true,
+        layerName: 'Kakamega Highway Openstreet Maps - Smaller Version',
+        theme: 305,
+        layer: 407,
+      },
+    ],
     selectedData: null,
   },
   layerAttributesList: {
@@ -632,6 +688,23 @@ const resetLayerAttributeListState = state => ({
   },
 });
 
+const getQueryAttributeSuccess = (state, action) => {
+  const { counts, next, previous, results } = action.payload;
+  return {
+    ...state,
+    layerAttributesList: {
+      ...state.layerAttributesList,
+      attributeList: results,
+      pagination: {
+        ...state.layerAttributesList.pagination,
+        count: counts,
+        next,
+        previous,
+      },
+    },
+  };
+};
+
 const resetProjectMapState = () => ({
   ...initialState,
 });
@@ -677,6 +750,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.HANDLE_ATTRIBUTE_ROW_SELECT]: handleAttributeRowSelect,
   [Types.HANDLE_ATTRIBUTE_ORDERING]: handleAttributeOrdering,
   [Types.RESET_LAYER_ATTRIBUTE_LIST_STATE]: resetLayerAttributeListState,
+  [Types.GET_QUERY_ATTRIBUTE_SUCCESS]: getQueryAttributeSuccess,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

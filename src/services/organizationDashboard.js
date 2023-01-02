@@ -31,3 +31,9 @@ export const getUsers = params =>
 
 export const getUserGroup = params =>
   authenticated(api).get('/users/user_group/', { params });
+
+export const updateUserRole = (id, payload) =>
+  authenticated(api).patch(`/users/userrole_update/${id}/`, payload);
+
+export const updateInvitedUserStatus = (id, payload) =>
+  authenticated(api).patch(`/users/preliminary_user/${id}/`, payload);

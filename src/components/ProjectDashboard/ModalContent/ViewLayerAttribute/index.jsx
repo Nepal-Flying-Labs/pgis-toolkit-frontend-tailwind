@@ -1,5 +1,6 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import { Creators, Types } from '@Actions/projectMap';
@@ -18,6 +19,7 @@ import Pagination from '@Components/common/Pagination';
 
 const {
   getLayerAttributeRequest,
+  getQueryAttributeRequest,
   setAttributeTableSearchTerm,
   handleAttributeNextClick,
   handleAttributePreviousClick,
@@ -53,6 +55,9 @@ const dropdownOptions = [
 export default function ViewLayerAttribute() {
   const dispatch = useDispatch();
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
+  const selectedData = useSelector(
+    state => state.projectMap.dataQuery.selectedData,
+  );
   const showModal = useSelector(state => state.common.showModal);
   const modalContent = useSelector(state => state.common.modalContent);
   const attributeList = useSelector(
@@ -103,6 +108,7 @@ export default function ViewLayerAttribute() {
   );
 
   useEffect(() => {
+    if (modalContent !== 'view-layer-attribute') return;
     dispatch(
       getLayerAttributeRequest({
         layer: selectedLayer.id,
@@ -112,13 +118,47 @@ export default function ViewLayerAttribute() {
         ordering,
       }),
     );
-  }, [dispatch, selectedLayer, searchText, currentPage, rowPerPage, ordering]);
+  }, [
+    dispatch,
+    selectedLayer,
+    searchText,
+    currentPage,
+    rowPerPage,
+    ordering,
+    modalContent,
+  ]);
+
+  useEffect(() => {
+    if (modalContent !== 'view-query-attribute') return;
+    dispatch(
+      getQueryAttributeRequest({
+        layer: selectedData.id,
+        search: searchText,
+        page: currentPage,
+        limit: rowPerPage,
+        ordering,
+      }),
+    );
+  }, [
+    dispatch,
+    selectedData,
+    searchText,
+    currentPage,
+    rowPerPage,
+    ordering,
+    modalContent,
+  ]);
 
   useEffect(() => {
     if (showModal && modalContent === 'view-layer-attribute') return;
 
     dispatch(resetLayerAttributeListState());
   }, [dispatch, showModal, modalContent]);
+
+  const headerKeys = useMemo(
+    () => Object.keys(attributeList[0] || {}),
+    [attributeList],
+  );
 
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-2 naxatw-mt-2 naxatw-w-full naxatw-h-full">
@@ -131,612 +171,56 @@ export default function ViewLayerAttribute() {
       </div>
 
       <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative  naxatw-w-full naxatw-max-h-[calc(100vh-25rem)] naxatw-min-h-[calc(100vh-25rem)]">
-        {!loading ? (
+        {!loading && headerKeys.length > 0 ? (
           <Table
             data={attributeList || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            headerWidths={[
-              '100px',
-              '100px',
-              '100px',
-              '100px',
-              '100px',
-              '100px',
-              '100px',
-              '100px',
-              '100px',
-              '100px',
-              '100px',
-              '100px',
-              '100px',
-            ]}
+            headerWidths={[]}
             // eslint-disable-next-line
             // onRowClick={row => {}}
           >
-            <TableHeader
-              dataField="Auto ID"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Auto ID"
-                  isActive={ordering === 'AUTO_ID'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'AUTO_ID' ? null : 'AUTO_ID',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
-                  <span className="naxatw-text-base naxatw-font-bold">
-                    {row.AUTO_ID || '-'}
+            {headerKeys.map(key => (
+              <TableHeader
+                dataField={key}
+                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                rowcolSpan="rowSpan_2"
+                dataHeader={
+                  <SortingContainer
+                    name={key}
+                    isActive={ordering === key}
+                    handleSort={() =>
+                      dispatch(
+                        handleAttributeOrdering(ordering === key ? null : key),
+                      )
+                    }
+                  />
+                }
+                dataFormat={row => (
+                  <span
+                    className={` ${
+                      ordering === key
+                        ? 'naxatw-text-body-btn'
+                        : 'naxatw-text-body-lg'
+                    }`}
+                  >
+                    {row[key] || '-'}
                   </span>
-                </div>
-              )}
-            />
-            <TableHeader
-              dataField="Road"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Road"
-                  isActive={ordering === 'Road_2'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'Road_2' ? null : 'Road_2',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="text-base">{row.Road_2 || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Access"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Access"
-                  isActive={ordering === 'access'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'access' ? null : 'access',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.access || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Bridge"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Bridge"
-                  isActive={ordering === 'bridge'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'bridge' ? null : 'bridge',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.bridge || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Embankment"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Embankment"
-                  isActive={ordering === 'embankment'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'embankment' ? null : 'embankment',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">
-                  {row.embankment || '-'}
-                </span>
-              )}
-            />
-            <TableHeader
-              dataField="Foot"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Foot"
-                  isActive={ordering === 'foot'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'foot' ? null : 'foot',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.foot || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Footway"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Footway"
-                  isActive={ordering === 'footway'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'footway' ? null : 'footway',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.footway || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Full Id"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Full Id"
-                  isActive={ordering === 'full_id'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'full_id' ? null : 'full_id',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.full_id || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Highway"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Highway"
-                  isActive={ordering === 'highway'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'highway' ? null : 'highway',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.highway || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Id"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Id"
-                  isActive={ordering === 'id'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(ordering === 'id' ? null : 'id'),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.id || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Int Name"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Int Name"
-                  isActive={ordering === 'int_name'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'int_name' ? null : 'int_name',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.int_name || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Junction"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Junction"
-                  isActive={ordering === 'junction'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'junction' ? null : 'junction',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.junction || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Layer"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Layer"
-                  isActive={ordering === 'layer'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'layer' ? null : 'layer',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.layer || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Name"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Name"
-                  isActive={ordering === 'name'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'name' ? null : 'name',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.name || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="No Name"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="No Name"
-                  isActive={ordering === 'noname'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'noname' ? null : 'noname',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.noname || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Oneway"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Oneway"
-                  isActive={ordering === 'oneway'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'oneway' ? null : 'oneway',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.oneway || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="OSM Id"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="OSM Id"
-                  isActive={ordering === 'osm_id'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'osm_id' ? null : 'osm_id',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.osm_id || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="OSM Type"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="OSM Type"
-                  isActive={ordering === 'type'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'type' ? null : 'type',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.osm_type || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Difficulty"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Difficulty"
-                  isActive={ordering === 'difficulty'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'difficulty' ? null : 'difficulty',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">
-                  {row.difficulty || '-'}
-                </span>
-              )}
-            />
-            <TableHeader
-              dataField="Ref"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Ref"
-                  isActive={ordering === 'ref'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'ref' ? null : 'ref',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.ref || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Road"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Road"
-                  isActive={ordering === 'road'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'road' ? null : 'road',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.road || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="SAC Scale"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="SAC Scale"
-                  isActive={ordering === 'sac_scale'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'sac_scale' ? null : 'sac_scale',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.sac_scale || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Service"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Service"
-                  isActive={ordering === 'service'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'service' ? null : 'service',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.service || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Sidewalk"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Sidewalk"
-                  isActive={ordering === 'sidewalk'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'sidewalk' ? null : 'sidewalk',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.sidewalk || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Smoothness"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Smoothness"
-                  isActive={ordering === 'smoothness'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'smoothness' ? null : 'smoothness',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">
-                  {row.smoothness || '-'}
-                </span>
-              )}
-            />
-            <TableHeader
-              dataField="Surface"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Surface"
-                  isActive={ordering === 'surface'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'surface' ? null : 'surface',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.surface || '-'}</span>
-              )}
-            />
-            <TableHeader
-              dataField="Tunnel"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={
-                <SortingContainer
-                  name="Tunnel"
-                  isActive={ordering === 'tunnel'}
-                  handleSort={() =>
-                    dispatch(
-                      handleAttributeOrdering(
-                        ordering === 'tunnel' ? null : 'tunnel',
-                      ),
-                    )
-                  }
-                />
-              }
-              dataFormat={row => (
-                <span className="naxatw-text-base">{row.tunnel || '-'}</span>
-              )}
-            />
-
+                )}
+              />
+            ))}
             <TableHeader
               dataField=""
-              headerClassName="dropdownMenu"
-              rowClassName="dropdownMenu"
+              headerClassName="naxatw-py-1 naxatw-px-3 naxatw-text-right"
               rowcolSpan="rowSpan_3"
               dataFormat={row => (
-                <DropdownOptions options={dropdownOptions} data={row} />
+                <div className="naxatw-flex naxatw-justify-end naxatw-w-full">
+                  <DropdownOptions
+                    options={dropdownOptions}
+                    data={row}
+                    stopPropagation
+                  />
+                </div>
               )}
             />
           </Table>

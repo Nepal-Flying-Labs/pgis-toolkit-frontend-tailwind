@@ -325,15 +325,17 @@ export default function DataQuery() {
           </div>
         </div> */}
 
-      <div className="naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
-        <Button
-          className="naxatw-btn-primary"
-          onClick={handleApply}
-          isLoading={isPosting}
-        >
-          Apply
-        </Button>
-      </div>
+      {selectedLayer && (
+        <div className="naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
+          <Button
+            className="naxatw-btn-primary"
+            onClick={handleApply}
+            isLoading={isPosting}
+          >
+            Apply
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

@@ -40,7 +40,7 @@ export default function DeleteLayer() {
       <div className="naxatw-my-5 naxatw-px-4">
         <h4>Are you sure to delete {deleteLayer?.name}?</h4>
       </div>
-      <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-mt-12 naxatw-gap-2">
+      <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-gap-2">
         <Button
           className="naxatw-btn-secondary naxatw-btn-noborder"
           onClick={() => {

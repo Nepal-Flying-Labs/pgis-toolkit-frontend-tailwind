@@ -161,7 +161,7 @@ export default function ViewLayerAttribute() {
   );
 
   return (
-    <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-2 naxatw-mt-2 naxatw-w-full naxatw-h-full">
+    <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-2 naxatw-w-full naxatw-h-full">
       <div>
         <Searchbar
           className="naxatw-w-[15rem] naxatw-bg-grey-100"

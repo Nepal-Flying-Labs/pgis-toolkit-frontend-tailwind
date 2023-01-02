@@ -632,6 +632,23 @@ const resetLayerAttributeListState = state => ({
   },
 });
 
+const getQueryAttributeSuccess = (state, action) => {
+  const { counts, next, previous, results } = action.payload;
+  return {
+    ...state,
+    layerAttributesList: {
+      ...state.layerAttributesList,
+      attributeList: results,
+      pagination: {
+        ...state.layerAttributesList.pagination,
+        count: counts,
+        next,
+        previous,
+      },
+    },
+  };
+};
+
 const resetProjectMapState = () => ({
   ...initialState,
 });
@@ -677,6 +694,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.HANDLE_ATTRIBUTE_ROW_SELECT]: handleAttributeRowSelect,
   [Types.HANDLE_ATTRIBUTE_ORDERING]: handleAttributeOrdering,
   [Types.RESET_LAYER_ATTRIBUTE_LIST_STATE]: resetLayerAttributeListState,
+  [Types.GET_QUERY_ATTRIBUTE_SUCCESS]: getQueryAttributeSuccess,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

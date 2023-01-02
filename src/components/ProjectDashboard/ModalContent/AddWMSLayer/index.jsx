@@ -16,12 +16,7 @@ const AddWMSLayer = () => {
 
   return (
     <div>
-      <span className="naxatw-text-body-lg naxatw-text-[#484848]">
-        USAFIRI allows you to do different sorts of analysis with your map
-        datasets. Below are some of the analysis functions we have in the tool
-        at the moment.
-      </span>
-      <div className="naxatw-mt-5 naxatw-space-y-5">
+      <div className="naxatw-space-y-5">
         <Input
           label="Layer Name"
           name="layerName"

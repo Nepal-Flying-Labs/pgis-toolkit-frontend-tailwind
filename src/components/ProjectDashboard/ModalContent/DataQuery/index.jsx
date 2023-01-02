@@ -169,17 +169,12 @@ export default function DataQuery() {
   const lastQueryItem = query[query.length - 1];
 
   return (
-    <div>
-      <p>
-        This tool allows you to query on the layers and create a new layers
-        based on the query result.
-      </p>
-
+    <div className="naxatw-w-full">
       <div
-        className="naxatw-mt-10 naxatw-space-y-5 naxatw-min-h-[16rem] naxatw-overflow-y-auto scrollbar"
-        style={{
-          maxHeight: `calc(100vh - 18rem)`,
-        }}
+        className="naxatw-space-y-5 naxatw-min-h-[16rem] naxatw-overflow-y-auto scrollbar"
+        // style={{
+        //   maxHeight: `calc(100vh - 18rem)`,
+        // }}
       >
         <div className="">
           <div className="naxatw-space-y-2">
@@ -205,9 +200,9 @@ export default function DataQuery() {
 
         {fields !== null && (
           <>
-            <div className="naxatw-flex naxatw-gap-2">
+            <div className="naxatw-flex naxatw-gap-2 naxatw-h-[15rem]">
               <div
-                className="naxatw-h-[12.5rem] naxatw-w-full naxatw-border naxatw-border-grey-400 
+                className="naxatw-w-full naxatw-border naxatw-border-grey-400 
                   naxatw-rounded-lg naxatw-overflow-y-auto scrollbar"
               >
                 <ul>
@@ -227,7 +222,7 @@ export default function DataQuery() {
                   ))}
                 </ul>
               </div>
-              <div className="naxatw-h-[12.5rem] naxatw-w-full">
+              <div className="naxatw-w-full">
                 <div
                   className="naxatw-grid naxatw-grid-cols-3 naxatw-items-center naxatw-justify-items-center
                     naxatw-gap-2"
@@ -261,7 +256,7 @@ export default function DataQuery() {
                   ))}
                 </div>
               </div>
-              <div className="naxatw-h-[12.5rem] naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-overflow-y-auto scrollbar">
+              <div className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-overflow-y-auto scrollbar">
                 {isValuesFetching && (
                   <div className="naxatw-h-full naxatw-flex naxatw-items-center naxatw-justify-center">
                     <Spinner className="!naxatw-h-7 !naxatw-w-7 naxatw-fill-grey-500" />
@@ -296,7 +291,7 @@ export default function DataQuery() {
             <div className="">
               <div className="naxatw-space-y-2">
                 <label className="naxatw-label">Result</label>
-                <span className="naxatw-flex">
+                <span className="naxatw-flex naxatw-min-h-[4.8rem]">
                   <textarea
                     type="text"
                     className="naxatw-block naxatw-w-full naxatw-px-3 naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-grey-700 naxatw-focus:bg-white naxatw-focus:border-blue-600 naxatw-focus:outline-none naxatw-pointer-events-none"

@@ -36,13 +36,7 @@ export default function Analysis() {
 
   return (
     <div>
-      <p>
-        USAFIRI allows you to do different sorts of analysis with your map
-        datasets. Below are some of the analysis functions we have in the tool
-        at the moment.
-      </p>
-
-      <div className="naxatw-mt-10 naxatw-grid naxatw-grid-cols-2 naxatw-gap-3">
+      <div className="naxatw-grid naxatw-grid-cols-2 naxatw-gap-3">
         {analysisData.map(({ id, title, description, analysisType }) => (
           <div
             key={id}

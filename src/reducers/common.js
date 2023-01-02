@@ -2,8 +2,8 @@ import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/common';
 
 const initialState = {
-  showModal: true,
-  modalContent: 'data-query',
+  showModal: false,
+  modalContent: '',
   showPromptDialog: false,
   promptDialogContent: '',
   projectHeaderHeight: 65,

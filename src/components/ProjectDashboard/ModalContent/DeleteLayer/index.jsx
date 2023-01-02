@@ -37,7 +37,7 @@ export default function DeleteLayer() {
 
   return (
     <div>
-      <div className="naxatw-my-5 naxatw-px-4">
+      <div className="naxatw-mb-5">
         <h4>Are you sure to delete {deleteLayer?.name}?</h4>
       </div>
       <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-gap-2">

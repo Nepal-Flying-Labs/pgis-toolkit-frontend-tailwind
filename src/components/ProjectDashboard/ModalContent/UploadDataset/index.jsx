@@ -163,14 +163,10 @@ export default function UploadDataset() {
 
   return (
     <div>
-      <p>
-        USAFIRI allows you to import data in different formats(shp, csv, geojson
-        or gpkg file format). Please upload your datasets below.
-      </p>
       <p>Note: System supports WGS84 Coordinate System only.</p>
 
       <div
-        className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-auto scrollbar naxatw-max-h-96"
+        className="naxatw-mt-2 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-auto scrollbar naxatw-max-h-96"
         style={{ maxHeight: `${height / 16 - 22}rem` }}
       >
         <Dropzone

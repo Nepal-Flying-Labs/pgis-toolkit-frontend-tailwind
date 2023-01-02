@@ -29,6 +29,7 @@ import DeleteDataQuery from '@Components/ProjectDashboard/ModalContent/DeleteDat
 import AccountSettings from '@Components/Authentication/ModalContent/AccountSettings';
 import ViewLayerAttribute from '@Components/ProjectDashboard/ModalContent/ViewLayerAttribute';
 import DeleteDocument from '@Components/ProjectDashboard/ModalContent/DeleteDocument/index';
+import DataQueryHelp from '@Components/ProjectDashboard/ModalContent/HelpContents/DataQueryHelp';
 
 export function getModalContent(content) {
   switch (content) {
@@ -88,24 +89,36 @@ export function getModalContent(content) {
       return {
         title: 'Upload your datasets',
         content: <UploadDataset />,
+        subtitle:
+          'USAFIRI allows you to import data in different formats(shp, csv, geojson or gpkg file format). Please upload your datasets below.',
       };
     case 'view-layer-attribute':
       return {
         title: 'Layer Attribute',
         content: <ViewLayerAttribute />,
-        className:
-          '!naxatw-w-[calc(100vw-10rem)] !naxatw-h-[calc(100vh-10rem)]',
+        className: 'naxatw-w-[calc(100vw-10rem)]',
+      };
+    case 'view-query-attribute':
+      return {
+        title: 'Layer Attribute',
+        content: <ViewLayerAttribute />,
+        className: 'naxatw-w-[calc(100vw-10rem)]',
       };
     case 'data-query':
       return {
         title: 'Data Query',
+        subtitle:
+          'This tool allows you to query on the layers and create a new layers based on the query result.',
         content: <DataQuery />,
-        // className: '!naxatw-w-[63.25rem]',
+        className: '!naxatw-w-[63.25rem]',
+        helpContent: <DataQueryHelp />,
       };
     case 'analysis':
       return {
         title: 'Analysis',
         content: <Analysis />,
+        subtitle:
+          'USAFIRI allows you to do different sorts of analysis with your map datasets. Below are some of the analysis functions we have in the tool at the moment.',
       };
     case 'buffer-analysis':
       return {
@@ -124,12 +137,16 @@ export function getModalContent(content) {
       return {
         title: 'Import from OSM',
         content: <ImportOSM />,
+        subtitle:
+          'USAFIRI allows you to do different sorts of analysis with your map datasets. Below are some of the analysis functions we have in the tool at the moment.',
       };
 
     // project gallery
     case 'upload-image':
       return {
         title: 'Upload your image',
+        subtitle:
+          'You can add any sort of relevant photographs & images or maps, in file format JPEG, PNG, GIF or PDF.',
         content: <UploadImage />,
       };
 
@@ -145,6 +162,8 @@ export function getModalContent(content) {
     case 'edit-document':
       return {
         title: 'Edit your documents',
+        subtitle:
+          'You can add any sort of relevant documents to the project. It includes relevant report, findings etc. in file format DOCX, PDF, Excel or CSV.',
         content: <EditDocument />,
       };
 
@@ -153,6 +172,8 @@ export function getModalContent(content) {
       return {
         title: 'Add WMS Layer',
         content: <AddWMSLayer />,
+        subtitle:
+          'USAFIRI allows you to do different sorts of analysis with your map datasets. Below are some of the analysis functions we have in the tool at the moment.',
       };
     case 'manage-attributes':
       return {

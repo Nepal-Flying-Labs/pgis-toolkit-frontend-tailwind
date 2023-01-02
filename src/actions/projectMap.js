@@ -111,6 +111,10 @@ export const { Types, Creators } = createActions(
     handleAttributeOrdering: ['payload'],
 
     resetLayerAttributeListState: null,
+
+    getQueryAttributeRequest: ['params'],
+    getQueryAttributeSuccess: ['payload'],
+    getQueryAttributeFailure: null,
   },
   { prefix: 'projectMap/' },
 );

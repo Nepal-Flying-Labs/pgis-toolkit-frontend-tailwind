@@ -81,3 +81,7 @@ export const getUserGroup = params =>
 // upload-gallery
 export const uploadGallery = payload =>
   authenticated(api).post(`/projects/image/`, payload);
+
+// gallery-download
+export const downloadGallery = params =>
+  authenticated(api).get(`/projects/image_download/`, { params });

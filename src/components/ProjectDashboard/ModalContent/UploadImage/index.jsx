@@ -52,7 +52,6 @@ export default function UploadImage() {
     Array.from(files).forEach((file, index) => {
       const [filename, extension] = file.name.split('.');
       const prevId = uploadedFiles.at(-1)?.id || 0;
-      console.log('file ', file);
       const fileObj = {
         id: prevId + 1 + index,
         // tag: [],
@@ -139,7 +138,7 @@ export default function UploadImage() {
         <div className="naxatw-space-y-2">
           <label className="naxatw-label">Upload an image</label>
           <Dropzone
-            label="Please upload an image (JPEG, PNG, GIF or PDF file format)"
+            label="Please upload images (JPEG, PNG, GIF or PDF file format)"
             accept=".jpeg, .png, .gif, .pdf"
             multiple
             onChange={handleUpload}

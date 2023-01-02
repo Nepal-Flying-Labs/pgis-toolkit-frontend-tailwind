@@ -73,7 +73,7 @@ export const { Types, Creators } = createActions(
     getDocumentByIdSuccess: ['payload'],
     getDocumentByIdFailure: ['payload'],
 
-    // project-individual-document
+    // project-document
     downloadDocumentRequest: ['params'],
     downloadDocumentSuccess: ['payload'],
     downloadDocumentFailure: ['payload'],
@@ -141,6 +141,15 @@ export const { Types, Creators } = createActions(
     uploadGalleryRequest: ['id', 'payload'],
     uploadGallerySuccess: ['payload'],
     uploadGalleryFailure: ['payload'],
+
+    downloadGalleryRequest: ['params'],
+    downloadGallerySuccess: ['payload'],
+    downloadGalleryFailure: ['payload'],
+
+    // project-individual-gallery
+    getGalleryByIdRequest: ['id'],
+    getGalleryByIdSuccess: ['payload'],
+    getGalleryByIdFailure: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

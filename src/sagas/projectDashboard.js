@@ -37,6 +37,7 @@ import {
   getUsers,
   getUserGroup,
   uploadGallery,
+  downloadGallery,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -228,8 +229,9 @@ export function* getDocumentByIdRequest({ id }) {
 export function* downloadDocumentRequest({ params }) {
   try {
     const response = yield call(downloadDocument, params);
-    const responseData = response.data;
-    const url = window.URL.createObjectURL(new Blob([responseData]));
+    // const responseData = response.data;
+    // const url = window.URL.createObjectURL(new Blob([responseData]));
+    const url = response.request.responseURL;
     const link = document.createElement('a');
     link.href = url;
     link.setAttribute('download', 'Documents.zip'); // or any other extension
@@ -439,6 +441,25 @@ export function* uploadGalleryRequest({ id, payload }) {
   }
 }
 
+export function* downloadGalleryRequest({ params }) {
+  try {
+    const response = yield call(downloadGallery, params);
+    // const responseData = response.data;
+    // const url = window.URL.createObjectURL(new Blob([responseData]));
+    const url = response.request.responseURL;
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Gallery.zip'); // or any other extension
+    document.body.appendChild(link);
+    link.click();
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
+    yield put(toastActions.success({ message: 'Export Completed.' }));
+  } catch (error) {
+    yield put(projectDashboardActions.downloadGalleryFailure());
+    throw error;
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -555,6 +576,10 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.UPLOAD_GALLERY_REQUEST,
     withLoader(withErrorHandler(uploadGalleryRequest)),
+  );
+  yield takeLatest(
+    Types.DOWNLOAD_GALLERY_REQUEST,
+    withLoader(withErrorHandler(downloadGalleryRequest)),
   );
 }
 

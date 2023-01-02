@@ -137,6 +137,8 @@ export function getModalContent(content) {
     case 'upload-document':
       return {
         title: 'Upload your documents',
+        subtitle:
+          'You can add any sort of relevant documents to the project. It includes relevant report, findings etc. in file format DOCX, PDF, Excel or CSV.',
         content: <UploadDocument />,
       };
 

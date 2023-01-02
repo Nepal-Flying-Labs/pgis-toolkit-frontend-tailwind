@@ -208,7 +208,7 @@ const uploadDocumentDataSuccess = (state, action) => ({
   ...state,
   document: {
     ...state.document,
-    list: [...state.document.list, action.payload],
+    list: [action.payload, ...state.document.list],
   },
 });
 

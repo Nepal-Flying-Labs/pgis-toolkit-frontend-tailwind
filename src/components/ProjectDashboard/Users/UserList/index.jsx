@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable arrow-body-style */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import { Creators, Types } from '@Actions/projectDashboard';
@@ -147,10 +147,14 @@ const UserList = () => {
             <Table
               data={
                 users
-                  ?.filter(item =>
-                    item?.full_name
-                      ?.toLowerCase()
-                      ?.includes(searchText.toLowerCase()),
+                  ?.filter(
+                    item =>
+                      item?.full_name
+                        ?.toLowerCase()
+                        ?.includes(searchText.toLowerCase()) ||
+                      item?.email
+                        ?.toLowerCase()
+                        ?.includes(searchText.toLowerCase()),
                   )
                   ?.filter(d => (userRole ? d?.group === userRole : d)) || []
               }

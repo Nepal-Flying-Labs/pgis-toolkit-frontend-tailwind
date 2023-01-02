@@ -1,17 +1,19 @@
 /* eslint-disable import/no-named-as-default */
 import Creators from '@Actions/projectDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
 import Searchbar from '@Components/common/Searchbar/index';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import Button from '@Components/common/Button/index';
 import { isEmpty } from '@Utils/commonUtils';
 import GalleryCard from './GalleryCard';
 
-function GalleryList({ openSidebar }) {
+const { setRightSidebarState } = CommonCreators;
+const { setSearchText } = Creators;
+
+function GalleryList() {
   const dispatch = useDispatch();
-  const { setSearchText } = Creators;
   const searchText = useSelector(state => state?.projectDashboard?.searchText);
   const gallery = useSelector(state => state.projectDashboard.gallery.list);
 
@@ -64,7 +66,9 @@ function GalleryList({ openSidebar }) {
                 // eslint-disable-next-line no-unused-vars
                 onCardClick={id => {
                   // console.log('Gallery card clicked id : ', id);
-                  openSidebar(true);
+                  dispatch(
+                    setRightSidebarState({ show: true, flag: 'gallery' }),
+                  );
                 }}
               />
             ))}
@@ -74,11 +78,7 @@ function GalleryList({ openSidebar }) {
   );
 }
 
-GalleryList.propTypes = {
-  openSidebar: PropTypes.func,
-};
+GalleryList.propTypes = {};
 
-GalleryList.defaultProps = {
-  openSidebar: () => {},
-};
+GalleryList.defaultProps = {};
 export default GalleryList;

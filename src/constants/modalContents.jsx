@@ -28,6 +28,7 @@ import SaveDataQuery from '@Components/ProjectDashboard/ModalContent/SaveDataQue
 import DeleteDataQuery from '@Components/ProjectDashboard/ModalContent/DeleteDataQuery';
 import AccountSettings from '@Components/Authentication/ModalContent/AccountSettings';
 import ViewLayerAttribute from '@Components/ProjectDashboard/ModalContent/ViewLayerAttribute';
+import DeleteDocument from '@Components/ProjectDashboard/ModalContent/DeleteDocument/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -191,7 +192,7 @@ export function getPromptDialogContent(content) {
     case 'delete-document':
       return {
         title: '',
-        content: <DeleteLayer />,
+        content: <DeleteDocument />,
       };
     case 'save-data-query':
       return {

@@ -22,7 +22,12 @@ export default function DeleteDocument() {
 
   const handleDelete = () => {
     if (isDeleting) return;
-    dispatch(deleteDocumentRequest(deleteDocument?.id, { is_deleted: true }));
+    dispatch(
+      deleteDocumentRequest(deleteDocument?.id, {
+        is_deleted: true,
+        projectId: deleteDocument?.projectId,
+      }),
+    );
   };
 
   return (

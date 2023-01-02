@@ -30,6 +30,7 @@ const initialState = {
     list: [],
     item: {},
     delete: {},
+    searchText: '',
   },
   contactPerson: [],
   user: {
@@ -211,14 +212,6 @@ const uploadDocumentDataSuccess = (state, action) => ({
   },
 });
 
-const setDeleteDocument = (state, action) => ({
-  ...state,
-  document: {
-    ...state.document,
-    delete: action.payload,
-  },
-});
-
 const getProjectCountrySuccess = (state, action) => ({
   ...state,
   info: {
@@ -303,17 +296,19 @@ const getUsersSuccess = (state, action) =>
     user: { ...state.user, list: action.payload },
   });
 
-const setUserState = (state, action) => {
-  console.log(action);
-  return {
-    ...state,
-    user: { ...state.user, ...action.payload },
-  };
-};
+const setUserState = (state, action) => ({
+  ...state,
+  user: { ...state.user, ...action.payload },
+});
 
 const getUserGroupSuccess = (state, action) => ({
   ...state,
   userGroup: action.payload,
+});
+
+const setDocumentState = (state, action) => ({
+  ...state,
+  document: { ...state.document, ...action.payload },
 });
 
 const projectDashboardReducer = createReducer(initialState, {
@@ -336,7 +331,6 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_DOCUMENT_ITEM_SUCCESS]: getDocumentItemSuccess,
   [Types.GET_DOCUMENT_BY_ID_SUCCESS]: getDocumentByIdSuccess,
   [Types.UPLOAD_DOCUMENT_DATA_SUCCESS]: uploadDocumentDataSuccess,
-  [Types.SET_DELETE_DOCUMENT]: setDeleteDocument,
   [Types.GET_PROJECT_COUNTRY_SUCCESS]: getProjectCountrySuccess,
   [Types.GET_PROJECT_STATE_SUCCESS]: getProjectStateSuccess,
   [Types.GET_LAYER_TEMPLATE_SUCCESS]: getLayerTemplateSuccess,
@@ -347,6 +341,7 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_USERS_SUCCESS]: getUsersSuccess,
   [Types.SET_USER_STATE]: setUserState,
   [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
+  [Types.SET_DOCUMENT_STATE]: setDocumentState,
 });
 
 export default projectDashboardReducer;

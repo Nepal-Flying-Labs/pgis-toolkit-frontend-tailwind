@@ -7,9 +7,9 @@ import UserList from '@Components/ProjectDashboard/Users/UserList';
 import { useParams } from 'react-router';
 import { useDispatch } from 'react-redux';
 
-const { getUsersRequest, getUserGroupRequest } = Creators;
+const { getUsersRequest } = Creators;
 
-// const { toggleModal } = CommonCreators;
+// const { toggleModal } = CommonCreators; getUserGroupRequest
 
 const User = () => {
   const { organizationId, projectId } = useParams();
@@ -23,9 +23,9 @@ const User = () => {
     dispatch(
       getUsersRequest({ project: projectId, organization: organizationId }),
     );
-    dispatch(
-      getUserGroupRequest({ project: projectId, organization: organizationId }),
-    );
+    // dispatch(
+    //   getUserGroupRequest({ project: projectId, organization: organizationId }),
+    // );
   }, [dispatch, organizationId, projectId]);
 
   return (

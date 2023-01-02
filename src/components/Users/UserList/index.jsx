@@ -117,10 +117,14 @@ const UserList = () => {
           {!loading ? (
             <Table
               data={
-                users?.filter(item =>
-                  item?.full_name
-                    ?.toLowerCase()
-                    ?.includes(searchText.toLowerCase()),
+                users?.filter(
+                  item =>
+                    item?.full_name
+                      ?.toLowerCase()
+                      ?.includes(searchText.toLowerCase()) ||
+                    item?.email
+                      ?.toLowerCase()
+                      ?.includes(searchText.toLowerCase()),
                 ) || []
               }
               className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"

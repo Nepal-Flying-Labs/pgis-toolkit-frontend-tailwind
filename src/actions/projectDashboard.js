@@ -86,8 +86,6 @@ export const { Types, Creators } = createActions(
     updateDocumentDataSuccess: ['payload'],
     updateDocumentDataFailure: ['payload'],
 
-    setDeleteDocument: ['payload'],
-
     deleteDocumentRequest: ['id', 'payload'],
     deleteDocumentSuccess: ['payload'],
     deleteDocumentFailure: null,
@@ -137,6 +135,8 @@ export const { Types, Creators } = createActions(
     getUserGroupRequest: ['params'],
     getUserGroupSuccess: ['payload'],
     getUserGroupFailure: null,
+
+    setDocumentState: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

@@ -4,7 +4,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import { Creators, Types } from '@Actions/projectMap';
-import Table, { TableHeader } from '@Components/common/Table/Table';
+import Table, { TableHeader } from '@Components/common/CustomTable';
 import SortingContainer from '@Components/common/SortingContainer/index';
 import DropdownOptions from '@Components/common/DropdownOptions/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
@@ -185,6 +185,7 @@ export default function ViewLayerAttribute() {
                 dataField={key}
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
+                rowClassName=""
                 dataHeader={
                   <SortingContainer
                     name={key}
@@ -211,10 +212,11 @@ export default function ViewLayerAttribute() {
             ))}
             <TableHeader
               dataField=""
-              headerClassName="naxatw-py-1 naxatw-px-3 naxatw-text-right"
+              headerClassName="sticky-menu"
+              rowClassName="sticky-menu"
               rowcolSpan="rowSpan_3"
               dataFormat={row => (
-                <div className="naxatw-flex naxatw-justify-end naxatw-w-full">
+                <div className="naxatw-flex naxatw-justify-end naxatw-w-full naxatw-shadow-xl">
                   <DropdownOptions
                     options={dropdownOptions}
                     data={row}

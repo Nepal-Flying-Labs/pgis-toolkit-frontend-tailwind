@@ -208,7 +208,7 @@ export default function EditDocument() {
       </div>
 
       {/* {isEmpty(errorFields) && ( */}
-      <div className="naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
+      <div className="naxatw-flex naxatw-items-center naxatw-justify-center">
         <Button
           className="naxatw-btn-primary"
           onClick={handleSubmit}

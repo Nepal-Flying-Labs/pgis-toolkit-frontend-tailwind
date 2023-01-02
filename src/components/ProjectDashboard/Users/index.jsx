@@ -1,28 +1,33 @@
 /* eslint-disable arrow-body-style */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import Button from '@Components/common/Button/index';
-// import { Creators as OrganizationDashboardCreators } from '@Actions/organizationDashboard';
+import { Creators } from '@Actions/projectDashboard';
 // import { Creators as CommonCreators } from '@Actions/common';
 import UserList from '@Components/ProjectDashboard/Users/UserList';
-// import { useParams } from 'react-router';
+import { useParams } from 'react-router';
+import { useDispatch } from 'react-redux';
 
-// const { clearUsersFilter, getUserGroupRequest } = OrganizationDashboardCreators;
+const { getUsersRequest, getUserGroupRequest } = Creators;
+
 // const { toggleModal } = CommonCreators;
 
 const User = () => {
-  // const { organizationId } = useParams();
-  // const dispatch = useDispatch();
+  const { organizationId, projectId } = useParams();
+  const dispatch = useDispatch();
   const [active, setActive] = useState('users');
   const handleTabChange = name => {
     setActive(name);
   };
 
-  // useEffect(() => {
-  //   dispatch(getUserGroupRequest({ organization: organizationId }));
-  //   return () => {
-  //     dispatch(clearUsersFilter());
-  //   };
-  // }, [dispatch, organizationId]);
+  useEffect(() => {
+    dispatch(
+      getUsersRequest({ project: projectId, organization: organizationId }),
+    );
+    dispatch(
+      getUserGroupRequest({ project: projectId, organization: organizationId }),
+    );
+  }, [dispatch, organizationId, projectId]);
+
   return (
     <div className="naxatw-mx-10">
       <div className="naxatw-flex naxatw-justify-between naxatw-py-5 ">

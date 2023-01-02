@@ -12,10 +12,10 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import TableSkeleton from '@Components/common/TableSkeleton';
 import Table, { TableHeader } from '@Components/common/Table/Table';
-import { useParams } from 'react-router';
+// import { useParams } from 'react-router';
 import Select from '@Components/common/Select/index';
 
-const { getUsersRequest, setUserState } = Creators;
+const { setUserState } = Creators;
 
 const roles = [
   {
@@ -63,7 +63,7 @@ const dropdownOptions = [
 ];
 
 const UserList = () => {
-  const { organizationId, projectId } = useParams();
+  // const { organizationId, projectId } = useParams();
   const dispatch = useDispatch();
   // const [byGroup, setByGroup] = useState('role');
   const users = useSelector(state => state.projectDashboard.user.list);
@@ -99,16 +99,16 @@ const UserList = () => {
   //   }
   // }, [dispatch, users]);
 
-  useEffect(() => {
-    dispatch(
-      getUsersRequest({
-        search: searchText,
-        project: projectId,
-        organization: organizationId,
-        group: userRole,
-      }),
-    );
-  }, [dispatch, searchText, userRole]);
+  // useEffect(() => {
+  //   dispatch(
+  //     getUsersRequest({
+  //       search: searchText,
+  //       project: projectId,
+  //       organization: organizationId,
+  //       group: userRole,
+  //     }),
+  //   );
+  // }, [dispatch, searchText, userRole]);
 
   return (
     <div className="naxatw-mt-3 ">
@@ -132,9 +132,9 @@ const UserList = () => {
             dataKey="name"
             placeholder="Role"
             onChange={data => {
-              dispatch(setUserState({ userRole: data.value }));
+              dispatch(setUserState({ userRole: data.name }));
             }}
-            selected={roles.filter(role => role.value === userRole)[0]?.name}
+            selected={roles.filter(role => role.name === userRole)[0]?.name}
           />
         </div>
       </div>
@@ -145,7 +145,15 @@ const UserList = () => {
         >
           {!loading ? (
             <Table
-              data={users || []}
+              data={
+                users
+                  ?.filter(item =>
+                    item?.full_name
+                      ?.toLowerCase()
+                      ?.includes(searchText.toLowerCase()),
+                  )
+                  ?.filter(d => (userRole ? d?.group === userRole : d)) || []
+              }
               className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               headerWidths={[

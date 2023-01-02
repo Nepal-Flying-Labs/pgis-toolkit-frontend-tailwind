@@ -133,6 +133,10 @@ export const { Types, Creators } = createActions(
     getUsersFailure: null,
 
     setUserState: ['payload'],
+
+    getUserGroupRequest: ['params'],
+    getUserGroupSuccess: ['payload'],
+    getUserGroupFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

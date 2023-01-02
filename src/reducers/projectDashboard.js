@@ -33,6 +33,7 @@ const initialState = {
   },
   contactPerson: [],
   user: {
+    userGroup: [],
     list: [],
     searchText: '',
     userRole: null,
@@ -310,6 +311,11 @@ const setUserState = (state, action) => {
   };
 };
 
+const getUserGroupSuccess = (state, action) => ({
+  ...state,
+  userGroup: action.payload,
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -340,6 +346,7 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_LAYER_ATTRIBUTE_SUCCESS]: getLayerAttributeSuccess,
   [Types.GET_USERS_SUCCESS]: getUsersSuccess,
   [Types.SET_USER_STATE]: setUserState,
+  [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
 });
 
 export default projectDashboardReducer;

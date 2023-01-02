@@ -74,3 +74,6 @@ export const downloadBulkTemplate = params =>
 
 export const getUsers = params =>
   authenticated(api).get('/users/user/', { params });
+
+export const getUserGroup = params =>
+  authenticated(api).get('/users/user_group/', { params });

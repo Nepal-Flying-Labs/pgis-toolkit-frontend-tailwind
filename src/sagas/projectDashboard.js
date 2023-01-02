@@ -35,6 +35,7 @@ import {
   postAttributeSelection,
   downloadBulkTemplate,
   getUsers,
+  getUserGroup,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -403,6 +404,15 @@ export function* getUsersRequest({ params }) {
   }
 }
 
+export function* getUserGroupRequest({ params }) {
+  try {
+    const response = yield call(getUserGroup, params);
+    yield put(projectDashboardActions.getUserGroupSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getUserGroupFailure());
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -511,6 +521,10 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_USERS_REQUEST,
     withLoader(withErrorHandler(getUsersRequest)),
+  );
+  yield takeLatest(
+    Types.GET_USER_GROUP_REQUEST,
+    withLoader(withErrorHandler(getUserGroupRequest)),
   );
 }
 

@@ -107,4 +107,5 @@
   top: unset !important;
   right: unset !important;
   background: transparent !important;
+  display: none;
 }

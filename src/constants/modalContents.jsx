@@ -29,6 +29,7 @@ import DeleteDataQuery from '@Components/ProjectDashboard/ModalContent/DeleteDat
 import AccountSettings from '@Components/Authentication/ModalContent/AccountSettings';
 import ViewLayerAttribute from '@Components/ProjectDashboard/ModalContent/ViewLayerAttribute';
 import DataQueryHelp from '@Components/ProjectDashboard/ModalContent/HelpContents/DataQueryHelp';
+import DeleteOrganizationUser from '@Components/OrganizationDashboard/ModalContent/DeleteOrganizationUser';
 
 export function getModalContent(content) {
   switch (content) {
@@ -226,6 +227,16 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <DeleteDataQuery />,
+      };
+    case 'delete-organization-user':
+      return {
+        title: 'Delete User',
+        content: <DeleteOrganizationUser />,
+      };
+    case 'delete-organization-invited-user':
+      return {
+        title: 'Delete User',
+        content: <DeleteOrganizationUser />,
       };
     default:
       return '';

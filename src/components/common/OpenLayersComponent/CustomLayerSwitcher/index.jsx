@@ -10,11 +10,11 @@ import Mapbox from '@Assets/images/project/mapbox.png';
 import None from '@Assets/images/project/none.png';
 
 const baseLayerData = [
-  { id: 1, name: 'None', label: 'None', img: None },
-  { id: 2, name: 'Mapbox Outdoors', label: 'Outdoors', img: Mapbox },
-  { id: 3, name: 'Mapbox Light', label: 'Light', img: MiniMap },
-  { id: 4, name: 'OSM', label: 'OSM', img: OSM },
-  { id: 5, name: 'Satellite', label: 'Satellite', img: Satellite },
+  { id: 1, name: 'Mapbox Outdoors', label: 'Outdoors', img: Mapbox },
+  { id: 2, name: 'Mapbox Light', label: 'Light', img: MiniMap },
+  { id: 3, name: 'OSM', label: 'OSM', img: OSM },
+  { id: 4, name: 'Satellite', label: 'Satellite', img: Satellite },
+  { id: 5, name: 'None', label: 'None', img: None },
 ];
 
 export default function CustomLayerSwitcher({ map }) {
@@ -34,6 +34,7 @@ export default function CustomLayerSwitcher({ map }) {
         setActiveLayer(baseLayer.values_.title);
       } else {
         baseLayer.setVisible(false);
+        setActiveLayer('None');
       }
     });
   };
@@ -82,19 +83,17 @@ export default function CustomLayerSwitcher({ map }) {
               onKeyDown={() => toggleBaseLayer(name)}
             >
               <img
-                className={`naxatw-w-10 naxatw-h-10 naxatw-rounded-full naxatw-border-4
+                className={`naxatw-mb-1 naxatw-w-10 naxatw-h-10 naxatw-rounded-full naxatw-border-2
                     naxatw-border-white naxatw-bg-contain
                     hover:naxatw-border-active_text ${
-                      activeLayer === 'Satellite'
-                        ? 'naxatw-border-active_text'
-                        : ''
+                      activeLayer === name ? 'naxatw-border-active_text' : ''
                     } `}
                 src={img}
                 alt="out"
               />
               <p
                 className={`naxatw-flex naxatw-justify-center naxatw-text-xs naxatw-font-semibold ${
-                  activeLayer === 'Satellite' ? 'naxatw-text-active_text' : ''
+                  activeLayer === name ? 'naxatw-text-active_text' : ''
                 } `}
               >
                 {label}

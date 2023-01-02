@@ -45,6 +45,7 @@ module.exports = {
           900: '#212121',
         },
         delete_btn: '#FF0F0F',
+        active_text: '#1973E7',
       },
       fontSize: {
         'body-lg': [

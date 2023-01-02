@@ -11,6 +11,7 @@ import {
   MapContainer as MapComponent,
 } from '@Components/common/OpenLayersComponent';
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher';
+import CustomLayerSwitcher from '@Components/common/OpenLayersComponent/CustomLayerSwitcher/index';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import {
@@ -202,6 +203,8 @@ export default function MapSection() {
         <QueryResultPopup />
 
         <LayerSwitcherControl />
+
+        <CustomLayerSwitcher />
 
         {mapState.map((item, index) =>
           item.layer_type === 'Vector' ? (

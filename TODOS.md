@@ -67,6 +67,7 @@
 - [ ] draw on map project setup (sudeep) 
 - [ ] map display on info page
 - [ ] reset data query modal state on close
+- [ ] wms layer
 
 
 ### ISSUES

@@ -137,6 +137,10 @@ export const { Types, Creators } = createActions(
     getUserGroupFailure: null,
 
     setDocumentState: ['payload'],
+
+    uploadGalleryRequest: ['id', 'payload'],
+    uploadGallerySuccess: ['payload'],
+    uploadGalleryFailure: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

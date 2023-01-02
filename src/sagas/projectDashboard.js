@@ -36,6 +36,7 @@ import {
   downloadBulkTemplate,
   getUsers,
   getUserGroup,
+  uploadGallery,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -419,6 +420,24 @@ export function* getUserGroupRequest({ params }) {
     yield put(projectDashboardActions.getUserGroupFailure());
   }
 }
+export function* uploadGalleryRequest({ id, payload }) {
+  try {
+    yield all(payload.map(data => call(uploadGallery, data)));
+    const response = yield call(getGalleryItem, {
+      project: id,
+    });
+    yield put(projectDashboardActions.getGalleryItemSuccess(response.data));
+    yield put(commonActions.toggleModal());
+    yield put(
+      toastActions.success({
+        message: 'Gallery uploaded successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.uploadGalleryFailure());
+    throw error;
+  }
+}
 
 function* projectDashboardWatcher() {
   yield takeLatest(
@@ -532,6 +551,10 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_USER_GROUP_REQUEST,
     withLoader(withErrorHandler(getUserGroupRequest)),
+  );
+  yield takeLatest(
+    Types.UPLOAD_GALLERY_REQUEST,
+    withLoader(withErrorHandler(uploadGalleryRequest)),
   );
 }
 

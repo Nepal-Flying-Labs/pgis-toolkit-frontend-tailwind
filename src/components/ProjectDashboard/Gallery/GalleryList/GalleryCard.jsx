@@ -101,7 +101,7 @@ function GalleryCard({
 }
 
 GalleryCard.propTypes = {
-  id: PropTypes.string,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   imgSrc: PropTypes.string,
   label: PropTypes.string,
   onCardClick: PropTypes.func,

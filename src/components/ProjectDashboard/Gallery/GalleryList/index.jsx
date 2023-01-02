@@ -58,6 +58,7 @@ function GalleryList() {
           {!isEmpty(gallery) &&
             gallery.map(item => (
               <GalleryCard
+                key={item.id}
                 label={item.title}
                 id={item.id}
                 status=""

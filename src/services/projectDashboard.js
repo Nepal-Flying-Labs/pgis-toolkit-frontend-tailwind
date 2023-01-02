@@ -77,3 +77,7 @@ export const getUsers = params =>
 
 export const getUserGroup = params =>
   authenticated(api).get('/users/user_group/', { params });
+
+// upload-gallery
+export const uploadGallery = payload =>
+  authenticated(api).post(`/projects/image/`, payload);

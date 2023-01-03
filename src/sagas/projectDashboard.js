@@ -78,17 +78,21 @@ export function* uploadDatasetsRequest({ payload }) {
     const responses = yield all(payload.map(data => call(uploadLayer, data)));
     const responsesData = responses.map(res => res.data);
     const layerResponses = yield all(
-      responsesData.map(item => call(getLayerById, item.layer_id)),
+      responsesData.map(item =>
+        call(getLayerById, item.layer_id || item.data.id),
+      ),
     );
     const layerData = layerResponses.map(res => res.data);
     yield put(projectDashboardActions.uploadDatasetsSuccess(layerData));
     yield put(commonActions.toggleModal());
-    yield put(
-      toastActions.success({
-        message:
-          'The layer is being uploaded. We will notify you shortly after upload success.',
-      }),
-    );
+    if (layerData[0]?.layer_type === 'Vector') {
+      yield put(
+        toastActions.success({
+          message:
+            'The layer is being uploaded. We will notify you shortly after upload success.',
+        }),
+      );
+    }
   } catch (error) {
     yield put(projectDashboardActions.uploadDatasetsFailure());
     throw error;

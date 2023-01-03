@@ -42,6 +42,9 @@ const AssignUsers = () => {
   const { organizationId } = useParams();
   const assignList = useSelector(assignProjectListSelector);
   const userList = useSelector(state => state.organizationDashboard.users);
+  const selectedData = useSelector(
+    state => state.organizationDashboard.selectedData,
+  );
   const userRoles = useSelector(assignRoleListSelector);
   const organizationDetails = useSelector(
     state => state.organizationDashboard.organizationDetail,
@@ -63,7 +66,9 @@ const AssignUsers = () => {
   const [projectSearchText, setProjectSearchText] = useState('');
   const [selectedRolesList, setSelectedRolesList] = useState(userRoles);
   const [selectedProjectList, setSelectedProjectList] = useState(assignList);
-  const [emailList, setEmailList] = useState([]);
+  const [emailList, setEmailList] = useState(
+    selectedData?.fromUserTab ? [selectedData] : [],
+  );
 
   const handleSubmit = () => {
     const data = {

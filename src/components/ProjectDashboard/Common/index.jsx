@@ -32,8 +32,8 @@ function AdditionalSidebar({ onCloseClick, onDownload, onDelete, onEdit }) {
 
   return (
     <div
-      style={{ height: `calc(100vh - 52px)`, transition: 'ease-in-out 300ms' }}
-      className="naxatw-min-w-[364px] naxatw-max-w-[364px] naxatw-px-5 naxatw-bg-grey-100 naxatw-border-grey-300 naxatw-border-l-[1px] naxatw-border-b-[1px]"
+      style={{ height: `calc(100vh - 52px)` }}
+      className="naxatw-min-w-[364px] naxatw-max-w-[364px] naxatw-px-5 naxatw-bg-grey-100 naxatw-border-grey-300 naxatw-border-l-[1px] naxatw-border-b-[1px]  naxatw-transition-all naxatw-ease-in-out naxatw-duration-200 -naxatw-translate-x-1"
     >
       <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
         <h4 className="">
@@ -52,13 +52,11 @@ function AdditionalSidebar({ onCloseClick, onDownload, onDelete, onEdit }) {
         </div>
       </div>
       {flag?.toLowerCase() === 'gallery' && (
-        <div className="">
+        <div className="naxatw-w-[324px] naxatw-min-w-[324px] naxatw-h-[190px] ">
           <img
             src={sidebarData?.image}
             alt="sidebar"
-            width="324px"
-            height="160px"
-            className="naxatw-object-contain naxatw-rounded-lg naxatw-border-[1px] naxatw-border-[#D7D7D7]"
+            className="naxatw-object-cover naxatw-h-full naxatw-w-full naxatw-rounded-lg naxatw-border-[1px] naxatw-border-[#D7D7D7]"
           />
         </div>
       )}
@@ -76,10 +74,10 @@ function AdditionalSidebar({ onCloseClick, onDownload, onDelete, onEdit }) {
         <div className="naxatw-text-body-btn naxatw-mb-2">File Type</div>
         <div className="naxatw-text-body-lg">{sidebarData?.type || '-'}</div>
       </div>
-      <div className="naxatw-mb-5">
+      {/* <div className="naxatw-mb-5">
         <div className="naxatw-text-body-btn naxatw-mb-2">Tags</div>
         <div className="naxatw-text-body-lg">{sidebarData?.tag || '-'}</div>
-      </div>
+      </div> */}
       <div className="naxatw-mb-5">
         <div className="naxatw-text-body-btn naxatw-mb-2">Uploaded on</div>
         <div className="naxatw-text-body-lg">

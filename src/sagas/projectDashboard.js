@@ -38,6 +38,8 @@ import {
   getUserGroup,
   uploadGallery,
   downloadGallery,
+  getIndividualGallery,
+  updateGallery,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -45,7 +47,8 @@ import {
   uploadLayer,
 } from '@Services/projectMap';
 import prepareFormData from '@Utils/prepareFormData';
-import removeObjectKeys from '@Utils/removeObjectKeys';
+// import removeObjectKeys from '@Utils/removeObjectKeys';
+import axios from 'axios';
 
 export function* getProjectDetailRequest({ params }) {
   try {
@@ -227,25 +230,33 @@ export function* getDocumentByIdRequest({ id }) {
 }
 
 export function* downloadDocumentRequest({ params }) {
+  const token = localStorage.getItem('userToken');
+  // const headers = new Headers();
+  // headers.append('Authorization', `Bearer ${token}`);
   try {
     const response = yield call(downloadDocument, params);
     // const responseData = response.data;
     // const url = window.URL.createObjectURL(new Blob([responseData]));
-    const url = response.request.responseURL;
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'Documents.zip'); // or any other extension
-    document.body.appendChild(link);
-    link.click();
+    const resURL = response.request.responseURL;
+
+    axios.get(resURL, {
+      headers: { Authentication: `Bearer ${token}` },
+    });
+    // const link = document.createElement('a');
+    // link.href = url;
+    // link.setAttribute('download', 'Document.zip'); // or any other extension
+    // document.body.appendChild(link);
+    // link.click();
     yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
     yield put(toastActions.success({ message: 'Export Completed.' }));
   } catch (error) {
+    console.log('err ', error);
     yield put(projectDashboardActions.downloadDocumentFailure());
     throw error;
   }
 }
 
-export function* uploadDocumentDataRequest({ id, payload }) {
+export function* uploadDocumentDataRequest({ payload, id }) {
   try {
     yield all(payload.map(data => call(uploadDocument, data)));
     const res = yield call(getDocumentItem, { project: id });
@@ -253,10 +264,11 @@ export function* uploadDocumentDataRequest({ id, payload }) {
     yield put(commonActions.toggleModal());
     yield put(
       toastActions.success({
-        message: 'Data uploaded successfully.',
+        message: 'Document uploaded successfully.',
       }),
     );
   } catch (error) {
+    console.log('err ', error);
     yield put(projectDashboardActions.uploadDocumentDataFailure());
     throw error;
   }
@@ -301,13 +313,15 @@ export function* getLayerTemplateRequest({ id }) {
 }
 
 export function* deleteDocumentRequest({ id, payload }) {
-  const filteredData = removeObjectKeys(payload, ['projectId']);
-  const pId = payload.projectId;
-  const formData = prepareFormData(filteredData);
+  // const filteredData = removeObjectKeys(payload, ['projectId']);
+  // const pId = payload.projectId;
+  const formData = prepareFormData(payload);
   try {
-    yield call(updateDocument, id, formData);
-    const res = yield call(getDocumentItem, { project: pId });
-    yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
+    const response = yield call(updateDocument, id, formData);
+    yield put(projectDashboardActions.deleteDocumentSuccess(response.data));
+
+    // const res = yield call(getDocumentItem, { project: pId });
+    // yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
     yield put(commonActions.togglePromptDialog());
     yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
 
@@ -460,6 +474,39 @@ export function* downloadGalleryRequest({ params }) {
   }
 }
 
+export function* getGalleryByIdRequest({ id }) {
+  try {
+    const response = yield call(getIndividualGallery, id);
+    yield put(projectDashboardActions.getGalleryByIdSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getGalleryByIdFailure());
+    throw error;
+  }
+}
+
+export function* deleteGalleryRequest({ id, payload }) {
+  // const filteredData = removeObjectKeys(payload, ['projectId']);
+  // const pId = payload.projectId;
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(updateGallery, id, formData);
+    yield put(projectDashboardActions.deleteGallerySuccess(response.data));
+
+    // const res = yield call(getGalleryItem, { project: pId });
+    // yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
+    yield put(commonActions.togglePromptDialog());
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
+
+    yield put(
+      toastActions.success({
+        message: 'Gallery deleted successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.deleteGalleryFailure());
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -580,6 +627,14 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.DOWNLOAD_GALLERY_REQUEST,
     withLoader(withErrorHandler(downloadGalleryRequest)),
+  );
+  yield takeLatest(
+    Types.GET_GALLERY_BY_ID_REQUEST,
+    withLoader(withErrorHandler(getGalleryByIdRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_GALLERY_REQUEST,
+    withLoader(withErrorHandler(deleteGalleryRequest)),
   );
 }
 

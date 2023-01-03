@@ -150,6 +150,12 @@ export const { Types, Creators } = createActions(
     getGalleryByIdRequest: ['id'],
     getGalleryByIdSuccess: ['payload'],
     getGalleryByIdFailure: ['payload'],
+
+    setGalleryState: ['payload'],
+
+    deleteGalleryRequest: ['id', 'payload'],
+    deleteGallerySuccess: ['payload'],
+    deleteGalleryFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

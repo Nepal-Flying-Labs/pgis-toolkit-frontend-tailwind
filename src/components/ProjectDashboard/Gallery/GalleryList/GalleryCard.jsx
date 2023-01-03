@@ -1,7 +1,15 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable import/no-named-as-default */
+import React from 'react';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions/index';
 import CustomCheckbox from '@Components/common/CustomCheckbox/index';
+import { useDispatch } from 'react-redux';
+import Creators from '@Actions/projectDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
+import { useParams } from 'react-router';
+
+const { togglePromptDialog } = CommonCreators;
+const { setGalleryState } = Creators;
 
 function GalleryCard({
   id,
@@ -12,14 +20,8 @@ function GalleryCard({
   status,
   onCheckSelected,
 }) {
-  const [activeCard, setActiveCard] = useState(false);
-
-  useEffect(() => {
-    if (status === id) {
-      setActiveCard(!activeCard);
-    }
-  }, [status]);
-
+  const dispatch = useDispatch();
+  const { projectId } = useParams();
   const dropdownOptions = [
     {
       id: 1,
@@ -29,7 +31,7 @@ function GalleryCard({
           <p className="naxatw-text-body-lg">Edit</p>
         </span>
       ),
-      //   logic for edit item
+      //   logic for edit item toggleModal
       onClick: () => {},
     },
     {
@@ -41,7 +43,14 @@ function GalleryCard({
         </span>
       ),
       //   logic for delete item
-      onClick: () => {},
+      onClick: () => {
+        dispatch(
+          setGalleryState({
+            delete: { id, name: label, image: imgSrc, projectId },
+          }),
+        );
+        dispatch(togglePromptDialog('delete-gallery'));
+      },
     },
   ];
 
@@ -62,7 +71,7 @@ function GalleryCard({
             // width="210px"
             // height="210px"
             className={`${
-              activeCard ? 'naxatw-border-2 naxatw-border-primary-400' : ''
+              status === id ? 'naxatw-border-2 naxatw-border-primary-400' : ''
             } naxatw-object-cover naxatw-h-full naxatw-w-full naxatw-rounded-lg naxatw-border-2`}
           />
         </div>
@@ -86,7 +95,7 @@ function GalleryCard({
       <div className=" naxatw-flex naxatw-justify-between">
         <p
           className={`${
-            activeCard ? 'naxatw-text-[#00A699]' : ''
+            status === id ? 'naxatw-text-[#00A699]' : ''
           } group-hover:naxatw-text-[#00A699] naxatw-py-[10px] naxatw-text-body-btn`}
         >
           {label}
@@ -109,7 +118,7 @@ GalleryCard.propTypes = {
   label: PropTypes.string,
   onCardClick: PropTypes.func,
   checked: PropTypes.bool,
-  status: PropTypes.string,
+  status: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onCheckSelected: PropTypes.func,
 };
 

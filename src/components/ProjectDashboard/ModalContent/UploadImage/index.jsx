@@ -34,7 +34,7 @@ export default function UploadImage() {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [errorFields, setErrorFields] = useState({});
   const isUploading = useSelector(state =>
-    checkIfLoading(state, [Types.UPLOAD_DATASETS_REQUEST]),
+    checkIfLoading(state, [Types.UPLOAD_GALLERY_REQUEST]),
   );
   const { height } = useWindowDimensions();
   const dispatch = useDispatch();
@@ -213,7 +213,7 @@ export default function UploadImage() {
                   Delete
                 </Button>
               </div>
-              <div className="naxatw-w-full">
+              <div className="naxatw-w-full naxatw-space-y-2">
                 <Input
                   id={id}
                   label="Title of Image"
@@ -255,6 +255,7 @@ export default function UploadImage() {
             className="naxatw-btn-primary"
             onClick={handleSubmit}
             isLoading={isUploading}
+            loaderClassName="naxatw-fill-secondary-400"
           >
             Upload
           </Button>

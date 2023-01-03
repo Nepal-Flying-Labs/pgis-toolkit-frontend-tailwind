@@ -85,3 +85,11 @@ export const uploadGallery = payload =>
 // gallery-download
 export const downloadGallery = params =>
   authenticated(api).get(`/projects/image_download/`, { params });
+
+// individual-gallery-item
+export const getIndividualGallery = id =>
+  authenticated(api).get(`/projects/image/${id}/`);
+
+// update-document-item
+export const updateGallery = (id, payload) =>
+  authenticated(api).patch(`/projects/image/${id}/`, payload);

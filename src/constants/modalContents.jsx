@@ -30,6 +30,7 @@ import AccountSettings from '@Components/Authentication/ModalContent/AccountSett
 import ViewLayerAttribute from '@Components/ProjectDashboard/ModalContent/ViewLayerAttribute';
 import DeleteDocument from '@Components/ProjectDashboard/ModalContent/DeleteDocument/index';
 import DataQueryHelp from '@Components/ProjectDashboard/ModalContent/HelpContents/DataQueryHelp';
+import DeleteGallery from '@Components/ProjectDashboard/ModalContent/DeleteGallery/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -216,6 +217,11 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <DeleteDocument />,
+      };
+    case 'delete-gallery':
+      return {
+        title: '',
+        content: <DeleteGallery />,
       };
     case 'save-data-query':
       return {

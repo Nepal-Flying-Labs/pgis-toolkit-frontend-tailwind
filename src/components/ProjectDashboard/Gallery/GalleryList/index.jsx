@@ -11,20 +11,27 @@ import { useParams } from 'react-router';
 import GalleryCard from './GalleryCard';
 
 const { setRightSidebarState } = CommonCreators;
-const { setSearchText, downloadGalleryRequest } = Creators;
+const { downloadGalleryRequest, setGalleryState, getGalleryByIdRequest } =
+  Creators;
 
 function GalleryList() {
   const { projectId } = useParams();
   const dispatch = useDispatch();
-  const searchText = useSelector(state => state?.projectDashboard?.searchText);
+  const searchText = useSelector(
+    state => state.projectDashboard.gallery.searchText,
+  );
   const gallery = useSelector(state => state.projectDashboard.gallery.list);
   const [downloadIdList, setDownloadIdList] = useState([]);
+  // const [selectedCard, setSelectedCard] = useState('');
+  const selectedCard = useSelector(
+    state => state.projectDashboard.gallery.cardId,
+  );
 
   const [value, handleSearch] = useDebouncedInput({
     ms: 300,
     init: searchText,
     onChange: debouncedEvent => {
-      dispatch(setSearchText(debouncedEvent.target.value));
+      dispatch(setGalleryState({ searchText: debouncedEvent.target.value }));
     },
   });
 
@@ -83,27 +90,35 @@ function GalleryList() {
       >
         <div className="naxatw-flex naxatw-flex-wrap naxatw-gap-5">
           {!isEmpty(gallery) &&
-            gallery.map(item => (
-              <GalleryCard
-                key={item.id}
-                label={item.title}
-                id={item.id}
-                status=""
-                imgSrc={item.image}
-                checked={downloadIdList?.includes(item.id)}
-                // eslint-disable-next-line no-unused-vars
-                onCardClick={id => {
-                  // console.log('Gallery card clicked id : ', id);
-                  dispatch(
-                    setRightSidebarState({ show: true, flag: 'gallery' }),
-                  );
-                }}
-                onCheckSelected={e => {
-                  e.stopPropagation();
-                  handleSelect(item.id);
-                }}
-              />
-            ))}
+            gallery.map(item => {
+              if (
+                item?.title?.toLowerCase().includes(searchText.toLowerCase())
+              ) {
+                return (
+                  <GalleryCard
+                    key={item.id}
+                    label={item.title}
+                    id={item.id}
+                    status={selectedCard}
+                    imgSrc={item.image}
+                    checked={downloadIdList?.includes(item.id)}
+                    // eslint-disable-next-line no-unused-vars
+                    onCardClick={() => {
+                      dispatch(setGalleryState({ cardId: item.id }));
+                      dispatch(getGalleryByIdRequest(item.id));
+                      dispatch(
+                        setRightSidebarState({ show: true, flag: 'gallery' }),
+                      );
+                    }}
+                    onCheckSelected={e => {
+                      e.stopPropagation();
+                      handleSelect(item.id);
+                    }}
+                  />
+                );
+              }
+              return null;
+            })}
         </div>
       </div>
     </div>

@@ -9,14 +9,22 @@ import GalleryList from './GalleryList/index';
 import AdditionalSidebar from '../Common/index';
 import NoPhotosYet from './NoPhotosYet/index';
 
-const { getGalleryItemRequest } = ProjectDashboardCreators;
-const { toggleModal, setRightSidebarState } = CommonCreators;
+const { getGalleryItemRequest, setGalleryState } = ProjectDashboardCreators;
+const { toggleModal, setRightSidebarState, togglePromptDialog } =
+  CommonCreators;
 
 export default function Gallery() {
   const { projectId } = useParams();
   const gallery = useSelector(state => state.projectDashboard.gallery.list);
   const toggleRightBar = useSelector(state => state.common.rightSidebar.show);
   const dispatch = useDispatch();
+
+  const handleDownload = id => {
+    // dispatch(
+    //   downloadDocumentRequest({ document: [id].join(), project: projectId }),
+    // );
+    console.log(id);
+  };
 
   useEffect(() => {
     dispatch(setRightSidebarState({ show: false, flag: '' }));
@@ -68,9 +76,19 @@ export default function Gallery() {
       </div>
       {toggleRightBar && (
         <AdditionalSidebar
-          onCloseClick={() =>
-            dispatch(setRightSidebarState({ show: false, flag: '' }))
-          }
+          onCloseClick={() => {
+            dispatch(setGalleryState({ cardId: null }));
+            dispatch(setRightSidebarState({ show: false, flag: '' }));
+          }}
+          onDownload={id => handleDownload(id)}
+          onDelete={data => {
+            dispatch(setGalleryState({ delete: { ...data, projectId } }));
+            dispatch(togglePromptDialog('delete-gallery'));
+          }}
+          // onEdit={id => {
+          //   dispatch(dispatch(getDocumentByIdRequest(id)));
+          //   dispatch(toggleModal('edit-document'));
+          // }}
         />
       )}
     </div>

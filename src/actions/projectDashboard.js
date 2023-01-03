@@ -112,6 +112,11 @@ export const { Types, Creators } = createActions(
 
     setSelectedLayer: ['payload'],
 
+    setIndividualAttribute: ['payload'],
+    clearIndividualAttribute: null,
+
+    setAttributeList: ['payload'],
+
     clearAttributeListData: null,
 
     getLayerAttributeRequest: ['params'],
@@ -121,6 +126,18 @@ export const { Types, Creators } = createActions(
     postAttributeSelectionRequest: ['payload'],
     postAttributeSelectionSuccess: ['payload'],
     postAttributeSelectionFailure: null,
+
+    postTemplateAttributeRequest: ['payload'],
+    postTemplateAttributeSuccess: ['payload'],
+    postTemplateAttributeFailure: null,
+
+    updateTemplateAttributeRequest: ['id', 'payload'],
+    updateTemplateAttributeSuccess: ['payload'],
+    updateTemplateAttributeFailure: null,
+
+    deleteTemplateAttributeRequest: ['id', 'payload'],
+    deleteTemplateAttributeSuccess: ['payload'],
+    deleteTemplateAttributeFailure: null,
 
     downloadBulkTemplateRequest: ['params'],
     downloadBulkTemplateSuccess: ['payload'],

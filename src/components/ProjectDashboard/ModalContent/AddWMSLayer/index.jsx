@@ -11,6 +11,7 @@ import Input from '@Components/common/Input';
 import Button from '@Components/common/Button';
 import Select from '@Components/common/Select';
 import prepareFormData from '@Utils/prepareFormData';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const initialState = {
   layerName: '',
@@ -24,6 +25,9 @@ const { uploadDatasetsRequest } = ProjectDashboardCreators;
 const AddWMSLayer = () => {
   const { projectId } = useParams();
   const themes = useSelector(state => state.projectMap.themes);
+  const isUploading = useSelector(state =>
+    checkIfLoading(state, [Types.UPLOAD_DATASETS_REQUEST]),
+  );
   const dispatch = useDispatch();
   const { values, inputProps, handleSubmit, handleChange } = useForm({
     initialValues: initialState,
@@ -86,7 +90,11 @@ const AddWMSLayer = () => {
           )} */}
         </div>
         <div className="naxatw-pt-5 naxatw-flex naxatw-justify-center">
-          <Button className="naxatw-btn-primary" onClick={handleSubmit}>
+          <Button
+            className="naxatw-btn-primary"
+            isLoading={isUploading}
+            onClick={handleSubmit}
+          >
             Add to Catalogue
           </Button>
         </div>

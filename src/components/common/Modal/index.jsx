@@ -11,6 +11,7 @@ export default function Modal({
   className,
   headerContent,
   helpContent,
+  zIndex,
 }) {
   const nodeRef = useRef();
 
@@ -37,6 +38,7 @@ export default function Modal({
           naxatw-overflow-x-hidden naxatw-z-[11111] naxatw-p-4 md:naxatw-inset-0 naxatw-h-modal
           md:naxatw-h-full naxatw-flex naxatw-justify-center naxatw-bg-grey-700/50
       `}
+        style={{ zIndex }}
       >
         <div
           ref={nodeRef}
@@ -120,6 +122,7 @@ Modal.defaultProps = {
   className: '',
   headerContent: null,
   helpContent: null,
+  zIndex: '11111',
 };
 
 Modal.propTypes = {
@@ -131,4 +134,5 @@ Modal.propTypes = {
   className: PropTypes.string,
   headerContent: PropTypes.node,
   helpContent: PropTypes.node,
+  zIndex: PropTypes.string,
 };

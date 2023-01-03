@@ -7,6 +7,7 @@ export const { Types, Creators } = createActions(
     togglePromptDialog: ['payload'],
     setPromptDialogContent: ['payload'],
     setProjectHeaderHeight: ['payload'],
+    setRightSidebarState: ['payload'],
   },
   { prefix: 'common/' },
 );

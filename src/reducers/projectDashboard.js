@@ -30,8 +30,16 @@ const initialState = {
     list: [],
     item: {},
     delete: {},
+    searchText: '',
   },
   contactPerson: [],
+  user: {
+    userGroup: [],
+    list: [],
+    searchText: '',
+    userRole: null,
+    ordering: null,
+  },
 };
 
 const getProjectDetailSuccess = (state, action) => ({
@@ -200,15 +208,7 @@ const uploadDocumentDataSuccess = (state, action) => ({
   ...state,
   document: {
     ...state.document,
-    list: [...state.document.list, action.payload],
-  },
-});
-
-const setDeleteDocument = (state, action) => ({
-  ...state,
-  document: {
-    ...state.document,
-    delete: action.payload,
+    list: [action.payload, ...state.document.list],
   },
 });
 
@@ -289,6 +289,28 @@ const getLayerAttributeSuccess = (state, action) => ({
   },
 });
 
+const getUsersSuccess = (state, action) =>
+  // const { counts, next, previous } = action.payload;
+  ({
+    ...state,
+    user: { ...state.user, list: action.payload },
+  });
+
+const setUserState = (state, action) => ({
+  ...state,
+  user: { ...state.user, ...action.payload },
+});
+
+const getUserGroupSuccess = (state, action) => ({
+  ...state,
+  userGroup: action.payload,
+});
+
+const setDocumentState = (state, action) => ({
+  ...state,
+  document: { ...state.document, ...action.payload },
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -309,7 +331,6 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_DOCUMENT_ITEM_SUCCESS]: getDocumentItemSuccess,
   [Types.GET_DOCUMENT_BY_ID_SUCCESS]: getDocumentByIdSuccess,
   [Types.UPLOAD_DOCUMENT_DATA_SUCCESS]: uploadDocumentDataSuccess,
-  [Types.SET_DELETE_DOCUMENT]: setDeleteDocument,
   [Types.GET_PROJECT_COUNTRY_SUCCESS]: getProjectCountrySuccess,
   [Types.GET_PROJECT_STATE_SUCCESS]: getProjectStateSuccess,
   [Types.GET_LAYER_TEMPLATE_SUCCESS]: getLayerTemplateSuccess,
@@ -317,6 +338,10 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.SET_SELECTED_LAYER]: setSelectedLayer,
   [Types.CLEAR_ATTRIBUTE_LIST_DATA]: clearAttributeListData,
   [Types.GET_LAYER_ATTRIBUTE_SUCCESS]: getLayerAttributeSuccess,
+  [Types.GET_USERS_SUCCESS]: getUsersSuccess,
+  [Types.SET_USER_STATE]: setUserState,
+  [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
+  [Types.SET_DOCUMENT_STATE]: setDocumentState,
 });
 
 export default projectDashboardReducer;

@@ -34,6 +34,10 @@ import {
   getLayerAttribute,
   postAttributeSelection,
   downloadBulkTemplate,
+  getUsers,
+  getUserGroup,
+  uploadGallery,
+  downloadGallery,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -41,6 +45,7 @@ import {
   uploadLayer,
 } from '@Services/projectMap';
 import prepareFormData from '@Utils/prepareFormData';
+import removeObjectKeys from '@Utils/removeObjectKeys';
 
 export function* getProjectDetailRequest({ params }) {
   try {
@@ -228,13 +233,15 @@ export function* getDocumentByIdRequest({ id }) {
 export function* downloadDocumentRequest({ params }) {
   try {
     const response = yield call(downloadDocument, params);
-    const responseData = response.data;
-    const url = window.URL.createObjectURL(new Blob([responseData]));
+    // const responseData = response.data;
+    // const url = window.URL.createObjectURL(new Blob([responseData]));
+    const url = response.request.responseURL;
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'Documents'); // or any other extension
+    link.setAttribute('download', 'Documents.zip'); // or any other extension
     document.body.appendChild(link);
     link.click();
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
     yield put(toastActions.success({ message: 'Export Completed.' }));
   } catch (error) {
     yield put(projectDashboardActions.downloadDocumentFailure());
@@ -262,14 +269,16 @@ export function* uploadDocumentDataRequest({ id, payload }) {
 export function* updateDocumentDataRequest({ payload }) {
   const { documentId, projectId, data } = payload;
   // console.log('update docx ', payload);
+  const formData = prepareFormData(data);
   try {
-    yield call(updateDocument, documentId, data);
+    yield call(updateDocument, documentId, formData);
     const res = yield call(getDocumentItem, { project: projectId });
     yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
     yield put(commonActions.toggleModal());
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
     yield put(
       toastActions.success({
-        message: 'Data uploaded successfully.',
+        message: 'Data updated successfully.',
       }),
     );
   } catch (error) {
@@ -296,16 +305,19 @@ export function* getLayerTemplateRequest({ id }) {
 }
 
 export function* deleteDocumentRequest({ id, payload }) {
+  const filteredData = removeObjectKeys(payload, ['projectId']);
+  const pId = payload.projectId;
+  const formData = prepareFormData(filteredData);
   try {
-    // eslint-disable-next-line no-unused-vars
-    const response = yield call(updateDocument, id, payload);
-    // console.log('deleted item ', response);
-    // const res = yield call(getDocumentItem, { project: projectId });
-    // yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
-    yield put(commonActions.toggleModal());
+    yield call(updateDocument, id, formData);
+    const res = yield call(getDocumentItem, { project: pId });
+    yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
+    yield put(commonActions.togglePromptDialog());
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
+
     yield put(
       toastActions.success({
-        message: 'Data deleted successfully.',
+        message: 'Document deleted successfully.',
       }),
     );
   } catch (error) {
@@ -392,6 +404,62 @@ export function* downloadBulkTemplateRequest({ params }) {
     );
   } catch (error) {
     yield put(projectDashboardActions.downloadBulkTemplateFailure());
+    throw error;
+  }
+}
+
+export function* getUsersRequest({ params }) {
+  try {
+    const response = yield call(getUsers, params);
+    yield put(projectDashboardActions.getUsersSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getUsersFailure());
+    throw error;
+  }
+}
+
+export function* getUserGroupRequest({ params }) {
+  try {
+    const response = yield call(getUserGroup, params);
+    yield put(projectDashboardActions.getUserGroupSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getUserGroupFailure());
+  }
+}
+export function* uploadGalleryRequest({ id, payload }) {
+  try {
+    yield all(payload.map(data => call(uploadGallery, data)));
+    const response = yield call(getGalleryItem, {
+      project: id,
+    });
+    yield put(projectDashboardActions.getGalleryItemSuccess(response.data));
+    yield put(commonActions.toggleModal());
+    yield put(
+      toastActions.success({
+        message: 'Gallery uploaded successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.uploadGalleryFailure());
+    throw error;
+  }
+}
+
+export function* downloadGalleryRequest({ params }) {
+  try {
+    const response = yield call(downloadGallery, params);
+    // const responseData = response.data;
+    // const url = window.URL.createObjectURL(new Blob([responseData]));
+    const url = response.request.responseURL;
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Gallery.zip'); // or any other extension
+    document.body.appendChild(link);
+    link.click();
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
+    yield put(toastActions.success({ message: 'Export Completed.' }));
+  } catch (error) {
+    yield put(projectDashboardActions.downloadGalleryFailure());
     throw error;
   }
 }
@@ -500,6 +568,22 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.DOWNLOAD_BULK_TEMPLATE_REQUEST,
     withLoader(withErrorHandler(downloadBulkTemplateRequest)),
+  );
+  yield takeLatest(
+    Types.GET_USERS_REQUEST,
+    withLoader(withErrorHandler(getUsersRequest)),
+  );
+  yield takeLatest(
+    Types.GET_USER_GROUP_REQUEST,
+    withLoader(withErrorHandler(getUserGroupRequest)),
+  );
+  yield takeLatest(
+    Types.UPLOAD_GALLERY_REQUEST,
+    withLoader(withErrorHandler(uploadGalleryRequest)),
+  );
+  yield takeLatest(
+    Types.DOWNLOAD_GALLERY_REQUEST,
+    withLoader(withErrorHandler(downloadGalleryRequest)),
   );
 }
 

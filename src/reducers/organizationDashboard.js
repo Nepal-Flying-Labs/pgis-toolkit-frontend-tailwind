@@ -17,7 +17,8 @@ const initialState = {
     stepFour: {},
   },
   organizationDetail: null,
-  users: null,
+  selectedData: null,
+  users: [],
   userGroup: [],
   usersFilter: {
     searchText: '',
@@ -25,6 +26,8 @@ const initialState = {
     ordering: null,
   },
   assignList: [],
+  organizationList: [],
+  userTab: 'users',
 };
 
 const getOrganizationDetailSuccess = (state, action) => ({
@@ -212,8 +215,74 @@ const getAllProjectSuccess = (state, action) => ({
 
 const setAssignList = (state, action) => ({
   ...state,
-  assignList: [action.payload],
+  organizationList: [action.payload],
 });
+
+const updateUserStatusSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.users.map(user => {
+    const { active } = user;
+    return user.id === userData.id ? { ...user, active: !active } : { ...user };
+  });
+  return {
+    ...state,
+    users: newData,
+  };
+};
+
+const deleteUserSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.users.map(user =>
+    user.id === userData.id ? null : { ...user },
+  );
+  return {
+    ...state,
+    users: newData,
+  };
+};
+
+const setSelectedData = (state, action) => ({
+  ...state,
+  selectedData: action.payload,
+});
+
+const handleUserTabChange = (state, action) => ({
+  ...state,
+  userTab: action.payload,
+});
+
+const updateInvitedUserStatusSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.users.map(user =>
+    user.id === userData.id ? { ...user, status: 'Expired' } : { ...user },
+  );
+  return {
+    ...state,
+    users: newData,
+  };
+};
+
+const resendInvitationSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.users.map(user =>
+    user.id === userData.id ? { ...user, status: 'Pending' } : { ...user },
+  );
+  return {
+    ...state,
+    users: newData,
+  };
+};
+
+const deleteInvitedUserSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.users.map(user =>
+    user.id === userData.id ? null : { ...user },
+  );
+  return {
+    ...state,
+    users: newData,
+  };
+};
 
 const resetOrganizationDashboardState = () => ({
   ...initialState,
@@ -237,6 +306,13 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
   [Types.GET_ALL_PROJECT_SUCCESS]: getAllProjectSuccess,
   [Types.SET_ASSIGN_LIST]: setAssignList,
+  [Types.UPDATE_USER_STATUS_SUCCESS]: updateUserStatusSuccess,
+  [Types.DELETE_USER_SUCCESS]: deleteUserSuccess,
+  [Types.SET_SELECTED_DATA]: setSelectedData,
+  [Types.HANDLE_USER_TAB_CHANGE]: handleUserTabChange,
+  [Types.UPDATE_INVITED_USER_STATUS_SUCCESS]: updateInvitedUserStatusSuccess,
+  [Types.RESEND_INVITATION_SUCCESS]: resendInvitationSuccess,
+  [Types.DELETE_INVITED_USER_SUCCESS]: deleteInvitedUserSuccess,
   [Types.RESET_ORGANIZATION_DASHBOARD_STATE]: resetOrganizationDashboardState,
 });
 

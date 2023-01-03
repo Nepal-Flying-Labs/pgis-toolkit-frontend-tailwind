@@ -24,13 +24,13 @@ import useWindowDimensions from '@Hooks/useWindowDimentions';
 import Chip from '@Components/common/Chip/index';
 import noImg from '@Assets/images/noImage.png';
 import { v4 as uuidv4 } from 'uuid';
+import FormErrorMessage from '@Components/common/FormErrorMessage/index';
+import getImageSource from '@Utils/getImageSource';
 
-const { getProjectThemesRequest } = ProjectMapCreators;
-const { uploadDatasetsRequest } = ProjectDashboardCreators;
+const { uploadGalleryRequest } = ProjectDashboardCreators;
 
 export default function UploadImage() {
   const { projectId } = useParams();
-  const themes = useSelector(state => state.projectMap.themes);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [errorFields, setErrorFields] = useState({});
   const isUploading = useSelector(state =>
@@ -38,11 +38,6 @@ export default function UploadImage() {
   );
   const { height } = useWindowDimensions();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (themes) return;
-    dispatch(getProjectThemesRequest({ project: projectId }));
-  }, [dispatch, themes, projectId]);
 
   const handleUpload = e => {
     const { files } = e.target;
@@ -59,53 +54,18 @@ export default function UploadImage() {
       const prevId = uploadedFiles.at(-1)?.id || 0;
       const fileObj = {
         id: prevId + 1 + index,
-        name: filename,
-        extension,
-        category: null,
-        addToMap: false,
+        // tag: [],
+        title: filename,
+        caption: '',
         file,
+        project: projectId,
       };
-      if (extension === 'csv') {
-        getCSVHeaders(file).then(headers => {
-          const latlngOptions = headers.map((item, idx) => ({
-            id: idx + 1,
-            name: item,
-          }));
-          setUploadedFiles(prev => [...prev, { ...fileObj, latlngOptions }]);
-        });
-      } else {
-        setUploadedFiles(prev => [...prev, fileObj]);
-      }
+      setUploadedFiles(prev => [...prev, fileObj]);
     });
   };
 
   const handleChange = e => {
     const { id, name, value } = e.target;
-    setUploadedFiles(prev =>
-      prev.map(item =>
-        item.id === +id ? { ...item, [name]: value } : { ...item },
-      ),
-    );
-  };
-
-  const handleCategorySelect = (id, selectedItem) => {
-    setUploadedFiles(prev =>
-      prev.map(item =>
-        item.id === +id ? { ...item, category: selectedItem.id } : { ...item },
-      ),
-    );
-  };
-
-  const handleAddToMap = e => {
-    const { id, checked } = e.target;
-    setUploadedFiles(prev =>
-      prev.map(item =>
-        item.id === +id ? { ...item, addToMap: checked } : { ...item },
-      ),
-    );
-  };
-
-  const handleLatLngSelect = (id, { name, value }) => {
     setUploadedFiles(prev =>
       prev.map(item =>
         item.id === +id ? { ...item, [name]: value } : { ...item },
@@ -130,168 +90,163 @@ export default function UploadImage() {
     return setTagList(newTagList);
   };
 
-  // console.log('form data ', uploadedFiles);
-  // console.log('tag list data ', tagList);
-
   const handleSubmit = () => {
-    // eslint-disable-next-line no-useless-return
     if (isUploading) return;
-    // console.log('submited');
-    // let errorCount = 0;
-    // const errors = uploadedFiles.reduce((obj, item) => {
-    //   const fields = [];
-    //   if (!item.name) fields.push('name');
-    //   if (!item.category) fields.push('category');
-    //   if (item.extension === 'csv') {
-    //     if (!item.latField) fields.push('latField');
-    //     if (!item.lonField) fields.push('lonField');
-    //   }
-    //   if (fields.length) errorCount += 1;
-    //   return {
-    //     ...obj,
-    //     [item.id]: fields,
-    //   };
-    // }, {});
-    // if (errorCount === 0) {
-    //   const payloadData = uploadedFiles.map(item => {
-    //     const data = {
-    //       name: item.name,
-    //       theme: item.category,
-    //       display_on_map: item.addToMap,
-    //       file: item.file,
-    //       layer_type: 'Vector',
-    //       source: 'computer',
-    //       lat_field: item.latField.name,
-    //       lon_field: item.lonField.name,
-    //     };
-    //     return prepareFormData(data);
-    //   });
-    //   dispatch(uploadDatasetsRequest(payloadData));
-    // } else {
-    //   setErrorFields(errors);
-    // }
+    let errorCount = 0;
+    const errors = uploadedFiles.reduce((obj, item) => {
+      const fields = [];
+      // form validation
+      if (!item.title) fields.push('title');
+      if (fields.length) errorCount += 1;
+      return {
+        ...obj,
+        [item.id]: fields,
+      };
+    }, {});
+    setErrorFields(errors);
+    if (errorCount === 0) {
+      const payloadData = uploadedFiles.map(item => {
+        const data = {
+          title: item.title,
+          caption: item.caption,
+          image: item.file,
+          project: item.project,
+        };
+        return prepareFormData(data);
+      });
+      dispatch(uploadGalleryRequest(projectId, payloadData));
+    } else {
+      dispatch(
+        toastActions.error({
+          message: 'Please fill out all the required fields.',
+        }),
+      );
+    }
   };
 
   return (
     <div>
-      <p>
-        You can add any sort of relevant photographs & images or maps, in file
-        format JPEG, PNG, GIF or PDF.
-      </p>
-
       <div
-        className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-5 naxatw-overflow-auto scrollbar naxatw-max-h-96"
+        className="naxatw-flex naxatw-flex-col naxatw-gap-5 naxatw-overflow-auto scrollbar naxatw-max-h-96"
         style={{ maxHeight: `${height / 16 - 22}rem` }}
       >
         <div className="naxatw-space-y-2">
           <label className="naxatw-label">Upload an image</label>
           <Dropzone
-            label="Please upload an image (JPEG, PNG, GIF or PDF file format)"
+            label="Please upload images (JPEG, PNG, GIF or PDF file format)"
             accept=".jpeg, .png, .gif, .pdf"
             multiple
             onChange={handleUpload}
           />
-          {uploadedFiles?.map(({ id, file }) => (
-            <div key={id} className="naxatw-flex naxatw-flex-col naxatw-gap-2">
-              <div
-                className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-pr-5
-                naxatw-flex naxatw-gap-y-2"
-              >
-                <div className="naxatw-flex naxatw-gap-5 naxatw-w-4/5 naxatw-pr-2">
-                  <div className="">
-                    <img
-                      src={noImg}
-                      alt="file-icon"
-                      width="60px"
-                      className="naxatw-bg-slate-500 naxatw-rounded-tl-[8px] naxatw-rounded-bl-[8px] naxatw-h-full naxatw-object-cover"
-                    />
-                  </div>
-                  <div className="naxatw-py-2">
-                    <p className="naxatw-font-bold naxatw-text-[15px]">
-                      {file?.name}
-                    </p>
-                    <p className="naxatw-text-body-md naxatw-text-grey-600">
-                      Uploaded on 16/11/2022
-                    </p>
-                  </div>
-                </div>
+          {uploadedFiles?.map(({ id, title, caption, file }) => (
+            <div
+              key={id}
+              className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-px-5 naxatw-py-3 naxatw-flex naxatw-items-center naxatw-gap-x-5"
+            >
+              {/* <div className="naxatw-space-y-2">
+                  <Input
+                    id={uuidv4()}
+                    label="Tags"
+                    name="tag"
+                    value={tags || ''}
+                    placeholder="Add your own tags"
+                    onChange={e => {
+                      // console.log(e.target.value);
+                      setTags(e.target.value);
+                    }}
+                    className=""
+                    required={false}
+                    type="text"
+                    iconRight="add"
+                    onKeyDown={e => {
+                      console.log('tags ', e.target);
+                      if (e.key === 'Enter') {
+                        if (tags) {
+                          setTagList(prev => [
+                            ...prev,
+                            {
+                              id: e.target.id,
+                              value: tags,
+                            },
+                          ]);
+                          setTags('');
+                        }
+                      }
+                    }}
+                    onIconClick={data => {
+                      // console.log(data);
+                      handleAddTag({
+                        id: data.id,
+                        name: data.name,
+                        value: data.value,
+                      });
+                    }}
+                  />
+                  {!isEmpty(tagList) && (
+                    <div className="tag-Chips naxatw-flex naxatw-gap-2">
+                      {tagList?.map(d => (
+                        <Chip
+                          key={d.id}
+                          name={d?.value}
+                          onClick={() => {}}
+                          status=""
+                          value=""
+                          iconRight="close"
+                          onIconClick={() => {
+                            handleRemoveTag(d.id);
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div> */}
+              <div className="naxatw-min-w-40 naxatw-w-40 naxatw-space-y-2">
+                <img
+                  src={file ? getImageSource(file) : ''}
+                  alt="file"
+                  className="naxatw-w-40 naxatw-h-32 naxatw-object-cover naxatw-rounded-lg"
+                />
+                <Button
+                  className="naxatw-btn-primary naxatw-w-full"
+                  onClick={() => handleDelete(id)}
+                >
+                  Delete
+                </Button>
+              </div>
+              <div className="naxatw-w-full">
+                <Input
+                  id={id}
+                  label="Title of Image"
+                  name="title"
+                  value={title || ''}
+                  placeholder="Enter title of image"
+                  onChange={handleChange}
+                  className=""
+                  required={false}
+                  type="text"
+                />
+                {errorFields?.[id]?.includes('title') && (
+                  <FormErrorMessage message="Required" />
+                )}
 
-                <div className="naxatw-flex naxatw-gap-5 naxatw-items-center naxatw-w-1/5">
-                  <MaterialIcon
-                    // onIconClick={() => handleDelete(id)}
-                    wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                    className="naxatw-text-[22px]"
-                    name="file_download"
-                  />
-                  <MaterialIcon
-                    // onIconClick={() => handleDelete(id)}
-                    wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                    className="naxatw-text-[22px] naxatw-text-delete_btn"
-                    name="delete_outline"
-                  />
-                </div>
+                <Input
+                  id={id}
+                  label="Suitable Caption"
+                  name="caption"
+                  value={caption || ''}
+                  placeholder="Write a Suitable Caption"
+                  onChange={handleChange}
+                  className=""
+                  required={false}
+                  type="text"
+                />
+                {errorFields?.[id]?.includes('caption') && (
+                  <FormErrorMessage message="Required" />
+                )}
               </div>
             </div>
           ))}
         </div>
-
-        <Input
-          id={uuidv4()}
-          label="Tags"
-          name="tag"
-          value={tags || ''}
-          placeholder="Add your own tags"
-          onChange={e => {
-            // console.log(e.target.value);
-            setTags(e.target.value);
-          }}
-          className=""
-          required={false}
-          type="text"
-          iconRight="add"
-          onIconClick={data => {
-            // console.log(data);
-            handleAddTag({ id: data.id, name: data.name, value: data.value });
-          }}
-        />
-        {!isEmpty(tagList) && (
-          <div className="tag-Chips naxatw-flex naxatw-gap-2">
-            {tagList?.map(d => (
-              <Chip
-                name={d?.value}
-                onClick={() => {}}
-                status=""
-                value=""
-                iconRight="close"
-                onIconClick={() => {
-                  handleRemoveTag(d.id);
-                }}
-              />
-            ))}
-          </div>
-        )}
-        <Input
-          id="title"
-          label="Title of Image"
-          name="title"
-          value=""
-          placeholder="Enter title of image"
-          onChange={() => {}}
-          className=""
-          required={false}
-          type="text"
-        />
-        <Input
-          id="caption"
-          label="Suitable Caption"
-          name="caption"
-          value=""
-          placeholder="Write a Suitable Caption"
-          onChange={() => {}}
-          className=""
-          required={false}
-          type="text"
-        />
       </div>
 
       {!isEmpty(uploadedFiles) && (

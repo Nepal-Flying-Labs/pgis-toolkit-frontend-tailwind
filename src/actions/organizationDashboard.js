@@ -67,6 +67,29 @@ export const { Types, Creators } = createActions(
     postAssignUserFailure: null,
 
     setAssignList: ['payload'],
+
+    updateUserStatusRequest: ['id', 'payload'],
+    updateUserStatusSuccess: ['payload'],
+    updateUserStatusFailure: null,
+
+    deleteUserRequest: ['id', 'payload'],
+    deleteUserSuccess: ['payload'],
+    deleteUserFailure: null,
+
+    setSelectedData: ['payload'],
+    handleUserTabChange: ['payload'],
+
+    updateInvitedUserStatusRequest: ['id', 'payload'],
+    updateInvitedUserStatusSuccess: ['payload'],
+    updateInvitedUserStatusFailure: null,
+
+    resendInvitationRequest: ['id', 'payload'],
+    resendInvitationSuccess: ['payload'],
+    resendInvitationFailure: null,
+
+    deleteInvitedUserRequest: ['id', 'payload'],
+    deleteInvitedUserSuccess: ['payload'],
+    deleteInvitedUserFailure: null,
   },
   { prefix: 'organizationDashboard/' },
 );

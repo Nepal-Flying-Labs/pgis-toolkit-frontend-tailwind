@@ -28,7 +28,9 @@ import SaveDataQuery from '@Components/ProjectDashboard/ModalContent/SaveDataQue
 import DeleteDataQuery from '@Components/ProjectDashboard/ModalContent/DeleteDataQuery';
 import AccountSettings from '@Components/Authentication/ModalContent/AccountSettings';
 import ViewLayerAttribute from '@Components/ProjectDashboard/ModalContent/ViewLayerAttribute';
+import DeleteDocument from '@Components/ProjectDashboard/ModalContent/DeleteDocument/index';
 import DataQueryHelp from '@Components/ProjectDashboard/ModalContent/HelpContents/DataQueryHelp';
+import DeleteOrganizationUser from '@Components/OrganizationDashboard/ModalContent/DeleteOrganizationUser';
 
 export function getModalContent(content) {
   switch (content) {
@@ -144,6 +146,8 @@ export function getModalContent(content) {
     case 'upload-image':
       return {
         title: 'Upload your image',
+        subtitle:
+          'You can add any sort of relevant photographs & images or maps, in file format JPEG, PNG, GIF or PDF.',
         content: <UploadImage />,
       };
 
@@ -151,12 +155,16 @@ export function getModalContent(content) {
     case 'upload-document':
       return {
         title: 'Upload your documents',
+        subtitle:
+          'You can add any sort of relevant documents to the project. It includes relevant report, findings etc. in file format DOCX, PDF, Excel or CSV.',
         content: <UploadDocument />,
       };
 
     case 'edit-document':
       return {
         title: 'Edit your documents',
+        subtitle:
+          'You can add any sort of relevant documents to the project. It includes relevant report, findings etc. in file format DOCX, PDF, Excel or CSV.',
         content: <EditDocument />,
       };
 
@@ -208,7 +216,7 @@ export function getPromptDialogContent(content) {
     case 'delete-document':
       return {
         title: '',
-        content: <DeleteLayer />,
+        content: <DeleteDocument />,
       };
     case 'save-data-query':
       return {
@@ -224,6 +232,16 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <DeleteDataQuery />,
+      };
+    case 'delete-organization-user':
+      return {
+        title: 'Delete User',
+        content: <DeleteOrganizationUser />,
+      };
+    case 'delete-organization-invited-user':
+      return {
+        title: 'Delete User',
+        content: <DeleteOrganizationUser />,
       };
     default:
       return '';

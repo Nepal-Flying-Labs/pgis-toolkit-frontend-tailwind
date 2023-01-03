@@ -30,10 +30,10 @@ function* usersWatcher() {
     Types.GET_USERS_REQUEST,
     withLoader(withErrorHandler(getUsersRequest)),
   );
-  yield takeLatest(
-    Types.GET_ORGANIZATION_REQUEST,
-    withLoader(withErrorHandler(getOrganizationRequest)),
-  );
+  // yield takeLatest(
+  //   Types.GET_ORGANIZATION_REQUEST,
+  //   withLoader(withErrorHandler(getOrganizationRequest)),
+  // );
 }
 
 export default usersWatcher;

@@ -36,6 +36,16 @@ const getOrganizationSuccess = (state, action) => ({
   })),
 });
 
+const setSearchText = (state, action) => ({
+  ...state,
+  searchText: action.payload,
+});
+
+// const setUserState = (state, action) => ({
+//   ...state,
+//   ...action.payload,
+// });
+
 // const createOrganizationSuccess = (state, action) => ({
 //   ...state,
 //   createOrganizationDetail: action.payload,
@@ -97,7 +107,8 @@ const getOrganizationSuccess = (state, action) => ({
 const usersReducer = createReducer(initialState, {
   [Types.GET_USERS_SUCCESS]: getUsersSuccess,
   [Types.GET_ORGANIZATION_SUCCESS]: getOrganizationSuccess,
-
+  [Types.SET_SEARCH_TEXT]: setSearchText,
+  // [Types.SET_USER_STATE]: setUserState,
   //   [Types.CREATE_ORGANIZATION_SUCCESS]: createOrganizationSuccess,
   //   [Types.SET_SEARCH_TEXT]: setSearchText,
   //   [Types.HANDLE_NEXT_CLICK]: handleNextClick,

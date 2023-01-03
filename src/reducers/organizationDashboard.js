@@ -276,9 +276,7 @@ const resendInvitationSuccess = (state, action) => {
 
 const deleteInvitedUserSuccess = (state, action) => {
   const userData = action.payload;
-  const newData = state.users.map(user =>
-    user.id === userData.id ? null : { ...user },
-  );
+  const newData = state.users.filter(user => user.id !== userData.id);
   return {
     ...state,
     users: newData,

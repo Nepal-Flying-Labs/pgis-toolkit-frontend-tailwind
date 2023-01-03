@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable import/no-named-as-default */
 import React, { useEffect } from 'react';
 import Input from '@Components/common/Input/index';
 import useForm from '@Hooks/useForm';
@@ -10,6 +10,7 @@ import { isEmpty } from '@Utils/commonUtils';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Creators, { Types } from '@Actions/authentication';
 import removeObjectKeys from '@Utils/removeObjectKeys';
+import { v4 as uuidv4 } from 'uuid';
 
 // const initialState = {
 //   profile: '',
@@ -45,7 +46,7 @@ const ProfileSettings = () => {
     handleSubmit,
   } = useForm({
     initialValues: profile,
-    required: ['full_name', 'contact'],
+    required: ['full_name', 'contact', 'username'],
     onSubmit: data => {
       const finalObj = data;
       const diffObj = diffObject(profile, finalObj);
@@ -68,7 +69,7 @@ const ProfileSettings = () => {
   // console.log('form values ', values);
 
   return (
-    <div className="naxatw-mt-7">
+    <div className="naxatw-h-[calc(100vh-240px)] naxatw-overflow-hidden naxatw-overflow-y-auto scrollbar">
       <div className="naxatw-space-y-7 naxatw-mb-10">
         <UploadImage
           uploadedFile={values?.image}
@@ -89,14 +90,44 @@ const ProfileSettings = () => {
         )}
 
         <Input
-          label="Role of User *"
+          label="User Name*"
+          placeholder="User Name"
+          name="username"
+          onChange={handleChange}
+          value={values.username}
+        />
+        {meta.username.error && meta.username.touched && (
+          <FormErrorMessage message="User Name is required" />
+        )}
+
+        <div className="naxatw-space-y-1">
+          <label className="naxatw-text-body-btn">Roles of User</label>
+          <div className="naxatw-input naxatw-space-y-1 naxatw-h-fit naxatw-input-disabled">
+            {!isEmpty(values?.roles) ? (
+              values.roles.map(d => (
+                <p
+                  className="naxatw-text-body-lg naxatw-text-grey-400"
+                  key={uuidv4()}
+                >
+                  {d}
+                </p>
+              ))
+            ) : (
+              <span className="naxatw-text-body-lg">
+                No roles assigned yet!
+              </span>
+            )}
+          </div>
+        </div>
+        {/* <Input
+          label="Role of User"
           placeholder="Role of User"
           name="roles"
           className="naxatw-bg-grey-100 naxatw-text-grey-400"
           disabled
           onChange={handleChange}
           value={values?.roles?.join()}
-        />
+        /> */}
         <Input
           label="Phone*"
           placeholder="User's Phone Number*"

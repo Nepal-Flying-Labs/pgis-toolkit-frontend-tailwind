@@ -49,21 +49,23 @@ function GalleryCard({
     <div
       role="button"
       tabIndex="0"
-      className="naxatw-min-h-[190px] naxatw-max-h-[190px] naxatw-min-w-[210px] naxatw-max-w-[210px] naxatw-group hover:naxatw-cursor-pointer"
+      className="naxatw-min-h-[260px] naxatw-max-h-[260px] naxatw-min-w-[215px] naxatw-max-w-[215px] naxatw-group hover:naxatw-cursor-pointer"
       onClick={() => {
         onCardClick(id);
       }}
     >
       <div className="naxatw-mb-1 naxatw-relative">
-        <img
-          src={imgSrc}
-          alt="gallery"
-          width="210px"
-          height="140px"
-          className={`${
-            activeCard ? 'naxatw-border-2 naxatw-border-primary-400' : ''
-          } naxatw-object-contain naxatw-rounded-lg naxatw-border-2`}
-        />
+        <div className="naxatw-w-[210px] naxatw-h-[210px]">
+          <img
+            src={imgSrc}
+            alt="gallery"
+            // width="210px"
+            // height="210px"
+            className={`${
+              activeCard ? 'naxatw-border-2 naxatw-border-primary-400' : ''
+            } naxatw-object-cover naxatw-h-full naxatw-w-full naxatw-rounded-lg naxatw-border-2`}
+          />
+        </div>
         {/* <input
           type="checkbox"
           checked={checked}
@@ -73,11 +75,12 @@ function GalleryCard({
           } naxatw-absolute group-hover:naxatw-visible naxatw-invisible naxatw-z-10 naxatw-h-5 naxatw-w-5 naxatw-top-2 naxatw-left-2`}
         /> */}
         <CustomCheckbox
-          onClick={() => onCheckSelected()}
+          onClick={e => onCheckSelected(e)}
           wrapperClassName={`${
-            checked ? 'naxatw-visible' : ''
-          } naxatw-absolute naxatw-border-white group-hover:naxatw-visible naxatw-ring-2 naxatw-ring-offset-0 naxatw-ring-white naxatw-invisible naxatw-z-50 naxatw-top-2 naxatw-left-2`}
+            checked ? 'naxatw-visible' : 'naxatw-invisible'
+          } naxatw-absolute naxatw-border-white group-hover:naxatw-visible naxatw-ring-2 naxatw-ring-offset-0 naxatw-ring-white naxatw-z-50 naxatw-top-2 naxatw-left-2`}
           iconClassName="naxatw-text-white"
+          status={checked}
         />
       </div>
       <div className=" naxatw-flex naxatw-justify-between">
@@ -101,7 +104,7 @@ function GalleryCard({
 }
 
 GalleryCard.propTypes = {
-  id: PropTypes.string,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   imgSrc: PropTypes.string,
   label: PropTypes.string,
   onCardClick: PropTypes.func,

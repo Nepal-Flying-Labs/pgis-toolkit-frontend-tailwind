@@ -1,19 +1,24 @@
 /* eslint-disable import/no-named-as-default */
 import Creators from '@Actions/projectDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
 import Searchbar from '@Components/common/Searchbar/index';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import Button from '@Components/common/Button/index';
 import { isEmpty } from '@Utils/commonUtils';
+import { useParams } from 'react-router';
 import GalleryCard from './GalleryCard';
 
-function GalleryList({ openSidebar }) {
+const { setRightSidebarState } = CommonCreators;
+const { setSearchText, downloadGalleryRequest } = Creators;
+
+function GalleryList() {
+  const { projectId } = useParams();
   const dispatch = useDispatch();
-  const { setSearchText } = Creators;
   const searchText = useSelector(state => state?.projectDashboard?.searchText);
   const gallery = useSelector(state => state.projectDashboard.gallery.list);
+  const [downloadIdList, setDownloadIdList] = useState([]);
 
   const [value, handleSearch] = useDebouncedInput({
     ms: 300,
@@ -22,6 +27,29 @@ function GalleryList({ openSidebar }) {
       dispatch(setSearchText(debouncedEvent.target.value));
     },
   });
+
+  const handleSelect = id => {
+    if (downloadIdList?.includes(id)) {
+      return setDownloadIdList(prev => prev.filter(d => d !== id));
+    }
+    return setDownloadIdList([...downloadIdList, id]);
+  };
+
+  // const handleDownload = id => {
+  //   dispatch(
+  //     downloadDocumentRequest({ document: [id].join(), project: projectId }),
+  //   );
+  // };
+
+  const handleDownloadAll = () => {
+    dispatch(
+      downloadGalleryRequest({
+        image: isEmpty(downloadIdList) ? 'all' : downloadIdList?.join(),
+        project: projectId,
+      }),
+    );
+  };
+
   return (
     <div className="">
       <div className="naxatw-py-2 naxatw-flex naxatw-justify-between">
@@ -36,10 +64,11 @@ function GalleryList({ openSidebar }) {
           <Button
             className="naxatw-btn-secondary naxatw-btn-noborder "
             iconLeft="download"
-            // onClick={onFileUpload}
+            onClick={handleDownloadAll}
           >
             <span className="naxatw-text-[15px] naxatw-font-bold naxatw-text-[#00A699]">
-              Download All
+              Download
+              {isEmpty(downloadIdList) ? ' All' : ` Selected`}
             </span>
           </Button>
         </div>
@@ -56,15 +85,22 @@ function GalleryList({ openSidebar }) {
           {!isEmpty(gallery) &&
             gallery.map(item => (
               <GalleryCard
+                key={item.id}
                 label={item.title}
                 id={item.id}
                 status=""
                 imgSrc={item.image}
-                checked={false}
+                checked={downloadIdList?.includes(item.id)}
                 // eslint-disable-next-line no-unused-vars
                 onCardClick={id => {
                   // console.log('Gallery card clicked id : ', id);
-                  openSidebar(true);
+                  dispatch(
+                    setRightSidebarState({ show: true, flag: 'gallery' }),
+                  );
+                }}
+                onCheckSelected={e => {
+                  e.stopPropagation();
+                  handleSelect(item.id);
                 }}
               />
             ))}
@@ -74,11 +110,7 @@ function GalleryList({ openSidebar }) {
   );
 }
 
-GalleryList.propTypes = {
-  openSidebar: PropTypes.func,
-};
+GalleryList.propTypes = {};
 
-GalleryList.defaultProps = {
-  openSidebar: () => {},
-};
+GalleryList.defaultProps = {};
 export default GalleryList;

@@ -9,15 +9,28 @@ import AdditionalSidebar from '../Common/index';
 import DocumentList from './DocumentList/index';
 import NoDocumentYet from './NoDocumentYet/index';
 
-const { getDocumentItemRequest } = ProjectDashboardCreators;
-const { toggleModal } = CommonCreators;
+const {
+  getDocumentItemRequest,
+  downloadDocumentRequest,
+  setDocumentState,
+  getDocumentByIdRequest,
+} = ProjectDashboardCreators;
+
+const { toggleModal, togglePromptDialog, setRightSidebarState } =
+  CommonCreators;
 
 export default function Document() {
   const { projectId } = useParams();
   const document = useSelector(state => state.projectDashboard.document.list);
   const dispatch = useDispatch();
+  const [initialLoad, setInitialLoad] = useState(true);
 
-  const [toggleRightBar, setToggleRightBar] = useState(false);
+  const toggleRightBar = useSelector(state => state.common.rightSidebar.show);
+
+  useEffect(() => {
+    setInitialLoad(false);
+    dispatch(setRightSidebarState({ show: false, flag: '' }));
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getDocumentItemRequest({ project: projectId }));
@@ -25,8 +38,14 @@ export default function Document() {
 
   const getContent = () => {
     // if (!layers) return '';
-    if (isEmpty(document)) return <NoDocumentYet />;
-    return <DocumentList openSidebar={setToggleRightBar} />;
+    if (isEmpty(document) && initialLoad) return <NoDocumentYet />;
+    return <DocumentList />;
+  };
+
+  const handleDownload = id => {
+    dispatch(
+      downloadDocumentRequest({ document: [id].join(), project: projectId }),
+    );
   };
 
   return (
@@ -67,8 +86,19 @@ export default function Document() {
       </div>
       {toggleRightBar && (
         <AdditionalSidebar
-          onCloseClick={() => setToggleRightBar(false)}
+          onCloseClick={() =>
+            dispatch(setRightSidebarState({ show: false, flag: '' }))
+          }
           flag="document"
+          onDownload={id => handleDownload(id)}
+          onDelete={data => {
+            dispatch(setDocumentState({ delete: { ...data, projectId } }));
+            dispatch(togglePromptDialog('delete-document'));
+          }}
+          onEdit={id => {
+            dispatch(dispatch(getDocumentByIdRequest(id)));
+            dispatch(toggleModal('edit-document'));
+          }}
         />
       )}
     </div>

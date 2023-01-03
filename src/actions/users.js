@@ -11,6 +11,7 @@ export const { Types, Creators } = createActions(
     getOrganizationFailure: null,
 
     setSearchText: ['payload'],
+    // setUserState: ['payload'],
     // handleOrdering: ['payload'],
 
     // handleNextClick: null,
@@ -18,7 +19,7 @@ export const { Types, Creators } = createActions(
     // handleJumpsTo: ['payload'],
     // handleRowSelect: ['payload'],
   },
-  { prefix: '/organizations' },
+  { prefix: '/users' },
 );
 
 export default Creators;

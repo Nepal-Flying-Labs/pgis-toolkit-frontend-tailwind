@@ -64,7 +64,7 @@ const AddWMSLayer = () => {
         <Input
           label="Your URL Here"
           name="url"
-          placeholder="Yout URL Heree"
+          placeholder="Your URL Here"
           value={values.url}
           onChange={handleChange}
           {...inputProps}

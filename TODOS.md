@@ -97,6 +97,7 @@
 
 - [x] download each data from layer list
 - [ ] patch wms layer not working
+- [ ] delete wms layer not working
 
 
 ### Login

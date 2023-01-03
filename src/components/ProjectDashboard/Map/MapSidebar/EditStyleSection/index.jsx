@@ -87,35 +87,43 @@ export default function EditStyleSection() {
           </div>
         </div>
 
-        <div className="naxatw-flex naxatw-items-center">
-          <div className="naxatw-w-full naxatw-space-y-2">
-            <label className="naxatw-label">Styling</label>
+        {selectedLayer.layer_type === 'Vector' && (
+          <>
+            <div className="naxatw-flex naxatw-items-center">
+              <div className="naxatw-w-full naxatw-space-y-2">
+                <label className="naxatw-label">Styling</label>
 
-            {selectedLayer?.style?.geometryType === 'Point' && (
-              <div className="naxatw-flex naxatw-gap-2">
-                {tabData.map(({ label }) => (
-                  <div
-                    key={label}
-                    className={`naxatw-w-fit naxatw-bg-white naxatw-border naxatw-rounded-2xl naxatw-px-3 naxatw-py-2 naxatw-cursor-pointer ${
-                      styleTab === label
-                        ? 'naxatw-border-grey-800'
-                        : 'naxatw-border-grey-100'
-                    }`}
-                    onClick={() => {
-                      setStyleTab(label);
-                    }}
-                  >
-                    {label}
+                {selectedLayer?.style?.geometryType === 'Point' && (
+                  <div className="naxatw-flex naxatw-gap-2">
+                    {tabData.map(({ label }) => (
+                      <div
+                        key={label}
+                        className={`naxatw-w-fit naxatw-bg-white naxatw-border naxatw-rounded-2xl naxatw-px-3 naxatw-py-2 naxatw-cursor-pointer ${
+                          styleTab === label
+                            ? 'naxatw-border-grey-800'
+                            : 'naxatw-border-grey-100'
+                        }`}
+                        onClick={() => {
+                          setStyleTab(label);
+                        }}
+                      >
+                        {label}
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
-            )}
-          </div>
-        </div>
+            </div>
 
-        <div className="naxatw-flex naxatw-flex-col naxatw-gap-4">
-          {styleTab === 'Standard' ? <StandardStyling /> : <AdvanceStyling />}
-        </div>
+            <div className="naxatw-flex naxatw-flex-col naxatw-gap-4">
+              {styleTab === 'Standard' ? (
+                <StandardStyling />
+              ) : (
+                <AdvanceStyling />
+              )}
+            </div>
+          </>
+        )}
 
         <div className="naxatw-fixed naxatw-bottom-0 naxatw-w-full naxatw-py-4 naxatw-bg-grey-100">
           <Button

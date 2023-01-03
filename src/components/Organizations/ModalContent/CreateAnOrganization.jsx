@@ -208,7 +208,7 @@ export default function CreateAnOrganization() {
         </div>
       </div>
 
-      <div className=" naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
+      <div className="naxatw-flex naxatw-items-center naxatw-justify-center">
         <Button
           className="naxatw-btn-primary naxatw-w-[128px]"
           isLoading={loading}

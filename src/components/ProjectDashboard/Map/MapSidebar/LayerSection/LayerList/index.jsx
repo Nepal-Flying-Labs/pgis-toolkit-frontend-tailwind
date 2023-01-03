@@ -141,7 +141,16 @@ export default function LayerList({ dropdownOptions }) {
                           />
                         </span>
                       )}
-                      <DropdownOptions options={dropdownOptions} data={layer} />
+                      <DropdownOptions
+                        options={
+                          layer.layer_type === 'WMS'
+                            ? dropdownOptions.filter(
+                                item => item.id === 'delete-layer',
+                              )
+                            : dropdownOptions
+                        }
+                        data={layer}
+                      />
                     </div>
                   </div>
                 ))}

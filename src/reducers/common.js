@@ -7,6 +7,10 @@ const initialState = {
   showPromptDialog: false,
   promptDialogContent: '',
   projectHeaderHeight: 65,
+  rightSidebar: {
+    show: false,
+    flag: '',
+  },
 };
 
 const toggleModal = (state, action) => ({
@@ -36,12 +40,18 @@ const setProjectHeaderHeight = (state, action) => ({
   projectHeaderHeight: action.payload,
 });
 
+const setRightSidebarState = (state, action) => ({
+  ...state,
+  rightSidebar: { ...state.rightSidebar, ...action.payload },
+});
+
 const commonReducer = createReducer(initialState, {
   [Types.TOGGLE_MODAL]: toggleModal,
   [Types.SET_MODAL_CONTENT]: setModalContent,
   [Types.TOGGLE_PROMPT_DIALOG]: togglePromptDialog,
   [Types.SET_PROMPT_DIALOG_CONTENT]: setPromptDialogContent,
   [Types.SET_PROJECT_HEADER_HEIGHT]: setProjectHeaderHeight,
+  [Types.SET_RIGHT_SIDEBAR_STATE]: setRightSidebarState,
 });
 
 export default commonReducer;

@@ -71,3 +71,17 @@ export const postAttributeSelection = payload =>
 
 export const downloadBulkTemplate = params =>
   authenticated(api).get(`/maps/bulk_template_download/`, { params });
+
+export const getUsers = params =>
+  authenticated(api).get('/users/user/', { params });
+
+export const getUserGroup = params =>
+  authenticated(api).get('/users/user_group/', { params });
+
+// upload-gallery
+export const uploadGallery = payload =>
+  authenticated(api).post(`/projects/image/`, payload);
+
+// gallery-download
+export const downloadGallery = params =>
+  authenticated(api).get(`/projects/image_download/`, { params });

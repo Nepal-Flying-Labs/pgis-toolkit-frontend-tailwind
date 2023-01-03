@@ -73,7 +73,7 @@ export const { Types, Creators } = createActions(
     getDocumentByIdSuccess: ['payload'],
     getDocumentByIdFailure: ['payload'],
 
-    // project-individual-document
+    // project-document
     downloadDocumentRequest: ['params'],
     downloadDocumentSuccess: ['payload'],
     downloadDocumentFailure: ['payload'],
@@ -85,8 +85,6 @@ export const { Types, Creators } = createActions(
     updateDocumentDataRequest: ['payload'],
     updateDocumentDataSuccess: ['payload'],
     updateDocumentDataFailure: ['payload'],
-
-    setDeleteDocument: ['payload'],
 
     deleteDocumentRequest: ['id', 'payload'],
     deleteDocumentSuccess: ['payload'],
@@ -127,6 +125,31 @@ export const { Types, Creators } = createActions(
     downloadBulkTemplateRequest: ['params'],
     downloadBulkTemplateSuccess: ['payload'],
     downloadBulkTemplateFailure: null,
+
+    getUsersRequest: ['params'],
+    getUsersSuccess: ['payload'],
+    getUsersFailure: null,
+
+    setUserState: ['payload'],
+
+    getUserGroupRequest: ['params'],
+    getUserGroupSuccess: ['payload'],
+    getUserGroupFailure: null,
+
+    setDocumentState: ['payload'],
+
+    uploadGalleryRequest: ['id', 'payload'],
+    uploadGallerySuccess: ['payload'],
+    uploadGalleryFailure: ['payload'],
+
+    downloadGalleryRequest: ['params'],
+    downloadGallerySuccess: ['payload'],
+    downloadGalleryFailure: ['payload'],
+
+    // project-individual-gallery
+    getGalleryByIdRequest: ['id'],
+    getGalleryByIdSuccess: ['payload'],
+    getGalleryByIdFailure: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

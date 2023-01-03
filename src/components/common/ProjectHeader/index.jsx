@@ -21,7 +21,7 @@ const projectHeaderData = [
   { label: 'Data', route: 'data', disabled: false },
   { label: 'Document', route: 'document', disabled: false },
   { label: 'Gallery', route: 'gallery', disabled: false },
-  { label: 'Users', route: 'users', disabled: true },
+  { label: 'Users', route: 'users', disabled: false },
   { label: 'Info', route: 'info', disabled: false },
   { label: 'Settings', route: 'settings', disabled: false },
 ];

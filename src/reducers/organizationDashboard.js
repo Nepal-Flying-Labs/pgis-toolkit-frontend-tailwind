@@ -26,7 +26,7 @@ const initialState = {
     ordering: null,
   },
   assignList: [],
-  organizationList: [],
+  organizationAssignList: [],
   userTab: 'users',
 };
 
@@ -215,7 +215,8 @@ const getAllProjectSuccess = (state, action) => ({
 
 const setAssignList = (state, action) => ({
   ...state,
-  organizationList: [action.payload],
+  organizationAssignList: [action.payload],
+  assignList: [],
 });
 
 const updateUserStatusSuccess = (state, action) => {

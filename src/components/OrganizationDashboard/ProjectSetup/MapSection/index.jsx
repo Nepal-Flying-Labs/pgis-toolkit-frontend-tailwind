@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { stringify } from 'wkt';
 import { transformExtent, fromLonLat } from 'ol/proj';
@@ -15,8 +15,12 @@ import {
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import Scalebar from '@Components/common/OpenLayersComponent/Scalebar/index';
 import VectorLayer from 'ol/layer/Vector';
-import { VectorLayer as MapVectorLayer } from '@Components/common/OpenLayersComponent/Layers';
-import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
+import VectorTileLayer from 'ol/layer/VectorTile';
+import {
+  VectorLayer as MapVectorLayer,
+  VectorTileLayer as MapVectorTileLayer,
+} from '@Components/common/OpenLayersComponent/Layers';
+
 import AddFeature from '@Components/common/OpenLayersComponent/CustomLayer/AddFeature';
 import Button from '@Components/common/Button/index';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
@@ -42,6 +46,16 @@ export default function MapSection({ isDraw, geojson, locationType }) {
     maxZoom: 25,
   });
 
+  // const flag = useRef(true);
+
+  // useEffect(() => {
+  //   if (project.id && flag) {
+  //     setRedraw(false);
+  //     setDrawComplete(true);
+  //     flag.current = false;
+  //   }
+  // }, [project.id]);
+
   // zoom to project location on initial map load
   useEffect(() => {
     if (!map || !Object.keys(project).length > 0) return;
@@ -63,6 +77,12 @@ export default function MapSection({ isDraw, geojson, locationType }) {
     vectorLayer.forEach(layer => {
       map.removeLayer(layer);
     });
+    const vectorTileLayer = layers.filter(
+      layer => layer instanceof VectorTileLayer,
+    );
+    vectorTileLayer.forEach(layer => {
+      map.removeLayer(layer);
+    });
     setRedraw(false);
     setDrawComplete(false);
     dispatch(setDrawnGeojsonData(null));
@@ -72,17 +92,19 @@ export default function MapSection({ isDraw, geojson, locationType }) {
   return (
     <div className="naxatw-w-full">
       {locationType === 'Custom Draw' && (
-        <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-[40px] naxatw-my-2">
-          <span className="naxatw-text-body-lg">
-            Select project boundary by drawing on map
-          </span>
-          {drawComplete && (
+        <div className="naxatw-flex naxatw-gap-x-4 naxatw-items-center naxatw-h-[40px] naxatw-my-2">
+          {drawComplete ? (
             <Button
+              iconLeft="edit"
               className="naxatw-btn-secondary naxatw-btn-noborder"
               onClick={handleClick}
             >
               Redraw
             </Button>
+          ) : (
+            <span className="naxatw-text-body-lg">
+              Select project boundary by drawing on map
+            </span>
           )}
         </div>
       )}
@@ -98,7 +120,7 @@ export default function MapSection({ isDraw, geojson, locationType }) {
         <Scalebar />
         {geojson && <MapVectorLayer geojson={geojson} zoomToLayer />}
         {project.id && (
-          <VectorTileLayer
+          <MapVectorTileLayer
             url={`${API_URL}projects/project_location_vectortile/{z}/{x}/{y}/?project=${project.id}`}
             authToken={localStorage.getItem('userToken')}
           />
@@ -108,7 +130,14 @@ export default function MapSection({ isDraw, geojson, locationType }) {
           <AddFeature
             enable={redraw}
             geometryType="Polygon"
-            style={{ ...defaultStyles }}
+            style={{
+              ...defaultStyles,
+              lineColor: '#d12313',
+              lineOpacity: 50,
+              fillColor: '#2C675A',
+              fillOpacity: 0,
+              lineThickness: 2,
+            }}
             onDrawFinish={geojsonx => {
               setDrawComplete(true);
               setRedraw(false);

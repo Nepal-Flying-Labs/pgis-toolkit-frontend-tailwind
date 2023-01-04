@@ -148,7 +148,7 @@ const ProjectSetup = () => {
             <div className="naxatw-space-y-7">{getPage(page, setPage)}</div>
           ) : (
             <div className="naxatw-w-full naxatw-h-[calc(100vh-10rem)] naxatw-flex naxatw-items-center naxatw-justify-center">
-              <Spinner className="naxatw-w-[100px] naxatw-h-[100px] naxatw-fill-primary-400 " />
+              <Spinner className="!naxatw-w-[50px] !naxatw-h-[50px] naxatw-fill-secondary-400 " />
             </div>
           )}
         </div>

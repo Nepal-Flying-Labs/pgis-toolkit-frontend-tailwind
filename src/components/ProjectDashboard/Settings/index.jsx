@@ -101,7 +101,7 @@ export default function Settings() {
               </>
             ) : (
               <div className="naxatw-h-screen naxatw-flex naxatw-items-center naxatw-justify-center">
-                <Spinner className="naxatw-w-8 naxatw-h-8 naxatw-fill-primary-400" />
+                <Spinner className="!naxatw-w-[50px] !naxatw-h-[50px] naxatw-fill-secondary-400" />
               </div>
             )}
           </div>

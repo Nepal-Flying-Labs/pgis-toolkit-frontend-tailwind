@@ -1,22 +1,39 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
-import { loginUser } from '@Services/analysis';
+import { call, put, select, takeLatest, delay } from 'redux-saga/effects';
+import { checkError } from '@Services/analysis';
 import analysisActions, { Types } from '@Actions/analysis';
 // import commonActions from '@Actions/common';
 // import toastActions from '@Actions/toast';
 // import prepareFormData from '@Utils/prepareFormData';
-// import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
+import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 
-// export function* loginRequest({ payload }) {
-//   try {
-//     const response = yield call(loginUser, payload);
-//     yield put(commonActions.toggleModal('access-to-functionalities'));
-//   } catch (error) {
-//     yield put(authActions.loginFailure());
-//   }
-// }
+export function* checkErrorRequest({ params }) {
+  try {
+    const layerId = params.layer;
+    yield put(analysisActions.setErrorStates(layerId));
+    const { errorStates } = yield select(state => state.analysis);
+    const errorData = errorStates[layerId];
+    for (let i = 0; i < errorData.length; i += 1) {
+      const { apiEndPoint } = errorData[i];
+      const response = yield call(checkError, apiEndPoint, params);
+      yield put(
+        analysisActions.checkErrorSuccess({
+          ...response.data,
+          apiEndPoint,
+          layerId,
+        }),
+      );
+    }
+  } catch (error) {
+    yield put(analysisActions.checkErrorFailure());
+    throw error;
+  }
+}
 
 function* analysisWatcher() {
-  // yield takeLatest(Types.LOGIN_REQUEST, withLoader(loginRequest));
+  yield takeLatest(
+    Types.CHECK_ERROR_REQUEST,
+    withLoader(withErrorHandler(checkErrorRequest)),
+  );
 }
 
 export default analysisWatcher;

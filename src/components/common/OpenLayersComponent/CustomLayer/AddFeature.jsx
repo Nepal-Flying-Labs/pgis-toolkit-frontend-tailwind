@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import { Draw } from 'ol/interaction';
 import { Vector as VectorSource } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -15,6 +15,7 @@ export default function AddFeature({
   onDrawFinish,
   // onCancel,
 }) {
+  const isDrawInstanceAdded = useRef(false);
   const [vectorLayer, setVectorLayer] = useState(null);
   const [drawType, setDrawType] = useState(null);
   const [drawnFeature, setDrawnFeature] = useState(null);
@@ -51,9 +52,10 @@ export default function AddFeature({
 
   // add interaction
   useEffect(() => {
-    if (!map || !drawType) return;
+    if (!map || !drawType || isDrawInstanceAdded.current || !enable) return;
     map.addInteraction(draw);
-  }, [map, draw, drawType]);
+    isDrawInstanceAdded.current = true;
+  }, [map, draw, drawType, enable]);
 
   // on draw end
   useEffect(() => {
@@ -61,6 +63,7 @@ export default function AddFeature({
       const { feature } = e;
       setDrawnFeature(feature);
       map.removeInteraction(draw);
+      isDrawInstanceAdded.current = false;
       setDrawType(null);
       const featureGeojson = getFeatureGeojson(feature);
       onDrawFinish(featureGeojson);

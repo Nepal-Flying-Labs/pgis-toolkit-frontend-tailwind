@@ -39,6 +39,9 @@ const Location = ({ page, setPage }) => {
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.PATCH_PROJECT_REQUEST]),
   );
+  const drawnGeojsonData = useSelector(
+    state => state.organizationDashboard.drawnGeojsonData,
+  );
   const countryList = useSelector(
     state => state.organizationDashboard.countryList,
   );
@@ -85,10 +88,20 @@ const Location = ({ page, setPage }) => {
         ? removeObjectKeys(payloadData, ['cover_image'])
         : payloadData;
 
-      if (values.file) {
+      const newData =
+        finalPayloadData.location_type === 'Custom Draw'
+          ? {
+              ...finalPayloadData,
+              location_wkt: [drawnGeojsonData],
+              file: '',
+              file_type: '',
+            }
+          : { ...finalPayloadData };
+
+      if (values.file || values.location_wkt) {
         dispatch(
           patchProjectRequest(projectId, {
-            ...finalPayloadData,
+            ...newData,
             status: 'ongoing',
             page: tabname === 'settings',
           }),
@@ -171,7 +184,9 @@ const Location = ({ page, setPage }) => {
         />
       )}
 
-      {values?.location_type === 'Custom Draw' && <MapSection />}
+      {values?.location_type === 'Custom Draw' && (
+        <MapSection locationType={values.location_type} />
+      )}
       <div
         className={`naxatw-flex ${
           tabname !== 'settings'

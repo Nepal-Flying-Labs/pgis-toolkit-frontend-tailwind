@@ -299,7 +299,7 @@ const postTemplateAttributeSuccess = (state, action) => ({
 });
 
 const updateTemplateAttributeSuccess = (state, action) => {
-  const data = action.payload;
+  const { data } = action.payload;
   const newData = state.data.manageData.attributeList.map(item =>
     item.id === data.id ? { ...data } : { ...item },
   );
@@ -316,7 +316,7 @@ const updateTemplateAttributeSuccess = (state, action) => {
 };
 
 const deleteTemplateAttributeSuccess = (state, action) => {
-  const data = action.payload;
+  const { data } = action.payload;
   const newData = state.data.manageData.attributeList.filter(
     item => item.id !== data.id,
   );

@@ -90,6 +90,8 @@ export const { Types, Creators } = createActions(
     deleteInvitedUserRequest: ['id', 'payload'],
     deleteInvitedUserSuccess: ['payload'],
     deleteInvitedUserFailure: null,
+
+    setDrawnGeojsonData: ['payload'],
   },
   { prefix: 'organizationDashboard/' },
 );

@@ -2,8 +2,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
-import { Creators } from '@Actions/projectDashboard';
+import { Creators, Types } from '@Actions/projectDashboard';
 import Button from '@Components/common/Button';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { togglePromptDialog } = CommonCreators;
 const { deleteTemplateAttributeRequest } = Creators;
@@ -14,6 +15,9 @@ export default function DeleteDataQuery() {
   );
   const individualAttribute = useSelector(
     state => state.projectDashboard.data.manageData.individualAttribute,
+  );
+  const isDeleting = useSelector(state =>
+    checkIfLoading(state, [Types.DELETE_TEMPLATE_ATTRIBUTE_REQUEST]),
   );
   const dispatch = useDispatch();
 
@@ -42,7 +46,7 @@ export default function DeleteDataQuery() {
         <Button
           className="naxatw-bg-[#FF0F0F] naxatw-text-white"
           iconLeft="delete_outline"
-          // isLoading={isDeleting}
+          isLoading={isDeleting}
           loaderClassName="naxatw-fill-secondary-400"
           onClick={handleDelete}
         >

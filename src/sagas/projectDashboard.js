@@ -426,12 +426,13 @@ export function* updateTemplateAttributeRequest({ id, payload }) {
 }
 
 export function* deleteTemplateAttributeRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
   try {
-    const response = yield call(updateTemplateAttribute, id, payload);
+    const response = yield call(updateTemplateAttribute, id, formData);
     yield put(
       projectDashboardActions.deleteTemplateAttributeSuccess(response.data),
     );
-    yield put(commonActions.toggleModal('manage-attributes'));
+    yield put(commonActions.togglePromptDialog());
     yield put(toastActions.success({ message: response.data.message }));
   } catch (error) {
     yield put(projectDashboardActions.deleteTemplateAttributeFailure());

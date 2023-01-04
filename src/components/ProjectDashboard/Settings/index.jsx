@@ -1,11 +1,13 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { Creators } from '@Actions/organizationDashboard';
+import { Creators, Types } from '@Actions/organizationDashboard';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import BasicInfo from '@Components/OrganizationDashboard/ProjectSetup/FormPages/BasicInfo';
 import Location from '@Components/OrganizationDashboard/ProjectSetup/FormPages/Location';
+import { checkIfLoading } from '@Utils/loaderSelector';
+import Spinner from '@Components/common/Spinner/index';
 // import ProjectSetup from '@Components/OrganizationDashboard/ProjectSetup/index';
 
 const {
@@ -29,6 +31,12 @@ export default function Settings() {
   const { projectId } = useParams();
   const [active, setActive] = useState(1);
   const dispatch = useDispatch();
+  const loading = useSelector(state =>
+    checkIfLoading(state, [
+      Types.GET_INDIVIDUAL_PROJECT_REQUEST,
+      Types.GET_CONTACT_PERSON_REQUEST,
+    ]),
+  );
 
   useEffect(() => {
     dispatch(getIndividualProjectRequest(projectId));
@@ -75,17 +83,25 @@ export default function Settings() {
         </div>
         <div className=" naxatw-overflow-y-auto scrollbar  naxatw-w-full">
           <div className="naxatw-w-[50rem] naxatw-p-7 naxatw-bg-white naxatw-rounded-xl ">
-            {active === 1 && (
-              <div className="naxatw-space-y-7 ">
-                <h3>Basic Info</h3>
-                <BasicInfo />
-              </div>
-            )}
+            {!loading ? (
+              <>
+                {active === 1 && (
+                  <div className="naxatw-space-y-7 ">
+                    <h3>Basic Info</h3>
+                    <BasicInfo />
+                  </div>
+                )}
 
-            {active === 2 && (
-              <div className="naxatw-space-y-7">
-                <h3>Location</h3>
-                <Location />
+                {active === 2 && (
+                  <div className="naxatw-space-y-7">
+                    <h3>Location</h3>
+                    <Location />
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="naxatw-h-screen naxatw-flex naxatw-items-center naxatw-justify-center">
+                <Spinner className="!naxatw-w-[50px] !naxatw-h-[50px] naxatw-fill-secondary-400" />
               </div>
             )}
           </div>

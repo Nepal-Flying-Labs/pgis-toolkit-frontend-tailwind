@@ -35,6 +35,7 @@ import UploadGallery from '@Components/ProjectDashboard/ModalContent/UploadGalle
 import DeleteOrganizationUser from '@Components/OrganizationDashboard/ModalContent/DeleteOrganizationUser';
 import DeleteUser from '@Components/Users/ModalContent/DeleteUser';
 import DeleteProjectUser from '@Components/ProjectDashboard/ModalContent/DeleteProjectUser/index';
+import DeleteTemplateAttribute from '@Components/ProjectDashboard/ModalContent/DeleteTemplateAttribute';
 
 export function getModalContent(content) {
   switch (content) {
@@ -101,13 +102,13 @@ export function getModalContent(content) {
       return {
         title: 'Layer Attribute',
         content: <ViewLayerAttribute />,
-        className: 'naxatw-w-[calc(100vw-10rem)]',
+        className: '!naxatw-w-[calc(100vw-10rem)]',
       };
     case 'view-query-attribute':
       return {
         title: 'Layer Attribute',
         content: <ViewLayerAttribute />,
-        className: 'naxatw-w-[calc(100vw-10rem)]',
+        className: '!naxatw-w-[calc(100vw-10rem)]',
       };
     case 'data-query':
       return {
@@ -279,6 +280,11 @@ export function getPromptDialogContent(content) {
       return {
         title: 'Delete User',
         content: <DeleteProjectUser />,
+      };
+    case 'delete-template-attribute':
+      return {
+        title: 'Delete Attribute',
+        content: <DeleteTemplateAttribute />,
       };
     default:
       return '';

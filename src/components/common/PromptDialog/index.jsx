@@ -4,7 +4,7 @@ import Modal from '@Components/common/Modal';
 
 export default function PromptDialog({ title, show, onClose, children }) {
   return (
-    <Modal show={show} title={title} onClose={onClose}>
+    <Modal show={show} title={title} onClose={onClose} zIndex="111111">
       {children}
     </Modal>
   );

@@ -26,7 +26,7 @@ const initialState = {
     ordering: null,
   },
   assignList: [],
-  organizationList: [],
+  organizationAssignList: [],
   userTab: 'users',
 };
 
@@ -215,7 +215,8 @@ const getAllProjectSuccess = (state, action) => ({
 
 const setAssignList = (state, action) => ({
   ...state,
-  organizationList: [action.payload],
+  organizationAssignList: [action.payload],
+  assignList: [],
 });
 
 const updateUserStatusSuccess = (state, action) => {
@@ -275,9 +276,7 @@ const resendInvitationSuccess = (state, action) => {
 
 const deleteInvitedUserSuccess = (state, action) => {
   const userData = action.payload;
-  const newData = state.users.map(user =>
-    user.id === userData.id ? null : { ...user },
-  );
+  const newData = state.users.filter(user => user.id !== userData.id);
   return {
     ...state,
     users: newData,

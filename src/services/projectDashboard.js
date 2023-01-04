@@ -69,6 +69,15 @@ export const getLayerAttribute = params =>
 export const postAttributeSelection = payload =>
   authenticated(api).post(`/maps/update_template_attributes/`, payload);
 
+export const postTemplateAttribute = payload =>
+  authenticated(api).post(`/maps/project_layer_template_attribute/`, payload);
+
+export const updateTemplateAttribute = (id, payload) =>
+  authenticated(api).patch(
+    `/maps/project_layer_template_attribute/${id}/`,
+    payload,
+  );
+
 export const downloadBulkTemplate = params =>
   authenticated(api).get(`/maps/bulk_template_download/`, { params });
 

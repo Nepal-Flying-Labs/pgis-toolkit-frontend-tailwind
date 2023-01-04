@@ -13,10 +13,12 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import TableSkeleton from '@Components/common/TableSkeleton/index';
 import CustomCheckbox from '@Components/common/CustomCheckbox/index';
 
-const { toggleModal } = CommonCreators;
+const { toggleModal, togglePromptDialog } = CommonCreators;
 const {
   getLayerAttributeRequest,
   postAttributeSelectionRequest,
+  setAttributeList,
+  setIndividualAttribute,
   clearAttributeListData,
 } = Creators;
 
@@ -75,7 +77,10 @@ const ManageAttributes = () => {
         <Button
           iconLeft="add"
           className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-group"
-          onClick={() => dispatch(toggleModal('add-attributes'))}
+          onClick={() => {
+            dispatch(setAttributeList(checkedData));
+            dispatch(toggleModal('add-attributes'));
+          }}
         >
           Attribute
         </Button>
@@ -152,11 +157,21 @@ const ManageAttributes = () => {
                     name="edit_outline"
                     className="naxatw-text-icon-md"
                     wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
+                    onIconClick={e => {
+                      e.stopPropagation();
+                      dispatch(setIndividualAttribute(row));
+                      dispatch(toggleModal('add-attributes'));
+                    }}
                   />
                   <MaterialIcon
                     name="delete_outline"
                     className="naxatw-text-icon-md naxatw-text-[#FF0F0F]"
                     wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
+                    onIconClick={e => {
+                      e.stopPropagation();
+                      dispatch(setIndividualAttribute(row));
+                      dispatch(togglePromptDialog('delete-template-attribute'));
+                    }}
                   />
                 </div>
               )}

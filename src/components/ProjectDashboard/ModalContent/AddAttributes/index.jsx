@@ -1,33 +1,47 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable arrow-body-style */
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Input from '@Components/common/Input';
 import Select from '@Components/common/Select/index';
 import Button from '@Components/common/Button/index';
+import { Creators, Types } from '@Actions/projectDashboard';
+import { checkIfLoading } from '@Utils/loaderSelector';
 import useForm from '@Hooks/useForm';
+
+const {
+  postTemplateAttributeRequest,
+  clearIndividualAttribute,
+  updateTemplateAttributeRequest,
+} = Creators;
 
 const initialState = {
   name: '',
   alias: '',
-  type: '',
+  data_type: '',
   source: '',
 };
 
 const type = [
   {
     id: 1,
-    name: 'text',
-    displayName: 'Text',
+    name: 'str',
+    displayName: 'String',
   },
   {
     id: 2,
-    name: 'integer',
+    name: 'int',
     displayName: 'Integer',
   },
   {
     id: 3,
     name: 'float',
     displayName: 'Float',
+  },
+  {
+    id: 4,
+    name: 'date',
+    displayName: 'Date',
   },
 ];
 
@@ -50,10 +64,44 @@ const source = [
 ];
 
 const AddAttributes = () => {
+  const dispatch = useDispatch();
+  const selectedData = useSelector(
+    state => state.projectDashboard.data.manageData.selectedData,
+  );
+  const loading = useSelector(state =>
+    checkIfLoading(state, [
+      Types.POST_TEMPLATE_ATTRIBUTE_REQUEST,
+      Types.UPDATE_TEMPLATE_ATTRIBUTE_REQUEST,
+    ]),
+  );
+  const individualAttribute = useSelector(
+    state => state.projectDashboard.data.manageData.individualAttribute,
+  );
   const { values, handleChange, handleSubmit, handleCustomChange } = useForm({
-    initialValues: initialState,
-    onSubmit: data => {},
+    initialValues: individualAttribute || initialState,
+    onSubmit: data => {
+      if (individualAttribute) {
+        dispatch(
+          updateTemplateAttributeRequest(individualAttribute.id, { ...values }),
+        );
+      } else {
+        dispatch(
+          postTemplateAttributeRequest({
+            ...values,
+            data_type: values.type,
+            layer_template: selectedData.id,
+          }),
+        );
+      }
+    },
   });
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearIndividualAttribute());
+    };
+  }, [dispatch]);
+
   return (
     <div className="naxatw-container ">
       <div className="naxatw-w-[41.875rem] naxatw-mx-auto naxatw-px-7 naxatw-py-5">
@@ -62,14 +110,14 @@ const AddAttributes = () => {
             label="Attribute"
             placeholder="Enter Attribute Name"
             name="name"
-            value={values.name}
+            value={values.name || ''}
             onChange={handleChange}
           />
           <Input
             label="Alias"
             placeholder="Enter alias"
             name="alias"
-            value={values.alias}
+            value={values.alias || ''}
             onChange={handleChange}
           />
           <div className="naxatw-flex naxatw-gap-x-5">
@@ -80,10 +128,11 @@ const AddAttributes = () => {
                 options={type}
                 dataKey="displayName"
                 onChange={data => {
-                  handleCustomChange('type', data.name);
+                  handleCustomChange('data_type', data.name);
                 }}
                 selected={
-                  type.filter(t => t.name === values.type)?.[0]?.displayName
+                  type.filter(t => t.name === values.data_type)?.[0]
+                    ?.displayName
                 }
               />
             </div>
@@ -104,7 +153,14 @@ const AddAttributes = () => {
           </div>
         </div>
         <div className="naxatw-flex naxatw-justify-center">
-          <Button className="naxatw-btn-primary naxatw-mt-10">Add</Button>
+          <Button
+            className="naxatw-btn-primary naxatw-mt-10"
+            isLoading={loading}
+            loaderClassName="naxatw-fill-secondary-400"
+            onClick={handleSubmit}
+          >
+            {individualAttribute ? 'Edit' : 'Add'}
+          </Button>
         </div>
       </div>
     </div>

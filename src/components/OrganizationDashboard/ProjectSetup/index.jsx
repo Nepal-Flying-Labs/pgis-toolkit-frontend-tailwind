@@ -1,10 +1,11 @@
 /* eslint-disable arrow-body-style */
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
-import { Creators } from '@Actions/organizationDashboard';
-
+import { Creators, Types } from '@Actions/organizationDashboard';
+import { checkIfLoading } from '@Utils/loaderSelector';
+import Spinner from '@Components/common/Spinner/index';
 import BasicInfo from './FormPages/BasicInfo';
 import Location from './FormPages/Location';
 // import Documents from './FormPages/Documents';
@@ -59,6 +60,13 @@ const ProjectSetup = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [page, setPage] = useState(1);
+
+  const loading = useSelector(state =>
+    checkIfLoading(state, [
+      Types.GET_INDIVIDUAL_PROJECT_REQUEST,
+      Types.GET_CONTACT_PERSON_REQUEST,
+    ]),
+  );
 
   useEffect(() => {
     dispatch(getIndividualProjectRequest(projectId));
@@ -136,34 +144,13 @@ const ProjectSetup = () => {
           </div>
         </div>
         <div>
-          <div className="naxatw-space-y-7">
-            {getPage(page, setPage)}
-            {/* <div className="naxatw-flex naxatw-justify-between  naxatw-pt-7 naxatw-pb-7 ">
-              {page > 1 ? (
-                <Button
-                  iconLeft="arrow_back"
-                  className=" naxatw-w-[8.875rem] naxatw-text-[#00A699] "
-                  onClick={() => setPage(prevPage => prevPage - 1)}
-                >
-                  Go back
-                </Button>
-              ) : (
-                <div />
-              )}
-              <Button
-                className="naxatw-btn-primary naxatw-w-[4.75rem]"
-                onClick={() => setPage(prevPage => prevPage + 1)}
-              >
-                Next
-              </Button>
-              <Button
-                // onClick={handleSubmit}
-                className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
-              >
-                Save as Draft
-              </Button>
-            </div> */}
-          </div>
+          {!loading ? (
+            <div className="naxatw-space-y-7">{getPage(page, setPage)}</div>
+          ) : (
+            <div className="naxatw-w-full naxatw-h-[calc(100vh-10rem)] naxatw-flex naxatw-items-center naxatw-justify-center">
+              <Spinner className="naxatw-w-[100px] naxatw-h-[100px] naxatw-fill-primary-400 " />
+            </div>
+          )}
         </div>
       </div>
     </div>

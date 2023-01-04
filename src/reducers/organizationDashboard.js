@@ -18,6 +18,7 @@ const initialState = {
   },
   organizationDetail: null,
   selectedData: null,
+  drawnGeojsonData: null,
   users: [],
   userGroup: [],
   usersFilter: {
@@ -283,6 +284,11 @@ const deleteInvitedUserSuccess = (state, action) => {
   };
 };
 
+const setDrawnGeojsonData = (state, action) => ({
+  ...state,
+  drawnGeojsonData: action.payload,
+});
+
 const resetOrganizationDashboardState = () => ({
   ...initialState,
 });
@@ -312,6 +318,7 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.UPDATE_INVITED_USER_STATUS_SUCCESS]: updateInvitedUserStatusSuccess,
   [Types.RESEND_INVITATION_SUCCESS]: resendInvitationSuccess,
   [Types.DELETE_INVITED_USER_SUCCESS]: deleteInvitedUserSuccess,
+  [Types.SET_DRAWN_GEOJSON_DATA]: setDrawnGeojsonData,
   [Types.RESET_ORGANIZATION_DASHBOARD_STATE]: resetOrganizationDashboardState,
 });
 

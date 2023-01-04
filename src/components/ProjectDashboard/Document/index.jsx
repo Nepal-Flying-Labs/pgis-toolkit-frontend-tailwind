@@ -9,12 +9,8 @@ import AdditionalSidebar from '../Common/index';
 import DocumentList from './DocumentList/index';
 import NoDocumentYet from './NoDocumentYet/index';
 
-const {
-  getDocumentItemRequest,
-  downloadDocumentRequest,
-  setDocumentState,
-  getDocumentByIdRequest,
-} = ProjectDashboardCreators;
+const { getDocumentItemRequest, downloadDocumentRequest, setDocumentState } =
+  ProjectDashboardCreators;
 
 const { toggleModal, togglePromptDialog, setRightSidebarState } =
   CommonCreators;
@@ -95,8 +91,7 @@ export default function Document() {
             dispatch(setDocumentState({ delete: { ...data, projectId } }));
             dispatch(togglePromptDialog('delete-document'));
           }}
-          onEdit={id => {
-            dispatch(dispatch(getDocumentByIdRequest(id)));
+          onEdit={() => {
             dispatch(toggleModal('edit-document'));
           }}
         />

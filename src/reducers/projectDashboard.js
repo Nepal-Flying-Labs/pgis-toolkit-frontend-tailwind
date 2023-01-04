@@ -19,6 +19,10 @@ const initialState = {
   },
   gallery: {
     list: [],
+    cardId: null,
+    item: {},
+    delete: {},
+    searchText: '',
   },
   info: {
     details: {},
@@ -209,9 +213,35 @@ const uploadDocumentDataSuccess = (state, action) => ({
   ...state,
   document: {
     ...state.document,
-    list: [action.payload, ...state.document.list],
+    list: [...action.payload, ...state.document.list],
   },
 });
+
+const updateDocumentDataSuccess = (state, action) => {
+  const filteredData = state.document.list.filter(
+    item => item.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    document: {
+      ...state.document,
+      list: [action.payload, ...filteredData],
+    },
+  };
+};
+
+const deleteDocumentSuccess = (state, action) => {
+  const filteredData = state.document.list.filter(
+    item => item.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    document: {
+      ...state.document,
+      list: filteredData,
+    },
+  };
+};
 
 const getProjectCountrySuccess = (state, action) => ({
   ...state,
@@ -390,6 +420,42 @@ const setDocumentState = (state, action) => ({
   document: { ...state.document, ...action.payload },
 });
 
+const setGalleryState = (state, action) => ({
+  ...state,
+  gallery: { ...state.gallery, ...action.payload },
+});
+
+const getGalleryByIdSuccess = (state, action) => ({
+  ...state,
+  gallery: { ...state.gallery, item: action.payload },
+});
+
+const deleteGallerySuccess = (state, action) => {
+  const filteredData = state.gallery.list.filter(
+    item => item.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    gallery: {
+      ...state.gallery,
+      list: filteredData,
+    },
+  };
+};
+
+const updateGallerySuccess = (state, action) => {
+  const filteredData = state.gallery.list.filter(
+    item => item.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    gallery: {
+      ...state.gallery,
+      list: [action.payload, ...filteredData],
+    },
+  };
+};
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -409,7 +475,9 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_GALLERY_ITEM_SUCCESS]: getGalleryItemSuccess,
   [Types.GET_DOCUMENT_ITEM_SUCCESS]: getDocumentItemSuccess,
   [Types.GET_DOCUMENT_BY_ID_SUCCESS]: getDocumentByIdSuccess,
+  [Types.DELETE_DOCUMENT_SUCCESS]: deleteDocumentSuccess,
   [Types.UPLOAD_DOCUMENT_DATA_SUCCESS]: uploadDocumentDataSuccess,
+  [Types.UPDATE_DOCUMENT_DATA_SUCCESS]: updateDocumentDataSuccess,
   [Types.GET_PROJECT_COUNTRY_SUCCESS]: getProjectCountrySuccess,
   [Types.GET_PROJECT_STATE_SUCCESS]: getProjectStateSuccess,
   [Types.GET_LAYER_TEMPLATE_SUCCESS]: getLayerTemplateSuccess,
@@ -427,6 +495,10 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.SET_USER_STATE]: setUserState,
   [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
   [Types.SET_DOCUMENT_STATE]: setDocumentState,
+  [Types.SET_GALLERY_STATE]: setGalleryState,
+  [Types.GET_GALLERY_BY_ID_SUCCESS]: getGalleryByIdSuccess,
+  [Types.DELETE_GALLERY_SUCCESS]: deleteGallerySuccess,
+  [Types.UPDATE_GALLERY_SUCCESS]: updateGallerySuccess,
 });
 
 export default projectDashboardReducer;

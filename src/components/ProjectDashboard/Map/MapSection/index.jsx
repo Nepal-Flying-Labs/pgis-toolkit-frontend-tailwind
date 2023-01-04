@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-vars */
 import React, { useCallback, useEffect } from 'react';
 import { stringify } from 'wkt';
@@ -13,6 +14,7 @@ import {
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher';
 import CustomLayerSwitcher from '@Components/common/OpenLayersComponent/CustomLayerSwitcher/index';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
+import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileLayer';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import {
   defaultStyles,
@@ -229,6 +231,12 @@ export default function MapSection() {
               // }
               zIndex={mapState.length + 10 - index}
               properties={{ layerId: item.id }}
+            />
+          ) : item.layer_type === 'WMS' ? (
+            <WMSTileLayer
+              key={item.id}
+              url={item.url}
+              visibleOnMap={item.checked}
             />
           ) : (
             ''

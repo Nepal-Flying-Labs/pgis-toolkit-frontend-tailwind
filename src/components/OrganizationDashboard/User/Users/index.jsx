@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import { Creators, Types } from '@Actions/organizationDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import SortingContainer from '@Components/common/SortingContainer/index';
@@ -17,7 +18,18 @@ import TableSkeleton from '@Components/common/TableSkeleton';
 import './index.css';
 import { useParams } from 'react-router';
 
-const { setUserRole, getUsersRequest, setSearchText } = Creators;
+const { togglePromptDialog } = CommonCreators;
+
+const {
+  setUserRole,
+  getUsersRequest,
+  setSearchText,
+  updateUserStatusRequest,
+  updateInvitedUserStatusRequest,
+  resendInvitationRequest,
+  setSelectedData,
+  handleUserTabChange,
+} = Creators;
 
 const roles = [
   {
@@ -34,29 +46,6 @@ const roles = [
     id: 3,
     value: '3',
     name: 'Medical Assistant',
-  },
-];
-
-const dropdownOptions = [
-  {
-    id: 1,
-    label: (
-      <span className="naxatw-flex naxatw-items-center">
-        <i className="material-icons naxatw-mr-2">edit</i>
-        <p className="naxatw-text-body-lg">Edit</p>
-      </span>
-    ),
-    onClick: () => {},
-  },
-  {
-    id: 2,
-    label: (
-      <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
-        <i className="material-icons naxatw-mr-2">delete_outline</i>
-        <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
-      </span>
-    ),
-    onClick: () => {},
   },
 ];
 
@@ -83,7 +72,7 @@ const Users = () => {
   });
 
   useEffect(() => {
-    if (!users) {
+    if (users.length < 1) {
       dispatch(
         getUsersRequest({
           organization: organizationId,
@@ -93,6 +82,90 @@ const Users = () => {
       );
     }
   }, [dispatch, searchText, organizationId, userRole, users]);
+
+  const userOptions = [
+    {
+      id: 1,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">group</i>
+          <p className="naxatw-text-body-lg">Assign</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setSelectedData({ ...data, fromUserTab: true }));
+        dispatch(handleUserTabChange('assign-users'));
+      },
+    },
+    {
+      id: 2,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">edit</i>
+          <p className="naxatw-text-body-lg">Deactivate</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(updateUserStatusRequest(data.id, { active: !data.active }));
+      },
+    },
+    {
+      id: 3,
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setSelectedData(data));
+        dispatch(togglePromptDialog('delete-organization-user'));
+      },
+    },
+  ];
+
+  const invitedUserOptions = [
+    {
+      id: 1,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">group</i>
+          <p className="naxatw-text-body-lg">Expire</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(
+          updateInvitedUserStatusRequest(data.id, { status: 'Expired' }),
+        );
+      },
+    },
+    {
+      id: 2,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">edit</i>
+          <p className="naxatw-text-body-lg">Resend</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(resendInvitationRequest(data.id, { resend: true }));
+      },
+    },
+    {
+      id: 3,
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setSelectedData(data));
+        dispatch(togglePromptDialog('delete-organization-invited-user'));
+      },
+    },
+  ];
+
   return (
     <div className="naxatw-mt-3 ">
       <div className="naxatw-flex naxatw-gap-x-3 naxatw-justify-start ">
@@ -148,7 +221,7 @@ const Users = () => {
                       className="naxatw-w-7 naxatw-h-7 naxatw-rounded-full "
                     />
                     <span className="naxatw-text-base naxatw-font-bold">
-                      {row.full_name}
+                      {row.full_name || '-'}
                     </span>
                   </div>
                 )}
@@ -159,7 +232,7 @@ const Users = () => {
                 rowcolSpan="rowSpan_2"
                 dataHeader={<SortingContainer name="Role" />}
                 dataFormat={row => (
-                  <span className="text-base">{row.group}</span>
+                  <span className="naxatw-text-base">{row.group}</span>
                 )}
               />
               <TableHeader
@@ -197,7 +270,30 @@ const Users = () => {
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
                 rowcolSpan="rowSpan_3"
                 dataFormat={row => (
-                  <DropdownOptions options={dropdownOptions} data={row} />
+                  <DropdownOptions
+                    options={
+                      row.active !== null
+                        ? userOptions.map(option =>
+                            option.id === 2
+                              ? {
+                                  ...option,
+                                  label: (
+                                    <span className="naxatw-flex naxatw-items-center">
+                                      <i className="material-icons naxatw-mr-2">
+                                        edit
+                                      </i>
+                                      <p className="naxatw-text-body-lg">
+                                        {row.active ? 'Deactivate' : 'Activate'}
+                                      </p>
+                                    </span>
+                                  ),
+                                }
+                              : { ...option },
+                          )
+                        : invitedUserOptions
+                    }
+                    data={row}
+                  />
                 )}
               />
             </Table>

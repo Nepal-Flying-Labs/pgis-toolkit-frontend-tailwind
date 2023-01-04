@@ -57,7 +57,7 @@ export default function Modal({
                 <div
                   className={`naxatw-flex naxatw-justify-between naxatw-items-start
                     naxatw-rounded-t-[20px] naxatw-px-7 ${
-                      !subtitle ? 'naxatw-py-7' : 'naxatw-py-5'
+                      !subtitle && title ? 'naxatw-py-7' : 'naxatw-py-5'
                     }`}
                   style={{
                     boxShadow: helpContent

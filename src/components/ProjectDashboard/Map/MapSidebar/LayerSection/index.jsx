@@ -35,7 +35,7 @@ export default function LayerSection() {
 
   const dropdownOptions = [
     {
-      id: 1,
+      id: 'zoom-to-layer',
       label: (
         <span className="naxatw-flex naxatw-items-center">
           <i className="material-icons naxatw-mr-2">zoom_in</i>
@@ -47,7 +47,7 @@ export default function LayerSection() {
       },
     },
     {
-      id: 2,
+      id: 'attribute-table',
       label: (
         <span className="naxatw-flex naxatw-items-center">
           <i className="material-symbols-outlined naxatw-mr-2">table_chart</i>
@@ -64,7 +64,7 @@ export default function LayerSection() {
       },
     },
     {
-      id: 3,
+      id: 'add-feature',
       label: (
         <span className="naxatw-flex naxatw-items-center">
           <i className="material-icons naxatw-mr-2">add</i>
@@ -90,7 +90,7 @@ export default function LayerSection() {
       },
     },
     {
-      id: 4,
+      id: 'delete-layer',
       label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>

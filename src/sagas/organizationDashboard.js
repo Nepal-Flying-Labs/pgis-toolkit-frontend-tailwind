@@ -13,6 +13,8 @@ import {
   getCountryList,
   getUsers,
   getUserGroup,
+  updateUserRole,
+  updateInvitedUserStatus,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
@@ -198,6 +200,76 @@ export function* postAssignUserRequest({ payload }) {
   }
 }
 
+export function* updateUserStatusRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateUserRole, id, formdata);
+    yield put(
+      organizationDashboardActions.updateUserStatusSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.updateUserStatusFailure());
+    throw error;
+  }
+}
+
+export function* deleteUserRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateUserRole, id, formdata);
+    yield put(organizationDashboardActions.deleteUserSuccess(response.data));
+    yield put(commonActions.togglePromptDialog());
+    yield put(toastActions.success({ message: 'User deleted successfully' }));
+  } catch (error) {
+    yield put(organizationDashboardActions.deleteUserFailure());
+    throw error;
+  }
+}
+
+export function* updateInvitedUserStatusRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateInvitedUserStatus, id, formdata);
+    yield put(
+      organizationDashboardActions.updateInvitedUserStatusSuccess(
+        response.data,
+      ),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.updateInvitedUserStatusFailure());
+    throw error;
+  }
+}
+
+export function* deleteInvitedUserRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateInvitedUserStatus, id, formdata);
+    yield put(
+      organizationDashboardActions.deleteInvitedUserSuccess(response.data),
+    );
+    yield put(commonActions.togglePromptDialog());
+    yield put(toastActions.success({ message: 'User deleted successfully' }));
+  } catch (error) {
+    yield put(organizationDashboardActions.deleteInvitedUserFailure());
+    throw error;
+  }
+}
+
+export function* resendInvitationRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateInvitedUserStatus, id, formdata);
+    yield put(
+      organizationDashboardActions.resendInvitationSuccess(response.data),
+    );
+    yield put(toastActions.success({ message: 'User deleted successfully' }));
+  } catch (error) {
+    yield put(organizationDashboardActions.resendInvitationFailure());
+    throw error;
+  }
+}
+
 function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
@@ -247,6 +319,26 @@ function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.POST_ASSIGN_USER_REQUEST,
     withLoader(withErrorHandler(postAssignUserRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_USER_STATUS_REQUEST,
+    withLoader(withErrorHandler(updateUserStatusRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_USER_REQUEST,
+    withLoader(withErrorHandler(deleteUserRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_INVITED_USER_STATUS_REQUEST,
+    withLoader(withErrorHandler(updateInvitedUserStatusRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_INVITED_USER_REQUEST,
+    withLoader(withErrorHandler(deleteInvitedUserRequest)),
+  );
+  yield takeLatest(
+    Types.RESEND_INVITATION_REQUEST,
+    withLoader(withErrorHandler(resendInvitationRequest)),
   );
 }
 

@@ -2,7 +2,7 @@
 /* eslint-disable arrow-body-style */
 import React from 'react';
 
-const Checkbox = ({ id, label, onClick, checked }) => {
+const Checkbox = ({ id, label, onClick, checked, disabled }) => {
   return (
     <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2 ">
       <input
@@ -11,6 +11,7 @@ const Checkbox = ({ id, label, onClick, checked }) => {
         className="naxatw-h-5 naxatw-w-5"
         onChange={onClick}
         checked={checked}
+        disabled={disabled}
       />
 
       <label htmlFor={id} className="naxatw-text-body-lg naxatw-text-[#484848]">

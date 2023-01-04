@@ -235,6 +235,9 @@ export function* updateInvitedUserStatusRequest({ id, payload }) {
         response.data,
       ),
     );
+    yield put(
+      toastActions.success({ message: 'Invitation expire successful' }),
+    );
   } catch (error) {
     yield put(organizationDashboardActions.updateInvitedUserStatusFailure());
     throw error;
@@ -260,10 +263,8 @@ export function* resendInvitationRequest({ id, payload }) {
   try {
     const formdata = prepareFormData(payload);
     const response = yield call(updateInvitedUserStatus, id, formdata);
-    yield put(
-      organizationDashboardActions.resendInvitationSuccess(response.data),
-    );
-    yield put(toastActions.success({ message: 'User deleted successfully' }));
+    yield put(organizationDashboardActions.resendInvitationSuccess({ id }));
+    yield put(toastActions.success({ message: response.data.message }));
   } catch (error) {
     yield put(organizationDashboardActions.resendInvitationFailure());
     throw error;

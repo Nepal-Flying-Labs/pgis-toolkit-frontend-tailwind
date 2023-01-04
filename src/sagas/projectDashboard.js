@@ -31,6 +31,8 @@ import {
   getLayerTemplate,
   patchLayerTemplate,
   postImportTemplate,
+  updateTemplateAttribute,
+  postTemplateAttribute,
   getLayerAttribute,
   postAttributeSelection,
   downloadBulkTemplate,
@@ -390,6 +392,48 @@ export function* postAttributeSelectionRequest({ payload }) {
   }
 }
 
+export function* postTemplateAttributeRequest({ payload }) {
+  try {
+    const response = yield call(postTemplateAttribute, payload);
+    yield put(
+      projectDashboardActions.postTemplateAttributeSuccess(response.data.data),
+    );
+    yield put(commonActions.toggleModal('manage-attributes'));
+    yield put(toastActions.success({ message: response.data.message }));
+  } catch (error) {
+    yield put(projectDashboardActions.postTemplateAttributeFailure());
+    throw error;
+  }
+}
+
+export function* updateTemplateAttributeRequest({ id, payload }) {
+  try {
+    const response = yield call(updateTemplateAttribute, id, payload);
+    yield put(
+      projectDashboardActions.updateTemplateAttributeSuccess(response.data),
+    );
+    yield put(commonActions.toggleModal('manage-attributes'));
+    yield put(toastActions.success({ message: response.data.message }));
+  } catch (error) {
+    yield put(projectDashboardActions.updateTemplateAttributeFailure());
+    throw error;
+  }
+}
+
+export function* deleteTemplateAttributeRequest({ id, payload }) {
+  try {
+    const response = yield call(updateTemplateAttribute, id, payload);
+    yield put(
+      projectDashboardActions.deleteTemplateAttributeSuccess(response.data),
+    );
+    yield put(commonActions.toggleModal('manage-attributes'));
+    yield put(toastActions.success({ message: response.data.message }));
+  } catch (error) {
+    yield put(projectDashboardActions.deleteTemplateAttributeFailure());
+    throw error;
+  }
+}
+
 export function* downloadBulkTemplateRequest({ params }) {
   try {
     const response = yield call(downloadBulkTemplate, params);
@@ -564,6 +608,20 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.POST_ATTRIBUTE_SELECTION_REQUEST,
     withLoader(withErrorHandler(postAttributeSelectionRequest)),
+  );
+
+  yield takeLatest(
+    Types.POST_TEMPLATE_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(postTemplateAttributeRequest)),
+  );
+
+  yield takeLatest(
+    Types.UPDATE_TEMPLATE_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(updateTemplateAttributeRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_TEMPLATE_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(deleteTemplateAttributeRequest)),
   );
   yield takeLatest(
     Types.DOWNLOAD_BULK_TEMPLATE_REQUEST,

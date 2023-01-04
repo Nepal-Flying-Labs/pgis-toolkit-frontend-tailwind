@@ -13,6 +13,7 @@ const initialState = {
     manageData: {
       layerTemplate: [],
       selectedLayer: null,
+      individualAttribute: null,
       attributeList: [],
     },
   },
@@ -256,6 +257,51 @@ const patchLayerTemplateSuccess = (state, action) => {
   };
 };
 
+const postTemplateAttributeSuccess = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      attributeList: [...state.data.manageData.attributeList, action.payload],
+    },
+  },
+});
+
+const updateTemplateAttributeSuccess = (state, action) => {
+  const data = action.payload;
+  const newData = state.data.manageData.attributeList.map(item =>
+    item.id === data.id ? { ...data } : { ...item },
+  );
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      manageData: {
+        ...state.data.manageData,
+        attributeList: newData,
+      },
+    },
+  };
+};
+
+const deleteTemplateAttributeSuccess = (state, action) => {
+  const data = action.payload;
+  const newData = state.data.manageData.attributeList.filter(
+    item => item.id !== data.id,
+  );
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      manageData: {
+        ...state.data.manageData,
+        attributeList: newData,
+      },
+    },
+  };
+};
+
 const setSelectedLayer = (state, action) => ({
   ...state,
   data: {
@@ -263,6 +309,39 @@ const setSelectedLayer = (state, action) => ({
     manageData: {
       ...state.data.manageData,
       selectedData: action.payload,
+    },
+  },
+});
+
+const setIndividualAttribute = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      individualAttribute: action.payload,
+    },
+  },
+});
+
+const clearIndividualAttribute = state => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      individualAttribute: null,
+    },
+  },
+});
+
+const setAttributeList = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      attributeList: action.payload,
     },
   },
 });
@@ -335,7 +414,13 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_STATE_SUCCESS]: getProjectStateSuccess,
   [Types.GET_LAYER_TEMPLATE_SUCCESS]: getLayerTemplateSuccess,
   [Types.PATCH_LAYER_TEMPLATE_SUCCESS]: patchLayerTemplateSuccess,
+  [Types.POST_TEMPLATE_ATTRIBUTE_SUCCESS]: postTemplateAttributeSuccess,
+  [Types.UPDATE_TEMPLATE_ATTRIBUTE_SUCCESS]: updateTemplateAttributeSuccess,
+  [Types.DELETE_TEMPLATE_ATTRIBUTE_SUCCESS]: deleteTemplateAttributeSuccess,
   [Types.SET_SELECTED_LAYER]: setSelectedLayer,
+  [Types.SET_ATTRIBUTE_LIST]: setAttributeList,
+  [Types.SET_INDIVIDUAL_ATTRIBUTE]: setIndividualAttribute,
+  [Types.CLEAR_INDIVIDUAL_ATTRIBUTE]: clearIndividualAttribute,
   [Types.CLEAR_ATTRIBUTE_LIST_DATA]: clearAttributeListData,
   [Types.GET_LAYER_ATTRIBUTE_SUCCESS]: getLayerAttributeSuccess,
   [Types.GET_USERS_SUCCESS]: getUsersSuccess,

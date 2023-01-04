@@ -57,6 +57,12 @@ const UserList = () => {
   const users = useSelector(state => state.projectDashboard.user.list);
   const userRole = useSelector(state => state.projectDashboard.user.userRole);
   const ordering = useSelector(state => state.projectDashboard.user.ordering);
+  const invitationLoading = useSelector(state =>
+    checkIfLoading(state, [
+      Types.UPDATE_INVITED_USER_STATUS_REQUEST,
+      Types.RESEND_INVITATION_REQUEST,
+    ]),
+  );
 
   // const userRole = useSelector(
   //   state => state.organizationDashboard.usersFilter.userRole,
@@ -383,6 +389,7 @@ const UserList = () => {
                   <Status
                     status={row.active}
                     invitationStatus={row.status || ''}
+                    isLoading={invitationLoading}
                   />
                 )}
               />

@@ -52,6 +52,12 @@ const UserList = () => {
   // const [byGroup, setByGroup] = useState('role');
   const users = useSelector(state => state.users.userData);
   const [rowPerPage, setRowPerPage] = useState(10);
+  const invitationLoading = useSelector(state =>
+    checkIfLoading(state, [
+      Types.UPDATE_INVITED_USER_STATUS_REQUEST,
+      Types.RESEND_INVITATION_REQUEST,
+    ]),
+  );
 
   const userOptions = [
     {
@@ -301,6 +307,7 @@ const UserList = () => {
                 dataFormat={row => (
                   <Status
                     status={row.active}
+                    isLoading={invitationLoading}
                     invitationStatus={row.status || ''}
                   />
                 )}

@@ -5,11 +5,12 @@ import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard'
 import { Creators as CommonCreators } from '@Actions/common';
 import { isEmpty } from '@Utils/commonUtils';
 import Button from '@Components/common/Button/index';
-import GalleryList from './GalleryList/index';
 import AdditionalSidebar from '../Common/index';
 import NoPhotosYet from './NoPhotosYet/index';
+import GalleryList from './GalleryList/index';
 
-const { getGalleryItemRequest, setGalleryState } = ProjectDashboardCreators;
+const { getGalleryItemRequest, setGalleryState, downloadGalleryRequest } =
+  ProjectDashboardCreators;
 const { toggleModal, setRightSidebarState, togglePromptDialog } =
   CommonCreators;
 
@@ -20,10 +21,9 @@ export default function Gallery() {
   const dispatch = useDispatch();
 
   const handleDownload = id => {
-    // dispatch(
-    //   downloadDocumentRequest({ document: [id].join(), project: projectId }),
-    // );
-    console.log(id);
+    dispatch(
+      downloadGalleryRequest({ image: [id].join(), project: projectId }),
+    );
   };
 
   useEffect(() => {
@@ -85,10 +85,9 @@ export default function Gallery() {
             dispatch(setGalleryState({ delete: { ...data, projectId } }));
             dispatch(togglePromptDialog('delete-gallery'));
           }}
-          // onEdit={id => {
-          //   dispatch(dispatch(getDocumentByIdRequest(id)));
-          //   dispatch(toggleModal('edit-document'));
-          // }}
+          onEdit={() => {
+            dispatch(toggleModal('edit-image'));
+          }}
         />
       )}
     </div>

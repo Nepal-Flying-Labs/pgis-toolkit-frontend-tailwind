@@ -29,7 +29,7 @@ import getImageSource from '@Utils/getImageSource';
 
 const { uploadGalleryRequest } = ProjectDashboardCreators;
 
-export default function UploadImage() {
+export default function UploadGallery() {
   const { projectId } = useParams();
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [errorFields, setErrorFields] = useState({});

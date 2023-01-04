@@ -8,8 +8,8 @@ import Creators from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
 import { useParams } from 'react-router';
 
-const { togglePromptDialog } = CommonCreators;
-const { setGalleryState } = Creators;
+const { togglePromptDialog, toggleModal } = CommonCreators;
+const { setGalleryState, getGalleryByIdRequest } = Creators;
 
 function GalleryCard({
   id,
@@ -32,7 +32,10 @@ function GalleryCard({
         </span>
       ),
       //   logic for edit item toggleModal
-      onClick: () => {},
+      onClick: () => {
+        dispatch(dispatch(getGalleryByIdRequest(id)));
+        dispatch(toggleModal('edit-image'));
+      },
     },
     {
       id: 2,

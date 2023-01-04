@@ -20,7 +20,6 @@ import DownloadLayer from '@Components/ProjectDashboard/ModalContent/DownloadLay
 import ManageAttributes from '@Components/ProjectDashboard/ModalContent/ManageAttributes';
 import AddAttributes from '@Components/ProjectDashboard/ModalContent/AddAttributes';
 import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer';
-import UploadImage from '@Components/ProjectDashboard/ModalContent/UploadImage';
 import UploadDocument from '@Components/ProjectDashboard/ModalContent/UploadDocument';
 import ImportOSM from '@Components/ProjectDashboard/ModalContent/ImportOSM';
 import EditDocument from '@Components/ProjectDashboard/ModalContent/EditDocument';
@@ -31,6 +30,8 @@ import ViewLayerAttribute from '@Components/ProjectDashboard/ModalContent/ViewLa
 import DeleteDocument from '@Components/ProjectDashboard/ModalContent/DeleteDocument/index';
 import DataQueryHelp from '@Components/ProjectDashboard/ModalContent/HelpContents/DataQueryHelp';
 import DeleteGallery from '@Components/ProjectDashboard/ModalContent/DeleteGallery/index';
+import EditGallery from '@Components/ProjectDashboard/ModalContent/EditGallery/index';
+import UploadGallery from '@Components/ProjectDashboard/ModalContent/UploadGallery/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -148,7 +149,15 @@ export function getModalContent(content) {
         title: 'Upload your image',
         subtitle:
           'You can add any sort of relevant photographs & images or maps, in file format JPEG, PNG, GIF or PDF.',
-        content: <UploadImage />,
+        content: <UploadGallery />,
+      };
+
+    case 'edit-image':
+      return {
+        title: 'Edit your image',
+        subtitle:
+          'You can add any sort of relevant photographs & images or maps, in file format JPEG, PNG, GIF or PDF.',
+        content: <EditGallery />,
       };
 
     // project document

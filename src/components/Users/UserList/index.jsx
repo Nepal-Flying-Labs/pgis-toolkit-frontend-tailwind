@@ -12,6 +12,7 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import TableSkeleton from '@Components/common/TableSkeleton';
 import Table, { TableHeader } from '@Components/common/Table/Table';
+// import usePagination from '@Hooks/usePagination';
 
 const { setSearchText } = Creators;
 
@@ -64,6 +65,19 @@ const UserList = () => {
   const dispatch = useDispatch();
   // const [byGroup, setByGroup] = useState('role');
   const users = useSelector(state => state.users.userData);
+
+  // const {
+  //   next,
+  //   prev,
+  //   jump,
+  //   currentData,
+  //   currentPage,
+  //   maxPage,
+  //   begin,
+  //   end,
+  //   currentList,
+  //   handleSorting,
+  // } = usePagination(users || [], 10);
 
   // const userRole = useSelector(
   //   state => state.organizationDashboard.usersFilter.userRole,

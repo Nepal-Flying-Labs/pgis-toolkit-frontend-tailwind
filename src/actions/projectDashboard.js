@@ -82,7 +82,7 @@ export const { Types, Creators } = createActions(
     uploadDocumentDataSuccess: ['payload'],
     uploadDocumentDataFailure: ['payload'],
 
-    updateDocumentDataRequest: ['payload'],
+    updateDocumentDataRequest: ['id', 'payload'],
     updateDocumentDataSuccess: ['payload'],
     updateDocumentDataFailure: ['payload'],
 
@@ -167,6 +167,16 @@ export const { Types, Creators } = createActions(
     getGalleryByIdRequest: ['id'],
     getGalleryByIdSuccess: ['payload'],
     getGalleryByIdFailure: ['payload'],
+
+    setGalleryState: ['payload'],
+
+    deleteGalleryRequest: ['id', 'payload'],
+    deleteGallerySuccess: ['payload'],
+    deleteGalleryFailure: null,
+
+    updateGalleryRequest: ['id', 'payload'],
+    updateGallerySuccess: ['payload'],
+    updateGalleryFailure: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

@@ -1,4 +1,4 @@
-import { api, authenticated } from '.';
+import { api, authenticated, downloadApi } from '.';
 
 export const getProjectDetail = params =>
   authenticated(api).get(`/projects/project_detail/`, { params });
@@ -36,7 +36,7 @@ export const getIndividualDocument = id =>
 
 // Document-download
 export const downloadDocument = params =>
-  authenticated(api).get(`/projects/document_download/`, { params });
+  authenticated(downloadApi).get(`/projects/document_download/`, { params });
 
 // upload-document
 export const uploadDocument = payload =>
@@ -93,4 +93,16 @@ export const uploadGallery = payload =>
 
 // gallery-download
 export const downloadGallery = params =>
-  authenticated(api).get(`/projects/image_download/`, { params });
+  authenticated(downloadApi).get(`/projects/image_download/`, { params });
+
+// individual-gallery-item
+export const getIndividualGallery = id =>
+  authenticated(api).get(`/projects/image/${id}/`);
+
+// update-document-item
+export const updateGallery = (id, payload) =>
+  authenticated(api).patch(`/projects/image/${id}/`, payload);
+
+// update-document-item
+export const deleteGallery = (id, payload) =>
+  authenticated(api).delete(`/projects/image/${id}/`, payload);

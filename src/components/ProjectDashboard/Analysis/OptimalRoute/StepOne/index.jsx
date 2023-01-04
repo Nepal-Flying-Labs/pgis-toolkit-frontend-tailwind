@@ -1,18 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import Select from '@Components/common/Select';
 import Spinner from '@Components/common/Spinner';
-import Button from '@Components/common/Button/index';
+import Button from '@Components/common/Button';
+import {
+  obstacleLayersThemeIdSelector,
+  roadLayersThemeIdSelector,
+} from '@Selectors/projectMap';
+import { checkIfLoading } from '@Utils/loaderSelector';
+import { isEmpty } from '@Utils/commonUtils';
 
-const values = [
-  'Road Accident',
-  'road Accident',
-  'road Accident',
-  'road Accident',
-  'road Accident',
-];
-const isValuesFetching = false;
+const { getProjectThemesRequest, getProjectThemeLayersRequest } =
+  ProjectMapCreators;
 
 export default function StepOne() {
+  const { projectId } = useParams();
+  const themes = useSelector(state => state.projectMap.themes);
+  const layers = useSelector(state => state.projectMap.layers);
+  const roadLayerThemeId = useSelector(roadLayersThemeIdSelector);
+  const obstaclesLayerThemeId = useSelector(obstacleLayersThemeIdSelector);
+  const isLayersFetching = useSelector(state =>
+    checkIfLoading(state, [Types.GET_PROJECT_THEME_LAYERS_REQUEST]),
+  );
+
+  const dispatch = useDispatch();
+
+  // get project themes
+  useEffect(() => {
+    if (themes) return;
+    dispatch(getProjectThemesRequest({ project: projectId }));
+  }, [dispatch, themes, projectId]);
+
+  // get road and obstacles layers
+  useEffect(() => {
+    if (isEmpty(themes)) return;
+    if (roadLayerThemeId)
+      dispatch(getProjectThemeLayersRequest({ theme: roadLayerThemeId }));
+    if (obstaclesLayerThemeId)
+      dispatch(getProjectThemeLayersRequest({ theme: obstaclesLayerThemeId }));
+  }, [dispatch, themes, roadLayerThemeId, obstaclesLayerThemeId]);
+
   return (
     <div>
       <h4>Data preparation & cleaning for analysis</h4>
@@ -25,7 +54,10 @@ export default function StepOne() {
       <div className="naxatw-mt-5 naxatw-space-y-5">
         <div className="naxatw-space-y-2">
           <label className="naxatw-label">Road layer</label>
-          <Select placeholder="Choose" />
+          <Select
+            options={layers?.[roadLayerThemeId] || []}
+            placeholder="Choose"
+          />
         </div>
 
         <div className="naxatw-space-y-2">
@@ -34,29 +66,32 @@ export default function StepOne() {
             className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg
               naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem]"
           >
-            {isValuesFetching && (
+            {isLayersFetching && (
               <div className="naxatw-h-full naxatw-flex naxatw-items-center naxatw-justify-center">
                 <Spinner className="!naxatw-h-7 !naxatw-w-7 naxatw-fill-grey-500" />
               </div>
             )}
             <ul>
-              {values?.map(item => (
-                <li
-                  key={item}
-                  role="presentation"
-                  className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
-                    naxatw-cursor-pointer hover:naxatw-bg-grey-100 naxatw-flex naxatw-items-center"
-                  onClick={() => {}}
-                >
-                  <input
-                    id={item}
-                    className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
-                      naxatw-accent-grey-800"
-                    type="checkbox"
-                  />
-                  <label htmlFor={item}>{item}</label>
-                </li>
-              ))}
+              {layers?.[obstaclesLayerThemeId] &&
+                layers[obstaclesLayerThemeId].map(item => (
+                  <li
+                    key={item.id}
+                    role="presentation"
+                    className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
+                      hover:naxatw-bg-grey-100 naxatw-flex naxatw-items-center"
+                    onClick={() => {}}
+                  >
+                    <input
+                      id={item.id}
+                      className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
+                        naxatw-accent-grey-800 naxatw-cursor-pointer"
+                      type="checkbox"
+                    />
+                    <label htmlFor={item.id} className="naxatw-cursor-pointer">
+                      {item.name}
+                    </label>
+                  </li>
+                ))}
             </ul>
           </div>
         </div>

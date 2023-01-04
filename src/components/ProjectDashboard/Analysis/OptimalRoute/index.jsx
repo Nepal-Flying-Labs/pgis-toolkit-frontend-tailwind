@@ -15,7 +15,7 @@ export default function OptimalRoute() {
   const stepIndex = useSelector(state => state.analysis.stepIndex);
 
   return (
-    <div className="naxatw-flex naxatw-grow naxatw-justify-center naxatw-py-[19px]">
+    <div className="naxatw-flex naxatw-grow naxatw-justify-center naxatw-py-[19px] naxatw-overflow-y-auto scrollbar">
       <div className="naxatw-w-[34.5rem]">{getStepWiseContent(stepIndex)}</div>
     </div>
   );

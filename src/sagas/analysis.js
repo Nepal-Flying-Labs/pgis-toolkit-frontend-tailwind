@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest, delay } from 'redux-saga/effects';
+import { call, put, select, takeLatest, takeEvery } from 'redux-saga/effects';
 import { checkError } from '@Services/analysis';
 import analysisActions, { Types } from '@Actions/analysis';
 // import commonActions from '@Actions/common';
@@ -37,7 +37,7 @@ export function* checkErrorRequest({ params }) {
 }
 
 function* analysisWatcher() {
-  yield takeLatest(
+  yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
     withLoader(withErrorHandler(checkErrorRequest)),
   );

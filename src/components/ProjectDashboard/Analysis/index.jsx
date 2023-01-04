@@ -21,7 +21,7 @@ export default function Analysis() {
     <div>
       <Header />
 
-      <div className="naxatw-flex">
+      <div className="naxatw-flex naxatw-h-[calc(100vh-6.2rem)]">
         {getAnalysisContent(analysisType)}
 
         <HelpContent />

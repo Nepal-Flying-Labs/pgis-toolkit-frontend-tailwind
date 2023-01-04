@@ -14,6 +14,13 @@ export function* checkErrorRequest({ params }) {
     const errorData = errorStates[layerId];
     for (let i = 0; i < errorData.length; i += 1) {
       const { apiEndPoint } = errorData[i];
+      yield put(
+        analysisActions.setErrorCheckingStatus({
+          layerId,
+          apiEndPoint,
+          status: 'checking',
+        }),
+      );
       const response = yield call(checkError, apiEndPoint, params);
       yield put(
         analysisActions.checkErrorSuccess({

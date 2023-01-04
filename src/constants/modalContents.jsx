@@ -33,6 +33,8 @@ import DeleteGallery from '@Components/ProjectDashboard/ModalContent/DeleteGalle
 import EditGallery from '@Components/ProjectDashboard/ModalContent/EditGallery/index';
 import UploadGallery from '@Components/ProjectDashboard/ModalContent/UploadGallery/index';
 import DeleteOrganizationUser from '@Components/OrganizationDashboard/ModalContent/DeleteOrganizationUser';
+import DeleteUser from '@Components/Users/ModalContent/DeleteUser';
+import DeleteProjectUser from '@Components/ProjectDashboard/ModalContent/DeleteProjectUser/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -257,6 +259,26 @@ export function getPromptDialogContent(content) {
       return {
         title: 'Delete User',
         content: <DeleteOrganizationUser />,
+      };
+    case 'delete-user':
+      return {
+        title: 'Delete User',
+        content: <DeleteUser />,
+      };
+    case 'delete-invited-user':
+      return {
+        title: 'Delete User',
+        content: <DeleteUser />,
+      };
+    case 'delete-project-user':
+      return {
+        title: 'Delete User',
+        content: <DeleteProjectUser />,
+      };
+    case 'delete-project-invited-user':
+      return {
+        title: 'Delete User',
+        content: <DeleteProjectUser />,
       };
     default:
       return '';

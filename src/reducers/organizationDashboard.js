@@ -288,6 +288,11 @@ const resetOrganizationDashboardState = () => ({
   ...initialState,
 });
 
+const setUserState = (state, action) => ({
+  ...state,
+  usersFilter: { ...state.usersFilter, ...action.payload },
+});
+
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
@@ -314,6 +319,7 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.RESEND_INVITATION_SUCCESS]: resendInvitationSuccess,
   [Types.DELETE_INVITED_USER_SUCCESS]: deleteInvitedUserSuccess,
   [Types.RESET_ORGANIZATION_DASHBOARD_STATE]: resetOrganizationDashboardState,
+  [Types.SET_USER_STATE]: setUserState,
 });
 
 export default organizationDashboardReducer;

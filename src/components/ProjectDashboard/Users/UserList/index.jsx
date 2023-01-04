@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable arrow-body-style */
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import { Creators, Types } from '@Actions/projectDashboard';
@@ -14,6 +14,9 @@ import TableSkeleton from '@Components/common/TableSkeleton';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 // import { useParams } from 'react-router';
 import Select from '@Components/common/Select/index';
+import Pagination from '@Components/common/Pagination/index';
+import usePagination from '@Hooks/usePagination';
+import { getSelectedRange } from '@Components/common/Pagination/getSelectedItem';
 
 const { setUserState } = Creators;
 
@@ -88,6 +91,21 @@ const UserList = () => {
     },
   });
 
+  const [rowPerPage, setRowPerPage] = useState(10);
+
+  const {
+    next,
+    prev,
+    jump,
+    // currentData,
+    currentPage,
+    maxPage,
+    // begin,
+    // end,
+    currentList,
+    // handleSorting,
+  } = usePagination(users || [], rowPerPage);
+
   // useEffect(() => {
   //   if (!users) {
   //     dispatch(
@@ -140,13 +158,13 @@ const UserList = () => {
       </div>
       <div className="naxatw-mt-3 ">
         <div
-          style={{ height: `calc(100vh - 17rem)` }}
+          style={{ height: `calc(100vh - 24rem)` }}
           className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative"
         >
           {!loading ? (
             <Table
               data={
-                users
+                currentList
                   ?.filter(
                     item =>
                       item?.full_name
@@ -308,6 +326,21 @@ const UserList = () => {
             <TableSkeleton itemNumber={5} />
           )}
         </div>
+        <Pagination
+          nextPage={next}
+          previousPage={prev}
+          jumpTo={jump}
+          currentPage={currentPage}
+          count={users?.length || 0}
+          paginatedCounts={getSelectedRange(
+            users?.length,
+            rowPerPage,
+            currentPage,
+          )}
+          maxPage={maxPage}
+          rowSelect={rowPerPage}
+          handleSelect={data => setRowPerPage(data)}
+        />
       </div>
     </div>
   );

@@ -90,6 +90,8 @@ export const { Types, Creators } = createActions(
     deleteInvitedUserRequest: ['id', 'payload'],
     deleteInvitedUserSuccess: ['payload'],
     deleteInvitedUserFailure: null,
+
+    setUserState: ['payload'],
   },
   { prefix: 'organizationDashboard/' },
 );

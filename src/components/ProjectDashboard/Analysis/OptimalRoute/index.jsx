@@ -1,11 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import StepOne from './StepOne/index';
+import StepOne from './StepOne';
+import StepTwo from './StepTwo';
 
 function getStepWiseContent(step) {
   switch (step) {
     case 1:
       return <StepOne />;
+    case 2:
+      return <StepTwo />;
     default:
       return <StepOne />;
   }

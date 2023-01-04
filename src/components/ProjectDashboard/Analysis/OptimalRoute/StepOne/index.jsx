@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
+import { Creators as AnalysisCreators } from '@Actions/analysis';
+import useForm from '@Hooks/useForm';
 import Select from '@Components/common/Select';
 import Spinner from '@Components/common/Spinner';
 import Button from '@Components/common/Button';
@@ -11,9 +13,11 @@ import {
 } from '@Selectors/projectMap';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
+import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 
 const { getProjectThemesRequest, getProjectThemeLayersRequest } =
   ProjectMapCreators;
+const { setAnalysisState, setOptimalRouteState } = AnalysisCreators;
 
 export default function StepOne() {
   const { projectId } = useParams();
@@ -21,11 +25,36 @@ export default function StepOne() {
   const layers = useSelector(state => state.projectMap.layers);
   const roadLayerThemeId = useSelector(roadLayersThemeIdSelector);
   const obstaclesLayerThemeId = useSelector(obstacleLayersThemeIdSelector);
+  const selectedRoadLayer = useSelector(
+    state => state.analysis.optimalRoute.selectedRoadLayer,
+  );
+  const selectedObstacleLayers = useSelector(
+    state => state.analysis.optimalRoute.selectedObstacleLayers,
+  );
   const isLayersFetching = useSelector(state =>
     checkIfLoading(state, [Types.GET_PROJECT_THEME_LAYERS_REQUEST]),
   );
-
   const dispatch = useDispatch();
+
+  const { values, meta, handleChange, handleSubmit } = useForm({
+    initialValues: {
+      selectedRoadLayer,
+      selectedObstacleLayers,
+    },
+    required: ['selectedRoadLayer', 'selectedObstacleLayers'],
+    onSubmit: data => {
+      dispatch(
+        setOptimalRouteState({
+          ...data,
+        }),
+      );
+      dispatch(
+        setAnalysisState({
+          stepIndex: 2,
+        }),
+      );
+    },
+  });
 
   // get project themes
   useEffect(() => {
@@ -57,7 +86,21 @@ export default function StepOne() {
           <Select
             options={layers?.[roadLayerThemeId] || []}
             placeholder="Choose"
+            selectedValue={values.selectedRoadLayer?.id}
+            labelKey="name"
+            valueKey="id"
+            onChange={selectedItem => {
+              handleChange({
+                target: {
+                  name: 'selectedRoadLayer',
+                  value: selectedItem,
+                },
+              });
+            }}
           />
+          {meta.selectedRoadLayer.error && meta.selectedRoadLayer.touched && (
+            <FormErrorMessage message="Please select road layer." />
+          )}
         </div>
 
         <div className="naxatw-space-y-2">
@@ -86,6 +129,22 @@ export default function StepOne() {
                       className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
                         naxatw-accent-grey-800 naxatw-cursor-pointer"
                       type="checkbox"
+                      checked={values.selectedObstacleLayers?.some(
+                        i => i.id === item.id,
+                      )}
+                      onChange={e => {
+                        const { checked } = e.target;
+                        handleChange({
+                          target: {
+                            name: 'selectedObstacleLayers',
+                            value: checked
+                              ? [...selectedObstacleLayers, item]
+                              : values.selectedObstacleLayers.filter(
+                                  i => i.id !== item.id,
+                                ),
+                          },
+                        });
+                      }}
                     />
                     <label htmlFor={item.id} className="naxatw-cursor-pointer">
                       {item.name}
@@ -94,11 +153,15 @@ export default function StepOne() {
                 ))}
             </ul>
           </div>
+          {meta.selectedObstacleLayers.error &&
+            meta.selectedObstacleLayers.touched && (
+              <FormErrorMessage message="Please select obstacles layer." />
+            )}
         </div>
       </div>
 
       <div className="naxatw-flex naxatw-justify-center naxatw-mt-10">
-        <Button className="naxatw-btn-primary" onClick={() => {}}>
+        <Button className="naxatw-btn-primary" onClick={handleSubmit}>
           Next
         </Button>
       </div>

@@ -50,6 +50,10 @@ function DocumentList() {
     checkIfLoading(state, [Types.GET_DOCUMENT_ITEM_REQUEST]),
   );
 
+  const isDownloading = useSelector(state =>
+    checkIfLoading(state, [Types.DOWNLOAD_DOCUMENT_REQUEST]),
+  );
+
   useEffect(() => {
     // if (searchText) {
     dispatch(
@@ -110,6 +114,7 @@ function DocumentList() {
           <Button
             className="naxatw-btn-secondary naxatw-btn-noborder "
             iconLeft="download"
+            isLoading={isDownloading}
             onClick={handleDownloadAll}
           >
             <span className="naxatw-text-[15px] naxatw-font-bold naxatw-text-[#00A699]">

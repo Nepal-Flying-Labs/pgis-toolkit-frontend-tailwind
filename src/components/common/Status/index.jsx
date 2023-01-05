@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable arrow-body-style */
 import React from 'react';
+import Spinner from '../Spinner/index';
 import Tooltip from '../Tooltip/index';
 import MaterialIcon from '../MaterialIcon/index';
 
@@ -19,14 +20,14 @@ const getInvitationStatus = inviteStatus => {
   switch (inviteStatus) {
     case 'pending':
       return { name: 'update', color: 'naxatw-text-[#0076FF]' };
-    case 'expire':
+    case 'expired':
       return { name: 'report', color: 'naxatw-text-[#FF0F05]' };
     default:
       return '';
   }
 };
 
-const Status = ({ status, invitationStatus }) => {
+const Status = ({ status, invitationStatus, isLoading }) => {
   const stat = getColor(status);
   const inviteStat = getInvitationStatus(invitationStatus?.toLowerCase());
   return (
@@ -36,12 +37,17 @@ const Status = ({ status, invitationStatus }) => {
         {status ? 'Active' : 'Inactive'}
       </span>
       {inviteStat && (
-        <Tooltip content={invitationStatus} direction="right">
-          <MaterialIcon
-            name={inviteStat.name}
-            className={`naxatw-text-icon-md ${inviteStat.color}`}
-          />
-        </Tooltip>
+        <>
+          <Tooltip content={invitationStatus} direction="right">
+            <MaterialIcon
+              name={inviteStat.name}
+              className={`naxatw-text-icon-md naxatw-cursor-default ${inviteStat.color}`}
+            />
+          </Tooltip>
+          {isLoading && (
+            <Spinner className="naxatw-w-8 naxatw-h-8 naxatw-fill-secondary-400" />
+          )}
+        </>
       )}
     </div>
   );

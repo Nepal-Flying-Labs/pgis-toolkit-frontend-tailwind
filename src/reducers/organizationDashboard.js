@@ -18,6 +18,7 @@ const initialState = {
   },
   organizationDetail: null,
   selectedData: null,
+  drawnGeojsonData: null,
   users: [],
   userGroup: [],
   usersFilter: {
@@ -26,7 +27,7 @@ const initialState = {
     ordering: null,
   },
   assignList: [],
-  organizationList: [],
+  organizationAssignList: [],
   userTab: 'users',
 };
 
@@ -215,7 +216,8 @@ const getAllProjectSuccess = (state, action) => ({
 
 const setAssignList = (state, action) => ({
   ...state,
-  organizationList: [action.payload],
+  organizationAssignList: [action.payload],
+  assignList: [],
 });
 
 const updateUserStatusSuccess = (state, action) => {
@@ -275,14 +277,17 @@ const resendInvitationSuccess = (state, action) => {
 
 const deleteInvitedUserSuccess = (state, action) => {
   const userData = action.payload;
-  const newData = state.users.map(user =>
-    user.id === userData.id ? null : { ...user },
-  );
+  const newData = state.users.filter(user => user.id !== userData.id);
   return {
     ...state,
     users: newData,
   };
 };
+
+const setDrawnGeojsonData = (state, action) => ({
+  ...state,
+  drawnGeojsonData: action.payload,
+});
 
 const resetOrganizationDashboardState = () => ({
   ...initialState,
@@ -313,6 +318,7 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.UPDATE_INVITED_USER_STATUS_SUCCESS]: updateInvitedUserStatusSuccess,
   [Types.RESEND_INVITATION_SUCCESS]: resendInvitationSuccess,
   [Types.DELETE_INVITED_USER_SUCCESS]: deleteInvitedUserSuccess,
+  [Types.SET_DRAWN_GEOJSON_DATA]: setDrawnGeojsonData,
   [Types.RESET_ORGANIZATION_DASHBOARD_STATE]: resetOrganizationDashboardState,
 });
 

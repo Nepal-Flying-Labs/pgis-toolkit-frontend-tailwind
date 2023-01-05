@@ -126,6 +126,8 @@
 - [x] Validation on Forgot password module
 - [ ] Loader in access to funtionality modal
 - [ ] modal design review (sudeep)
+- [ ] responsive project header
+- [ ] token session expire
 
 ### Need to fix
 

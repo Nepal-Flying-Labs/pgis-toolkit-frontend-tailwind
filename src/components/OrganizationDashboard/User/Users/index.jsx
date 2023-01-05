@@ -61,6 +61,12 @@ const Users = () => {
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_USERS_REQUEST]),
   );
+  const invitationLoading = useSelector(state =>
+    checkIfLoading(state, [
+      Types.UPDATE_INVITED_USER_STATUS_REQUEST,
+      Types.RESEND_INVITATION_REQUEST,
+    ]),
+  );
   const users = useSelector(state => state.organizationDashboard.users);
 
   const [value, handleSearch] = useDebouncedInput({
@@ -262,6 +268,7 @@ const Users = () => {
                   <Status
                     status={row.active}
                     invitationStatus={row.status || ''}
+                    isLoading={invitationLoading}
                   />
                 )}
               />

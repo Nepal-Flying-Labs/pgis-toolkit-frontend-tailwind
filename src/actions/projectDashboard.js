@@ -82,7 +82,7 @@ export const { Types, Creators } = createActions(
     uploadDocumentDataSuccess: ['payload'],
     uploadDocumentDataFailure: ['payload'],
 
-    updateDocumentDataRequest: ['payload'],
+    updateDocumentDataRequest: ['id', 'payload'],
     updateDocumentDataSuccess: ['payload'],
     updateDocumentDataFailure: ['payload'],
 
@@ -112,6 +112,11 @@ export const { Types, Creators } = createActions(
 
     setSelectedLayer: ['payload'],
 
+    setIndividualAttribute: ['payload'],
+    clearIndividualAttribute: null,
+
+    setAttributeList: ['payload'],
+
     clearAttributeListData: null,
 
     getLayerAttributeRequest: ['params'],
@@ -121,6 +126,18 @@ export const { Types, Creators } = createActions(
     postAttributeSelectionRequest: ['payload'],
     postAttributeSelectionSuccess: ['payload'],
     postAttributeSelectionFailure: null,
+
+    postTemplateAttributeRequest: ['payload'],
+    postTemplateAttributeSuccess: ['payload'],
+    postTemplateAttributeFailure: null,
+
+    updateTemplateAttributeRequest: ['id', 'payload'],
+    updateTemplateAttributeSuccess: ['payload'],
+    updateTemplateAttributeFailure: null,
+
+    deleteTemplateAttributeRequest: ['id', 'payload'],
+    deleteTemplateAttributeSuccess: ['payload'],
+    deleteTemplateAttributeFailure: null,
 
     downloadBulkTemplateRequest: ['params'],
     downloadBulkTemplateSuccess: ['payload'],
@@ -150,6 +167,16 @@ export const { Types, Creators } = createActions(
     getGalleryByIdRequest: ['id'],
     getGalleryByIdSuccess: ['payload'],
     getGalleryByIdFailure: ['payload'],
+
+    setGalleryState: ['payload'],
+
+    deleteGalleryRequest: ['id', 'payload'],
+    deleteGallerySuccess: ['payload'],
+    deleteGalleryFailure: null,
+
+    updateGalleryRequest: ['id', 'payload'],
+    updateGallerySuccess: ['payload'],
+    updateGalleryFailure: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

@@ -1,30 +1,41 @@
 /* eslint-disable import/no-named-as-default */
-import Creators from '@Actions/projectDashboard';
+import { Types, Creators } from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
 import Searchbar from '@Components/common/Searchbar/index';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@Components/common/Button/index';
 import { isEmpty } from '@Utils/commonUtils';
 import { useParams } from 'react-router';
+import { checkIfLoading } from '@Utils/loaderSelector';
 import GalleryCard from './GalleryCard';
 
 const { setRightSidebarState } = CommonCreators;
-const { setSearchText, downloadGalleryRequest } = Creators;
+const { downloadGalleryRequest, setGalleryState, getGalleryByIdRequest } =
+  Creators;
 
 function GalleryList() {
   const { projectId } = useParams();
   const dispatch = useDispatch();
-  const searchText = useSelector(state => state?.projectDashboard?.searchText);
+  const searchText = useSelector(
+    state => state.projectDashboard.gallery.searchText,
+  );
+  const isDownloading = useSelector(state =>
+    checkIfLoading(state, [Types.DOWNLOAD_GALLERY_REQUEST]),
+  );
   const gallery = useSelector(state => state.projectDashboard.gallery.list);
   const [downloadIdList, setDownloadIdList] = useState([]);
+
+  const selectedCard = useSelector(
+    state => state.projectDashboard.gallery.cardId,
+  );
 
   const [value, handleSearch] = useDebouncedInput({
     ms: 300,
     init: searchText,
     onChange: debouncedEvent => {
-      dispatch(setSearchText(debouncedEvent.target.value));
+      dispatch(setGalleryState({ searchText: debouncedEvent.target.value }));
     },
   });
 
@@ -50,6 +61,24 @@ function GalleryList() {
     );
   };
 
+  const [resultList, setResultList] = useState([]);
+
+  // useEffect(() => {
+  //   if (!isEmpty(gallery)) {
+  //     setResultList(gallery);
+  //   }
+  // }, [gallery]);
+
+  useEffect(() => {
+    if (!isEmpty(gallery)) {
+      setResultList(
+        gallery.filter(item =>
+          item?.title?.toLowerCase().includes(searchText.toLowerCase()),
+        ),
+      );
+    }
+  }, [searchText, gallery]);
+
   return (
     <div className="">
       <div className="naxatw-py-2 naxatw-flex naxatw-justify-between">
@@ -62,6 +91,7 @@ function GalleryList() {
         </div>
         <div className="">
           <Button
+            isLoading={isDownloading}
             className="naxatw-btn-secondary naxatw-btn-noborder "
             iconLeft="download"
             onClick={handleDownloadAll}
@@ -82,18 +112,18 @@ function GalleryList() {
         className="naxatw-py-3 naxatw-overflow-hidden naxatw-overflow-y-auto scrollbar"
       >
         <div className="naxatw-flex naxatw-flex-wrap naxatw-gap-5">
-          {!isEmpty(gallery) &&
-            gallery.map(item => (
+          {(!isEmpty(resultList) &&
+            resultList.map(item => (
               <GalleryCard
                 key={item.id}
                 label={item.title}
                 id={item.id}
-                status=""
+                status={selectedCard}
                 imgSrc={item.image}
                 checked={downloadIdList?.includes(item.id)}
-                // eslint-disable-next-line no-unused-vars
-                onCardClick={id => {
-                  // console.log('Gallery card clicked id : ', id);
+                onCardClick={() => {
+                  dispatch(setGalleryState({ cardId: item.id }));
+                  dispatch(getGalleryByIdRequest(item.id));
                   dispatch(
                     setRightSidebarState({ show: true, flag: 'gallery' }),
                   );
@@ -103,7 +133,13 @@ function GalleryList() {
                   handleSelect(item.id);
                 }}
               />
-            ))}
+            ))) || (
+            <div className="naxatw-flex naxatw-flex-col naxatw-px-5 naxatw-py-5 naxatw-items-center">
+              <p className="naxatw-mt-2 naxatw-text-center naxatw-text-body-lg">
+                No data found
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

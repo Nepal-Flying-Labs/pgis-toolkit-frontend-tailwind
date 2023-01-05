@@ -610,9 +610,10 @@ export function* deleteInvitedUserRequest({ id, payload }) {
 export function* resendInvitationRequest({ id, payload }) {
   try {
     const formdata = prepareFormData(payload);
+    // eslint-disable-next-line no-unused-vars
     const response = yield call(updateInvitedUserStatus, id, formdata);
-    yield put(projectDashboardActions.resendInvitationSuccess(response.data));
-    yield put(toastActions.success({ message: 'User deleted successfully' }));
+    yield put(projectDashboardActions.resendInvitationSuccess({ id }));
+    yield put(toastActions.success({ message: 'Resend invitation success' }));
   } catch (error) {
     yield put(projectDashboardActions.resendInvitationFailure());
     throw error;

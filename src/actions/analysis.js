@@ -11,6 +11,7 @@ export const { Types, Creators } = createActions(
     checkErrorFailure: null,
 
     setErrorCheckingStatus: ['payload'],
+    handleAutofixCheckbox: ['payload'],
   },
   { prefix: 'analysis/' },
 );

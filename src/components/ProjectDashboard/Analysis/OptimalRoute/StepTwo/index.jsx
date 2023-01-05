@@ -6,7 +6,7 @@ import Button from '@Components/common/Button';
 import Accordion from '@Components/common/Accordion';
 import IconButton from '@Components/common/IconButton';
 
-const { checkErrorRequest } = AnalysisCreators;
+const { checkErrorRequest, handleAutofixCheckbox } = AnalysisCreators;
 
 function getStatusIcon(status) {
   switch (status) {
@@ -97,9 +97,9 @@ export default function StepTwo() {
             <div>
               <div className="naxatw-p-2 naxatw-space-y-4">
                 {errorStates[selectedRoadLayer.id]?.map(
-                  ({ label, status, errorData, totalData }) => (
+                  ({ label, status, errorData, totalData, id }) => (
                     <div
-                      key={label}
+                      key={id}
                       className="naxatw-grid naxatw-grid-cols-2 naxatw-items-center"
                     >
                       <div
@@ -113,15 +113,20 @@ export default function StepTwo() {
                       >
                         {!isRoadLayerCheckingError && status === 'error' && (
                           <input
-                            // id={label}
+                            id={id}
                             type="checkbox"
                             className="naxatw-min-w-[1rem] naxatw-min-h-[1rem]
                               naxatw-accent-grey-800 naxatw-cursor-pointer"
-                            // checked={values.selectedObstacleLayers?.some(
-                            //   i => i.id === item.id,
-                            // )}
+                            checked={errorStates[selectedRoadLayer.id].checked}
                             onChange={e => {
                               const { checked } = e.target;
+                              dispatch(
+                                handleAutofixCheckbox({
+                                  layerId: selectedRoadLayer.id,
+                                  id,
+                                  checked,
+                                }),
+                              );
                             }}
                           />
                         )}

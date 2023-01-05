@@ -82,6 +82,7 @@ const setErrorStates = (state, action) => {
         status: 'waiting',
         errorData: null,
         totalData: null,
+        checked: false,
       })),
     },
   };
@@ -128,12 +129,27 @@ const checkErrorSuccess = (state, action) => {
   };
 };
 
+const handleAutofixCheckbox = (state, action) => {
+  const { id, checked, layerId } = action.payload;
+  const errorStates = {
+    ...state.errorStates,
+    [layerId]: state.errorStates[layerId].map(item =>
+      item.id === id ? { ...item, checked } : { ...item },
+    ),
+  };
+  return {
+    ...state,
+    errorStates,
+  };
+};
+
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
   [Types.SET_ERROR_STATES]: setErrorStates,
   [Types.CHECK_ERROR_SUCCESS]: checkErrorSuccess,
   [Types.SET_ERROR_CHECKING_STATUS]: setErrorCheckingStatus,
+  [Types.HANDLE_AUTOFIX_CHECKBOX]: handleAutofixCheckbox,
 });
 
 export default analysisReducer;

@@ -6,13 +6,16 @@ import Button from '@Components/common/Button';
 import Accordion from '@Components/common/Accordion';
 import IconButton from '@Components/common/IconButton';
 
-const { checkErrorRequest, handleAutofixCheckbox } = AnalysisCreators;
+const { checkErrorRequest, handleAutofixCheckbox, autoFixErrorRequest } =
+  AnalysisCreators;
 
 function getStatusIcon(status) {
   switch (status) {
     case 'checking':
       return { color: '#FF5A5F', icon: 'rotate_right' };
     case 'error':
+      return { color: '#FFB100', icon: 'error_outline' };
+    case 'fix-failed':
       return { color: '#FFB100', icon: 'error_outline' };
     case 'success':
       return { color: '#40B449', icon: 'check_circle' };
@@ -154,9 +157,17 @@ export default function StepTwo() {
                           <p className="naxatw-text-body-lg naxatw-text-grey-800">
                             <b>{errorData}</b> out of <b>{totalData}</b> errors
                           </p>
+                        ) : status === 'fix-failed' ? (
+                          <p className="naxatw-text-body-lg naxatw-text-grey-800">
+                            <b>{errorData}</b> out of <b>{totalData}</b> fixed
+                          </p>
                         ) : status === 'checking' ? (
                           <p className="naxatw-text-body-btn naxatw-text-primary-400">
                             Checking...
+                          </p>
+                        ) : status === 'fixing' ? (
+                          <p className="naxatw-text-body-btn naxatw-text-primary-400">
+                            Fixing...
                           </p>
                         ) : (
                           <p className="naxatw-text-body-btn naxatw-text-grey-500">
@@ -173,6 +184,11 @@ export default function StepTwo() {
                   <Button
                     className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
                     disabled={isRoadLayerCheckingError}
+                    onClick={() =>
+                      dispatch(
+                        autoFixErrorRequest({ layer: selectedRoadLayer.id }),
+                      )
+                    }
                   >
                     Automatic Fix
                   </Button>
@@ -194,6 +210,7 @@ export default function StepTwo() {
             errorStates[layer.id].some(item => item.status === 'waiting');
           return (
             <Accordion
+              key={layer.id}
               collapsed={!toggledStates[layer.id]}
               onToggle={toggleState => {
                 setToggledStates(prev => ({
@@ -247,14 +264,43 @@ export default function StepTwo() {
                 <div>
                   <div className="naxatw-p-2 naxatw-space-y-4">
                     {errorStates[layer.id]?.map(
-                      ({ label, status, errorData, totalData }) => (
+                      ({ label, status, errorData, totalData, id }) => (
                         <div
-                          key={label}
+                          key={id}
                           className="naxatw-grid naxatw-grid-cols-2 naxatw-items-center"
                         >
-                          <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
+                          <div
+                            className={`naxatw-flex naxatw-items-center naxatw-gap-2
+                        ${
+                          !isLayerCheckingError && status !== 'error'
+                            ? 'naxatw-pl-6'
+                            : ''
+                        }
+                        `}
+                          >
+                            {!isLayerCheckingError && status === 'error' && (
+                              <input
+                                id={id}
+                                type="checkbox"
+                                className="naxatw-min-w-[1rem] naxatw-min-h-[1rem]
+                              naxatw-accent-grey-800 naxatw-cursor-pointer"
+                                checked={errorStates[layer.id].checked}
+                                onChange={e => {
+                                  const { checked } = e.target;
+                                  dispatch(
+                                    handleAutofixCheckbox({
+                                      layerId: layer.id,
+                                      id,
+                                      checked,
+                                    }),
+                                  );
+                                }}
+                              />
+                            )}
+
                             {status !== 'waiting' && (
                               <span
+                                className="naxatw-flex naxatw-items-center"
                                 style={{ color: getStatusIcon(status).color }}
                               >
                                 <i className="material-icons-outlined">
@@ -276,9 +322,18 @@ export default function StepTwo() {
                                 <b>{errorData}</b> out of <b>{totalData}</b>{' '}
                                 errors
                               </p>
+                            ) : status === 'fix-failed' ? (
+                              <p className="naxatw-text-body-lg naxatw-text-grey-800">
+                                <b>{errorData}</b> out of <b>{totalData}</b>{' '}
+                                fixed
+                              </p>
                             ) : status === 'checking' ? (
                               <p className="naxatw-text-body-btn naxatw-text-primary-400">
                                 Checking...
+                              </p>
+                            ) : status === 'fixing' ? (
+                              <p className="naxatw-text-body-btn naxatw-text-primary-400">
+                                Fixing...
                               </p>
                             ) : (
                               <p className="naxatw-text-body-btn naxatw-text-grey-500">
@@ -295,6 +350,13 @@ export default function StepTwo() {
                       <Button
                         className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
                         disabled={isLayerCheckingError}
+                        onClick={() =>
+                          dispatch(
+                            autoFixErrorRequest({
+                              layer: layer.id,
+                            }),
+                          )
+                        }
                       >
                         Automatic Fix
                       </Button>

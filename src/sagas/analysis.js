@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest, takeEvery } from 'redux-saga/effects';
-import { checkError } from '@Services/analysis';
+import { autoFixError, checkError } from '@Services/analysis';
 import analysisActions, { Types } from '@Actions/analysis';
 // import commonActions from '@Actions/common';
 // import toastActions from '@Actions/toast';
@@ -13,19 +13,19 @@ export function* checkErrorRequest({ params }) {
     const { errorStates } = yield select(state => state.analysis);
     const errorData = errorStates[layerId];
     for (let i = 0; i < errorData.length; i += 1) {
-      const { apiEndPoint } = errorData[i];
+      const { id, checkAPI } = errorData[i];
       yield put(
         analysisActions.setErrorCheckingStatus({
           layerId,
-          apiEndPoint,
+          id,
           status: 'checking',
         }),
       );
-      const response = yield call(checkError, apiEndPoint, params);
+      const response = yield call(checkError, checkAPI, params);
       yield put(
         analysisActions.checkErrorSuccess({
           ...response.data,
-          apiEndPoint,
+          id,
           layerId,
         }),
       );
@@ -36,10 +36,43 @@ export function* checkErrorRequest({ params }) {
   }
 }
 
+export function* autoFixErrorRequest({ params }) {
+  try {
+    const layerId = params.layer;
+    const { errorStates } = yield select(state => state.analysis);
+    const checkedErrorData = errorStates[layerId].filter(item => item.checked);
+    for (let i = 0; i < checkedErrorData.length; i += 1) {
+      const { id, fixAPI } = checkedErrorData[i];
+      yield put(
+        analysisActions.setErrorCheckingStatus({
+          layerId,
+          id,
+          status: 'fixing',
+        }),
+      );
+      const response = yield call(autoFixError, fixAPI, params);
+      yield put(
+        analysisActions.autoFixErrorSuccess({
+          ...response.data,
+          id,
+          layerId,
+        }),
+      );
+    }
+  } catch (error) {
+    yield put(analysisActions.autoFixErrorFailure());
+    throw error;
+  }
+}
+
 function* analysisWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
     withLoader(withErrorHandler(checkErrorRequest)),
+  );
+  yield takeEvery(
+    Types.AUTO_FIX_ERROR_REQUEST,
+    withLoader(withErrorHandler(autoFixErrorRequest)),
   );
 }
 

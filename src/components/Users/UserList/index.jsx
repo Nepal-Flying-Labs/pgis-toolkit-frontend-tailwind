@@ -1,9 +1,10 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable arrow-body-style */
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import { Creators, Types } from '@Actions/users';
+import { Creators as CommonCreators } from '@Actions/common';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import SortingContainer from '@Components/common/SortingContainer/index';
 import Status from '@Components/common/Status';
@@ -12,10 +13,17 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import TableSkeleton from '@Components/common/TableSkeleton';
 import Table, { TableHeader } from '@Components/common/Table/Table';
-// import usePagination from '@Hooks/usePagination';
+import Pagination from '@Components/common/Pagination/index';
+import usePagination from '@Hooks/usePagination';
+import { getSelectedRange } from '@Components/common/Pagination/getSelectedItem';
 
-const { setSearchText } = Creators;
-
+const {
+  setUserState,
+  updateUserStatusRequest,
+  updateInvitedUserStatusRequest,
+  resendInvitationRequest,
+} = Creators;
+const { togglePromptDialog } = CommonCreators;
 // const roles = [
 //   {
 //     id: 1,
@@ -38,46 +46,118 @@ const { setSearchText } = Creators;
 //   { id: 1, value: 'role', name: 'Role' },
 //   { id: 2, value: 'project', name: 'Project' },
 // ];
-const dropdownOptions = [
-  {
-    id: 1,
-    label: (
-      <span className="naxatw-flex naxatw-items-center">
-        <i className="material-icons naxatw-mr-2">edit</i>
-        <p className="naxatw-text-body-lg">Edit</p>
-      </span>
-    ),
-    onClick: () => {},
-  },
-  {
-    id: 2,
-    label: (
-      <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
-        <i className="material-icons naxatw-mr-2">delete_outline</i>
-        <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
-      </span>
-    ),
-    onClick: () => {},
-  },
-];
 
 const UserList = () => {
   const dispatch = useDispatch();
   // const [byGroup, setByGroup] = useState('role');
   const users = useSelector(state => state.users.userData);
+  const [rowPerPage, setRowPerPage] = useState(10);
+  const invitationLoading = useSelector(state =>
+    checkIfLoading(state, [
+      Types.UPDATE_INVITED_USER_STATUS_REQUEST,
+      Types.RESEND_INVITATION_REQUEST,
+    ]),
+  );
 
-  // const {
-  //   next,
-  //   prev,
-  //   jump,
-  //   currentData,
-  //   currentPage,
-  //   maxPage,
-  //   begin,
-  //   end,
-  //   currentList,
-  //   handleSorting,
-  // } = usePagination(users || [], 10);
+  const userOptions = [
+    {
+      id: 1,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">group</i>
+          <p className="naxatw-text-body-lg">Assign</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(
+          setUserState({
+            pageTab: 'assign-users',
+            item: { ...data, fromUserTab: true },
+          }),
+        );
+      },
+    },
+    {
+      id: 2,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">edit</i>
+          <p className="naxatw-text-body-lg">Deactivate</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(updateUserStatusRequest(data.id, { active: !data.active }));
+      },
+    },
+    {
+      id: 3,
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setUserState({ item: data }));
+        dispatch(togglePromptDialog('delete-user'));
+      },
+    },
+  ];
+
+  const invitedUserOptions = [
+    {
+      id: 1,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">group</i>
+          <p className="naxatw-text-body-lg">Expire</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(
+          updateInvitedUserStatusRequest(data.id, { status: 'Expired' }),
+        );
+      },
+    },
+    {
+      id: 2,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">edit</i>
+          <p className="naxatw-text-body-lg">Resend</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(resendInvitationRequest(data.id, { resend: true }));
+      },
+    },
+    {
+      id: 3,
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setUserState({ item: data }));
+        dispatch(togglePromptDialog('delete-invited-user'));
+      },
+    },
+  ];
+
+  const {
+    next,
+    prev,
+    jump,
+    // currentData,
+    currentPage,
+    maxPage,
+    // begin,
+    // end,
+    currentList,
+    // handleSorting,
+  } = usePagination(users || [], rowPerPage);
 
   // const userRole = useSelector(
   //   state => state.organizationDashboard.usersFilter.userRole,
@@ -91,7 +171,7 @@ const UserList = () => {
     ms: 800,
     init: searchText,
     onChange: debouncedEvent => {
-      dispatch(setSearchText(debouncedEvent.target.value));
+      dispatch(setUserState({ searchText: debouncedEvent.target.value }));
     },
   });
 
@@ -125,13 +205,13 @@ const UserList = () => {
       </div>
       <div className="naxatw-mt-3 ">
         <div
-          style={{ height: `calc(100vh - 17rem)` }}
+          style={{ height: `calc(100vh - 25rem)` }}
           className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative"
         >
           {!loading ? (
             <Table
               data={
-                users?.filter(
+                currentList?.filter(
                   item =>
                     item?.full_name
                       ?.toLowerCase()
@@ -227,6 +307,7 @@ const UserList = () => {
                 dataFormat={row => (
                   <Status
                     status={row.active}
+                    isLoading={invitationLoading}
                     invitationStatus={row.status || ''}
                   />
                 )}
@@ -236,7 +317,30 @@ const UserList = () => {
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
                 rowcolSpan="rowSpan_3"
                 dataFormat={row => (
-                  <DropdownOptions options={dropdownOptions} data={row} />
+                  <DropdownOptions
+                    options={
+                      row.active !== null
+                        ? userOptions.map(option =>
+                            option.id === 2
+                              ? {
+                                  ...option,
+                                  label: (
+                                    <span className="naxatw-flex naxatw-items-center">
+                                      <i className="material-icons naxatw-mr-2">
+                                        edit
+                                      </i>
+                                      <p className="naxatw-text-body-lg">
+                                        {row.active ? 'Deactivate' : 'Activate'}
+                                      </p>
+                                    </span>
+                                  ),
+                                }
+                              : { ...option },
+                          )
+                        : invitedUserOptions
+                    }
+                    data={row}
+                  />
                 )}
               />
             </Table>
@@ -244,6 +348,21 @@ const UserList = () => {
             <TableSkeleton itemNumber={5} />
           )}
         </div>
+        <Pagination
+          nextPage={next}
+          previousPage={prev}
+          jumpTo={jump}
+          currentPage={currentPage}
+          count={users?.length || 0}
+          paginatedCounts={getSelectedRange(
+            users?.length,
+            rowPerPage,
+            currentPage,
+          )}
+          maxPage={maxPage}
+          rowSelect={rowPerPage}
+          handleSelect={data => setRowPerPage(data)}
+        />
       </div>
     </div>
   );

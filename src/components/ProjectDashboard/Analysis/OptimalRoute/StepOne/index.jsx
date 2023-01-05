@@ -126,9 +126,9 @@ export default function StepOne() {
                   >
                     <input
                       id={item.id}
+                      type="checkbox"
                       className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
                         naxatw-accent-grey-800 naxatw-cursor-pointer"
-                      type="checkbox"
                       checked={values.selectedObstacleLayers?.some(
                         i => i.id === item.id,
                       )}

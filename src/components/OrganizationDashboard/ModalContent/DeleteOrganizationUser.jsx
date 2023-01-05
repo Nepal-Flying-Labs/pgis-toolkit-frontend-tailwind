@@ -8,7 +8,7 @@ import Button from '@Components/common/Button';
 const { togglePromptDialog } = CommonCreators;
 const { deleteUserRequest, deleteInvitedUserRequest } = Creators;
 
-export default function DeleteDataQuery() {
+export default function DeleteOrganizationUser() {
   const selectedData = useSelector(
     state => state.organizationDashboard.selectedData,
   );
@@ -30,7 +30,7 @@ export default function DeleteDataQuery() {
     if (promptDialogContent === 'delete-organization-invited-user') {
       dispatch(deleteInvitedUserRequest(selectedData.id, { is_deleted: true }));
     }
-    return () => {};
+    // return () => {};
   };
 
   return (

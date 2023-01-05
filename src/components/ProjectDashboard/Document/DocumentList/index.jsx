@@ -187,7 +187,7 @@ function DocumentList() {
                   rowcolSpan="rowSpan_2"
                   dataHeader={
                     <SortingContainer
-                      name="title"
+                      name="name"
                       className="naxatw-text-black"
                     />
                   }

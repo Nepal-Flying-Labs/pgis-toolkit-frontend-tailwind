@@ -43,6 +43,8 @@ import {
   getIndividualGallery,
   deleteGallery,
   updateGallery,
+  updateUserRole,
+  updateInvitedUserStatus,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -557,6 +559,67 @@ export function* updateGalleryRequest({ id, payload }) {
     yield put(projectDashboardActions.updateGalleryFailure());
   }
 }
+export function* updateUserStatusRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateUserRole, id, formdata);
+    yield put(projectDashboardActions.updateUserStatusSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.updateUserStatusFailure());
+    throw error;
+  }
+}
+export function* deleteUserRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateUserRole, id, formdata);
+    yield put(projectDashboardActions.deleteUserSuccess(response.data));
+    yield put(commonActions.togglePromptDialog());
+    yield put(toastActions.success({ message: 'User deleted successfully' }));
+  } catch (error) {
+    yield put(projectDashboardActions.deleteUserFailure());
+    throw error;
+  }
+}
+
+export function* updateInvitedUserStatusRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateInvitedUserStatus, id, formdata);
+    yield put(
+      projectDashboardActions.updateInvitedUserStatusSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.updateInvitedUserStatusFailure());
+    throw error;
+  }
+}
+
+export function* deleteInvitedUserRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateInvitedUserStatus, id, formdata);
+    yield put(projectDashboardActions.deleteInvitedUserSuccess(response.data));
+    yield put(commonActions.togglePromptDialog());
+    yield put(toastActions.success({ message: 'User deleted successfully' }));
+  } catch (error) {
+    yield put(projectDashboardActions.deleteInvitedUserFailure());
+    throw error;
+  }
+}
+
+export function* resendInvitationRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    // eslint-disable-next-line no-unused-vars
+    const response = yield call(updateInvitedUserStatus, id, formdata);
+    yield put(projectDashboardActions.resendInvitationSuccess({ id }));
+    yield put(toastActions.success({ message: 'Resend invitation success' }));
+  } catch (error) {
+    yield put(projectDashboardActions.resendInvitationFailure());
+    throw error;
+  }
+}
 
 function* projectDashboardWatcher() {
   yield takeLatest(
@@ -704,6 +767,26 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.UPDATE_GALLERY_REQUEST,
     withLoader(withErrorHandler(updateGalleryRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_USER_STATUS_REQUEST,
+    withLoader(withErrorHandler(updateUserStatusRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_USER_REQUEST,
+    withLoader(withErrorHandler(deleteUserRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_INVITED_USER_STATUS_REQUEST,
+    withLoader(withErrorHandler(updateInvitedUserStatusRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_INVITED_USER_REQUEST,
+    withLoader(withErrorHandler(deleteInvitedUserRequest)),
+  );
+  yield takeLatest(
+    Types.RESEND_INVITATION_REQUEST,
+    withLoader(withErrorHandler(resendInvitationRequest)),
   );
 }
 

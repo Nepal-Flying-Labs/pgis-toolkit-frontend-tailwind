@@ -82,17 +82,18 @@ const setErrorStates = (state, action) => {
         status: 'waiting',
         errorData: null,
         totalData: null,
+        checked: false,
       })),
     },
   };
 };
 
 const setErrorCheckingStatus = (state, action) => {
-  const { layerId, apiEndPoint, status } = action.payload;
+  const { layerId, id, status } = action.payload;
   const errorStates = {
     ...state.errorStates,
     [layerId]: state.errorStates[layerId].map(item =>
-      item.apiEndPoint === apiEndPoint
+      item.id === id
         ? {
             ...item,
             status,
@@ -112,12 +113,50 @@ const checkErrorSuccess = (state, action) => {
   const errorStates = {
     ...state.errorStates,
     [layerId]: state.errorStates[layerId].map(item =>
-      item.apiEndPoint === data.apiEndPoint
+      item.id === data.id
         ? {
             ...item,
             errorData: data.error_data,
             totalData: data.total_data,
             status: !data.error_data ? 'success' : 'error',
+          }
+        : { ...item },
+    ),
+  };
+  return {
+    ...state,
+    errorStates,
+  };
+};
+
+const handleAutofixCheckbox = (state, action) => {
+  const { id, checked, layerId } = action.payload;
+  const errorStates = {
+    ...state.errorStates,
+    [layerId]: state.errorStates[layerId].map(item =>
+      item.id === id ? { ...item, checked } : { ...item },
+    ),
+  };
+  return {
+    ...state,
+    errorStates,
+  };
+};
+
+const autoFixErrorSuccess = (state, action) => {
+  const data = action.payload;
+  const { layerId } = data;
+  const error = data.prev_error - data.new_error;
+  const errorStates = {
+    ...state.errorStates,
+    [layerId]: state.errorStates[layerId].map(item =>
+      item.id === data.id
+        ? {
+            ...item,
+            errorData: error,
+            totalData: data.prev_error,
+            status: !data.new_error ? 'success' : 'fix-failed',
+            checked: false,
           }
         : { ...item },
     ),
@@ -134,6 +173,8 @@ const analysisReducer = createReducer(initialState, {
   [Types.SET_ERROR_STATES]: setErrorStates,
   [Types.CHECK_ERROR_SUCCESS]: checkErrorSuccess,
   [Types.SET_ERROR_CHECKING_STATUS]: setErrorCheckingStatus,
+  [Types.HANDLE_AUTOFIX_CHECKBOX]: handleAutofixCheckbox,
+  [Types.AUTO_FIX_ERROR_SUCCESS]: autoFixErrorSuccess,
 });
 
 export default analysisReducer;

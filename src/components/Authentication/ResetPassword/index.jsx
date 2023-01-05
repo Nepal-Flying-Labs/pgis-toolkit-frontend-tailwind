@@ -79,7 +79,7 @@ export default function ResetPassword() {
     <div className="md:naxatw-w-[34.688rem] naxatw-container naxatw-mx-auto naxatw-mt-[15.938rem]">
       <div className="naxatw-flex naxatw-justify-center naxatw-mb-10">
         <h3 className="naxatw-font-bold naxatw-tracking-wider">
-          Please Enter New Pasword
+          Please Enter New Password
         </h3>
       </div>
       {infoDialogContent ? (

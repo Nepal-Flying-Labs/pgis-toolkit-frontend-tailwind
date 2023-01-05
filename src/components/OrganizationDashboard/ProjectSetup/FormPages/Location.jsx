@@ -179,6 +179,7 @@ const Location = ({ page, setPage }) => {
         <UploadPolygonBoundary
           uploadedFile={values?.file}
           setuploadedFile={file => {
+            console.log('files ', file);
             handleCustomChange('file', file);
           }}
         />

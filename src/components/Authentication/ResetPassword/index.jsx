@@ -101,7 +101,7 @@ export default function ResetPassword() {
                 type={!isVisible ? 'password' : 'text'}
                 className="naxatw-input"
                 name="new_password1"
-                placeholder="8+ characters"
+                placeholder="********"
                 value={values.new_password1}
                 onChange={handleChange}
                 {...inputProps}
@@ -119,9 +119,10 @@ export default function ResetPassword() {
 
             <Input
               label="Confirm Password"
-              type="password"
+              type={!isVisible ? 'password' : 'text'}
               className="naxatw-input"
               name="new_password2"
+              placeholder="********"
               value={values.new_password2}
               onChange={handleChange}
               {...inputProps}

@@ -62,8 +62,10 @@ const Location = ({ page, setPage }) => {
           return 'GeoJSON';
         case 'application/zip':
           return 'Shapefile';
+        case 'application/x-zip-compressed':
+          return 'Shapefile';
         default:
-          return '';
+          return 'Shapefile';
       }
     } else {
       return '';

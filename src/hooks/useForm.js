@@ -5,8 +5,8 @@ function getMetaState(data, required) {
     (obj, item) => ({
       ...obj,
       [item]: {
-        touched: !!data[item],
-        error: !data[item],
+        touched: Array.isArray(data[item]) ? !!data[item].length : !!data[item],
+        error: Array.isArray(data[item]) ? !data[item].length : !data[item],
         message: '',
       },
     }),
@@ -40,7 +40,10 @@ const useForm = ({
   const isValid = (name, value) =>
     Object.prototype.hasOwnProperty.call(validationSchema, name)
       ? validationSchema[name](value)
-      : { error: !value, message: 'Required' };
+      : {
+          error: Array.isArray(value) ? !value.length : !value,
+          message: 'Required',
+        };
 
   const handleChange = e => {
     const { name, value, type, files } = e.target;

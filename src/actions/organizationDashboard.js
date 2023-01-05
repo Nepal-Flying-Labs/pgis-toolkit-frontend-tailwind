@@ -92,6 +92,7 @@ export const { Types, Creators } = createActions(
     deleteInvitedUserFailure: null,
 
     setUserState: ['payload'],
+    setDrawnGeojsonData: ['payload'],
   },
   { prefix: 'organizationDashboard/' },
 );

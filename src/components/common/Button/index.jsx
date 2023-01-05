@@ -12,6 +12,7 @@ export default function Button({
   iconRight,
   isLoading,
   loaderClassName,
+  ...rest
 }) {
   const btnRef = useRef();
   const [btnWidth, setBtnWidth] = useState(null);
@@ -29,6 +30,7 @@ export default function Button({
       className={`naxatw-btn naxatw-group ${className}`}
       style={{ minWidth: isLoading ? btnWidth : '' }}
       onClick={onClick}
+      {...rest}
     >
       {iconLeft && (
         <i className="material-icons naxatw-mr-2 naxatw-text-[22px]">

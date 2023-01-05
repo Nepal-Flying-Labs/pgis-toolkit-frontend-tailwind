@@ -55,3 +55,13 @@ export const filteredThemesSelector = createSelector(
     );
   },
 );
+
+export const roadLayersThemeIdSelector = createSelector(
+  [themesSelector],
+  themes => themes?.find(theme => theme.name === 'Transport Utilities')?.id,
+);
+
+export const obstacleLayersThemeIdSelector = createSelector(
+  [themesSelector],
+  themes => themes?.find(theme => theme.name === 'Transport Obstacles')?.id,
+);

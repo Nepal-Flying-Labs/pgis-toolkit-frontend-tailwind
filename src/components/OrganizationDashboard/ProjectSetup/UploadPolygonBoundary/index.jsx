@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/prop-types */
-/* eslint-disable no-console */
+
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // import { useDispatch } from 'react-redux';
@@ -30,7 +30,11 @@ function convertToGeoJSON(file) {
   }
   return null;
 }
-function UploadPolygonBoundary({ uploadedFile, setuploadedFile }) {
+function UploadPolygonBoundary({
+  uploadedFile,
+  setuploadedFile,
+  locationType,
+}) {
   // eslint-disable-next-line no-unused-vars
   // const [uploadedFile, setuploadedFile] = useState([]);
   const [error, setError] = useState(false);
@@ -91,7 +95,7 @@ function UploadPolygonBoundary({ uploadedFile, setuploadedFile }) {
         {uploadedFile && (
           <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-mb-2 naxatw-px-[20px] naxatw-py-[15px] naxatw-border naxatw-border-[#D7D7D7] naxatw-rounded-xl">
             <div className="naxatw-flex naxatw-gap-x-5 naxatw-items-center">
-              <span className="naxatw-w-[40px] naxatw-h-[40px] naxatw-rounded-full naxatw-bg-red-50 naxatw-text-center naxatw-border naxatw-border-[#D7D7D7]">
+              <span className="naxatw-w-[40px] naxatw-h-[40px] naxatw-rounded-full naxatw-bg-red-50 naxatw-text-center naxatw-border naxatw-border-[#D7D7D7] naxatw-flex naxatw-justify-center naxatw-items-center">
                 {' '}
                 <MaterialIcon
                   name="description"
@@ -128,6 +132,7 @@ function UploadPolygonBoundary({ uploadedFile, setuploadedFile }) {
           </div>
         )}
       </div>
+
       <MapSection geojson={geojson} />
     </div>
   );

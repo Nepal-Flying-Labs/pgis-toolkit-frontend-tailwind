@@ -34,7 +34,7 @@ export default function StepTwo() {
 
   const isRoadLayerCheckingError =
     errorStates[selectedRoadLayer.id] &&
-    errorStates[selectedRoadLayer.id].some(item => item.status === 'waiting');
+    errorStates[selectedRoadLayer.id].some(item => item.status === 'checking');
 
   return (
     <div>
@@ -102,9 +102,35 @@ export default function StepTwo() {
                       key={label}
                       className="naxatw-grid naxatw-grid-cols-2 naxatw-items-center"
                     >
-                      <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
+                      <div
+                        className={`naxatw-flex naxatw-items-center naxatw-gap-2
+                        ${
+                          !isRoadLayerCheckingError && status !== 'error'
+                            ? 'naxatw-pl-6'
+                            : ''
+                        }
+                        `}
+                      >
+                        {!isRoadLayerCheckingError && status === 'error' && (
+                          <input
+                            // id={label}
+                            type="checkbox"
+                            className="naxatw-min-w-[1rem] naxatw-min-h-[1rem]
+                              naxatw-accent-grey-800 naxatw-cursor-pointer"
+                            // checked={values.selectedObstacleLayers?.some(
+                            //   i => i.id === item.id,
+                            // )}
+                            onChange={e => {
+                              const { checked } = e.target;
+                            }}
+                          />
+                        )}
+
                         {status !== 'waiting' && (
-                          <span style={{ color: getStatusIcon(status).color }}>
+                          <span
+                            className="naxatw-flex naxatw-items-center"
+                            style={{ color: getStatusIcon(status).color }}
+                          >
                             <i className="material-icons-outlined">
                               {getStatusIcon(status).icon}
                             </i>
@@ -139,10 +165,16 @@ export default function StepTwo() {
               </div>
               {!isRoadLayerCheckingError && (
                 <div className="naxatw-mt-4 naxatw-flex naxatw-justify-end naxatw-gap-2">
-                  <Button className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2">
+                  <Button
+                    className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
+                    disabled={isRoadLayerCheckingError}
+                  >
                     Automatic Fix
                   </Button>
-                  <Button className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2">
+                  <Button
+                    className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
+                    disabled={isRoadLayerCheckingError}
+                  >
                     Manual Fix
                   </Button>
                 </div>
@@ -255,10 +287,16 @@ export default function StepTwo() {
                   </div>
                   {!isLayerCheckingError && (
                     <div className="naxatw-mt-4 naxatw-flex naxatw-justify-end naxatw-gap-2">
-                      <Button className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2">
+                      <Button
+                        className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
+                        disabled={isLayerCheckingError}
+                      >
                         Automatic Fix
                       </Button>
-                      <Button className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2">
+                      <Button
+                        className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
+                        disabled={isLayerCheckingError}
+                      >
                         Manual Fix
                       </Button>
                     </div>

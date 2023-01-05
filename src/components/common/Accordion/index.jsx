@@ -6,6 +6,7 @@ export default function Accordion({
   header,
   body,
   className,
+  onToggle,
 }) {
   const [collapsed, setCollapsed] = useState(isCollapsed);
 
@@ -22,8 +23,11 @@ export default function Accordion({
         <span className="naxatw-flex">
           <button
             type="button"
-            className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg"
-            onClick={() => setCollapsed(!collapsed)}
+            className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-p-2"
+            onClick={() => {
+              setCollapsed(!collapsed);
+              onToggle(collapsed);
+            }}
           >
             <i className="material-icons">
               {collapsed ? 'expand_more' : 'expand_less'}
@@ -43,6 +47,7 @@ Accordion.defaultProps = {
   header: '',
   body: '',
   className: '',
+  onToggle: () => {},
 };
 
 Accordion.propTypes = {
@@ -50,4 +55,5 @@ Accordion.propTypes = {
   header: PropTypes.node,
   className: PropTypes.string,
   body: PropTypes.node,
+  onToggle: PropTypes.func,
 };

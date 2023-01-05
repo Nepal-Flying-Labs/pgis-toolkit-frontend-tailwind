@@ -2,11 +2,14 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import LoginLogo from '@Assets/images/logo.png';
+import { useSelector } from 'react-redux';
 import HeaderProfile from './HeaderProfile';
+import { isEmpty } from '@Utils/commonUtils';
 // import HeaderNotification from './HeaderNotification';
 
 export default function Header() {
   const { pathname } = useLocation();
+  const user = useSelector(state => state.authentication.userProfile);
   return (
     <header className="naxatw-fixed naxatw-w-full  naxatw-z-[999] naxatw-top-0 naxatw-border-b naxatw-border-grey-300 naxatw-bg-white">
       <div className="naxatw-flex naxatw-justify-between naxatw-px-10  naxatw-h-full">
@@ -33,21 +36,24 @@ export default function Header() {
                 Organizations
               </Link>
             </li>
-            <li
-              className={`${
-                pathname === '/users'
-                  ? 'naxatw-text-grey-800 naxatw-border-b-[2px] naxatw-border-grey-800'
-                  : ''
-              } hover:naxatw-text-secondary-400`}
-            >
-              <Link
-                className="naxatw-inline-block naxatw-px-3 naxatw-py-[18.65px] naxatw-text-[0.9375rem]"
-                to="/users"
-                // style={{ pointerEvents: 'none' }}
-              >
-                Users
-              </Link>
-            </li>
+            {isEmpty(user) ||
+              (user?.role?.toLowerCase()?.includes('pgis web') && (
+                <li
+                  className={`${
+                    pathname === '/users'
+                      ? 'naxatw-text-grey-800 naxatw-border-b-[2px] naxatw-border-grey-800'
+                      : ''
+                  } hover:naxatw-text-secondary-400`}
+                >
+                  <Link
+                    className="naxatw-inline-block naxatw-px-3 naxatw-py-[18.65px] naxatw-text-[0.9375rem]"
+                    to="/users"
+                    // style={{ pointerEvents: 'none' }}
+                  >
+                    Users
+                  </Link>
+                </li>
+              ))}
           </ul>
         </nav>
         <div className="naxatw-flex naxatw-gap-4 naxatw-items-center">

@@ -95,8 +95,12 @@ const Location = ({ page, setPage }) => {
               location_wkt: [drawnGeojsonData],
               file: '',
               file_type: '',
+              location_type: 'Custom Draw',
             }
-          : { ...finalPayloadData };
+          : {
+              ...finalPayloadData,
+              location_type: 'File Upload',
+            };
 
       if (values.file || values.location_wkt) {
         dispatch(

@@ -21,11 +21,13 @@ import {
   VectorTileLayer as MapVectorTileLayer,
 } from '@Components/common/OpenLayersComponent/Layers';
 
-import AddFeature from '@Components/common/OpenLayersComponent/CustomLayer/AddFeature';
+import CustomAddFeature from '@Components/common/OpenLayersComponent/CustomLayer/CustomAddFeature';
 import Button from '@Components/common/Button/index';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import '@Components/common/OpenLayersComponent/map.css';
 import { Creators } from '@Actions/organizationDashboard';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
+import Tooltip from '@Components/common/Tooltip/index';
 
 const { setDrawnGeojsonData } = Creators;
 
@@ -33,7 +35,8 @@ const { API_URL } = process.env;
 
 export default function MapSection({ isDraw, geojson, locationType }) {
   const dispatch = useDispatch();
-  const [redraw, setRedraw] = useState(true);
+  const [selectedGeomType, setSelectedGeomType] = useState('');
+  const [redraw, setRedraw] = useState(false);
   const [drawComplete, setDrawComplete] = useState(false);
 
   const project = useSelector(
@@ -45,16 +48,6 @@ export default function MapSection({ isDraw, geojson, locationType }) {
     zoom: 2,
     maxZoom: 25,
   });
-
-  // const flag = useRef(true);
-
-  // useEffect(() => {
-  //   if (project.id && flag) {
-  //     setRedraw(false);
-  //     setDrawComplete(true);
-  //     flag.current = false;
-  //   }
-  // }, [project.id]);
 
   // zoom to project location on initial map load
   useEffect(() => {
@@ -85,7 +78,7 @@ export default function MapSection({ isDraw, geojson, locationType }) {
     });
     setRedraw(false);
     setDrawComplete(false);
-    dispatch(setDrawnGeojsonData(null));
+    // dispatch(setDrawnGeojsonData(null));
     setTimeout(() => setRedraw(true), 100);
   };
 
@@ -93,19 +86,47 @@ export default function MapSection({ isDraw, geojson, locationType }) {
     <div className="naxatw-w-full">
       {locationType === 'Custom Draw' && (
         <div className="naxatw-flex naxatw-gap-x-4 naxatw-items-center naxatw-h-[40px] naxatw-my-2">
-          {drawComplete ? (
+          <div className="naxatw-flex ">
+            <Tooltip content="Draw Polygon" direction="right">
+              <MaterialIcon
+                name="polyline"
+                className="naxatw-text-icon-md"
+                wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer ${
+                  selectedGeomType === 'Polygon' ? 'naxatw-bg-[#F5F5F5]' : ''
+                }`}
+                onIconClick={() => {
+                  setSelectedGeomType('Polygon');
+                  handleClick();
+                }}
+              />
+            </Tooltip>
+            <Tooltip content="Draw rectangle" direction="right">
+              <MaterialIcon
+                name="rectangle"
+                className="naxatw-text-icon-md material-symbols-outlined"
+                wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer ${
+                  selectedGeomType === 'Box' ? 'naxatw-bg-[#F5F5F5]' : ''
+                }`}
+                onIconClick={() => {
+                  setSelectedGeomType('Box');
+                  handleClick();
+                }}
+              />
+            </Tooltip>
+          </div>
+          {/* {drawComplete ? (
             <Button
               iconLeft="edit"
               className="naxatw-btn-secondary naxatw-btn-noborder"
               onClick={handleClick}
             >
-              Redraw
+              Draw
             </Button>
           ) : (
             <span className="naxatw-text-body-lg">
               Select project boundary by drawing on map
             </span>
-          )}
+          )} */}
         </div>
       )}
 
@@ -114,6 +135,7 @@ export default function MapSection({ isDraw, geojson, locationType }) {
         mapInstance={map}
         style={{
           height: '400px',
+          border: '1px solid #F5F5F5',
         }}
       >
         <LayerSwitcherControl />
@@ -127,9 +149,9 @@ export default function MapSection({ isDraw, geojson, locationType }) {
         )}
 
         {locationType === 'Custom Draw' && (
-          <AddFeature
+          <CustomAddFeature
             enable={redraw}
-            geometryType="Polygon"
+            geometryType={selectedGeomType}
             style={{
               ...defaultStyles,
               lineColor: '#d12313',

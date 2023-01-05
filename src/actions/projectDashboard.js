@@ -177,6 +177,26 @@ export const { Types, Creators } = createActions(
     updateGalleryRequest: ['id', 'payload'],
     updateGallerySuccess: ['payload'],
     updateGalleryFailure: ['payload'],
+
+    updateUserStatusRequest: ['id', 'payload'],
+    updateUserStatusSuccess: ['payload'],
+    updateUserStatusFailure: null,
+
+    deleteUserRequest: ['id', 'payload'],
+    deleteUserSuccess: ['payload'],
+    deleteUserFailure: null,
+
+    updateInvitedUserStatusRequest: ['id', 'payload'],
+    updateInvitedUserStatusSuccess: ['payload'],
+    updateInvitedUserStatusFailure: null,
+
+    resendInvitationRequest: ['id', 'payload'],
+    resendInvitationSuccess: ['payload'],
+    resendInvitationFailure: null,
+
+    deleteInvitedUserRequest: ['id', 'payload'],
+    deleteInvitedUserSuccess: ['payload'],
+    deleteInvitedUserFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

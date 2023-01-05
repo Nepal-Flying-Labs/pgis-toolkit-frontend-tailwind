@@ -23,7 +23,8 @@ export default function Pagination({
   rowSelect,
   handleSelect,
 }) {
-  const [jump, setJump] = useState('');
+  const [jump, setJump] = useState(1);
+
   return (
     <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-mt-8">
       <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
@@ -82,12 +83,17 @@ export default function Pagination({
             type="number"
             className="naxatw-input naxatw-w-[60px]"
             value={jump}
-            onChange={e => setJump(e.target.value)}
+            onChange={e => {
+              const { value } = e.target;
+              if (value <= maxPage) {
+                return setJump(e.target.value);
+              }
+            }}
             onKeyDown={e => {
               if (e.key === 'Enter') jumpTo(e.target.value);
             }}
             min="1"
-            max={maxPage}
+            max={`${maxPage}`}
           />
         </p>
       </div>

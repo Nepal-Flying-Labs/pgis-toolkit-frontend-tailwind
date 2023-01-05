@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable arrow-body-style */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import { Creators, Types } from '@Actions/organizationDashboard';
@@ -17,6 +17,9 @@ import Select from '@Components/common/Select/index';
 import TableSkeleton from '@Components/common/TableSkeleton';
 import './index.css';
 import { useParams } from 'react-router';
+import usePagination from '@Hooks/usePagination';
+import Pagination from '@Components/common/Pagination/index';
+import { getSelectedRange } from '@Components/common/Pagination/getSelectedItem';
 
 const { togglePromptDialog } = CommonCreators;
 
@@ -33,19 +36,19 @@ const {
 
 const roles = [
   {
-    id: 1,
-    value: '1',
-    name: 'Project Manager',
-  },
-  {
     id: 2,
     value: '2',
     name: 'Organization Admin',
   },
   {
-    id: 3,
+    id: 1,
     value: '3',
-    name: 'Medical Assistant',
+    name: 'Project Manager',
+  },
+  {
+    id: 3,
+    value: '4',
+    name: 'Data Collector',
   },
 ];
 
@@ -76,6 +79,20 @@ const Users = () => {
       dispatch(setSearchText(debouncedEvent.target.value));
     },
   });
+  const [rowPerPage, setRowPerPage] = useState(10);
+
+  const {
+    next,
+    prev,
+    jump,
+    // currentData,
+    currentPage,
+    maxPage,
+    // begin,
+    // end,
+    currentList,
+    // handleSorting,
+  } = usePagination(users || [], rowPerPage);
 
   useEffect(() => {
     if (users.length < 1) {
@@ -172,6 +189,11 @@ const Users = () => {
     },
   ];
 
+  const getUserRoleById = id => {
+    const filteredList = roles.filter(item => item.value === id);
+    return filteredList?.[0]?.name;
+  };
+
   return (
     <div className="naxatw-mt-3 ">
       <div className="naxatw-flex naxatw-gap-x-3 naxatw-justify-start ">
@@ -195,10 +217,24 @@ const Users = () => {
         </div>
       </div>
       <div className="naxatw-mt-3 ">
-        <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-h-[600px]">
+        <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-h-[calc(100vh-23rem)]">
           {!loading ? (
             <Table
-              data={users || []}
+              data={
+                currentList
+                  ?.filter(
+                    item =>
+                      item?.full_name
+                        ?.toLowerCase()
+                        ?.includes(searchText.toLowerCase()) ||
+                      item?.email
+                        ?.toLowerCase()
+                        ?.includes(searchText.toLowerCase()),
+                  )
+                  ?.filter(d =>
+                    userRole ? d?.group === getUserRoleById(userRole) : d,
+                  ) || []
+              }
               className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               headerWidths={[
@@ -308,6 +344,21 @@ const Users = () => {
             <TableSkeleton itemNumber={5} />
           )}
         </div>
+        <Pagination
+          nextPage={next}
+          previousPage={prev}
+          jumpTo={jump}
+          currentPage={currentPage}
+          count={users?.length || 0}
+          paginatedCounts={getSelectedRange(
+            users?.length,
+            rowPerPage,
+            currentPage,
+          )}
+          maxPage={maxPage}
+          rowSelect={rowPerPage}
+          handleSelect={data => setRowPerPage(data)}
+        />
       </div>
     </div>
   );

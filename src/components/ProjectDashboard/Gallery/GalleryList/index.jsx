@@ -136,7 +136,7 @@ function GalleryList() {
             ))) || (
             <div className="naxatw-flex naxatw-flex-col naxatw-px-5 naxatw-py-5 naxatw-items-center">
               <p className="naxatw-mt-2 naxatw-text-center naxatw-text-body-lg">
-                No data found
+                No data available.
               </p>
             </div>
           )}

@@ -1,23 +1,24 @@
 /* eslint-disable arrow-body-style */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 // import Button from '@Components/common/Button/index';
 import { Creators } from '@Actions/projectDashboard';
 // import { Creators as CommonCreators } from '@Actions/common';
 import UserList from '@Components/ProjectDashboard/Users/UserList';
 import { useParams } from 'react-router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-const { getUsersRequest } = Creators;
+const { getUsersRequest, setUserState } = Creators;
 
 // const { toggleModal } = CommonCreators; getUserGroupRequest
 
 const User = () => {
   const { organizationId, projectId } = useParams();
+  const active = useSelector(state => state.projectDashboard.user.pageTab);
   const dispatch = useDispatch();
-  const [active, setActive] = useState('users');
-  const handleTabChange = name => {
-    setActive(name);
-  };
+  // const [active, setActive] = useState('users');
+  // const handleTabChange = name => {
+  //   setActive(name);
+  // };
 
   useEffect(() => {
     dispatch(
@@ -52,20 +53,21 @@ const User = () => {
                   ? 'naxatw-border-b-[2px] naxatw-border-[#484848] naxatw-text-[#484848]'
                   : 'naxatw-text-[#989898] hover:naxatw-text-[#00A699]'
               }`}
-              onClick={() => handleTabChange('users')}
+              onClick={() => dispatch(setUserState({ pageTab: 'users' }))}
             >
               Users
             </a>
           </li>
           {/* <li className="">
-            {' '}
             <a
               className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-[13px] naxatw-leading-[18px] naxatw-font-bold ${
                 active === 'assign-users'
                   ? 'naxatw-border-b-[2px] naxatw-border-[#484848] naxatw-text-[#484848]'
                   : 'naxatw-text-[#989898] hover:naxatw-text-[#00A699]'
               }`}
-              onClick={() => handleTabChange('assign-users')}
+              onClick={() =>
+                dispatch(setUserState({ pageTab: 'assign-users' }))
+              }
             >
               Assign Users
             </a>

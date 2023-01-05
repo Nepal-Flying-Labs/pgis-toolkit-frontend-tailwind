@@ -1,8 +1,8 @@
-const queryResult = [
-  { field: 'OBJECTID', operator: 1, value: 1 },
-  { join: 'OR' },
-  { field: 'OBJECTID', operator: 1, value: 2 },
-];
+// const queryResult = [
+//   { field: 'OBJECTID', operator: 1, value: 1 },
+//   { join: 'OR' },
+//   { field: 'OBJECTID', operator: 1, value: 2 },
+// ];
 
 export const dataQueryOperators = [
   { id: 1, label: '=', value: 1, type: 'operator' },
@@ -16,4 +16,5 @@ export const dataQueryOperators = [
   { id: 9, label: 'OR', value: 'OR', type: 'join' },
 ];
 
-export const nothing = '';
+export const transportThemeName = 'Transportation Network';
+export const obstacleThemeName = 'Transportation Obstacles';

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect, useRef } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +13,7 @@ import Users from '@Components/ProjectDashboard/Users';
 import Info from '@Components/ProjectDashboard/Info';
 import Settings from '@Components/ProjectDashboard/Settings';
 import AppLoader from '@Components/common/AppLoader';
+import Analysis from '@Components/ProjectDashboard/Analysis';
 
 const {
   getProjectLayersRequest,
@@ -73,7 +75,11 @@ export default function ProjectDashboard() {
     );
   }
 
-  return tabname !== 'manage-data' ? (
+  return tabname === 'manage-data' ? (
+    <ManageDataCollection />
+  ) : tabname === 'analysis' ? (
+    <Analysis />
+  ) : (
     <div>
       <ProjectHeader />
       <div
@@ -84,7 +90,5 @@ export default function ProjectDashboard() {
         {getTabContent(tabname)}
       </div>
     </div>
-  ) : (
-    <ManageDataCollection />
   );
 }

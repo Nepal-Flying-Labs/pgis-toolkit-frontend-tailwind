@@ -13,12 +13,15 @@ const SignupSuccess = () => {
   const history = useHistory();
   return (
     <div>
-      <div>
+      <div className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-gap-y-4">
+        <span className="material-icons naxatw-h-12 naxatw-w-12 naxatw-text-5xl naxatw-text-secondary-400 naxatw-leading-10">
+          verified
+        </span>
         <h4>Your account has been successfully created</h4>
       </div>
       <div className="naxatw-flex naxatw-justify-center">
         <Button
-          className="naxatw-btn-primary naxatw-mt-[1.625rem] naxatw-w-[100px]"
+          className="naxatw-btn-primary naxatw-mt-[3rem] naxatw-w-[100px]"
           //   isLoading={loading}
           //   loaderClassName="naxatw-fill-secondary-400"
           onClick={() => {

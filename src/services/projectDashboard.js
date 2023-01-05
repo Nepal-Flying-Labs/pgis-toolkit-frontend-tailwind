@@ -106,3 +106,9 @@ export const updateGallery = (id, payload) =>
 // update-document-item
 export const deleteGallery = (id, payload) =>
   authenticated(api).delete(`/projects/image/${id}/`, payload);
+
+export const updateUserRole = (id, payload) =>
+  authenticated(api).patch(`/users/userrole_update/${id}/`, payload);
+
+export const updateInvitedUserStatus = (id, payload) =>
+  authenticated(api).patch(`/users/preliminary_user/${id}/`, payload);

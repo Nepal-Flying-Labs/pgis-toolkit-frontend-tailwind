@@ -44,6 +44,7 @@ const initialState = {
     searchText: '',
     userRole: null,
     ordering: null,
+    pageTab: 'users',
   },
 };
 
@@ -456,6 +457,62 @@ const updateGallerySuccess = (state, action) => {
   };
 };
 
+const updateUserStatusSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.user.list.map(item => {
+    const { active } = item;
+    return item.id === userData.id ? { ...item, active: !active } : { ...item };
+  });
+  return {
+    ...state,
+    user: { ...state.user, list: newData },
+  };
+};
+
+const deleteUserSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.user.list.map(item =>
+    item.id === userData.id ? null : { ...item },
+  );
+  return {
+    ...state,
+    user: { ...state.user, list: newData },
+  };
+};
+
+const updateInvitedUserStatusSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.user.list.map(item =>
+    item.id === userData.id ? { ...item, status: 'Expired' } : { ...item },
+  );
+  return {
+    ...state,
+    user: { ...state.user, list: newData },
+  };
+};
+
+const resendInvitationSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.user.list.map(item =>
+    item.id === userData.id ? { ...item, status: 'Pending' } : { ...item },
+  );
+  return {
+    ...state,
+    user: { ...state.user, list: newData },
+  };
+};
+
+const deleteInvitedUserSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.user.list.map(item =>
+    item.id === userData.id ? null : { ...item },
+  );
+  return {
+    ...state,
+    user: { ...state.user, list: newData },
+  };
+};
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -499,6 +556,11 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_GALLERY_BY_ID_SUCCESS]: getGalleryByIdSuccess,
   [Types.DELETE_GALLERY_SUCCESS]: deleteGallerySuccess,
   [Types.UPDATE_GALLERY_SUCCESS]: updateGallerySuccess,
+  [Types.UPDATE_USER_STATUS_SUCCESS]: updateUserStatusSuccess,
+  [Types.DELETE_USER_SUCCESS]: deleteUserSuccess,
+  [Types.UPDATE_INVITED_USER_STATUS_SUCCESS]: updateInvitedUserStatusSuccess,
+  [Types.RESEND_INVITATION_SUCCESS]: resendInvitationSuccess,
+  [Types.DELETE_INVITED_USER_SUCCESS]: deleteInvitedUserSuccess,
 });
 
 export default projectDashboardReducer;

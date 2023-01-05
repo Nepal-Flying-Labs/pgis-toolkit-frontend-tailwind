@@ -3,9 +3,10 @@ import { Types } from '@Actions/users';
 
 const initialState = {
   userData: [],
-  organizationData: [],
   //   createOrganizationDetail: null,
   searchText: '',
+  pageTab: 'users',
+  item: {},
   //   ordering: 'name',
   pagination: {
     page: 1,
@@ -21,94 +22,86 @@ const getUsersSuccess = (state, action) =>
   ({
     ...state,
     userData: action.payload,
-    // pagination: {
-    //   ...state.pagination,
-    //   count: counts,
-    //   next,
-    //   previous,
-    // },
   });
-const getOrganizationSuccess = (state, action) => ({
+// const getOrganizationSuccess = (state, action) => ({
+//   ...state,
+//   organizationData: action.payload?.map(d => ({
+//     ...d,
+//     children: [],
+//   })),
+// });
+
+const setUserState = (state, action) => ({
   ...state,
-  organizationData: action.payload?.map(d => ({
-    ...d,
-    children: [],
-  })),
+  ...action.payload,
 });
 
-const setSearchText = (state, action) => ({
-  ...state,
-  searchText: action.payload,
-});
+const updateUserStatusSuccess = (state, action) => {
+  const users = action.payload;
+  const newData = state.userData.map(user => {
+    const { active } = user;
+    return user.id === users.id ? { ...user, active: !active } : { ...user };
+  });
+  return {
+    ...state,
+    userData: newData,
+  };
+};
 
-// const setUserState = (state, action) => ({
-//   ...state,
-//   ...action.payload,
-// });
+const deleteUserSuccess = (state, action) => {
+  const users = action.payload;
+  const newData = state.userData.map(user =>
+    user.id === users.id ? null : { ...user },
+  );
+  return {
+    ...state,
+    userData: newData,
+  };
+};
 
-// const createOrganizationSuccess = (state, action) => ({
-//   ...state,
-//   createOrganizationDetail: action.payload,
-// });
+const updateInvitedUserStatusSuccess = (state, action) => {
+  const users = action.payload;
+  const newData = state.userData.map(user =>
+    user.id === users.id ? { ...user, status: 'Expired' } : { ...user },
+  );
+  return {
+    ...state,
+    userData: newData,
+  };
+};
 
-// const setSearchText = (state, action) => ({
-//   ...state,
-//   searchText: action.payload,
-// });
+const resendInvitationSuccess = (state, action) => {
+  const users = action.payload;
+  const newData = state.userData.map(user =>
+    user.id === users.id ? { ...user, status: 'Pending' } : { ...user },
+  );
+  return {
+    ...state,
+    userData: newData,
+  };
+};
 
-// // handle pagination in transaction page
-// const handleNextClick = state => {
-//   if (state.pagination.next !== null) {
-//     return {
-//       ...state,
-//       pagination: {
-//         ...state.pagination,
-//         page: state.pagination.page + 1,
-//       },
-//     };
-//   }
-//   return {
-//     ...state,
-//   };
-// };
-// const handlePreviousClick = state => {
-//   if (state.pagination.previous !== null) {
-//     return {
-//       ...state,
-//       pagination: {
-//         ...state.pagination,
-//         page: state.pagination.page - 1,
-//       },
-//     };
-//   }
-//   return { ...state };
-// };
-
-// const handleJumpsTo = (state, action) =>
-//   // if (action.payload !== '')
-//   ({
-//     ...state,
-//     pagination: {
-//       ...state.pagination,
-//       page: parseInt(action.payload, 10),
-//     },
-//   });
-
-// const handleRowSelect = (state, action) => ({
-//   ...state,
-//   pagination: { ...state.pagination, page: 1, rowSelect: action.payload },
-// });
-
-// const handleOrdering = (state, action) => ({
-//   ...state,
-//   ordering: action.payload,
-// });
+const deleteInvitedUserSuccess = (state, action) => {
+  const users = action.payload;
+  const newData = state.userData.map(user =>
+    user.id === users.id ? null : { ...user },
+  );
+  return {
+    ...state,
+    userData: newData,
+  };
+};
 
 const usersReducer = createReducer(initialState, {
   [Types.GET_USERS_SUCCESS]: getUsersSuccess,
-  [Types.GET_ORGANIZATION_SUCCESS]: getOrganizationSuccess,
-  [Types.SET_SEARCH_TEXT]: setSearchText,
-  // [Types.SET_USER_STATE]: setUserState,
+  // [Types.GET_ORGANIZATION_SUCCESS]: getOrganizationSuccess,
+  [Types.SET_USER_STATE]: setUserState,
+  [Types.UPDATE_USER_STATUS_SUCCESS]: updateUserStatusSuccess,
+  [Types.DELETE_USER_SUCCESS]: deleteUserSuccess,
+  [Types.UPDATE_INVITED_USER_STATUS_SUCCESS]: updateInvitedUserStatusSuccess,
+  [Types.RESEND_INVITATION_SUCCESS]: resendInvitationSuccess,
+  [Types.DELETE_INVITED_USER_SUCCESS]: deleteInvitedUserSuccess,
+
   //   [Types.CREATE_ORGANIZATION_SUCCESS]: createOrganizationSuccess,
   //   [Types.SET_SEARCH_TEXT]: setSearchText,
   //   [Types.HANDLE_NEXT_CLICK]: handleNextClick,

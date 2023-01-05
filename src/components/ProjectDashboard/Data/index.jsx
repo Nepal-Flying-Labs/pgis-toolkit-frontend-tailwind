@@ -86,7 +86,7 @@ export default function Data() {
   };
 
   return (
-    <div className="naxatw-absolute naxatw-mx-10">
+    <div className="naxatw-mx-10">
       <div className="naxatw-flex naxatw-justify-between naxatw-items-center ">
         <h3 className="naxatw-font-bold naxatw-py-5">Data Catalogue</h3>
         <div className="naxatw-flex naxatw-gap-3">

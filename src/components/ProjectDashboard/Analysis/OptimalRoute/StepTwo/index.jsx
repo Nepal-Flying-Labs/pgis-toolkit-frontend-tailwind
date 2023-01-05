@@ -151,118 +151,123 @@ export default function StepTwo() {
           }
         />
 
-        {selectedObstacleLayers.map(layer => (
-          <Accordion
-            collapsed={!toggledStates[layer.id]}
-            onToggle={toggleState => {
-              setToggledStates(prev => ({
-                ...prev,
-                [layer.id]: toggleState,
-              }));
-            }}
-            className={`!naxatw-p-2 ${
-              toggledStates[layer.id] ? 'naxatw-bg-grey-50' : ''
-            }`}
-            header={
-              <div className="naxatw-pl-2 naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
-                <div
-                  className="naxatw-flex naxatw-items-center naxatw-justify-between
+        {selectedObstacleLayers.map(layer => {
+          const isLayerCheckingError =
+            errorStates[layer.id] &&
+            errorStates[layer.id].some(item => item.status === 'waiting');
+          return (
+            <Accordion
+              collapsed={!toggledStates[layer.id]}
+              onToggle={toggleState => {
+                setToggledStates(prev => ({
+                  ...prev,
+                  [layer.id]: toggleState,
+                }));
+              }}
+              className={`!naxatw-p-2 ${
+                toggledStates[layer.id] ? 'naxatw-bg-grey-50' : ''
+              }`}
+              header={
+                <div className="naxatw-pl-2 naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
+                  <div
+                    className="naxatw-flex naxatw-items-center naxatw-justify-between
                   naxatw-w-full"
-                >
-                  <h5 className="naxatw-text-grey-800">{layer.name}</h5>
-                  <div className="naxatw-flex naxatw-gap-2">
-                    <span
-                      className="naxatw-p-1 hover:naxatw-bg-grey-100
+                  >
+                    <h5 className="naxatw-text-grey-800">{layer.name}</h5>
+                    <div className="naxatw-flex naxatw-gap-2">
+                      <span
+                        className="naxatw-p-1 hover:naxatw-bg-grey-100
                       hover:naxatw-rounded-lg naxatw-cursor-pointer"
-                    >
-                      <IconButton
-                        name="edit"
-                        className="material-icons-outlined naxatw-mt-1"
-                      />
-                    </span>
-                    <Button
-                      className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
-                      disabled={isRoadLayerCheckingError}
-                      onClick={() => {
-                        if (!errorStates[layer.id])
-                          dispatch(
-                            checkErrorRequest({
-                              layer: layer.id,
-                            }),
-                          );
-                        setToggledStates(prev => ({
-                          ...prev,
-                          [layer.id]: true,
-                        }));
-                      }}
-                    >
-                      Check Error
-                    </Button>
+                      >
+                        <IconButton
+                          name="edit"
+                          className="material-icons-outlined naxatw-mt-1"
+                        />
+                      </span>
+                      <Button
+                        className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
+                        disabled={isLayerCheckingError}
+                        onClick={() => {
+                          if (!errorStates[layer.id])
+                            dispatch(
+                              checkErrorRequest({
+                                layer: layer.id,
+                              }),
+                            );
+                          setToggledStates(prev => ({
+                            ...prev,
+                            [layer.id]: true,
+                          }));
+                        }}
+                      >
+                        Check Error
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            }
-            body={
-              <div>
-                <div className="naxatw-p-2 naxatw-space-y-4">
-                  {errorStates[layer.id]?.map(
-                    ({ label, status, errorData, totalData }) => (
-                      <div
-                        key={label}
-                        className="naxatw-grid naxatw-grid-cols-2 naxatw-items-center"
-                      >
-                        <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
-                          {status !== 'waiting' && (
-                            <span
-                              style={{ color: getStatusIcon(status).color }}
+              }
+              body={
+                <div>
+                  <div className="naxatw-p-2 naxatw-space-y-4">
+                    {errorStates[layer.id]?.map(
+                      ({ label, status, errorData, totalData }) => (
+                        <div
+                          key={label}
+                          className="naxatw-grid naxatw-grid-cols-2 naxatw-items-center"
+                        >
+                          <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
+                            {status !== 'waiting' && (
+                              <span
+                                style={{ color: getStatusIcon(status).color }}
+                              >
+                                <i className="material-icons-outlined">
+                                  {getStatusIcon(status).icon}
+                                </i>
+                              </span>
+                            )}
+                            <p
+                              className={`${
+                                status === 'waiting' ? 'naxatw-pl-8' : ''
+                              }`}
                             >
-                              <i className="material-icons-outlined">
-                                {getStatusIcon(status).icon}
-                              </i>
-                            </span>
-                          )}
-                          <p
-                            className={`${
-                              status === 'waiting' ? 'naxatw-pl-8' : ''
-                            }`}
-                          >
-                            {label}
-                          </p>
+                              {label}
+                            </p>
+                          </div>
+                          <span>
+                            {status === 'error' || status === 'success' ? (
+                              <p className="naxatw-text-body-lg naxatw-text-grey-800">
+                                <b>{errorData}</b> out of <b>{totalData}</b>{' '}
+                                errors
+                              </p>
+                            ) : status === 'checking' ? (
+                              <p className="naxatw-text-body-btn naxatw-text-primary-400">
+                                Checking...
+                              </p>
+                            ) : (
+                              <p className="naxatw-text-body-btn naxatw-text-grey-500">
+                                Waiting
+                              </p>
+                            )}
+                          </span>
                         </div>
-                        <span>
-                          {status === 'error' || status === 'success' ? (
-                            <p className="naxatw-text-body-lg naxatw-text-grey-800">
-                              <b>{errorData}</b> out of <b>{totalData}</b>{' '}
-                              errors
-                            </p>
-                          ) : status === 'checking' ? (
-                            <p className="naxatw-text-body-btn naxatw-text-primary-400">
-                              Checking...
-                            </p>
-                          ) : (
-                            <p className="naxatw-text-body-btn naxatw-text-grey-500">
-                              Waiting
-                            </p>
-                          )}
-                        </span>
-                      </div>
-                    ),
+                      ),
+                    )}
+                  </div>
+                  {!isLayerCheckingError && (
+                    <div className="naxatw-mt-4 naxatw-flex naxatw-justify-end naxatw-gap-2">
+                      <Button className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2">
+                        Automatic Fix
+                      </Button>
+                      <Button className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2">
+                        Manual Fix
+                      </Button>
+                    </div>
                   )}
                 </div>
-                {!isRoadLayerCheckingError && (
-                  <div className="naxatw-mt-4 naxatw-flex naxatw-justify-end naxatw-gap-2">
-                    <Button className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2">
-                      Automatic Fix
-                    </Button>
-                    <Button className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2">
-                      Manual Fix
-                    </Button>
-                  </div>
-                )}
-              </div>
-            }
-          />
-        ))}
+              }
+            />
+          );
+        })}
       </div>
 
       <div className="naxatw-flex naxatw-justify-center naxatw-mt-10">

@@ -1,40 +1,44 @@
 export const webAdmin = [
   {
     id: 1,
-    name: 'Inviting Organization',
+    name: 'Can create organization',
   },
   {
     id: 2,
-    name: ' Viewing basic details of organization',
+    name: 'Invite users by email',
   },
   {
     id: 3,
-    name: 'Managing Organization Details',
+    name: 'View organization and project dashboard and many more',
   },
 ];
 
 export const organizationAdmin = [
   {
     id: 1,
-    name: 'Inviting Project Manager',
+    name: 'Can create/edit/delete project',
   },
   {
     id: 2,
-    name: ' Viewing basic details of organization',
+    name: ' Invite project managers by email',
   },
   {
     id: 3,
-    name: 'Managing Organization Details',
+    name: 'Add/Edit/Delete datasets within multiple projects and many more',
   },
 ];
 
 export const projectAdmin = [
   {
     id: 1,
-    name: 'Manage Project',
+    name: ' Can edit assigned project details',
   },
   {
     id: 2,
-    name: ' Viewing basic details of Projects',
+    name: 'Invite and assign users in the project',
+  },
+  {
+    id: 3,
+    name: 'Add/Edit/Delete datasets in the project and many more',
   },
 ];

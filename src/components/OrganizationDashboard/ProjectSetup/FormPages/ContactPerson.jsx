@@ -117,7 +117,7 @@ const ContactPerson = () => {
         className="naxatw-btn-secondary naxatw-btn-noborder"
         onClick={handleSubmit}
       >
-        Add
+        Save Contact Person
       </Button>
     </>
   );

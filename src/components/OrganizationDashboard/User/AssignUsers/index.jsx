@@ -92,6 +92,7 @@ const AssignUsers = () => {
             organization: organizationDetails.id,
             group: userRole,
             email: emailList.map(e => e.email),
+            activeTab,
           }),
         );
       } else {
@@ -101,6 +102,7 @@ const AssignUsers = () => {
             group: userRole,
             project: projectList,
             email: emailList.map(e => e.email),
+            activeTab,
           }),
         );
       }
@@ -328,6 +330,7 @@ const AssignUsers = () => {
                       label={roles.name?.replaceAll('_', ' ')?.toLowerCase()}
                       onClick={() => handleCheckboxClick(roles)}
                       checked={roles.checked}
+                      className="!naxatw-min-w-[1.25rem]"
                     />
                   ))}
               </div>
@@ -364,6 +367,7 @@ const AssignUsers = () => {
                           checked={project.checked}
                           disabled={project.disabled}
                           onClick={() => handleProjectCheckboxClick(project)}
+                          className="!naxatw-min-w-[1.25rem]"
                         />
                       ))
                   ) : (
@@ -384,12 +388,12 @@ const AssignUsers = () => {
         </div>
         <div className="naxatw-mt-5 naxatw-flex naxatw-justify-center">
           <Button
-            className="naxatw-w-[86px] naxatw-btn-primary"
+            className="naxatw-w-[86px] naxatw-btn-primary naxatw-min-w-fit"
             isLoading={loading}
             loaderClassName="naxatw-fill-secondary-400"
             onClick={handleSubmit}
           >
-            Assign
+            {activeTab === 'invite' ? 'Invite and Assign' : 'Assign'}
           </Button>
         </div>
       </div>

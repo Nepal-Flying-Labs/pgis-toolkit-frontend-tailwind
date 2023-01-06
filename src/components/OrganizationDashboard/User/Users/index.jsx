@@ -62,6 +62,9 @@ const Users = () => {
   const searchText = useSelector(
     state => state.organizationDashboard.usersFilter.searchText,
   );
+  const selectedData = useSelector(
+    state => state.organizationDashboard.selectedData,
+  );
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_USERS_REQUEST]),
   );
@@ -161,6 +164,7 @@ const Users = () => {
         </span>
       ),
       onClick: data => {
+        dispatch(setSelectedData(data));
         dispatch(
           updateInvitedUserStatusRequest(data.id, { status: 'Expired' }),
         );
@@ -175,6 +179,7 @@ const Users = () => {
         </span>
       ),
       onClick: data => {
+        dispatch(setSelectedData(data));
         dispatch(resendInvitationRequest(data.id, { resend: true }));
       },
     },
@@ -338,7 +343,7 @@ const Users = () => {
                   <Status
                     status={row.active}
                     invitationStatus={row.status || ''}
-                    isLoading={invitationLoading}
+                    isLoading={invitationLoading && row.id === selectedData?.id}
                   />
                 )}
               />

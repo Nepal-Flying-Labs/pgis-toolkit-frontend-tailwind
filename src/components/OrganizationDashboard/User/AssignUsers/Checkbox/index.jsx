@@ -10,7 +10,7 @@ const Checkbox = ({ id, label, onClick, checked, disabled, className }) => {
       <input
         id={id}
         type="checkbox"
-        className="naxatw-h-5 naxatw-w-5"
+        className={`naxatw-h-5 naxatw-w-5 ${className}`}
         onChange={onClick}
         checked={checked}
         disabled={disabled}

@@ -79,8 +79,8 @@ export default function LayerList({ dropdownOptions }) {
                 */}
                   </div>
                 </div>
-                <div>
-                  <p>{theme.description}</p>
+                <div className={`${!theme.description ? '' : 'naxatw-mb-3'}`}>
+                  <p className="naxatw-text-body-md">{theme.description}</p>
                 </div>
               </div>
             }

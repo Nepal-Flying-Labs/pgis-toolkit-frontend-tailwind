@@ -198,14 +198,27 @@ export function* getAllProjectRequest({ params }) {
 
 export function* postAssignUserRequest({ payload }) {
   const { organization } = payload;
+  const { activeTab, ...newPayload } = payload;
   try {
-    const formdata = prepareFormData(payload);
+    const formdata = prepareFormData(newPayload);
     const response = yield call(postProjectInvite, formdata);
     yield put(
       organizationDashboardActions.postProjectInviteSuccess(response.data),
     );
     yield put(push(`/organizations/${organization}/user`));
-    yield put(toastActions.success({ message: 'User assigned successful' }));
+    if (activeTab === 'assign') {
+      yield put(
+        toastActions.success({
+          message: 'User has been assigned successfully',
+        }),
+      );
+    } else {
+      yield put(
+        toastActions.success({
+          message: ' User has been invited and assigned successfully',
+        }),
+      );
+    }
   } catch (error) {
     yield put(organizationDashboardActions.postProjectInviteFailure());
     throw error;

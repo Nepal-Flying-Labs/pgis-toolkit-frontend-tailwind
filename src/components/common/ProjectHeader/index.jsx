@@ -7,6 +7,8 @@ import { projectHeaderHeight } from '@src/constants';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
 import MaterialIcon from '@Components/common/MaterialIcon';
 // import HeaderNotification from '../Header/HeaderNotification';
+import AvatarIcon from '@Assets/images/user-avatar.png';
+import getImageSource from '@Utils/getImageSource';
 import HeaderProfile from '../Header/HeaderProfile';
 
 const organizationHeaderData = [
@@ -44,6 +46,9 @@ export default function ProjectHeader() {
     ? projectDetail?.name
     : organizationDetail?.name;
 
+  console.log('project details ', projectDetail);
+  console.log('org details ', organizationDetail);
+
   useEffect(() => {
     if (!headerTitle) return;
     const el = document.getElementById('project-header');
@@ -78,7 +83,18 @@ export default function ProjectHeader() {
           <div>
             <nav>
               <ul className="naxatw-font-bold  naxatw-text-grey-500 naxatw-text-[0.9375rem]  naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-2 naxatw-h-full">
-                <li>
+                <li className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                  {/* <figure className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
+                    <img
+                      src={
+                        projectDetail?.image
+                          ? getImageSource(projectDetail?.image)
+                          : AvatarIcon
+                      }
+                      alt="avatar-placeholder"
+                      className="naxatw-rounded-full naxatw-w-[40px] naxatw-h-[40px] naxatw-object-cover"
+                    />
+                  </figure> */}
                   <Link
                     className="naxatw-py-2.5 hover:naxatw-text-[#484848] naxatw-text-body-btn"
                     to={`/organizations/${organizationId}/projects`}
@@ -89,7 +105,7 @@ export default function ProjectHeader() {
                 <li className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
                   <MaterialIcon
                     name="chevron_right"
-                    className="naxatw-text-[#484848] naxatw-pb-1"
+                    className="naxatw-text-[#484848]"
                   />
                   <a className=" naxatw-text-[#484848] naxatw-py-2.5 naxatw-text-body-btn">
                     {projectDetail?.name}
@@ -107,7 +123,20 @@ export default function ProjectHeader() {
                 wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
               />
             </Link>
-            <h4>{headerTitle}</h4>
+            <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
+              <figure className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
+                <img
+                  src={
+                    projectDetail?.image
+                      ? getImageSource(projectDetail?.image)
+                      : AvatarIcon
+                  }
+                  alt="avatar-placeholder"
+                  className="naxatw-rounded-full naxatw-w-[40px] naxatw-h-[40px] naxatw-object-cover"
+                />
+              </figure>
+              <h4>{headerTitle}</h4>
+            </div>
           </div>
         )}
 
@@ -121,7 +150,7 @@ export default function ProjectHeader() {
                       tabname === route
                         ? 'naxatw-text-grey-800 naxatw-border-b-[2px] naxatw-border-grey-800'
                         : ''
-                    } `}
+                    } hover:naxatw-text-secondary-400`}
                     to={
                       projectId
                         ? `/organizations/${organizationId}/projects/${projectId}/${route}`

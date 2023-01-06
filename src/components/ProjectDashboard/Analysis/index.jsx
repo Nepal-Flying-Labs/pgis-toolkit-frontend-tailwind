@@ -17,9 +17,7 @@ function getAnalysisContent(type) {
 
 export default function Analysis() {
   const { analysisType } = useParams();
-  const manualFixLayerId = useSelector(
-    state => state.analysis.manualFixLayerId,
-  );
+  const selectedLayer = useSelector(state => state.analysis.selectedLayer);
 
   return (
     <div>
@@ -28,7 +26,7 @@ export default function Analysis() {
       <div className="naxatw-flex naxatw-h-[calc(100vh-6.2rem)]">
         {getAnalysisContent(analysisType)}
 
-        {!manualFixLayerId && <HelpContent />}
+        {!selectedLayer && <HelpContent />}
       </div>
     </div>
   );

@@ -17,11 +17,9 @@ function getStepWiseContent(step) {
 
 export default function OptimalRoute() {
   const stepIndex = useSelector(state => state.analysis.stepIndex);
-  const manualFixLayerId = useSelector(
-    state => state.analysis.manualFixLayerId,
-  );
+  const selectedLayer = useSelector(state => state.analysis.selectedLayer);
 
-  return manualFixLayerId ? (
+  return selectedLayer ? (
     <ManualFix />
   ) : (
     <div className="naxatw-flex naxatw-grow naxatw-justify-center naxatw-py-[19px] naxatw-overflow-y-auto scrollbar">

@@ -7,14 +7,12 @@ import MapSection from './MapSection';
 const { getErrorFeaturesRequest } = Creators;
 
 export default function ManualFix() {
-  const manualFixLayerId = useSelector(
-    state => state.analysis.manualFixLayerId,
-  );
+  const selectedLayer = useSelector(state => state.analysis.selectedLayer);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getErrorFeaturesRequest({ layer: manualFixLayerId }));
-  }, [dispatch, manualFixLayerId]);
+    dispatch(getErrorFeaturesRequest({ layer: selectedLayer.id }));
+  }, [dispatch, selectedLayer]);
 
   return (
     <div className="naxatw-flex naxatw-h-[calc(100vh-6.2rem)] naxatw-w-full">

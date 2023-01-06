@@ -1,19 +1,26 @@
 /* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { fromLonLat } from 'ol/proj';
+import { fromLonLat, transformExtent } from 'ol/proj';
 import { Types } from '@Actions/projectMap';
 import {
   useOLMap,
   MapContainer as MapComponent,
 } from '@Components/common/OpenLayersComponent';
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher';
-import CustomLayerSwitcher from '@Components/common/OpenLayersComponent/CustomLayerSwitcher/index';
+import CustomLayerSwitcher from '@Components/common/OpenLayersComponent/CustomLayerSwitcher';
 import Spinner from '@Components/common/Spinner';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
+import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
+import { apiURL } from '@Services';
+import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
+import {
+  defaultStyles,
+  getStyles,
+} from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -28,6 +35,31 @@ export default function MapSection() {
       Types.GET_PROJECT_GEOJSON_REQUEST,
     ]),
   );
+  const selectedLayer = useSelector(state => state.analysis.selectedLayer);
+
+  // zoom to selected layer on initial map load
+  useEffect(() => {
+    if (!map || !selectedLayer) return;
+    const bbox = selectedLayer?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        // duration: 3500,
+        constrainResolution: true,
+      });
+    }
+  }, [map, selectedLayer]);
+
+  const setLayerStyle = useCallback((style, feature, resolution) => {
+    const stylex = { ...style };
+    return getStyles({
+      style: stylex,
+      feature,
+      resolution,
+    });
+  }, []);
 
   return (
     <div className="naxatw-w-full naxatw-relative">
@@ -51,6 +83,25 @@ export default function MapSection() {
 
         <CustomLayerSwitcher />
 
+        <VectorTileLayer
+          url={`${apiURL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${selectedLayer.id}`}
+          authToken={localStorage.getItem('userToken')}
+          visibleOnMap
+          setStyle={(feature, resolution) =>
+            setLayerStyle(
+              selectedLayer.style || { ...defaultStyles },
+              feature,
+              resolution,
+            )
+          }
+          // style={
+          //   item.id === selectedLayer?.id
+          //     ? selectedLayer.style
+          //     : item?.style || { ...defaultStyles }
+          // }
+          zIndex={10}
+          // properties={{ layerId: item.id }}
+        />
         <MapFooter loading={isMapLoading} />
       </MapComponent>
     </div>

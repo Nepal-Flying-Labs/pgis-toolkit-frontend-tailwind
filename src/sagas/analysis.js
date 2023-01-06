@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest, takeEvery } from 'redux-saga/effects';
-import { autoFixError, checkError } from '@Services/analysis';
+import { autoFixError, checkError, copyFeatures } from '@Services/analysis';
 import analysisActions, { Types } from '@Actions/analysis';
 // import commonActions from '@Actions/common';
 // import toastActions from '@Actions/toast';
@@ -10,6 +10,7 @@ export function* checkErrorRequest({ params }) {
   try {
     const layerId = params.layer;
     yield put(analysisActions.setErrorStates(layerId));
+    yield call(copyFeatures, { layer: layerId });
     const { errorStates } = yield select(state => state.analysis);
     const errorData = errorStates[layerId];
     for (let i = 0; i < errorData.length; i += 1) {

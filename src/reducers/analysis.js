@@ -4,6 +4,7 @@ import { checkErrorData } from '@src/constants/analysis';
 
 const initialState = {
   stepIndex: 1,
+  manualFixLayerId: null,
   optimalRoute: {
     selectedRoadLayer: {
       // id: 483,

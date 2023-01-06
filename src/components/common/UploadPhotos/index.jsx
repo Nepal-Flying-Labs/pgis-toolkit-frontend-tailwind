@@ -82,13 +82,19 @@ function UploadPhotos({
               </div>
             </div>
             <div className="naxatw-flex naxatw-items-center naxatw-gap-x-4">
-              <a href={uploadedFile?.fileURL}>
+              <a
+                href={uploadedFile?.fileURL}
+                className="hover:naxatw-bg-grey-100 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-justify-center naxatw-items-center naxatw-rounded-lg"
+              >
                 <MaterialIcon
                   name="download"
                   className="naxatw-text-[#484848] naxatw-cursor-pointer"
                 />
               </a>
-              <a onClick={() => onChange('')}>
+              <a
+                onClick={() => onChange('')}
+                className="hover:naxatw-bg-grey-100 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-justify-center naxatw-items-center naxatw-rounded-lg"
+              >
                 <MaterialIcon
                   name="delete_outline"
                   className="naxatw-text-red-500 naxatw-cursor-pointer"

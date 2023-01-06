@@ -324,13 +324,12 @@ const AssignUsers = () => {
                   .filter(i => i.name?.toLowerCase()?.includes(roleSearchText))
                   .map(roles => (
                     <Checkbox
-                      className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer"
+                      className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
                       key={roles.id}
                       id={roles.id}
                       label={roles.name?.replaceAll('_', ' ')?.toLowerCase()}
                       onClick={() => handleCheckboxClick(roles)}
                       checked={roles.checked}
-                      className="!naxatw-min-w-[1.25rem]"
                     />
                   ))}
               </div>
@@ -362,12 +361,11 @@ const AssignUsers = () => {
                         <Checkbox
                           key={project.id}
                           id={project.id}
-                          className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer"
+                          className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
                           label={project.name}
                           checked={project.checked}
                           disabled={project.disabled}
                           onClick={() => handleProjectCheckboxClick(project)}
-                          className="!naxatw-min-w-[1.25rem]"
                         />
                       ))
                   ) : (

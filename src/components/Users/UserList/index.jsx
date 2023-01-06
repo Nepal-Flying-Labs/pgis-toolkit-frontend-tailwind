@@ -94,7 +94,7 @@ const UserList = () => {
       label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
-          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Remove</p>
         </span>
       ),
       onClick: data => {
@@ -136,7 +136,7 @@ const UserList = () => {
       label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
-          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Remove</p>
         </span>
       ),
       onClick: data => {
@@ -227,9 +227,10 @@ const UserList = () => {
                 '396px',
                 '220px',
                 '220px',
-                '280px',
-                '180px',
-                '50px',
+                '220px',
+                '290px',
+                '100px',
+                '100px',
               ]}
               // eslint-disable-next-line
               // onRowClick={row => {}}
@@ -263,7 +264,7 @@ const UserList = () => {
                   <span className="text-base">{row.organization || '-'}</span>
                 )}
               />
-              <TableHeader
+              {/* <TableHeader
                 dataField="Project"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
                 rowcolSpan="rowSpan_2"
@@ -271,7 +272,7 @@ const UserList = () => {
                 dataFormat={row => (
                   <span className="text-base">{row.project || '-'}</span>
                 )}
-              />
+              /> */}
               <TableHeader
                 dataField="Role"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "

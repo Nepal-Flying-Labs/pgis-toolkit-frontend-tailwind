@@ -62,8 +62,10 @@ const Location = ({ page, setPage }) => {
           return 'GeoJSON';
         case 'application/zip':
           return 'Shapefile';
+        case 'application/x-zip-compressed':
+          return 'Shapefile';
         default:
-          return '';
+          return 'Shapefile';
       }
     } else {
       return '';
@@ -96,7 +98,9 @@ const Location = ({ page, setPage }) => {
               file: '',
               file_type: '',
             }
-          : { ...finalPayloadData };
+          : {
+              ...finalPayloadData,
+            };
 
       if (values.file || values.location_wkt) {
         dispatch(
@@ -179,6 +183,7 @@ const Location = ({ page, setPage }) => {
         <UploadPolygonBoundary
           uploadedFile={values?.file}
           setuploadedFile={file => {
+            console.log('files ', file);
             handleCustomChange('file', file);
           }}
         />

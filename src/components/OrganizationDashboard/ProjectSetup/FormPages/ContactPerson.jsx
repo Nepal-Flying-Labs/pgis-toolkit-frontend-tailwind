@@ -29,7 +29,9 @@ const ContactPerson = () => {
     state => state.organizationDashboard.individualProject.contactPerson,
   );
   const deleteContact = id => {
-    dispatch(patchContactPersonRequest(id, { is_deleted: 'True' }));
+    dispatch(
+      patchContactPersonRequest(id, { is_deleted: true, type: 'project' }),
+    );
   };
 
   const { meta, values, handleChange, handleSubmit, resetFormState } = useForm({
@@ -39,7 +41,7 @@ const ContactPerson = () => {
       dispatch(
         postContactPersonRequest(
           { ...data, project: projectId },
-          { project: projectId },
+          { project: projectId, type: 'project' },
         ),
       );
       resetFormState();
@@ -117,7 +119,7 @@ const ContactPerson = () => {
         className="naxatw-btn-secondary naxatw-btn-noborder"
         onClick={handleSubmit}
       >
-        Add
+        Save Contact Person
       </Button>
     </>
   );

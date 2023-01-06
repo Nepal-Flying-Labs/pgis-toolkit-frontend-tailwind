@@ -61,6 +61,9 @@ const Users = () => {
   const searchText = useSelector(
     state => state.organizationDashboard.usersFilter.searchText,
   );
+  const selectedData = useSelector(
+    state => state.organizationDashboard.selectedData,
+  );
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_USERS_REQUEST]),
   );
@@ -137,7 +140,7 @@ const Users = () => {
       label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
-          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Remove</p>
         </span>
       ),
       onClick: data => {
@@ -157,6 +160,7 @@ const Users = () => {
         </span>
       ),
       onClick: data => {
+        dispatch(setSelectedData(data));
         dispatch(
           updateInvitedUserStatusRequest(data.id, { status: 'Expired' }),
         );
@@ -171,6 +175,7 @@ const Users = () => {
         </span>
       ),
       onClick: data => {
+        dispatch(setSelectedData(data));
         dispatch(resendInvitationRequest(data.id, { resend: true }));
       },
     },
@@ -179,7 +184,7 @@ const Users = () => {
       label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
-          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Remove</p>
         </span>
       ),
       onClick: data => {
@@ -304,7 +309,7 @@ const Users = () => {
                   <Status
                     status={row.active}
                     invitationStatus={row.status || ''}
-                    isLoading={invitationLoading}
+                    isLoading={invitationLoading && row.id === selectedData?.id}
                   />
                 )}
               />

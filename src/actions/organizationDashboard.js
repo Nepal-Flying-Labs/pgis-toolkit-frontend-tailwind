@@ -28,7 +28,7 @@ export const { Types, Creators } = createActions(
     postContactPersonSuccess: ['payload'],
     postContactPersonFailure: null,
 
-    patchContactPersonRequest: ['id', 'params'],
+    patchContactPersonRequest: ['id', 'payload'],
     patchContactPersonSuccess: ['payload'],
     patchContactPersonFailure: null,
 
@@ -93,6 +93,14 @@ export const { Types, Creators } = createActions(
 
     setUserState: ['payload'],
     setDrawnGeojsonData: ['payload'],
+
+    updateOrganizationRequest: ['id', 'payload'],
+    updateOrganizationSuccess: ['payload'],
+    updateOrganizationFailure: null,
+
+    getOrganizationByIdRequest: ['id'],
+    getOrganizationByIdSuccess: ['payload'],
+    getOrganizationByIdFailure: null,
   },
   { prefix: 'organizationDashboard/' },
 );

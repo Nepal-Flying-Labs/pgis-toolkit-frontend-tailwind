@@ -120,6 +120,7 @@ export default class Table extends Component {
   renderHeader = () => {
     const { fields, rowColSpanValue, headClassName, isSubheaderCollection } =
       this.getFields();
+    // eslint-disable-next-line no-unused-vars
     const { headerWidths, data } = this.props;
     return fields?.map((field, index) => {
       const isSubHeader = isSubheaderCollection[index];
@@ -132,13 +133,15 @@ export default class Table extends Component {
             className="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-whitespace-nowrap naxatw-text-sm"
             {...{ [rowCol[0]]: rowCol[1] }}
             {...{ className: headClassName[index] }}
-            {...(headerWidths[index] &&
-              data?.length > 0 && {
-                style: {
-                  width: headerWidths[index],
-                  minWidth: headerWidths[index],
-                },
-              })}
+            {...(headerWidths[index] && {
+              // problem : table columns right aligned: no data available
+              // fix : table columns are set to fixed width
+              // data?.length > 0 &&
+              style: {
+                width: headerWidths[index],
+                minWidth: headerWidths[index],
+              },
+            })}
           >
             {this.getHeaderData(field)}
           </th>

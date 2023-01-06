@@ -155,9 +155,9 @@ function DocumentList() {
                 headerWidths={[
                   '90px',
                   '220px',
-                  '220px',
-                  '280px',
-                  '180px',
+                  '250px',
+                  '90px',
+                  '90px',
                   '50px',
                   '100px',
                 ]}
@@ -165,7 +165,7 @@ function DocumentList() {
                 <TableHeader
                   dataField="CheckBox"
                   headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-                  rowcolSpan="rowSpan_0"
+                  // rowcolSpan="rowSpan_0"
                   dataHeader={
                     <SortingContainer name="" className="naxatw-text-black" />
                   }
@@ -184,7 +184,7 @@ function DocumentList() {
                 <TableHeader
                   dataField="TITLE"
                   headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-                  rowcolSpan="rowSpan_2"
+                  // rowcolSpan="rowSpan_2"
                   dataHeader={
                     <SortingContainer
                       name="name"
@@ -198,7 +198,7 @@ function DocumentList() {
                 <TableHeader
                   dataField="DESCRIPTION"
                   headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
-                  rowcolSpan="rowSpan_2"
+                  // rowcolSpan="rowSpan_2"
                   dataHeader={<SortingContainer name="description" />}
                   dataFormat={row => (
                     <span className="text-base">{row.description || '-'}</span>
@@ -207,7 +207,7 @@ function DocumentList() {
                 <TableHeader
                   dataField="FILE TYPES"
                   headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-                  rowcolSpan="rowSpan_2"
+                  // rowcolSpan="rowSpan_2"
                   dataHeader={<SortingContainer name="file_types" />}
                   dataFormat={row => (
                     <span className="naxatw-text-base">
@@ -218,7 +218,7 @@ function DocumentList() {
                 <TableHeader
                   dataField="UPLOADED ON"
                   headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-                  rowcolSpan="rowSpan_2"
+                  // rowcolSpan="rowSpan_2"
                   dataHeader={<SortingContainer name="uploaded_on" />}
                   dataFormat={row => (
                     <span className="naxatw-text-base">
@@ -230,7 +230,7 @@ function DocumentList() {
                 <TableHeader
                   dataField="CREATED ON"
                   headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-                  rowcolSpan="rowSpan_2"
+                  // rowcolSpan="rowSpan_2"
                   dataHeader={<SortingContainer name="created_on" />}
                   dataFormat={row => (
                     <span className="naxatw-text-base">
@@ -242,7 +242,7 @@ function DocumentList() {
                 <TableHeader
                   dataField=""
                   headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
-                  rowcolSpan="rowSpan_3"
+                  // rowcolSpan="rowSpan_3"
                   dataFormat={row => (
                     <div className="naxatw-flex naxatw-gap-3 naxatw-py-2">
                       <MaterialIcon

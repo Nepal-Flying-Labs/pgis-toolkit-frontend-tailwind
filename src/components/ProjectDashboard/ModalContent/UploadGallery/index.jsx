@@ -216,7 +216,7 @@ export default function UploadGallery() {
               <div className="naxatw-w-full naxatw-space-y-2">
                 <Input
                   id={id}
-                  label="Title of Image"
+                  label="Title of Image*"
                   name="title"
                   value={title || ''}
                   placeholder="Enter title of image"

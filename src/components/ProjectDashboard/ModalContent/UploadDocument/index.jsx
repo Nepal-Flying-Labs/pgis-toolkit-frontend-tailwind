@@ -104,6 +104,8 @@ export default function UploadDocument() {
       // form validation
       if (!item.name) fields.push('name');
       if (fields.length) errorCount += 1;
+      if (!item.created_on) fields.push('created_on');
+      if (fields.length) errorCount += 1;
       return {
         ...obj,
         [item.id]: fields,
@@ -226,7 +228,7 @@ export default function UploadDocument() {
 
                   <div className="naxatw-flex naxatw-gap-3">
                     <div className="naxatw-space-y-2 naxatw-grow">
-                      <label className="naxatw-label">Created on</label>
+                      <label className="naxatw-label">Created on*</label>
                       <CustomCalendar
                         onChange={date => {
                           handleDateSelect(

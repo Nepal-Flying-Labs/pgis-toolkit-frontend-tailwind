@@ -1,20 +1,14 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Accordion from '@Components/common/Accordion';
 import IconButton from '@Components/common/IconButton';
 import Button from '@Components/common/Button';
 
-const data = {
-  layer_id: 483,
-  null: [1, 2, 3, 4],
-  multipart: [],
-  duplicate: [],
-  overlap: [],
-  self_instersect: [232696, 233166],
-  snapping: [234268, 234296],
-  features: 0,
-};
-
 export default function Errors() {
+  const errorFeaturesData = useSelector(
+    state => state.analysis.errorFeaturesData,
+  );
+
   return (
     <div>
       <Accordion
@@ -34,7 +28,7 @@ export default function Errors() {
         }
         body={
           <div>
-            {data.null.map(feature => (
+            {errorFeaturesData?.null?.map(feature => (
               <div
                 key={feature}
                 className="naxatw-flex naxatw-justify-between naxatw-items-center"

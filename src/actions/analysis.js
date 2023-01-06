@@ -16,6 +16,10 @@ export const { Types, Creators } = createActions(
     autoFixErrorRequest: ['params'],
     autoFixErrorSuccess: ['payload'],
     autoFixErrorFailure: null,
+
+    getErrorFeaturesRequest: ['params'],
+    getErrorFeaturesSuccess: ['payload'],
+    getErrorFeaturesFailure: null,
   },
   { prefix: 'analysis/' },
 );

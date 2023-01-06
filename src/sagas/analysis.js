@@ -1,16 +1,18 @@
 import { call, put, select, takeLatest, takeEvery } from 'redux-saga/effects';
-import { autoFixError, checkError, copyFeatures } from '@Services/analysis';
+import {
+  autoFixError,
+  checkError,
+  copyFeatures,
+  getErrorFeatures,
+} from '@Services/analysis';
 import analysisActions, { Types } from '@Actions/analysis';
-// import commonActions from '@Actions/common';
-// import toastActions from '@Actions/toast';
-// import prepareFormData from '@Utils/prepareFormData';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 
 export function* checkErrorRequest({ params }) {
   try {
     const layerId = params.layer;
     yield put(analysisActions.setErrorStates(layerId));
-    yield call(copyFeatures, { layer: layerId });
+    yield call(copyFeatures, { layer: layerId.toString() });
     const { errorStates } = yield select(state => state.analysis);
     const errorData = errorStates[layerId];
     for (let i = 0; i < errorData.length; i += 1) {
@@ -66,6 +68,16 @@ export function* autoFixErrorRequest({ params }) {
   }
 }
 
+export function* getErrorFeaturesRequest({ params }) {
+  try {
+    const response = yield call(getErrorFeatures, params);
+    yield put(analysisActions.getErrorFeaturesSuccess(response.data));
+  } catch (error) {
+    yield put(analysisActions.getErrorFeaturesFailure());
+    throw error;
+  }
+}
+
 function* analysisWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
@@ -74,6 +86,10 @@ function* analysisWatcher() {
   yield takeEvery(
     Types.AUTO_FIX_ERROR_REQUEST,
     withLoader(withErrorHandler(autoFixErrorRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ERROR_FEATURES_REQUEST,
+    withLoader(withErrorHandler(getErrorFeaturesRequest)),
   );
 }
 

@@ -8,3 +8,6 @@ export const autoFixError = (apiEndPoint, params) =>
 
 export const copyFeatures = data =>
   authenticated(api).post(`/maps/copy_features/`, data);
+
+export const getErrorFeatures = params =>
+  authenticated(api).get(`/maps/cleaning_error_features/`, { params });

@@ -3,56 +3,21 @@ import { Types } from '@Actions/analysis';
 import { checkErrorData } from '@src/constants/analysis';
 
 const initialState = {
-  stepIndex: 1,
-  manualFixLayerId: null,
+  stepIndex: 2,
+  manualFixLayerId: 506,
+  errorFeaturesData: null,
   optimalRoute: {
     selectedRoadLayer: {
-      // id: 483,
-      // name: 'Ward 1 Roads',
-      // layer_type: 'Vector',
-      // upload_status: 'successful',
-      // bbox: [
-      //   85.39604534275621, 27.686313633829993, 85.41973471439125,
-      //   27.71203178188435,
-      // ],
-      // geom_type: 'LineString',
-      // sub_layer: [],
-      // style: {
-      //   lineColor: '#2C675A',
-      //   lineOpacity: 40,
-      //   fillColor: '#f61f73',
-      //   fillOpacity: 0,
-      //   lineThickness: 1,
-      //   circleRadius: 5,
-      //   dashline: 0,
-      //   showLabel: false,
-      //   labelField: '',
-      //   labelFont: 'Calibri',
-      //   labelFontSize: 14,
-      //   labelColor: '#000000',
-      //   labelOpacity: 100,
-      //   labelOutlineWidth: 3,
-      //   labelOutlineColor: '#ffffff',
-      //   labelOffsetX: 0,
-      //   labelOffsetY: 0,
-      //   labelText: 'normal',
-      //   labelMaxResolution: 1200,
-      //   labelAlign: 'center',
-      //   labelBaseline: 'middle',
-      //   labelRotationDegree: 0,
-      //   labelFontWeight: 'normal',
-      //   labelPlacement: 'point',
-      //   labelMaxAngleDegree: 0.7853981633974483,
-      //   labelOverflow: false,
-      //   labelLineHeight: 1,
-      //   icon: {},
-      //   showSublayer: false,
-      //   sublayerColumnName: '',
-      //   sublayer: {},
-      //   geometryType: 'LineString',
-      // },
-      // theme: 479,
-      // checked: false,
+      id: 506,
+      name: 'Road_Test_Small_Section1',
+      layer_type: 'Vector',
+      upload_status: 'successful',
+      bbox: [
+        -0.144022770398482, -0.093301707779886, 0.098102466793169,
+        0.094554079696395,
+      ],
+      geom_type: 'MultiLineString',
+      sub_layer: [],
     },
     selectedObstacleLayers: [], // []
   },
@@ -168,6 +133,14 @@ const autoFixErrorSuccess = (state, action) => {
   };
 };
 
+const getErrorFeaturesSuccess = (state, action) => {
+  const data = action.payload;
+  return {
+    ...state,
+    errorFeaturesData: data,
+  };
+};
+
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -176,6 +149,7 @@ const analysisReducer = createReducer(initialState, {
   [Types.SET_ERROR_CHECKING_STATUS]: setErrorCheckingStatus,
   [Types.HANDLE_AUTOFIX_CHECKBOX]: handleAutofixCheckbox,
   [Types.AUTO_FIX_ERROR_SUCCESS]: autoFixErrorSuccess,
+  [Types.GET_ERROR_FEATURES_SUCCESS]: getErrorFeaturesSuccess,
 });
 
 export default analysisReducer;

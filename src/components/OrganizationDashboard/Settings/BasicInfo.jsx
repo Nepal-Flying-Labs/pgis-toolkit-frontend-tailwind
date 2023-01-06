@@ -145,6 +145,28 @@ const BasicInfo = () => {
         onChange={handleChange}
         placeholder="Write a short summary of an organization"
       />
+      <div className="naxatw-flex naxatw-gap-x-2">
+        <div className="naxatw-w-1/2">
+          <Input
+            type="text"
+            label="Contact"
+            name="contact"
+            value={values?.contact}
+            onChange={handleChange}
+            placeholder="phone"
+          />
+        </div>
+        <div className="naxatw-w-1/2">
+          <Input
+            type="text"
+            label="Website"
+            name="link"
+            value={values?.link}
+            onChange={handleChange}
+            placeholder="example.com"
+          />
+        </div>
+      </div>
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Upload Cover Image</label>
         <UploadPhotos
@@ -176,7 +198,7 @@ const BasicInfo = () => {
       <Input
         type="text"
         label="Organization Size"
-        name="name"
+        name="size"
         value={values?.size}
         onChange={handleChange}
         placeholder="Organization size"

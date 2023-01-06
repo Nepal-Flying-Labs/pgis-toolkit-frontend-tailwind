@@ -41,7 +41,7 @@ export default function Settings() {
     <div className="naxatw-bg-[#F5F5F5]">
       <div className="naxatw-ml-[40px] naxatw-pt-3 naxatw-flex naxatw-gap-x-5 naxatw-h-[calc(100vh-60px)]">
         <div className=" naxatw-overflow-y-auto scrollbar  naxatw-w-full naxatw-flex naxatw-justify-center">
-          <div className="naxatw-w-[50rem] naxatw-p-7 naxatw-bg-white naxatw-rounded-xl naxatw-h-fit">
+          <div className="naxatw-w-[50rem] naxatw-p-7 naxatw-bg-white naxatw-rounded-xl naxatw-h-fit naxatw-mb-3">
             {!loading ? (
               <div className="naxatw-space-y-7">
                 <h3>Settings</h3>

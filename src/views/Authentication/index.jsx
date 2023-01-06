@@ -4,6 +4,7 @@ import SignInBanner from '@Components/Authentication/SignInBanner';
 import SignIn from '@Components/Authentication/SignIn';
 import SignUp from '@Components/Authentication/SignUp';
 import ForgotPassword from '@Components/Authentication/ForgotPassword';
+// import Button from '@Components/common/Button/index';
 
 export default function Authentication() {
   const { pathname } = useLocation();

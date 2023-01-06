@@ -8,6 +8,9 @@ const { toggleModal } = CommonCreators;
 
 export default function AddAttributesHeader() {
   const dispatch = useDispatch();
+  const individualAttribute = useSelector(
+    state => state.projectDashboard.data.manageData.individualAttribute,
+  );
   const selectedLayer = useSelector(
     state => state.projectDashboard.data.manageData.selectedData,
   );
@@ -19,7 +22,9 @@ export default function AddAttributesHeader() {
         wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer"
         onIconClick={() => dispatch(toggleModal('manage-attributes'))}
       />
-      <h4>{`Add ${selectedLayer?.name} attributes`}</h4>
+      <h4>{`${individualAttribute ? 'Edit' : 'Add'} ${
+        selectedLayer?.name
+      } attributes`}</h4>
     </div>
   );
 }

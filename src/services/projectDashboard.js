@@ -1,4 +1,4 @@
-import { api, authenticated } from '.';
+import { api, authenticated, downloadApi } from '.';
 
 export const getProjectDetail = params =>
   authenticated(api).get(`/projects/project_detail/`, { params });
@@ -36,7 +36,7 @@ export const getIndividualDocument = id =>
 
 // Document-download
 export const downloadDocument = params =>
-  authenticated(api).get(`/projects/document_download/`, { params });
+  authenticated(downloadApi).get(`/projects/document_download/`, { params });
 
 // upload-document
 export const uploadDocument = payload =>
@@ -69,5 +69,46 @@ export const getLayerAttribute = params =>
 export const postAttributeSelection = payload =>
   authenticated(api).post(`/maps/update_template_attributes/`, payload);
 
+export const postTemplateAttribute = payload =>
+  authenticated(api).post(`/maps/project_layer_template_attribute/`, payload);
+
+export const updateTemplateAttribute = (id, payload) =>
+  authenticated(api).patch(
+    `/maps/project_layer_template_attribute/${id}/`,
+    payload,
+  );
+
 export const downloadBulkTemplate = params =>
   authenticated(api).get(`/maps/bulk_template_download/`, { params });
+
+export const getUsers = params =>
+  authenticated(api).get('/users/user/', { params });
+
+export const getUserGroup = params =>
+  authenticated(api).get('/users/user_group/', { params });
+
+// upload-gallery
+export const uploadGallery = payload =>
+  authenticated(api).post(`/projects/image/`, payload);
+
+// gallery-download
+export const downloadGallery = params =>
+  authenticated(downloadApi).get(`/projects/image_download/`, { params });
+
+// individual-gallery-item
+export const getIndividualGallery = id =>
+  authenticated(api).get(`/projects/image/${id}/`);
+
+// update-document-item
+export const updateGallery = (id, payload) =>
+  authenticated(api).patch(`/projects/image/${id}/`, payload);
+
+// update-document-item
+export const deleteGallery = (id, payload) =>
+  authenticated(api).delete(`/projects/image/${id}/`, payload);
+
+export const updateUserRole = (id, payload) =>
+  authenticated(api).patch(`/users/userrole_update/${id}/`, payload);
+
+export const updateInvitedUserStatus = (id, payload) =>
+  authenticated(api).patch(`/users/preliminary_user/${id}/`, payload);

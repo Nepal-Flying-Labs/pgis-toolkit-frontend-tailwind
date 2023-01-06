@@ -7,13 +7,15 @@ import { projectHeaderHeight } from '@src/constants';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
 import MaterialIcon from '@Components/common/MaterialIcon';
 // import HeaderNotification from '../Header/HeaderNotification';
+import AvatarIcon from '@Assets/images/user-avatar.png';
+import getImageSource from '@Utils/getImageSource';
 import HeaderProfile from '../Header/HeaderProfile';
 
 const organizationHeaderData = [
   { label: 'Info', route: 'home', disabled: false },
   { label: 'Projects', route: 'projects', disabled: false },
   { label: 'User', route: 'user', disabled: false },
-  { label: 'Settings', route: 'settings', disabled: true },
+  { label: 'Settings', route: 'settings', disabled: false },
 ];
 
 const projectHeaderData = [
@@ -21,7 +23,7 @@ const projectHeaderData = [
   { label: 'Data', route: 'data', disabled: false },
   { label: 'Document', route: 'document', disabled: false },
   { label: 'Gallery', route: 'gallery', disabled: false },
-  { label: 'Users', route: 'users', disabled: true },
+  { label: 'Users', route: 'users', disabled: false },
   { label: 'Info', route: 'info', disabled: false },
   { label: 'Settings', route: 'settings', disabled: false },
 ];
@@ -43,6 +45,9 @@ export default function ProjectHeader() {
   const headerTitle = projectId
     ? projectDetail?.name
     : organizationDetail?.name;
+
+  console.log('project details ', projectDetail);
+  console.log('org details ', organizationDetail);
 
   useEffect(() => {
     if (!headerTitle) return;
@@ -78,7 +83,18 @@ export default function ProjectHeader() {
           <div>
             <nav>
               <ul className="naxatw-font-bold  naxatw-text-grey-500 naxatw-text-[0.9375rem]  naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-2 naxatw-h-full">
-                <li>
+                <li className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                  {/* <figure className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
+                    <img
+                      src={
+                        projectDetail?.image
+                          ? getImageSource(projectDetail?.image)
+                          : AvatarIcon
+                      }
+                      alt="avatar-placeholder"
+                      className="naxatw-rounded-full naxatw-w-[40px] naxatw-h-[40px] naxatw-object-cover"
+                    />
+                  </figure> */}
                   <Link
                     className="naxatw-py-2.5 hover:naxatw-text-[#484848] naxatw-text-body-btn"
                     to={`/organizations/${organizationId}/projects`}
@@ -89,7 +105,7 @@ export default function ProjectHeader() {
                 <li className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
                   <MaterialIcon
                     name="chevron_right"
-                    className="naxatw-text-[#484848] naxatw-pb-1"
+                    className="naxatw-text-[#484848]"
                   />
                   <a className=" naxatw-text-[#484848] naxatw-py-2.5 naxatw-text-body-btn">
                     {projectDetail?.name}
@@ -107,7 +123,20 @@ export default function ProjectHeader() {
                 wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
               />
             </Link>
-            <h4>{headerTitle}</h4>
+            <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
+              <figure className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
+                <img
+                  src={
+                    projectDetail?.image
+                      ? getImageSource(projectDetail?.image)
+                      : AvatarIcon
+                  }
+                  alt="avatar-placeholder"
+                  className="naxatw-rounded-full naxatw-w-[40px] naxatw-h-[40px] naxatw-object-cover"
+                />
+              </figure>
+              <h4>{headerTitle}</h4>
+            </div>
           </div>
         )}
 
@@ -121,7 +150,7 @@ export default function ProjectHeader() {
                       tabname === route
                         ? 'naxatw-text-grey-800 naxatw-border-b-[2px] naxatw-border-grey-800'
                         : ''
-                    } `}
+                    } hover:naxatw-text-secondary-400`}
                     to={
                       projectId
                         ? `/organizations/${organizationId}/projects/${projectId}/${route}`

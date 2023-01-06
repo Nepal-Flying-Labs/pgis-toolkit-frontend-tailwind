@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable arrow-body-style */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import { Creators, Types } from '@Actions/organizationDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import SortingContainer from '@Components/common/SortingContainer/index';
@@ -16,47 +17,39 @@ import Select from '@Components/common/Select/index';
 import TableSkeleton from '@Components/common/TableSkeleton';
 import './index.css';
 import { useParams } from 'react-router';
+import usePagination from '@Hooks/usePagination';
+import Pagination from '@Components/common/Pagination/index';
+import { getSelectedRange } from '@Components/common/Pagination/getSelectedItem';
 
-const { setUserRole, getUsersRequest, setSearchText } = Creators;
+const { togglePromptDialog } = CommonCreators;
+
+const {
+  setUserRole,
+  getUsersRequest,
+  setSearchText,
+  updateUserStatusRequest,
+  updateInvitedUserStatusRequest,
+  resendInvitationRequest,
+  setSelectedData,
+  handleUserTabChange,
+  setUsersOrdering,
+} = Creators;
 
 const roles = [
-  {
-    id: 1,
-    value: '1',
-    name: 'Project Manager',
-  },
   {
     id: 2,
     value: '2',
     name: 'Organization Admin',
   },
   {
-    id: 3,
-    value: '3',
-    name: 'Medical Assistant',
-  },
-];
-
-const dropdownOptions = [
-  {
     id: 1,
-    label: (
-      <span className="naxatw-flex naxatw-items-center">
-        <i className="material-icons naxatw-mr-2">edit</i>
-        <p className="naxatw-text-body-lg">Edit</p>
-      </span>
-    ),
-    onClick: () => {},
+    value: '3',
+    name: 'Project Manager',
   },
   {
-    id: 2,
-    label: (
-      <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
-        <i className="material-icons naxatw-mr-2">delete_outline</i>
-        <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
-      </span>
-    ),
-    onClick: () => {},
+    id: 3,
+    value: '4',
+    name: 'Data Collector',
   },
 ];
 
@@ -69,10 +62,22 @@ const Users = () => {
   const searchText = useSelector(
     state => state.organizationDashboard.usersFilter.searchText,
   );
+  const selectedData = useSelector(
+    state => state.organizationDashboard.selectedData,
+  );
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_USERS_REQUEST]),
   );
+  const invitationLoading = useSelector(state =>
+    checkIfLoading(state, [
+      Types.UPDATE_INVITED_USER_STATUS_REQUEST,
+      Types.RESEND_INVITATION_REQUEST,
+    ]),
+  );
   const users = useSelector(state => state.organizationDashboard.users);
+  const ordering = useSelector(
+    state => state.organizationDashboard.usersFilter.ordering,
+  );
 
   const [value, handleSearch] = useDebouncedInput({
     ms: 300,
@@ -81,9 +86,23 @@ const Users = () => {
       dispatch(setSearchText(debouncedEvent.target.value));
     },
   });
+  const [rowPerPage, setRowPerPage] = useState(10);
+
+  const {
+    next,
+    prev,
+    jump,
+    // currentData,
+    currentPage,
+    maxPage,
+    // begin,
+    // end,
+    currentList,
+    // handleSorting,
+  } = usePagination(users || [], rowPerPage);
 
   useEffect(() => {
-    if (!users) {
+    if (users.length < 1) {
       dispatch(
         getUsersRequest({
           organization: organizationId,
@@ -93,6 +112,97 @@ const Users = () => {
       );
     }
   }, [dispatch, searchText, organizationId, userRole, users]);
+
+  const userOptions = [
+    {
+      id: 1,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">group</i>
+          <p className="naxatw-text-body-lg">Assign</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setSelectedData({ ...data, fromUserTab: true }));
+        dispatch(handleUserTabChange('assign-users'));
+      },
+    },
+    {
+      id: 2,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">edit</i>
+          <p className="naxatw-text-body-lg">Deactivate</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(updateUserStatusRequest(data.id, { active: !data.active }));
+      },
+    },
+    {
+      id: 3,
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Remove</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setSelectedData(data));
+        dispatch(togglePromptDialog('delete-organization-user'));
+      },
+    },
+  ];
+
+  const invitedUserOptions = [
+    {
+      id: 1,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">group</i>
+          <p className="naxatw-text-body-lg">Expire</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setSelectedData(data));
+        dispatch(
+          updateInvitedUserStatusRequest(data.id, { status: 'Expired' }),
+        );
+      },
+    },
+    {
+      id: 2,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">edit</i>
+          <p className="naxatw-text-body-lg">Resend</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setSelectedData(data));
+        dispatch(resendInvitationRequest(data.id, { resend: true }));
+      },
+    },
+    {
+      id: 3,
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Remove</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setSelectedData(data));
+        dispatch(togglePromptDialog('delete-organization-invited-user'));
+      },
+    },
+  ];
+
+  const getUserRoleById = id => {
+    const filteredList = roles.filter(item => item.value === id);
+    return filteredList?.[0]?.name;
+  };
+
   return (
     <div className="naxatw-mt-3 ">
       <div className="naxatw-flex naxatw-gap-x-3 naxatw-justify-start ">
@@ -116,10 +226,24 @@ const Users = () => {
         </div>
       </div>
       <div className="naxatw-mt-3 ">
-        <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-h-[600px]">
+        <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-h-[calc(100vh-23rem)]">
           {!loading ? (
             <Table
-              data={users || []}
+              data={
+                currentList
+                  ?.filter(
+                    item =>
+                      item?.full_name
+                        ?.toLowerCase()
+                        ?.includes(searchText.toLowerCase()) ||
+                      item?.email
+                        ?.toLowerCase()
+                        ?.includes(searchText.toLowerCase()),
+                  )
+                  ?.filter(d =>
+                    userRole ? d?.group === getUserRoleById(userRole) : d,
+                  ) || []
+              }
               className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               headerWidths={[
@@ -138,7 +262,17 @@ const Users = () => {
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
                 dataHeader={
-                  <SortingContainer name="Name" className="naxatw-text-black" />
+                  <SortingContainer
+                    name="Name"
+                    isActive={ordering === 'full_name'}
+                    handleSort={() =>
+                      dispatch(
+                        setUsersOrdering(
+                          ordering === 'full_name' ? null : 'full_name',
+                        ),
+                      )
+                    }
+                  />
                 }
                 dataFormat={row => (
                   <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
@@ -147,8 +281,12 @@ const Users = () => {
                       alt="img"
                       className="naxatw-w-7 naxatw-h-7 naxatw-rounded-full "
                     />
-                    <span className="naxatw-text-base naxatw-font-bold">
-                      {row.full_name}
+                    <span
+                      className={` ${
+                        ordering === 'full_name' ? 'naxatw-font-bold' : ''
+                      } naxatw-text-base`}
+                    >
+                      {row.full_name || '-'}
                     </span>
                   </div>
                 )}
@@ -157,16 +295,32 @@ const Users = () => {
                 dataField="Role"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
                 rowcolSpan="rowSpan_2"
-                dataHeader={<SortingContainer name="Role" />}
+                dataHeader={
+                  <SortingContainer
+                    name="Role"
+                    isActive={ordering === 'group'}
+                    handleSort={() =>
+                      dispatch(
+                        setUsersOrdering(ordering === 'group' ? null : 'group'),
+                      )
+                    }
+                  />
+                }
                 dataFormat={row => (
-                  <span className="text-base">{row.group}</span>
+                  <span
+                    className={` ${
+                      ordering === 'group' ? 'naxatw-font-bold' : ''
+                    } naxatw-text-base`}
+                  >
+                    {row.group}
+                  </span>
                 )}
               />
               <TableHeader
                 dataField="Phone"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
-                dataHeader={<SortingContainer name="Phone" />}
+                // dataHeader={<SortingContainer name="Phone" />}
                 dataFormat={row => (
                   <span className="naxatw-text-base">{row.contact || '-'}</span>
                 )}
@@ -175,7 +329,7 @@ const Users = () => {
                 dataField="Email"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
-                dataHeader={<SortingContainer name="Email" />}
+                // dataHeader={<SortingContainer name="Email" />}
                 dataFormat={row => (
                   <span className="naxatw-text-base">{row.email}</span>
                 )}
@@ -184,11 +338,12 @@ const Users = () => {
                 dataField="Status"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
-                dataHeader={<SortingContainer name="Status" />}
+                // dataHeader={<SortingContainer name="Status" />}
                 dataFormat={row => (
                   <Status
                     status={row.active}
                     invitationStatus={row.status || ''}
+                    isLoading={invitationLoading && row.id === selectedData?.id}
                   />
                 )}
               />
@@ -197,7 +352,30 @@ const Users = () => {
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
                 rowcolSpan="rowSpan_3"
                 dataFormat={row => (
-                  <DropdownOptions options={dropdownOptions} data={row} />
+                  <DropdownOptions
+                    options={
+                      row.active !== null
+                        ? userOptions.map(option =>
+                            option.id === 2
+                              ? {
+                                  ...option,
+                                  label: (
+                                    <span className="naxatw-flex naxatw-items-center">
+                                      <i className="material-icons naxatw-mr-2">
+                                        edit
+                                      </i>
+                                      <p className="naxatw-text-body-lg">
+                                        {row.active ? 'Deactivate' : 'Activate'}
+                                      </p>
+                                    </span>
+                                  ),
+                                }
+                              : { ...option },
+                          )
+                        : invitedUserOptions
+                    }
+                    data={row}
+                  />
                 )}
               />
             </Table>
@@ -205,6 +383,21 @@ const Users = () => {
             <TableSkeleton itemNumber={5} />
           )}
         </div>
+        <Pagination
+          nextPage={next}
+          previousPage={prev}
+          jumpTo={jump}
+          currentPage={currentPage}
+          count={users?.length || 0}
+          paginatedCounts={getSelectedRange(
+            users?.length,
+            rowPerPage,
+            currentPage,
+          )}
+          maxPage={maxPage}
+          rowSelect={rowPerPage}
+          handleSelect={data => setRowPerPage(data)}
+        />
       </div>
     </div>
   );

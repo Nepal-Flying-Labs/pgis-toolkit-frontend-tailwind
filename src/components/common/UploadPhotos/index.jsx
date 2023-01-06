@@ -4,7 +4,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import useCustomUpload from '@Hooks/useCustomUpload';
 import { format } from 'date-fns';
 import UserAvatar from '@Assets/images/user-avatar.png';
 import MaterialIcon from '../MaterialIcon/index';
@@ -21,8 +20,6 @@ function UploadPhotos({
   isDropzone,
 }) {
   const [uploadFile, setUploadFile] = useState(null);
-  //   console.log(uploadedFile, 'file');
-  const [inputRef, onFileUpload] = useCustomUpload();
   const onChangeFileUpload = e => {
     const { files } = e.target;
     const file = files[0];
@@ -39,10 +36,7 @@ function UploadPhotos({
 
   return (
     <div className="naxatw-mb-2">
-      <div
-        className="naxatw-flex naxatw-justify-start naxatw-items-center naxatw-w-full naxatw-h-[144px] naxatw-mb-2 "
-        onClick={onFileUpload}
-      >
+      <div className="naxatw-flex naxatw-justify-start naxatw-items-center naxatw-w-full naxatw-h-[144px] naxatw-mb-2 ">
         <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-w-full naxatw-h-full">
           <label className=" naxatw-flex naxatw-flex-col naxatw-gap-y-3 naxatw-justify-center naxatw-w-full naxatw-h-full naxatw-items-center naxatw-bg-[#F5F5F5] naxatw-rounded-lg naxatw-border-2 naxatw-border-[#BDBDBD] naxatw-border-dashed naxatw-cursor-pointer">
             <MaterialIcon
@@ -53,7 +47,6 @@ function UploadPhotos({
               Please Upload Documents (DOCX,PDF,Excel or CSV file format)
             </span>
             <input
-              ref={inputRef}
               type="file"
               className="naxatw-hidden"
               onChange={e => onChangeFileUpload(e)}
@@ -89,13 +82,19 @@ function UploadPhotos({
               </div>
             </div>
             <div className="naxatw-flex naxatw-items-center naxatw-gap-x-4">
-              <a href={uploadedFile?.fileURL}>
+              <a
+                href={uploadedFile?.fileURL}
+                className="hover:naxatw-bg-grey-100 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-justify-center naxatw-items-center naxatw-rounded-lg"
+              >
                 <MaterialIcon
                   name="download"
                   className="naxatw-text-[#484848] naxatw-cursor-pointer"
                 />
               </a>
-              <a onClick={() => onChange('')}>
+              <a
+                onClick={() => onChange('')}
+                className="hover:naxatw-bg-grey-100 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-justify-center naxatw-items-center naxatw-rounded-lg"
+              >
                 <MaterialIcon
                   name="delete_outline"
                   className="naxatw-text-red-500 naxatw-cursor-pointer"
@@ -110,7 +109,7 @@ function UploadPhotos({
 }
 
 UploadPhotos.propTypes = {
-  uploadedFile: PropTypes.object,
+  uploadedFile: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   setFileUpload: PropTypes.func,
   multiple: PropTypes.bool,
   accept: PropTypes.string,

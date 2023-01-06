@@ -22,15 +22,19 @@ export default function DeleteDocument() {
 
   const handleDelete = () => {
     if (isDeleting) return;
-    dispatch(deleteDocumentRequest(deleteDocument?.id, { is_deleted: true }));
+    dispatch(
+      deleteDocumentRequest(deleteDocument?.id, {
+        is_deleted: true,
+      }),
+    );
   };
 
   return (
     <div>
-      <div className="naxatw-my-5 naxatw-px-4">
+      <div className="naxatw-px-4 -naxatw-mt-5">
         <h4>Are you sure to delete {deleteDocument?.name}?</h4>
       </div>
-      <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-mt-12 naxatw-gap-2">
+      <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-gap-2">
         <Button
           className="naxatw-btn-secondary naxatw-btn-noborder"
           onClick={() => {

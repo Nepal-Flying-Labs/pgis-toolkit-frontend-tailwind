@@ -1,6 +1,6 @@
 /* eslint-disable arrow-body-style */
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 // import Button from '@Components/common/Button/index';
 import { Creators as OrganizationDashboardCreators } from '@Actions/organizationDashboard';
 // import { Creators as CommonCreators } from '@Actions/common';
@@ -8,16 +8,14 @@ import Users from '@Components/OrganizationDashboard/User/Users';
 import AssignUsers from '@Components/OrganizationDashboard/User/AssignUsers';
 import { useParams } from 'react-router';
 
-const { clearUsersFilter, getUserGroupRequest } = OrganizationDashboardCreators;
+const { clearUsersFilter, getUserGroupRequest, handleUserTabChange } =
+  OrganizationDashboardCreators;
 // const { toggleModal } = CommonCreators;
 
 const User = () => {
   const { organizationId } = useParams();
   const dispatch = useDispatch();
-  const [active, setActive] = useState('users');
-  const handleTabChange = name => {
-    setActive(name);
-  };
+  const activeTab = useSelector(state => state.organizationDashboard.userTab);
 
   useEffect(() => {
     dispatch(getUserGroupRequest({ organization: organizationId }));
@@ -44,12 +42,12 @@ const User = () => {
           <li className="">
             {' '}
             <a
-              className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-[13px] naxatw-leading-[18px] naxatw-font-bold ${
-                active === 'users'
+              className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-body-btn ${
+                activeTab === 'users'
                   ? 'naxatw-border-b-[2px] naxatw-border-[#484848] naxatw-text-[#484848]'
                   : 'naxatw-text-[#989898] hover:naxatw-text-[#00A699]'
               }`}
-              onClick={() => handleTabChange('users')}
+              onClick={() => dispatch(handleUserTabChange('users'))}
             >
               Users
             </a>
@@ -57,20 +55,20 @@ const User = () => {
           <li className="">
             {' '}
             <a
-              className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-[13px] naxatw-leading-[18px] naxatw-font-bold ${
-                active === 'assign-users'
+              className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-body-btn ${
+                activeTab === 'assign-users'
                   ? 'naxatw-border-b-[2px] naxatw-border-[#484848] naxatw-text-[#484848]'
                   : 'naxatw-text-[#989898] hover:naxatw-text-[#00A699]'
               }`}
-              onClick={() => handleTabChange('assign-users')}
+              onClick={() => dispatch(handleUserTabChange('assign-users'))}
             >
               Assign Users
             </a>
           </li>
         </ul>
       </div>
-      {active === 'users' && <Users />}
-      {active === 'assign-users' && <AssignUsers />}
+      {activeTab === 'users' && <Users />}
+      {activeTab === 'assign-users' && <AssignUsers />}
     </div>
   );
 };

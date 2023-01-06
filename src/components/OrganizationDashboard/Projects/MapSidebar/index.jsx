@@ -65,8 +65,8 @@ export default function MapSidebar() {
     <div
       className={`naxatw-relative naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5`}
       style={{
-        width: sidebarToggle ? '0' : '50%',
-        minWidth: sidebarToggle ? '0' : '50%',
+        width: sidebarToggle ? '0' : '40%',
+        minWidth: sidebarToggle ? '0' : '40%',
         padding: sidebarToggle ? '0' : '',
         transition: 'ease-in-out 300ms',
       }}
@@ -136,7 +136,7 @@ export default function MapSidebar() {
         className={`naxatw-mt-5 naxatw-overflow-y-auto scrollbar ${
           viewType === 'list'
             ? ' naxatw-flex naxatw-flex-col naxatw-gap-2 '
-            : 'naxatw-flex naxatw-flex-wrap naxatw-gap-2'
+            : 'naxatw-grid naxatw-grid-cols-1 lg:naxatw-grid-cols-2 naxatw-gap-5 naxatw-overflow-x-hidden'
         }`}
         style={{
           height: `calc(100vh - ${projectHeaderHeight}px - 9rem)`,
@@ -177,27 +177,29 @@ export default function MapSidebar() {
                     }
                   />
                 ) : (
-                  <ProjectGridCard
-                    key={id}
-                    title={name}
-                    address="kenya"
-                    id={id}
-                    coverImage={cover_image}
-                    startDate={start_date}
-                    endDate={end_date}
-                    thematicAreas={thematic_areas}
-                    status={status}
-                    toggle={toggleId === id}
-                    setToggle={setToggleId}
-                    onClick={
-                      status !== 'draft'
-                        ? () => history.push(`${url}/${id}/map`)
-                        : () =>
-                            history.push(
-                              `/organizations/${organizationId}/project-setup/${id}`,
-                            )
-                    }
-                  />
+                  <div className="naxatw-w-full">
+                    <ProjectGridCard
+                      key={id}
+                      title={name}
+                      address="kenya"
+                      id={id}
+                      coverImage={cover_image}
+                      startDate={start_date}
+                      endDate={end_date}
+                      thematicAreas={thematic_areas}
+                      status={status}
+                      toggle={toggleId === id}
+                      setToggle={setToggleId}
+                      onClick={
+                        status !== 'draft'
+                          ? () => history.push(`${url}/${id}/map`)
+                          : () =>
+                              history.push(
+                                `/organizations/${organizationId}/project-setup/${id}`,
+                              )
+                      }
+                    />{' '}
+                  </div>
                 ),
             )
           ) : (
@@ -229,10 +231,10 @@ export default function MapSidebar() {
 
       <div>
         <a
-          className="naxatw-absolute naxatw-top-4 -naxatw-right-12 naxatw-z-10 naxatw-bg-white naxatw-text-grey-800 naxatw-h-10 naxatw-p-2 naxatw-rounded-lg naxatw-border naxatw-border-grey-300 naxatw-flex naxatw-items-center naxatw-shadow-3xl"
+          className="naxatw-absolute naxatw-top-4 -naxatw-right-12 naxatw-z-10 naxatw-bg-white naxatw-text-grey-800 naxatw-h-10 naxatw-p-2 naxatw-rounded-lg naxatw-border naxatw-border-grey-300 naxatw-flex naxatw-items-center naxatw-shadow-3xl hover:naxatw-bg-[#F5F5F5]"
           onClick={() => setSidebarToggle(prev => !prev)}
         >
-          <i className="material-icons">
+          <i className="material-icons ">
             {sidebarToggle ? 'navigate_next' : 'navigate_before'}
           </i>
         </a>

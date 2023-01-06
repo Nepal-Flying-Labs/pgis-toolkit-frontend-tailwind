@@ -27,7 +27,7 @@ export default function DeleteDataQuery() {
 
   return (
     <div>
-      <div className="naxatw-my-5 naxatw-px-4">
+      <div className="naxatw-mb-5">
         <h4>
           {promptDialogContent === 'delete-all-data-query'
             ? 'Are you sure to delete all query results?'

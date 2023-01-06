@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { isEmpty } from '@Utils/commonUtils';
+import { obstacleThemeName, transportThemeName } from '@src/constants/map';
 
 const themesSelector = state => state.projectMap.themes;
 const layersSelector = state => state.projectMap.layers;
@@ -54,4 +55,14 @@ export const filteredThemesSelector = createSelector(
       [],
     );
   },
+);
+
+export const roadLayersThemeIdSelector = createSelector(
+  [themesSelector],
+  themes => themes?.find(theme => theme.name === transportThemeName)?.id,
+);
+
+export const obstacleLayersThemeIdSelector = createSelector(
+  [themesSelector],
+  themes => themes?.find(theme => theme.name === obstacleThemeName)?.id,
 );

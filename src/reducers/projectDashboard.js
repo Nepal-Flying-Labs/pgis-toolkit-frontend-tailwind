@@ -13,11 +13,16 @@ const initialState = {
     manageData: {
       layerTemplate: [],
       selectedLayer: null,
+      individualAttribute: null,
       attributeList: [],
     },
   },
   gallery: {
     list: [],
+    cardId: null,
+    item: {},
+    delete: {},
+    searchText: '',
   },
   info: {
     details: {},
@@ -30,8 +35,17 @@ const initialState = {
     list: [],
     item: {},
     delete: {},
+    searchText: '',
   },
   contactPerson: [],
+  user: {
+    userGroup: [],
+    list: [],
+    searchText: '',
+    userRole: null,
+    ordering: null,
+    pageTab: 'users',
+  },
 };
 
 const getProjectDetailSuccess = (state, action) => ({
@@ -200,17 +214,35 @@ const uploadDocumentDataSuccess = (state, action) => ({
   ...state,
   document: {
     ...state.document,
-    list: [...state.document.list, action.payload],
+    list: [...action.payload, ...state.document.list],
   },
 });
 
-const setDeleteDocument = (state, action) => ({
-  ...state,
-  document: {
-    ...state.document,
-    delete: action.payload,
-  },
-});
+const updateDocumentDataSuccess = (state, action) => {
+  const filteredData = state.document.list.filter(
+    item => item.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    document: {
+      ...state.document,
+      list: [action.payload, ...filteredData],
+    },
+  };
+};
+
+const deleteDocumentSuccess = (state, action) => {
+  const filteredData = state.document.list.filter(
+    item => item.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    document: {
+      ...state.document,
+      list: filteredData,
+    },
+  };
+};
 
 const getProjectCountrySuccess = (state, action) => ({
   ...state,
@@ -256,6 +288,51 @@ const patchLayerTemplateSuccess = (state, action) => {
   };
 };
 
+const postTemplateAttributeSuccess = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      attributeList: [...state.data.manageData.attributeList, action.payload],
+    },
+  },
+});
+
+const updateTemplateAttributeSuccess = (state, action) => {
+  const { data } = action.payload;
+  const newData = state.data.manageData.attributeList.map(item =>
+    item.id === data.id ? { ...data } : { ...item },
+  );
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      manageData: {
+        ...state.data.manageData,
+        attributeList: newData,
+      },
+    },
+  };
+};
+
+const deleteTemplateAttributeSuccess = (state, action) => {
+  const { data } = action.payload;
+  const newData = state.data.manageData.attributeList.filter(
+    item => item.id !== data.id,
+  );
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      manageData: {
+        ...state.data.manageData,
+        attributeList: newData,
+      },
+    },
+  };
+};
+
 const setSelectedLayer = (state, action) => ({
   ...state,
   data: {
@@ -263,6 +340,39 @@ const setSelectedLayer = (state, action) => ({
     manageData: {
       ...state.data.manageData,
       selectedData: action.payload,
+    },
+  },
+});
+
+const setIndividualAttribute = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      individualAttribute: action.payload,
+    },
+  },
+});
+
+const clearIndividualAttribute = state => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      individualAttribute: null,
+    },
+  },
+});
+
+const setAttributeList = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    manageData: {
+      ...state.data.manageData,
+      attributeList: action.payload,
     },
   },
 });
@@ -289,6 +399,120 @@ const getLayerAttributeSuccess = (state, action) => ({
   },
 });
 
+const getUsersSuccess = (state, action) =>
+  // const { counts, next, previous } = action.payload;
+  ({
+    ...state,
+    user: { ...state.user, list: action.payload },
+  });
+
+const setUserState = (state, action) => ({
+  ...state,
+  user: { ...state.user, ...action.payload },
+});
+
+const getUserGroupSuccess = (state, action) => ({
+  ...state,
+  userGroup: action.payload,
+});
+
+const setDocumentState = (state, action) => ({
+  ...state,
+  document: { ...state.document, ...action.payload },
+});
+
+const setGalleryState = (state, action) => ({
+  ...state,
+  gallery: { ...state.gallery, ...action.payload },
+});
+
+const getGalleryByIdSuccess = (state, action) => ({
+  ...state,
+  gallery: { ...state.gallery, item: action.payload },
+});
+
+const deleteGallerySuccess = (state, action) => {
+  const filteredData = state.gallery.list.filter(
+    item => item.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    gallery: {
+      ...state.gallery,
+      list: filteredData,
+    },
+  };
+};
+
+const updateGallerySuccess = (state, action) => {
+  const filteredData = state.gallery.list.filter(
+    item => item.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    gallery: {
+      ...state.gallery,
+      list: [action.payload, ...filteredData],
+    },
+  };
+};
+
+const updateUserStatusSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.user.list.map(item => {
+    const { active } = item;
+    return item.id === userData.id ? { ...item, active: !active } : { ...item };
+  });
+  return {
+    ...state,
+    user: { ...state.user, list: newData },
+  };
+};
+
+const deleteUserSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.user.list.map(item =>
+    item.id === userData.id ? null : { ...item },
+  );
+  return {
+    ...state,
+    user: { ...state.user, list: newData },
+  };
+};
+
+const updateInvitedUserStatusSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.user.list.map(item =>
+    item.id === userData.id ? { ...item, status: 'Expired' } : { ...item },
+  );
+  return {
+    ...state,
+    user: { ...state.user, list: newData },
+  };
+};
+
+const resendInvitationSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.user.list.map(item =>
+    item.id === userData.id ? { ...item, status: 'Pending' } : { ...item },
+  );
+  return {
+    ...state,
+    user: { ...state.user, list: newData },
+  };
+};
+
+const deleteInvitedUserSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.user.list.map(item =>
+    item.id === userData.id ? null : { ...item },
+  );
+  return {
+    ...state,
+    user: { ...state.user, list: newData },
+  };
+};
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -308,15 +532,35 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_GALLERY_ITEM_SUCCESS]: getGalleryItemSuccess,
   [Types.GET_DOCUMENT_ITEM_SUCCESS]: getDocumentItemSuccess,
   [Types.GET_DOCUMENT_BY_ID_SUCCESS]: getDocumentByIdSuccess,
+  [Types.DELETE_DOCUMENT_SUCCESS]: deleteDocumentSuccess,
   [Types.UPLOAD_DOCUMENT_DATA_SUCCESS]: uploadDocumentDataSuccess,
-  [Types.SET_DELETE_DOCUMENT]: setDeleteDocument,
+  [Types.UPDATE_DOCUMENT_DATA_SUCCESS]: updateDocumentDataSuccess,
   [Types.GET_PROJECT_COUNTRY_SUCCESS]: getProjectCountrySuccess,
   [Types.GET_PROJECT_STATE_SUCCESS]: getProjectStateSuccess,
   [Types.GET_LAYER_TEMPLATE_SUCCESS]: getLayerTemplateSuccess,
   [Types.PATCH_LAYER_TEMPLATE_SUCCESS]: patchLayerTemplateSuccess,
+  [Types.POST_TEMPLATE_ATTRIBUTE_SUCCESS]: postTemplateAttributeSuccess,
+  [Types.UPDATE_TEMPLATE_ATTRIBUTE_SUCCESS]: updateTemplateAttributeSuccess,
+  [Types.DELETE_TEMPLATE_ATTRIBUTE_SUCCESS]: deleteTemplateAttributeSuccess,
   [Types.SET_SELECTED_LAYER]: setSelectedLayer,
+  [Types.SET_ATTRIBUTE_LIST]: setAttributeList,
+  [Types.SET_INDIVIDUAL_ATTRIBUTE]: setIndividualAttribute,
+  [Types.CLEAR_INDIVIDUAL_ATTRIBUTE]: clearIndividualAttribute,
   [Types.CLEAR_ATTRIBUTE_LIST_DATA]: clearAttributeListData,
   [Types.GET_LAYER_ATTRIBUTE_SUCCESS]: getLayerAttributeSuccess,
+  [Types.GET_USERS_SUCCESS]: getUsersSuccess,
+  [Types.SET_USER_STATE]: setUserState,
+  [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
+  [Types.SET_DOCUMENT_STATE]: setDocumentState,
+  [Types.SET_GALLERY_STATE]: setGalleryState,
+  [Types.GET_GALLERY_BY_ID_SUCCESS]: getGalleryByIdSuccess,
+  [Types.DELETE_GALLERY_SUCCESS]: deleteGallerySuccess,
+  [Types.UPDATE_GALLERY_SUCCESS]: updateGallerySuccess,
+  [Types.UPDATE_USER_STATUS_SUCCESS]: updateUserStatusSuccess,
+  [Types.DELETE_USER_SUCCESS]: deleteUserSuccess,
+  [Types.UPDATE_INVITED_USER_STATUS_SUCCESS]: updateInvitedUserStatusSuccess,
+  [Types.RESEND_INVITATION_SUCCESS]: resendInvitationSuccess,
+  [Types.DELETE_INVITED_USER_SUCCESS]: deleteInvitedUserSuccess,
 });
 
 export default projectDashboardReducer;

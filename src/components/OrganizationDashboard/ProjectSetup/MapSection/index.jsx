@@ -1,40 +1,173 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { fromLonLat } from 'ol/proj';
-import { Draw, Modify, Select } from 'ol/interaction';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { stringify } from 'wkt';
+import { transformExtent, fromLonLat } from 'ol/proj';
 import {
   useOLMap,
   MapContainer as MapComponent,
 } from '@Components/common/OpenLayersComponent';
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher/index';
+import {
+  defaultStyles,
+  getStyles,
+} from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import Scalebar from '@Components/common/OpenLayersComponent/Scalebar/index';
-import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
+import VectorLayer from 'ol/layer/Vector';
+import VectorTileLayer from 'ol/layer/VectorTile';
+import {
+  VectorLayer as MapVectorLayer,
+  VectorTileLayer as MapVectorTileLayer,
+} from '@Components/common/OpenLayersComponent/Layers';
 
+import CustomAddFeature from '@Components/common/OpenLayersComponent/CustomLayer/CustomAddFeature';
+import Button from '@Components/common/Button/index';
+import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import '@Components/common/OpenLayersComponent/map.css';
+import { Creators } from '@Actions/organizationDashboard';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
+import Tooltip from '@Components/common/Tooltip/index';
+
+const { setDrawnGeojsonData } = Creators;
 
 const { API_URL } = process.env;
 
-export default function MapSection({ isDraw, geojson }) {
+export default function MapSection({ isDraw, geojson, locationType }) {
+  const dispatch = useDispatch();
+  const [selectedGeomType, setSelectedGeomType] = useState('');
+  const [redraw, setRedraw] = useState(false);
+  const [drawComplete, setDrawComplete] = useState(false);
+
+  const project = useSelector(
+    state => state.organizationDashboard.individualProject.project,
+  );
+
   const { mapRef, map } = useOLMap({
     center: fromLonLat([85.3, 27.7]),
     zoom: 2,
     maxZoom: 25,
   });
 
+  // zoom to project location on initial map load
+  useEffect(() => {
+    if (!map || !Object.keys(project).length > 0) return;
+    const bbox = project?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        // duration: 3500,
+        constrainResolution: true,
+      });
+    }
+  }, [map, project]);
+
+  const handleClick = () => {
+    const layers = map.getLayers().getArray();
+    const vectorLayer = layers.filter(layer => layer instanceof VectorLayer);
+    vectorLayer.forEach(layer => {
+      map.removeLayer(layer);
+    });
+    const vectorTileLayer = layers.filter(
+      layer => layer instanceof VectorTileLayer,
+    );
+    vectorTileLayer.forEach(layer => {
+      map.removeLayer(layer);
+    });
+    setRedraw(false);
+    setDrawComplete(false);
+    // dispatch(setDrawnGeojsonData(null));
+    setTimeout(() => setRedraw(true), 100);
+  };
+
   return (
     <div className="naxatw-w-full">
+      {locationType === 'Custom Draw' && (
+        <div className="naxatw-flex naxatw-gap-x-4 naxatw-items-center naxatw-h-[40px] naxatw-my-2">
+          <div className="naxatw-flex ">
+            <Tooltip content="Draw Polygon" direction="right">
+              <MaterialIcon
+                name="polyline"
+                className="naxatw-text-icon-md"
+                wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer ${
+                  selectedGeomType === 'Polygon' ? 'naxatw-bg-[#F5F5F5]' : ''
+                }`}
+                onIconClick={() => {
+                  setSelectedGeomType('Polygon');
+                  handleClick();
+                }}
+              />
+            </Tooltip>
+            <Tooltip content="Draw rectangle" direction="right">
+              <MaterialIcon
+                name="rectangle"
+                className="naxatw-text-icon-md material-symbols-outlined"
+                wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer ${
+                  selectedGeomType === 'Box' ? 'naxatw-bg-[#F5F5F5]' : ''
+                }`}
+                onIconClick={() => {
+                  setSelectedGeomType('Box');
+                  handleClick();
+                }}
+              />
+            </Tooltip>
+          </div>
+          {/* {drawComplete ? (
+            <Button
+              iconLeft="edit"
+              className="naxatw-btn-secondary naxatw-btn-noborder"
+              onClick={handleClick}
+            >
+              Draw
+            </Button>
+          ) : (
+            <span className="naxatw-text-body-lg">
+              Select project boundary by drawing on map
+            </span>
+          )} */}
+        </div>
+      )}
+
       <MapComponent
         ref={mapRef}
         mapInstance={map}
         style={{
           height: '400px',
+          border: '1px solid #F5F5F5',
         }}
       >
         <LayerSwitcherControl />
         <Scalebar />
-        {geojson && <VectorLayer geojson={geojson} zoomToLayer />}
+        {geojson && <MapVectorLayer geojson={geojson} zoomToLayer />}
+        {project.id && (
+          <MapVectorTileLayer
+            url={`${API_URL}projects/project_location_vectortile/{z}/{x}/{y}/?project=${project.id}`}
+            authToken={localStorage.getItem('userToken')}
+          />
+        )}
+
+        {locationType === 'Custom Draw' && (
+          <CustomAddFeature
+            enable={redraw}
+            geometryType={selectedGeomType}
+            style={{
+              ...defaultStyles,
+              lineColor: '#d12313',
+              lineOpacity: 50,
+              fillColor: '#2C675A',
+              fillOpacity: 0,
+              lineThickness: 2,
+            }}
+            onDrawFinish={geojsonx => {
+              setDrawComplete(true);
+              setRedraw(false);
+              const wktString = stringify(geojsonx);
+              dispatch(setDrawnGeojsonData(wktString));
+            }}
+          />
+        )}
       </MapComponent>
     </div>
   );

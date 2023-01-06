@@ -1,23 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
 import { isEmpty } from '@Utils/commonUtils';
 import Button from '@Components/common/Button/index';
-import GalleryList from './GalleryList/index';
 import AdditionalSidebar from '../Common/index';
 import NoPhotosYet from './NoPhotosYet/index';
+import GalleryList from './GalleryList/index';
 
-const { getGalleryItemRequest } = ProjectDashboardCreators;
-const { toggleModal } = CommonCreators;
+const { getGalleryItemRequest, setGalleryState, downloadGalleryRequest } =
+  ProjectDashboardCreators;
+const { toggleModal, setRightSidebarState, togglePromptDialog } =
+  CommonCreators;
 
 export default function Gallery() {
   const { projectId } = useParams();
   const gallery = useSelector(state => state.projectDashboard.gallery.list);
+  const toggleRightBar = useSelector(state => state.common.rightSidebar.show);
   const dispatch = useDispatch();
 
-  const [toggleRightBar, setToggleRightBar] = useState(false);
+  const handleDownload = id => {
+    dispatch(
+      downloadGalleryRequest({ image: [id].join(), project: projectId }),
+    );
+  };
+
+  useEffect(() => {
+    dispatch(setRightSidebarState({ show: false, flag: '' }));
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getGalleryItemRequest({ project: projectId }));
@@ -26,7 +37,7 @@ export default function Gallery() {
   const getContent = () => {
     // if (!layers) return '';
     if (isEmpty(gallery)) return <NoPhotosYet />;
-    return <GalleryList openSidebar={setToggleRightBar} />;
+    return <GalleryList />;
   };
   return (
     <div
@@ -65,8 +76,18 @@ export default function Gallery() {
       </div>
       {toggleRightBar && (
         <AdditionalSidebar
-          onCloseClick={() => setToggleRightBar(false)}
-          flag="gallery"
+          onCloseClick={() => {
+            dispatch(setGalleryState({ cardId: null }));
+            dispatch(setRightSidebarState({ show: false, flag: '' }));
+          }}
+          onDownload={id => handleDownload(id)}
+          onDelete={data => {
+            dispatch(setGalleryState({ delete: { ...data, projectId } }));
+            dispatch(togglePromptDialog('delete-gallery'));
+          }}
+          onEdit={() => {
+            dispatch(toggleModal('edit-image'));
+          }}
         />
       )}
     </div>

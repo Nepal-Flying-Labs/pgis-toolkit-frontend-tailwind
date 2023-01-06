@@ -6,19 +6,39 @@ export const { Types, Creators } = createActions(
     getUsersSuccess: ['payload'],
     getUsersFailure: null,
 
-    getOrganizationRequest: ['payload'],
-    getOrganizationSuccess: ['payload'],
-    getOrganizationFailure: null,
+    // getOrganizationRequest: ['payload'],
+    // getOrganizationSuccess: ['payload'],
+    // getOrganizationFailure: null,
 
-    setSearchText: ['payload'],
+    setUserState: ['payload'],
     // handleOrdering: ['payload'],
 
     // handleNextClick: null,
     // handlePreviousClick: null,
     // handleJumpsTo: ['payload'],
     // handleRowSelect: ['payload'],
+
+    updateUserStatusRequest: ['id', 'payload'],
+    updateUserStatusSuccess: ['payload'],
+    updateUserStatusFailure: null,
+
+    deleteUserRequest: ['id', 'payload'],
+    deleteUserSuccess: ['payload'],
+    deleteUserFailure: null,
+
+    updateInvitedUserStatusRequest: ['id', 'payload'],
+    updateInvitedUserStatusSuccess: ['payload'],
+    updateInvitedUserStatusFailure: null,
+
+    resendInvitationRequest: ['id', 'payload'],
+    resendInvitationSuccess: ['payload'],
+    resendInvitationFailure: null,
+
+    deleteInvitedUserRequest: ['id', 'payload'],
+    deleteInvitedUserSuccess: ['payload'],
+    deleteInvitedUserFailure: null,
   },
-  { prefix: '/organizations' },
+  { prefix: '/users' },
 );
 
 export default Creators;

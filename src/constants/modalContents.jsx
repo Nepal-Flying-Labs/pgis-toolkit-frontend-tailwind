@@ -20,7 +20,6 @@ import DownloadLayer from '@Components/ProjectDashboard/ModalContent/DownloadLay
 import ManageAttributes from '@Components/ProjectDashboard/ModalContent/ManageAttributes';
 import AddAttributes from '@Components/ProjectDashboard/ModalContent/AddAttributes';
 import AddWMSLayer from '@Components/ProjectDashboard/ModalContent/AddWMSLayer';
-import UploadImage from '@Components/ProjectDashboard/ModalContent/UploadImage';
 import UploadDocument from '@Components/ProjectDashboard/ModalContent/UploadDocument';
 import ImportOSM from '@Components/ProjectDashboard/ModalContent/ImportOSM';
 import EditDocument from '@Components/ProjectDashboard/ModalContent/EditDocument';
@@ -28,6 +27,15 @@ import SaveDataQuery from '@Components/ProjectDashboard/ModalContent/SaveDataQue
 import DeleteDataQuery from '@Components/ProjectDashboard/ModalContent/DeleteDataQuery';
 import AccountSettings from '@Components/Authentication/ModalContent/AccountSettings';
 import ViewLayerAttribute from '@Components/ProjectDashboard/ModalContent/ViewLayerAttribute';
+import DeleteDocument from '@Components/ProjectDashboard/ModalContent/DeleteDocument/index';
+import DataQueryHelp from '@Components/ProjectDashboard/ModalContent/HelpContents/DataQueryHelp';
+import DeleteGallery from '@Components/ProjectDashboard/ModalContent/DeleteGallery/index';
+import EditGallery from '@Components/ProjectDashboard/ModalContent/EditGallery/index';
+import UploadGallery from '@Components/ProjectDashboard/ModalContent/UploadGallery/index';
+import DeleteOrganizationUser from '@Components/OrganizationDashboard/ModalContent/DeleteOrganizationUser';
+import DeleteUser from '@Components/Users/ModalContent/DeleteUser';
+import DeleteProjectUser from '@Components/ProjectDashboard/ModalContent/DeleteProjectUser/index';
+import DeleteTemplateAttribute from '@Components/ProjectDashboard/ModalContent/DeleteTemplateAttribute';
 
 export function getModalContent(content) {
   switch (content) {
@@ -87,24 +95,36 @@ export function getModalContent(content) {
       return {
         title: 'Upload your datasets',
         content: <UploadDataset />,
+        subtitle:
+          'USAFIRI allows you to import data in different formats(shp, csv, geojson or gpkg file format). Please upload your datasets below.',
       };
     case 'view-layer-attribute':
       return {
         title: 'Layer Attribute',
         content: <ViewLayerAttribute />,
-        className:
-          '!naxatw-w-[calc(100vw-10rem)] !naxatw-h-[calc(100vh-10rem)]',
+        className: '!naxatw-w-[calc(100vw-10rem)]',
+      };
+    case 'view-query-attribute':
+      return {
+        title: 'Layer Attribute',
+        content: <ViewLayerAttribute />,
+        className: '!naxatw-w-[calc(100vw-10rem)]',
       };
     case 'data-query':
       return {
         title: 'Data Query',
+        subtitle:
+          'This tool allows you to query on the layers and create a new layers based on the query result.',
         content: <DataQuery />,
-        // className: '!naxatw-w-[63.25rem]',
+        className: '!naxatw-w-[63.25rem]',
+        helpContent: <DataQueryHelp />,
       };
     case 'analysis':
       return {
         title: 'Analysis',
         content: <Analysis />,
+        subtitle:
+          'USAFIRI allows you to do different sorts of analysis with your map datasets. Below are some of the analysis functions we have in the tool at the moment.',
       };
     case 'buffer-analysis':
       return {
@@ -123,25 +143,41 @@ export function getModalContent(content) {
       return {
         title: 'Import from OSM',
         content: <ImportOSM />,
+        subtitle:
+          'USAFIRI allows you to do different sorts of analysis with your map datasets. Below are some of the analysis functions we have in the tool at the moment.',
       };
 
     // project gallery
     case 'upload-image':
       return {
         title: 'Upload your image',
-        content: <UploadImage />,
+        subtitle:
+          'You can add any sort of relevant photographs & images or maps, in file format JPEG, PNG, GIF or PDF.',
+        content: <UploadGallery />,
+      };
+
+    case 'edit-image':
+      return {
+        title: 'Edit your image',
+        subtitle:
+          'You can add any sort of relevant photographs & images or maps, in file format JPEG, PNG, GIF or PDF.',
+        content: <EditGallery />,
       };
 
     // project document
     case 'upload-document':
       return {
         title: 'Upload your documents',
+        subtitle:
+          'You can add any sort of relevant documents to the project. It includes relevant report, findings etc. in file format DOCX, PDF, Excel or CSV.',
         content: <UploadDocument />,
       };
 
     case 'edit-document':
       return {
         title: 'Edit your documents',
+        subtitle:
+          'You can add any sort of relevant documents to the project. It includes relevant report, findings etc. in file format DOCX, PDF, Excel or CSV.',
         content: <EditDocument />,
       };
 
@@ -150,6 +186,8 @@ export function getModalContent(content) {
       return {
         title: 'Add WMS Layer',
         content: <AddWMSLayer />,
+        subtitle:
+          'USAFIRI allows you to do different sorts of analysis with your map datasets. Below are some of the analysis functions we have in the tool at the moment.',
       };
     case 'manage-attributes':
       return {
@@ -191,7 +229,12 @@ export function getPromptDialogContent(content) {
     case 'delete-document':
       return {
         title: '',
-        content: <DeleteLayer />,
+        content: <DeleteDocument />,
+      };
+    case 'delete-gallery':
+      return {
+        title: '',
+        content: <DeleteGallery />,
       };
     case 'save-data-query':
       return {
@@ -207,6 +250,41 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <DeleteDataQuery />,
+      };
+    case 'delete-organization-user':
+      return {
+        title: 'Delete User',
+        content: <DeleteOrganizationUser />,
+      };
+    case 'delete-organization-invited-user':
+      return {
+        title: 'Delete User',
+        content: <DeleteOrganizationUser />,
+      };
+    case 'delete-user':
+      return {
+        title: 'Delete User',
+        content: <DeleteUser />,
+      };
+    case 'delete-invited-user':
+      return {
+        title: 'Delete User',
+        content: <DeleteUser />,
+      };
+    case 'delete-project-user':
+      return {
+        title: 'Delete User',
+        content: <DeleteProjectUser />,
+      };
+    case 'delete-project-invited-user':
+      return {
+        title: 'Delete User',
+        content: <DeleteProjectUser />,
+      };
+    case 'delete-template-attribute':
+      return {
+        title: 'Delete Attribute',
+        content: <DeleteTemplateAttribute />,
       };
     default:
       return '';

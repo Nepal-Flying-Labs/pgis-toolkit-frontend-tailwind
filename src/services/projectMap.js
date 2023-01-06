@@ -44,3 +44,6 @@ export const saveDataQuery = data =>
 
 export const getLayerAttribute = params =>
   authenticated(api).get(`/maps/feature_collection/`, { params });
+
+export const getQueryAttribute = params =>
+  authenticated(api).get(`/maps/query_feature_collection/`, { params });

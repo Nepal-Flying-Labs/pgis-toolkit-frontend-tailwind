@@ -6,13 +6,14 @@ import { useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
 
-function AdditionalSidebar({ onCloseClick, flag }) {
+function AdditionalSidebar({ onCloseClick, onDownload, onDelete, onEdit }) {
   const { tabname } = useParams();
   // console.log(tabname);
 
   const documentData = useSelector(
     state => state.projectDashboard.document.item,
   );
+  const flag = useSelector(state => state.common.rightSidebar.flag);
   const galleryData = useSelector(state => state.projectDashboard.gallery.item);
 
   const [sidebarData, setSidebarData] = useState([]);
@@ -31,8 +32,8 @@ function AdditionalSidebar({ onCloseClick, flag }) {
 
   return (
     <div
-      style={{ height: `calc(100vh - 52px)`, transition: 'ease-in-out 300ms' }}
-      className="naxatw-min-w-[364px] naxatw-max-w-[364px] naxatw-px-5 naxatw-bg-grey-100 naxatw-border-grey-300 naxatw-border-l-[1px] naxatw-border-b-[1px]"
+      style={{ height: `calc(100vh - 52px)` }}
+      className="naxatw-min-w-[364px] naxatw-max-w-[364px] naxatw-px-5 naxatw-bg-grey-100 naxatw-border-grey-300 naxatw-border-l-[1px] naxatw-border-b-[1px]  naxatw-transition-all naxatw-ease-in-out naxatw-duration-200 -naxatw-translate-x-1"
     >
       <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
         <h4 className="">
@@ -42,7 +43,7 @@ function AdditionalSidebar({ onCloseClick, flag }) {
         </h4>
         <div
           onClick={onCloseClick}
-          className="naxatw-my-3 naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center"
+          className="naxatw-my-3 naxatw-cursor-pointer naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center"
         >
           <MaterialIcon
             className="naxatw-text-2xl naxatw-leading-6 naxatw-p-2"
@@ -51,13 +52,11 @@ function AdditionalSidebar({ onCloseClick, flag }) {
         </div>
       </div>
       {flag?.toLowerCase() === 'gallery' && (
-        <div className="">
+        <div className="naxatw-w-[324px] naxatw-min-w-[324px] naxatw-h-[190px] ">
           <img
             src={sidebarData?.image}
             alt="sidebar"
-            width="324px"
-            height="160px"
-            className="naxatw-object-contain naxatw-rounded-lg naxatw-border-[1px] naxatw-border-[#D7D7D7]"
+            className="naxatw-object-cover naxatw-h-full naxatw-w-full naxatw-rounded-lg naxatw-border-[1px] naxatw-border-[#D7D7D7]"
           />
         </div>
       )}
@@ -75,10 +74,10 @@ function AdditionalSidebar({ onCloseClick, flag }) {
         <div className="naxatw-text-body-btn naxatw-mb-2">File Type</div>
         <div className="naxatw-text-body-lg">{sidebarData?.type || '-'}</div>
       </div>
-      <div className="naxatw-mb-5">
+      {/* <div className="naxatw-mb-5">
         <div className="naxatw-text-body-btn naxatw-mb-2">Tags</div>
         <div className="naxatw-text-body-lg">{sidebarData?.tag || '-'}</div>
-      </div>
+      </div> */}
       <div className="naxatw-mb-5">
         <div className="naxatw-text-body-btn naxatw-mb-2">Uploaded on</div>
         <div className="naxatw-text-body-lg">
@@ -91,23 +90,24 @@ function AdditionalSidebar({ onCloseClick, flag }) {
         <div>
           <Button
             iconLeft="download"
-            className="naxatw-text-[#00A699] naxatw-btn-noborder"
+            onClick={() => onDownload(sidebarData?.id)}
+            className="naxatw-text-[#00A699] naxatw-btn-noborder naxatw-cursor-pointer"
           >
-            <span className="naxatw-text-[#00A699]">Download All</span>
+            <span className="naxatw-text-[#00A699]">Download</span>
           </Button>
         </div>
         <div>
           <MaterialIcon
-            // onIconClick={() => handleDelete(id)}
-            wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
+            onIconClick={() => onDelete(sidebarData)}
+            wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent naxatw-cursor-pointer hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
             className="naxatw-text-[22px] naxatw-text-[#FF0F0F]"
             name="delete_outline"
           />
         </div>
         <div className="">
           <MaterialIcon
-            // onIconClick={() => handleDelete(id)}
-            wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
+            onIconClick={() => onEdit(sidebarData?.id)}
+            wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent naxatw-cursor-pointer hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
             className="naxatw-text-[22px]"
             name="edit"
           />
@@ -119,11 +119,15 @@ function AdditionalSidebar({ onCloseClick, flag }) {
 
 AdditionalSidebar.propTypes = {
   onCloseClick: PropTypes.func,
-  flag: PropTypes.string,
+  onDownload: PropTypes.func,
+  onDelete: PropTypes.func,
+  onEdit: PropTypes.func,
 };
 
 AdditionalSidebar.defaultProps = {
   onCloseClick: () => {},
-  flag: null,
+  onDownload: () => {},
+  onDelete: () => {},
+  onEdit: () => {},
 };
 export default AdditionalSidebar;

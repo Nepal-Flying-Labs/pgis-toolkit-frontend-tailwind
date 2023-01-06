@@ -1,7 +1,15 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable import/no-named-as-default */
+import React from 'react';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions/index';
 import CustomCheckbox from '@Components/common/CustomCheckbox/index';
+import { useDispatch } from 'react-redux';
+import Creators from '@Actions/projectDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
+import { useParams } from 'react-router';
+
+const { togglePromptDialog, toggleModal } = CommonCreators;
+const { setGalleryState, getGalleryByIdRequest } = Creators;
 
 function GalleryCard({
   id,
@@ -12,14 +20,8 @@ function GalleryCard({
   status,
   onCheckSelected,
 }) {
-  const [activeCard, setActiveCard] = useState(false);
-
-  useEffect(() => {
-    if (status === id) {
-      setActiveCard(!activeCard);
-    }
-  }, [status]);
-
+  const dispatch = useDispatch();
+  const { projectId } = useParams();
   const dropdownOptions = [
     {
       id: 1,
@@ -29,8 +31,11 @@ function GalleryCard({
           <p className="naxatw-text-body-lg">Edit</p>
         </span>
       ),
-      //   logic for edit item
-      onClick: () => {},
+      //   logic for edit item toggleModal
+      onClick: () => {
+        dispatch(dispatch(getGalleryByIdRequest(id)));
+        dispatch(toggleModal('edit-image'));
+      },
     },
     {
       id: 2,
@@ -41,7 +46,14 @@ function GalleryCard({
         </span>
       ),
       //   logic for delete item
-      onClick: () => {},
+      onClick: () => {
+        dispatch(
+          setGalleryState({
+            delete: { id, name: label, image: imgSrc, projectId },
+          }),
+        );
+        dispatch(togglePromptDialog('delete-gallery'));
+      },
     },
   ];
 
@@ -49,21 +61,23 @@ function GalleryCard({
     <div
       role="button"
       tabIndex="0"
-      className="naxatw-min-h-[190px] naxatw-max-h-[190px] naxatw-min-w-[210px] naxatw-max-w-[210px] naxatw-group hover:naxatw-cursor-pointer"
+      className="naxatw-min-h-[260px] naxatw-max-h-[260px] naxatw-min-w-[215px] naxatw-max-w-[215px] naxatw-group hover:naxatw-cursor-pointer"
       onClick={() => {
         onCardClick(id);
       }}
     >
       <div className="naxatw-mb-1 naxatw-relative">
-        <img
-          src={imgSrc}
-          alt="gallery"
-          width="210px"
-          height="140px"
-          className={`${
-            activeCard ? 'naxatw-border-2 naxatw-border-primary-400' : ''
-          } naxatw-object-contain naxatw-rounded-lg naxatw-border-2`}
-        />
+        <div className="naxatw-w-[210px] naxatw-h-[210px]">
+          <img
+            src={imgSrc}
+            alt="gallery"
+            // width="210px"
+            // height="210px"
+            className={`${
+              status === id ? 'naxatw-border-2 naxatw-border-primary-400' : ''
+            } naxatw-object-cover naxatw-h-full naxatw-w-full naxatw-rounded-lg naxatw-border-2`}
+          />
+        </div>
         {/* <input
           type="checkbox"
           checked={checked}
@@ -73,17 +87,18 @@ function GalleryCard({
           } naxatw-absolute group-hover:naxatw-visible naxatw-invisible naxatw-z-10 naxatw-h-5 naxatw-w-5 naxatw-top-2 naxatw-left-2`}
         /> */}
         <CustomCheckbox
-          onClick={() => onCheckSelected()}
+          onClick={e => onCheckSelected(e)}
           wrapperClassName={`${
-            checked ? 'naxatw-visible' : ''
-          } naxatw-absolute naxatw-border-white group-hover:naxatw-visible naxatw-ring-2 naxatw-ring-offset-0 naxatw-ring-white naxatw-invisible naxatw-z-50 naxatw-top-2 naxatw-left-2`}
+            checked ? 'naxatw-visible' : 'naxatw-invisible'
+          } naxatw-absolute naxatw-border-white group-hover:naxatw-visible naxatw-ring-2 naxatw-ring-offset-0 naxatw-ring-white naxatw-z-50 naxatw-top-2 naxatw-left-2`}
           iconClassName="naxatw-text-white"
+          status={checked}
         />
       </div>
       <div className=" naxatw-flex naxatw-justify-between">
         <p
           className={`${
-            activeCard ? 'naxatw-text-[#00A699]' : ''
+            status === id ? 'naxatw-text-[#00A699]' : ''
           } group-hover:naxatw-text-[#00A699] naxatw-py-[10px] naxatw-text-body-btn`}
         >
           {label}
@@ -101,12 +116,12 @@ function GalleryCard({
 }
 
 GalleryCard.propTypes = {
-  id: PropTypes.string,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   imgSrc: PropTypes.string,
   label: PropTypes.string,
   onCardClick: PropTypes.func,
   checked: PropTypes.bool,
-  status: PropTypes.string,
+  status: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onCheckSelected: PropTypes.func,
 };
 

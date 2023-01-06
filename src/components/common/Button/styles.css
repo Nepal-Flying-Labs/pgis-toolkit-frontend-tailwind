@@ -1,16 +1,18 @@
 .naxatw-btn {
-  @apply naxatw-px-5 naxatw-py-3 naxatw-font-bold naxatw-rounded-lg naxatw-text-[0.938rem]
+  @apply naxatw-px-5 naxatw-py-[13px] naxatw-font-bold naxatw-rounded-lg naxatw-text-[0.938rem]
   naxatw-leading-[1.25rem] naxatw-flex naxatw-items-center naxatw-justify-center 
-  naxatw-transition-colors naxatw-duration-150;
+  naxatw-transition-colors naxatw-duration-150 
+  disabled:naxatw-cursor-not-allowed disabled:!naxatw-text-grey-400
+  disabled:hover:!naxatw-bg-transparent;
 }
 .naxatw-btn.naxatw-btn-sm {
-  @apply naxatw-px-4 naxatw-py-2 ;
+  @apply naxatw-px-4 naxatw-py-2;
 }
 .naxatw-btn.naxatw-btn-primary {
   @apply naxatw-text-white naxatw-bg-primary-400 hover:naxatw-bg-primary-800;
 }
 .naxatw-btn.naxatw-btn-secondary {
-  @apply  naxatw-text-secondary-400 naxatw-border naxatw-border-grey-800
+  @apply naxatw-text-secondary-400 naxatw-border naxatw-border-grey-800
   hover:naxatw-bg-grey-100;
 }
 .naxatw-btn.naxatw-btn-link {

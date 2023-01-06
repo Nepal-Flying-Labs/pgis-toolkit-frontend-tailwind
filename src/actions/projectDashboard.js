@@ -73,7 +73,7 @@ export const { Types, Creators } = createActions(
     getDocumentByIdSuccess: ['payload'],
     getDocumentByIdFailure: ['payload'],
 
-    // project-individual-document
+    // project-document
     downloadDocumentRequest: ['params'],
     downloadDocumentSuccess: ['payload'],
     downloadDocumentFailure: ['payload'],
@@ -82,11 +82,9 @@ export const { Types, Creators } = createActions(
     uploadDocumentDataSuccess: ['payload'],
     uploadDocumentDataFailure: ['payload'],
 
-    updateDocumentDataRequest: ['payload'],
+    updateDocumentDataRequest: ['id', 'payload'],
     updateDocumentDataSuccess: ['payload'],
     updateDocumentDataFailure: ['payload'],
-
-    setDeleteDocument: ['payload'],
 
     deleteDocumentRequest: ['id', 'payload'],
     deleteDocumentSuccess: ['payload'],
@@ -114,6 +112,11 @@ export const { Types, Creators } = createActions(
 
     setSelectedLayer: ['payload'],
 
+    setIndividualAttribute: ['payload'],
+    clearIndividualAttribute: null,
+
+    setAttributeList: ['payload'],
+
     clearAttributeListData: null,
 
     getLayerAttributeRequest: ['params'],
@@ -124,9 +127,76 @@ export const { Types, Creators } = createActions(
     postAttributeSelectionSuccess: ['payload'],
     postAttributeSelectionFailure: null,
 
+    postTemplateAttributeRequest: ['payload'],
+    postTemplateAttributeSuccess: ['payload'],
+    postTemplateAttributeFailure: null,
+
+    updateTemplateAttributeRequest: ['id', 'payload'],
+    updateTemplateAttributeSuccess: ['payload'],
+    updateTemplateAttributeFailure: null,
+
+    deleteTemplateAttributeRequest: ['id', 'payload'],
+    deleteTemplateAttributeSuccess: ['payload'],
+    deleteTemplateAttributeFailure: null,
+
     downloadBulkTemplateRequest: ['params'],
     downloadBulkTemplateSuccess: ['payload'],
     downloadBulkTemplateFailure: null,
+
+    getUsersRequest: ['params'],
+    getUsersSuccess: ['payload'],
+    getUsersFailure: null,
+
+    setUserState: ['payload'],
+
+    getUserGroupRequest: ['params'],
+    getUserGroupSuccess: ['payload'],
+    getUserGroupFailure: null,
+
+    setDocumentState: ['payload'],
+
+    uploadGalleryRequest: ['id', 'payload'],
+    uploadGallerySuccess: ['payload'],
+    uploadGalleryFailure: ['payload'],
+
+    downloadGalleryRequest: ['params'],
+    downloadGallerySuccess: ['payload'],
+    downloadGalleryFailure: ['payload'],
+
+    // project-individual-gallery
+    getGalleryByIdRequest: ['id'],
+    getGalleryByIdSuccess: ['payload'],
+    getGalleryByIdFailure: ['payload'],
+
+    setGalleryState: ['payload'],
+
+    deleteGalleryRequest: ['id', 'payload'],
+    deleteGallerySuccess: ['payload'],
+    deleteGalleryFailure: null,
+
+    updateGalleryRequest: ['id', 'payload'],
+    updateGallerySuccess: ['payload'],
+    updateGalleryFailure: ['payload'],
+
+    updateUserStatusRequest: ['id', 'payload'],
+    updateUserStatusSuccess: ['payload'],
+    updateUserStatusFailure: null,
+
+    deleteUserRequest: ['id', 'payload'],
+    deleteUserSuccess: ['payload'],
+    deleteUserFailure: null,
+
+    updateInvitedUserStatusRequest: ['id', 'payload'],
+    updateInvitedUserStatusSuccess: ['payload'],
+    updateInvitedUserStatusFailure: null,
+
+    resendInvitationRequest: ['id', 'payload'],
+    resendInvitationSuccess: ['payload'],
+    resendInvitationFailure: null,
+
+    deleteInvitedUserRequest: ['id', 'payload'],
+    deleteInvitedUserSuccess: ['payload'],
+    deleteInvitedUserFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

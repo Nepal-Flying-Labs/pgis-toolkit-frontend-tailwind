@@ -16,6 +16,17 @@ export const api = axios.create({
   },
 });
 
+// To download zip files from api response
+export const downloadApi = axios.create({
+  baseURL: `${API_URL}`,
+  timeout: 5 * 60 * 1000,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+  responseType: 'arraybuffer',
+});
+
 api.interceptors.response.use(
   response => response,
   error => {

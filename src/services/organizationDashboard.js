@@ -21,8 +21,8 @@ export const getContactPerson = params =>
 export const postContactPerson = (payload, params) =>
   authenticated(api).post(`/projects/contact_person/`, payload, { params });
 
-export const patchContactPerson = (id, params) =>
-  authenticated(api).patch(`/projects/contact_person/${id}/`, { params });
+export const patchContactPerson = (id, payload) =>
+  authenticated(api).patch(`/projects/contact_person/${id}/`, payload);
 
 export const getCountryList = () => authenticated(api).get('/projects/country');
 
@@ -31,3 +31,15 @@ export const getUsers = params =>
 
 export const getUserGroup = params =>
   authenticated(api).get('/users/user_group/', { params });
+
+export const updateUserRole = (id, payload) =>
+  authenticated(api).patch(`/users/userrole_update/${id}/`, payload);
+
+export const updateInvitedUserStatus = (id, payload) =>
+  authenticated(api).patch(`/users/preliminary_user/${id}/`, payload);
+
+export const updateOrganization = (id, payload) =>
+  authenticated(api).patch(`/projects/organization/${id}/`, payload);
+
+export const organizationById = id =>
+  authenticated(api).get(`/projects/organization/${id}/`);

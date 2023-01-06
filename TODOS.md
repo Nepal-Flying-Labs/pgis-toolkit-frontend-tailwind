@@ -58,16 +58,16 @@
 - [ ] attribute edit
 - [ ] add feature
 - [ ] draw rectangle, draw polygon
-- [ ] view attribute table 
+- [ ] view attribute table
 - [ ] manage attribute (attribute type/delete/add)
 - [ ] map export
 
 - [ ] data query
-- [ ] clustering on organization dashboard map 
-- [ ] draw on map project setup (sudeep) 
+- [ ] clustering on organization dashboard map
+- [ ] draw on map project setup (sudeep)
 - [ ] map display on info page
 - [ ] reset data query modal state on close
-
+- [ ] wms layer
 
 ### ISSUES
 
@@ -95,34 +95,40 @@
 ### Backend
 
 - [x] download each data from layer list
-
+- [ ] patch wms layer not working
+- [ ] delete wms layer not working
 
 ### Login
 
 - [x] Loader in organization invite
-- [ ] organization modal in invitation success
+- [x] organization modal in invitation success
 - [x] splash screen for checking landing page
 - [x] project card design
 
 ### Styles
 
-- [ ] Button Component
-- [ ] Icon component
-- [ ] Fixed row in table
+- [x] Button Component
+- [x] Icon component
+- [x] Fixed row in table
 - [ ] Remove Pagination
-- [ ] Search bar outline on select
+- [x] Search bar outline on select
 - [ ] Font issue in Safari
 
 ### Organization Module
 
 - [ ] Display error message
-- [ ] Search Component design
-- [ ] Table Sorting Design
-- [ ] Select List Overflow Problem
+- [x] Search Component design
+- [x] Table Sorting Design
+- [x] Select List Overflow Problem
 - [ ] Table Menu Functionalities(Edit/Delete)
 - [ ] Implement User Permission and role
-- [ ] Give max width to toast component
-- [ ] Validation on Forgot password module
+- [x] Give max width to toast component
+- [x] Validation on Forgot password module
+- [ ] Loader in access to funtionality modal
+- [ ] modal design review (sudeep)
+- [ ] responsive project header
+- [ ] token session expire
 
 ### Need to fix
+
 - [ ] tooltip direction bottom prop

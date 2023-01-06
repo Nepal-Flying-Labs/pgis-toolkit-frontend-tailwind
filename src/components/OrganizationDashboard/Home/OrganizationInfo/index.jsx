@@ -79,7 +79,7 @@ const OrganizationInfo = () => {
               // eslint-disable-next-line react/jsx-curly-brace-presence
               className={`naxatw-bg-[#0076FF] naxatw-w-2 naxatw-h-2 naxatw-rounded-full`}
             />
-            <p className={` naxatw-capitalize naxatw-text-body-md `}>Ongoing</p>
+            <p className={` naxatw-capitalize naxatw-text-body-lg `}>Ongoing</p>
             <h5>{organizationDetails?.ongoing || 'N/A'}</h5>
           </div>
           <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
@@ -87,7 +87,7 @@ const OrganizationInfo = () => {
               // eslint-disable-next-line react/jsx-curly-brace-presence
               className={`naxatw-bg-[#40B449] naxatw-w-2 naxatw-h-2 naxatw-rounded-full`}
             />
-            <p className={` naxatw-capitalize naxatw-text-body-md `}>
+            <p className={` naxatw-capitalize naxatw-text-body-lg `}>
               Completed
             </p>
             <h5>{organizationDetails?.completed}</h5>
@@ -101,7 +101,7 @@ const OrganizationInfo = () => {
                 organizationDetails?.projects,
               )}%`,
             }}
-            className="naxatw-h-[20px] naxatw-bg-[#0076FF] naxatw-rounded-l-md"
+            className="naxatw-h-[20px] naxatw-bg-[#0076FF] naxatw-rounded-l-md naxatw-rounded-r-md"
           />
           <div
             style={{

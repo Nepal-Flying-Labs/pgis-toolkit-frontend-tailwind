@@ -29,6 +29,7 @@ const Input = ({
         </label>
       )}
       <input
+        id={id}
         type={type}
         name={name}
         value={value || ''}
@@ -63,7 +64,7 @@ Input.propTypes = {
   required: PropTypes.bool,
 
   label: PropTypes.string,
-  id: PropTypes.string,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onIconClick: PropTypes.func,
   iconRight: PropTypes.string,
   iconClassName: PropTypes.string,

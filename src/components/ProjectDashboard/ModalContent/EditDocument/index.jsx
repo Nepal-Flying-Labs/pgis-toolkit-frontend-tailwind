@@ -1,32 +1,29 @@
 /* eslint-disable no-use-before-define */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Creators as ProjectDashboardCreators,
   Types,
 } from '@Actions/projectDashboard';
-import toastActions from '@Actions/toast';
-import Dropzone from '@Components/common/Dropzone';
-import MaterialIcon from '@Components/common/MaterialIcon';
-import FileIcon from '@Assets/images/icons/file-icon.svg';
+// import toastActions from '@Actions/toast';
+// import Dropzone from '@Components/common/Dropzone';
+// import MaterialIcon from '@Components/common/MaterialIcon';
+// import FileIcon from '@Assets/images/icons/file-icon.svg';
 import Button from '@Components/common/Button';
-import prepareFormData from '@Utils/prepareFormData';
+// import prepareFormData from '@Utils/prepareFormData';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
-import { format, getDate, getMonth, getYear } from 'date-fns';
+import { format } from 'date-fns';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import useForm from '@Hooks/useForm';
 
 const { updateDocumentDataRequest } = ProjectDashboardCreators;
 
 export default function EditDocument() {
-  const { projectId } = useParams();
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+  // const [uploadedFiles, setUploadedFiles] = useState([]);
   const [errorFields, setErrorFields] = useState({});
   const document = useSelector(state => state.projectDashboard.document.item);
   const isUploading = useSelector(state =>
@@ -34,22 +31,22 @@ export default function EditDocument() {
   );
   const { height } = useWindowDimensions();
   const dispatch = useDispatch();
-  const monthNames = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
+  // const monthNames = [
+  //   'Jan',
+  //   'Feb',
+  //   'Mar',
+  //   'Apr',
+  //   'May',
+  //   'Jun',
+  //   'Jul',
+  //   'Aug',
+  //   'Sep',
+  //   'Oct',
+  //   'Nov',
+  //   'Dec',
+  // ];
 
-  const currentDate = new Date();
+  // const currentDate = new Date();
 
   const formSubmit = () => {
     if (isUploading) return;
@@ -66,13 +63,7 @@ export default function EditDocument() {
         description: values.description,
         uploaded_date: format(new Date(values.uploaded_date), 'MMM dd , yyyy'),
       };
-      dispatch(
-        updateDocumentDataRequest({
-          projectId,
-          documentId: values.id,
-          data: formData,
-        }),
-      );
+      dispatch(updateDocumentDataRequest(values.id, formData));
     }
   };
 
@@ -88,35 +79,35 @@ export default function EditDocument() {
     return setValues(document);
   }, [document, setValues]);
 
-  const handleDelete = id => {
-    setUploadedFiles(prev => prev.filter(item => item.id !== id));
-  };
+  // const handleDelete = id => {
+  //   setUploadedFiles(prev => prev.filter(item => item.id !== id));
+  // };
 
-  const handleUpload = e => {
-    const { files } = e.target;
-    if (files.length + uploadedFiles.length > 5) {
-      dispatch(
-        toastActions.error({
-          message: 'Only 5 files can be uploaded at a time.',
-        }),
-      );
-      return;
-    }
-    Array.from(files).forEach((file, index) => {
-      const [filename, extension] = file.name.split('.');
-      const prevId = uploadedFiles.at(-1)?.id || 0;
-      const fileObj = {
-        id: prevId + 1 + index,
-        name: filename,
-        extension,
-        file,
-        description: '',
-        created_on: '',
-        // initial states
-      };
-      setUploadedFiles(prev => [...prev, fileObj]);
-    });
-  };
+  // const handleUpload = e => {
+  //   const { files } = e.target;
+  //   if (files.length + uploadedFiles.length > 5) {
+  //     dispatch(
+  //       toastActions.error({
+  //         message: 'Only 5 files can be uploaded at a time.',
+  //       }),
+  //     );
+  //     return;
+  //   }
+  //   Array.from(files).forEach((file, index) => {
+  //     const [filename, extension] = file.name.split('.');
+  //     const prevId = uploadedFiles.at(-1)?.id || 0;
+  //     const fileObj = {
+  //       id: prevId + 1 + index,
+  //       name: filename,
+  //       extension,
+  //       file,
+  //       description: '',
+  //       created_on: '',
+  //       // initial states
+  //     };
+  //     setUploadedFiles(prev => [...prev, fileObj]);
+  //   });
+  // };
 
   // const handleChange = e => {
   //   const { id, name, value } = e.target;
@@ -127,23 +118,18 @@ export default function EditDocument() {
   //   );
   // };
 
-  const handleDateSelect = (id, name, value) => {
-    setUploadedFiles(prev =>
-      prev.map(item =>
-        item.id === +id ? { ...item, [name]: value } : { ...item },
-      ),
-    );
-  };
+  // const handleDateSelect = (id, name, value) => {
+  //   setUploadedFiles(prev =>
+  //     prev.map(item =>
+  //       item.id === +id ? { ...item, [name]: value } : { ...item },
+  //     ),
+  //   );
+  // };
 
   return (
     <div>
-      <p>
-        You can add any sort of relevant documents to the project. It includes
-        relevant report, findings etc. in file format DOCX, PDF, Excel or CSV.
-      </p>
-
       <div
-        className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-5 naxatw-overflow-auto scrollbar naxatw-max-h-96"
+        className="naxatw-flex naxatw-flex-col naxatw-gap-5 naxatw-overflow-auto naxatw-mb-5 scrollbar naxatw-max-h-96"
         style={{ maxHeight: `${height / 16 - 22}rem` }}
       >
         <div className="naxatw-flex naxatw-gap-3">
@@ -208,7 +194,7 @@ export default function EditDocument() {
       </div>
 
       {/* {isEmpty(errorFields) && ( */}
-      <div className="naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
+      <div className="naxatw-flex naxatw-items-center naxatw-justify-center">
         <Button
           className="naxatw-btn-primary"
           onClick={handleSubmit}

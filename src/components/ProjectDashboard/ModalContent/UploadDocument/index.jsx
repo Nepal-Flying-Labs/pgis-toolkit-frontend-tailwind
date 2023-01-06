@@ -104,6 +104,8 @@ export default function UploadDocument() {
       // form validation
       if (!item.name) fields.push('name');
       if (fields.length) errorCount += 1;
+      if (!item.created_on) fields.push('created_on');
+      if (fields.length) errorCount += 1;
       return {
         ...obj,
         [item.id]: fields,
@@ -135,13 +137,8 @@ export default function UploadDocument() {
 
   return (
     <div>
-      <p>
-        You can add any sort of relevant documents to the project. It includes
-        relevant report, findings etc. in file format DOCX, PDF, Excel or CSV.
-      </p>
-
       <div
-        className="naxatw-mt-10 naxatw-flex naxatw-flex-col naxatw-gap-5 naxatw-overflow-auto scrollbar naxatw-max-h-96"
+        className="naxatw-flex naxatw-flex-col naxatw-gap-5 naxatw-overflow-auto scrollbar naxatw-max-h-96"
         style={{ maxHeight: `${height / 16 - 22}rem` }}
       >
         <div className="naxatw-space-y-2">
@@ -231,7 +228,7 @@ export default function UploadDocument() {
 
                   <div className="naxatw-flex naxatw-gap-3">
                     <div className="naxatw-space-y-2 naxatw-grow">
-                      <label className="naxatw-label">Created on</label>
+                      <label className="naxatw-label">Created on*</label>
                       <CustomCalendar
                         onChange={date => {
                           handleDateSelect(

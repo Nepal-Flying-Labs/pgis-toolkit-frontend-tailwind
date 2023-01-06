@@ -5,7 +5,6 @@ import { Creators, Types } from '@Actions/organizations';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button';
 import Input from '@Components/common/Input/index';
-import Select from '@Components/common/Select/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
 
@@ -42,6 +41,7 @@ export default function CreateAnOrganization() {
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.CREATE_ORGANIZATION_REQUEST]),
   );
+
   const { height } = useWindowDimensions();
   const {
     values,
@@ -66,11 +66,26 @@ export default function CreateAnOrganization() {
     },
   });
 
+  // const [uploadFile, setUploadFile] = useState(null);
+  // const onChangeFileUpload = e => {
+  //   const { files } = e.target;
+  //   const file = files[0];
+  //   const uploadedFileObject = {
+  //     name: file.name,
+  //     size: file.size,
+  //     type: file.type,
+  //     lastModifiedDate: file.lastModifiedDate,
+  //     image: URL.createObjectURL(files[0]),
+  //   };
+  //   // onChange(file);
+  //   setUploadFile(uploadedFileObject);
+  // };
+
   return (
-    <div className="">
+    <div>
       <div
-        className="naxatw-p-4 naxatw-space-y-7 naxatw-overflow-y-auto scrollbar"
-        style={{ maxHeight: `${height / 16 - 15}rem` }}
+        className="naxatw-px-4 naxatw-pb-4 naxatw-space-y-7 naxatw-overflow-y-auto scrollbar
+          naxatw-max-h-[calc(100vh-19rem)]"
       >
         <Input
           label="Name of Organization *"
@@ -87,7 +102,7 @@ export default function CreateAnOrganization() {
           </span>
         )}
 
-        <Input
+        {/* <Input
           label="Website"
           type="text"
           name="website"
@@ -110,7 +125,7 @@ export default function CreateAnOrganization() {
             onChange={handleChange}
             {...inputProps}
           />
-        </div>
+        </div> */}
 
         {/* <div className="naxatw-space-y-2">
           <label className="naxatw-label">Thematic Focus Area*</label>
@@ -208,7 +223,7 @@ export default function CreateAnOrganization() {
         </div>
       </div>
 
-      <div className=" naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
+      <div className="naxatw-flex naxatw-items-center naxatw-justify-center">
         <Button
           className="naxatw-btn-primary naxatw-w-[128px]"
           isLoading={loading}

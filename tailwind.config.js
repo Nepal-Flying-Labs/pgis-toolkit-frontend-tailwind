@@ -45,6 +45,7 @@ module.exports = {
           900: '#212121',
         },
         delete_btn: '#FF0F0F',
+        active_text: '#1973E7',
       },
       fontSize: {
         'body-lg': [
@@ -98,7 +99,7 @@ module.exports = {
       },
       boxShadow: {
         '3xl': '0px 2px 20px 4px rgba(0, 0, 0, 0.20)',
-        light: '0px 2px 20px 4px rgba(217, 217, 217, 0.12)',
+        light: '0px 2px 20px 4px rgba(0, 0, 0, 0.12)',
         dark: '0px 4px 16px 8px rgba(217, 217, 217, 0.28)',
       },
     },

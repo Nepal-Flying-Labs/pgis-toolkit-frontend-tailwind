@@ -31,9 +31,20 @@ import {
   getLayerTemplate,
   patchLayerTemplate,
   postImportTemplate,
+  updateTemplateAttribute,
+  postTemplateAttribute,
   getLayerAttribute,
   postAttributeSelection,
   downloadBulkTemplate,
+  getUsers,
+  getUserGroup,
+  uploadGallery,
+  downloadGallery,
+  getIndividualGallery,
+  deleteGallery,
+  updateGallery,
+  updateUserRole,
+  updateInvitedUserStatus,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -41,6 +52,11 @@ import {
   uploadLayer,
 } from '@Services/projectMap';
 import prepareFormData from '@Utils/prepareFormData';
+// import JSZip from 'jszip';
+// import { saveAs } from 'file-saver';
+
+// import removeObjectKeys from '@Utils/removeObjectKeys';
+// import axios from 'axios';
 
 export function* getProjectDetailRequest({ params }) {
   try {
@@ -78,17 +94,21 @@ export function* uploadDatasetsRequest({ payload }) {
     const responses = yield all(payload.map(data => call(uploadLayer, data)));
     const responsesData = responses.map(res => res.data);
     const layerResponses = yield all(
-      responsesData.map(item => call(getLayerById, item.layer_id)),
+      responsesData.map(item =>
+        call(getLayerById, item.layer_id || item.data.id),
+      ),
     );
     const layerData = layerResponses.map(res => res.data);
     yield put(projectDashboardActions.uploadDatasetsSuccess(layerData));
     yield put(commonActions.toggleModal());
-    yield put(
-      toastActions.success({
-        message:
-          'The layer is being uploaded. We will notify you shortly after upload success.',
-      }),
-    );
+    if (layerData[0]?.layer_type === 'Vector') {
+      yield put(
+        toastActions.success({
+          message:
+            'The layer is being uploaded. We will notify you shortly after upload success.',
+        }),
+      );
+    }
   } catch (error) {
     yield put(projectDashboardActions.uploadDatasetsFailure());
     throw error;
@@ -224,13 +244,14 @@ export function* getDocumentByIdRequest({ id }) {
 export function* downloadDocumentRequest({ params }) {
   try {
     const response = yield call(downloadDocument, params);
-    const responseData = response.data;
-    const url = window.URL.createObjectURL(new Blob([responseData]));
+    const blob = new Blob([response.data], {
+      type: 'application/octet-stream',
+    });
     const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'Documents'); // or any other extension
-    document.body.appendChild(link);
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Document.zip';
     link.click();
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
     yield put(toastActions.success({ message: 'Export Completed.' }));
   } catch (error) {
     yield put(projectDashboardActions.downloadDocumentFailure());
@@ -238,7 +259,7 @@ export function* downloadDocumentRequest({ params }) {
   }
 }
 
-export function* uploadDocumentDataRequest({ id, payload }) {
+export function* uploadDocumentDataRequest({ payload, id }) {
   try {
     yield all(payload.map(data => call(uploadDocument, data)));
     const res = yield call(getDocumentItem, { project: id });
@@ -246,7 +267,7 @@ export function* uploadDocumentDataRequest({ id, payload }) {
     yield put(commonActions.toggleModal());
     yield put(
       toastActions.success({
-        message: 'Data uploaded successfully.',
+        message: 'Document uploaded successfully.',
       }),
     );
   } catch (error) {
@@ -255,17 +276,16 @@ export function* uploadDocumentDataRequest({ id, payload }) {
   }
 }
 
-export function* updateDocumentDataRequest({ payload }) {
-  const { documentId, projectId, data } = payload;
-  // console.log('update docx ', payload);
+export function* updateDocumentDataRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
   try {
-    yield call(updateDocument, documentId, data);
-    const res = yield call(getDocumentItem, { project: projectId });
-    yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
+    const response = yield call(updateDocument, id, formData);
+    yield put(projectDashboardActions.updateDocumentDataSuccess(response.data));
     yield put(commonActions.toggleModal());
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
     yield put(
       toastActions.success({
-        message: 'Data uploaded successfully.',
+        message: 'Document updated successfully.',
       }),
     );
   } catch (error) {
@@ -292,16 +312,21 @@ export function* getLayerTemplateRequest({ id }) {
 }
 
 export function* deleteDocumentRequest({ id, payload }) {
+  // const filteredData = removeObjectKeys(payload, ['projectId']);
+  // const pId = payload.projectId;
+  const formData = prepareFormData(payload);
   try {
-    // eslint-disable-next-line no-unused-vars
-    const response = yield call(updateDocument, id, payload);
-    // console.log('deleted item ', response);
-    // const res = yield call(getDocumentItem, { project: projectId });
+    const response = yield call(updateDocument, id, formData);
+    yield put(projectDashboardActions.deleteDocumentSuccess(response.data));
+
+    // const res = yield call(getDocumentItem, { project: pId });
     // yield put(projectDashboardActions.getDocumentItemSuccess(res.data));
-    yield put(commonActions.toggleModal());
+    yield put(commonActions.togglePromptDialog());
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
+
     yield put(
       toastActions.success({
-        message: 'Data deleted successfully.',
+        message: 'Document deleted successfully.',
       }),
     );
   } catch (error) {
@@ -374,6 +399,49 @@ export function* postAttributeSelectionRequest({ payload }) {
   }
 }
 
+export function* postTemplateAttributeRequest({ payload }) {
+  try {
+    const response = yield call(postTemplateAttribute, payload);
+    yield put(
+      projectDashboardActions.postTemplateAttributeSuccess(response.data.data),
+    );
+    yield put(commonActions.toggleModal('manage-attributes'));
+    yield put(toastActions.success({ message: response.data.message }));
+  } catch (error) {
+    yield put(projectDashboardActions.postTemplateAttributeFailure());
+    throw error;
+  }
+}
+
+export function* updateTemplateAttributeRequest({ id, payload }) {
+  try {
+    const response = yield call(updateTemplateAttribute, id, payload);
+    yield put(
+      projectDashboardActions.updateTemplateAttributeSuccess(response.data),
+    );
+    yield put(commonActions.toggleModal('manage-attributes'));
+    yield put(toastActions.success({ message: response.data.message }));
+  } catch (error) {
+    yield put(projectDashboardActions.updateTemplateAttributeFailure());
+    throw error;
+  }
+}
+
+export function* deleteTemplateAttributeRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(updateTemplateAttribute, id, formData);
+    yield put(
+      projectDashboardActions.deleteTemplateAttributeSuccess(response.data),
+    );
+    yield put(commonActions.togglePromptDialog());
+    yield put(toastActions.success({ message: response.data.message }));
+  } catch (error) {
+    yield put(projectDashboardActions.deleteTemplateAttributeFailure());
+    throw error;
+  }
+}
+
 export function* downloadBulkTemplateRequest({ params }) {
   try {
     const response = yield call(downloadBulkTemplate, params);
@@ -388,6 +456,167 @@ export function* downloadBulkTemplateRequest({ params }) {
     );
   } catch (error) {
     yield put(projectDashboardActions.downloadBulkTemplateFailure());
+    throw error;
+  }
+}
+
+export function* getUsersRequest({ params }) {
+  try {
+    const response = yield call(getUsers, params);
+    yield put(projectDashboardActions.getUsersSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getUsersFailure());
+    throw error;
+  }
+}
+
+export function* getUserGroupRequest({ params }) {
+  try {
+    const response = yield call(getUserGroup, params);
+    yield put(projectDashboardActions.getUserGroupSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getUserGroupFailure());
+  }
+}
+export function* uploadGalleryRequest({ id, payload }) {
+  try {
+    yield all(payload.map(data => call(uploadGallery, data)));
+    const response = yield call(getGalleryItem, {
+      project: id,
+    });
+    yield put(projectDashboardActions.getGalleryItemSuccess(response.data));
+    yield put(commonActions.toggleModal());
+    yield put(
+      toastActions.success({
+        message: 'Gallery uploaded successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.uploadGalleryFailure());
+    throw error;
+  }
+}
+
+export function* downloadGalleryRequest({ params }) {
+  try {
+    const response = yield call(downloadGallery, params);
+    const blob = new Blob([response.data], {
+      type: 'application/octet-stream',
+    });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Gallery.zip';
+    link.click();
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
+    yield put(toastActions.success({ message: 'Export Completed.' }));
+  } catch (error) {
+    yield put(projectDashboardActions.downloadGalleryFailure());
+    throw error;
+  }
+}
+
+export function* getGalleryByIdRequest({ id }) {
+  try {
+    const response = yield call(getIndividualGallery, id);
+    yield put(projectDashboardActions.getGalleryByIdSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.getGalleryByIdFailure());
+    throw error;
+  }
+}
+
+export function* deleteGalleryRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
+  try {
+    yield call(deleteGallery, id, formData);
+    yield put(projectDashboardActions.deleteGallerySuccess({ id }));
+    yield put(commonActions.togglePromptDialog());
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
+
+    yield put(
+      toastActions.success({
+        message: 'Gallery deleted successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.deleteGalleryFailure());
+  }
+}
+
+export function* updateGalleryRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(updateGallery, id, formData);
+    yield put(projectDashboardActions.updateGallerySuccess(response.data));
+    yield put(commonActions.toggleModal());
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
+    yield put(
+      toastActions.success({
+        message: 'Gallery updated successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.updateGalleryFailure());
+  }
+}
+export function* updateUserStatusRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateUserRole, id, formdata);
+    yield put(projectDashboardActions.updateUserStatusSuccess(response.data));
+  } catch (error) {
+    yield put(projectDashboardActions.updateUserStatusFailure());
+    throw error;
+  }
+}
+export function* deleteUserRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateUserRole, id, formdata);
+    yield put(projectDashboardActions.deleteUserSuccess(response.data));
+    yield put(commonActions.togglePromptDialog());
+    yield put(toastActions.success({ message: 'User deleted successfully' }));
+  } catch (error) {
+    yield put(projectDashboardActions.deleteUserFailure());
+    throw error;
+  }
+}
+
+export function* updateInvitedUserStatusRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateInvitedUserStatus, id, formdata);
+    yield put(
+      projectDashboardActions.updateInvitedUserStatusSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.updateInvitedUserStatusFailure());
+    throw error;
+  }
+}
+
+export function* deleteInvitedUserRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateInvitedUserStatus, id, formdata);
+    yield put(projectDashboardActions.deleteInvitedUserSuccess(response.data));
+    yield put(commonActions.togglePromptDialog());
+    yield put(toastActions.success({ message: 'User deleted successfully' }));
+  } catch (error) {
+    yield put(projectDashboardActions.deleteInvitedUserFailure());
+    throw error;
+  }
+}
+
+export function* resendInvitationRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    // eslint-disable-next-line no-unused-vars
+    const response = yield call(updateInvitedUserStatus, id, formdata);
+    yield put(projectDashboardActions.resendInvitationSuccess({ id }));
+    yield put(toastActions.success({ message: 'Resend invitation success' }));
+  } catch (error) {
+    yield put(projectDashboardActions.resendInvitationFailure());
     throw error;
   }
 }
@@ -493,9 +722,71 @@ function* projectDashboardWatcher() {
     Types.POST_ATTRIBUTE_SELECTION_REQUEST,
     withLoader(withErrorHandler(postAttributeSelectionRequest)),
   );
+
+  yield takeLatest(
+    Types.POST_TEMPLATE_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(postTemplateAttributeRequest)),
+  );
+
+  yield takeLatest(
+    Types.UPDATE_TEMPLATE_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(updateTemplateAttributeRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_TEMPLATE_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(deleteTemplateAttributeRequest)),
+  );
   yield takeLatest(
     Types.DOWNLOAD_BULK_TEMPLATE_REQUEST,
     withLoader(withErrorHandler(downloadBulkTemplateRequest)),
+  );
+  yield takeLatest(
+    Types.GET_USERS_REQUEST,
+    withLoader(withErrorHandler(getUsersRequest)),
+  );
+  yield takeLatest(
+    Types.GET_USER_GROUP_REQUEST,
+    withLoader(withErrorHandler(getUserGroupRequest)),
+  );
+  yield takeLatest(
+    Types.UPLOAD_GALLERY_REQUEST,
+    withLoader(withErrorHandler(uploadGalleryRequest)),
+  );
+  yield takeLatest(
+    Types.DOWNLOAD_GALLERY_REQUEST,
+    withLoader(withErrorHandler(downloadGalleryRequest)),
+  );
+  yield takeLatest(
+    Types.GET_GALLERY_BY_ID_REQUEST,
+    withLoader(withErrorHandler(getGalleryByIdRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_GALLERY_REQUEST,
+    withLoader(withErrorHandler(deleteGalleryRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_GALLERY_REQUEST,
+    withLoader(withErrorHandler(updateGalleryRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_USER_STATUS_REQUEST,
+    withLoader(withErrorHandler(updateUserStatusRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_USER_REQUEST,
+    withLoader(withErrorHandler(deleteUserRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_INVITED_USER_STATUS_REQUEST,
+    withLoader(withErrorHandler(updateInvitedUserStatusRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_INVITED_USER_REQUEST,
+    withLoader(withErrorHandler(deleteInvitedUserRequest)),
+  );
+  yield takeLatest(
+    Types.RESEND_INVITATION_REQUEST,
+    withLoader(withErrorHandler(resendInvitationRequest)),
   );
 }
 

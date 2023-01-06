@@ -17,7 +17,13 @@ const initialState = {
     stepFour: {},
   },
   organizationDetail: null,
-  users: null,
+  individualOrganization: {
+    item: {},
+    contactPerson: [],
+  },
+  selectedData: null,
+  drawnGeojsonData: null,
+  users: [],
   userGroup: [],
   usersFilter: {
     searchText: '',
@@ -25,6 +31,8 @@ const initialState = {
     ordering: null,
   },
   assignList: [],
+  organizationAssignList: [],
+  userTab: 'users',
 };
 
 const getOrganizationDetailSuccess = (state, action) => ({
@@ -118,33 +126,68 @@ const setIndividualProject = (state, action) => {
 };
 
 const getContactPersonSuccess = (state, action) => {
-  const { data } = action.payload;
-
+  const { data, type } = action.payload;
+  if (type === 'project') {
+    return {
+      ...state,
+      individualProject: {
+        ...state.individualProject,
+        contactPerson: data,
+      },
+    };
+  }
   return {
     ...state,
-    individualProject: {
-      ...state.individualProject,
+    individualOrganization: {
+      ...state.individualOrganization,
       contactPerson: data,
     },
   };
 };
 
-const postContactPersonSuccess = (state, action) => ({
-  ...state,
-  individualProject: {
-    ...state.individualProject,
-    contactPerson: [...state.individualProject.contactPerson, action.payload],
-  },
-});
+const postContactPersonSuccess = (state, action) => {
+  const { data, type } = action.payload;
 
-const patchContactPersonSuccess = (state, action) => {
-  const newData = state.individualProject.contactPerson.filter(
-    person => person.id !== action.payload.id,
-  );
+  if (type === 'project') {
+    return {
+      ...state,
+      individualProject: {
+        ...state.individualProject,
+        contactPerson: [...state.individualProject.contactPerson, data],
+      },
+    };
+  }
   return {
     ...state,
     individualProject: {
-      ...state.individualProject,
+      ...state.individualOrganization,
+      contactPerson: [...state.individualOrganization.contactPerson, data],
+    },
+  };
+};
+
+const patchContactPersonSuccess = (state, action) => {
+  const { data, type } = action.payload;
+  if (type === 'project') {
+    const newData = state.individualProject.contactPerson.filter(
+      person => person.id !== data.id,
+    );
+    return {
+      ...state,
+      individualProject: {
+        ...state.individualProject,
+        contactPerson: newData,
+      },
+    };
+  }
+
+  const newData = state.individualOrganization.contactPerson.filter(
+    person => person.id !== data.id,
+  );
+  return {
+    ...state,
+    individualOrganization: {
+      ...state.individualOrganization,
       contactPerson: newData,
     },
   };
@@ -212,11 +255,99 @@ const getAllProjectSuccess = (state, action) => ({
 
 const setAssignList = (state, action) => ({
   ...state,
-  assignList: [action.payload],
+  organizationAssignList: [action.payload],
+  assignList: [],
+});
+
+const updateUserStatusSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.users.map(user => {
+    const { active } = user;
+    return user.id === userData.id ? { ...user, active: !active } : { ...user };
+  });
+  return {
+    ...state,
+    users: newData,
+  };
+};
+
+const deleteUserSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.users.map(user =>
+    user.id === userData.id ? null : { ...user },
+  );
+  return {
+    ...state,
+    users: newData,
+  };
+};
+
+const setSelectedData = (state, action) => ({
+  ...state,
+  selectedData: action.payload,
+});
+
+const handleUserTabChange = (state, action) => ({
+  ...state,
+  userTab: action.payload,
+});
+
+const updateInvitedUserStatusSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.users.map(user =>
+    user.id === userData.id ? { ...user, status: 'Expired' } : { ...user },
+  );
+  return {
+    ...state,
+    users: newData,
+  };
+};
+
+const resendInvitationSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.users.map(user =>
+    user.id === userData.id ? { ...user, status: 'Pending' } : { ...user },
+  );
+  return {
+    ...state,
+    users: newData,
+  };
+};
+
+const deleteInvitedUserSuccess = (state, action) => {
+  const userData = action.payload;
+  const newData = state.users.filter(user => user.id !== userData.id);
+  return {
+    ...state,
+    users: newData,
+  };
+};
+
+const setDrawnGeojsonData = (state, action) => ({
+  ...state,
+  drawnGeojsonData: action.payload,
 });
 
 const resetOrganizationDashboardState = () => ({
   ...initialState,
+});
+
+const setUserState = (state, action) => ({
+  ...state,
+  usersFilter: { ...state.usersFilter, ...action.payload },
+});
+
+const updateOrganizationSuccess = (state, action) => ({
+  ...state,
+  organizationDetail: action.payload,
+});
+
+const getOrganizationByIdSuccess = (state, action) => ({
+  ...state,
+  individualOrganization: {
+    ...state.individualOrganization,
+    item: action.payload,
+  },
 });
 
 const organizationDashboardReducer = createReducer(initialState, {
@@ -237,7 +368,18 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
   [Types.GET_ALL_PROJECT_SUCCESS]: getAllProjectSuccess,
   [Types.SET_ASSIGN_LIST]: setAssignList,
+  [Types.UPDATE_USER_STATUS_SUCCESS]: updateUserStatusSuccess,
+  [Types.DELETE_USER_SUCCESS]: deleteUserSuccess,
+  [Types.SET_SELECTED_DATA]: setSelectedData,
+  [Types.HANDLE_USER_TAB_CHANGE]: handleUserTabChange,
+  [Types.UPDATE_INVITED_USER_STATUS_SUCCESS]: updateInvitedUserStatusSuccess,
+  [Types.RESEND_INVITATION_SUCCESS]: resendInvitationSuccess,
+  [Types.DELETE_INVITED_USER_SUCCESS]: deleteInvitedUserSuccess,
+  [Types.SET_DRAWN_GEOJSON_DATA]: setDrawnGeojsonData,
   [Types.RESET_ORGANIZATION_DASHBOARD_STATE]: resetOrganizationDashboardState,
+  [Types.SET_USER_STATE]: setUserState,
+  [Types.UPDATE_ORGANIZATION_SUCCESS]: updateOrganizationSuccess,
+  [Types.GET_ORGANIZATION_BY_ID_SUCCESS]: getOrganizationByIdSuccess,
 });
 
 export default organizationDashboardReducer;

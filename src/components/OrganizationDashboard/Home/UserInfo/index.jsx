@@ -57,11 +57,11 @@ const UserInfo = () => {
         </Button>
       </div>
       <div className="naxatw-overflow-y-auto scrollbar naxatw-h-full">
-        <div className="naxatw-py-3 naxatw-pl-5 naxatw-pr-1 naxatw-flex naxatw-gap-x-2">
-          <Searchbar isSmall className="naxatw-w-[312px]" />
+        <div className="naxatw-py-3 naxatw-px-5 naxatw-flex naxatw-gap-x-2">
+          <Searchbar isSmall className="naxatw-w-[290px]" />
           <Select
             options={roles}
-            className="naxatw-h-[40px]"
+            className="naxatw-h-[40px] naxatw-pl-3"
             placeholder="Role"
           />
         </div>

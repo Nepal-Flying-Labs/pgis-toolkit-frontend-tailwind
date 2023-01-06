@@ -40,8 +40,14 @@ const validation = data => {
 
 const AssignUsers = () => {
   const { organizationId } = useParams();
+  const stateAssignList = useSelector(
+    state => state.organizationDashboard.assignList,
+  );
   const assignList = useSelector(assignProjectListSelector);
   const userList = useSelector(state => state.organizationDashboard.users);
+  const selectedData = useSelector(
+    state => state.organizationDashboard.selectedData,
+  );
   const userRoles = useSelector(assignRoleListSelector);
   const organizationDetails = useSelector(
     state => state.organizationDashboard.organizationDetail,
@@ -63,7 +69,9 @@ const AssignUsers = () => {
   const [projectSearchText, setProjectSearchText] = useState('');
   const [selectedRolesList, setSelectedRolesList] = useState(userRoles);
   const [selectedProjectList, setSelectedProjectList] = useState(assignList);
-  const [emailList, setEmailList] = useState([]);
+  const [emailList, setEmailList] = useState(
+    selectedData?.fromUserTab ? [selectedData] : [],
+  );
 
   const handleSubmit = () => {
     const data = {
@@ -84,6 +92,7 @@ const AssignUsers = () => {
             organization: organizationDetails.id,
             group: userRole,
             email: emailList.map(e => e.email),
+            activeTab,
           }),
         );
       } else {
@@ -93,6 +102,7 @@ const AssignUsers = () => {
             group: userRole,
             project: projectList,
             email: emailList.map(e => e.email),
+            activeTab,
           }),
         );
       }
@@ -108,12 +118,13 @@ const AssignUsers = () => {
     });
     setSelectedRolesList(newData);
     if (data.id !== 2) {
-      dispatch(
-        getAllProjectRequest({
-          organization: organizationId,
-          paginate: 'False',
-        }),
-      );
+      if (stateAssignList.length < 1)
+        dispatch(
+          getAllProjectRequest({
+            organization: organizationId,
+            paginate: 'False',
+          }),
+        );
     } else {
       dispatch(
         setAssignList({
@@ -195,6 +206,25 @@ const AssignUsers = () => {
               )}
             />
             {errors && <FormErrorMessage message={errors.email} />}
+            <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-2 ">
+              {emailList.map(item => (
+                <div
+                  key={item.id}
+                  className="naxatw-flex naxatw-justify-between naxatw-items-center hover:naxatw-border-[#484848] naxatw-cursor-pointer naxatw-gap-x-2 naxatw-rounded-3xl naxatw-bg-[#F5F5F5] naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-[7px]"
+                >
+                  <p className="naxatw-text-[#484848]">{item.email}</p>
+
+                  <i
+                    className="material-icons naxatw-text-lg naxatw-text-[#484848] naxatw-cursor-pointer"
+                    onClick={() => {
+                      setEmailList(emailList.filter(e => e.id !== item.id));
+                    }}
+                  >
+                    close
+                  </i>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
@@ -289,11 +319,12 @@ const AssignUsers = () => {
                 value={roleSearchText}
                 onChange={e => setRoleSearchText(e.target.value)}
               />
-              <div className="naxatw-w-full naxatw-space-y-5  naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-2 naxatw-min-h-[200px] naxatw-max-h-[200px] naxatw-overflow-x-auto scrollbar">
+              <div className="naxatw-w-full naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7]  naxatw-py-2 naxatw-min-h-[200px] naxatw-max-h-[200px] naxatw-overflow-x-auto scrollbar">
                 {selectedRolesList
                   .filter(i => i.name?.toLowerCase()?.includes(roleSearchText))
                   .map(roles => (
                     <Checkbox
+                      className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
                       key={roles.id}
                       id={roles.id}
                       label={roles.name?.replaceAll('_', ' ')?.toLowerCase()}
@@ -317,7 +348,7 @@ const AssignUsers = () => {
                 value={projectSearchText}
                 onChange={e => setProjectSearchText(e.target.value)}
               />
-              <div className="naxatw-w-full naxatw-space-y-5  naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-2 naxatw-max-h-[200px] naxatw-min-h-[200px] naxatw-overflow-x-auto scrollbar">
+              <div className="naxatw-w-full naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-py-2 naxatw-max-h-[200px] naxatw-min-h-[200px] naxatw-h-[200px] naxatw-overflow-x-auto scrollbar">
                 {!userListLoading ? (
                   selectedRolesList
                     ?.map(list => list.checked)
@@ -330,8 +361,10 @@ const AssignUsers = () => {
                         <Checkbox
                           key={project.id}
                           id={project.id}
+                          className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
                           label={project.name}
                           checked={project.checked}
+                          disabled={project.disabled}
                           onClick={() => handleProjectCheckboxClick(project)}
                         />
                       ))
@@ -344,7 +377,7 @@ const AssignUsers = () => {
                   )
                 ) : (
                   <div className="naxatw-flex naxatw-h-full naxatw-items-center naxatw-justify-center">
-                    <Spinner className="naxatw-w-8 naxatw-h-8 naxatw-fill-primary-400" />
+                    <Spinner className="naxatw-w-8 naxatw-h-8 naxatw-fill-grey-500" />
                   </div>
                 )}
               </div>
@@ -353,12 +386,12 @@ const AssignUsers = () => {
         </div>
         <div className="naxatw-mt-5 naxatw-flex naxatw-justify-center">
           <Button
-            className="naxatw-w-[86px] naxatw-btn-primary"
+            className="naxatw-w-[86px] naxatw-btn-primary naxatw-min-w-fit"
             isLoading={loading}
             loaderClassName="naxatw-fill-secondary-400"
             onClick={handleSubmit}
           >
-            Assign
+            {activeTab === 'invite' ? 'Invite and Assign' : 'Assign'}
           </Button>
         </div>
       </div>

@@ -38,7 +38,7 @@ function UploadImage({ uploadedFile, setuploadedFile }) {
                   : AvatarIcon
               }
               alt="img"
-              className="naxatw-max-w-full naxatw-max-h-full naxatw-object-cover naxatw-rounded-full"
+              className="naxatw-w-[80px] naxatw-h-[80px] naxatw-object-cover naxatw-rounded-full"
             />
           </div>
           <Button

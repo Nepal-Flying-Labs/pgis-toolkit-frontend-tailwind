@@ -28,7 +28,7 @@ export const { Types, Creators } = createActions(
     postContactPersonSuccess: ['payload'],
     postContactPersonFailure: null,
 
-    patchContactPersonRequest: ['id', 'params'],
+    patchContactPersonRequest: ['id', 'payload'],
     patchContactPersonSuccess: ['payload'],
     patchContactPersonFailure: null,
 
@@ -67,6 +67,40 @@ export const { Types, Creators } = createActions(
     postAssignUserFailure: null,
 
     setAssignList: ['payload'],
+
+    updateUserStatusRequest: ['id', 'payload'],
+    updateUserStatusSuccess: ['payload'],
+    updateUserStatusFailure: null,
+
+    deleteUserRequest: ['id', 'payload'],
+    deleteUserSuccess: ['payload'],
+    deleteUserFailure: null,
+
+    setSelectedData: ['payload'],
+    handleUserTabChange: ['payload'],
+
+    updateInvitedUserStatusRequest: ['id', 'payload'],
+    updateInvitedUserStatusSuccess: ['payload'],
+    updateInvitedUserStatusFailure: null,
+
+    resendInvitationRequest: ['id', 'payload'],
+    resendInvitationSuccess: ['payload'],
+    resendInvitationFailure: null,
+
+    deleteInvitedUserRequest: ['id', 'payload'],
+    deleteInvitedUserSuccess: ['payload'],
+    deleteInvitedUserFailure: null,
+
+    setUserState: ['payload'],
+    setDrawnGeojsonData: ['payload'],
+
+    updateOrganizationRequest: ['id', 'payload'],
+    updateOrganizationSuccess: ['payload'],
+    updateOrganizationFailure: null,
+
+    getOrganizationByIdRequest: ['id'],
+    getOrganizationByIdSuccess: ['payload'],
+    getOrganizationByIdFailure: null,
   },
   { prefix: 'organizationDashboard/' },
 );

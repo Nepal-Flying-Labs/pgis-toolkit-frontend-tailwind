@@ -42,7 +42,7 @@ const User = () => {
           <li className="">
             {' '}
             <a
-              className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-[13px] naxatw-leading-[18px] naxatw-font-bold ${
+              className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-body-btn ${
                 activeTab === 'users'
                   ? 'naxatw-border-b-[2px] naxatw-border-[#484848] naxatw-text-[#484848]'
                   : 'naxatw-text-[#989898] hover:naxatw-text-[#00A699]'
@@ -55,7 +55,7 @@ const User = () => {
           <li className="">
             {' '}
             <a
-              className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-[13px] naxatw-leading-[18px] naxatw-font-bold ${
+              className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-body-btn ${
                 activeTab === 'assign-users'
                   ? 'naxatw-border-b-[2px] naxatw-border-[#484848] naxatw-text-[#484848]'
                   : 'naxatw-text-[#989898] hover:naxatw-text-[#00A699]'

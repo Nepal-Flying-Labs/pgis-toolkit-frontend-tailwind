@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router';
+import { useSelector } from 'react-redux';
 import Header from './Header';
 import HelpContent from './HelpContent';
 import OptimalRoute from './OptimalRoute';
@@ -16,6 +17,9 @@ function getAnalysisContent(type) {
 
 export default function Analysis() {
   const { analysisType } = useParams();
+  const manualFixLayerId = useSelector(
+    state => state.analysis.manualFixLayerId,
+  );
 
   return (
     <div>
@@ -24,7 +28,7 @@ export default function Analysis() {
       <div className="naxatw-flex naxatw-h-[calc(100vh-6.2rem)]">
         {getAnalysisContent(analysisType)}
 
-        <HelpContent />
+        {!manualFixLayerId && <HelpContent />}
       </div>
     </div>
   );

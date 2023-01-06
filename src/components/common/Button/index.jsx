@@ -12,6 +12,7 @@ export default function Button({
   iconRight,
   isLoading,
   loaderClassName,
+  iconClassName,
   ...rest
 }) {
   const btnRef = useRef();
@@ -33,7 +34,7 @@ export default function Button({
       {...rest}
     >
       {iconLeft && (
-        <i className="material-icons naxatw-mr-2 naxatw-text-[22px]">
+        <i className={`naxatw-mr-2 naxatw-text-[22px] ${iconClassName}`}>
           {iconLeft}
         </i>
       )}
@@ -65,7 +66,7 @@ export default function Button({
           </p>
 
           {iconRight && (
-            <i className="material-icons naxatw-mr-2 naxatw-text-[22px]">
+            <i className={`naxatw-mr-2 naxatw-text-[22px] ${iconClassName}`}>
               {iconRight}
             </i>
           )}
@@ -84,6 +85,7 @@ Button.defaultProps = {
   onClick: () => {},
   isLoading: false,
   loaderClassName: 'naxatw-fill-secondary-400',
+  iconClassName: 'material-icons',
 };
 
 Button.propTypes = {
@@ -95,4 +97,5 @@ Button.propTypes = {
   iconRight: PropTypes.string,
   isLoading: PropTypes.bool,
   loaderClassName: PropTypes.string,
+  iconClassName: PropTypes.string,
 };

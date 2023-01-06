@@ -62,8 +62,10 @@ const Location = ({ page, setPage }) => {
           return 'GeoJSON';
         case 'application/zip':
           return 'Shapefile';
+        case 'application/x-zip-compressed':
+          return 'Shapefile';
         default:
-          return '';
+          return 'Shapefile';
       }
     } else {
       return '';
@@ -95,11 +97,9 @@ const Location = ({ page, setPage }) => {
               location_wkt: [drawnGeojsonData],
               file: '',
               file_type: '',
-              location_type: 'Custom Draw',
             }
           : {
               ...finalPayloadData,
-              location_type: 'File Upload',
             };
 
       if (values.file || values.location_wkt) {

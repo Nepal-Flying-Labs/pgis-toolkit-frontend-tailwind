@@ -32,6 +32,7 @@ const {
   resendInvitationRequest,
   setSelectedData,
   handleUserTabChange,
+  setUsersOrdering,
 } = Creators;
 
 const roles = [
@@ -74,6 +75,9 @@ const Users = () => {
     ]),
   );
   const users = useSelector(state => state.organizationDashboard.users);
+  const ordering = useSelector(
+    state => state.organizationDashboard.usersFilter.ordering,
+  );
 
   const [value, handleSearch] = useDebouncedInput({
     ms: 300,
@@ -258,7 +262,17 @@ const Users = () => {
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
                 dataHeader={
-                  <SortingContainer name="Name" className="naxatw-text-black" />
+                  <SortingContainer
+                    name="Name"
+                    isActive={ordering === 'full_name'}
+                    handleSort={() =>
+                      dispatch(
+                        setUsersOrdering(
+                          ordering === 'full_name' ? null : 'full_name',
+                        ),
+                      )
+                    }
+                  />
                 }
                 dataFormat={row => (
                   <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
@@ -267,7 +281,11 @@ const Users = () => {
                       alt="img"
                       className="naxatw-w-7 naxatw-h-7 naxatw-rounded-full "
                     />
-                    <span className="naxatw-text-base naxatw-font-bold">
+                    <span
+                      className={` ${
+                        ordering === 'full_name' ? 'naxatw-font-bold' : ''
+                      } naxatw-text-base`}
+                    >
                       {row.full_name || '-'}
                     </span>
                   </div>
@@ -277,16 +295,32 @@ const Users = () => {
                 dataField="Role"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
                 rowcolSpan="rowSpan_2"
-                dataHeader={<SortingContainer name="Role" />}
+                dataHeader={
+                  <SortingContainer
+                    name="Role"
+                    isActive={ordering === 'group'}
+                    handleSort={() =>
+                      dispatch(
+                        setUsersOrdering(ordering === 'group' ? null : 'group'),
+                      )
+                    }
+                  />
+                }
                 dataFormat={row => (
-                  <span className="naxatw-text-base">{row.group}</span>
+                  <span
+                    className={` ${
+                      ordering === 'group' ? 'naxatw-font-bold' : ''
+                    } naxatw-text-base`}
+                  >
+                    {row.group}
+                  </span>
                 )}
               />
               <TableHeader
                 dataField="Phone"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
-                dataHeader={<SortingContainer name="Phone" />}
+                // dataHeader={<SortingContainer name="Phone" />}
                 dataFormat={row => (
                   <span className="naxatw-text-base">{row.contact || '-'}</span>
                 )}
@@ -295,7 +329,7 @@ const Users = () => {
                 dataField="Email"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
-                dataHeader={<SortingContainer name="Email" />}
+                // dataHeader={<SortingContainer name="Email" />}
                 dataFormat={row => (
                   <span className="naxatw-text-base">{row.email}</span>
                 )}
@@ -304,7 +338,7 @@ const Users = () => {
                 dataField="Status"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
-                dataHeader={<SortingContainer name="Status" />}
+                // dataHeader={<SortingContainer name="Status" />}
                 dataFormat={row => (
                   <Status
                     status={row.active}

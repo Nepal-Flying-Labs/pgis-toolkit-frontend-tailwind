@@ -4,7 +4,9 @@ import React from 'react';
 
 const Checkbox = ({ id, label, onClick, checked, disabled, className }) => {
   return (
-    <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2 ">
+    <div
+      className={`${className} naxatw-flex naxatw-items-center naxatw-gap-x-2 `}
+    >
       <input
         id={id}
         type="checkbox"

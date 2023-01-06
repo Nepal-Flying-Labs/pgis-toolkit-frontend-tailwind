@@ -7,7 +7,7 @@ const initialState = {
   searchText: '',
   pageTab: 'users',
   item: {},
-  //   ordering: 'name',
+  ordering: '',
   pagination: {
     page: 1,
     rowSelect: 10,

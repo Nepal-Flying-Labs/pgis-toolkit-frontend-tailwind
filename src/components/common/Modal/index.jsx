@@ -90,7 +90,7 @@ export default function Modal({
                 <div className="naxatw-flex">
                   <div
                     className="naxatw-grow naxatw-max-h-[calc(100vh-10rem)] naxatw-overflow-y-auto scrollbar
-                      naxatw-px-7 naxatw-py-5"
+                      naxatw-px-10 naxatw-py-5"
                   >
                     {children}
                   </div>

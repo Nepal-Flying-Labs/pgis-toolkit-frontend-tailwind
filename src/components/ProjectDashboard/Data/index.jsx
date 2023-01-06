@@ -113,10 +113,10 @@ export default function Data() {
         </div>
       </div>
 
-      <div className="naxatw-space-y-2">
+      {/* <div className="naxatw-space-y-2">
         <h4 className="naxatw-text-grey-800">Please upload your dataset</h4>
         <p>Download Datasets for Field Data Collection</p>
-      </div>
+      </div> */}
 
       <div className="naxatw-py-6 naxatw-flex naxatw-gap-3">
         {uploadMethods.map(({ id, icon, title, description, onClick }) => (

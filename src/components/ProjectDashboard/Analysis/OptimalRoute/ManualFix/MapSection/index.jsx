@@ -21,6 +21,7 @@ import {
   defaultStyles,
   getStyles,
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import { errorFeaturesMapStateSelector } from '@Selectors/analysis';
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -36,6 +37,7 @@ export default function MapSection() {
     ]),
   );
   const selectedLayer = useSelector(state => state.analysis.selectedLayer);
+  const errorFeaturesMapState = useSelector(errorFeaturesMapStateSelector);
 
   // zoom to selected layer on initial map load
   useEffect(() => {
@@ -94,14 +96,34 @@ export default function MapSection() {
               resolution,
             )
           }
-          // style={
-          //   item.id === selectedLayer?.id
-          //     ? selectedLayer.style
-          //     : item?.style || { ...defaultStyles }
-          // }
           zIndex={10}
           // properties={{ layerId: item.id }}
         />
+
+        {errorFeaturesMapState.map(({ type }) => (
+          <VectorTileLayer
+            key={type}
+            url={`${apiURL}maps/error_features_vectortile/{z}/{x}/{y}/?layer=${selectedLayer.id}&type=${type}`}
+            authToken={localStorage.getItem('userToken')}
+            visibleOnMap
+            setStyle={(feature, resolution) =>
+              setLayerStyle(
+                {
+                  ...defaultStyles,
+                  fillColor: '#FF0F0F',
+                  lineColor: '#FF0F0F',
+                  fillOpacity: 100,
+                  lineOpacity: 100,
+                  lineThickness: 1,
+                },
+                feature,
+                resolution,
+              )
+            }
+            zIndex={11}
+            // properties={{ layerId: item.id }}
+          />
+        ))}
         <MapFooter loading={isMapLoading} />
       </MapComponent>
     </div>

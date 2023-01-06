@@ -25,12 +25,7 @@ export default function MapSidebar() {
           <Button className="naxatw-btn-primary">Save</Button>
         </div>
 
-        <div
-          className="naxatw-overflow-auto scrollbar naxatw-flex naxatw-flex-col naxatw-gap-5"
-          style={{
-            height: `calc(100vh - 6.2rem - 9rem)`,
-          }}
-        >
+        <div>
           <Tab data={tabData} />
         </div>
       </div>

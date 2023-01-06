@@ -3,24 +3,21 @@ import { Types } from '@Actions/analysis';
 import { checkErrorData } from '@src/constants/analysis';
 
 const initialState = {
-  stepIndex: 2,
+  stepIndex: 1,
+  // selectedLayer: null, // selected layer for manual fix
   selectedLayer: {
-    id: 507,
-    name: 'ward1geojson2',
+    id: 509,
+    name: 'Other_geom_check_small',
     layer_type: 'Vector',
     upload_status: 'successful',
-    bbox: [
-      85.39604534275621, 27.686313633829993, 85.41973471439125,
-      27.71203178188435,
-    ],
-    geom_type: 'MultiLineString',
-    sub_layer: [],
+    icon: null,
+    std_icon: null,
     style: {
       lineColor: '#2C675A',
-      lineOpacity: 100,
-      fillColor: '#5fb321',
-      fillOpacity: 100,
-      lineThickness: 2,
+      lineOpacity: 40,
+      fillColor: '#f24675',
+      fillOpacity: 0,
+      lineThickness: 1,
       circleRadius: 5,
       dashline: 0,
       showLabel: false,
@@ -49,9 +46,15 @@ const initialState = {
       sublayer: {},
       geometryType: 'MultiLineString',
     },
+    bbox: [
+      85.44320388498414, 27.68996509433749, 85.46849581716032,
+      27.71562359670412,
+    ],
+    geom_type: 'MultiLineString',
+    sub_layer: [],
     theme: 479,
-    checked: false,
-  }, // selected layer for manual fix
+    checked: true,
+  },
   errorFeaturesData: null,
   optimalRoute: {
     selectedRoadLayer: {

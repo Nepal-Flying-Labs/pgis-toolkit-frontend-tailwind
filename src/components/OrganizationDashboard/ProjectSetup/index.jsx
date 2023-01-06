@@ -70,7 +70,7 @@ const ProjectSetup = () => {
 
   useEffect(() => {
     dispatch(getIndividualProjectRequest(projectId));
-    dispatch(getContactPersonRequest({ project: projectId }));
+    dispatch(getContactPersonRequest({ project: projectId, type: 'project' }));
     dispatch(getCountryListRequest());
   }, [dispatch, projectId]);
 

@@ -17,6 +17,10 @@ const initialState = {
     stepFour: {},
   },
   organizationDetail: null,
+  individualOrganization: {
+    item: {},
+    contactPerson: [],
+  },
   selectedData: null,
   drawnGeojsonData: null,
   users: [],
@@ -122,33 +126,68 @@ const setIndividualProject = (state, action) => {
 };
 
 const getContactPersonSuccess = (state, action) => {
-  const { data } = action.payload;
-
+  const { data, type } = action.payload;
+  if (type === 'project') {
+    return {
+      ...state,
+      individualProject: {
+        ...state.individualProject,
+        contactPerson: data,
+      },
+    };
+  }
   return {
     ...state,
-    individualProject: {
-      ...state.individualProject,
+    individualOrganization: {
+      ...state.individualOrganization,
       contactPerson: data,
     },
   };
 };
 
-const postContactPersonSuccess = (state, action) => ({
-  ...state,
-  individualProject: {
-    ...state.individualProject,
-    contactPerson: [...state.individualProject.contactPerson, action.payload],
-  },
-});
+const postContactPersonSuccess = (state, action) => {
+  const { data, type } = action.payload;
 
-const patchContactPersonSuccess = (state, action) => {
-  const newData = state.individualProject.contactPerson.filter(
-    person => person.id !== action.payload.id,
-  );
+  if (type === 'project') {
+    return {
+      ...state,
+      individualProject: {
+        ...state.individualProject,
+        contactPerson: [...state.individualProject.contactPerson, data],
+      },
+    };
+  }
   return {
     ...state,
     individualProject: {
-      ...state.individualProject,
+      ...state.individualOrganization,
+      contactPerson: [...state.individualOrganization.contactPerson, data],
+    },
+  };
+};
+
+const patchContactPersonSuccess = (state, action) => {
+  const { data, type } = action.payload;
+  if (type === 'project') {
+    const newData = state.individualProject.contactPerson.filter(
+      person => person.id !== data.id,
+    );
+    return {
+      ...state,
+      individualProject: {
+        ...state.individualProject,
+        contactPerson: newData,
+      },
+    };
+  }
+
+  const newData = state.individualOrganization.contactPerson.filter(
+    person => person.id !== data.id,
+  );
+  return {
+    ...state,
+    individualOrganization: {
+      ...state.individualOrganization,
       contactPerson: newData,
     },
   };
@@ -298,6 +337,19 @@ const setUserState = (state, action) => ({
   usersFilter: { ...state.usersFilter, ...action.payload },
 });
 
+const updateOrganizationSuccess = (state, action) => ({
+  ...state,
+  organizationDetail: action.payload,
+});
+
+const getOrganizationByIdSuccess = (state, action) => ({
+  ...state,
+  individualOrganization: {
+    ...state.individualOrganization,
+    item: action.payload,
+  },
+});
+
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
@@ -326,6 +378,8 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.SET_DRAWN_GEOJSON_DATA]: setDrawnGeojsonData,
   [Types.RESET_ORGANIZATION_DASHBOARD_STATE]: resetOrganizationDashboardState,
   [Types.SET_USER_STATE]: setUserState,
+  [Types.UPDATE_ORGANIZATION_SUCCESS]: updateOrganizationSuccess,
+  [Types.GET_ORGANIZATION_BY_ID_SUCCESS]: getOrganizationByIdSuccess,
 });
 
 export default organizationDashboardReducer;

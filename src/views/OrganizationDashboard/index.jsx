@@ -7,6 +7,7 @@ import Projects from '@Components/OrganizationDashboard/Projects/index';
 import User from '@Components/OrganizationDashboard/User/index';
 import Home from '@Components/OrganizationDashboard/Home/index';
 import ProjectSetup from '@Components/OrganizationDashboard/ProjectSetup/index';
+import Settings from '@Components/OrganizationDashboard/Settings/index';
 
 const { getOrganizationDetailRequest, resetOrganizationDashboardState } =
   OrganizationDashboardCreators;
@@ -19,6 +20,8 @@ function getTabContent(tabname) {
       return <Projects />;
     case 'user':
       return <User />;
+    case 'settings':
+      return <Settings />;
     default:
       return <Projects />;
   }

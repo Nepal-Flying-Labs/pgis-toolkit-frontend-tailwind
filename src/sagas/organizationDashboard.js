@@ -15,6 +15,7 @@ import {
   getUserGroup,
   updateUserRole,
   updateInvitedUserStatus,
+  organizationById,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
@@ -23,6 +24,7 @@ import commonActions from '@Actions/common';
 import toastActions from '@Actions/toast';
 import prepareFormData from '@Utils/prepareFormData';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
+import removeObjectKeys from '@Utils/removeObjectKeys';
 
 export function* getOrganizationDetailRequest({ id }) {
   try {
@@ -108,10 +110,12 @@ export function* patchProjectRequest({ id, payload }) {
 
 export function* getContactPersonRequest({ params }) {
   try {
-    const response = yield call(getContactPerson, params);
+    const formParams = removeObjectKeys(params, ['type']);
+    const response = yield call(getContactPerson, formParams);
     yield put(
       organizationDashboardActions.getContactPersonSuccess({
         data: response.data,
+        type: params.type,
       }),
     );
   } catch (error) {
@@ -123,20 +127,28 @@ export function* getContactPersonRequest({ params }) {
 export function* postContactPersonRequest({ params, payload }) {
   try {
     const formData = prepareFormData(payload);
-    const response = yield call(postContactPerson, formData, params);
+    const formParams = removeObjectKeys(params, ['type']);
+    const response = yield call(postContactPerson, formData, formParams);
     yield put(
-      organizationDashboardActions.postContactPersonSuccess(response.data),
+      organizationDashboardActions.postContactPersonSuccess({
+        data: response.data,
+        type: payload.type,
+      }),
     );
   } catch (error) {
     yield put(organizationDashboardActions.postContactPersonFailure());
     throw error;
   }
 }
-export function* patchContactPersonRequest({ params, id }) {
+export function* patchContactPersonRequest({ payload, id }) {
+  const formPayload = removeObjectKeys(payload, ['type']);
   try {
-    const response = yield call(patchContactPerson, id, params);
+    const response = yield call(patchContactPerson, id, formPayload);
     yield put(
-      organizationDashboardActions.patchContactPersonSuccess(response.data),
+      organizationDashboardActions.patchContactPersonSuccess({
+        data: response.data,
+        type: payload.type,
+      }),
     );
   } catch (error) {
     yield put(organizationDashboardActions.patchContactPersonFailure());
@@ -284,6 +296,47 @@ export function* resendInvitationRequest({ id, payload }) {
   }
 }
 
+export function* updateOrganizationRequest({ id, payload }) {
+  console.log('action values', payload, id);
+  const newPayload = payload;
+  delete newPayload.page;
+  try {
+    // const formData = prepareFormData(newPayload);
+    // const response = yield call(patchProject, id, formData);
+    // yield put(organizationDashboardActions.patchProjectSuccess(response.data));
+    // // yield put(organizationDashboardActions.toggleModal(''));
+    // if (!page) {
+    //   yield put(push(`/organizations/${organization}/projects`));
+    //   if (status === 'ongoing') {
+    //     yield put(push(`/organizations/${organization}/projects`));
+    //     yield put(commonActions.toggleModal('create-project-success'));
+    //   } else {
+    //     yield put(commonActions.togglePromptDialog(''));
+    //     yield put(push(`/organizations/${organization}/projects`));
+    //   }
+    // } else {
+    //   yield put(organizationDashboardActions.getIndividualProjectRequest(id));
+    // }
+    // yield put(toastActions.success({ message: 'Data saved successfully' }));
+  } catch (error) {
+    yield put(organizationDashboardActions.updateOrganizationFailure());
+    throw error;
+  }
+}
+
+export function* getOrganizationByIdRequest({ id }) {
+  try {
+    const response = yield call(organizationById, id);
+    yield put(
+      organizationDashboardActions.getOrganizationByIdSuccess(response.data),
+    );
+  } catch (error) {
+    console.log('err', error);
+    yield put(organizationDashboardActions.getOrganizationByIdFailure());
+    throw error;
+  }
+}
+
 function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
@@ -353,6 +406,14 @@ function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.RESEND_INVITATION_REQUEST,
     withLoader(withErrorHandler(resendInvitationRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_ORGANIZATION_REQUEST,
+    withLoader(withErrorHandler(updateOrganizationRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ORGANIZATION_BY_ID_REQUEST,
+    withLoader(withErrorHandler(getOrganizationByIdRequest)),
   );
 }
 

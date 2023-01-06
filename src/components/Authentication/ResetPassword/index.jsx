@@ -36,6 +36,7 @@ const validateConfirmPassword = (pass1, pass2) => {
 
 export default function ResetPassword() {
   const [token, setToken] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
   const dispatch = useDispatch();
   const infoDialogContent = useSelector(
     state => state.authentication.infoDialogContent,
@@ -47,6 +48,7 @@ export default function ResetPassword() {
     new_password1: '',
     new_password2: '',
   };
+
   const { meta, values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: initialState,
     required: ['new_password1', 'new_password2'],
@@ -77,7 +79,7 @@ export default function ResetPassword() {
     <div className="md:naxatw-w-[34.688rem] naxatw-container naxatw-mx-auto naxatw-mt-[15.938rem]">
       <div className="naxatw-flex naxatw-justify-center naxatw-mb-10">
         <h3 className="naxatw-font-bold naxatw-tracking-wider">
-          Please Enter New Pasword
+          Please Enter New Password
         </h3>
       </div>
       {infoDialogContent ? (
@@ -93,25 +95,34 @@ export default function ResetPassword() {
       <form onSubmit={handleSubmit}>
         <div className="">
           <div className="mb-6 naxatw-space-y-[1.25rem]">
-            <Input
-              label="Password"
-              type="password"
-              className="naxatw-input"
-              name="new_password1"
-              placeholder="8+ characters"
-              value={values.new_password1}
-              onChange={handleChange}
-              {...inputProps}
-            />
-            {meta.new_password1.error && meta.new_password1.touched && (
-              <FormErrorMessage message={meta.new_password1.message} />
-            )}
+            <div className="naxatw-relative">
+              <Input
+                label="Password"
+                type={!isVisible ? 'password' : 'text'}
+                className="naxatw-input"
+                name="new_password1"
+                placeholder="********"
+                value={values.new_password1}
+                onChange={handleChange}
+                {...inputProps}
+              />
+              {meta.new_password1.error && meta.new_password1.touched && (
+                <FormErrorMessage message={meta.new_password1.message} />
+              )}
+              <span
+                onClick={() => setIsVisible(!isVisible)}
+                className="material-icons naxatw-absolute naxatw-right-3 naxatw-top-10 naxatw-cursor-pointer"
+              >
+                {!isVisible ? 'visibility' : 'visibility_off'}
+              </span>
+            </div>
 
             <Input
               label="Confirm Password"
-              type="password"
+              type={!isVisible ? 'password' : 'text'}
               className="naxatw-input"
               name="new_password2"
+              placeholder="********"
               value={values.new_password2}
               onChange={handleChange}
               {...inputProps}

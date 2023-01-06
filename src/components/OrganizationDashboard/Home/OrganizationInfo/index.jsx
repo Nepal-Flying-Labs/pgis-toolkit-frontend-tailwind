@@ -101,7 +101,7 @@ const OrganizationInfo = () => {
                 organizationDetails?.projects,
               )}%`,
             }}
-            className="naxatw-h-[20px] naxatw-bg-[#0076FF] naxatw-rounded-l-md"
+            className="naxatw-h-[20px] naxatw-bg-[#0076FF] naxatw-rounded-l-md naxatw-rounded-r-md"
           />
           <div
             style={{

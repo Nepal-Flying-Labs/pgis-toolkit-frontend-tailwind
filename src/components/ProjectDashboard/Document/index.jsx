@@ -19,12 +19,13 @@ export default function Document() {
   const { projectId } = useParams();
   const document = useSelector(state => state.projectDashboard.document.list);
   const dispatch = useDispatch();
-  const [initialLoad, setInitialLoad] = useState(true);
+  // const [initialLoad, setInitialLoad] = useState(true);
 
   const toggleRightBar = useSelector(state => state.common.rightSidebar.show);
 
   useEffect(() => {
-    setInitialLoad(false);
+    // setInitialLoad(false);
+    dispatch(setDocumentState({ searchText: '' }));
     dispatch(setRightSidebarState({ show: false, flag: '' }));
   }, [dispatch]);
 
@@ -34,7 +35,7 @@ export default function Document() {
 
   const getContent = () => {
     // if (!layers) return '';
-    if (isEmpty(document) && initialLoad) return <NoDocumentYet />;
+    if (isEmpty(document)) return <NoDocumentYet />;
     return <DocumentList />;
   };
 

@@ -13,7 +13,7 @@ const organizationHeaderData = [
   { label: 'Info', route: 'home', disabled: false },
   { label: 'Projects', route: 'projects', disabled: false },
   { label: 'User', route: 'user', disabled: false },
-  { label: 'Settings', route: 'settings', disabled: true },
+  { label: 'Settings', route: 'settings', disabled: false },
 ];
 
 const projectHeaderData = [

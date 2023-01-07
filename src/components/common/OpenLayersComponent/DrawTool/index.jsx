@@ -8,7 +8,7 @@ import { getUid } from 'ol/util';
 import { Vector as VectorSource } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 import Tooltip from '@Components/common/Tooltip';
-import { defaultStyles, getStyles } from '../helpers/styleUtils';
+import { defaultStyles, getStyles, pointTypes } from '../helpers/styleUtils';
 import getFeatureGeojson from './helpers/getFeatureGeojson';
 import {
   useDrawUtils,
@@ -17,7 +17,6 @@ import {
   DragFeature,
   // RotateFeature,
 } from './modules';
-import { pointTypes } from '../Legend/LegendItem';
 
 const source = new VectorSource();
 

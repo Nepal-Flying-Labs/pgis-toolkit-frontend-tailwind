@@ -20,6 +20,8 @@ export const { Types, Creators } = createActions(
     getErrorFeaturesRequest: ['params'],
     getErrorFeaturesSuccess: ['payload'],
     getErrorFeaturesFailure: null,
+
+    setManualFixState: ['payload'],
   },
   { prefix: 'analysis/' },
 );

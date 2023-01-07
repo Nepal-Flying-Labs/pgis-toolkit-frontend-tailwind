@@ -1,5 +1,9 @@
 import { Fill, Stroke, Style, Icon, Circle, Text } from 'ol/style';
 
+export const pointTypes = ['Point', 'MultiPoint'];
+export const lineTypes = ['LineString', 'MultiLineString'];
+// const polygonTypes = ['Polygon', 'MultiPolygon'];
+
 export function hexToRgba(hex, opacity = 100) {
   if (!hex) return '';
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);

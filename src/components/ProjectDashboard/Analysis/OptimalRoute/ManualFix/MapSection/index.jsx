@@ -39,6 +39,9 @@ export default function MapSection() {
   );
   const selectedLayer = useSelector(state => state.analysis.selectedLayer);
   const errorFeaturesMapState = useSelector(errorFeaturesMapStateSelector);
+  const drawFeatureId = useSelector(
+    state => state.analysis.manualFix.drawFeatureId,
+  );
 
   // zoom to selected layer on initial map load
   useEffect(() => {
@@ -127,9 +130,9 @@ export default function MapSection() {
         ))}
 
         <DrawTool
-          enable={false}
+          enable={!!drawFeatureId}
           // geojson={featureGeojson}
-          geometryType="Polygon"
+          geometryType={selectedLayer.geom_type}
           zIndex={100}
           style={selectedLayer?.style || { ...defaultStyles }}
           onChange={modifiedGeojson => {

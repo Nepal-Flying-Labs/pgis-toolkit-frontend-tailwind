@@ -5,9 +5,12 @@ import { checkErrorData } from '@src/constants/analysis';
 const initialState = {
   stepIndex: 1,
   // selectedLayer: null, // selected layer for manual fix
+  manualFix: {
+    drawFeatureId: null,
+  },
   selectedLayer: {
-    id: 509,
-    name: 'Other_geom_check_small',
+    id: 507,
+    name: 'Null_geom_Large_Area',
     layer_type: 'Vector',
     upload_status: 'successful',
     icon: null,
@@ -15,7 +18,7 @@ const initialState = {
     style: {
       lineColor: '#2C675A',
       lineOpacity: 40,
-      fillColor: '#f24675',
+      fillColor: '#f97d4a',
       fillOpacity: 0,
       lineThickness: 1,
       circleRadius: 5,
@@ -47,8 +50,8 @@ const initialState = {
       geometryType: 'MultiLineString',
     },
     bbox: [
-      85.44320388498414, 27.68996509433749, 85.46849581716032,
-      27.71562359670412,
+      85.39604534275621, 27.686313633829993, 85.41973471439125,
+      27.71203178188435,
     ],
     geom_type: 'MultiLineString',
     sub_layer: [],
@@ -191,6 +194,14 @@ const getErrorFeaturesSuccess = (state, action) => {
   };
 };
 
+const setManualFixState = (state, action) => ({
+  ...state,
+  manualFix: {
+    ...state.manualFix,
+    ...action.payload,
+  },
+});
+
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -200,6 +211,7 @@ const analysisReducer = createReducer(initialState, {
   [Types.HANDLE_AUTOFIX_CHECKBOX]: handleAutofixCheckbox,
   [Types.AUTO_FIX_ERROR_SUCCESS]: autoFixErrorSuccess,
   [Types.GET_ERROR_FEATURES_SUCCESS]: getErrorFeaturesSuccess,
+  [Types.SET_MANUAL_FIX_STATE]: setManualFixState,
 });
 
 export default analysisReducer;

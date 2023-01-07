@@ -1,12 +1,27 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { errorFeaturesMapStateSelector } from '@Selectors/analysis';
+import { Creators } from '@Actions/analysis';
 import Accordion from '@Components/common/Accordion';
 import IconButton from '@Components/common/IconButton';
 import Button from '@Components/common/Button';
 
+const { setManualFixState } = Creators;
+
 export default function Errors() {
   const errorFeaturesMapState = useSelector(errorFeaturesMapStateSelector);
+  const dispatch = useDispatch();
+
+  const handleEditClick = (type, feature) => {
+    if (type === 'null') {
+      dispatch(
+        setManualFixState({
+          drawFeatureId: feature,
+          sidebarContent: 'add-feature',
+        }),
+      );
+    }
+  };
 
   return (
     <div
@@ -63,14 +78,7 @@ export default function Errors() {
                   <div className="naxatw-flex">
                     <span
                       className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
-                      // onClick={() => {
-                      //   dispatch(
-                      //     setProjectMapState({
-                      //       selectedLayer: feature,
-                      //       sidebarContent: 'edit-style',
-                      //     }),
-                      //   );
-                      // }}
+                      onClick={() => handleEditClick(type, feature)}
                     >
                       <IconButton
                         name="edit"

@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import {
-  lineTypes,
   pointTypes,
-} from '@Components/common/OpenLayersComponent/Legend/LegendItem';
+  lineTypes,
+} from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import Input from '../../InputComponents/Input';
 import RangeSlider from '../../InputComponents/RangeSlider';
 

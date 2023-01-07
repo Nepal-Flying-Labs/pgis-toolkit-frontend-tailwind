@@ -10,10 +10,6 @@ import {
 // import checkIfSvgUrl from '../OpenLayersComponent/helpers/checkIfSvgUrl';
 // import './styles.scss';
 
-export const pointTypes = ['Point', 'MultiPoint'];
-export const lineTypes = ['LineString', 'MultiLineString'];
-// const polygonTypes = ['Polygon', 'MultiPolygon'];
-
 const LegendItem = ({
   styles = { ...defaultStyles },
   onClick = () => {},

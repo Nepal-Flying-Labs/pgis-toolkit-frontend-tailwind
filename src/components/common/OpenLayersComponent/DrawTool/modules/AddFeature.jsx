@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useMemo } from 'react';
 import { Draw, Snap } from 'ol/interaction';
+import { lineTypes, pointTypes } from '../../helpers/styleUtils';
 
 export default function AddFeature({
   onClick,
@@ -55,9 +56,9 @@ export default function AddFeature({
       }`}
     >
       <i className="material-symbols-outlined">
-        {type === 'Point'
+        {pointTypes.includes(type)
           ? 'location_on'
-          : type === 'LineString'
+          : lineTypes.includes(type)
           ? 'line_end'
           : 'square'}
       </i>

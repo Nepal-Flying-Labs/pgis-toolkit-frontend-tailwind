@@ -1,5 +1,5 @@
 import { createReducer } from 'reduxsauce';
-import { Types } from '@Actions/analysis';
+import { Types } from '@Actions/dataCleaning';
 import { checkErrorData } from '@src/constants/analysis';
 
 const initialState = {
@@ -245,7 +245,7 @@ const updateFeatureCollectionSuccess = (state, action) => {
   };
 };
 
-const analysisReducer = createReducer(initialState, {
+const dataCleaningReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
   [Types.SET_ERROR_STATES]: setErrorStates,
@@ -259,4 +259,4 @@ const analysisReducer = createReducer(initialState, {
   [Types.UPDATE_FEATURE_COLLECTION_SUCCESS]: updateFeatureCollectionSuccess,
 });
 
-export default analysisReducer;
+export default dataCleaningReducer;

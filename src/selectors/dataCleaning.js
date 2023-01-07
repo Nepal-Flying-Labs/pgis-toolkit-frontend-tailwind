@@ -2,7 +2,7 @@ import removeObjectKeys from '@Utils/removeObjectKeys';
 import { createSelector } from 'reselect';
 
 export const errorFeaturesDataSelector = state =>
-  state.analysis.errorFeaturesData;
+  state.dataCleaning.errorFeaturesData;
 
 export const errorFeaturesMapStateSelector = createSelector(
   [errorFeaturesDataSelector],

@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators } from '@Actions/analysis';
+import { Creators } from '@Actions/dataCleaning';
 import MapSidebar from './MapSidebar';
 import MapSection from './MapSection';
 
 const { getErrorFeaturesRequest } = Creators;
 
 export default function ManualFix() {
-  const selectedLayer = useSelector(state => state.analysis.selectedLayer);
+  const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -31,7 +31,7 @@ export const { Types, Creators } = createActions(
     updateFeatureCollectionSuccess: ['payload'],
     updateFeatureCollectionFailure: null,
   },
-  { prefix: 'analysis/' },
+  { prefix: 'dataCleaning/' },
 );
 
 export default Creators;

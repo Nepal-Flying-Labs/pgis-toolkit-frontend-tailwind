@@ -1,13 +1,13 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators as AnalysisCreators } from '@Actions/analysis';
+import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
 import Button from '@Components/common/Button';
 import Accordion from '@Components/common/Accordion';
 import IconButton from '@Components/common/IconButton';
 
 const { checkErrorRequest, handleAutofixCheckbox, autoFixErrorRequest } =
-  AnalysisCreators;
+  DataCleaningCreators;
 
 function getStatusIcon(status) {
   switch (status) {
@@ -26,13 +26,13 @@ function getStatusIcon(status) {
 
 export default function StepTwo() {
   const selectedRoadLayer = useSelector(
-    state => state.analysis.optimalRoute.selectedRoadLayer,
+    state => state.dataCleaning.optimalRoute.selectedRoadLayer,
   );
   const selectedObstacleLayers = useSelector(
-    state => state.analysis.optimalRoute.selectedObstacleLayers,
+    state => state.dataCleaning.optimalRoute.selectedObstacleLayers,
   );
   const [toggledStates, setToggledStates] = useState({});
-  const errorStates = useSelector(state => state.analysis.errorStates);
+  const errorStates = useSelector(state => state.dataCleaning.errorStates);
   const dispatch = useDispatch();
 
   const isRoadLayerCheckingError =

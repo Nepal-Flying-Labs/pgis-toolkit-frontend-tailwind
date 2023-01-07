@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { stringify } from 'wkt';
-import { Creators as AnalysisCreators, Types } from '@Actions/analysis';
+import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
 import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
@@ -14,18 +14,18 @@ const {
   setManualFixState,
   getLayerAttributeFieldsRequest,
   updateFeatureCollectionRequest,
-} = AnalysisCreators;
+} = DataCleaningCreators;
 
 export default function EditFeatureSection() {
   const sidebarContent = useSelector(
-    state => state.analysis.manualFix.sidebarContent,
+    state => state.dataCleaning.manualFix.sidebarContent,
   );
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
-  const selectedLayer = useSelector(state => state.analysis.selectedLayer);
+  const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
   const drawnFeatureWkt = useSelector(
-    state => state.analysis.manualFix.drawnFeatureWkt,
+    state => state.dataCleaning.manualFix.drawnFeatureWkt,
   );
   const featureGeojson = useSelector(state => state.projectMap.featureGeojson);
   const editFeatureId = useSelector(state => state.projectMap.editFeatureId);
@@ -36,7 +36,7 @@ export default function EditFeatureSection() {
     state => state.projectMap.modifiedFeatureGeojson,
   );
   const individualAttributeData = useSelector(
-    state => state.analysis.manualFix.individualAttributeData,
+    state => state.dataCleaning.manualFix.individualAttributeData,
   );
   const isPosting = useSelector(state =>
     checkIfLoading(state, [

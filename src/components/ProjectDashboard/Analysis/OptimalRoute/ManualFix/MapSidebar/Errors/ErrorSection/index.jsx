@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { errorFeaturesMapStateSelector } from '@Selectors/analysis';
-import { Creators } from '@Actions/analysis';
+import { errorFeaturesMapStateSelector } from '@Selectors/dataCleaning';
+import { Creators } from '@Actions/dataCleaning';
 import Accordion from '@Components/common/Accordion';
 import IconButton from '@Components/common/IconButton';
 import Button from '@Components/common/Button';

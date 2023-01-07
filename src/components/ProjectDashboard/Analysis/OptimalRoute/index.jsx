@@ -16,8 +16,8 @@ function getStepWiseContent(step) {
 }
 
 export default function OptimalRoute() {
-  const stepIndex = useSelector(state => state.analysis.stepIndex);
-  const selectedLayer = useSelector(state => state.analysis.selectedLayer);
+  const stepIndex = useSelector(state => state.dataCleaning.stepIndex);
+  const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
 
   return selectedLayer ? (
     <ManualFix />

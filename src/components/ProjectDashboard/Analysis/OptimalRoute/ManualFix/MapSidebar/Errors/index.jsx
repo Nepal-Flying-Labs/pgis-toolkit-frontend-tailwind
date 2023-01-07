@@ -5,7 +5,7 @@ import EditFeatureSection from './EditFeatureSection';
 
 export default function Errors() {
   const sidebarContent = useSelector(
-    state => state.analysis.manualFix.sidebarContent,
+    state => state.dataCleaning.manualFix.sidebarContent,
   );
 
   function getContent() {

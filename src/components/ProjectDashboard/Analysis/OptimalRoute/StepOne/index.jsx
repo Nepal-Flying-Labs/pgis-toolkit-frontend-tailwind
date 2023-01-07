@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
-import { Creators as AnalysisCreators } from '@Actions/analysis';
+import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
 import useForm from '@Hooks/useForm';
 import Select from '@Components/common/Select';
 import Spinner from '@Components/common/Spinner';
@@ -17,7 +17,7 @@ import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 
 const { getProjectThemesRequest, getProjectThemeLayersRequest } =
   ProjectMapCreators;
-const { setAnalysisState, setOptimalRouteState } = AnalysisCreators;
+const { setAnalysisState, setOptimalRouteState } = DataCleaningCreators;
 
 export default function StepOne() {
   const { projectId } = useParams();
@@ -26,10 +26,10 @@ export default function StepOne() {
   const roadLayerThemeId = useSelector(roadLayersThemeIdSelector);
   const obstaclesLayerThemeId = useSelector(obstacleLayersThemeIdSelector);
   const selectedRoadLayer = useSelector(
-    state => state.analysis.optimalRoute.selectedRoadLayer,
+    state => state.dataCleaning.optimalRoute.selectedRoadLayer,
   );
   const selectedObstacleLayers = useSelector(
-    state => state.analysis.optimalRoute.selectedObstacleLayers,
+    state => state.dataCleaning.optimalRoute.selectedObstacleLayers,
   );
   const isLayersFetching = useSelector(state =>
     checkIfLoading(state, [Types.GET_PROJECT_THEME_LAYERS_REQUEST]),

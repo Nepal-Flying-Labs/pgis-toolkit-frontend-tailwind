@@ -17,7 +17,7 @@ function getAnalysisContent(type) {
 
 export default function Analysis() {
   const { analysisType } = useParams();
-  const selectedLayer = useSelector(state => state.analysis.selectedLayer);
+  const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
 
   return (
     <div>

@@ -3,7 +3,7 @@ import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
 import { stringify } from 'wkt';
-import { Creators as AnalysisCreators, Types } from '@Actions/analysis';
+import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
 import {
   useOLMap,
   MapContainer as MapComponent,
@@ -23,10 +23,10 @@ import {
   defaultStyles,
   getStyles,
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
-import { errorFeaturesMapStateSelector } from '@Selectors/analysis';
+import { errorFeaturesMapStateSelector } from '@Selectors/dataCleaning';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool/index';
 
-const { setManualFixState } = AnalysisCreators;
+const { setManualFixState } = DataCleaningCreators;
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -41,13 +41,13 @@ export default function MapSection() {
       Types.GET_PROJECT_GEOJSON_REQUEST,
     ]),
   );
-  const selectedLayer = useSelector(state => state.analysis.selectedLayer);
+  const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
   const errorFeaturesMapState = useSelector(errorFeaturesMapStateSelector);
   const drawFeatureId = useSelector(
-    state => state.analysis.manualFix.drawFeatureId,
+    state => state.dataCleaning.manualFix.drawFeatureId,
   );
   const refreshLayerId = useSelector(
-    state => state.analysis.manualFix.refreshLayerId,
+    state => state.dataCleaning.manualFix.refreshLayerId,
   );
   const dispatch = useDispatch();
 

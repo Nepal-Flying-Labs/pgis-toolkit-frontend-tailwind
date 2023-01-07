@@ -5,22 +5,22 @@ import {
   copyFeatures,
   getErrorFeatures,
   updateFeatureCollection,
-} from '@Services/analysis';
-import analysisActions, { Types } from '@Actions/analysis';
+} from '@Services/dataCleaning';
+import dataCleaningActions, { Types } from '@Actions/dataCleaning';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { getLayerAttributeFields } from '@Services/projectMap';
 
 export function* checkErrorRequest({ params }) {
   try {
     const layerId = params.layer;
-    yield put(analysisActions.setErrorStates(layerId));
+    yield put(dataCleaningActions.setErrorStates(layerId));
     yield call(copyFeatures, { layer: layerId.toString() });
-    const { errorStates } = yield select(state => state.analysis);
+    const { errorStates } = yield select(state => state.dataCleaning);
     const errorData = errorStates[layerId];
     for (let i = 0; i < errorData.length; i += 1) {
       const { id, checkAPI } = errorData[i];
       yield put(
-        analysisActions.setErrorCheckingStatus({
+        dataCleaningActions.setErrorCheckingStatus({
           layerId,
           id,
           status: 'checking',
@@ -28,7 +28,7 @@ export function* checkErrorRequest({ params }) {
       );
       const response = yield call(checkError, checkAPI, params);
       yield put(
-        analysisActions.checkErrorSuccess({
+        dataCleaningActions.checkErrorSuccess({
           ...response.data,
           id,
           layerId,
@@ -36,7 +36,7 @@ export function* checkErrorRequest({ params }) {
       );
     }
   } catch (error) {
-    yield put(analysisActions.checkErrorFailure());
+    yield put(dataCleaningActions.checkErrorFailure());
     throw error;
   }
 }
@@ -44,12 +44,12 @@ export function* checkErrorRequest({ params }) {
 export function* autoFixErrorRequest({ params }) {
   try {
     const layerId = params.layer;
-    const { errorStates } = yield select(state => state.analysis);
+    const { errorStates } = yield select(state => state.dataCleaning);
     const checkedErrorData = errorStates[layerId].filter(item => item.checked);
     for (let i = 0; i < checkedErrorData.length; i += 1) {
       const { id, fixAPI } = checkedErrorData[i];
       yield put(
-        analysisActions.setErrorCheckingStatus({
+        dataCleaningActions.setErrorCheckingStatus({
           layerId,
           id,
           status: 'fixing',
@@ -57,7 +57,7 @@ export function* autoFixErrorRequest({ params }) {
       );
       const response = yield call(autoFixError, fixAPI, params);
       yield put(
-        analysisActions.autoFixErrorSuccess({
+        dataCleaningActions.autoFixErrorSuccess({
           ...response.data,
           id,
           layerId,
@@ -65,7 +65,7 @@ export function* autoFixErrorRequest({ params }) {
       );
     }
   } catch (error) {
-    yield put(analysisActions.autoFixErrorFailure());
+    yield put(dataCleaningActions.autoFixErrorFailure());
     throw error;
   }
 }
@@ -73,9 +73,9 @@ export function* autoFixErrorRequest({ params }) {
 export function* getErrorFeaturesRequest({ params }) {
   try {
     const response = yield call(getErrorFeatures, params);
-    yield put(analysisActions.getErrorFeaturesSuccess(response.data));
+    yield put(dataCleaningActions.getErrorFeaturesSuccess(response.data));
   } catch (error) {
-    yield put(analysisActions.getErrorFeaturesFailure());
+    yield put(dataCleaningActions.getErrorFeaturesFailure());
     throw error;
   }
 }
@@ -83,9 +83,11 @@ export function* getErrorFeaturesRequest({ params }) {
 export function* getLayerAttributeFieldsRequest({ params }) {
   try {
     const response = yield call(getLayerAttributeFields, params);
-    yield put(analysisActions.getLayerAttributeFieldsSuccess(response.data));
+    yield put(
+      dataCleaningActions.getLayerAttributeFieldsSuccess(response.data),
+    );
   } catch (error) {
-    yield put(analysisActions.getLayerAttributeFieldsFailure());
+    yield put(dataCleaningActions.getLayerAttributeFieldsFailure());
     throw error;
   }
 }
@@ -93,14 +95,16 @@ export function* getLayerAttributeFieldsRequest({ params }) {
 export function* updateFeatureCollectionRequest({ id, payload }) {
   try {
     const response = yield call(updateFeatureCollection, id, payload);
-    yield put(analysisActions.updateFeatureCollectionSuccess(response.data));
+    yield put(
+      dataCleaningActions.updateFeatureCollectionSuccess(response.data),
+    );
   } catch (error) {
-    yield put(analysisActions.updateFeatureCollectionFailure());
+    yield put(dataCleaningActions.updateFeatureCollectionFailure());
     throw error;
   }
 }
 
-function* analysisWatcher() {
+function* dataCleaningWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
     withLoader(withErrorHandler(checkErrorRequest)),
@@ -123,4 +127,4 @@ function* analysisWatcher() {
   );
 }
 
-export default analysisWatcher;
+export default dataCleaningWatcher;

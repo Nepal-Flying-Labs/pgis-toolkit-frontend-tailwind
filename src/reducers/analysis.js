@@ -4,10 +4,14 @@ import { checkErrorData } from '@src/constants/analysis';
 
 const initialState = {
   stepIndex: 1,
-  // selectedLayer: null, // selected layer for manual fix
   manualFix: {
     drawFeatureId: null,
+    sidebarContent: 'error-list', // 'error-list', 'add-feature', 'edit-feature'
+    drawnFeatureWkt: null,
+    layerAttributes: null,
+    individualAttributeData: [],
   },
+  // selectedLayer: null, // selected layer for manual fix
   selectedLayer: {
     id: 507,
     name: 'Null_geom_Large_Area',
@@ -202,6 +206,21 @@ const setManualFixState = (state, action) => ({
   },
 });
 
+const getLayerAttributeFieldsSuccess = (state, action) => {
+  const { layerAttributes } = state.manualFix;
+  const individualAttributeData = action.payload.map(item => ({
+    ...item,
+    value: layerAttributes?.[`${item.name}`] || '',
+  }));
+  return {
+    ...state,
+    manualFix: {
+      ...state.manualFix,
+      individualAttributeData,
+    },
+  };
+};
+
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -212,6 +231,7 @@ const analysisReducer = createReducer(initialState, {
   [Types.AUTO_FIX_ERROR_SUCCESS]: autoFixErrorSuccess,
   [Types.GET_ERROR_FEATURES_SUCCESS]: getErrorFeaturesSuccess,
   [Types.SET_MANUAL_FIX_STATE]: setManualFixState,
+  [Types.GET_LAYER_ATTRIBUTE_FIELDS_SUCCESS]: getLayerAttributeFieldsSuccess,
 });
 
 export default analysisReducer;

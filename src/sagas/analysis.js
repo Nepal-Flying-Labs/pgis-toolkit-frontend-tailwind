@@ -7,6 +7,7 @@ import {
 } from '@Services/analysis';
 import analysisActions, { Types } from '@Actions/analysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
+import { getLayerAttributeFields } from '@Services/projectMap';
 
 export function* checkErrorRequest({ params }) {
   try {
@@ -78,6 +79,16 @@ export function* getErrorFeaturesRequest({ params }) {
   }
 }
 
+export function* getLayerAttributeFieldsRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttributeFields, params);
+    yield put(analysisActions.getLayerAttributeFieldsSuccess(response.data));
+  } catch (error) {
+    yield put(analysisActions.getLayerAttributeFieldsFailure());
+    throw error;
+  }
+}
+
 function* analysisWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
@@ -90,6 +101,10 @@ function* analysisWatcher() {
   yield takeLatest(
     Types.GET_ERROR_FEATURES_REQUEST,
     withLoader(withErrorHandler(getErrorFeaturesRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+    withLoader(withErrorHandler(getLayerAttributeFieldsRequest)),
   );
 }
 

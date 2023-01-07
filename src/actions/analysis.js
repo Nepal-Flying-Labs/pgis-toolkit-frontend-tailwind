@@ -22,6 +22,10 @@ export const { Types, Creators } = createActions(
     getErrorFeaturesFailure: null,
 
     setManualFixState: ['payload'],
+
+    getLayerAttributeFieldsRequest: ['params'],
+    getLayerAttributeFieldsSuccess: ['payload'],
+    getLayerAttributeFieldsFailure: null,
   },
   { prefix: 'analysis/' },
 );

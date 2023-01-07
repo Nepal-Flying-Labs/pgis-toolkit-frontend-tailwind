@@ -1,8 +1,9 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
-import { Types } from '@Actions/projectMap';
+import { stringify } from 'wkt';
+import { Creators as AnalysisCreators, Types } from '@Actions/analysis';
 import {
   useOLMap,
   MapContainer as MapComponent,
@@ -15,6 +16,7 @@ import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
+import VectorTile from 'ol/layer/VectorTile';
 import { apiURL } from '@Services';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import {
@@ -23,6 +25,8 @@ import {
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { errorFeaturesMapStateSelector } from '@Selectors/analysis';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool/index';
+
+const { setManualFixState } = AnalysisCreators;
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -42,6 +46,10 @@ export default function MapSection() {
   const drawFeatureId = useSelector(
     state => state.analysis.manualFix.drawFeatureId,
   );
+  const refreshLayerId = useSelector(
+    state => state.analysis.manualFix.refreshLayerId,
+  );
+  const dispatch = useDispatch();
 
   // zoom to selected layer on initial map load
   useEffect(() => {
@@ -57,6 +65,21 @@ export default function MapSection() {
       });
     }
   }, [map, selectedLayer]);
+
+  // refresh vectortile after layer edit
+  useEffect(() => {
+    if (!map || !refreshLayerId) return;
+    const layers = map.getLayers();
+    layers.forEach(layer => {
+      if (layer instanceof VectorTile) {
+        const properties = layer.getProperties();
+        if (properties.layerId === refreshLayerId) {
+          layer.getSource().refresh();
+          dispatch(setManualFixState({ refreshLayerId: null }));
+        }
+      }
+    });
+  }, [dispatch, map, refreshLayerId]);
 
   const setLayerStyle = useCallback((style, feature, resolution) => {
     const stylex = { ...style };
@@ -125,7 +148,7 @@ export default function MapSection() {
               )
             }
             zIndex={11}
-            // properties={{ layerId: item.id }}
+            properties={{ layerId: selectedLayer.id }}
           />
         ))}
 
@@ -135,11 +158,13 @@ export default function MapSection() {
           geometryType={selectedLayer.geom_type}
           zIndex={100}
           style={selectedLayer?.style || { ...defaultStyles }}
-          onChange={modifiedGeojson => {
-            console.log(modifiedGeojson, 'modifiedGeojsonx');
-          }}
-          onCancel={() => {
-            // dispatch(cancelSitePolygonEdit());
+          onChange={geojson => {
+            const wktString = stringify(geojson);
+            dispatch(
+              setManualFixState({
+                drawnFeatureWkt: wktString,
+              }),
+            );
           }}
         />
 

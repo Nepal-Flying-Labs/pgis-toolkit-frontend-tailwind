@@ -13,8 +13,7 @@ import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 const {
   setManualFixState,
   getLayerAttributeFieldsRequest,
-  postNewLayerFeatureRequest,
-  // updateFeatureCollectionRequest,
+  updateFeatureCollectionRequest,
 } = AnalysisCreators;
 
 export default function EditFeatureSection() {
@@ -89,7 +88,7 @@ export default function EditFeatureSection() {
         payloadData.layer = selectedLayer.id;
         payloadData.geometry = drawnFeatureWkt;
         payloadData.attributes = data;
-        // dispatch(updateFeatureCollectionRequest(selectedLayer.id, payloadData));
+        dispatch(updateFeatureCollectionRequest(selectedLayer.id, payloadData));
         return;
       }
       if (!modifiedFeatureGeojson) {

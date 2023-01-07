@@ -4,6 +4,7 @@ import {
   checkError,
   copyFeatures,
   getErrorFeatures,
+  updateFeatureCollection,
 } from '@Services/analysis';
 import analysisActions, { Types } from '@Actions/analysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
@@ -89,6 +90,16 @@ export function* getLayerAttributeFieldsRequest({ params }) {
   }
 }
 
+export function* updateFeatureCollectionRequest({ id, payload }) {
+  try {
+    const response = yield call(updateFeatureCollection, id, payload);
+    yield put(analysisActions.updateFeatureCollectionSuccess(response.data));
+  } catch (error) {
+    yield put(analysisActions.updateFeatureCollectionFailure());
+    throw error;
+  }
+}
+
 function* analysisWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
@@ -105,6 +116,10 @@ function* analysisWatcher() {
   yield takeLatest(
     Types.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
     withLoader(withErrorHandler(getLayerAttributeFieldsRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_FEATURE_COLLECTION_REQUEST,
+    withLoader(withErrorHandler(updateFeatureCollectionRequest)),
   );
 }
 

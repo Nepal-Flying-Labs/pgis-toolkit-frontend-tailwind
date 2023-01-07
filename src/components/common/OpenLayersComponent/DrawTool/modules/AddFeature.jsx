@@ -17,7 +17,11 @@ export default function AddFeature({
     () =>
       new Draw({
         source: vectorLayer?.getSource(),
-        type,
+        type: pointTypes.includes(type)
+          ? 'Point'
+          : lineTypes.includes(type)
+          ? 'LineString'
+          : 'Polygon',
       }),
     [vectorLayer, type],
   );

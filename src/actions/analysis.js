@@ -26,6 +26,10 @@ export const { Types, Creators } = createActions(
     getLayerAttributeFieldsRequest: ['params'],
     getLayerAttributeFieldsSuccess: ['payload'],
     getLayerAttributeFieldsFailure: null,
+
+    updateFeatureCollectionRequest: ['id', 'payload'],
+    updateFeatureCollectionSuccess: ['payload'],
+    updateFeatureCollectionFailure: null,
   },
   { prefix: 'analysis/' },
 );

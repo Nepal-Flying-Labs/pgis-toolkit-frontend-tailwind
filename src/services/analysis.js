@@ -11,3 +11,6 @@ export const copyFeatures = data =>
 
 export const getErrorFeatures = params =>
   authenticated(api).get(`/maps/cleaning_error_features/`, { params });
+
+export const updateFeatureCollection = (id, data) =>
+  authenticated(api).patch(`/maps/feature_collection_mirror/${id}/`, data);

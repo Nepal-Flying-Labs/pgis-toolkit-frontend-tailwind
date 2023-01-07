@@ -5,11 +5,12 @@ import { checkErrorData } from '@src/constants/analysis';
 const initialState = {
   stepIndex: 1,
   manualFix: {
-    drawFeatureId: null,
     sidebarContent: 'error-list', // 'error-list', 'add-feature', 'edit-feature'
+    drawFeatureId: null,
     drawnFeatureWkt: null,
     layerAttributes: null,
     individualAttributeData: [],
+    refreshLayerId: null,
   },
   // selectedLayer: null, // selected layer for manual fix
   selectedLayer: {
@@ -221,6 +222,29 @@ const getLayerAttributeFieldsSuccess = (state, action) => {
   };
 };
 
+const updateFeatureCollectionSuccess = (state, action) => {
+  const refreshLayerId = action.payload.layer;
+  const {
+    sidebarContent,
+    drawFeatureId,
+    drawnFeatureWkt,
+    layerAttributes,
+    individualAttributeData,
+  } = initialState.manualFix;
+  return {
+    ...state,
+    manualFix: {
+      ...state.manualFix,
+      refreshLayerId,
+      sidebarContent,
+      drawFeatureId,
+      drawnFeatureWkt,
+      layerAttributes,
+      individualAttributeData,
+    },
+  };
+};
+
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -232,6 +256,7 @@ const analysisReducer = createReducer(initialState, {
   [Types.GET_ERROR_FEATURES_SUCCESS]: getErrorFeaturesSuccess,
   [Types.SET_MANUAL_FIX_STATE]: setManualFixState,
   [Types.GET_LAYER_ATTRIBUTE_FIELDS_SUCCESS]: getLayerAttributeFieldsSuccess,
+  [Types.UPDATE_FEATURE_COLLECTION_SUCCESS]: updateFeatureCollectionSuccess,
 });
 
 export default analysisReducer;

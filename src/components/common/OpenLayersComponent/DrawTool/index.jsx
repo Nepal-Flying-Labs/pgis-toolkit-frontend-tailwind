@@ -101,7 +101,8 @@ export default function DrawTool({
     setModifiedStates(prev => [...prev, featureGeojson]);
     setModifiedFeature(feature);
     setDrawType(null);
-  }, []);
+    onChange(featureGeojson);
+  }, []); // eslint-disable-line
 
   const handleDelete = () => {
     source.clear();

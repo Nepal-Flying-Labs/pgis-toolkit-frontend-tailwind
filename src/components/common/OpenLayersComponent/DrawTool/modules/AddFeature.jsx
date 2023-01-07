@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useMemo } from 'react';
 import { Draw, Snap } from 'ol/interaction';
@@ -46,8 +47,20 @@ export default function AddFeature({
   }, [drawInstance, onDrawEnd]);
 
   return (
-    <button type="button" title="Draw Polygon" onClick={onClick}>
-      <i className="material-icons-outlined">square</i>
+    <button
+      type="button"
+      onClick={onClick}
+      className={`naxatw-icon-btn naxatw-icon-btn-sm ${
+        enable ? 'naxatw-text-secondary-400' : ''
+      }`}
+    >
+      <i className="material-symbols-outlined">
+        {type === 'Point'
+          ? 'location_on'
+          : type === 'LineString'
+          ? 'line_end'
+          : 'square'}
+      </i>
     </button>
   );
 }

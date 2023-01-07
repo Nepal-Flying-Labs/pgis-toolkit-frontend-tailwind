@@ -22,6 +22,7 @@ import {
   getStyles,
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { errorFeaturesMapStateSelector } from '@Selectors/analysis';
+import DrawTool from '@Components/common/OpenLayersComponent/DrawTool/index';
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -124,6 +125,21 @@ export default function MapSection() {
             // properties={{ layerId: item.id }}
           />
         ))}
+
+        <DrawTool
+          enable={false}
+          // geojson={featureGeojson}
+          geometryType="Polygon"
+          zIndex={100}
+          style={selectedLayer?.style || { ...defaultStyles }}
+          onChange={modifiedGeojson => {
+            console.log(modifiedGeojson, 'modifiedGeojsonx');
+          }}
+          onCancel={() => {
+            // dispatch(cancelSitePolygonEdit());
+          }}
+        />
+
         <MapFooter loading={isMapLoading} />
       </MapComponent>
     </div>

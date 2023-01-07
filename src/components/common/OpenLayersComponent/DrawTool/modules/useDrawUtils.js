@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useMemo, useEffect, useCallback } from 'react';
-import { Modify, Select, Translate } from 'ol/interaction';
+import { Modify, Select, Translate, Snap } from 'ol/interaction';
 import { shiftKeyOnly, singleClick } from 'ol/events/condition';
 
 export default function useDrawUtils({
@@ -8,12 +8,13 @@ export default function useDrawUtils({
   onModifyEnd = () => {},
   onDragEnd = () => {},
   layerUid,
+  source,
 }) {
   const select = useMemo(
     () =>
       new Select({
         wrapX: false,
-        filter: (_, layer) => layerUid?.current === layer?.ol_uid,
+        // filter: (_, layer) => layerUid?.current === layer?.ol_uid,
       }),
     [],
   );
@@ -34,6 +35,8 @@ export default function useDrawUtils({
       }),
     [select],
   );
+
+  const snap = useMemo(() => new Snap({ source }), [source]);
 
   useEffect(() => {
     modify.on('modifyend', e => {
@@ -76,6 +79,7 @@ export default function useDrawUtils({
     select,
     modify,
     translate,
+    snap,
     addInteraction,
     removeInteraction,
   };

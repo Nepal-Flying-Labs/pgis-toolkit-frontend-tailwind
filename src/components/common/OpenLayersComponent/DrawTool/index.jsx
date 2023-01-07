@@ -15,7 +15,7 @@ import {
   AddFeature,
   EditFeature,
   DragFeature,
-  RotateFeature,
+  // RotateFeature,
 } from './modules';
 import { pointTypes } from '../Legend/LegendItem';
 
@@ -31,6 +31,7 @@ export default function DrawTool({
   onSave = () => {},
   onCancel,
   onError,
+  enable,
 }) {
   const [vectorLayer, setVectorLayer] = useState(null);
   const [drawType, setDrawType] = useState(null);
@@ -45,10 +46,11 @@ export default function DrawTool({
     onChange(featureGeojson);
   }, []); // eslint-disable-line
 
-  const { select, modify, translate, addInteraction, removeInteraction } =
+  const { select, modify, translate, snap, addInteraction, removeInteraction } =
     useDrawUtils({
       mapInstance: map,
       layerUid,
+      source,
       onModifyEnd: handleFeatureEdit,
       onDragEnd: handleFeatureEdit,
     });
@@ -75,16 +77,24 @@ export default function DrawTool({
 
   // clean up on geojson remove
   useEffect(() => {
-    if (!map || geojson || !vectorLayer) return;
+    if (!map || enable || !vectorLayer) return;
     select.getFeatures().clear();
     source.clear();
     setDrawType(null);
     map.removeLayer(vectorLayer);
-  }, [map, vectorLayer, geojson, select]);
+  }, [map, vectorLayer, enable, select]);
 
   const handleAddFeatureClick = () => {
-    if (modifiedFeature !== null) return;
-    setDrawType('add-polygon');
+    if (vectorLayer) return;
+    const vectorLyr = new VectorLayer({
+      source,
+      zIndex: zIndex + 1,
+      style: (feature, resolution) => getStyles({ style, feature, resolution }),
+    });
+    layerUid.current = getUid(vectorLyr);
+    map.addLayer(vectorLyr);
+    setVectorLayer(vectorLyr);
+    setDrawType('add-feature');
   };
 
   const handleDrawEnd = useCallback(feature => {
@@ -98,7 +108,7 @@ export default function DrawTool({
     source.clear();
     // setModifiedStates((prev) => [...prev, null]);
     setModifiedFeature(null);
-    setDrawType('add-polygon');
+    // setDrawType('add-feature');
   };
 
   // on undo click
@@ -135,6 +145,7 @@ export default function DrawTool({
     select,
     modify,
     translate,
+    snap,
     addInteraction,
     removeInteraction,
     vectorLayer,
@@ -146,8 +157,19 @@ export default function DrawTool({
       className="naxatw-absolute naxatw-py-1 naxatw-px-[1px] naxatw-rounded-lg naxatw-top-28 naxatw-left-4
         naxatw-bg-white naxatw-z-10 naxatw-shadow-3xl naxatw-text-grey-800 naxatw-flex naxatw-flex-col
         naxatw-border naxatw-border-grey-300"
-      style={{ display: !geojson ? 'none' : '' }}
+      style={{ display: !enable ? 'none' : '' }}
     >
+      <Tooltip content="Add Feature" direction="right">
+        <AddFeature
+          type={geometryType}
+          enable={drawType === 'add-feature'}
+          // onClick={() => setDrawType('add-feature')}
+          onClick={handleAddFeatureClick}
+          onDrawEnd={handleDrawEnd}
+          {...props}
+        />
+      </Tooltip>
+
       <Tooltip content="Drag" direction="right">
         <DragFeature
           enable={drawType === 'drag-feature'}
@@ -166,7 +188,7 @@ export default function DrawTool({
         </Tooltip>
       )}
 
-      {!pointTypes.includes(geometryType) && (
+      {/* {!pointTypes.includes(geometryType) && (
         <Tooltip content="Rotate" direction="right">
           <RotateFeature
             enable={drawType === 'rotate-feature'}
@@ -174,7 +196,7 @@ export default function DrawTool({
             {...props}
           />
         </Tooltip>
-      )}
+      )} */}
 
       <Tooltip content="Delete" direction="right">
         <button
@@ -272,12 +294,13 @@ export default function DrawTool({
 }
 
 DrawTool.defaultProps = {
+  geojson: null,
   zIndex: 0,
   style: { ...defaultStyles, fillOpacity: 30, fillColor: '#0000ff' },
 };
 
 DrawTool.propTypes = {
-  geojson: PropTypes.object.isRequired,
+  geojson: PropTypes.object,
   style: PropTypes.object,
   zIndex: PropTypes.number,
 };

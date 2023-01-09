@@ -17,6 +17,7 @@ import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import VectorTile from 'ol/layer/VectorTile';
+import CustomVTLayer from '@Components/common/OpenLayersComponent/CustomLayer/CustomVTLayer';
 import { apiURL } from '@Services';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import {
@@ -24,7 +25,8 @@ import {
   getStyles,
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { errorFeaturesMapStateSelector } from '@Selectors/dataCleaning';
-import DrawTool from '@Components/common/OpenLayersComponent/DrawTool/index';
+import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
+import HelpBox from './HelpBox';
 
 const { setManualFixState } = DataCleaningCreators;
 
@@ -112,7 +114,9 @@ export default function MapSection() {
 
         <CustomLayerSwitcher />
 
-        <VectorTileLayer
+        <HelpBox />
+
+        <CustomVTLayer
           url={`${apiURL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${selectedLayer.id}`}
           authToken={localStorage.getItem('userToken')}
           visibleOnMap

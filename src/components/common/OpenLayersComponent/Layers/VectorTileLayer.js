@@ -6,7 +6,6 @@ import { useEffect, useMemo, useRef } from 'react';
 import VectorTile from 'ol/layer/VectorTile';
 import MVT from 'ol/format/MVT';
 import Feature from 'ol/Feature';
-import { Stroke, Fill, Style } from 'ol/style';
 import VectorTileSource from 'ol/source/VectorTile';
 import { transformExtent } from 'ol/proj';
 import getSvgImageIcon from '../helpers/getSvgImageIcon';
@@ -16,16 +15,6 @@ import checkIfSvgUrl from '../helpers/checkIfSvgUrl';
 // import { isExtentValid } from '../helpers/layerUtils';
 
 const hoverEffectColor = '#7BCBC3';
-
-const selectedCountry = new Style({
-  stroke: new Stroke({
-    color: '#ffffff',
-    width: 2,
-  }),
-  fill: new Fill({
-    color: '#ffffff',
-  }),
-});
 
 const VectorTileLayer = ({
   map,
@@ -241,6 +230,7 @@ const VectorTileLayer = ({
               fillOpacity: 100,
               lineColor: hoverEffectColor,
               lineOpacity: 100,
+              lineThickness: style.lineThickness + 1,
             },
             feature,
             resolution,

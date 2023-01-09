@@ -7,6 +7,7 @@ import {
   updateFeatureCollection,
 } from '@Services/dataCleaning';
 import dataCleaningActions, { Types } from '@Actions/dataCleaning';
+import commonActions from '@Actions/common';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { getLayerAttributeFields } from '@Services/projectMap';
 
@@ -104,6 +105,18 @@ export function* updateFeatureCollectionRequest({ id, payload }) {
   }
 }
 
+export function* deleteFeatureRequest({ id }) {
+  try {
+    const payload = { is_deleted: true };
+    yield call(updateFeatureCollection, id, payload);
+    yield put(dataCleaningActions.deleteFeatureSuccess());
+    yield put(commonActions.togglePromptDialog());
+  } catch (error) {
+    yield put(dataCleaningActions.deleteFeatureFailure());
+    throw error;
+  }
+}
+
 function* dataCleaningWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
@@ -124,6 +137,10 @@ function* dataCleaningWatcher() {
   yield takeLatest(
     Types.UPDATE_FEATURE_COLLECTION_REQUEST,
     withLoader(withErrorHandler(updateFeatureCollectionRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_FEATURE_REQUEST,
+    withLoader(withErrorHandler(deleteFeatureRequest)),
   );
 }
 

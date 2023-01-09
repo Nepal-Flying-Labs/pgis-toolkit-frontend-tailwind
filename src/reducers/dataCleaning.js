@@ -11,6 +11,7 @@ const initialState = {
     layerAttributes: null,
     individualAttributeData: [],
     refreshLayerId: null,
+    selectedError: null,
   },
   // selectedLayer: null, // selected layer for manual fix
   selectedLayer: {
@@ -192,7 +193,18 @@ const autoFixErrorSuccess = (state, action) => {
 };
 
 const getErrorFeaturesSuccess = (state, action) => {
-  const data = action.payload;
+  const data = Object.entries(action.payload).reduce(
+    (obj, [key, value]) =>
+      value.length
+        ? {
+            ...obj,
+            [key]: Array.isArray(value)
+              ? value.map(val => ({ id: val, checked: false }))
+              : value,
+          }
+        : { ...obj },
+    {},
+  );
   return {
     ...state,
     errorFeaturesData: data,
@@ -245,6 +257,32 @@ const updateFeatureCollectionSuccess = (state, action) => {
   };
 };
 
+const handleErrorCheckbox = (state, action) => {
+  const { id, name, checked } = action.payload;
+  const errorFeaturesData = {
+    ...state.errorFeaturesData,
+    [name]: state.errorFeaturesData[name].map(item =>
+      item.id === +id ? { ...item, checked } : { ...item },
+    ),
+  };
+  return {
+    ...state,
+    errorFeaturesData,
+  };
+};
+
+const deleteFeatureSuccess = state => {
+  const { id, type } = state.manualFix.selectedError;
+  const errorFeaturesData = {
+    ...state.errorFeaturesData,
+    [type]: state.errorFeaturesData[type].filter(item => item.id !== id),
+  };
+  return {
+    ...state,
+    errorFeaturesData,
+  };
+};
+
 const dataCleaningReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -257,6 +295,8 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.SET_MANUAL_FIX_STATE]: setManualFixState,
   [Types.GET_LAYER_ATTRIBUTE_FIELDS_SUCCESS]: getLayerAttributeFieldsSuccess,
   [Types.UPDATE_FEATURE_COLLECTION_SUCCESS]: updateFeatureCollectionSuccess,
+  [Types.HANDLE_ERROR_CHECKBOX]: handleErrorCheckbox,
+  [Types.DELETE_FEATURE_SUCCESS]: deleteFeatureSuccess,
 });
 
 export default dataCleaningReducer;

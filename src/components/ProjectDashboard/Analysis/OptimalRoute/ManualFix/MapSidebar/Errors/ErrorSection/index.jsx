@@ -1,12 +1,14 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { errorFeaturesMapStateSelector } from '@Selectors/dataCleaning';
-import { Creators } from '@Actions/dataCleaning';
+import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
 import Accordion from '@Components/common/Accordion';
 import IconButton from '@Components/common/IconButton';
 import Button from '@Components/common/Button';
 
-const { setManualFixState } = Creators;
+const { setManualFixState, handleErrorCheckbox } = DataCleaningCreators;
+const { togglePromptDialog } = CommonCreators;
 
 export default function ErrorSection() {
   const errorFeaturesMapState = useSelector(errorFeaturesMapStateSelector);
@@ -24,11 +26,10 @@ export default function ErrorSection() {
   };
 
   return (
-    <div>
+    <>
       {errorFeaturesMapState.map(({ type, features }) => (
         <Accordion
           key={type}
-          // collapsed={hasNoLayer}
           header={
             <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
               <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
@@ -45,47 +46,64 @@ export default function ErrorSection() {
             <div>
               {features.map(feature => (
                 <div
-                  key={feature}
+                  key={feature.id}
                   className="naxatw-flex naxatw-justify-between naxatw-items-center"
                 >
                   <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                     <input
-                      id={feature}
+                      id={feature.id}
                       type="checkbox"
                       className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                      checked={feature}
-                      onChange={() => {}}
-                      // onChange={e =>
-                      // handleLayerCheck({
-                      //   checked: e.target.checked,
-                      //   layerId: feature.id,
-                      //   themeId: theme.id,
-                      // })
-                      // }
+                      checked={feature.checked}
+                      onChange={e =>
+                        dispatch(
+                          handleErrorCheckbox({
+                            id: feature.id,
+                            name: type,
+                            checked: e.target.checked,
+                          }),
+                        )
+                      }
                     />
 
                     <label
                       className="naxatw-text-body-lg naxatw-text-grey-800"
-                      htmlFor={feature}
+                      htmlFor={feature.id}
                     >
-                      {feature}
+                      {feature.id}
                     </label>
                   </div>
 
                   <div className="naxatw-flex">
                     <span
                       className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
-                      onClick={() => handleEditClick(type, feature)}
+                      onClick={() => handleEditClick(type, feature.id)}
                     >
                       <IconButton
                         name="edit"
                         className="material-icons-outlined"
-                        // style={{ fontSize: '20px' }}
+                        onClick={() => {
+                          dispatch(
+                            setManualFixState({
+                              drawFeatureId: feature.id,
+                              sidebarContent: 'add-feature',
+                              selectedError: feature,
+                            }),
+                          );
+                        }}
                       />
                     </span>
                     <IconButton
                       className="material-icons-outlined naxatw-text-delete_btn"
                       name="delete"
+                      onClick={() => {
+                        dispatch(
+                          setManualFixState({
+                            selectedError: { ...feature, type },
+                          }),
+                        );
+                        dispatch(togglePromptDialog('delete-error'));
+                      }}
                     />
                   </div>
                 </div>
@@ -105,6 +123,6 @@ export default function ErrorSection() {
           }
         />
       ))}
-    </div>
+    </>
   );
 }

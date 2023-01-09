@@ -30,6 +30,12 @@ export const { Types, Creators } = createActions(
     updateFeatureCollectionRequest: ['id', 'payload'],
     updateFeatureCollectionSuccess: ['payload'],
     updateFeatureCollectionFailure: null,
+
+    deleteFeatureRequest: ['id'],
+    deleteFeatureSuccess: ['payload'],
+    deleteFeatureFailure: null,
+
+    handleErrorCheckbox: ['payload'],
   },
   { prefix: 'dataCleaning/' },
 );

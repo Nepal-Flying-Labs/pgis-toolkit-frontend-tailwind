@@ -11,11 +11,9 @@ export const errorFeaturesMapStateSelector = createSelector(
       'features',
       'layer_id',
     ]);
-    return Object.entries(errorFeatures)
-      .map(([key, value]) => ({
-        type: key,
-        features: value,
-      }))
-      .filter(item => item.features.length);
+    return Object.entries(errorFeatures).map(([key, value]) => ({
+      type: key,
+      features: value,
+    }));
   },
 );

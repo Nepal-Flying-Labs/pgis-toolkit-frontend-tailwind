@@ -5,6 +5,8 @@ import React from 'react';
 import {
   defaultStyles,
   hexToRgba,
+  lineTypes,
+  pointTypes,
 } from '@src/components/common/OpenLayersComponent/helpers/styleUtils';
 // import getSvgImageIcon from '@Utils/map/getSvgImageIcon';
 // import checkIfSvgUrl from '../OpenLayersComponent/helpers/checkIfSvgUrl';

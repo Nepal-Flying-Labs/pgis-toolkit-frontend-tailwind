@@ -283,6 +283,21 @@ const deleteFeatureSuccess = state => {
   };
 };
 
+const deleteSelectedFeaturesSuccess = (state, action) => {
+  const deletedLayers = action.payload;
+  const errorFeaturesData = {
+    ...state.errorFeaturesData,
+    null: state.errorFeaturesData.null.filter(
+      item => !deletedLayers.includes(item.id),
+    ),
+  };
+
+  return {
+    ...state,
+    errorFeaturesData,
+  };
+};
+
 const dataCleaningReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -297,6 +312,7 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.UPDATE_FEATURE_COLLECTION_SUCCESS]: updateFeatureCollectionSuccess,
   [Types.HANDLE_ERROR_CHECKBOX]: handleErrorCheckbox,
   [Types.DELETE_FEATURE_SUCCESS]: deleteFeatureSuccess,
+  [Types.DELETE_SELECTED_FEATURES_SUCCESS]: deleteSelectedFeaturesSuccess,
 });
 
 export default dataCleaningReducer;

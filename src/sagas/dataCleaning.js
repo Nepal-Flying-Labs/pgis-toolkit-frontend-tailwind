@@ -1,6 +1,7 @@
 import { call, put, select, takeLatest, takeEvery } from 'redux-saga/effects';
 import {
   autoFixError,
+  bulkDeleteNullGeometry,
   checkError,
   copyFeatures,
   getErrorFeatures,
@@ -10,6 +11,7 @@ import dataCleaningActions, { Types } from '@Actions/dataCleaning';
 import commonActions from '@Actions/common';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { getLayerAttributeFields } from '@Services/projectMap';
+import { isEmpty } from '@Utils/commonUtils';
 
 export function* checkErrorRequest({ params }) {
   try {
@@ -117,6 +119,27 @@ export function* deleteFeatureRequest({ id }) {
   }
 }
 
+export function* deleteSelectedFeaturesRequest() {
+  try {
+    const { errorFeaturesData } = yield select(state => state.dataCleaning);
+    const nullErrors = errorFeaturesData.null;
+    const checkedErrors = nullErrors
+      .filter(item => item.checked)
+      .map(item => item.id);
+    if (isEmpty(checkedErrors)) {
+      return;
+    }
+    const payload = {
+      feature_ids: JSON.stringify(checkedErrors),
+    };
+    yield call(bulkDeleteNullGeometry, payload);
+    yield put(dataCleaningActions.deleteSelectedFeaturesSuccess(checkedErrors));
+  } catch (error) {
+    yield put(dataCleaningActions.deleteSelectedFeaturesFailure());
+    throw error;
+  }
+}
+
 function* dataCleaningWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
@@ -141,6 +164,10 @@ function* dataCleaningWatcher() {
   yield takeLatest(
     Types.DELETE_FEATURE_REQUEST,
     withLoader(withErrorHandler(deleteFeatureRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_SELECTED_FEATURES_REQUEST,
+    withLoader(withErrorHandler(deleteSelectedFeaturesRequest)),
   );
 }
 

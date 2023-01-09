@@ -7,7 +7,11 @@ import Accordion from '@Components/common/Accordion';
 import IconButton from '@Components/common/IconButton';
 import Button from '@Components/common/Button';
 
-const { setManualFixState, handleErrorCheckbox } = DataCleaningCreators;
+const {
+  setManualFixState,
+  handleErrorCheckbox,
+  deleteSelectedFeaturesRequest,
+} = DataCleaningCreators;
 const { togglePromptDialog } = CommonCreators;
 
 export default function ErrorSection() {
@@ -114,6 +118,9 @@ export default function ErrorSection() {
                     className="naxatw-text-delete_btn"
                     iconLeft="delete"
                     iconClassName="material-icons-outlined"
+                    onClick={() => {
+                      dispatch(deleteSelectedFeaturesRequest());
+                    }}
                   >
                     Delete Selected
                   </Button>

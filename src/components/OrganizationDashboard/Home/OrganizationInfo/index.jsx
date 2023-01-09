@@ -16,7 +16,7 @@ const OrganizationInfo = () => {
   return (
     <div className="naxatw-w-full naxatw-bg-white naxatw-rounded-xl naxatw-h-full naxatw-border naxatw-border-[#D7D7D7]">
       {/* Header */}
-      <div className="naxatw-p-7  naxatw-rounded-t-lg naxatw-flex naxatw-gap-x-5">
+      <div className="naxatw-p-7  naxatw-rounded-t-lg naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-x-5">
         <div className="naxatw-w-[60px] naxatw-h-[60px] naxatw-rounded-full">
           <img
             src={organizationDetails?.cover_image || AvatarImage}
@@ -29,7 +29,7 @@ const OrganizationInfo = () => {
           <p className="naxatw-mt-[4px] naxatw-text-body-lg">
             {organizationDetails?.address || 'N/A'}
           </p>
-          <div className="naxatw-mt-5 naxatw-flex naxatw-gap-x-7">
+          <div className="naxatw-mt-5 naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-x-7">
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
               <MaterialIcon
                 name="phone"
@@ -61,7 +61,7 @@ const OrganizationInfo = () => {
         </div>
       </div>
       {/* Project Description */}
-      <div className="naxatw-bg-[#F5F5F5] naxatw-p-7 naxatw-flex naxatw-gap-x-5 naxatw-items-center naxatw-justify-between">
+      <div className="naxatw-bg-[#F5F5F5] naxatw-p-7 naxatw-flex naxatw-flex-col naxatw-gap-y-2 md:naxatw-flex-row naxatw-gap-x-5 naxatw-items-center naxatw-justify-between">
         <div className="naxatw-flex naxatw-gap-x-5 ">
           <img
             className="naxatw-w-[60px] naxatw-h-[60px] naxatw-py-[3px]"
@@ -93,7 +93,7 @@ const OrganizationInfo = () => {
             <h5>{organizationDetails?.completed}</h5>
           </div>
         </div>
-        <div className="naxatw-flex naxatw-w-[450px]">
+        <div className="naxatw-flex naxatw-w-full md:naxatw-w-[450px]">
           <div
             style={{
               width: `${getWidth(
@@ -121,13 +121,13 @@ const OrganizationInfo = () => {
             <span className="naxatw-text-body-md naxatw-w-[160px]">
               Organization Size
             </span>
-            <span className="naxatw-text-body-lg">200+</span>
+            <span className="naxatw-text-body-lg naxatw-font-bold">200+</span>
           </div>
           <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
             <span className="naxatw-text-body-md naxatw-w-[160px]">
               Thematic focus areas
             </span>
-            <span className="naxatw-text-body-lg">
+            <span className="naxatw-text-body-lg naxatw-font-bold">
               {organizationDetails?.thematicAreas?.toString() || 'N/A'}
             </span>
           </div>

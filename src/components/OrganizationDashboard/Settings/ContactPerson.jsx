@@ -43,8 +43,8 @@ const ContactPerson = () => {
     onSubmit: data => {
       dispatch(
         postContactPersonRequest(
-          { ...data, project: organizationId },
-          { project: organizationId, type: 'organization' },
+          { ...data, organization: organizationId },
+          { organization: organizationId, type: 'organization' },
         ),
       );
       resetFormState();

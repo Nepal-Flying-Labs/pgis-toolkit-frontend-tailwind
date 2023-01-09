@@ -114,7 +114,7 @@ export default function LayerList() {
               '120px',
               '120px',
               '120px',
-              '120px',
+              '160px',
               '50px',
             ]}
             onBtnClick={row => {
@@ -136,7 +136,7 @@ export default function LayerList() {
               rowcolSpan="rowSpan_0"
               dataHeader={<SortingContainer name="S.N" />}
               dataFormat={(row, _, index) => (
-                <span className="naxatw-text-base">
+                <span className="naxatw-text-body-lg">
                   {(currentPage - 1) * dataPerPage + (index + 1)}
                 </span>
               )}
@@ -146,7 +146,7 @@ export default function LayerList() {
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-2">
+                <span className="naxatw-text-body-lg naxatw-font-bold naxatw-flex naxatw-gap-2">
                   {row.name}
                 </span>
               )}
@@ -156,7 +156,7 @@ export default function LayerList() {
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <span className="naxatw-text-base">{row.theme || '-'}</span>
+                <span className="naxatw-text-body-lg">{row.theme || '-'}</span>
               )}
             />
             <TableHeader
@@ -164,7 +164,7 @@ export default function LayerList() {
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <span className="naxatw-text-base">{row.geom_type}</span>
+                <span className="naxatw-text-body-lg">{row.geom_type}</span>
               )}
             />
             <TableHeader
@@ -172,7 +172,7 @@ export default function LayerList() {
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <span className="naxatw-text-base">{row.features}</span>
+                <span className="naxatw-text-body-lg">{row.features}</span>
               )}
             />
             <TableHeader
@@ -180,7 +180,7 @@ export default function LayerList() {
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <span className="naxatw-text-base">{row.source}</span>
+                <span className="naxatw-text-body-lg">{row.source}</span>
               )}
             />
             <TableHeader
@@ -189,7 +189,7 @@ export default function LayerList() {
               rowcolSpan="rowSpan_2"
               dataHeader={<SortingContainer name="Status" />}
               dataFormat={row => (
-                <span className="naxatw-text-base">{row.status}</span>
+                <span className="naxatw-text-body-lg">{row.status}</span>
               )}
             />
             <TableHeader
@@ -219,7 +219,7 @@ export default function LayerList() {
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
                 <span className="naxatw-text-base">
-                  <Button className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder">
+                  <Button className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder !naxatw-min-w-fit">
                     Add Field Data
                   </Button>
                 </span>

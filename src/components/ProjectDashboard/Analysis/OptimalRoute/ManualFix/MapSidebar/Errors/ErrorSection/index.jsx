@@ -2,10 +2,11 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { errorFeaturesMapStateSelector } from '@Selectors/dataCleaning';
 import { Creators as CommonCreators } from '@Actions/common';
-import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
+import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
 import Accordion from '@Components/common/Accordion';
 import IconButton from '@Components/common/IconButton';
 import Button from '@Components/common/Button';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const {
   setManualFixState,
@@ -16,6 +17,9 @@ const { togglePromptDialog } = CommonCreators;
 
 export default function ErrorSection() {
   const errorFeaturesMapState = useSelector(errorFeaturesMapStateSelector);
+  const isDeleting = useSelector(state =>
+    checkIfLoading(state, [Types.DELETE_SELECTED_FEATURES_REQUEST]),
+  );
   const dispatch = useDispatch();
 
   const handleEditClick = (type, feature) => {
@@ -116,6 +120,7 @@ export default function ErrorSection() {
                 <div className="naxatw-flex naxatw-justify-center">
                   <Button
                     className="naxatw-text-delete_btn"
+                    isLoading={isDeleting}
                     iconLeft="delete"
                     iconClassName="material-icons-outlined"
                     onClick={() => {

@@ -16,11 +16,9 @@ export default function DeleteError() {
     state => state.dataCleaning.manualFix.selectedError,
   );
   const isDeleting = useSelector(state =>
-    checkIfLoading(state, [DataCleaningTypes.DELETE_DATA_REQUEST]),
+    checkIfLoading(state, [DataCleaningTypes.DELETE_FEATURE_REQUEST]),
   );
   const dispatch = useDispatch();
-
-  console.log(selectedError, 'selectedErrorx');
 
   const handleDelete = () => {
     if (isDeleting) return;

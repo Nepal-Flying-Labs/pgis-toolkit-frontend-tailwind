@@ -123,8 +123,11 @@ export default function MapSection() {
               resolution,
             )
           }
+          style={selectedLayer.style}
           zIndex={10}
           // properties={{ layerId: item.id }}
+          renderMode="vector"
+          hoverEffect={!!drawFeatureId}
         />
 
         {errorFeaturesMapState.map(({ type }) => (
@@ -132,7 +135,7 @@ export default function MapSection() {
             key={type}
             url={`${apiURL}maps/error_features_vectortile/{z}/{x}/{y}/?layer=${selectedLayer.id}&type=${type}`}
             authToken={localStorage.getItem('userToken')}
-            visibleOnMap
+            visibleOnMap={!drawFeatureId}
             setStyle={(feature, resolution) =>
               setLayerStyle(
                 {

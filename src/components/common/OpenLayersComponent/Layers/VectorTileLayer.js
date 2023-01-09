@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 // import * as olExtent from 'ol/extent';
 import VectorTile from 'ol/layer/VectorTile';
 import MVT from 'ol/format/MVT';
 import Feature from 'ol/Feature';
+import { Stroke, Fill, Style } from 'ol/style';
 import VectorTileSource from 'ol/source/VectorTile';
 import { transformExtent } from 'ol/proj';
 import getSvgImageIcon from '../helpers/getSvgImageIcon';
@@ -13,6 +14,18 @@ import { getStyles, defaultStyles } from '../helpers/styleUtils';
 import { isExtentValid } from '../helpers/layerUtils';
 import checkIfSvgUrl from '../helpers/checkIfSvgUrl';
 // import { isExtentValid } from '../helpers/layerUtils';
+
+const hoverEffectColor = '#7BCBC3';
+
+const selectedCountry = new Style({
+  stroke: new Stroke({
+    color: '#ffffff',
+    width: 2,
+  }),
+  fill: new Fill({
+    color: '#ffffff',
+  }),
+});
 
 const VectorTileLayer = ({
   map,
@@ -25,14 +38,18 @@ const VectorTileLayer = ({
   zoomToLayer = false,
   bbox = null,
   properties,
+  renderMode = 'hybrid',
+  hoverEffect = false,
 }) => {
+  const selection = useRef({});
+
   const vectorTileLayer = useMemo(
     () =>
       new VectorTile({
-        renderMode: 'hybrid',
+        renderMode,
         // declutter: true,
       }),
-    [],
+    [renderMode],
   );
 
   // add source to layer
@@ -45,7 +62,10 @@ const VectorTileLayer = ({
     }
 
     const vectorTileSource = new VectorTileSource({
-      format: new MVT(),
+      format: new MVT({
+        idProperty: 'id',
+        featureClass: Feature,
+      }),
       maxZoom: 19,
       url,
       transition: 0,
@@ -179,6 +199,72 @@ const VectorTileLayer = ({
       constrainResolution: true,
     });
   }, [map, vectorTileLayer, zoomToLayer, bbox]);
+
+  // const selectionLayer = useMemo(
+  //   () =>
+  //     new VectorTile({
+  //       map,
+  //       renderMode: 'vector',
+  //       source: vectorTileLayer.getSource(),
+  //       style: feature => {
+  //         console.log(feature, 'featurex');
+  //         if (feature.getId() in selection.current) {
+  //           return selectedCountry;
+  //         }
+  //       },
+  //     }),
+  //   [vectorTileLayer, map],
+  // );
+
+  // useEffect(() => {
+  //   if (!map) return;
+  //   if (hoverEffect) {
+  //     console.log('hoverEffectx');
+  //     map.addLayer(selectionLayer);
+  //   } else {
+  //     map.removeLayer(selectionLayer);
+  //   }
+  // }, [map, hoverEffect, selectionLayer]);
+
+  useEffect(() => {
+    if (!map || !vectorTileLayer || !hoverEffect) return;
+    const selectionLayer = new VectorTile({
+      map,
+      renderMode: 'vector',
+      source: vectorTileLayer.getSource(),
+      style: (feature, resolution) => {
+        if (feature.getId() in selection.current) {
+          return getStyles({
+            style: {
+              ...style,
+              fillColor: hoverEffectColor,
+              fillOpacity: 100,
+              lineColor: hoverEffectColor,
+              lineOpacity: 100,
+            },
+            feature,
+            resolution,
+          });
+        }
+      },
+    });
+    map.on('pointermove', event => {
+      vectorTileLayer.getFeatures(event.pixel).then(features => {
+        if (!features.length) {
+          selection.current = {};
+          selectionLayer.changed();
+          return;
+        }
+        const feature = features[0];
+        if (!feature) {
+          return;
+        }
+        const fid = feature.getId();
+        selection.current[fid] = feature;
+        selectionLayer.changed();
+      });
+    });
+  }, [map, vectorTileLayer, hoverEffect, style]);
 
   // cleanup
   useEffect(

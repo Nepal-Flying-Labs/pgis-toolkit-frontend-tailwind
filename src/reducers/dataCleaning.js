@@ -23,10 +23,10 @@ const initialState = {
     std_icon: null,
     style: {
       lineColor: '#2C675A',
-      lineOpacity: 40,
+      lineOpacity: 100,
       fillColor: '#f97d4a',
-      fillOpacity: 0,
-      lineThickness: 1,
+      fillOpacity: 100,
+      lineThickness: 3,
       circleRadius: 5,
       dashline: 0,
       showLabel: false,

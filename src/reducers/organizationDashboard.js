@@ -342,13 +342,19 @@ const updateOrganizationSuccess = (state, action) => ({
   organizationDetail: action.payload,
 });
 
-const getOrganizationByIdSuccess = (state, action) => ({
-  ...state,
-  individualOrganization: {
-    ...state.individualOrganization,
-    item: action.payload,
-  },
-});
+const getOrganizationByIdSuccess = (state, action) => {
+  const data = action.payload;
+  return {
+    ...state,
+    individualOrganization: {
+      ...state.individualOrganization,
+      item: {
+        ...data,
+        cover_image: data?.cover_image ? { image: data.cover_image } : {},
+      },
+    },
+  };
+};
 
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,

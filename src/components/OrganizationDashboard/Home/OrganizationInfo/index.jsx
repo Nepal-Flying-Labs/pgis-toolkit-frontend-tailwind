@@ -19,7 +19,7 @@ const OrganizationInfo = () => {
       <div className="naxatw-p-7  naxatw-rounded-t-lg naxatw-flex naxatw-gap-x-5">
         <div className="naxatw-w-[60px] naxatw-h-[60px] naxatw-rounded-full">
           <img
-            src={AvatarImage}
+            src={organizationDetails?.cover_image || AvatarImage}
             alt="organization-img"
             className="naxatw-w-[60px] naxatw-h-[60px] naxatw-rounded-full"
           />

@@ -8,7 +8,7 @@ import useWindowDimensions from '@Hooks/useWindowDimentions';
 import MaterialIcon from '@Components/common/MaterialIcon';
 // import HeaderNotification from '../Header/HeaderNotification';
 import AvatarIcon from '@Assets/images/user-avatar.png';
-import getImageSource from '@Utils/getImageSource';
+// import getImageSource from '@Utils/getImageSource';
 import HeaderProfile from '../Header/HeaderProfile';
 
 const organizationHeaderData = [
@@ -45,9 +45,6 @@ export default function ProjectHeader() {
   const headerTitle = projectId
     ? projectDetail?.name
     : organizationDetail?.name;
-
-  console.log('project details ', projectDetail);
-  console.log('org details ', organizationDetail);
 
   useEffect(() => {
     if (!headerTitle) return;
@@ -127,8 +124,8 @@ export default function ProjectHeader() {
               <figure className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
                 <img
                   src={
-                    projectDetail?.image
-                      ? getImageSource(projectDetail?.image)
+                    organizationDetail?.cover_image
+                      ? organizationDetail.cover_image
                       : AvatarIcon
                   }
                   alt="avatar-placeholder"

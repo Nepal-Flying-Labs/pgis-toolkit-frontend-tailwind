@@ -77,14 +77,20 @@ const VectorLayer = ({
     });
   }, [map, vectorLayer, zoomToLayer]);
 
-  // set properties to features for identifying popup
+  // set properties to layer
   useEffect(() => {
     if (!vectorLayer || !properties) return;
-    const features = vectorLayer.getSource().getFeatures();
-    features.forEach(feat => {
-      feat.setProperties(properties);
-    });
+    vectorLayer.setProperties(properties);
   }, [vectorLayer, properties]);
+
+  // // set properties to features for identifying popup
+  // useEffect(() => {
+  //   if (!vectorLayer || !properties) return;
+  //   const features = vectorLayer.getSource().getFeatures();
+  //   features.forEach(feat => {
+  //     feat.setProperties(properties);
+  //   });
+  // }, [vectorLayer, properties]);
 
   return null;
 };

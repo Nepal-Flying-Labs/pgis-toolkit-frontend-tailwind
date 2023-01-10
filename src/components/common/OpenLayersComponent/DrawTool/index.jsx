@@ -2,6 +2,8 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { Collection } from 'ol';
+import { Snap } from 'ol/interaction';
 import GeoJSON from 'ol/format/GeoJSON';
 import { get } from 'ol/proj';
 import { getUid } from 'ol/util';
@@ -45,7 +47,7 @@ export default function DrawTool({
     onChange(featureGeojson);
   }, []); // eslint-disable-line
 
-  const { select, modify, translate, snap, addInteraction, removeInteraction } =
+  const { select, modify, translate, addInteraction, removeInteraction } =
     useDrawUtils({
       mapInstance: map,
       layerUid,
@@ -72,7 +74,7 @@ export default function DrawTool({
     select.getFeatures().push(features[0]);
     setModifiedStates([geojson]);
     setModifiedFeature(features[0]);
-  }, [map, geojson, zIndex, select]);
+  }, [map, geojson, zIndex, select]); // eslint-disable-line
 
   // clean up on geojson remove
   useEffect(() => {
@@ -82,6 +84,28 @@ export default function DrawTool({
     setDrawType(null);
     map.removeLayer(vectorLayer);
   }, [map, vectorLayer, enable, select]);
+
+  // add snap interaction
+  useEffect(() => {
+    if (!map || !drawType) return;
+    const snapCollection = new Collection([], {
+      unique: true,
+    });
+    setTimeout(() => {
+      const layers = map.getLayers();
+      layers.forEach(layer => {
+        const properties = layer.getProperties();
+        if (properties.layerId === 'snaplayer') {
+          const features = layer.getSource().getFeatures();
+          snapCollection.push(features[0]);
+        }
+      });
+      const snapInteraction = new Snap({
+        features: snapCollection,
+      });
+      map.addInteraction(snapInteraction);
+    }, 500);
+  }, [map, drawType]);
 
   const handleAddFeatureClick = () => {
     if (vectorLayer) return;
@@ -145,7 +169,6 @@ export default function DrawTool({
     select,
     modify,
     translate,
-    snap,
     addInteraction,
     removeInteraction,
     vectorLayer,

@@ -29,8 +29,8 @@ import {
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { errorFeaturesMapStateSelector } from '@Selectors/dataCleaning';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
-import HelpBox from './HelpBox';
 import { isEmpty } from '@Utils/commonUtils';
+import HelpBox from './HelpBox';
 
 const { setManualFixState } = DataCleaningCreators;
 
@@ -195,6 +195,7 @@ export default function MapSection() {
             geojson={item}
             visibleOnMap
             zIndex={11}
+            properties={{ layerId: 'snaplayer' }}
             style={
               !isEmpty(selectedLayer.style)
                 ? {

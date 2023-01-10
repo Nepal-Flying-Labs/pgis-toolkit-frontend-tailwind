@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useMemo } from 'react';
-import { Draw, Snap } from 'ol/interaction';
+import { Draw } from 'ol/interaction';
 import { lineTypes, pointTypes } from '../../helpers/styleUtils';
 
 export default function AddFeature({
@@ -26,22 +26,20 @@ export default function AddFeature({
     [vectorLayer, type],
   );
 
-  const snap = useMemo(
-    () => new Snap({ source: vectorLayer?.getSource() }),
-    [vectorLayer],
-  );
+  // const snap = useMemo(
+  //   () => new Snap({ source: vectorLayer?.getSource() }),
+  //   [vectorLayer],
+  // );
 
   useEffect(() => {
     if (!vectorLayer || !enable) return;
     addInteraction(drawInstance);
-    addInteraction(snap);
-  }, [addInteraction, vectorLayer, type, enable, drawInstance, snap]);
+  }, [addInteraction, vectorLayer, type, enable, drawInstance]);
 
   useEffect(() => {
     if (enable) return;
     removeInteraction(drawInstance);
-    removeInteraction(snap);
-  }, [removeInteraction, enable, drawInstance, snap]);
+  }, [removeInteraction, enable, drawInstance]);
 
   // on draw end
   useEffect(() => {

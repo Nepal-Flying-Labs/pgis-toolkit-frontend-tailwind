@@ -30,7 +30,7 @@ const roles = [
 
 const UserInfo = () => {
   const [searchTerm, setSearchTErm] = useState('');
-  const [userRole, setUserRole] = useState(null);
+  const [userRole, setUserRole] = useState('');
   const { organizationId } = useParams();
   const history = useHistory();
   const users = useSelector(state => state.organizationDashboard.users);

@@ -214,25 +214,6 @@ const AssignUsers = () => {
               )}
             />
             {errors && <FormErrorMessage message={errors.email} />}
-            <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-2 ">
-              {emailList.map(item => (
-                <div
-                  key={item.id}
-                  className="naxatw-flex naxatw-justify-between naxatw-items-center hover:naxatw-border-[#484848] naxatw-cursor-pointer naxatw-gap-x-2 naxatw-rounded-3xl naxatw-bg-[#F5F5F5] naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-[7px]"
-                >
-                  <p className="naxatw-text-[#484848]">{item.email}</p>
-
-                  <i
-                    className="material-icons naxatw-text-lg naxatw-text-[#484848] naxatw-cursor-pointer"
-                    onClick={() => {
-                      setEmailList(emailList.filter(e => e.id !== item.id));
-                    }}
-                  >
-                    close
-                  </i>
-                </div>
-              ))}
-            </div>
           </div>
         )}
 

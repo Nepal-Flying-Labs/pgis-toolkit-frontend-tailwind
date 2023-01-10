@@ -113,25 +113,27 @@ export default function Data() {
         </div>
       </div>
 
-      {/* <div className="naxatw-space-y-2">
+      <div className="naxatw-space-y-2">
         <h4 className="naxatw-text-grey-800">Please upload your dataset</h4>
-        <p>Download Datasets for Field Data Collection</p>
-      </div> */}
+        <p className="naxatw-text-body-lg">
+          Download Datasets for Field Data Collection
+        </p>
+      </div>
 
       <div className="naxatw-py-6 naxatw-flex naxatw-gap-3">
         {uploadMethods.map(({ id, icon, title, description, onClick }) => (
           <div
             key={id}
-            className="naxatw-w-fit naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-p-5 naxatw-cursor-pointer"
+            className="naxatw-w-fit naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-p-5 naxatw-cursor-pointer hover:naxatw-bg-grey-100 "
             onClick={onClick}
           >
-            <div className="naxatw-flex naxatw-gap-5 naxatw-items-center">
+            <div className="naxatw-flex naxatw-gap-5 naxatw-items-center ">
               <figure>
                 <img height={80} width={80} src={icon} alt="uploadx" />
               </figure>
               <div>
-                <h5 className="naxatw-text-grey-800">{title}</h5>
-                <p className="naxatw-text-sm">{description}</p>
+                <h5 className="naxatw-text-grey-800 naxatw-mb-2">{title}</h5>
+                <p className="naxatw-text-body-md">{description}</p>
               </div>
             </div>
           </div>

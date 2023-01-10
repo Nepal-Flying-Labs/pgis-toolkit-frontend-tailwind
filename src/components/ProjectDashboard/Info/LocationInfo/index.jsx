@@ -49,20 +49,20 @@ const LocationInfo = () => {
             <p className="naxatw-text-body-lg">
               {!isEmpty(locationState)
                 ? locationState.map(d => (
-                    <span key={d.id} className="">
+                    <span key={d.id} className="naxatw-text-body-lg">
                       {d.name} <span>, </span>
                     </span>
                   ))
                 : '-'}
               {!isEmpty(locationCountry)
                 ? locationCountry.map((d, index) => (
-                    <span key={d.id} className="">
+                    <span key={d.id} className="naxatw-text-body-lg">
                       {d.name}
                       <span
                         className={`${
                           index === locationCountry.length - 1
                             ? 'naxatw-hidden'
-                            : ''
+                            : 'naxatw-text-body-lg'
                         }`}
                       >
                         ,{' '}

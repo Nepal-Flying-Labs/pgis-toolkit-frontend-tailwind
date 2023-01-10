@@ -10,6 +10,11 @@
     @apply hover:naxatw-bg-[#F5F5F5] ;
   }
 
+  .naxa-table table tr td {
+    @apply !naxatw-py-0 ;
+  }
+
+
   .naxa-table .sticky-menu {
     @apply !naxatw-sticky naxatw-z-[1] !naxatw-right-0 naxatw-bg-white !naxatw-shadow-3xl;
   }

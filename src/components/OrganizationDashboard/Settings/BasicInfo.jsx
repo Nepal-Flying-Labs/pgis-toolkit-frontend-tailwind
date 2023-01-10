@@ -91,17 +91,6 @@ const BasicInfo = () => {
     setValues(settingInfo);
   }, [setValues, settingInfo]);
 
-  const diffObj = diffObject(settingInfo, values);
-
-  // const payloadData = diffObj?.cover_image?.existedData
-  //   ? removeObjectKeys(diffObj, ['cover_image'])
-  //   : diffObj;
-  // dispatch(
-  //   updateOrganizationRequest(organizationId, {
-  //     ...payloadData,
-  //   }),
-  // );
-
   const handleSubmit = () => {
     if (loading) return;
     let errorCount = 0;
@@ -109,8 +98,9 @@ const BasicInfo = () => {
     if (!values.name) fields.push('name');
     if (fields.length) errorCount += 1;
     setErrorFields(fields);
+    const diffObj = diffObject(settingInfo, values);
     if (errorCount === 0) {
-      dispatch(updateOrganizationRequest(organizationId, values));
+      dispatch(updateOrganizationRequest(organizationId, diffObj));
     } else {
       dispatch(
         toastActions.error({
@@ -162,16 +152,10 @@ const BasicInfo = () => {
         <div className="naxatw-w-32 naxatw-min-w-32">
           {/* <div className="naxatw-w-full naxatw-flex naxatw-items-center naxatw-justify-center"> */}
           <img
-            src={
-              values?.cover_image
-                ? getImageSource(values.cover_image)
-                : AvatarIcon
-            }
+            src={values?.cover_image ? values.cover_image.image : AvatarIcon}
             alt="img"
             className="naxatw-w-32 naxatw-min-w-32 naxatw-h-[6.5rem] naxatw-min-h-[6.5rem] naxatw-object-cover naxatw-border naxatw-rounded-full"
           />
-          {/* </div> */}
-          {/* <div className="naxatw-w-full naxatw-justify-center"> */}
           <Button
             className="naxatw-btn-secondary naxatw-w-full naxatw-mt-5"
             onClick={onFileUpload}

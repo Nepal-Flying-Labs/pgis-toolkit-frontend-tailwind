@@ -195,9 +195,9 @@ const Location = ({ page, setPage }) => {
       <div
         className={`naxatw-flex ${
           tabname !== 'settings'
-            ? 'naxatw-justify-between naxatw-pb-7'
+            ? 'naxatw-justify-between naxatw-pb-5'
             : 'naxatw-justify-center'
-        }  naxatw-pt-7 `}
+        }  naxatw-pt-5 `}
       >
         {page > 1 ? (
           <Button

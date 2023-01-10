@@ -115,10 +115,7 @@ const ContactPerson = () => {
         onChange={handleChange}
         placeholder="Phone Number"
       />
-      <Button
-        className="naxatw-btn-secondary naxatw-btn-noborder"
-        onClick={handleSubmit}
-      >
+      <Button className="naxatw-btn-secondary " onClick={handleSubmit}>
         Save Contact Person
       </Button>
     </>

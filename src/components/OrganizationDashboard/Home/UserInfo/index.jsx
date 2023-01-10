@@ -32,7 +32,7 @@ const UserInfo = () => {
   const history = useHistory();
   const users = useSelector(state => state.organizationDashboard.users);
   return (
-    <div className="naxatw-w-1/3 naxatw-min-w-[440px] naxatw-bg-white naxatw-rounded-xl naxatw-border naxatw-border-[#D7D7D7]">
+    <div className="naxatw-w-full md:naxatw-w-1/3  naxatw-bg-white naxatw-rounded-xl naxatw-border naxatw-border-[#D7D7D7]">
       <div className="naxatw-flex naxatw-p-2 naxatw-justify-between naxatw-items-center naxatw-border-b-[1px] naxatw-rounded-t-xl naxatw-pl-4">
         <div>
           <div className="naxatw-flex naxatw-gap-x-5">
@@ -56,9 +56,9 @@ const UserInfo = () => {
           View all
         </Button>
       </div>
-      <div className="naxatw-overflow-y-auto scrollbar naxatw-h-full">
-        <div className="naxatw-py-3 naxatw-px-5 naxatw-flex naxatw-gap-x-2">
-          <Searchbar isSmall className="naxatw-w-[290px]" />
+      <div className="naxatw-overflow-y-auto naxatw-overflow-x-hidden scrollbar naxatw-h-full">
+        <div className="naxatw-py-3 naxatw-px-5 naxatw-flex naxatw-items-center naxatw-gap-x-2">
+          <Searchbar isSmall className="naxatw-w-[290px] naxatw-bg-grey-100" />
           <Select
             options={roles}
             className="naxatw-h-[40px] naxatw-pl-3"

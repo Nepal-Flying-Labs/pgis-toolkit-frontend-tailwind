@@ -20,6 +20,10 @@ import Checkbox from './Checkbox/index';
 
 const { getAllProjectRequest, setAssignList, postAssignUserRequest } = Creators;
 
+function getUniqueListBy(arr, key) {
+  return [...new Map(arr.map(item => [item[key], item])).values()];
+}
+
 const validation = data => {
   const errors = {};
 
@@ -72,6 +76,10 @@ const AssignUsers = () => {
   const [emailList, setEmailList] = useState(
     selectedData?.fromUserTab ? [selectedData] : [],
   );
+
+  const activeUsers = userList?.filter(i => i.active);
+
+  const uniqueUsers = getUniqueListBy(activeUsers, 'email');
 
   const handleSubmit = () => {
     const data = {
@@ -195,7 +203,7 @@ const AssignUsers = () => {
               Assign User
             </label>
             <MultiSelect
-              options={userList?.filter(i => i.active)}
+              options={uniqueUsers}
               placeholder="Choose User"
               field="full_name"
               onChange={data => {

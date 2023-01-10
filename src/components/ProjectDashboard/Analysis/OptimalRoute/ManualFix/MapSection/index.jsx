@@ -124,7 +124,7 @@ export default function MapSection() {
         <HelpBox />
 
         <CustomVTLayer
-          url={`${apiURL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${selectedLayer.id}`}
+          url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${selectedLayer.id}`}
           authToken={localStorage.getItem('userToken')}
           visibleOnMap
           setStyle={(feature, resolution) =>
@@ -136,7 +136,7 @@ export default function MapSection() {
           }
           style={selectedLayer.style}
           zIndex={10}
-          // properties={{ layerId: item.id }}
+          properties={{ layerId: selectedLayer.id }}
           // renderMode="vector"
           hoverEffect={!!drawFeatureId && !geojsonFeatures}
           onFeatureSelect={features => {

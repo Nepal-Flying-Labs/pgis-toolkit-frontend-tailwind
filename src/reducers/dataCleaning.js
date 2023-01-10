@@ -238,15 +238,30 @@ const getLayerAttributeFieldsSuccess = (state, action) => {
 
 const updateFeatureCollectionSuccess = (state, action) => {
   const refreshLayerId = action.payload.layer;
+  let errorFeaturesData = {};
+  if (state.manualFix.selectedError.type === 'null') {
+    errorFeaturesData = {
+      ...state.errorFeaturesData,
+      null: state.errorFeaturesData.null.filter(
+        item => item.id !== state.manualFix.selectedError.id,
+      ),
+    };
+  } else {
+    errorFeaturesData = state.errorFeaturesData;
+  }
   const {
     sidebarContent,
     drawFeatureId,
     drawnFeatureWkt,
     layerAttributes,
     individualAttributeData,
+    selectedError,
+    selectedFeaturesForSnap,
+    geojsonFeatures,
   } = initialState.manualFix;
   return {
     ...state,
+    errorFeaturesData,
     manualFix: {
       ...state.manualFix,
       refreshLayerId,
@@ -255,6 +270,9 @@ const updateFeatureCollectionSuccess = (state, action) => {
       drawnFeatureWkt,
       layerAttributes,
       individualAttributeData,
+      selectedError,
+      selectedFeaturesForSnap,
+      geojsonFeatures,
     },
   };
 };

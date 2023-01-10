@@ -95,7 +95,7 @@ export default function ErrorSection() {
                             setManualFixState({
                               drawFeatureId: feature.id,
                               sidebarContent: 'add-feature',
-                              selectedError: feature,
+                              selectedError: { ...feature, type },
                             }),
                           );
                         }}

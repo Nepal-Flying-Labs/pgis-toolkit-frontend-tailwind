@@ -55,7 +55,7 @@ const VectorLayer = ({
   }, [map, vectorLayer, visibleOnMap]);
 
   useEffect(() => {
-    if (!vectorLayer || !style.visibleOnMap) return;
+    if (!vectorLayer || !style) return;
     vectorLayer.setStyle((feature, resolution) =>
       getStyles({ style, feature, resolution }),
     );

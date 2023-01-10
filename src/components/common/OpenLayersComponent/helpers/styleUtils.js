@@ -4,6 +4,9 @@ export const pointTypes = ['Point', 'MultiPoint'];
 export const lineTypes = ['LineString', 'MultiLineString'];
 // const polygonTypes = ['Polygon', 'MultiPolygon'];
 
+export const hoverEffectColor = '#7BCBC3';
+export const selectEffectColor = '#fde047';
+
 export function hexToRgba(hex, opacity = 100) {
   if (!hex) return '';
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);

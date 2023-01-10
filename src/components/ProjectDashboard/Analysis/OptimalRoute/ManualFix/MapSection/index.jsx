@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,10 +25,12 @@ import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/la
 import {
   defaultStyles,
   getStyles,
+  selectEffectColor,
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { errorFeaturesMapStateSelector } from '@Selectors/dataCleaning';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
 import HelpBox from './HelpBox';
+import { isEmpty } from '@Utils/commonUtils';
 
 const { setManualFixState } = DataCleaningCreators;
 
@@ -171,7 +174,7 @@ export default function MapSection() {
         ))}
 
         <DrawTool
-          enable={!!drawFeatureId}
+          enable={!!drawFeatureId && geojsonFeatures}
           // geojson={featureGeojson}
           geometryType={selectedLayer.geom_type}
           zIndex={100}
@@ -187,7 +190,31 @@ export default function MapSection() {
         />
 
         {geojsonFeatures?.map((item, idx) => (
-          <VectorLayer key={idx} geojson={item} visibleOnMap />
+          <VectorLayer
+            key={idx}
+            geojson={item}
+            visibleOnMap
+            zIndex={11}
+            style={
+              !isEmpty(selectedLayer.style)
+                ? {
+                    ...selectedLayer.style,
+                    fillColor: selectEffectColor,
+                    fillOpacity: 100,
+                    lineColor: selectEffectColor,
+                    lineOpacity: 100,
+                    lineThickness: selectedLayer.style.lineThickness + 1,
+                  }
+                : {
+                    ...defaultStyles,
+                    fillColor: selectEffectColor,
+                    fillOpacity: 100,
+                    lineColor: selectEffectColor,
+                    lineOpacity: 100,
+                    lineThickness: defaultStyles.lineThickness + 1,
+                  }
+            }
+          />
         ))}
 
         <MapFooter loading={isMapLoading} />

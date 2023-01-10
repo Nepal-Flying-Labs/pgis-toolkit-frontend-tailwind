@@ -8,13 +8,15 @@ import Feature from 'ol/Feature';
 import VectorTileSource from 'ol/source/VectorTile';
 import { transformExtent } from 'ol/proj';
 import getSvgImageIcon from '../helpers/getSvgImageIcon';
-import { getStyles, defaultStyles } from '../helpers/styleUtils';
+import {
+  getStyles,
+  defaultStyles,
+  selectEffectColor,
+  hoverEffectColor,
+} from '../helpers/styleUtils';
 import { isExtentValid } from '../helpers/layerUtils';
 import checkIfSvgUrl from '../helpers/checkIfSvgUrl';
 // import { isExtentValid } from '../helpers/layerUtils';
-
-const hoverEffectColor = '#7BCBC3';
-const selectColor = '#fde047';
 
 export default function CustomVTLayer({
   map,
@@ -236,14 +238,16 @@ export default function CustomVTLayer({
     }
     selectionLayer.current = new VectorTile({
       map,
+      renderMode: 'vector',
+      source: vectorTileLayer.getSource(),
       style: (feature, resolution) => {
         if (feature.getId() in selectedFeatures.current) {
           return getStyles({
             style: {
               ...style,
-              fillColor: selectColor,
+              fillColor: selectEffectColor,
               fillOpacity: 100,
-              lineColor: selectColor,
+              lineColor: selectEffectColor,
               lineOpacity: 100,
               lineThickness: style.lineThickness + 1,
             },

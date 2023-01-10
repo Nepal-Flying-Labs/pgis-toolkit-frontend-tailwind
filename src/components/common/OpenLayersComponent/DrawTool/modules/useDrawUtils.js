@@ -8,15 +8,14 @@ export default function useDrawUtils({
   onModifyEnd = () => {},
   onDragEnd = () => {},
   layerUid,
-  source,
 }) {
   const select = useMemo(
     () =>
       new Select({
         wrapX: false,
-        // filter: (_, layer) => layerUid?.current === layer?.ol_uid,
+        filter: (_, layer) => layerUid?.current === layer?.ol_uid,
       }),
-    [],
+    [layerUid],
   );
 
   const modify = useMemo(

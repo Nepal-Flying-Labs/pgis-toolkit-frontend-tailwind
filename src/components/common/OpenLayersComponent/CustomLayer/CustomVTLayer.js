@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 import { useEffect, useMemo, useRef } from 'react';
 // import * as olExtent from 'ol/extent';
 import VectorTile from 'ol/layer/VectorTile';
@@ -30,9 +29,12 @@ export default function CustomVTLayer({
   properties,
   renderMode = 'hybrid',
   hoverEffect = false,
+  onFeatureSelect = () => {},
 }) {
   const hoveredFeatures = useRef({});
   const selectedFeatures = useRef({});
+  const hoverLayer = useRef(null);
+  const selectionLayer = useRef(null);
 
   const vectorTileLayer = useMemo(
     () =>
@@ -151,8 +153,32 @@ export default function CustomVTLayer({
 
   // add hover effect
   useEffect(() => {
-    if (!map || !vectorTileLayer || !hoverEffect) return;
-    const hoverLayer = new VectorTile({
+    function hoverInteraction(event) {
+      vectorTileLayer.getFeatures(event.pixel).then(features => {
+        if (!features.length) {
+          hoveredFeatures.current = {};
+          hoverLayer.current.changed();
+          return;
+        }
+        const feature = features[0];
+        if (!feature) {
+          return;
+        }
+        const fid = feature.getId();
+        hoveredFeatures.current[fid] = feature;
+        hoverLayer.current.changed();
+      });
+    }
+    if (!map || !vectorTileLayer || !hoverEffect) {
+      hoveredFeatures.current = {};
+      if (hoverLayer.current) {
+        hoverLayer.current.changed();
+        hoverLayer.current.setSource(null);
+      }
+      map?.un('singleclick', hoverInteraction);
+      return;
+    }
+    hoverLayer.current = new VectorTile({
       map,
       renderMode: 'vector',
       source: vectorTileLayer.getSource(),
@@ -173,11 +199,14 @@ export default function CustomVTLayer({
         }
       },
     });
-    map.on('pointermove', event => {
+    map.on('pointermove', hoverInteraction);
+  }, [map, vectorTileLayer, hoverEffect, style]);
+
+  // add select effect
+  useEffect(() => {
+    function selectInteraction(event) {
       vectorTileLayer.getFeatures(event.pixel).then(features => {
-        if (!features.length) {
-          hoveredFeatures.current = {};
-          hoverLayer.changed();
+        if (!features.length || !hoverEffect) {
           return;
         }
         const feature = features[0];
@@ -185,19 +214,28 @@ export default function CustomVTLayer({
           return;
         }
         const fid = feature.getId();
-        hoveredFeatures.current[fid] = feature;
-        hoverLayer.changed();
+        if (fid in selectedFeatures.current) {
+          delete selectedFeatures.current[fid];
+          selectionLayer.current.changed();
+          onFeatureSelect(Object.keys(selectedFeatures.current));
+        } else {
+          selectedFeatures.current[fid] = feature;
+          selectionLayer.current.changed();
+          onFeatureSelect(Object.keys(selectedFeatures.current));
+        }
       });
-    });
-  }, [map, vectorTileLayer, hoverEffect, style]);
-
-  // add select effect
-  useEffect(() => {
-    if (!map || !vectorTileLayer || !hoverEffect) return;
-    const selectionLayer = new VectorTile({
+    }
+    if (!map || !vectorTileLayer || !hoverEffect) {
+      selectedFeatures.current = {};
+      if (selectionLayer.current) {
+        selectionLayer.current.changed();
+        selectionLayer.current.setSource(null);
+      }
+      map?.un('singleclick', selectInteraction);
+      return;
+    }
+    selectionLayer.current = new VectorTile({
       map,
-      renderMode: 'vector',
-      source: vectorTileLayer.getSource(),
       style: (feature, resolution) => {
         if (feature.getId() in selectedFeatures.current) {
           return getStyles({
@@ -215,26 +253,8 @@ export default function CustomVTLayer({
         }
       },
     });
-    map.on('singleclick', event => {
-      vectorTileLayer.getFeatures(event.pixel).then(features => {
-        if (!features.length) {
-          return;
-        }
-        const feature = features[0];
-        if (!feature) {
-          return;
-        }
-        const fid = feature.getId();
-        if (fid in selectedFeatures.current) {
-          delete selectedFeatures.current[fid];
-          selectionLayer.changed();
-        } else {
-          selectedFeatures.current[fid] = feature;
-          selectionLayer.changed();
-        }
-      });
-    });
-  }, [map, vectorTileLayer, hoverEffect, style]);
+    map.on('singleclick', selectInteraction);
+  }, [map, vectorTileLayer, hoverEffect, style]); // eslint-disable-line
 
   // cleanup
   useEffect(

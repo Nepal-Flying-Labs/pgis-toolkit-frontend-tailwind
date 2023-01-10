@@ -12,6 +12,8 @@ const initialState = {
     individualAttributeData: [],
     refreshLayerId: null,
     selectedError: null,
+    selectedFeaturesForSnap: [],
+    geojsonFeatures: null,
   },
   // selectedLayer: null, // selected layer for manual fix
   selectedLayer: {
@@ -291,10 +293,20 @@ const deleteSelectedFeaturesSuccess = (state, action) => {
       item => !deletedLayers.includes(item.id),
     ),
   };
-
   return {
     ...state,
     errorFeaturesData,
+  };
+};
+
+const getFeatureGeojsonSuccess = (state, action) => {
+  const geojsonFeatures = action.payload;
+  return {
+    ...state,
+    manualFix: {
+      ...state.manualFix,
+      geojsonFeatures,
+    },
   };
 };
 
@@ -313,6 +325,7 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.HANDLE_ERROR_CHECKBOX]: handleErrorCheckbox,
   [Types.DELETE_FEATURE_SUCCESS]: deleteFeatureSuccess,
   [Types.DELETE_SELECTED_FEATURES_SUCCESS]: deleteSelectedFeaturesSuccess,
+  [Types.GET_FEATURE_GEOJSON_SUCCESS]: getFeatureGeojsonSuccess,
 });
 
 export default dataCleaningReducer;

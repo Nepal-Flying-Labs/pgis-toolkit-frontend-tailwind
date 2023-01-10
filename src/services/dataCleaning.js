@@ -17,3 +17,6 @@ export const updateFeatureCollection = (id, data) =>
 
 export const bulkDeleteNullGeometry = data =>
   authenticated(api).post(`/maps/bulk_del_null_geom/`, data);
+
+export const getFeatureGeojson = id =>
+  authenticated(api).get(`/maps/feature_geojson/${id}/`);

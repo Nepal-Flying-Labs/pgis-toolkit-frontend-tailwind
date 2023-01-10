@@ -1,4 +1,11 @@
-import { call, put, select, takeLatest, takeEvery } from 'redux-saga/effects';
+import {
+  call,
+  all,
+  put,
+  select,
+  takeLatest,
+  takeEvery,
+} from 'redux-saga/effects';
 import {
   autoFixError,
   bulkDeleteNullGeometry,
@@ -6,6 +13,7 @@ import {
   copyFeatures,
   getErrorFeatures,
   updateFeatureCollection,
+  getFeatureGeojson,
 } from '@Services/dataCleaning';
 import dataCleaningActions, { Types } from '@Actions/dataCleaning';
 import commonActions from '@Actions/common';
@@ -140,6 +148,17 @@ export function* deleteSelectedFeaturesRequest() {
   }
 }
 
+export function* getFeatureGeojsonRequest({ payload }) {
+  try {
+    const responses = yield all(payload.map(id => call(getFeatureGeojson, id)));
+    const responseData = responses.map(res => res.data);
+    yield put(dataCleaningActions.getFeatureGeojsonSuccess(responseData));
+  } catch (error) {
+    yield put(dataCleaningActions.getFeatureGeojsonFailure());
+    throw error;
+  }
+}
+
 function* dataCleaningWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
@@ -168,6 +187,10 @@ function* dataCleaningWatcher() {
   yield takeLatest(
     Types.DELETE_SELECTED_FEATURES_REQUEST,
     withLoader(withErrorHandler(deleteSelectedFeaturesRequest)),
+  );
+  yield takeLatest(
+    Types.GET_FEATURE_GEOJSON_REQUEST,
+    withLoader(withErrorHandler(getFeatureGeojsonRequest)),
   );
 }
 

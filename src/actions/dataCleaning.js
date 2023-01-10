@@ -40,6 +40,10 @@ export const { Types, Creators } = createActions(
     deleteSelectedFeaturesFailure: null,
 
     handleErrorCheckbox: ['payload'],
+
+    getFeatureGeojsonRequest: ['payload'],
+    getFeatureGeojsonSuccess: ['payload'],
+    getFeatureGeojsonFailure: null,
   },
   { prefix: 'dataCleaning/' },
 );

@@ -18,6 +18,7 @@ import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import VectorTile from 'ol/layer/VectorTile';
 import CustomVTLayer from '@Components/common/OpenLayersComponent/CustomLayer/CustomVTLayer';
+import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
 import { apiURL } from '@Services';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import {
@@ -50,6 +51,9 @@ export default function MapSection() {
   );
   const refreshLayerId = useSelector(
     state => state.dataCleaning.manualFix.refreshLayerId,
+  );
+  const geojsonFeatures = useSelector(
+    state => state.dataCleaning.manualFix.geojsonFeatures,
   );
   const dispatch = useDispatch();
 
@@ -130,8 +134,15 @@ export default function MapSection() {
           style={selectedLayer.style}
           zIndex={10}
           // properties={{ layerId: item.id }}
-          renderMode="vector"
-          hoverEffect={!!drawFeatureId}
+          // renderMode="vector"
+          hoverEffect={!!drawFeatureId && !geojsonFeatures}
+          onFeatureSelect={features => {
+            dispatch(
+              setManualFixState({
+                selectedFeaturesForSnap: features,
+              }),
+            );
+          }}
         />
 
         {errorFeaturesMapState.map(({ type }) => (
@@ -174,6 +185,10 @@ export default function MapSection() {
             );
           }}
         />
+
+        {geojsonFeatures?.map((item, idx) => (
+          <VectorLayer key={idx} geojson={item} visibleOnMap />
+        ))}
 
         <MapFooter loading={isMapLoading} />
       </MapComponent>

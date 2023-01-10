@@ -1,7 +1,7 @@
 export const webAdmin = [
   {
     id: 1,
-    name: 'Can create organization',
+    name: 'Can create an organization',
   },
   {
     id: 2,
@@ -9,7 +9,7 @@ export const webAdmin = [
   },
   {
     id: 3,
-    name: 'View organization and project dashboard and many more',
+    name: 'View admin dashboards of organizations and their projects',
   },
 ];
 
@@ -24,7 +24,7 @@ export const organizationAdmin = [
   },
   {
     id: 3,
-    name: 'Add/Edit/Delete datasets within multiple projects and many more',
+    name: 'Add/Edit/Delete datasets within multiple projects ',
   },
 ];
 
@@ -39,6 +39,6 @@ export const projectAdmin = [
   },
   {
     id: 3,
-    name: 'Add/Edit/Delete datasets in the project and many more',
+    name: 'Add/Edit/Delete datasets in the project',
   },
 ];

@@ -85,7 +85,9 @@ function Select({
                       onKeyDown={() => {}}
                       tabIndex="0"
                     >
-                      <span>{item[dataKey] || item[labelKey]}</span>
+                      <span className="naxatw-text-body-lg">
+                        {item[dataKey] || item[labelKey]}
+                      </span>
                     </li>
                   );
                 })

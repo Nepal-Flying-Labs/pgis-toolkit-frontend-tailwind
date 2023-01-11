@@ -163,6 +163,7 @@ const UserList = () => {
   //   state => state.organizationDashboard.usersFilter.userRole,
   // );
   const searchText = useSelector(state => state.users.searchText);
+
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_USERS_REQUEST]),
   );
@@ -174,6 +175,8 @@ const UserList = () => {
       dispatch(setUserState({ searchText: debouncedEvent.target.value }));
     },
   });
+
+  const ordering = useSelector(state => state.users.ordering);
 
   return (
     <div className="naxatw-mt-3 ">
@@ -240,7 +243,19 @@ const UserList = () => {
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
                 dataHeader={
-                  <SortingContainer name="Name" className="naxatw-text-black" />
+                  <SortingContainer
+                    name="Name"
+                    isActive={ordering === 'full_name'}
+                    handleSort={() =>
+                      dispatch(
+                        setUserState({
+                          ordering: `${
+                            ordering === 'full_name' ? null : 'full_name'
+                          }`,
+                        }),
+                      )
+                    }
+                  />
                 }
                 dataFormat={row => (
                   <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
@@ -249,7 +264,13 @@ const UserList = () => {
                       alt="img"
                       className="naxatw-w-7 naxatw-h-7 naxatw-rounded-full "
                     />
-                    <span className="naxatw-text-base naxatw-font-bold">
+                    <span
+                      className={` ${
+                        ordering === 'full_name'
+                          ? 'naxatw-text-body-btn'
+                          : 'naxatw-text-body-lg'
+                      }`}
+                    >
                       {row.full_name}
                     </span>
                   </div>
@@ -259,9 +280,31 @@ const UserList = () => {
                 dataField="Organization Name"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
                 rowcolSpan="rowSpan_2"
-                dataHeader={<SortingContainer name="Organization Name" />}
+                dataHeader={
+                  <SortingContainer
+                    name="Organization Name"
+                    isActive={ordering === 'organization'}
+                    handleSort={() =>
+                      dispatch(
+                        setUserState({
+                          ordering: `${
+                            ordering === 'organization' ? null : 'organization'
+                          }`,
+                        }),
+                      )
+                    }
+                  />
+                }
                 dataFormat={row => (
-                  <span className="text-base">{row.organization || '-'}</span>
+                  <span
+                    className={` ${
+                      ordering === 'organization'
+                        ? 'naxatw-text-body-btn'
+                        : 'naxatw-text-body-lg'
+                    }`}
+                  >
+                    {row.organization || '-'}
+                  </span>
                 )}
               />
               {/* <TableHeader
@@ -277,34 +320,70 @@ const UserList = () => {
                 dataField="Role"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
                 rowcolSpan="rowSpan_2"
-                dataHeader={<SortingContainer name="Role" />}
+                dataHeader={
+                  <SortingContainer
+                    name="Role"
+                    isActive={ordering === 'group'}
+                    handleSort={() =>
+                      dispatch(
+                        setUserState({
+                          ordering: `${ordering === 'group' ? null : 'group'}`,
+                        }),
+                      )
+                    }
+                  />
+                }
                 dataFormat={row => (
-                  <span className="text-base">{row.group}</span>
+                  <span
+                    className={` ${
+                      ordering === 'group'
+                        ? 'naxatw-text-body-btn'
+                        : 'naxatw-text-body-lg'
+                    }`}
+                  >
+                    {row.group}
+                  </span>
                 )}
               />
               <TableHeader
                 dataField="Phone"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
-                dataHeader={<SortingContainer name="Phone" />}
+                // dataHeader={<SortingContainer name="Phone" />}
                 dataFormat={row => (
-                  <span className="naxatw-text-base">{row.contact || '-'}</span>
+                  <span
+                    className={` ${
+                      ordering === 'contact'
+                        ? 'naxatw-text-body-btn'
+                        : 'naxatw-text-body-lg'
+                    }`}
+                  >
+                    {row.contact || '-'}
+                  </span>
                 )}
               />
               <TableHeader
                 dataField="Email"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
-                dataHeader={<SortingContainer name="Email" />}
+                // dataHeader={<SortingContainer name="Email" />}
                 dataFormat={row => (
-                  <span className="naxatw-text-base">{row.email}</span>
+                  <span
+                    className={` ${
+                      ordering === 'email'
+                        ? 'naxatw-text-body-btn'
+                        : 'naxatw-text-body-lg'
+                    }`}
+                  >
+                    {row.email}
+                  </span>
                 )}
               />
               <TableHeader
                 dataField="Status"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
-                dataHeader={<SortingContainer name="Status" />}
+                // dataHeader={<SortingContainer name="Status" />}
                 dataFormat={row => (
                   <Status
                     status={row.active}

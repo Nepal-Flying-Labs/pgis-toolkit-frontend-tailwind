@@ -12,10 +12,11 @@ export default function Home() {
   const users = useSelector(state => state.organizationDashboard.users);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!users) dispatch(getUsersRequest({ organization: organizationId }));
+    if (users.length < 1)
+      dispatch(getUsersRequest({ organization: organizationId }));
   }, [dispatch, organizationId, users]);
   return (
-    <div className="naxatw-h-[93vh] naxatw-bg-[#F5F5F5]   naxatw-flex naxatw-gap-x-5 naxatw-py-3 naxatw-px-10">
+    <div className="naxatw-h-[calc(100vh-10px)] naxatw-bg-grey-100 naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-y-4 naxatw-gap-x-5 naxatw-py-3 naxatw-px-10">
       <OrganizationInfo />
       <UserInfo />
     </div>

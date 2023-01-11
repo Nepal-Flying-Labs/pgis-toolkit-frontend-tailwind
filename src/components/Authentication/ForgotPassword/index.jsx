@@ -82,12 +82,14 @@ export default function ForgotPassword() {
         >
           Reset password
         </Button>
-        <ButtonLink
-          to="/login"
-          onClick={() => dispatch(setInfoDialogContent(''))}
-        >
-          Back
-        </ButtonLink>
+        <div className="naxatw-mt-2 naxatw-flex naxatw-justify-center">
+          <ButtonLink
+            to="/login"
+            onClick={() => dispatch(setInfoDialogContent(''))}
+          >
+            Back
+          </ButtonLink>
+        </div>
       </form>
     </>
   );

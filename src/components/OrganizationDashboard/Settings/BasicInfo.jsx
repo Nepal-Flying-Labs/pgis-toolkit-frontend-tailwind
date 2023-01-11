@@ -16,8 +16,10 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 // import { format } from 'date-fns';
 import toastActions from '@Actions/toast';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
+import getImageSource from '@Utils/getImageSource';
+import AvatarIcon from '@Assets/images/icons/avatar-icon.svg';
+import useCustomUpload from '@Hooks/useCustomUpload';
 import ContactPerson from './ContactPerson';
-
 // import ContactPerson from './ContactPerson';
 
 const { updateOrganizationRequest } = Creators;
@@ -64,6 +66,7 @@ function diffObject(a, b) {
 
 const BasicInfo = () => {
   const { organizationId } = useParams();
+  const [inputRef, onFileUpload] = useCustomUpload();
   const [errorFields, setErrorFields] = useState([]);
 
   const dispatch = useDispatch();
@@ -88,17 +91,6 @@ const BasicInfo = () => {
     setValues(settingInfo);
   }, [setValues, settingInfo]);
 
-  const diffObj = diffObject(settingInfo, values);
-
-  // const payloadData = diffObj?.cover_image?.existedData
-  //   ? removeObjectKeys(diffObj, ['cover_image'])
-  //   : diffObj;
-  // dispatch(
-  //   updateOrganizationRequest(organizationId, {
-  //     ...payloadData,
-  //   }),
-  // );
-
   const handleSubmit = () => {
     if (loading) return;
     let errorCount = 0;
@@ -106,8 +98,9 @@ const BasicInfo = () => {
     if (!values.name) fields.push('name');
     if (fields.length) errorCount += 1;
     setErrorFields(fields);
+    const diffObj = diffObject(settingInfo, values);
     if (errorCount === 0) {
-      dispatch(updateOrganizationRequest(organizationId, values));
+      dispatch(updateOrganizationRequest(organizationId, diffObj));
     } else {
       dispatch(
         toastActions.error({
@@ -115,6 +108,13 @@ const BasicInfo = () => {
         }),
       );
     }
+  };
+
+  const onChangeFileUpload = e => {
+    const { files } = e.target;
+    const image = URL.createObjectURL(files[0]);
+    files[0].image = image;
+    handleCustomChange('cover_image', files[0]);
   };
 
   return (
@@ -125,27 +125,107 @@ const BasicInfo = () => {
           basic info form to proceed ahead
         </span>
       </div>
+      <div className="naxatw-flex naxatw-gap-x-5">
+        <div className="naxatw-w-full naxatw-space-y-7">
+          <Input
+            type="text"
+            label="Name of Organization*"
+            name="name"
+            value={values?.name}
+            onChange={handleChange}
+            placeholder="Enter name of organization"
+          />
+          {errorFields?.includes('name') && (
+            <FormErrorMessage message="Required" />
+          )}
 
-      <Input
-        type="text"
-        label="Name of Organization*"
-        name="name"
-        value={values?.name}
-        onChange={handleChange}
-        placeholder="Enter name of organization"
-      />
-      {errorFields?.includes('name') && <FormErrorMessage message="Required" />}
-
-      <Input
-        type="textarea"
-        label="About Organization"
-        className="naxatw-h-[77px] naxatw-pb-8"
-        name="description"
-        value={values?.description || ''}
-        onChange={handleChange}
-        placeholder="Write a short summary of an organization"
-      />
-      <div className="naxatw-space-y-2">
+          <Input
+            type="textarea"
+            label="About Organization"
+            className="naxatw-h-[77px] naxatw-pb-8"
+            name="description"
+            value={values?.description || ''}
+            onChange={handleChange}
+            placeholder="Write a short summary of an organization"
+          />
+        </div>
+        <div className="naxatw-w-32 naxatw-min-w-32">
+          {/* <div className="naxatw-w-full naxatw-flex naxatw-items-center naxatw-justify-center"> */}
+          <img
+            src={values?.cover_image ? values.cover_image.image : AvatarIcon}
+            alt="img"
+            className="naxatw-w-32 naxatw-min-w-32 naxatw-h-[6.5rem] naxatw-min-h-[6.5rem] naxatw-object-cover naxatw-border naxatw-rounded-full"
+          />
+          <Button
+            className="naxatw-btn-secondary naxatw-w-full naxatw-mt-5"
+            onClick={onFileUpload}
+          >
+            <span className="naxatw-text-[15px] naxatw-font-bold naxatw-text-[#00A699]">
+              Upload
+            </span>
+          </Button>
+          {/* </div> */}
+          <input
+            type="file"
+            ref={inputRef}
+            style={{ display: 'none' }}
+            onChange={e => onChangeFileUpload(e)}
+          />
+          <Button
+            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-w-full naxatw-mt-1"
+            onClick={() => handleCustomChange('cover_image', null)}
+          >
+            <span className="naxatw-text-[15px] naxatw-font-bold naxatw-text-[#00A699]">
+              Remove
+            </span>
+          </Button>
+        </div>
+      </div>
+      <div className="naxatw-flex naxatw-gap-x-2">
+        <div className="naxatw-w-1/2">
+          <Input
+            type="text"
+            label="Address"
+            name="address"
+            value={values?.address}
+            onChange={handleChange}
+            placeholder="address"
+          />
+        </div>
+        <div className="naxatw-w-1/2">
+          <Input
+            type="text"
+            label="Email"
+            name="email"
+            value={values?.email}
+            onChange={handleChange}
+            placeholder="example@example.com"
+          />
+        </div>
+      </div>
+      <div className="naxatw-flex naxatw-gap-x-2">
+        <div className="naxatw-w-1/2">
+          <Input
+            type="text"
+            label="Contact"
+            name="contact"
+            value={values?.contact}
+            onChange={handleChange}
+            placeholder="phone"
+          />
+        </div>
+        <div className="naxatw-w-1/2">
+          <Input
+            type="text"
+            label="Website"
+            name="link"
+            value={values?.link}
+            onChange={handleChange}
+            placeholder="example.com"
+          />
+        </div>
+      </div>
+      {/* <div className="naxatw-space-y-2">
         <label className="naxatw-label">Upload Cover Image</label>
         <UploadPhotos
           label="coverImage"
@@ -155,7 +235,15 @@ const BasicInfo = () => {
             handleCustomChange('cover_image', images);
           }}
         />
-      </div>
+      </div> */}
+      <Input
+        type="text"
+        label="Organization Size"
+        name="size"
+        value={values?.size}
+        onChange={handleChange}
+        placeholder="Organization size"
+      />
 
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Thematic Focus Area*</label>
@@ -172,16 +260,6 @@ const BasicInfo = () => {
           )}
         />
       </div>
-
-      <Input
-        type="text"
-        label="Organization Size"
-        name="name"
-        value={values?.size}
-        onChange={handleChange}
-        placeholder="Organization size"
-      />
-
       <hr />
       <ContactPerson />
 

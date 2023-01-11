@@ -96,7 +96,6 @@ function UploadPolygonBoundary({
           <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-mb-2 naxatw-px-[20px] naxatw-py-[15px] naxatw-border naxatw-border-[#D7D7D7] naxatw-rounded-xl">
             <div className="naxatw-flex naxatw-gap-x-5 naxatw-items-center">
               <span className="naxatw-w-[40px] naxatw-h-[40px] naxatw-rounded-full naxatw-bg-red-50 naxatw-text-center naxatw-border naxatw-border-[#D7D7D7] naxatw-flex naxatw-justify-center naxatw-items-center">
-                {' '}
                 <MaterialIcon
                   name="description"
                   className="naxatw-text-2xl naxatw-leading-10 naxatw-text-red-500"
@@ -116,13 +115,19 @@ function UploadPolygonBoundary({
               </div>
             </div>
             <div className="naxatw-flex naxatw-items-center naxatw-gap-x-4">
-              <a href={uploadedFile?.fileURL}>
+              <a
+                href={uploadedFile?.fileURL}
+                className="hover:naxatw-bg-grey-100 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-justify-center naxatw-items-center naxatw-rounded-lg"
+              >
                 <MaterialIcon
                   name="download"
                   className="naxatw-text-[#484848] naxatw-cursor-pointer"
                 />
               </a>
-              <a onClick={() => setuploadedFile('')}>
+              <a
+                onClick={() => setuploadedFile('')}
+                className="hover:naxatw-bg-grey-100 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-justify-center naxatw-items-center naxatw-rounded-lg"
+              >
                 <MaterialIcon
                   name="delete_outline"
                   className="naxatw-text-red-500 naxatw-cursor-pointer"

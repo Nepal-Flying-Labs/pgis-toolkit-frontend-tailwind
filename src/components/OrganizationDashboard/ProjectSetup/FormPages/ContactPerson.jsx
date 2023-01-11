@@ -59,8 +59,8 @@ const ContactPerson = () => {
               key={person.id}
               className="naxatw-flex  naxatw-p-4 naxatw-mb-2 naxatw-justify-between naxatw-items-center naxatw-rounded-xl naxatw-border"
             >
-              <span>{person.name}</span>
-              <div>
+              <span className="naxatw-text-body-lg">{person.name}</span>
+              <div className="hover:naxatw-bg-grey-100 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-justify-center naxatw-items-center naxatw-rounded-lg">
                 <MaterialIcon
                   name="delete_outline"
                   className="naxatw-text-red-500 naxatw-cursor-pointer"
@@ -115,10 +115,7 @@ const ContactPerson = () => {
         onChange={handleChange}
         placeholder="Phone Number"
       />
-      <Button
-        className="naxatw-btn-secondary naxatw-btn-noborder"
-        onClick={handleSubmit}
-      >
+      <Button className="naxatw-btn-secondary " onClick={handleSubmit}>
         Save Contact Person
       </Button>
     </>

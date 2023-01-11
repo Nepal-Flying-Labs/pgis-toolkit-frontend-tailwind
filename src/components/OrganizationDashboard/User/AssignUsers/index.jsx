@@ -20,6 +20,10 @@ import Checkbox from './Checkbox/index';
 
 const { getAllProjectRequest, setAssignList, postAssignUserRequest } = Creators;
 
+function getUniqueListBy(arr, key) {
+  return [...new Map(arr.map(item => [item[key], item])).values()];
+}
+
 const validation = data => {
   const errors = {};
 
@@ -72,6 +76,10 @@ const AssignUsers = () => {
   const [emailList, setEmailList] = useState(
     selectedData?.fromUserTab ? [selectedData] : [],
   );
+
+  const activeUsers = userList?.filter(i => i.active);
+
+  const uniqueUsers = getUniqueListBy(activeUsers, 'email');
 
   const handleSubmit = () => {
     const data = {
@@ -195,7 +203,7 @@ const AssignUsers = () => {
               Assign User
             </label>
             <MultiSelect
-              options={userList?.filter(i => i.active)}
+              options={uniqueUsers}
               placeholder="Choose User"
               field="full_name"
               onChange={data => {
@@ -300,17 +308,17 @@ const AssignUsers = () => {
                 value={roleSearchText}
                 onChange={e => setRoleSearchText(e.target.value)}
               />
-              <div className="naxatw-w-full naxatw-space-y-5  naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-2 naxatw-min-h-[200px] naxatw-max-h-[200px] naxatw-overflow-x-auto scrollbar">
+              <div className="naxatw-w-full naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7]  naxatw-py-2 naxatw-min-h-[200px] naxatw-max-h-[200px] naxatw-overflow-x-auto scrollbar">
                 {selectedRolesList
                   .filter(i => i.name?.toLowerCase()?.includes(roleSearchText))
                   .map(roles => (
                     <Checkbox
+                      className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
                       key={roles.id}
                       id={roles.id}
                       label={roles.name?.replaceAll('_', ' ')?.toLowerCase()}
                       onClick={() => handleCheckboxClick(roles)}
                       checked={roles.checked}
-                      className="!naxatw-min-w-[1.25rem]"
                     />
                   ))}
               </div>
@@ -329,7 +337,7 @@ const AssignUsers = () => {
                 value={projectSearchText}
                 onChange={e => setProjectSearchText(e.target.value)}
               />
-              <div className="naxatw-w-full naxatw-space-y-5  naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-2 naxatw-max-h-[200px] naxatw-min-h-[200px] naxatw-h-[200px] naxatw-overflow-x-auto scrollbar">
+              <div className="naxatw-w-full naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-py-2 naxatw-max-h-[200px] naxatw-min-h-[200px] naxatw-h-[200px] naxatw-overflow-x-auto scrollbar">
                 {!userListLoading ? (
                   selectedRolesList
                     ?.map(list => list.checked)
@@ -342,11 +350,11 @@ const AssignUsers = () => {
                         <Checkbox
                           key={project.id}
                           id={project.id}
+                          className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
                           label={project.name}
                           checked={project.checked}
                           disabled={project.disabled}
                           onClick={() => handleProjectCheckboxClick(project)}
-                          className="!naxatw-min-w-[1.25rem]"
                         />
                       ))
                   ) : (

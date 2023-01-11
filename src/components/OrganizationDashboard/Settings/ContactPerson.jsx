@@ -43,8 +43,8 @@ const ContactPerson = () => {
     onSubmit: data => {
       dispatch(
         postContactPersonRequest(
-          { ...data, project: organizationId },
-          { project: organizationId, type: 'organization' },
+          { ...data, organization: organizationId },
+          { organization: organizationId, type: 'organization' },
         ),
       );
       resetFormState();
@@ -60,10 +60,10 @@ const ContactPerson = () => {
             <div
               onClick={() => deleteContact(person.id)}
               key={person.id}
-              className="naxatw-flex  naxatw-p-4 naxatw-mb-2 naxatw-justify-between naxatw-items-center naxatw-rounded-xl naxatw-border"
+              className="naxatw-flex  naxatw-px-4 naxatw-py-1 naxatw-mb-2 naxatw-justify-between naxatw-items-center naxatw-rounded-xl naxatw-border"
             >
               <span>{person.name}</span>
-              <div>
+              <div className="hover:naxatw-bg-grey-100 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-justify-center naxatw-items-center naxatw-rounded-lg">
                 <MaterialIcon
                   name="delete_outline"
                   className="naxatw-text-red-500 naxatw-cursor-pointer"

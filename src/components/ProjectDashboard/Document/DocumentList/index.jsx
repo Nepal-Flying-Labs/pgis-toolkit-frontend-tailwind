@@ -102,9 +102,10 @@ function DocumentList() {
 
   return (
     <div className="">
-      <div className="naxatw-py-2 naxatw-flex naxatw-justify-between">
+      <div className="naxatw-py-2 naxatw-flex naxatw-items-center naxatw-justify-between">
         <div className="naxatw-flex naxatw-items-center naxatw-w-60 naxatw-mt-4 ">
           <Searchbar
+            isSmall
             placeholder="Search"
             value={value}
             onChange={handleSearch}

@@ -295,8 +295,10 @@ const UserList = () => {
                     />
                     <span
                       className={` ${
-                        ordering === 'name' ? 'naxatw-font-bold' : ''
-                      } naxatw-text-base`}
+                        ordering === 'name'
+                          ? 'naxatw-text-body-btn'
+                          : 'naxatw-text-body-lg'
+                      } `}
                     >
                       {row.full_name}
                     </span>
@@ -342,8 +344,10 @@ const UserList = () => {
                 dataFormat={row => (
                   <span
                     className={` ${
-                      ordering === 'group' ? 'naxatw-font-bold' : ''
-                    } naxatw-text-base`}
+                      ordering === 'group'
+                        ? 'naxatw-text-body-btn'
+                        : 'naxatw-text-body-lg'
+                    } `}
                   >
                     {row.group}
                   </span>
@@ -355,7 +359,9 @@ const UserList = () => {
                 rowcolSpan="rowSpan_2"
                 // dataHeader={<SortingContainer name="Phone" />}
                 dataFormat={row => (
-                  <span className="naxatw-text-base">{row.contact || '-'}</span>
+                  <span className="naxatw-text-body-lg">
+                    {row.contact || '-'}
+                  </span>
                 )}
               />
               <TableHeader
@@ -364,7 +370,7 @@ const UserList = () => {
                 rowcolSpan="rowSpan_2"
                 // dataHeader={<SortingContainer name="Email" />}
                 dataFormat={row => (
-                  <span className="naxatw-text-base">{row.email}</span>
+                  <span className="naxatw-text-body-lg">{row.email}</span>
                 )}
               />
               <TableHeader

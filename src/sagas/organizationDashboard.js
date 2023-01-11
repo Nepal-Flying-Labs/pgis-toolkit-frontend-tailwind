@@ -16,6 +16,7 @@ import {
   updateUserRole,
   updateInvitedUserStatus,
   organizationById,
+  updateOrganization,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
@@ -297,27 +298,16 @@ export function* resendInvitationRequest({ id, payload }) {
 }
 
 export function* updateOrganizationRequest({ id, payload }) {
-  console.log('action values', payload, id);
   const newPayload = payload;
   delete newPayload.page;
   try {
-    // const formData = prepareFormData(newPayload);
-    // const response = yield call(patchProject, id, formData);
-    // yield put(organizationDashboardActions.patchProjectSuccess(response.data));
-    // // yield put(organizationDashboardActions.toggleModal(''));
-    // if (!page) {
-    //   yield put(push(`/organizations/${organization}/projects`));
-    //   if (status === 'ongoing') {
-    //     yield put(push(`/organizations/${organization}/projects`));
-    //     yield put(commonActions.toggleModal('create-project-success'));
-    //   } else {
-    //     yield put(commonActions.togglePromptDialog(''));
-    //     yield put(push(`/organizations/${organization}/projects`));
-    //   }
-    // } else {
-    //   yield put(organizationDashboardActions.getIndividualProjectRequest(id));
-    // }
-    // yield put(toastActions.success({ message: 'Data saved successfully' }));
+    const formData = prepareFormData(newPayload);
+    const response = yield call(updateOrganization, id, formData);
+    yield put(
+      organizationDashboardActions.updateOrganizationSuccess(response.data),
+    );
+    // yield put(organizationDashboardActions.toggleModal(''));
+    yield put(toastActions.success({ message: 'Data saved successfully' }));
   } catch (error) {
     yield put(organizationDashboardActions.updateOrganizationFailure());
     throw error;
@@ -331,7 +321,6 @@ export function* getOrganizationByIdRequest({ id }) {
       organizationDashboardActions.getOrganizationByIdSuccess(response.data),
     );
   } catch (error) {
-    console.log('err', error);
     yield put(organizationDashboardActions.getOrganizationByIdFailure());
     throw error;
   }

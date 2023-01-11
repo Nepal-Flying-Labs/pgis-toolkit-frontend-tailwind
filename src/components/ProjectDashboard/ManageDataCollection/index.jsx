@@ -116,7 +116,7 @@ const ManageDataCollection = () => {
                       {link.id}
                     </h4>
                     <span
-                      className={`naxatw-text-[13px] naxatw-font-bold ${
+                      className={`naxatw-text-body-btn ${
                         active === link.id
                           ? 'naxatw-text-primary-400'
                           : 'naxatw-text-grey-600'

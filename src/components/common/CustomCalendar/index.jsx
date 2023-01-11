@@ -226,7 +226,9 @@ class CustomCalendar extends PureComponent {
         role="button"
       >
         <div
-          className={`naxatw-flex naxatw-justify-between naxatw-items-center naxatw-border naxatw-border-[#D7D7D7] naxatw-h-[54px]  naxatw-px-3 naxatw-py-[15px] naxatw-w-full naxatw-rounded-md  is-date ${
+          className={`naxatw-flex naxatw-justify-between naxatw-items-center ${
+            showCalendar && 'naxatw-bg-grey-100'
+          } hover:naxatw-bg-grey-100 naxatw-border naxatw-border-[#D7D7D7] naxatw-h-[54px]  naxatw-px-3 naxatw-py-[15px] naxatw-w-full naxatw-rounded-md  is-date ${
             errorClassName ? 'errorInput' : ''
           }`}
           tabIndex="0"

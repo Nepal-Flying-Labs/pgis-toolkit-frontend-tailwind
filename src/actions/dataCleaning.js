@@ -6,7 +6,7 @@ export const { Types, Creators } = createActions(
     setOptimalRouteState: ['payload'],
     setErrorStates: ['payload'],
 
-    checkErrorRequest: ['params'],
+    checkErrorRequest: ['payload'],
     checkErrorSuccess: ['payload'],
     checkErrorFailure: null,
 

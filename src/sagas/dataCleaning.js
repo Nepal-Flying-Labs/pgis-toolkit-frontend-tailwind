@@ -21,10 +21,10 @@ import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { getLayerAttributeFields } from '@Services/projectMap';
 import { isEmpty } from '@Utils/commonUtils';
 
-export function* checkErrorRequest({ params }) {
+export function* checkErrorRequest({ payload }) {
   try {
-    const layerId = params.layer;
-    yield put(dataCleaningActions.setErrorStates(layerId));
+    const { layerId, geometryType } = payload;
+    yield put(dataCleaningActions.setErrorStates({ layerId, geometryType }));
     yield call(copyFeatures, { layer: layerId.toString() });
     const { errorStates } = yield select(state => state.dataCleaning);
     const errorData = errorStates[layerId];
@@ -37,6 +37,7 @@ export function* checkErrorRequest({ params }) {
           status: 'checking',
         }),
       );
+      const params = { layer: layerId };
       const response = yield call(checkError, checkAPI, params);
       yield put(
         dataCleaningActions.checkErrorSuccess({

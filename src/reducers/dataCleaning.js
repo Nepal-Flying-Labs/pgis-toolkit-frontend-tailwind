@@ -1,6 +1,7 @@
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/dataCleaning';
 import { checkErrorData } from '@src/constants/analysis';
+import { lineTypes } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
 const initialState = {
   stepIndex: 1,
@@ -38,18 +39,21 @@ const setOptimalRouteState = (state, action) => ({
 });
 
 const setErrorStates = (state, action) => {
-  const id = action.payload;
+  const { layerId, geometryType } = action.payload;
+  const errorStateData = checkErrorData.map(item => ({
+    ...item,
+    status: 'waiting',
+    errorData: null,
+    totalData: null,
+    checked: false,
+  }));
   return {
     ...state,
     errorStates: {
       ...state.errorStates,
-      [id]: checkErrorData.map(item => ({
-        ...item,
-        status: 'waiting',
-        errorData: null,
-        totalData: null,
-        checked: false,
-      })),
+      [layerId]: !lineTypes.includes(geometryType)
+        ? errorStateData.filter(item => item.id !== 'isolated')
+        : errorStateData,
     },
   };
 };

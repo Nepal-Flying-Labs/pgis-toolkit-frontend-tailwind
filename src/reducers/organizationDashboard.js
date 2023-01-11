@@ -75,7 +75,18 @@ const getIndividualProjectSuccess = (state, action) => {
     ...state,
     individualProject: {
       ...state.individualProject,
-      project: action.payload,
+      project: {
+        ...action.payload,
+        file: file
+          ? {
+              fileURL: file,
+              name: fileName,
+              type: file_type,
+              lastModifiedDate: last_updated,
+              existedData: true,
+            }
+          : '',
+      },
       stepOne: {
         ...state.individualProject.stepOne,
         name,

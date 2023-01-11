@@ -81,7 +81,7 @@ export function* getIndividualProjectRequest({ id }) {
 }
 
 export function* patchProjectRequest({ id, payload }) {
-  const { status, organization, page } = payload;
+  const { status, organization, page, tabName } = payload;
   const newPayload = payload;
   delete newPayload.page;
   try {
@@ -91,11 +91,11 @@ export function* patchProjectRequest({ id, payload }) {
     // yield put(organizationDashboardActions.toggleModal(''));
     if (!page) {
       yield put(push(`/organizations/${organization}/projects`));
-      if (status === 'ongoing') {
+      if (status === 'ongoing' && tabName !== 'Edit a Project') {
         yield put(push(`/organizations/${organization}/projects`));
         yield put(commonActions.toggleModal('create-project-success'));
       } else {
-        yield put(commonActions.togglePromptDialog(''));
+        // yield put(commonActions.togglePromptDialog(''));
         yield put(push(`/organizations/${organization}/projects`));
       }
     } else {

@@ -117,16 +117,21 @@ const Location = ({ page, setPage }) => {
 
       const diffObj = diffObject(project, finalObj);
       const diffContact = diffObject(contactDetails, contactPerson);
+      const tabName =
+        tabname === 'project-setup'
+          ? 'Complete your project profile'
+          : 'Edit a Project';
 
       const payloadData = diffObj?.file?.existedData
         ? removeObjectKeys(diffObj, ['file'])
         : { ...diffObj, file_type: getFileType(values.file) };
+
       const finalPayloadData = payloadData?.cover_image?.existedData
         ? removeObjectKeys(payloadData, ['cover_image'])
         : payloadData;
 
       const newData =
-        finalPayloadData.location_type === 'Custom Draw'
+        values.location_type === 'Custom Draw' && drawnGeojsonData
           ? {
               ...finalPayloadData,
               location_wkt: [drawnGeojsonData],
@@ -137,7 +142,10 @@ const Location = ({ page, setPage }) => {
               ...finalPayloadData,
             };
 
-      if (values.file || values.location_wkt) {
+      if (
+        values.file ||
+        (values.location_type === 'Custom Draw' && values.bbox)
+      ) {
         if (Object.keys(diffContact).length > 0) {
           if (stepOne.contactId) {
             validateContactPerson(diffContact)
@@ -171,6 +179,7 @@ const Location = ({ page, setPage }) => {
             ...newData,
             status: 'ongoing',
             page: tabname === 'settings',
+            tabName,
           }),
         );
       } else {

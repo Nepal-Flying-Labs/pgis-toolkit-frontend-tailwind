@@ -56,7 +56,6 @@ const WMSTileLayer = ({ map, url, layer, zIndex = 1, visibleOnMap = true }) => {
   //  const viewResolution = map.getView();
   //  map.on('singleclick', function ehello(evt) {
   //    map.forEachLayerAtPixel(evt.pixel, function (lyr) {
-  //      console.log(lyr, 'layerx');
   //      if (!(lyr instanceof VectorTileLayer)) {
   //        //
   //      }

@@ -39,8 +39,6 @@ export default function StepTwo() {
     errorStates[selectedRoadLayer.id] &&
     errorStates[selectedRoadLayer.id].some(item => item.status === 'checking');
 
-  console.log(selectedRoadLayer, 'selectedRoadLayerx');
-
   return (
     <div>
       <h4>Data</h4>

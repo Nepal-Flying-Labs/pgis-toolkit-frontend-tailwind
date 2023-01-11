@@ -271,6 +271,8 @@ const getFeatureGeojsonSuccess = (state, action) => {
   };
 };
 
+const resetDataCleaningState = () => ({ ...initialState });
+
 const dataCleaningReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -287,6 +289,7 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.DELETE_FEATURE_SUCCESS]: deleteFeatureSuccess,
   [Types.DELETE_SELECTED_FEATURES_SUCCESS]: deleteSelectedFeaturesSuccess,
   [Types.GET_FEATURE_GEOJSON_SUCCESS]: getFeatureGeojsonSuccess,
+  [Types.RESET_DATA_CLEANING_STATE]: resetDataCleaningState,
 });
 
 export default dataCleaningReducer;

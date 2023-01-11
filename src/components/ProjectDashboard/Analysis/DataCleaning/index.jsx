@@ -1,5 +1,6 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Creators } from '@Actions/dataCleaning';
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
 import ManualFix from './ManualFix';
@@ -15,9 +16,20 @@ function getStepWiseContent(step) {
   }
 }
 
+const { resetDataCleaningState } = Creators;
+
 export default function DataCleaning() {
   const stepIndex = useSelector(state => state.dataCleaning.stepIndex);
   const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
+  const dispatch = useDispatch();
+
+  // reset reducer state on unmount
+  useEffect(
+    () => () => {
+      dispatch(resetDataCleaningState());
+    },
+    [dispatch],
+  );
 
   return selectedLayer ? (
     <ManualFix />

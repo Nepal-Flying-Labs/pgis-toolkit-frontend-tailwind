@@ -44,6 +44,8 @@ export const { Types, Creators } = createActions(
     getFeatureGeojsonRequest: ['payload'],
     getFeatureGeojsonSuccess: ['payload'],
     getFeatureGeojsonFailure: null,
+
+    resetDataCleaningState: null,
   },
   { prefix: 'dataCleaning/' },
 );

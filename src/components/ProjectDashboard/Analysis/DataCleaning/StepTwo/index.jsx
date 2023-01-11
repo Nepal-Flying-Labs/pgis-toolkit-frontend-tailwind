@@ -190,7 +190,7 @@ export default function StepTwo() {
                       ),
                     )}
                   </div>
-                  {!isLayerCheckingError && (
+                  {errorStates[layer.id] && !isLayerCheckingError && (
                     <div className="naxatw-mt-4 naxatw-flex naxatw-justify-end naxatw-gap-2">
                       <Button
                         className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
@@ -205,12 +205,14 @@ export default function StepTwo() {
                       >
                         Automatic Fix
                       </Button>
-                      <Button
-                        className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
-                        disabled={isLayerCheckingError}
-                      >
-                        Manual Fix
-                      </Button>
+                      {/*
+                        <Button
+                          className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
+                          disabled={isLayerCheckingError}
+                        >
+                          Manual Fix
+                        </Button>
+                      */}
                     </div>
                   )}
                 </div>

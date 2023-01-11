@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
+import { useParams, useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
 import Button from '@Components/common/Button';
@@ -25,6 +26,8 @@ function getStatusIcon(status) {
 }
 
 export default function StepTwo() {
+  const { organizationId, projectId, analysisType } = useParams();
+  const history = useHistory();
   const selectedRoadLayer = useSelector(
     state => state.dataCleaning.optimalRoute.selectedRoadLayer,
   );
@@ -376,7 +379,14 @@ export default function StepTwo() {
       </div>
 
       <div className="naxatw-flex naxatw-justify-center naxatw-mt-10">
-        <Button className="naxatw-btn-primary" onClick={() => {}}>
+        <Button
+          className="naxatw-btn-primary"
+          onClick={() => {
+            history.push(
+              `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}`,
+            );
+          }}
+        >
           Start Analysis
         </Button>
       </div>

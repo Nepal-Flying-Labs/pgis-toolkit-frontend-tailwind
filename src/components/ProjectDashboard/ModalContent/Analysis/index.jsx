@@ -55,7 +55,7 @@ export default function Analysis() {
                 if (disabled) return;
                 dispatch(toggleModal());
                 history.push(
-                  `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}`,
+                  `/organizations/${organizationId}/projects/${projectId}/data-cleaning/${analysisType}`,
                 );
               }}
             >

@@ -377,7 +377,7 @@ export default function StepTwo() {
 
       <div className="naxatw-flex naxatw-justify-center naxatw-mt-10">
         <Button className="naxatw-btn-primary" onClick={() => {}}>
-          Next
+          Start Analysis
         </Button>
       </div>
     </div>

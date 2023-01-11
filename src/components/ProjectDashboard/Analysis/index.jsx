@@ -3,12 +3,12 @@ import { useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import Header from './Header';
 import HelpContent from './HelpContent';
-import OptimalRoute from './OptimalRoute';
+import DataCleaning from './DataCleaning';
 
 function getAnalysisContent(type) {
   switch (type) {
-    case 'optimal-route':
-      return <OptimalRoute />;
+    case 'data-cleaning':
+      return <DataCleaning />;
 
     default:
       return '';
@@ -16,7 +16,7 @@ function getAnalysisContent(type) {
 }
 
 export default function Analysis() {
-  const { analysisType } = useParams();
+  const { tabname } = useParams();
   const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
 
   return (
@@ -24,7 +24,7 @@ export default function Analysis() {
       <Header />
 
       <div className="naxatw-flex naxatw-h-[calc(100vh-6.2rem)]">
-        {getAnalysisContent(analysisType)}
+        {getAnalysisContent(tabname)}
 
         {!selectedLayer && <HelpContent />}
       </div>

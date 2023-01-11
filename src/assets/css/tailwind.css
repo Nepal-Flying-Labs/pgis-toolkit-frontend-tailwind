@@ -37,13 +37,13 @@
     @apply naxatw-block naxatw-w-full naxatw-px-3 naxatw-py-[13px] naxatw-h-[48px] naxatw-font-normal naxatw-text-grey-900 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded-lg naxatw-transition naxatw-ease-in-out naxatw-m-0 focus:naxatw-text-grey-700 focus:naxatw-bg-white focus:naxatw-border-grey-800 focus:naxatw-outline-none;
   }
   .naxatw-label {
-    @apply naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px];
+    @apply naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-text-[15px];
   }
-  .naxatw-input.naxatw-input-disabled{
-    @apply naxatw-text-grey-300 naxatw-bg-grey-100 naxatw-cursor-not-allowed naxatw-select-none
+  .naxatw-input.naxatw-input-disabled {
+    @apply naxatw-text-grey-300 naxatw-bg-grey-100 naxatw-cursor-not-allowed naxatw-select-none;
   }
-  .naxatw-label.naxatw-label-disabled{
-    @apply naxatw-text-grey-300 naxatw-cursor-not-allowed naxatw-select-none
+  .naxatw-label.naxatw-label-disabled {
+    @apply naxatw-text-grey-300 naxatw-cursor-not-allowed naxatw-select-none;
   }
   .naxatw-btn-text {
     @apply naxatw-font-bold naxatw-text-[15px];

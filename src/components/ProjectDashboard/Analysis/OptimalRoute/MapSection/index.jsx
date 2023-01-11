@@ -1,19 +1,22 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { fromLonLat } from 'ol/proj';
-import { Types } from '@Actions/projectMap';
+// import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
 import {
   useOLMap,
   MapContainer as MapComponent,
 } from '@Components/common/OpenLayersComponent';
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher';
-import CustomLayerSwitcher from '@Components/common/OpenLayersComponent/CustomLayerSwitcher/index';
+import CustomLayerSwitcher from '@Components/common/OpenLayersComponent/CustomLayerSwitcher';
 import Spinner from '@Components/common/Spinner';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
+
+// const { setManualFixState } = DataCleaningCreators;
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -23,11 +26,10 @@ export default function MapSection() {
   });
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
-      Types.GET_PROJECT_THEMES_REQUEST,
-      Types.GET_PROJECT_THEME_LAYERS_REQUEST,
-      Types.GET_PROJECT_GEOJSON_REQUEST,
+      // Types.GET_PROJECT_GEOJSON_REQUEST,
     ]),
   );
+  // const dispatch = useDispatch();
 
   return (
     <div className="naxatw-w-full naxatw-relative">

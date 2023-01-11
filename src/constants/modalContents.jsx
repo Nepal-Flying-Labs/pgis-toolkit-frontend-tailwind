@@ -36,6 +36,7 @@ import DeleteOrganizationUser from '@Components/OrganizationDashboard/ModalConte
 import DeleteUser from '@Components/Users/ModalContent/DeleteUser';
 import DeleteProjectUser from '@Components/ProjectDashboard/ModalContent/DeleteProjectUser/index';
 import DeleteTemplateAttribute from '@Components/ProjectDashboard/ModalContent/DeleteTemplateAttribute';
+import DeleteError from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteError';
 
 export function getModalContent(content) {
   switch (content) {
@@ -285,6 +286,12 @@ export function getPromptDialogContent(content) {
       return {
         title: 'Delete Attribute',
         content: <DeleteTemplateAttribute />,
+      };
+    // data cleaning > manual fix
+    case 'delete-error':
+      return {
+        title: '',
+        content: <DeleteError />,
       };
     default:
       return '';

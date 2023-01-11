@@ -91,6 +91,8 @@
 - [x] value autofill query
 - [x] checkbox min width height
 - [ ] icon grey
+- [ ] required field validation while geom edit for feature
+- [ ] save data query modal mt remove
 
 ### Backend
 

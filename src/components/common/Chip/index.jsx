@@ -24,11 +24,12 @@ const Chip = ({ name, onClick, status, value, iconRight, onIconClick }) => {
       tabIndex={0}
       role="button"
       onClick={onClick}
-      className={`naxatw-px-5 naxatw-py-2.5 hover:naxatw-bg-[#F5F5F5] naxatw-bg-white naxatw-rounded-3xl naxatw-border naxatw-flex naxatw-items-center ${
-        activeChip
-          ? ' naxatw-border-[#484848] naxatw-bg-[#F5F5F5]'
-          : 'naxatw-border-[#D7D7D7]'
-      }`}
+      className={`naxatw-px-5 naxatw-py-2.5 naxatw-w-fit hover:naxatw-bg-[#F5F5F5] naxatw-bg-white
+        naxatw-rounded-3xl naxatw-border naxatw-flex naxatw-items-center ${
+          activeChip
+            ? ' naxatw-border-[#484848] naxatw-bg-[#F5F5F5]'
+            : 'naxatw-border-[#D7D7D7]'
+        }`}
     >
       <span className="naxatw-text-body-lg">{name}</span>
 

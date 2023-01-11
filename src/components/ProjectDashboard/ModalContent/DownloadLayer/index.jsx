@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { saveAs } from 'file-saver';
+import { useSelector, useDispatch } from 'react-redux';
 import Select from '@Components/common/Select';
+import { Creators, Types } from '@Actions/projectDashboard';
 import Button from '@Components/common/Button';
-import { baseURL } from '@Services';
+import { checkIfLoading } from '@Utils/loaderSelector';
+
+const { downloadProjectLayerRequest } = Creators;
 
 const downloadOptions = [
   { id: 1, label: 'Shapefile', value: 'shapefile' },
@@ -14,15 +16,25 @@ const downloadOptions = [
 ];
 
 export default function DownloadLayer() {
+  const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState(null);
   const selectedData = useSelector(
     state => state.projectDashboard.data.selectedData,
   );
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.DOWNLOAD_PROJECT_LAYER_REQUEST]),
+  );
 
   const handleDownload = () => {
     if (!selectedOption) return;
-    const downloadLink = `${baseURL}/api/maps/layer_download/?layer_id=${selectedData.id}&output_format=${selectedOption.value}`;
-    saveAs(downloadLink);
+    // const downloadLink = `${baseURL}/api/maps/layer_download/?layer_id=${selectedData.id}&output_format=${selectedOption.value}`;
+    // saveAs(downloadLink);
+    dispatch(
+      downloadProjectLayerRequest({
+        layer_id: selectedData.id,
+        output_format: selectedOption.value,
+      }),
+    );
   };
 
   return (
@@ -44,7 +56,12 @@ export default function DownloadLayer() {
       </div>
 
       <div className="naxatw-mt-12 naxatw-flex naxatw-items-center naxatw-justify-center">
-        <Button className="naxatw-btn-primary" onClick={handleDownload}>
+        <Button
+          className="naxatw-btn-primary"
+          onClick={handleDownload}
+          isLoading={loading}
+          loaderClassName="naxatw-fill-secondary-400"
+        >
           Download
         </Button>
       </div>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
@@ -20,7 +21,12 @@ import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetu
 import MapSection from '../MapSection/index';
 
 const { togglePromptDialog } = CommonCreators;
-const { setIndividualProject, patchProjectRequest } = Creators;
+const {
+  setIndividualProject,
+  patchProjectRequest,
+  postContactPersonRequest,
+  patchContactPersonRequest,
+} = Creators;
 
 function diffObject(a, b) {
   const diffObj = Object.keys(b).reduce((diff, key) => {
@@ -32,6 +38,18 @@ function diffObject(a, b) {
   }, {});
   return diffObj;
 }
+
+const validateContactPerson = contact => {
+  if (
+    !contact.name &&
+    !contact.position &&
+    !contact.email &&
+    !contact.contact
+  ) {
+    return false;
+  }
+  return true;
+};
 
 const Location = ({ page, setPage }) => {
   const { projectId, organizationId, tabname } = useParams();
@@ -54,6 +72,9 @@ const Location = ({ page, setPage }) => {
   const project = useSelector(
     state => state.organizationDashboard.individualProject.project,
   );
+  const contactDetails = useSelector(
+    state => state.organizationDashboard.individualProject.contactDetails,
+  );
 
   const getFileType = file => {
     if (file) {
@@ -75,13 +96,27 @@ const Location = ({ page, setPage }) => {
   const { values, handleChange, handleCustomChange, handleSubmit } = useForm({
     initialValues: stepTwo,
     onSubmit: data => {
+      const {
+        contactName,
+        contactPosition,
+        contactEmail,
+        contactPhone,
+        ...basicInfo
+      } = stepOne;
+      const contactPerson = {
+        name: contactName,
+        email: contactEmail,
+        contact: contactPhone,
+        position: contactPosition,
+      };
       const finalObj = {
-        ...stepOne,
+        ...basicInfo,
         ...values,
         organization: organizationId,
       };
 
       const diffObj = diffObject(project, finalObj);
+      const diffContact = diffObject(contactDetails, contactPerson);
 
       const payloadData = diffObj?.file?.existedData
         ? removeObjectKeys(diffObj, ['file'])
@@ -103,6 +138,34 @@ const Location = ({ page, setPage }) => {
             };
 
       if (values.file || values.location_wkt) {
+        if (Object.keys(diffContact).length > 0) {
+          if (stepOne.contactId) {
+            validateContactPerson(diffContact)
+              ? dispatch(
+                  patchContactPersonRequest(stepOne.contactId, {
+                    ...diffContact,
+                    type: 'project',
+                  }),
+                )
+              : dispatch(
+                  patchContactPersonRequest(stepOne.contactId, {
+                    is_deleted: true,
+                    type: 'project',
+                  }),
+                );
+          } else {
+            dispatch(
+              postContactPersonRequest(
+                {
+                  ...contactPerson,
+                  project: projectId,
+                  organization: organizationId,
+                },
+                { project: projectId, type: 'project' },
+              ),
+            );
+          }
+        }
         dispatch(
           patchProjectRequest(projectId, {
             ...newData,
@@ -183,7 +246,6 @@ const Location = ({ page, setPage }) => {
         <UploadPolygonBoundary
           uploadedFile={values?.file}
           setuploadedFile={file => {
-            console.log('files ', file);
             handleCustomChange('file', file);
           }}
         />

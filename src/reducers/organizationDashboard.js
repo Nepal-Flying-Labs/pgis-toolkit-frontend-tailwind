@@ -77,6 +77,7 @@ const getIndividualProjectSuccess = (state, action) => {
       ...state.individualProject,
       project: action.payload,
       stepOne: {
+        ...state.individualProject.stepOne,
         name,
         cover_image: cover_image
           ? {
@@ -127,12 +128,26 @@ const setIndividualProject = (state, action) => {
 
 const getContactPersonSuccess = (state, action) => {
   const { data, type } = action.payload;
+  const { name, email, position, contact, id } = data[0] || {};
   if (type === 'project') {
     return {
       ...state,
       individualProject: {
         ...state.individualProject,
-        contactPerson: data,
+        stepOne: {
+          ...state.individualProject.stepOne,
+          contactName: name || '',
+          contactPosition: position || '',
+          contactPhone: contact || '',
+          contactEmail: email || '',
+          contactId: id,
+        },
+        contactDetails: {
+          name: name || '',
+          position: position || '',
+          email: email || '',
+          contact: contact || '',
+        },
       },
     };
   }
@@ -159,7 +174,7 @@ const postContactPersonSuccess = (state, action) => {
   }
   return {
     ...state,
-    individualProject: {
+    individualOrganization: {
       ...state.individualOrganization,
       contactPerson: [...state.individualOrganization.contactPerson, data],
     },

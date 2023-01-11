@@ -117,26 +117,28 @@ export function* uploadDatasetsRequest({ payload }) {
   }
 }
 
-export function* downloadProjectLayerRequest({ params }) {
-  function getFileExtension(file) {
-    switch (file) {
-      case 'shapefile':
-        return 'layers.zip';
-      case 'geojson':
-        return 'layers.geojson';
-      case 'csv':
-        return 'layers.csv';
-      case 'kml':
-        return 'layers.kml';
-      case 'gpx':
-        return 'layers.gpx';
-      default:
-        return '';
-    }
+function getFileExtension(file) {
+  switch (file) {
+    case 'shapefile':
+      return 'layers.zip';
+    case 'geojson':
+      return 'layers.geojson';
+    case 'csv':
+      return 'layers.csv';
+    case 'kml':
+      return 'layers.kml';
+    case 'gpx':
+      return 'layers.gpx';
+    default:
+      return '';
   }
+}
+
+export function* downloadProjectLayerRequest({ params }) {
   const { output_format } = params;
   try {
     const response = yield call(downloadProjectLayer, params);
+    console.log(response, 'response');
     const blob = new Blob([response.data], {
       type: 'application/octet-stream',
     });
@@ -146,6 +148,7 @@ export function* downloadProjectLayerRequest({ params }) {
     link.click();
     yield put(toastActions.success({ message: 'Layer Download Completed.' }));
   } catch (error) {
+    console.log(error, 'saga error');
     yield put(projectDashboardActions.downloadProjectLayerFailure());
     throw error;
   }

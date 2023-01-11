@@ -5,7 +5,7 @@ import { useEffect, useMemo } from 'react';
 // import * as olExtent from 'ol/extent';
 import VectorTile from 'ol/layer/VectorTile';
 import MVT from 'ol/format/MVT';
-import Feature from 'ol/Feature';
+// import Feature from 'ol/Feature';
 import VectorTileSource from 'ol/source/VectorTile';
 import { transformExtent } from 'ol/proj';
 import getSvgImageIcon from '../helpers/getSvgImageIcon';

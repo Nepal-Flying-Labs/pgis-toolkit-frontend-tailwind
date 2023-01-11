@@ -5,7 +5,7 @@ import organizationDashboardWatcher from './organizationDashboard';
 import projectDashboardWatcher from './projectDashboard';
 import projectMapWatcher from './projectMap';
 import usersWatcher from './users';
-import analysisWatcher from './analysis';
+import dataCleaningWatcher from './dataCleaning';
 
 function* rootSaga() {
   yield all([
@@ -15,7 +15,7 @@ function* rootSaga() {
     projectDashboardWatcher(),
     projectMapWatcher(),
     usersWatcher(),
-    analysisWatcher(),
+    dataCleaningWatcher(),
   ]);
 }
 

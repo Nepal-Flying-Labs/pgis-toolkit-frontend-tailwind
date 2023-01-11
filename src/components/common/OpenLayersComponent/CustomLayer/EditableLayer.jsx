@@ -10,8 +10,7 @@ import { Modify, Select, Translate, Draw, Snap } from 'ol/interaction';
 import { shiftKeyOnly, singleClick } from 'ol/events/condition';
 import Tooltip from '@Components/common/Tooltip';
 import getFeatureGeojson from '../helpers/getFeatureGeojson';
-import { getStyles } from '../helpers/styleUtils';
-import { pointTypes } from '../Legend/LegendItem';
+import { getStyles, pointTypes } from '../helpers/styleUtils';
 
 // import './styles.scss';
 

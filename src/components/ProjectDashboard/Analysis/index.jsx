@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router';
-import { useSelector } from 'react-redux';
 import Header from './Header';
 import HelpContent from './HelpContent';
+import DataCleaning from './DataCleaning';
 import OptimalRoute from './OptimalRoute';
 
 function getAnalysisContent(type) {
@@ -16,19 +16,20 @@ function getAnalysisContent(type) {
 }
 
 export default function Analysis() {
-  const { analysisType } = useParams();
-  const manualFixLayerId = useSelector(
-    state => state.analysis.manualFixLayerId,
-  );
+  const { tabname, analysisType } = useParams();
 
   return (
     <div>
       <Header />
 
       <div className="naxatw-flex naxatw-h-[calc(100vh-6.2rem)]">
-        {getAnalysisContent(analysisType)}
+        {tabname === 'data-cleaning' ? (
+          <DataCleaning />
+        ) : (
+          getAnalysisContent(analysisType)
+        )}
 
-        {!manualFixLayerId && <HelpContent />}
+        {analysisType === 'data-cleaning' && <HelpContent />}
       </div>
     </div>
   );

@@ -77,7 +77,7 @@ export default function ProjectDashboard() {
 
   return tabname === 'manage-data' ? (
     <ManageDataCollection />
-  ) : tabname === 'analysis' ? (
+  ) : tabname === 'analysis' || tabname === 'data-cleaning' ? (
     <Analysis />
   ) : (
     <div>

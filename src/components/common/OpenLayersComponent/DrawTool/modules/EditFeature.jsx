@@ -6,6 +6,7 @@ export default function EditFeature({
   enable,
   select,
   modify,
+  snap,
   addInteraction,
   removeInteraction,
 }) {
@@ -13,11 +14,13 @@ export default function EditFeature({
     if (enable) {
       addInteraction(select);
       addInteraction(modify);
+      // addInteraction(snap);
     } else {
       removeInteraction(select);
       removeInteraction(modify);
+      // removeInteraction(snap);
     }
-  }, [addInteraction, removeInteraction, enable, modify, select]);
+  }, [addInteraction, removeInteraction, enable, modify, select, snap]);
 
   return (
     <button

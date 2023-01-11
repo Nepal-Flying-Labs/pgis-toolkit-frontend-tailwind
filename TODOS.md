@@ -132,3 +132,4 @@
 ### Need to fix
 
 - [ ] tooltip direction bottom prop
+- [ ] remove gpx option for Polygon and MultiPolygon

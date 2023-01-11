@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
-export default function Tab({ data, activeId }) {
+export default function Tab({ data, activeId, contentClassName }) {
   const [activeTabId, setActiveTabId] = useState(data[0]?.id || null);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function Tab({ data, activeId }) {
   );
 
   return (
-    <div className="">
+    <div className="naxatw-h-full">
       <ul className="naxatw-flex naxatw-flex-wrap naxatw--mb-px">
         {data.map(({ id, title, disabled }) => (
           <li
@@ -40,16 +40,20 @@ export default function Tab({ data, activeId }) {
           </li>
         ))}
       </ul>
-      <div className="naxatw-mt-3">{getTabContent(activeTabId)}</div>
+      <div className={`naxatw-pt-3 ${contentClassName}`}>
+        {getTabContent(activeTabId)}
+      </div>
     </div>
   );
 }
 
 Tab.defaultProps = {
   activeId: null,
+  contentClassName: '',
 };
 
 Tab.propTypes = {
   data: PropTypes.array.isRequired,
   activeId: PropTypes.number,
+  contentClassName: PropTypes.string,
 };

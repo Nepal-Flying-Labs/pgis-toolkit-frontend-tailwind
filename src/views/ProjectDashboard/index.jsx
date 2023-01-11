@@ -48,7 +48,8 @@ export default function ProjectDashboard() {
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
-  const layers = useSelector(state => state.projectDashboard.data.layers);
+  const layers =
+    useSelector(state => state.projectDashboard.data.layers) || true;
   const pushedToManageDataPage = useRef(false);
   const dispatch = useDispatch();
 

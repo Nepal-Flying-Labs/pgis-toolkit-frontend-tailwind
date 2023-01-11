@@ -1,5 +1,6 @@
 import React from 'react';
 import Tab from '@Components/common/Tab';
+import { analysisHeaderHeight } from '@src/constants';
 import DataInput from './DataInput';
 
 const tabData = [
@@ -14,10 +15,11 @@ export default function MapSidebar() {
       className="naxatw-bg-grey-100 naxatw-px-4 naxatw-overflow-auto
         scrollbar naxatw-min-w-[23rem]"
     >
-      <div className="naxatw-flex naxatw-flex-col naxatw-gap-2">
-        <div>
-          <Tab data={tabData} />
-        </div>
+      <div className="naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-h-full">
+        <Tab
+          contentClassName={`naxatw-h-[calc(100vh-${analysisHeaderHeight}-2.2rem)]`}
+          data={tabData}
+        />
       </div>
     </div>
   );

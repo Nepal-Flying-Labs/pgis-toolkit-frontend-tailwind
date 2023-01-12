@@ -21,18 +21,21 @@ import ProjectCard from './ProjectCard';
 import ProjectGridCard from './ProjectGridCard/index';
 import ProjectCardSkeleton from './ProjectCardSkeleton/index';
 
-const { getProjectsRequest } = OrganizationDashboardCreators;
+const { getProjectsRequest, toggleSidebar } = OrganizationDashboardCreators;
 const { toggleModal } = CommonCreators;
 
 export default function MapSidebar() {
   const [chipStatus, setChipStatus] = useState('all');
   const [viewType, setViewType] = useState('list');
-  const [sidebarToggle, setSidebarToggle] = useState(false);
   const [toggleId, setToggleId] = useState(null);
   const { organizationId } = useParams();
   const { url } = useRouteMatch();
   const history = useHistory();
   const projects = useSelector(state => state.organizationDashboard.projects);
+  const hideSidebar = useSelector(
+    state => state.organizationDashboard.hideSidebar,
+  );
+
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
@@ -65,9 +68,9 @@ export default function MapSidebar() {
     <div
       className={`naxatw-relative naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5`}
       style={{
-        width: sidebarToggle ? '0' : '40%',
-        minWidth: sidebarToggle ? '0' : '40%',
-        padding: sidebarToggle ? '0' : '',
+        width: hideSidebar ? '0' : '44.375rem',
+        minWidth: hideSidebar ? '0' : '40rem',
+        padding: hideSidebar ? '0' : '',
         transition: 'ease-in-out 300ms',
       }}
     >
@@ -136,7 +139,7 @@ export default function MapSidebar() {
         className={`naxatw-mt-5 naxatw-overflow-y-auto scrollbar ${
           viewType === 'list'
             ? ' naxatw-flex naxatw-flex-col naxatw-gap-2 '
-            : 'naxatw-grid naxatw-grid-cols-1 lg:naxatw-grid-cols-2 naxatw-gap-5 naxatw-overflow-x-hidden'
+            : 'naxatw-grid naxatw-grid-cols-2 naxatw-gap-5 naxatw-overflow-x-hidden'
         }`}
         style={{
           height: `calc(100vh - ${projectHeaderHeight}px - 9rem)`,
@@ -232,10 +235,10 @@ export default function MapSidebar() {
       <div>
         <a
           className="naxatw-absolute naxatw-top-4 -naxatw-right-12 naxatw-z-10 naxatw-bg-white naxatw-text-grey-800 naxatw-h-10 naxatw-p-2 naxatw-rounded-lg naxatw-border naxatw-border-grey-300 naxatw-flex naxatw-items-center naxatw-shadow-3xl hover:naxatw-bg-[#F5F5F5]"
-          onClick={() => setSidebarToggle(prev => !prev)}
+          onClick={() => dispatch(toggleSidebar())}
         >
           <i className="material-icons ">
-            {sidebarToggle ? 'navigate_next' : 'navigate_before'}
+            {hideSidebar ? 'navigate_next' : 'navigate_before'}
           </i>
         </a>
       </div>

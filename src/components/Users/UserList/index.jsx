@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable arrow-body-style */
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import { Creators, Types } from '@Actions/users';
@@ -51,6 +51,7 @@ const UserList = () => {
   const dispatch = useDispatch();
   // const [byGroup, setByGroup] = useState('role');
   const users = useSelector(state => state.users.userData);
+  const searchText = useSelector(state => state.users.searchText);
   const [rowPerPage, setRowPerPage] = useState(10);
   const invitationLoading = useSelector(state =>
     checkIfLoading(state, [
@@ -60,23 +61,23 @@ const UserList = () => {
   );
 
   const userOptions = [
-    {
-      id: 1,
-      label: (
-        <span className="naxatw-flex naxatw-items-center">
-          <i className="material-icons naxatw-mr-2">group</i>
-          <p className="naxatw-text-body-lg">Assign</p>
-        </span>
-      ),
-      onClick: data => {
-        dispatch(
-          setUserState({
-            pageTab: 'assign-users',
-            item: { ...data, fromUserTab: true },
-          }),
-        );
-      },
-    },
+    // {
+    //   id: 1,
+    //   label: (
+    //     <span className="naxatw-flex naxatw-items-center">
+    //       <i className="material-icons naxatw-mr-2">group</i>
+    //       <p className="naxatw-text-body-lg">Assign</p>
+    //     </span>
+    //   ),
+    //   onClick: data => {
+    //     dispatch(
+    //       setUserState({
+    //         pageTab: 'assign-users',
+    //         item: { ...data, fromUserTab: true },
+    //       }),
+    //     );
+    //   },
+    // },
     {
       id: 2,
       label: (
@@ -145,6 +146,15 @@ const UserList = () => {
       },
     },
   ];
+  const filteredData = useMemo(
+    () =>
+      users?.filter(
+        item =>
+          item?.full_name?.toLowerCase()?.includes(searchText.toLowerCase()) ||
+          item?.email?.toLowerCase()?.includes(searchText.toLowerCase()),
+      ) || [],
+    [searchText, users],
+  );
 
   const {
     next,
@@ -156,13 +166,12 @@ const UserList = () => {
     // begin,
     // end,
     currentList,
-    // handleSorting,
-  } = usePagination(users || [], rowPerPage);
+    handleSorting,
+  } = usePagination(filteredData || [], rowPerPage);
 
   // const userRole = useSelector(
   //   state => state.organizationDashboard.usersFilter.userRole,
   // );
-  const searchText = useSelector(state => state.users.searchText);
 
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_USERS_REQUEST]),
@@ -213,17 +222,7 @@ const UserList = () => {
         >
           {!loading ? (
             <Table
-              data={
-                currentList?.filter(
-                  item =>
-                    item?.full_name
-                      ?.toLowerCase()
-                      ?.includes(searchText.toLowerCase()) ||
-                    item?.email
-                      ?.toLowerCase()
-                      ?.includes(searchText.toLowerCase()),
-                ) || []
-              }
+              data={currentList || []}
               className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               headerWidths={[
@@ -246,15 +245,16 @@ const UserList = () => {
                   <SortingContainer
                     name="Name"
                     isActive={ordering === 'full_name'}
-                    handleSort={() =>
+                    handleSort={() => {
                       dispatch(
                         setUserState({
                           ordering: `${
                             ordering === 'full_name' ? null : 'full_name'
                           }`,
                         }),
-                      )
-                    }
+                      );
+                      handleSorting('full_name');
+                    }}
                   />
                 }
                 dataFormat={row => (
@@ -284,15 +284,16 @@ const UserList = () => {
                   <SortingContainer
                     name="Organization Name"
                     isActive={ordering === 'organization'}
-                    handleSort={() =>
+                    handleSort={() => {
                       dispatch(
                         setUserState({
                           ordering: `${
                             ordering === 'organization' ? null : 'organization'
                           }`,
                         }),
-                      )
-                    }
+                      );
+                      handleSorting('organization');
+                    }}
                   />
                 }
                 dataFormat={row => (
@@ -324,13 +325,14 @@ const UserList = () => {
                   <SortingContainer
                     name="Role"
                     isActive={ordering === 'group'}
-                    handleSort={() =>
+                    handleSort={() => {
                       dispatch(
                         setUserState({
                           ordering: `${ordering === 'group' ? null : 'group'}`,
                         }),
-                      )
-                    }
+                      );
+                      handleSorting('group');
+                    }}
                   />
                 }
                 dataFormat={row => (
@@ -433,9 +435,9 @@ const UserList = () => {
           previousPage={prev}
           jumpTo={jump}
           currentPage={currentPage}
-          count={users?.length || 0}
+          count={filteredData?.length || 0}
           paginatedCounts={getSelectedRange(
-            users?.length,
+            currentList?.length,
             rowPerPage,
             currentPage,
           )}

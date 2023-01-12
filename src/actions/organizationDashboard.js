@@ -101,6 +101,8 @@ export const { Types, Creators } = createActions(
     getOrganizationByIdRequest: ['id'],
     getOrganizationByIdSuccess: ['payload'],
     getOrganizationByIdFailure: null,
+
+    toggleSidebar: null,
   },
   { prefix: 'organizationDashboard/' },
 );

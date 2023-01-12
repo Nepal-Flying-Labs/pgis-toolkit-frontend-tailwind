@@ -10,7 +10,7 @@ export default function Projects() {
 
   return (
     <div
-      className="naxatw-flex"
+      className="naxatw-flex naxatw-w-full"
       style={{
         height: `calc(100vh - ${projectHeaderHeight}px)`,
       }}

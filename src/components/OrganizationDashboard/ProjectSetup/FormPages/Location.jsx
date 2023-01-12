@@ -1,10 +1,11 @@
+/* eslint-disable prefer-const */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable arrow-body-style */
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { Creators, Types } from '@Actions/organizationDashboard';
@@ -14,9 +15,11 @@ import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button/index';
 import { Creators as CommonCreators } from '@Actions/common';
 import Chip from '@Components/common/Chip';
+import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import Select from '@Components/common/Select';
 import removeObjectKeys from '@Utils/removeObjectKeys';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import hasKey from '@Utils/hasKey';
 import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetup/UploadPolygonBoundary/index';
 import MapSection from '../MapSection/index';
 
@@ -51,9 +54,40 @@ const validateContactPerson = contact => {
   return true;
 };
 
+const validation = formValues => {
+  let errors = {};
+  if (
+    hasKey(formValues, 'location_type') &&
+    formValues.location_type === 'File Upload' &&
+    !formValues.file
+  ) {
+    errors.location = 'Please upload a file';
+  }
+
+  if (
+    hasKey(formValues, 'location_type') &&
+    formValues.location_type === 'Custom Draw' &&
+    !formValues.location_wkt
+  ) {
+    errors.location = 'Please draw area on map';
+  }
+
+  if (
+    !hasKey(formValues, 'location_type') &&
+    hasKey(formValues, 'file') &&
+    !formValues.file
+  ) {
+    errors.location = 'Please upload a file';
+  }
+
+  return errors;
+};
+
 const Location = ({ page, setPage }) => {
   const { projectId, organizationId, tabname } = useParams();
   const dispatch = useDispatch();
+  const [errors, setErrors] = useState({});
+
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.PATCH_PROJECT_REQUEST]),
   );
@@ -114,7 +148,6 @@ const Location = ({ page, setPage }) => {
         ...values,
         organization: organizationId,
       };
-
       const diffObj = diffObject(project, finalObj);
       const diffContact = diffObject(contactDetails, contactPerson);
       const tabName =
@@ -142,10 +175,9 @@ const Location = ({ page, setPage }) => {
               ...finalPayloadData,
             };
 
-      if (
-        values.file ||
-        (values.location_type === 'Custom Draw' && values.bbox)
-      ) {
+      const error = validation(newData);
+
+      if (Object.keys(error).length < 1) {
         if (Object.keys(diffContact).length > 0) {
           if (stepOne.contactId) {
             validateContactPerson(diffContact)
@@ -183,8 +215,9 @@ const Location = ({ page, setPage }) => {
           }),
         );
       } else {
+        setErrors(error);
         dispatch(
-          toastActions.error({ message: 'Geographic Boundary is Required' }),
+          toastActions.error({ message: 'Please fill required (*) field' }),
         );
       }
     },
@@ -250,6 +283,7 @@ const Location = ({ page, setPage }) => {
             }}
           />
         </div>
+        {errors.location && <FormErrorMessage message={errors.location} />}
       </div>
       {values?.location_type === 'File Upload' && (
         <UploadPolygonBoundary

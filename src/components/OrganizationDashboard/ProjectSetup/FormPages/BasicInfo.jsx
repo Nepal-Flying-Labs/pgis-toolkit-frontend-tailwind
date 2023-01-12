@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable arrow-body-style */
 /* eslint-disable react/prop-types */
@@ -12,10 +13,12 @@ import MaterialIcon from '@Components/common/MaterialIcon/index';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
 import { Creators as CommonCreators } from '@Actions/common';
 import Button from '@Components/common/Button';
+import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import UploadPhotos from '@Components/common/UploadPhotos/index';
 import removeObjectKeys from '@Utils/removeObjectKeys';
 import useForm from '@Hooks/useForm';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import toastActions from '@Actions/toast';
 import { format } from 'date-fns';
 import ContactPerson from './ContactPerson';
 
@@ -78,8 +81,22 @@ const validateContactPerson = contact => {
   return true;
 };
 
+const validation = formValues => {
+  let errors = {};
+
+  if (!formValues.name) {
+    errors.name = 'Name is Required';
+  }
+  if (formValues.thematic_areas.length < 1) {
+    errors.thematicFocusArea = 'Choose Thematic Area';
+  }
+
+  return errors;
+};
+
 const BasicInfo = ({ setPage }) => {
   const { tabname, organizationId, projectId } = useParams();
+  const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const project = useSelector(
     state => state.organizationDashboard.individualProject.project,
@@ -197,15 +214,17 @@ const BasicInfo = ({ setPage }) => {
           basic info form to proceed ahead
         </span>
       </div>
-
-      <Input
-        type="text"
-        label="Name of project*"
-        name="name"
-        value={values?.name}
-        onChange={handleChange}
-        placeholder="Enter name of project"
-      />
+      <div>
+        <Input
+          type="text"
+          label="Name of project*"
+          name="name"
+          value={values?.name}
+          onChange={handleChange}
+          placeholder="Enter name of project"
+        />
+        {errors.name && <FormErrorMessage message={errors.name} />}
+      </div>
 
       <Input
         type="textarea"
@@ -242,6 +261,9 @@ const BasicInfo = ({ setPage }) => {
             values?.thematic_areas?.includes(item.value),
           )}
         />
+        {errors.thematicFocusArea && (
+          <FormErrorMessage message={errors.thematicFocusArea} />
+        )}
       </div>
 
       <div className="naxatw-flex naxatw-gap-x-5">
@@ -371,8 +393,20 @@ const BasicInfo = ({ setPage }) => {
           <Button
             className="naxatw-btn-primary naxatw-w-[4.75rem]"
             onClick={() => {
-              dispatch(setIndividualProject({ key: 'stepOne', value: values }));
-              setPage(prevPage => prevPage + 1);
+              const error = validation(values);
+              if (Object.keys(error).length > 0) {
+                setErrors(error);
+                dispatch(
+                  toastActions.error({
+                    message: 'Please fill all required (*) fields',
+                  }),
+                );
+              } else {
+                dispatch(
+                  setIndividualProject({ key: 'stepOne', value: values }),
+                );
+                setPage(prevPage => prevPage + 1);
+              }
             }}
           >
             Next

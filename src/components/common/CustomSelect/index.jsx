@@ -1,0 +1,170 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable react/jsx-curly-brace-presence */
+/* eslint-disable no-unused-vars */
+/* eslint-disable arrow-body-style */
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+import React, { useState, useRef } from 'react';
+import useOutsideClick from '@Hooks/useOutsideClick';
+// import isEmpty from '@Utils/commonUtils';
+import PropTypes from 'prop-types';
+import '../Select/styles.css';
+import MaterialIcon from '../MaterialIcon/index';
+
+function CustomSelect({
+  options,
+  placeholder,
+  onChange,
+  disabled,
+  selected,
+  noDataMessage,
+  dataKey,
+  className,
+  errorClassName,
+  errorValue,
+  labelKey,
+  valueKey,
+  selectedValue,
+  style,
+  ...rest
+}) {
+  const [searchText, setSearchText] = useState('');
+  const inputRef = useRef(null);
+  const [divRef, toggle, handleToggle] = useOutsideClick();
+  const handleSelect = item => {
+    onChange(item);
+  };
+
+  const getSelectedValue = () => {
+    return (
+      selected ||
+      options.find(item => item[valueKey] === selectedValue)?.[labelKey] ||
+      placeholder
+    );
+  };
+  return (
+    // eslint-disable-next-line react/jsx-curly-brace-presence
+    <div
+      className={`naxatw-inline-flex  naxatw-rounded-md naxatw-w-full `}
+      ref={divRef}
+    >
+      <div className="naxatw-relative naxatw-group naxatw-w-full">
+        <button
+          type="button"
+          onClick={
+            disabled
+              ? () => {}
+              : () => {
+                  handleToggle();
+                }
+          }
+          className={`naxatw-select ${className}  ${
+            toggle ? 'naxatw-bg-[#F5F5F5] naxatw-border-[#484848]' : ''
+          }`}
+          style={style}
+          {...rest}
+        >
+          <span className="naxatw-text-body-lg">{getSelectedValue()}</span>
+          <MaterialIcon
+            name={`${!toggle ? 'arrow_drop_down' : 'arrow_drop_up'}`}
+            className="naxatw-text-icon-md"
+          />
+        </button>
+
+        {toggle && (
+          <div
+            className="naxatw-dropdown naxatw-min-w-fit naxatw-max-h-[200px] naxatw-overflow-auto scrollbar"
+            // style={{
+            //   display: toggle ? 'block' : 'none',
+            // }}
+          >
+            <input
+              type="text"
+              placeholder="Search Country"
+              className={`naxatw-input naxatw-sticky naxatw-top-0`}
+              value={searchText}
+              // onFocus={() => handleToggle()}
+              onChange={e => {
+                setSearchText(e.target.value);
+              }}
+            />
+            <ul>
+              {options ? (
+                options
+                  .filter(opt =>
+                    opt[dataKey]
+                      .toLowerCase()
+                      .includes(searchText.toLowerCase()),
+                  )
+                  .map(item => {
+                    return (
+                      <li
+                        key={item.id}
+                        role="menuitem"
+                        className={`naxatw-dropdown-items  ${
+                          getSelectedValue() === item[dataKey] || item[valueKey]
+                            ? ''
+                            : ''
+                        }`}
+                        onClick={() => {
+                          handleSelect(item);
+                          handleToggle(!toggle);
+                        }}
+                        onKeyDown={() => {}}
+                        tabIndex="0"
+                      >
+                        <span className="naxatw-text-body-lg">
+                          {item[dataKey] || item[labelKey]}
+                        </span>
+                      </li>
+                    );
+                  })
+              ) : (
+                <li>{noDataMessage}</li>
+              )}
+            </ul>
+          </div>
+        )}
+      </div>
+      {errorValue && (
+        <span className="naxatw-text-red-600 naxatw-px-2">{errorValue}</span>
+      )}
+    </div>
+  );
+}
+
+CustomSelect.defaultProps = {
+  options: [],
+  className: 'naxatw-select-md',
+  placeholder: 'Select',
+  disabled: false,
+  onChange: () => {},
+  selected: '',
+  noDataMessage: '',
+  errorValue: false,
+  errorClassName: false,
+  dataKey: 'name',
+  labelKey: 'label',
+  valueKey: 'id',
+  selectedValue: '',
+  style: {},
+};
+
+CustomSelect.propTypes = {
+  options: PropTypes.array,
+  placeholder: PropTypes.string || PropTypes.React,
+  onChange: PropTypes.func,
+  selected: PropTypes.string,
+  noDataMessage: PropTypes.string,
+  disabled: PropTypes.bool,
+  errorValue: PropTypes.bool,
+  className: PropTypes.string,
+  errorClassName: PropTypes.bool,
+  dataKey: PropTypes.string,
+  labelKey: PropTypes.string,
+  valueKey: PropTypes.string,
+  selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  style: PropTypes.object,
+};
+
+export default CustomSelect;

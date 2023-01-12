@@ -173,7 +173,7 @@ export function* startAnalysisRequest({ params }) {
     yield put(
       routeAnalysisActions.setRouteAnalysisState({
         roadNetworkLayer: selectedRoadLayer,
-        obstaclesLayers: selectedObstacleLayers,
+        obstacleLayers: selectedObstacleLayers,
       }),
     );
     yield put(

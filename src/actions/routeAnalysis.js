@@ -9,6 +9,10 @@ export const { Types, Creators } = createActions(
     copyDataCleaningStateRequest: null,
     copyDataCleaningStateSuccess: ['payload'],
     copyDataCleaningStateFailure: null,
+
+    applyRouteAnalysisRequest: ['payload'],
+    applyRouteAnalysisSuccess: ['payload'],
+    applyRouteAnalysisFailure: null,
   },
   { prefix: 'routeAnalysis/' },
 );

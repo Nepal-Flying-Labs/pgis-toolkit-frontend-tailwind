@@ -67,8 +67,8 @@ const initialState = {
     theme: 479,
     checked: false,
   },
-  // obstaclesLayers: null,
-  obstaclesLayers: [
+  // obstacleLayers: null,
+  obstacleLayers: [
     {
       id: 484,
       name: 'Ward 1 Road Accident',
@@ -143,10 +143,16 @@ const handleCheckbox = (state, action) =>
     selectedData.checked = checked;
   });
 
+const applyRouteAnalysisSuccess = (state, action) =>
+  produce(state, draft => {
+    // console.log(action.payload, 'payloadx');
+  });
+
 const routeAnalysisReducer = createReducer(initialState, {
   [Types.SET_ROUTE_ANALYSIS_STATE]: setRouteAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
   [Types.HANDLE_CHECKBOX]: handleCheckbox,
+  [Types.APPLY_ROUTE_ANALYSIS_SUCCESS]: applyRouteAnalysisSuccess,
 });
 
 export default routeAnalysisReducer;

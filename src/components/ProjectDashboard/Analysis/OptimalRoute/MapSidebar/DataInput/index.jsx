@@ -1,12 +1,15 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators } from '@Actions/routeAnalysis';
+import toastActions from '@Actions/toast';
 import { analysisHeaderHeight } from '@src/constants';
 import Button from '@Components/common/Button';
 import Chip from '../Chip';
 
-const { setDataInputState, handleCheckbox } = Creators;
+const { setDataInputState, handleCheckbox, applyRouteAnalysisRequest } =
+  Creators;
 
 const modeOfTransportData = [
   { label: 'Drive', value: 'drive', icon: 'directions_car' },
@@ -48,6 +51,13 @@ function getGeojsonCoordinates(geojson) {
 }
 
 export default function DataInput() {
+  const { projectId } = useParams();
+  const roadNetworkLayer = useSelector(
+    state => state.routeAnalysis.roadNetworkLayer,
+  );
+  const obstacleLayers = useSelector(
+    state => state.routeAnalysis.obstacleLayers,
+  );
   const selectedModeOfTransport = useSelector(
     state => state.routeAnalysis.dataInput.selectedModeOfTransport,
   );
@@ -63,9 +73,6 @@ export default function DataInput() {
   const destinationGeojson = useSelector(
     state => state.routeAnalysis.dataInput.destinationGeojson,
   );
-  const obstaclesLayers = useSelector(
-    state => state.routeAnalysis.obstaclesLayers,
-  );
   const alternativePaths = useSelector(
     state => state.routeAnalysis.dataInput.alternativePaths,
   );
@@ -74,7 +81,37 @@ export default function DataInput() {
   );
   const dispatch = useDispatch();
 
-  const handleApply = () => {};
+  const handleApply = () => {
+    if (!startGeojson || !destinationGeojson || !outputName) {
+      dispatch(
+        toastActions.error({
+          message: 'Please input all the required fields!',
+        }),
+      );
+      return;
+    }
+    const [originLat, originLong] = startGeojson.geometry.coordinates;
+    const [destinationLat, destinationLong] =
+      destinationGeojson.geometry.coordinates;
+    const selectedObstacles = obstacleLayers
+      .filter(item => item.checked)
+      .map(item => item.id);
+    const payloadData = {
+      source: 'system',
+      road_network: roadNetworkLayer.id,
+      mode: selectedModeOfTransport,
+      origin_long: originLong,
+      origin_lat: originLat,
+      destination_long: destinationLong,
+      destination_lat: destinationLat,
+      paths: alternativePaths,
+      obstcles: JSON.stringify(selectedObstacles),
+      name: outputName,
+      project: projectId,
+      type: 'Optimum Path Analysis',
+    };
+    dispatch(applyRouteAnalysisRequest(payloadData));
+  };
 
   return (
     <div className=" naxatw-h-full">
@@ -159,7 +196,7 @@ export default function DataInput() {
               naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem] naxatw-bg-white"
           >
             <ul>
-              {obstaclesLayers.map(item => (
+              {obstacleLayers.map(item => (
                 <li
                   key={item.id}
                   role="presentation"
@@ -177,7 +214,7 @@ export default function DataInput() {
                       const { id, checked } = e.target;
                       dispatch(
                         handleCheckbox({
-                          stateName: 'obstaclesLayers',
+                          stateName: 'obstacleLayers',
                           id,
                           checked,
                         }),
@@ -198,7 +235,7 @@ export default function DataInput() {
           <input
             type="number"
             className="naxatw-input"
-            value={alternativePaths}
+            value={alternativePaths || ''}
             onChange={e => {
               dispatch(
                 setDataInputState({

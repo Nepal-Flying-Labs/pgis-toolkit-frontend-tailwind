@@ -1,7 +1,6 @@
 import { api, authenticated } from '.';
 
-export const checkError = (apiEndPoint, params) =>
-  authenticated(api).get(`/maps/${apiEndPoint}/`, { params });
+export const optimumRouteAnalysis = data =>
+  authenticated(api).post(`/maps/optimum_route_analysis/`, data);
 
-export const autoFixError = (apiEndPoint, params) =>
-  authenticated(api).get(`/maps/${apiEndPoint}/`, { params });
+export const nothing = '';

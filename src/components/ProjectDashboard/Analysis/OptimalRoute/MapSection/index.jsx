@@ -1,8 +1,8 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fromLonLat } from 'ol/proj';
+import { fromLonLat, transformExtent } from 'ol/proj';
 import {
   Creators as RouteAnalysisCreators,
   Types,
@@ -14,6 +14,8 @@ import {
 } from '@Components/common/OpenLayersComponent';
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher';
 import CustomLayerSwitcher from '@Components/common/OpenLayersComponent/CustomLayerSwitcher';
+import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
+import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import Spinner from '@Components/common/Spinner';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import 'ol/ol.css';
@@ -22,7 +24,8 @@ import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
 import { drawPointStyles } from '@src/constants/analysis';
 import { analysisHeaderHeight } from '@src/constants';
-import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
+import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
+import { apiURL } from '@Services';
 import HelpBox from './HelpBox';
 
 const { setDataInputState } = RouteAnalysisCreators;
@@ -33,6 +36,9 @@ export default function MapSection() {
     zoom: 2,
     maxZoom: 25,
   });
+  const roadNetworkLayer = useSelector(
+    state => state.routeAnalysis.roadNetworkLayer,
+  );
   const drawPointType = useSelector(
     state => state.routeAnalysis.dataInput.drawPointType,
   );
@@ -46,6 +52,21 @@ export default function MapSection() {
     checkIfLoading(state, [Types.GET_PROJECT_GEOJSON_REQUEST]),
   );
   const dispatch = useDispatch();
+
+  // zoom to road network layer on initial map load
+  useEffect(() => {
+    if (!map || !roadNetworkLayer) return;
+    const bbox = roadNetworkLayer?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        // duration: 3500,
+        constrainResolution: true,
+      });
+    }
+  }, [map, roadNetworkLayer]);
 
   return (
     <div className="naxatw-w-full naxatw-relative">
@@ -71,12 +92,23 @@ export default function MapSection() {
 
         <HelpBox />
 
+        {roadNetworkLayer && (
+          <VectorTileLayer
+            url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${roadNetworkLayer.id}`}
+            authToken={localStorage.getItem('userToken')}
+            visibleOnMap
+            style={roadNetworkLayer.style}
+            zIndex={1}
+            // properties={{ layerId: selectedLayer.id }}
+          />
+        )}
+
         <DrawTool
           enable={!!drawPointType}
           // geojson={featureGeojson}
           geometryType="Point"
           selectedDrawType="add-feature"
-          zIndex={100}
+          zIndex={10}
           style={drawPointStyles}
           onSave={geojson => {
             dispatch(
@@ -104,6 +136,7 @@ export default function MapSection() {
           <VectorLayer
             geojson={startGeojson}
             visibleOnMap
+            zIndex={10}
             style={drawPointStyles}
           />
         )}
@@ -111,6 +144,7 @@ export default function MapSection() {
           <VectorLayer
             geojson={destinationGeojson}
             visibleOnMap
+            zIndex={10}
             style={drawPointStyles}
           />
         )}

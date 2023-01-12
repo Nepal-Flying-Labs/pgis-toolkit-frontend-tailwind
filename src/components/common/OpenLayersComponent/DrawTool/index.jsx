@@ -40,12 +40,15 @@ export default function DrawTool({
   const [modifiedFeature, setModifiedFeature] = useState(null);
   const layerUid = useRef(null);
 
-  const handleFeatureEdit = useCallback(modifiedFeatures => {
-    const featureGeojson = getFeatureGeojson(modifiedFeatures[0]);
-    setModifiedStates(prev => [...prev, featureGeojson]);
-    setModifiedFeature(modifiedFeatures);
-    onChange(featureGeojson);
-  }, []); // eslint-disable-line
+  const handleFeatureEdit = useCallback(
+    modifiedFeatures => {
+      const featureGeojson = getFeatureGeojson(modifiedFeatures[0]);
+      setModifiedStates(prev => [...prev, featureGeojson]);
+      setModifiedFeature(modifiedFeatures);
+      onChange(featureGeojson);
+    },
+    [onChange],
+  );
 
   const { select, modify, translate, addInteraction, removeInteraction } =
     useDrawUtils({
@@ -74,7 +77,7 @@ export default function DrawTool({
     select.getFeatures().push(features[0]);
     setModifiedStates([geojson]);
     setModifiedFeature(features[0]);
-  }, [map, geojson, zIndex, select]); // eslint-disable-line
+  }, [map, geojson, zIndex, select, style]);
 
   // clean up on geojson remove
   useEffect(() => {
@@ -120,13 +123,16 @@ export default function DrawTool({
     setDrawType('add-feature');
   };
 
-  const handleDrawEnd = useCallback(feature => {
-    const featureGeojson = getFeatureGeojson(feature);
-    setModifiedStates(prev => [...prev, featureGeojson]);
-    setModifiedFeature(feature);
-    setDrawType(null);
-    onChange(featureGeojson);
-  }, []); // eslint-disable-line
+  const handleDrawEnd = useCallback(
+    feature => {
+      const featureGeojson = getFeatureGeojson(feature);
+      setModifiedStates(prev => [...prev, featureGeojson]);
+      setModifiedFeature(feature);
+      setDrawType(null);
+      onChange(featureGeojson);
+    },
+    [onChange],
+  );
 
   const handleDelete = () => {
     source.clear();
@@ -157,7 +163,7 @@ export default function DrawTool({
   // on save click
   const handleSave = () => {
     if (!modifiedFeature) {
-      onError('Please draw polygon to save');
+      onError('Please draw feature to save');
       return;
     }
     const lastModifiedFeature = modifiedStates[modifiedStates.length - 1];
@@ -242,6 +248,15 @@ export default function DrawTool({
         </button>
       </Tooltip>
 
+      <Tooltip content="Save" direction="right">
+        <button
+          className="naxatw-icon-btn naxatw-icon-btn-sm"
+          type="button"
+          onClick={handleSave}
+        >
+          <i className="material-symbols-outlined">save</i>
+        </button>
+      </Tooltip>
       {/*
           <button
             className="naxatw-icon-btn naxatw-icon-btn-sm"

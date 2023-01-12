@@ -1,9 +1,12 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { fromLonLat } from 'ol/proj';
-// import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
+import {
+  Creators as RouteAnalysisCreators,
+  Types,
+} from '@Actions/routeAnalysis';
 import {
   useOLMap,
   MapContainer as MapComponent,
@@ -15,8 +18,11 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
+import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
+import { drawPointStyles } from '@src/constants/analysis';
+import { analysisHeaderHeight } from '@src/constants';
 
-// const { setManualFixState } = DataCleaningCreators;
+const { setDataInputState } = RouteAnalysisCreators;
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -24,12 +30,13 @@ export default function MapSection() {
     zoom: 2,
     maxZoom: 25,
   });
-  const isMapDataLoading = useSelector(state =>
-    checkIfLoading(state, [
-      // Types.GET_PROJECT_GEOJSON_REQUEST,
-    ]),
+  const drawPointType = useSelector(
+    state => state.routeAnalysis.dataInput.drawPointType,
   );
-  // const dispatch = useDispatch();
+  const isMapDataLoading = useSelector(state =>
+    checkIfLoading(state, [Types.GET_PROJECT_GEOJSON_REQUEST]),
+  );
+  const dispatch = useDispatch();
 
   return (
     <div className="naxatw-w-full naxatw-relative">
@@ -46,12 +53,30 @@ export default function MapSection() {
         ref={mapRef}
         mapInstance={map}
         style={{
-          height: `calc(100vh - 6.2rem)`,
+          height: `calc(100vh - ${analysisHeaderHeight})`,
         }}
       >
         <LayerSwitcherControl />
 
         <CustomLayerSwitcher />
+
+        <DrawTool
+          enable={!!drawPointType}
+          // geojson={featureGeojson}
+          geometryType="Point"
+          zIndex={100}
+          style={drawPointStyles}
+          onChange={geojson => {
+            const { coordinates } = geojson.geometry;
+            dispatch(
+              setDataInputState({
+                [drawPointType === 'start'
+                  ? 'startCoordinates'
+                  : 'destinationCoordinates']: coordinates,
+              }),
+            );
+          }}
+        />
 
         <MapFooter loading={isMapLoading} />
       </MapComponent>

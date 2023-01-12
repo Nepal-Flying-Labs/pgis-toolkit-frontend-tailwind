@@ -1,7 +1,11 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Creators } from '@Actions/routeAnalysis';
 import { analysisHeaderHeight } from '@src/constants';
 import Button from '@Components/common/Button';
 import Chip from '../Chip';
+
+const { setDataInputState } = Creators;
 
 const modeOfTransportData = [
   { label: 'Drive', value: 'drive', icon: 'directions_car' },
@@ -22,115 +26,159 @@ const obstaclesData = [
   { id: 4, name: 'Road Accident' },
 ];
 
+const drawPointData = [
+  {
+    label: 'Draw Starting Point',
+    value: 'start',
+    icon: 'radio_button_checked',
+  },
+  {
+    label: 'Draw Destination Point',
+    value: 'destination',
+    icon: 'radio_button_checked',
+  },
+];
+
 // eslint-disable-next-line
 function Container({ children }) {
   return <div className="naxatw-space-y-2">{children}</div>;
 }
 
-function ModeOfTransport() {
-  return (
-    <Container>
-      <label className="naxatw-label">Mode of Transport</label>
-      <div className="naxatw-flex naxatw-space-x-2">
-        {modeOfTransportData.map(({ label, value, icon }) => (
-          <Chip
-            key={value}
-            active={value === 'drive'}
-            label={label}
-            iconClassName="material-symbols-outlined"
-            iconLeft={icon}
-            onClick={() => {}}
-          />
-        ))}
-      </div>
-    </Container>
-  );
-}
-
-function OriginPoint() {
-  return (
-    <Container>
-      <label className="naxatw-label">Origin & Destination Point</label>
-      <div className="naxatw-flex naxatw-space-x-2">
-        {originPointData.map(({ label, value, icon }) => (
-          <Chip
-            key={value}
-            active={value === 'map'}
-            label={label}
-            iconClassName="material-symbols-outlined"
-            iconLeft={icon}
-            onClick={() => {}}
-          />
-        ))}
-      </div>
-    </Container>
-  );
-}
-
-function Obstacles() {
-  return (
-    <Container>
-      <label className="naxatw-label">Obstacles</label>
-      <div
-        className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg
-          naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem] naxatw-bg-white"
-      >
-        <ul>
-          {obstaclesData.map(item => (
-            <li
-              key={item.id}
-              role="presentation"
-              className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
-                      hover:naxatw-bg-grey-100 naxatw-flex naxatw-items-center"
-              onClick={() => {}}
-            >
-              <input
-                id={item.id}
-                type="checkbox"
-                className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
-                        naxatw-accent-grey-800 naxatw-cursor-pointer"
-                // checked={values.selectedObstacleLayers?.some(
-                //   i => i.id === item.id,
-                // )}
-                onChange={e => {
-                  // const { checked } = e.target;
-                  // handleChange({
-                  //   target: {
-                  //     name: 'selectedObstacleLayers',
-                  //     value: checked
-                  //       ? [...selectedObstacleLayers, item]
-                  //       : values.selectedObstacleLayers.filter(
-                  //           i => i.id !== item.id,
-                  //         ),
-                  //   },
-                  // });
-                }}
-              />
-              <label htmlFor={item.id} className="naxatw-cursor-pointer">
-                {item.name}
-              </label>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Container>
-  );
-}
-
 export default function DataInput() {
+  const selectedModeOfTransport = useSelector(
+    state => state.routeAnalysis.dataInput.selectedModeOfTransport,
+  );
+  const originPointType = useSelector(
+    state => state.routeAnalysis.dataInput.originPointType,
+  );
+  const drawPointType = useSelector(
+    state => state.routeAnalysis.dataInput.drawPointType,
+  );
+  const startCoordinates = useSelector(
+    state => state.routeAnalysis.dataInput.startCoordinates,
+  );
+  const destinationCoordinates = useSelector(
+    state => state.routeAnalysis.dataInput.destinationCoordinates,
+  );
+  const dispatch = useDispatch();
+
+  console.log(startCoordinates, 'startCoordinatesx');
+
   return (
     <div className=" naxatw-h-full">
       <div
         className="naxatw-flex naxatw-flex-col naxatw-gap-y-5 naxatw-overflow-y-auto scrollbar"
         style={{
-          maxHeight: `calc(100vh - ${analysisHeaderHeight} - 7.5rem)`,
+          height: `calc(100vh - ${analysisHeaderHeight} - 7.5rem)`,
         }}
       >
-        <ModeOfTransport />
+        <Container>
+          <label className="naxatw-label">Mode of Transport</label>
+          <div className="naxatw-flex naxatw-space-x-2">
+            {modeOfTransportData.map(({ label, value, icon }) => (
+              <Chip
+                key={value}
+                active={selectedModeOfTransport === value}
+                label={label}
+                iconClassName="material-symbols-outlined"
+                iconLeft={icon}
+                onClick={() => {
+                  dispatch(
+                    setDataInputState({
+                      selectedModeOfTransport: value, // 'drive', 'cycle', walk
+                    }),
+                  );
+                }}
+              />
+            ))}
+          </div>
+        </Container>
 
-        <OriginPoint />
+        <Container>
+          <label className="naxatw-label">Origin & Destination Point</label>
+          <div className="naxatw-flex naxatw-space-x-2">
+            {originPointData.map(({ label, value, icon }) => (
+              <Chip
+                key={value}
+                active={originPointType === value}
+                label={label}
+                iconClassName="material-symbols-outlined"
+                iconLeft={icon}
+                onClick={() => {
+                  dispatch(
+                    setDataInputState({
+                      originPointType: value,
+                    }),
+                  );
+                }}
+              />
+            ))}
+          </div>
 
-        <Obstacles />
+          <Container>
+            {drawPointData.map(({ label, value, icon }) => (
+              <Chip
+                key={value}
+                label={label}
+                iconLeft={icon}
+                active={drawPointType === value}
+                onClick={() => {
+                  dispatch(
+                    setDataInputState({
+                      drawPointType: value,
+                    }),
+                  );
+                }}
+              />
+            ))}
+          </Container>
+        </Container>
+
+        <Container>
+          <label className="naxatw-label">Obstacles</label>
+          <div
+            className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg
+              naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem] naxatw-bg-white"
+          >
+            <ul>
+              {obstaclesData.map(item => (
+                <li
+                  key={item.id}
+                  role="presentation"
+                  className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
+                      hover:naxatw-bg-grey-100 naxatw-flex naxatw-items-center"
+                  onClick={() => {}}
+                >
+                  <input
+                    id={item.id}
+                    type="checkbox"
+                    className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
+                        naxatw-accent-grey-800 naxatw-cursor-pointer"
+                    // checked={values.selectedObstacleLayers?.some(
+                    //   i => i.id === item.id,
+                    // )}
+                    onChange={e => {
+                      // const { checked } = e.target;
+                      // handleChange({
+                      //   target: {
+                      //     name: 'selectedObstacleLayers',
+                      //     value: checked
+                      //       ? [...selectedObstacleLayers, item]
+                      //       : values.selectedObstacleLayers.filter(
+                      //           i => i.id !== item.id,
+                      //         ),
+                      //   },
+                      // });
+                    }}
+                  />
+                  <label htmlFor={item.id} className="naxatw-cursor-pointer">
+                    {item.name}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Container>
 
         <Container>
           <label className="naxatw-label">Preferred alternative path</label>

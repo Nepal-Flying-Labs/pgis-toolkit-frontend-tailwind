@@ -15,8 +15,8 @@ export default function Chip({
       role="button"
       onClick={onClick}
       className={`naxatw-px-4 naxatw-py-1.5 naxatw-w-fit hover:naxatw-bg-white 
-        naxatw-bg-white naxatw-rounded-3xl naxatw-border naxatw-flex
-        naxatw-items-center naxatw-space-x-1 ${
+        naxatw-bg-white naxatw-rounded-3xl naxatw-border naxatw-flex 
+        naxatw-items-center naxatw-space-x-1 naxatw-select-none ${
           active
             ? 'naxatw-border-grey-800'
             : 'naxatw-border-grey-300 naxatw-bg-grey-100'

@@ -33,6 +33,7 @@ const initialState = {
   assignList: [],
   organizationAssignList: [],
   userTab: 'users',
+  hideSidebar: false,
 };
 
 const getOrganizationDetailSuccess = (state, action) => ({
@@ -382,6 +383,11 @@ const getOrganizationByIdSuccess = (state, action) => {
   };
 };
 
+const toggleSidebar = state => ({
+  ...state,
+  hideSidebar: !state.hideSidebar,
+});
+
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
@@ -412,6 +418,7 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.SET_USER_STATE]: setUserState,
   [Types.UPDATE_ORGANIZATION_SUCCESS]: updateOrganizationSuccess,
   [Types.GET_ORGANIZATION_BY_ID_SUCCESS]: getOrganizationByIdSuccess,
+  [Types.TOGGLE_SIDEBAR]: toggleSidebar,
 });
 
 export default organizationDashboardReducer;

@@ -93,7 +93,7 @@ export default function ProjectHeader() {
                     />
                   </figure> */}
                   <Link
-                    className="naxatw-py-2.5 hover:naxatw-text-[#484848] naxatw-text-body-btn"
+                    className="naxatw-py-2.5 hover:naxatw-text-[#484848] naxatw-text-body-btn hover:naxatw-underline"
                     to={`/organizations/${organizationId}/projects`}
                   >
                     {projectDetail?.organization_name}

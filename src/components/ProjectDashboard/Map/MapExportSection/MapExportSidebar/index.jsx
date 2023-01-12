@@ -4,6 +4,7 @@ import { Creators } from '@Actions/projectMap';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import Select from '@Components/common/Select';
 import Toggle from '@Components/common/Toggle';
+import Button from '@Components/common/Button/index';
 
 const { setProjectMapState } = Creators;
 
@@ -21,7 +22,7 @@ export default function MapSidebar() {
       <div className="naxatw-flex naxatw-justify-between">
         <h4>Map Export</h4>
         <a
-          className="naxatw-text-grey-800"
+          className="hover:naxatw-bg-grey-200 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-justify-center naxatw-items-center naxatw-rounded-lg"
           onClick={() =>
             dispatch(setProjectMapState({ toggleMapExport: false }))
           }
@@ -51,6 +52,7 @@ export default function MapSidebar() {
               placeholder="Choose"
               // options={downloadOptions}
               label="label"
+              className="naxatw-bg-white naxatw-px-2 naxatw-py-[14px] naxatw-h-[48px]"
               value="value"
               // onChange={selectedItem => setSelectedOption(selectedItem)}
               // selectedValue={selectedOption?.id}
@@ -63,6 +65,7 @@ export default function MapSidebar() {
               // options={downloadOptions}
               label="label"
               value="value"
+              className="naxatw-bg-white naxatw-px-2 naxatw-py-[14px] naxatw-h-[48px]"
               // onChange={selectedItem => setSelectedOption(selectedItem)}
               // selectedValue={selectedOption?.id}
             />
@@ -75,6 +78,7 @@ export default function MapSidebar() {
             placeholder="Choose"
             // options={downloadOptions}
             label="label"
+            className="naxatw-bg-white naxatw-px-2 naxatw-py-[14px] naxatw-h-[48px]"
             value="value"
             // onChange={selectedItem => setSelectedOption(selectedItem)}
             // selectedValue={selectedOption?.id}
@@ -99,6 +103,15 @@ export default function MapSidebar() {
           <p className="naxatw-text-body-lg">Grid</p>
           <Toggle checked />
         </div>
+      </div>
+      <div className="naxatw-mt-[5rem] naxatw-flex naxatw-justify-center">
+        <Button
+          className="naxatw-btn-primary"
+          iconLeft="file_download"
+          // onClick={() => {}}
+        >
+          Export
+        </Button>
       </div>
     </div>
   );

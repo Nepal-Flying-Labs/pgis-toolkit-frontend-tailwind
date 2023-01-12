@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 // import {
 //   checkError,
 //   copyFeatures,
@@ -7,20 +7,28 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import routeAnalysisActions, { Types } from '@Actions/routeAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 
-export function* checkErrorRequest({ payload }) {
+export function* copyDataCleaningStateRequest() {
   try {
-    yield put(routeAnalysisActions.setErrorStates());
+    const { selectedLayer, selectedObstacleLayers } = yield select(
+      state => state.routeAnalysis,
+    );
+    yield put(
+      routeAnalysisActions.copyDataCleaningStateSuccess({
+        roadNetworkLayer: selectedLayer,
+        obstaclesLayers: selectedObstacleLayers,
+      }),
+    );
   } catch (error) {
-    yield put(routeAnalysisActions.checkErrorFailure());
+    yield put(routeAnalysisActions.copyDataCleaningStateFailure());
     throw error;
   }
 }
 
 function* routeAnalysisWatcher() {
-  // yield takeLatest(
-  //   Types.CHECK_ERROR_REQUEST,
-  //   withLoader(withErrorHandler(checkErrorRequest)),
-  // );
+  yield takeLatest(
+    Types.COPY_DATA_CLEANING_STATE_REQUEST,
+    withLoader(withErrorHandler(copyDataCleaningStateRequest)),
+  );
 }
 
 export default routeAnalysisWatcher;

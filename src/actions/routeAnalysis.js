@@ -2,7 +2,12 @@ import { createActions } from 'reduxsauce';
 
 export const { Types, Creators } = createActions(
   {
+    setRouteAnalysisState: ['payload'],
     setDataInputState: ['payload'],
+
+    copyDataCleaningStateRequest: null,
+    copyDataCleaningStateSuccess: ['payload'],
+    copyDataCleaningStateFailure: null,
   },
   { prefix: 'routeAnalysis/' },
 );

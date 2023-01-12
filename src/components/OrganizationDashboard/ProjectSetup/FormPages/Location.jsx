@@ -75,7 +75,8 @@ const validation = formValues => {
   if (
     !hasKey(formValues, 'location_type') &&
     hasKey(formValues, 'file') &&
-    !formValues.file
+    !formValues.file &&
+    !formValues.location_wkt
   ) {
     errors.location = 'Please upload a file';
   }

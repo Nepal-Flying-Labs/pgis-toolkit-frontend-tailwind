@@ -101,6 +101,9 @@ export function* patchProjectRequest({ id, payload }) {
     } else {
       yield put(organizationDashboardActions.getIndividualProjectRequest(id));
     }
+    if (status === 'draft') {
+      yield put(commonActions.togglePromptDialog());
+    }
 
     yield put(toastActions.success({ message: 'Data saved successfully' }));
   } catch (error) {

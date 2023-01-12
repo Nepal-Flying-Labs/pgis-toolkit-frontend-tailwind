@@ -13,6 +13,10 @@ export const { Types, Creators } = createActions(
     applyRouteAnalysisRequest: ['payload'],
     applyRouteAnalysisSuccess: ['payload'],
     applyRouteAnalysisFailure: null,
+
+    checkProcessingStatusRequest: ['params'],
+    checkProcessingStatusSuccess: ['payload'],
+    checkProcessingStatusFailure: null,
   },
   { prefix: 'routeAnalysis/' },
 );

@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from 'reduxsauce';
-import { Types } from '@Actions/routeAnalysis';
 import produce from 'immer';
+import { Types } from '@Actions/routeAnalysis';
 
 const initialState = {
   dataInput: {
@@ -121,6 +121,7 @@ const initialState = {
       checked: false,
     },
   ],
+  analysisTaskId: null,
 };
 
 const setRouteAnalysisState = (state, action) => ({
@@ -145,7 +146,7 @@ const handleCheckbox = (state, action) =>
 
 const applyRouteAnalysisSuccess = (state, action) =>
   produce(state, draft => {
-    // console.log(action.payload, 'payloadx');
+    draft.analysisTaskId = action.payload.task_id;
   });
 
 const routeAnalysisReducer = createReducer(initialState, {

@@ -2,10 +2,11 @@
 import React from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators } from '@Actions/routeAnalysis';
+import { Creators, Types } from '@Actions/routeAnalysis';
 import toastActions from '@Actions/toast';
 import { analysisHeaderHeight } from '@src/constants';
 import Button from '@Components/common/Button';
+import { checkIfLoading } from '@Utils/loaderSelector';
 import Chip from '../Chip';
 
 const { setDataInputState, handleCheckbox, applyRouteAnalysisRequest } =
@@ -79,6 +80,9 @@ export default function DataInput() {
   const outputName = useSelector(
     state => state.routeAnalysis.dataInput.outputName,
   );
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.APPLY_ROUTE_ANALYSIS_REQUEST]),
+  );
   const dispatch = useDispatch();
 
   const handleApply = () => {
@@ -105,7 +109,7 @@ export default function DataInput() {
       destination_long: destinationLong,
       destination_lat: destinationLat,
       paths: alternativePaths,
-      obstcles: JSON.stringify(selectedObstacles),
+      obstacles: JSON.stringify(selectedObstacles),
       name: outputName,
       project: projectId,
       type: 'Optimum Path Analysis',
@@ -266,9 +270,14 @@ export default function DataInput() {
       <div
         className="naxatw-mt-auto naxatw-flex naxatw-items-center
           naxatw-justify-center naxatw-py-3"
-        onClick={handleApply}
       >
-        <Button className="naxatw-btn-primary">Apply</Button>
+        <Button
+          className="naxatw-btn-primary"
+          isLoading={loading}
+          onClick={handleApply}
+        >
+          Apply
+        </Button>
       </div>
     </div>
   );

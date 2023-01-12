@@ -1,12 +1,10 @@
-/* eslint-disable no-unused-vars */
-import { call, put, select, takeLatest } from 'redux-saga/effects';
-// import {
-//   checkError,
-//   copyFeatures,
-// } from '@Services/routeAnalysis';
+import { call, put, select, takeLatest, delay } from 'redux-saga/effects';
 import routeAnalysisActions, { Types } from '@Actions/routeAnalysis';
+import {
+  getAnalysisTaskResponse,
+  optimumRouteAnalysis,
+} from '@Services/routeAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
-import { optimumRouteAnalysis } from '@Services/routeAnalysis';
 
 export function* copyDataCleaningStateRequest() {
   try {
@@ -35,6 +33,23 @@ export function* applyRouteAnalysisRequest({ payload }) {
   }
 }
 
+export function* checkProcessingStatusRequest({ params }) {
+  try {
+    let responseData = { message: 'processing' };
+    while (responseData?.message === 'processing') {
+      yield delay(5 * 1000); // call api in 5 second interval
+      const response = yield call(getAnalysisTaskResponse, params);
+      responseData = response.data;
+      console.log(responseData, 'resx');
+    }
+    console.log(responseData, 'resxy');
+    yield put(routeAnalysisActions.checkProcessingStatusSuccess(responseData));
+  } catch (error) {
+    yield put(routeAnalysisActions.checkProcessingStatusFailure());
+    throw error;
+  }
+}
+
 function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.COPY_DATA_CLEANING_STATE_REQUEST,
@@ -43,6 +58,10 @@ function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_ROUTE_ANALYSIS_REQUEST,
     withLoader(withErrorHandler(applyRouteAnalysisRequest)),
+  );
+  yield takeLatest(
+    Types.CHECK_PROCESSING_STATUS_REQUEST,
+    withLoader(withErrorHandler(checkProcessingStatusRequest)),
   );
 }
 

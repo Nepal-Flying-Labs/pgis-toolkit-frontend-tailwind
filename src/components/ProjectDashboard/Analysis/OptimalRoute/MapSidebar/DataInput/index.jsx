@@ -66,7 +66,15 @@ export default function DataInput() {
   const obstaclesLayers = useSelector(
     state => state.routeAnalysis.obstaclesLayers,
   );
+  const alternativePaths = useSelector(
+    state => state.routeAnalysis.dataInput.alternativePaths,
+  );
+  const outputName = useSelector(
+    state => state.routeAnalysis.dataInput.outputName,
+  );
   const dispatch = useDispatch();
+
+  const handleApply = () => {};
 
   return (
     <div className=" naxatw-h-full">
@@ -187,18 +195,41 @@ export default function DataInput() {
 
         <Container>
           <label className="naxatw-label">Preferred alternative path</label>
-          <input type="number" className="naxatw-input" />
+          <input
+            type="number"
+            className="naxatw-input"
+            value={alternativePaths}
+            onChange={e => {
+              dispatch(
+                setDataInputState({
+                  alternativePaths: e.target.value,
+                }),
+              );
+            }}
+          />
         </Container>
 
         <Container>
           <label className="naxatw-label">Output Name</label>
-          <input type="text" className="naxatw-input" />
+          <input
+            type="text"
+            className="naxatw-input"
+            value={outputName}
+            onChange={e => {
+              dispatch(
+                setDataInputState({
+                  outputName: e.target.value,
+                }),
+              );
+            }}
+          />
         </Container>
       </div>
 
       <div
         className="naxatw-mt-auto naxatw-flex naxatw-items-center
           naxatw-justify-center naxatw-py-3"
+        onClick={handleApply}
       >
         <Button className="naxatw-btn-primary">Apply</Button>
       </div>

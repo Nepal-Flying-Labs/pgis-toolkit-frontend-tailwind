@@ -10,6 +10,8 @@ const initialState = {
     drawPointType: null, // 'start', 'destination'
     startGeojson: null,
     destinationGeojson: null,
+    alternativePaths: null,
+    outputName: '',
   },
   results: {},
   layers: {},

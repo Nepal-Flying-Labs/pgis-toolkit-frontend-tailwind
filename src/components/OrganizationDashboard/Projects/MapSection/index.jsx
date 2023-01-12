@@ -18,6 +18,9 @@ export default function MapSection() {
   const organizationDetail = useSelector(
     state => state.organizationDashboard.organizationDetail,
   );
+  const hideSidebar = useSelector(
+    state => state.organizationDashboard.hideSidebar,
+  );
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
@@ -26,6 +29,15 @@ export default function MapSection() {
     zoom: 2,
     maxZoom: 25,
   });
+
+  // update map size on sidebar toggle
+  useEffect(() => {
+    if (!map) return () => {};
+    const timer = setTimeout(() => {
+      map.updateSize();
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [map, hideSidebar]);
 
   // zoom to project location on initial map load
   useEffect(() => {

@@ -141,7 +141,7 @@ export default function MapSection({ isDraw, geojson, locationType }) {
         <LayerSwitcherControl />
         <Scalebar />
         {geojson && <MapVectorLayer geojson={geojson} zoomToLayer />}
-        {project.id && (
+        {project?.id && (
           <MapVectorTileLayer
             url={`${API_URL}projects/project_location_vectortile/{z}/{x}/{y}/?project=${project.id}`}
             authToken={localStorage.getItem('userToken')}

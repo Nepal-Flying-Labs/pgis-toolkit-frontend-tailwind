@@ -33,6 +33,7 @@ const initialState = {
   assignList: [],
   organizationAssignList: [],
   userTab: 'users',
+  hideSidebar: false,
 };
 
 const getOrganizationDetailSuccess = (state, action) => ({
@@ -75,8 +76,20 @@ const getIndividualProjectSuccess = (state, action) => {
     ...state,
     individualProject: {
       ...state.individualProject,
-      project: action.payload,
+      project: {
+        ...action.payload,
+        file: file
+          ? {
+              fileURL: file,
+              name: fileName,
+              type: file_type,
+              lastModifiedDate: last_updated,
+              existedData: true,
+            }
+          : '',
+      },
       stepOne: {
+        ...state.individualProject.stepOne,
         name,
         cover_image: cover_image
           ? {
@@ -127,12 +140,26 @@ const setIndividualProject = (state, action) => {
 
 const getContactPersonSuccess = (state, action) => {
   const { data, type } = action.payload;
+  const { name, email, position, contact, id } = data[0] || {};
   if (type === 'project') {
     return {
       ...state,
       individualProject: {
         ...state.individualProject,
-        contactPerson: data,
+        stepOne: {
+          ...state.individualProject.stepOne,
+          contactName: name || '',
+          contactPosition: position || '',
+          contactPhone: contact || '',
+          contactEmail: email || '',
+          contactId: id,
+        },
+        contactDetails: {
+          name: name || '',
+          position: position || '',
+          email: email || '',
+          contact: contact || '',
+        },
       },
     };
   }
@@ -159,7 +186,7 @@ const postContactPersonSuccess = (state, action) => {
   }
   return {
     ...state,
-    individualProject: {
+    individualOrganization: {
       ...state.individualOrganization,
       contactPerson: [...state.individualOrganization.contactPerson, data],
     },
@@ -356,6 +383,11 @@ const getOrganizationByIdSuccess = (state, action) => {
   };
 };
 
+const toggleSidebar = state => ({
+  ...state,
+  hideSidebar: !state.hideSidebar,
+});
+
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
@@ -386,6 +418,7 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.SET_USER_STATE]: setUserState,
   [Types.UPDATE_ORGANIZATION_SUCCESS]: updateOrganizationSuccess,
   [Types.GET_ORGANIZATION_BY_ID_SUCCESS]: getOrganizationByIdSuccess,
+  [Types.TOGGLE_SIDEBAR]: toggleSidebar,
 });
 
 export default organizationDashboardReducer;

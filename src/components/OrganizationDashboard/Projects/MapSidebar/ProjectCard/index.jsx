@@ -181,7 +181,9 @@ export default function ProjectCard({
 
       <div className=" naxatw-pt-2 naxatw-pl-4 naxatw-pr-2 naxatw-pb-3 naxatw-flex  naxatw-w-full naxatw-justify-between naxatw-rounded-r-xl">
         <div className="">
-          <h5>{title || 'N/A'}</h5>
+          <h5 className="naxatw-text-ellipsis naxatw-overflow-hidden naxatw-h-[2.78rem]">
+            {title || 'N/A'}
+          </h5>
           <div className="naxatw-flex naxatw-flex-wrap naxatw-mt-2.5 naxatw-gap-x-3">
             <span className="naxatw-text-body-md">{`${
               format(new Date(startDate), 'MMM dd, yyyy') || 'N/A'
@@ -201,9 +203,11 @@ export default function ProjectCard({
             <p className="naxatw-text-body-sm naxatw-text-[#989898] naxatw-uppercase">
               Thematic areas
             </p>
-            <span className="naxatw-text-body-md">
-              {thematicAreas ? thematicAreas.toString() : 'N/A'}
-            </span>
+            <div className="naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden">
+              <span className="naxatw-text-body-md">
+                {thematicAreas ? thematicAreas.toString() : 'N/A'}
+              </span>
+            </div>
           </div>
         </div>
         <div className="naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-items-end  ">

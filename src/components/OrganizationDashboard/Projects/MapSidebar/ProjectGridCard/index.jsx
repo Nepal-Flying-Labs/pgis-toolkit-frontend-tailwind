@@ -111,7 +111,7 @@ export default function ProjectGridCard({
   return (
     <div
       // naxatw-min-h-[408px] naxatw-max-h-[415px] naxatw-min-w-[321px]
-      className={` naxatw-border naxatw-rounded-xl hover:naxatw-bg-[#F5F5F5] hover:naxatw-border-grey-800 naxatw-shadow-3xl naxatw-cursor-pointer naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-pb-1 ${
+      className={` naxatw-border naxatw-rounded-xl hover:naxatw-bg-[#F5F5F5] naxatw-h-fit hover:naxatw-border-grey-800 naxatw-shadow-3xl naxatw-cursor-pointer naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-pb-1 ${
         status === 'draft' ? 'naxatw-bg-[#F5F5F5]' : 'naxatw-bg-white'
       }`}
       onClick={onClick}
@@ -127,7 +127,9 @@ export default function ProjectGridCard({
 
         <div className="naxatw-pl-4 naxatw-py-3 naxatw-pr-2">
           <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
-            <h5>{title ? ellipsify(title.toString()) : 'N/A'}</h5>
+            <h5 className="naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden">
+              {title || 'N/A'}
+            </h5>
             <DropdownOptions
               options={dropdownOptions}
               data={id}
@@ -151,9 +153,11 @@ export default function ProjectGridCard({
             <p className="naxatw-text-body-sm naxatw-text-[#989898] naxatw-uppercase">
               Thematic areas
             </p>
-            <span className="naxatw-text-body-md">
-              {thematicAreas ? ellipsify(thematicAreas.toString()) : 'N/A'}
-            </span>
+            <div className="naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden">
+              <span className="naxatw-text-body-md">
+                {thematicAreas ? ellipsify(thematicAreas.toString()) : 'N/A'}
+              </span>
+            </div>
           </div>
         </div>
       </div>

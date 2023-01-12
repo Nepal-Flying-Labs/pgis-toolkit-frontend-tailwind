@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators } from '@Actions/routeAnalysis';
@@ -44,6 +45,15 @@ function Container({ children }) {
   return <div className="naxatw-space-y-2">{children}</div>;
 }
 
+function getGeojsonCoordinates(geojson) {
+  const {
+    coordinates: [lat, lng],
+  } = geojson.geometry;
+  const latitude = lat.toFixed(5);
+  const longitude = lng.toFixed(5);
+  return `${latitude}, ${longitude}`;
+}
+
 export default function DataInput() {
   const selectedModeOfTransport = useSelector(
     state => state.routeAnalysis.dataInput.selectedModeOfTransport,
@@ -54,15 +64,13 @@ export default function DataInput() {
   const drawPointType = useSelector(
     state => state.routeAnalysis.dataInput.drawPointType,
   );
-  const startCoordinates = useSelector(
-    state => state.routeAnalysis.dataInput.startCoordinates,
+  const startGeojson = useSelector(
+    state => state.routeAnalysis.dataInput.startGeojson,
   );
-  const destinationCoordinates = useSelector(
-    state => state.routeAnalysis.dataInput.destinationCoordinates,
+  const destinationGeojson = useSelector(
+    state => state.routeAnalysis.dataInput.destinationGeojson,
   );
   const dispatch = useDispatch();
-
-  console.log(startCoordinates, 'startCoordinatesx');
 
   return (
     <div className=" naxatw-h-full">
@@ -119,7 +127,13 @@ export default function DataInput() {
             {drawPointData.map(({ label, value, icon }) => (
               <Chip
                 key={value}
-                label={label}
+                label={
+                  value === 'start' && startGeojson
+                    ? getGeojsonCoordinates(startGeojson)
+                    : value === 'destination' && destinationGeojson
+                    ? getGeojsonCoordinates(destinationGeojson)
+                    : label
+                }
                 iconLeft={icon}
                 active={drawPointType === value}
                 onClick={() => {

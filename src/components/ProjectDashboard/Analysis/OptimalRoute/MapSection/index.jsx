@@ -7,6 +7,7 @@ import {
   Creators as RouteAnalysisCreators,
   Types,
 } from '@Actions/routeAnalysis';
+import toastActions from '@Actions/toast';
 import {
   useOLMap,
   MapContainer as MapComponent,
@@ -21,6 +22,7 @@ import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
 import { drawPointStyles } from '@src/constants/analysis';
 import { analysisHeaderHeight } from '@src/constants';
+import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
 
 const { setDataInputState } = RouteAnalysisCreators;
 
@@ -32,6 +34,12 @@ export default function MapSection() {
   });
   const drawPointType = useSelector(
     state => state.routeAnalysis.dataInput.drawPointType,
+  );
+  const startGeojson = useSelector(
+    state => state.routeAnalysis.dataInput.startGeojson,
+  );
+  const destinationGeojson = useSelector(
+    state => state.routeAnalysis.dataInput.destinationGeojson,
   );
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [Types.GET_PROJECT_GEOJSON_REQUEST]),
@@ -66,17 +74,42 @@ export default function MapSection() {
           geometryType="Point"
           zIndex={100}
           style={drawPointStyles}
-          onChange={geojson => {
-            const { coordinates } = geojson.geometry;
+          onSave={geojson => {
             dispatch(
               setDataInputState({
                 [drawPointType === 'start'
-                  ? 'startCoordinates'
-                  : 'destinationCoordinates']: coordinates,
+                  ? 'startGeojson'
+                  : 'destinationGeojson']: geojson,
+                drawPointType: null,
+              }),
+            );
+          }}
+          onError={message => {
+            dispatch(toastActions.error({ message }));
+          }}
+          onCancel={() => {
+            dispatch(
+              setDataInputState({
+                drawPointType: null,
               }),
             );
           }}
         />
+
+        {startGeojson && (
+          <VectorLayer
+            geojson={startGeojson}
+            visibleOnMap
+            style={drawPointStyles}
+          />
+        )}
+        {destinationGeojson && (
+          <VectorLayer
+            geojson={destinationGeojson}
+            visibleOnMap
+            style={drawPointStyles}
+          />
+        )}
 
         <MapFooter loading={isMapLoading} />
       </MapComponent>

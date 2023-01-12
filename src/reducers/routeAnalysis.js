@@ -8,8 +8,8 @@ const initialState = {
     selectedModeOfTransport: 'drive', // 'drive', 'cycle', 'walk'
     originPointType: 'search', // 'search', 'map', 'layer'
     drawPointType: null, // 'start', 'destination'
-    startCoordinates: null,
-    destinationCoordinates: null,
+    startGeojson: null,
+    destinationGeojson: null,
   },
   results: {},
   layers: {},

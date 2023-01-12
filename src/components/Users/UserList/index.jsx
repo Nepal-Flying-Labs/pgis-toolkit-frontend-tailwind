@@ -61,23 +61,23 @@ const UserList = () => {
   );
 
   const userOptions = [
-    {
-      id: 1,
-      label: (
-        <span className="naxatw-flex naxatw-items-center">
-          <i className="material-icons naxatw-mr-2">group</i>
-          <p className="naxatw-text-body-lg">Assign</p>
-        </span>
-      ),
-      onClick: data => {
-        dispatch(
-          setUserState({
-            pageTab: 'assign-users',
-            item: { ...data, fromUserTab: true },
-          }),
-        );
-      },
-    },
+    // {
+    //   id: 1,
+    //   label: (
+    //     <span className="naxatw-flex naxatw-items-center">
+    //       <i className="material-icons naxatw-mr-2">group</i>
+    //       <p className="naxatw-text-body-lg">Assign</p>
+    //     </span>
+    //   ),
+    //   onClick: data => {
+    //     dispatch(
+    //       setUserState({
+    //         pageTab: 'assign-users',
+    //         item: { ...data, fromUserTab: true },
+    //       }),
+    //     );
+    //   },
+    // },
     {
       id: 2,
       label: (

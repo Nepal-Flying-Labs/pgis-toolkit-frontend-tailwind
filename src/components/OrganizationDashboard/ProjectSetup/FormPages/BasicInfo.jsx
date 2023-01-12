@@ -87,7 +87,7 @@ const validation = formValues => {
   if (!formValues.name) {
     errors.name = 'Name is Required';
   }
-  if (formValues.thematic_areas.length < 1) {
+  if (formValues.thematic_areas?.length < 1) {
     errors.thematicFocusArea = 'Choose Thematic Area';
   }
 

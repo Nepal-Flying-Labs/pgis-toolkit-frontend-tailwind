@@ -16,7 +16,7 @@ import Button from '@Components/common/Button/index';
 import { Creators as CommonCreators } from '@Actions/common';
 import Chip from '@Components/common/Chip';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
-import Select from '@Components/common/Select';
+import CustomSelect from '@Components/common/CustomSelect';
 import removeObjectKeys from '@Utils/removeObjectKeys';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import hasKey from '@Utils/hasKey';
@@ -243,7 +243,7 @@ const Location = ({ page, setPage }) => {
       </div>
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Country</label>
-        <Select
+        <CustomSelect
           options={countryList}
           placeholder="Choose"
           onChange={data => {

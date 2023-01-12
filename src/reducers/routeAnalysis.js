@@ -121,11 +121,6 @@ const initialState = {
   ],
 };
 
-// const setDataInputState = (state, action) =>
-//   produce(state, draft => {
-//     draft.dataInput = action.payload;
-//   });
-
 const setRouteAnalysisState = (state, action) => ({
   ...state,
   ...action.payload,
@@ -139,9 +134,17 @@ const setDataInputState = (state, action) => ({
   },
 });
 
+const handleCheckbox = (state, action) =>
+  produce(state, draft => {
+    const { stateName, id, checked } = action.payload;
+    const selectedData = draft[stateName].find(item => item.id === +id);
+    selectedData.checked = checked;
+  });
+
 const routeAnalysisReducer = createReducer(initialState, {
   [Types.SET_ROUTE_ANALYSIS_STATE]: setRouteAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
+  [Types.HANDLE_CHECKBOX]: handleCheckbox,
 });
 
 export default routeAnalysisReducer;

@@ -6,7 +6,7 @@ import { analysisHeaderHeight } from '@src/constants';
 import Button from '@Components/common/Button';
 import Chip from '../Chip';
 
-const { setDataInputState } = Creators;
+const { setDataInputState, handleCheckbox } = Creators;
 
 const modeOfTransportData = [
   { label: 'Drive', value: 'drive', icon: 'directions_car' },
@@ -18,13 +18,6 @@ const originPointData = [
   { label: 'Search', value: 'search', icon: 'search' },
   { label: 'Map', value: 'map', icon: 'map' },
   { label: 'Layer', value: 'layer', icon: 'format_list_bulleted' },
-];
-
-const obstaclesData = [
-  { id: 1, name: 'Road Accident' },
-  { id: 2, name: 'Road Accident' },
-  { id: 3, name: 'Road Accident' },
-  { id: 4, name: 'Road Accident' },
 ];
 
 const drawPointData = [
@@ -69,6 +62,9 @@ export default function DataInput() {
   );
   const destinationGeojson = useSelector(
     state => state.routeAnalysis.dataInput.destinationGeojson,
+  );
+  const obstaclesLayers = useSelector(
+    state => state.routeAnalysis.obstaclesLayers,
   );
   const dispatch = useDispatch();
 
@@ -155,7 +151,7 @@ export default function DataInput() {
               naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem] naxatw-bg-white"
           >
             <ul>
-              {obstaclesData.map(item => (
+              {obstaclesLayers.map(item => (
                 <li
                   key={item.id}
                   role="presentation"
@@ -168,21 +164,16 @@ export default function DataInput() {
                     type="checkbox"
                     className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
                         naxatw-accent-grey-800 naxatw-cursor-pointer"
-                    // checked={values.selectedObstacleLayers?.some(
-                    //   i => i.id === item.id,
-                    // )}
+                    checked={item.checked}
                     onChange={e => {
-                      // const { checked } = e.target;
-                      // handleChange({
-                      //   target: {
-                      //     name: 'selectedObstacleLayers',
-                      //     value: checked
-                      //       ? [...selectedObstacleLayers, item]
-                      //       : values.selectedObstacleLayers.filter(
-                      //           i => i.id !== item.id,
-                      //         ),
-                      //   },
-                      // });
+                      const { id, checked } = e.target;
+                      dispatch(
+                        handleCheckbox({
+                          stateName: 'obstaclesLayers',
+                          id,
+                          checked,
+                        }),
+                      );
                     }}
                   />
                   <label htmlFor={item.id} className="naxatw-cursor-pointer">

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable arrow-body-style */
 import React from 'react';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
@@ -10,7 +11,11 @@ import removeObjectKeys from '@Utils/removeObjectKeys';
 
 import { Creators, Types } from '@Actions/organizationDashboard';
 
-const { patchProjectRequest } = Creators;
+const {
+  patchProjectRequest,
+  patchContactPersonRequest,
+  postContactPersonRequest,
+} = Creators;
 const { togglePromptDialog } = CommonCreators;
 
 function diffObject(a, b) {
@@ -31,12 +36,26 @@ const getFileType = file => {
         return 'GeoJSON';
       case 'application/zip':
         return 'Shapefile';
+      case 'application/x-zip-compressed':
+        return 'Shapefile';
       default:
-        return '';
+        return 'Shapefile';
     }
   } else {
     return '';
   }
+};
+
+const validateContactPerson = contact => {
+  if (
+    !contact.name &&
+    !contact.position &&
+    !contact.email &&
+    !contact.contact
+  ) {
+    return false;
+  }
+  return true;
 };
 
 const SaveAsDraft = () => {
@@ -54,6 +73,13 @@ const SaveAsDraft = () => {
   const project = useSelector(
     state => state.organizationDashboard.individualProject.project,
   );
+  const contactDetails = useSelector(
+    state => state.organizationDashboard.individualProject.contactDetails,
+  );
+
+  const drawnGeojsonData = useSelector(
+    state => state.organizationDashboard.drawnGeojsonData,
+  );
 
   const finalObj = {
     ...stepOne,
@@ -61,14 +87,73 @@ const SaveAsDraft = () => {
     organization: organizationId,
   };
 
-  const diffObj = diffObject(project, finalObj);
+  const {
+    contactName,
+    contactPosition,
+    contactEmail,
+    contactPhone,
+    ...newObject
+  } = finalObj;
+  const contactPerson = {
+    name: contactName,
+    email: contactEmail,
+    contact: contactPhone,
+    position: contactPosition,
+  };
+
+  const diffObj = diffObject(project, newObject);
+
   const payloadData = diffObj?.file?.existedData
     ? removeObjectKeys(diffObj, ['file'])
     : { ...diffObj, file_type: getFileType(stepTwo.file) };
 
-  const finalPayloadData = payloadData?.cover_image?.[0]?.existedData
+  const finalPayloadData = payloadData?.cover_image?.existedData
     ? removeObjectKeys(payloadData, ['cover_image'])
     : payloadData;
+
+  const handleSaveDraft = () => {
+    const diffContact = diffObject(contactDetails, contactPerson);
+    if (Object.keys(diffContact).length > 0) {
+      if (finalObj.contactId) {
+        validateContactPerson(diffContact)
+          ? dispatch(
+              patchContactPersonRequest(finalObj.contactId, {
+                ...diffContact,
+                type: 'project',
+              }),
+            )
+          : dispatch(
+              patchContactPersonRequest(finalObj.contactId, {
+                is_deleted: true,
+                type: 'project',
+              }),
+            );
+      } else {
+        dispatch(
+          postContactPersonRequest(
+            {
+              ...contactPerson,
+              project: projectId,
+              organization: organizationId,
+            },
+            { project: projectId, type: 'project' },
+          ),
+        );
+      }
+    }
+    const newData =
+      newObject.location_type === 'Custom Draw' && drawnGeojsonData
+        ? {
+            ...finalPayloadData,
+            location_wkt: [drawnGeojsonData],
+            file: '',
+            file_type: '',
+          }
+        : {
+            ...finalPayloadData,
+          };
+    dispatch(patchProjectRequest(projectId, { ...newData, status: 'draft' }));
+  };
 
   return (
     <div>
@@ -94,9 +179,7 @@ const SaveAsDraft = () => {
             Discard
           </Button>
           <Button
-            onClick={() => {
-              dispatch(patchProjectRequest(projectId, finalPayloadData));
-            }}
+            onClick={handleSaveDraft}
             className="naxatw-btn-primary naxatw-w-[7.563rem]"
             isLoading={loading}
             loaderClassName="naxatw-fill-secondary-400"

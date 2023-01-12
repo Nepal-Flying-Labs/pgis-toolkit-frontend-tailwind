@@ -174,13 +174,20 @@ const getContactPersonSuccess = (state, action) => {
 
 const postContactPersonSuccess = (state, action) => {
   const { data, type } = action.payload;
-
+  const { name, position, email, contact, id } = data || {};
   if (type === 'project') {
     return {
       ...state,
       individualProject: {
         ...state.individualProject,
-        contactPerson: [...state.individualProject.contactPerson, data],
+        stepOne: {
+          ...state.individualProject.stepOne,
+          contactName: name || '',
+          contactPosition: position || '',
+          contactPhone: contact || '',
+          contactEmail: email || '',
+          contactId: id,
+        },
       },
     };
   }
@@ -195,15 +202,30 @@ const postContactPersonSuccess = (state, action) => {
 
 const patchContactPersonSuccess = (state, action) => {
   const { data, type } = action.payload;
+  const { name, position, email, contact, id, is_deleted } = data || {};
   if (type === 'project') {
-    const newData = state.individualProject.contactPerson.filter(
-      person => person.id !== data.id,
-    );
+    const newData = !is_deleted
+      ? {
+          contactName: name || '',
+          contactPosition: position || '',
+          contactPhone: contact || '',
+          contactEmail: email || '',
+          contactId: id,
+        }
+      : {
+          contactName: '',
+          contactPosition: '',
+          contactPhone: '',
+          contactEmail: '',
+        };
     return {
       ...state,
       individualProject: {
         ...state.individualProject,
-        contactPerson: newData,
+        stepOne: {
+          ...state.individualProject.stepOne,
+          ...newData,
+        },
       },
     };
   }

@@ -101,6 +101,9 @@ export function* patchProjectRequest({ id, payload }) {
     } else {
       yield put(organizationDashboardActions.getIndividualProjectRequest(id));
     }
+    if (status === 'draft') {
+      yield put(commonActions.togglePromptDialog());
+    }
 
     yield put(toastActions.success({ message: 'Data saved successfully' }));
   } catch (error) {
@@ -126,6 +129,7 @@ export function* getContactPersonRequest({ params }) {
 }
 
 export function* postContactPersonRequest({ params, payload }) {
+  const { type } = params;
   try {
     const formData = prepareFormData(payload);
     const formParams = removeObjectKeys(params, ['type']);
@@ -133,7 +137,7 @@ export function* postContactPersonRequest({ params, payload }) {
     yield put(
       organizationDashboardActions.postContactPersonSuccess({
         data: response.data,
-        type: payload.type,
+        type,
       }),
     );
   } catch (error) {

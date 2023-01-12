@@ -18,6 +18,10 @@ export const { Types, Creators } = createActions(
     uploadDatasetsSuccess: ['payload'],
     uploadDatasetsFailure: null,
 
+    downloadProjectLayerRequest: ['params'],
+    downloadProjectLayerSuccess: ['payload'],
+    downloadProjectLayerFailure: null,
+
     deleteDataRequest: ['id', 'payload'],
     deleteDataSuccess: ['payload'],
     deleteDataFailure: null,

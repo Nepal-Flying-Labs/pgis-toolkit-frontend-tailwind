@@ -255,7 +255,44 @@ const BasicInfo = ({ setPage }) => {
       </div>
 
       <hr />
-      <ContactPerson />
+      {/* <ContactPerson /> */}
+
+      <h4>Contact Person Details</h4>
+      <Input
+        type="text"
+        label="Name of contact Person"
+        name="contactName"
+        value={values.contactName}
+        onChange={handleChange}
+        placeholder="Full Name"
+      />
+
+      <Input
+        label="Position"
+        type="text"
+        name="contactPosition"
+        value={values.contactPosition}
+        onChange={handleChange}
+        placeholder="Position"
+      />
+
+      <Input
+        type="email"
+        label="Email"
+        name="contactEmail"
+        value={values.contactEmail}
+        onChange={handleChange}
+        placeholder="example.com"
+      />
+
+      <Input
+        label="Phone"
+        type="text"
+        name="contactPhone"
+        value={values.contactPhone}
+        onChange={handleChange}
+        placeholder="Phone Number"
+      />
 
       <div
         className={`naxatw-flex ${

@@ -85,8 +85,8 @@ export default function DrawTool({
     setModifiedFeature(features[0]);
   }, [map, geojson, zIndex, select, style]);
 
-  // clean up on geojson remove
-  useEffect(() => {
+  // reset state and remove layer
+  const resetState = useCallback(() => {
     if (!map || enable || !vectorLayer) return;
     select.getFeatures().clear();
     source.clear();
@@ -94,6 +94,12 @@ export default function DrawTool({
     setVectorLayer(null);
     map.removeLayer(vectorLayer);
   }, [map, vectorLayer, enable, select]);
+
+  // clean up on geojson remove
+  useEffect(() => {
+    if (!map || enable || !vectorLayer) return;
+    resetState();
+  }, [map, vectorLayer, enable, resetState]);
 
   // add snap interaction
   useEffect(() => {
@@ -179,6 +185,11 @@ export default function DrawTool({
     const lastModifiedFeature = modifiedStates[modifiedStates.length - 1];
     if (!lastModifiedFeature) return;
     onSave(lastModifiedFeature);
+  };
+
+  const handleCancel = () => {
+    onCancel();
+    resetState();
   };
 
   const props = {
@@ -274,7 +285,7 @@ export default function DrawTool({
         <button
           className="naxatw-icon-btn naxatw-icon-btn-sm"
           type="button"
-          onClick={onCancel}
+          onClick={handleCancel}
         >
           <i className="material-symbols-outlined">close</i>
         </button>

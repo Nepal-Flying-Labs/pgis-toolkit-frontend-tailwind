@@ -35,8 +35,8 @@ export function* applyRouteAnalysisRequest({ payload }) {
 
 export function* checkProcessingStatusRequest({ params }) {
   try {
-    let responseData = { message: 'processing' };
-    while (responseData?.message === 'processing') {
+    let responseData = { status: 'processing' };
+    while (responseData?.status === 'processing') {
       yield delay(5 * 1000); // call api in 5 second interval
       const response = yield call(getAnalysisTaskResponse, params);
       responseData = response.data;

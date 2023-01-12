@@ -23,6 +23,7 @@ import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
 import { drawPointStyles } from '@src/constants/analysis';
 import { analysisHeaderHeight } from '@src/constants';
 import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
+import HelpBox from './HelpBox';
 
 const { setDataInputState } = RouteAnalysisCreators;
 
@@ -68,10 +69,13 @@ export default function MapSection() {
 
         <CustomLayerSwitcher />
 
+        <HelpBox />
+
         <DrawTool
           enable={!!drawPointType}
           // geojson={featureGeojson}
           geometryType="Point"
+          selectedDrawType="add-feature"
           zIndex={100}
           style={drawPointStyles}
           onSave={geojson => {

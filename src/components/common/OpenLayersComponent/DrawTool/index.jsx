@@ -33,6 +33,7 @@ export default function DrawTool({
   onCancel,
   onError,
   enable,
+  selectedDrawType,
 }) {
   const [vectorLayer, setVectorLayer] = useState(null);
   const [drawType, setDrawType] = useState(null);
@@ -58,6 +59,11 @@ export default function DrawTool({
       onModifyEnd: handleFeatureEdit,
       onDragEnd: handleFeatureEdit,
     });
+
+  // set selected draw type
+  useEffect(() => {
+    if (enable) setDrawType(selectedDrawType);
+  }, [enable, selectedDrawType]);
 
   // add geojson for edit feature
   useEffect(() => {
@@ -85,6 +91,7 @@ export default function DrawTool({
     select.getFeatures().clear();
     source.clear();
     setDrawType(null);
+    setVectorLayer(null);
     map.removeLayer(vectorLayer);
   }, [map, vectorLayer, enable, select]);
 
@@ -110,19 +117,6 @@ export default function DrawTool({
     }, 500);
   }, [map, drawType]);
 
-  const handleAddFeatureClick = () => {
-    if (vectorLayer) return;
-    const vectorLyr = new VectorLayer({
-      source,
-      zIndex: zIndex + 1,
-      style: (feature, resolution) => getStyles({ style, feature, resolution }),
-    });
-    layerUid.current = getUid(vectorLyr);
-    map.addLayer(vectorLyr);
-    setVectorLayer(vectorLyr);
-    setDrawType('add-feature');
-  };
-
   const handleDrawEnd = useCallback(
     feature => {
       const featureGeojson = getFeatureGeojson(feature);
@@ -133,6 +127,22 @@ export default function DrawTool({
     },
     [onChange],
   );
+
+  // handle add-feature click
+  useEffect(() => {
+    if (drawType === 'add-feature') {
+      const vectorLyr = new VectorLayer({
+        source,
+        zIndex: zIndex + 1,
+        style: (feature, resolution) =>
+          getStyles({ style, feature, resolution }),
+      });
+      layerUid.current = getUid(vectorLyr);
+      map.addLayer(vectorLyr);
+      setVectorLayer(vectorLyr);
+      setDrawType('add-feature');
+    }
+  }, [drawType, map, zIndex, style]);
 
   const handleDelete = () => {
     source.clear();
@@ -192,8 +202,10 @@ export default function DrawTool({
         <AddFeature
           type={geometryType}
           enable={drawType === 'add-feature'}
-          // onClick={() => setDrawType('add-feature')}
-          onClick={handleAddFeatureClick}
+          onClick={() => {
+            if (vectorLayer) return;
+            setDrawType('add-feature');
+          }}
           onDrawEnd={handleDrawEnd}
           {...props}
         />

@@ -8,6 +8,7 @@ export default function Chip({
   iconLeft,
   iconRight,
   iconClassName,
+  iconStyle,
 }) {
   return (
     <div
@@ -27,6 +28,7 @@ export default function Chip({
           role="button"
           tabIndex="0"
           className={`naxatw-text-[24px] naxatw-text-grey-800 ${iconClassName}`}
+          style={iconStyle}
         >
           {iconLeft}
         </i>
@@ -38,6 +40,7 @@ export default function Chip({
           role="button"
           tabIndex="0"
           className={`naxatw-text-[24px] naxatw-text-grey-800 ${iconClassName}`}
+          style={iconStyle}
         >
           {iconRight}
         </i>
@@ -46,6 +49,15 @@ export default function Chip({
   );
 }
 
+Chip.defaultProps = {
+  active: false,
+  onClick: () => {},
+  iconLeft: null,
+  iconRight: null,
+  iconClassName: 'material-icons',
+  iconStyle: {},
+};
+
 Chip.propTypes = {
   label: PropTypes.string.isRequired,
   active: PropTypes.bool,
@@ -53,12 +65,5 @@ Chip.propTypes = {
   iconLeft: PropTypes.node,
   iconRight: PropTypes.node,
   iconClassName: PropTypes.string,
-};
-
-Chip.defaultProps = {
-  active: false,
-  onClick: () => {},
-  iconLeft: null,
-  iconRight: null,
-  iconClassName: 'material-icons',
+  iconStyle: PropTypes.object,
 };

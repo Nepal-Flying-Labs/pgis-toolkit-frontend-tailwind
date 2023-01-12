@@ -7,6 +7,10 @@ import toastActions from '@Actions/toast';
 import { analysisHeaderHeight } from '@src/constants';
 import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import {
+  destinationPointColor,
+  startingPointColor,
+} from '@src/constants/analysis';
 import Chip from '../Chip';
 
 const { setDataInputState, handleCheckbox, applyRouteAnalysisRequest } =
@@ -180,6 +184,14 @@ export default function DataInput() {
                     : label
                 }
                 iconLeft={icon}
+                iconStyle={{
+                  color:
+                    value === 'start' && startGeojson
+                      ? startingPointColor
+                      : value === 'destination' && destinationGeojson
+                      ? destinationPointColor
+                      : '',
+                }}
                 active={drawPointType === value}
                 onClick={() => {
                   if (drawPointType) return;

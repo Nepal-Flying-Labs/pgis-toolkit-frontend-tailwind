@@ -9,8 +9,8 @@ export default function AnalysisLoader() {
         naxatw-flex-col naxatw-items-center naxatw-justify-center"
     >
       <div
-        className="naxatw-fixed naxatw-inset-0 naxatw-opacity-80
-          naxatw-bg-grey-700 naxatw-w-full naxatw-h-screen"
+        className="naxatw-fixed naxatw-inset-0 naxatw-opacity-75
+          naxatw-bg-grey-800 naxatw-w-full naxatw-h-screen"
       />
       <div
         className="naxatw-z-[111111] naxatw-w-full naxatw-flex
@@ -26,7 +26,7 @@ export default function AnalysisLoader() {
           Processing...
         </h4>
         <p className="naxatw-w-1/3 naxatw-text-center naxatw-text-white">
-          This may take several minutes, please don&apos;t close this page.
+          This may take some time, please don&apos;t close this page.
         </p>
       </div>
     </div>

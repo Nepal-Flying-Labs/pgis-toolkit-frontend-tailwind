@@ -22,7 +22,10 @@ import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
-import { drawPointStyles } from '@src/constants/analysis';
+import {
+  startPointStyles,
+  destinationPointStyles,
+} from '@src/constants/analysis';
 import { analysisHeaderHeight } from '@src/constants';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import { apiURL } from '@Services';
@@ -109,7 +112,11 @@ export default function MapSection() {
           geometryType="Point"
           selectedDrawType="add-feature"
           zIndex={10}
-          style={drawPointStyles}
+          style={
+            drawPointType === 'start'
+              ? { ...startPointStyles }
+              : { ...destinationPointStyles }
+          }
           onSave={geojson => {
             dispatch(
               setDataInputState({
@@ -137,7 +144,7 @@ export default function MapSection() {
             geojson={startGeojson}
             visibleOnMap
             zIndex={10}
-            style={drawPointStyles}
+            style={{ ...startPointStyles }}
           />
         )}
         {destinationGeojson && (
@@ -145,7 +152,7 @@ export default function MapSection() {
             geojson={destinationGeojson}
             visibleOnMap
             zIndex={10}
-            style={drawPointStyles}
+            style={{ ...destinationPointStyles }}
           />
         )}
 

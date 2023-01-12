@@ -39,11 +39,24 @@ export const checkErrorData = [
   },
 ];
 
-export const drawPointStyles = {
+export const startingPointColor = '#FFB100';
+export const destinationPointColor = '#EB455F';
+
+const drawPointStyles = {
   ...defaultStyles,
   fillColor: '#FFB100',
   lineColor: '#FFFFFF',
   lineOpacity: 100,
   fillOpacity: 100,
   circleRadius: 8,
+};
+
+export const startPointStyles = {
+  ...drawPointStyles,
+  fillColor: startingPointColor,
+};
+
+export const destinationPointStyles = {
+  ...drawPointStyles,
+  fillColor: destinationPointColor,
 };

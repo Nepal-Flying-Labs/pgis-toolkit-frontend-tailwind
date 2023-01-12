@@ -138,7 +138,7 @@ export default function DataInput() {
                 onClick={() => {
                   dispatch(
                     setDataInputState({
-                      selectedModeOfTransport: value, // 'drive', 'cycle', walk
+                      selectedModeOfTransport: value,
                     }),
                   );
                 }}
@@ -182,6 +182,7 @@ export default function DataInput() {
                 iconLeft={icon}
                 active={drawPointType === value}
                 onClick={() => {
+                  if (drawPointType) return;
                   dispatch(
                     setDataInputState({
                       drawPointType: value,

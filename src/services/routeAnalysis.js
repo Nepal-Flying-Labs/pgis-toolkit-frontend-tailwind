@@ -5,3 +5,6 @@ export const optimumRouteAnalysis = data =>
 
 export const getAnalysisTaskResponse = params =>
   authenticated(api).get(`/maps/get_analysis_task_response/`, { params });
+
+export const getAnalysisLayer = params =>
+  authenticated(api).get(`/maps/analysis_layer/`, { params });

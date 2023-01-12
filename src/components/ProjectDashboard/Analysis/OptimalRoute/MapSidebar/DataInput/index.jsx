@@ -94,8 +94,8 @@ export default function DataInput() {
       );
       return;
     }
-    const [originLat, originLong] = startGeojson.geometry.coordinates;
-    const [destinationLat, destinationLong] =
+    const [originLong, originLat] = startGeojson.geometry.coordinates;
+    const [destinationLong, destinationLat] =
       destinationGeojson.geometry.coordinates;
     const selectedObstacles = obstacleLayers
       .filter(item => item.checked)

@@ -14,7 +14,7 @@ export const { Types, Creators } = createActions(
     applyRouteAnalysisSuccess: ['payload'],
     applyRouteAnalysisFailure: null,
 
-    checkProcessingStatusRequest: ['params'],
+    checkProcessingStatusRequest: ['payload'],
     checkProcessingStatusSuccess: ['payload'],
     checkProcessingStatusFailure: null,
   },

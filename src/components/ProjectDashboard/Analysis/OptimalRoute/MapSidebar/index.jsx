@@ -5,7 +5,7 @@ import DataInput from './DataInput';
 
 const tabData = [
   { id: 1, title: 'Data Input', content: <DataInput /> },
-  { id: 2, title: 'Results', content: '', disabled: true },
+  { id: 2, title: 'Results', content: '' },
   { id: 3, title: 'Layers', content: '', disabled: true },
 ];
 

@@ -17,8 +17,8 @@ const initialState = {
   layers: {},
   // roadNetworkLayer: null,
   roadNetworkLayer: {
-    id: 507,
-    name: 'Null_geom_Large_Area',
+    id: 523,
+    name: 'Sample Road Network',
     layer_type: 'Vector',
     upload_status: 'successful',
     is_clean: false,
@@ -27,8 +27,8 @@ const initialState = {
     style: {
       lineColor: '#2C675A',
       lineOpacity: 100,
-      fillColor: '#f97d4a',
-      fillOpacity: 100,
+      fillColor: '#45a535',
+      fillOpacity: 0,
       lineThickness: 3,
       circleRadius: 5,
       dashline: 0,
@@ -56,13 +56,10 @@ const initialState = {
       showSublayer: false,
       sublayerColumnName: '',
       sublayer: {},
-      geometryType: 'MultiLineString',
+      geometryType: 'LineString',
     },
-    bbox: [
-      85.39604534275621, 27.686313633829993, 85.41973471439125,
-      27.71203178188435,
-    ],
-    geom_type: 'MultiLineString',
+    bbox: [85.3339292, 27.6472155, 85.3648767, 27.6658351],
+    geom_type: 'LineString',
     sub_layer: [],
     theme: 479,
     checked: false,
@@ -122,6 +119,7 @@ const initialState = {
     },
   ],
   analysisTaskId: null,
+  analysisId: null,
 };
 
 const setRouteAnalysisState = (state, action) => ({
@@ -149,11 +147,19 @@ const applyRouteAnalysisSuccess = (state, action) =>
     draft.analysisTaskId = action.payload.task_id;
   });
 
+const checkProcessingStatusSuccess = (state, action) =>
+  produce(state, draft => {
+    draft.analysisTaskId = null;
+    draft.dataInput = initialState.dataInput;
+    console.log(action.payload, 'payloadx');
+  });
+
 const routeAnalysisReducer = createReducer(initialState, {
   [Types.SET_ROUTE_ANALYSIS_STATE]: setRouteAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
   [Types.HANDLE_CHECKBOX]: handleCheckbox,
   [Types.APPLY_ROUTE_ANALYSIS_SUCCESS]: applyRouteAnalysisSuccess,
+  [Types.CHECK_PROCESSING_STATUS_SUCCESS]: checkProcessingStatusSuccess,
 });
 
 export default routeAnalysisReducer;

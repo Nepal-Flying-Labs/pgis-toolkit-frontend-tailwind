@@ -22,7 +22,7 @@ function getAnalysisContent(type) {
 }
 
 export default function Analysis() {
-  const { tabname, analysisType } = useParams();
+  const { tabname, analysisType, projectId } = useParams();
   const analysisTaskId = useSelector(
     state => state.routeAnalysis.analysisTaskId,
   );
@@ -33,8 +33,10 @@ export default function Analysis() {
 
   useEffect(() => {
     if (!analysisTaskId) return;
-    dispatch(checkProcessingStatusRequest({ task_id: analysisTaskId }));
-  }, [dispatch, analysisTaskId]);
+    dispatch(
+      checkProcessingStatusRequest({ projectId, taskId: analysisTaskId }),
+    );
+  }, [dispatch, analysisTaskId, projectId]);
 
   return (
     <div>

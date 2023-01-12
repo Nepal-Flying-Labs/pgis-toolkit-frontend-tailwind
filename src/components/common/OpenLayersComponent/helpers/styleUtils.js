@@ -34,10 +34,10 @@ export function getRandomColor() {
 
 export const defaultStyles = {
   lineColor: '#2C675A',
-  lineOpacity: 40,
+  lineOpacity: 100,
   fillColor: '#2C675A',
   fillOpacity: 0,
-  lineThickness: 1,
+  lineThickness: 2,
   circleRadius: 5,
   dashline: 0,
   showLabel: false,

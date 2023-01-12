@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable arrow-body-style */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
@@ -18,7 +19,12 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import { format } from 'date-fns';
 import ContactPerson from './ContactPerson';
 
-const { setIndividualProject, patchProjectRequest } = Creators;
+const {
+  setIndividualProject,
+  patchProjectRequest,
+  postContactPersonRequest,
+  patchContactPersonRequest,
+} = Creators;
 const { togglePromptDialog } = CommonCreators;
 
 const thematicFocusArea = [
@@ -60,6 +66,18 @@ function diffObject(a, b) {
   return diffObj;
 }
 
+const validateContactPerson = contact => {
+  if (
+    !contact.name &&
+    !contact.position &&
+    !contact.email &&
+    !contact.contact
+  ) {
+    return false;
+  }
+  return true;
+};
+
 const BasicInfo = ({ setPage }) => {
   const { tabname, organizationId, projectId } = useParams();
   const dispatch = useDispatch();
@@ -76,6 +94,10 @@ const BasicInfo = ({ setPage }) => {
 
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.PATCH_PROJECT_REQUEST]),
+  );
+
+  const contactDetails = useSelector(
+    state => state.organizationDashboard.individualProject.contactDetails,
   );
 
   const { values, setValues, handleChange, handleCustomChange, handleSubmit } =
@@ -99,16 +121,58 @@ const BasicInfo = ({ setPage }) => {
   };
 
   const handleSaveBasicInfo = () => {
+    const {
+      contactName,
+      contactPosition,
+      contactEmail,
+      contactPhone,
+      ...basicInfo
+    } = values;
+    const contactPerson = {
+      name: contactName,
+      email: contactEmail,
+      contact: contactPhone,
+      position: contactPosition,
+    };
     const finalObj = {
-      ...values,
+      ...basicInfo,
       organization: organizationId,
     };
 
     const diffObj = diffObject(project, finalObj);
+    const diffContact = diffObject(contactDetails, contactPerson);
 
     const payloadData = diffObj?.cover_image?.existedData
       ? removeObjectKeys(diffObj, ['cover_image'])
       : diffObj;
+    if (Object.keys(diffContact).length > 0) {
+      if (stepOne.contactId) {
+        validateContactPerson(diffContact)
+          ? dispatch(
+              patchContactPersonRequest(stepOne.contactId, {
+                ...diffContact,
+                type: 'project',
+              }),
+            )
+          : dispatch(
+              patchContactPersonRequest(stepOne.contactId, {
+                is_deleted: true,
+                type: 'project',
+              }),
+            );
+      } else {
+        dispatch(
+          postContactPersonRequest(
+            {
+              ...contactPerson,
+              project: projectId,
+              organization: organizationId,
+            },
+            { project: projectId, type: 'project' },
+          ),
+        );
+      }
+    }
     dispatch(
       patchProjectRequest(projectId, {
         ...payloadData,

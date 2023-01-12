@@ -126,6 +126,7 @@ export function* getContactPersonRequest({ params }) {
 }
 
 export function* postContactPersonRequest({ params, payload }) {
+  const { type } = params;
   try {
     const formData = prepareFormData(payload);
     const formParams = removeObjectKeys(params, ['type']);
@@ -133,7 +134,7 @@ export function* postContactPersonRequest({ params, payload }) {
     yield put(
       organizationDashboardActions.postContactPersonSuccess({
         data: response.data,
-        type: payload.type,
+        type,
       }),
     );
   } catch (error) {

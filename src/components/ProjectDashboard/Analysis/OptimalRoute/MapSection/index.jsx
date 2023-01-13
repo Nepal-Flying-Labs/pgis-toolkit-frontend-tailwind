@@ -75,8 +75,6 @@ export default function MapSection() {
     }
   }, [map, roadNetworkLayer]);
 
-  console.log(analysisResults, 'analysisResultsx');
-
   return (
     <div className="naxatw-w-full naxatw-relative">
       {isMapDataLoading && (

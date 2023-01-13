@@ -33,6 +33,7 @@ function CustomSelect({
   const [divRef, toggle, handleToggle] = useOutsideClick();
   const handleSelect = item => {
     onChange(item);
+    setSearchText('');
   };
 
   const getSelectedValue = () => {

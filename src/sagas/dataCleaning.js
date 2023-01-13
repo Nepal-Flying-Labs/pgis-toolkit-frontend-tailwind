@@ -6,6 +6,7 @@ import {
   takeLatest,
   takeEvery,
 } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
 import {
   autoFixError,
   bulkDeleteNullGeometry,
@@ -17,6 +18,7 @@ import {
 } from '@Services/dataCleaning';
 import dataCleaningActions, { Types } from '@Actions/dataCleaning';
 import commonActions from '@Actions/common';
+import routeAnalysisActions from '@Actions/routeAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { getLayerAttributeFields } from '@Services/projectMap';
 import { isEmpty } from '@Utils/commonUtils';
@@ -162,6 +164,30 @@ export function* getFeatureGeojsonRequest({ payload }) {
   }
 }
 
+export function* startAnalysisRequest({ params }) {
+  try {
+    const { organizationId, projectId, analysisType } = params;
+    const { selectedRoadLayer, selectedObstacleLayers } = yield select(
+      state => state.dataCleaning.optimalRoute,
+    );
+    yield put(
+      routeAnalysisActions.setRouteAnalysisState({
+        roadNetworkLayer: selectedRoadLayer,
+        obstacleLayers: selectedObstacleLayers,
+      }),
+    );
+    yield put(
+      push(
+        `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}`,
+      ),
+    );
+    // yield put(dataCleaningActions.startAnalysisSuccess(responseData));
+  } catch (error) {
+    yield put(dataCleaningActions.startAnalysisFailure());
+    throw error;
+  }
+}
+
 function* dataCleaningWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
@@ -194,6 +220,10 @@ function* dataCleaningWatcher() {
   yield takeLatest(
     Types.GET_FEATURE_GEOJSON_REQUEST,
     withLoader(withErrorHandler(getFeatureGeojsonRequest)),
+  );
+  yield takeLatest(
+    Types.START_ANALYSIS_REQUEST,
+    withLoader(withErrorHandler(startAnalysisRequest)),
   );
 }
 

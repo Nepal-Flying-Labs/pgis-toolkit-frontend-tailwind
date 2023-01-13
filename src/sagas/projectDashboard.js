@@ -171,7 +171,7 @@ export function* checkUploadStatusRequest({ id }) {
     let responseData = { upload_status: 'uploading' };
     yield put(projectDashboardActions.setUploadStatusCheckingId(id));
     while (responseData?.upload_status === 'uploading') {
-      yield delay(1000 * 15); // call api in 10 second interval
+      yield delay(15 * 1000); // call api in 10 second interval
       const response = yield call(getLayerById, id);
       responseData = response.data;
     }

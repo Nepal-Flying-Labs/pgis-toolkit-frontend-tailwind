@@ -1,3 +1,5 @@
+import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+
 export const checkErrorData = [
   {
     id: 'null',
@@ -37,4 +39,24 @@ export const checkErrorData = [
   },
 ];
 
-export const nothing = '';
+export const startingPointColor = '#00A699';
+export const destinationPointColor = '#FF5A5F';
+
+const drawPointStyles = {
+  ...defaultStyles,
+  fillColor: '#FFB100',
+  lineColor: '#FFFFFF',
+  lineOpacity: 100,
+  fillOpacity: 100,
+  circleRadius: 8,
+};
+
+export const startPointStyles = {
+  ...drawPointStyles,
+  fillColor: startingPointColor,
+};
+
+export const destinationPointStyles = {
+  ...drawPointStyles,
+  fillColor: destinationPointColor,
+};

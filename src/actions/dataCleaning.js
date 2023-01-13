@@ -45,6 +45,10 @@ export const { Types, Creators } = createActions(
     getFeatureGeojsonSuccess: ['payload'],
     getFeatureGeojsonFailure: null,
 
+    startAnalysisRequest: ['params'],
+    startAnalysisSuccess: ['payload'],
+    startAnalysisFailure: null,
+
     resetDataCleaningState: null,
   },
   { prefix: 'dataCleaning/' },

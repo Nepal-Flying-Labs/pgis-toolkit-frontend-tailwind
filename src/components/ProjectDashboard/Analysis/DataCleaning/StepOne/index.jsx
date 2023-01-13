@@ -138,7 +138,7 @@ export default function StepOne() {
                           target: {
                             name: 'selectedObstacleLayers',
                             value: checked
-                              ? [...selectedObstacleLayers, item]
+                              ? [...values.selectedObstacleLayers, item]
                               : values.selectedObstacleLayers.filter(
                                   i => i.id !== item.id,
                                 ),

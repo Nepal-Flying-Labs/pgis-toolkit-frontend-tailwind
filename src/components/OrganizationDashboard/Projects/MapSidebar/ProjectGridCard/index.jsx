@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import { useHistory, useParams, useRouteMatch } from 'react-router';
@@ -78,6 +78,15 @@ export default function ProjectGridCard({
     };
   }, [toggle, onOutsideClick]);
 
+  const [hideTitle, setHideTitle] = useState(false);
+  const titleLimit = 35;
+
+  useEffect(() => {
+    if (title.length > titleLimit) {
+      setHideTitle(true);
+    }
+  }, [title]);
+
   const { organizationId } = useParams();
 
   const history = useHistory();
@@ -127,8 +136,29 @@ export default function ProjectGridCard({
 
         <div className="naxatw-pl-4 naxatw-py-3 naxatw-pr-2">
           <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
-            <h5 className="naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden">
-              {title || 'N/A'}
+            <h5
+              className={`${
+                !hideTitle
+                  ? 'naxatw-h-fit'
+                  : 'naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden'
+              } `}
+            >
+              {hideTitle ? title.slice(0, titleLimit) : title || 'N/A'}
+              {hideTitle && (
+                <span className="naxatw-inline-flex">
+                  <span className="naxatw-px-1">...</span>
+                  <button
+                    type="button"
+                    className="naxatw-text-secondary-400 hover:naxatw-underline"
+                    onClick={e => {
+                      e.stopPropagation();
+                      setHideTitle(!hideTitle);
+                    }}
+                  >
+                    See more
+                  </button>
+                </span>
+              )}
             </h5>
             <DropdownOptions
               options={dropdownOptions}

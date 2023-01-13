@@ -16,6 +16,7 @@ import {
   getMaxPage,
 } from '@Components/common/Pagination/getSelectedItem';
 import Pagination from '@Components/common/Pagination';
+import Tooltip from '@Components/common/Tooltip/index';
 
 const {
   getLayerAttributeRequest,
@@ -176,7 +177,7 @@ export default function ViewLayerAttribute() {
             data={attributeList || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            headerWidths={[]}
+            headerWidths={[...headerKeys.map(() => '150px'), '100px']}
             // eslint-disable-next-line
             // onRowClick={row => {}}
           >
@@ -198,15 +199,17 @@ export default function ViewLayerAttribute() {
                   />
                 }
                 dataFormat={row => (
-                  <span
-                    className={` ${
-                      ordering === key
-                        ? 'naxatw-text-body-btn'
-                        : 'naxatw-text-body-lg'
-                    }`}
-                  >
-                    {row[key] || '-'}
-                  </span>
+                  <Tooltip content={row[key]} direction="right">
+                    <p
+                      className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden ${
+                        ordering === key
+                          ? 'naxatw-text-body-btn'
+                          : 'naxatw-text-body-lg'
+                      } `}
+                    >
+                      {row[key] || '-'}
+                    </p>
+                  </Tooltip>
                 )}
               />
             ))}
@@ -216,7 +219,7 @@ export default function ViewLayerAttribute() {
               rowClassName="sticky-menu"
               rowcolSpan="rowSpan_3"
               dataFormat={row => (
-                <div className="naxatw-flex naxatw-justify-end naxatw-w-full naxatw-shadow-xl">
+                <div className="naxatw-flex naxatw-justify-end naxatw-w-full naxatw-shadow-xl naxatw-relative">
                   <DropdownOptions
                     options={dropdownOptions}
                     data={row}

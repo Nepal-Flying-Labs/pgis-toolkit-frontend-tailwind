@@ -173,7 +173,13 @@ const getContactPersonSuccess = (state, action) => {
     ...state,
     individualOrganization: {
       ...state.individualOrganization,
-      contactPerson: data,
+      contactPerson: {
+        name: name || '',
+        position: position || '',
+        email: email || '',
+        contact: contact || '',
+        contactId: id || null,
+      },
     },
   };
 };

@@ -77,7 +77,7 @@ const AccessToFunctionalities = () => {
                   <span className="material-icons naxatw-h-6 naxatw-w-6 naxatw-text-secondary-400">
                     check
                   </span>
-                  <h6 className="naxatw-font-bold">{functions.name}</h6>
+                  <p className="naxatw-text-body-btn">{functions.name}</p>
                 </li>
               ))}
             </ul>

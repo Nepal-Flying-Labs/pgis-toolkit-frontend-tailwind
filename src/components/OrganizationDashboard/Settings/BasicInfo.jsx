@@ -279,7 +279,7 @@ const BasicInfo = () => {
           />
           <Button
             className="naxatw-btn-secondary naxatw-btn-noborder naxatw-w-full naxatw-mt-1"
-            onClick={() => handleCustomChange('cover_image', null)}
+            onClick={() => handleCustomChange('cover_image', '')}
           >
             <span className="naxatw-text-[15px] naxatw-font-bold naxatw-text-[#00A699]">
               Remove

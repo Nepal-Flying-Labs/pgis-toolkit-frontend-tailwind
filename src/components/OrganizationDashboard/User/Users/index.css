@@ -16,7 +16,7 @@
 
 
   .naxa-table .sticky-menu {
-    @apply !naxatw-sticky naxatw-z-[1] !naxatw-right-0 naxatw-bg-white !naxatw-shadow-3xl;
+    @apply !naxatw-sticky naxatw-z-10 !naxatw-right-0 naxatw-bg-white !naxatw-shadow-3xl;
   }
   
 

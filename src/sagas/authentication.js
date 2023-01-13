@@ -64,21 +64,21 @@ export function* verifyUserRequest({ params }) {
       yield put(push('/sign-up'));
     }
   } catch (error) {
-    const resError = {
-      config: error.config,
-      request: error.request,
-      response: {
-        ...error.response,
-        data: {
-          ...error.response.data,
-          message: 'Your token has been expired',
-        },
-      },
-      toJSON: error.toJSON,
-    };
+    // const resError = {
+    //   config: error.config,
+    //   request: error.request,
+    //   response: {
+    //     ...error.response,
+    //     data: {
+    //       ...error.response.data,
+    //       message: 'Your token has been expired',
+    //     },
+    //   },
+    //   toJSON: error.toJSON,
+    // };
     yield put(authActions.verifyUserFailure());
     yield put(push('/login'));
-    throw resError;
+    throw error;
   }
 }
 

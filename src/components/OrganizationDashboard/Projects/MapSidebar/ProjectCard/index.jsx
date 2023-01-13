@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import { useHistory, useParams } from 'react-router';
@@ -56,6 +56,15 @@ export default function ProjectCard({
     },
     [setToggle],
   );
+
+  const [hideTitle, setHideTitle] = useState(false);
+  const titleLimit = 40;
+
+  useEffect(() => {
+    if (title.length > titleLimit) {
+      setHideTitle(true);
+    }
+  }, [title]);
 
   useEffect(() => {
     if (toggle) {
@@ -171,7 +180,7 @@ export default function ProjectCard({
       }`}
       onClick={onClick}
     >
-      <div className=" naxatw-w-[120px] naxatw-h-[164px] naxatw-min-w-[120px]">
+      <div className=" naxatw-w-[120px] naxatw-h-full naxatw-min-w-[120px]">
         <img
           className=" naxatw-object-cover naxatw-w-full naxatw-h-full naxatw-rounded-l-xl"
           src={coverImage || AvatarImage}
@@ -181,8 +190,29 @@ export default function ProjectCard({
 
       <div className=" naxatw-pt-2 naxatw-pl-4 naxatw-pr-2 naxatw-pb-3 naxatw-flex  naxatw-w-full naxatw-justify-between naxatw-rounded-r-xl">
         <div className="">
-          <h5 className="naxatw-text-ellipsis naxatw-overflow-hidden naxatw-h-[2.78rem]">
-            {title || 'N/A'}
+          <h5
+            className={`${
+              !hideTitle
+                ? 'naxatw-h-fit'
+                : 'naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden'
+            } `}
+          >
+            {hideTitle ? title.slice(0, titleLimit + 10) : title || 'N/A'}
+            {hideTitle && (
+              <span className="naxatw-inline-flex">
+                <span className="naxatw-px-1">...</span>
+                <button
+                  type="button"
+                  className="naxatw-text-secondary-400 hover:naxatw-underline"
+                  onClick={e => {
+                    e.stopPropagation();
+                    setHideTitle(!hideTitle);
+                  }}
+                >
+                  See more
+                </button>
+              </span>
+            )}
           </h5>
           <div className="naxatw-flex naxatw-flex-wrap naxatw-mt-2.5 naxatw-gap-x-3">
             <span className="naxatw-text-body-md">{`${

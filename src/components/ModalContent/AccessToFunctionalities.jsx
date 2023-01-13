@@ -27,6 +27,21 @@ const getUserFunctionalities = role => {
   }
 };
 
+const getArticle = role => {
+  switch (role) {
+    case 'PGIS Web App Administrator':
+      return 'a';
+    case 'Organization Admin':
+      return 'an';
+    case 'Project Manager':
+      return 'a';
+    case 'Super Admin':
+      return 'a';
+    default:
+      return 'a';
+  }
+};
+
 const AccessToFunctionalities = () => {
   const userProfile = useSelector(state => state.authentication.userProfile);
   const functionalities = getUserFunctionalities(userProfile?.role);
@@ -43,7 +58,7 @@ const AccessToFunctionalities = () => {
               verified
             </span>
             <h4 className="naxatw-font-normal">
-              You are now logged in as a{' '}
+              You are now logged in as {getArticle(userProfile?.role)}{' '}
               <span className="naxatw-font-primary naxatw-text-primary-400 naxatw-text-[1.25rem] naxatw-font-bold naxatw-leading-[1.75rem] naxatw-tracking-normal">
                 {userProfile?.role || 'N/A'}
               </span>

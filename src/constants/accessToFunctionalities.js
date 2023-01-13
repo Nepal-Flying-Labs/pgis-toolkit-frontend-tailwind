@@ -24,7 +24,7 @@ export const organizationAdmin = [
   },
   {
     id: 3,
-    name: 'Add/Edit/Delete datasets within multiple projects ',
+    name: 'Add/edit/delete datasets within multiple projects ',
   },
 ];
 
@@ -39,6 +39,6 @@ export const projectAdmin = [
   },
   {
     id: 3,
-    name: 'Add/Edit/Delete datasets in the project',
+    name: 'Add/edit/delete datasets in the project',
   },
 ];

@@ -13,8 +13,6 @@ export default function Results() {
   );
   // const dispatch = useDispatch();
 
-  console.log(analysisResults, 'analysisResultsx');
-
   const dropdownOptions = [
     {
       id: 'zoom-to-layer',

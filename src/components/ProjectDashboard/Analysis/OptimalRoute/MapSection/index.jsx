@@ -51,6 +51,9 @@ export default function MapSection() {
   const destinationGeojson = useSelector(
     state => state.routeAnalysis.dataInput.destinationGeojson,
   );
+  const analysisResults = useSelector(
+    state => state.routeAnalysis.results.analysisResults,
+  );
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [Types.GET_PROJECT_GEOJSON_REQUEST]),
   );
@@ -104,6 +107,21 @@ export default function MapSection() {
             zIndex={1}
             // properties={{ layerId: selectedLayer.id }}
           />
+        )}
+
+        {analysisResults.map(result =>
+          result.routes.map(route =>
+            route.data.map(item => (
+              <VectorTileLayer
+                url={`${apiURL}maps/optimum_route_vectortile/{z}/{x}/{y}/?route=${item.id}`}
+                authToken={localStorage.getItem('userToken')}
+                visibleOnMap
+                style={item.style}
+                zIndex={2}
+                // properties={{ layerId: selectedLayer.id }}
+              />
+            )),
+          ),
         )}
 
         <DrawTool

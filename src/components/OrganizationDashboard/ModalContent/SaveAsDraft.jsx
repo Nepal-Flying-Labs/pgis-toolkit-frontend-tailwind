@@ -156,8 +156,8 @@ const SaveAsDraft = () => {
   };
 
   return (
-    <div>
-      <div className="naxatw-flex naxatw-items-center naxatw-gap-x-5 naxatw-mb-7">
+    <div className="">
+      <div className="naxatw-flex naxatw-items-center naxatw-gap-x-5 naxatw-mb-7 ">
         <span className="naxatw-w-[48px] naxatw-flex naxatw-items-center naxatw-justify-center naxatw-h-[48px] naxatw-rounded-full naxatw-bg-[#DFF2F1] naxatw-text-center ">
           {' '}
           <MaterialIcon
@@ -165,7 +165,7 @@ const SaveAsDraft = () => {
             className="naxatw-text-[32px] naxatw-leading-[32px] naxatw-font-normal naxatw-text-[#00A699]"
           />
         </span>
-        <h4>Save as Draft ?</h4>
+        <h4>Save Draft ?</h4>
       </div>
       <span className=" naxatw-text-body-lg naxatw-text-[#484848]">
         Drafts let you save your edits, so you can come back later.

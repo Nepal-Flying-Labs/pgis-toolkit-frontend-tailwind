@@ -32,7 +32,8 @@ export default function CreateOrganizationSuccess() {
           ))}
         </div>
         <p className="">
-          Please check your inbox and proceed ahead. If you didnt not recieve
+          Please check your inbox and proceed ahead.
+          {/* If you didnt not recieve
           any email,{' '}
           <a
             href={() => {}}
@@ -40,7 +41,7 @@ export default function CreateOrganizationSuccess() {
           >
             click here to resend email
           </a>
-          .
+          . */}
         </p>
       </div>
 

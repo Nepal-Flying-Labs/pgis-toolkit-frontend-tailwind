@@ -34,6 +34,7 @@ function UploadPolygonBoundary({
   uploadedFile,
   setuploadedFile,
   locationType,
+  formValues,
 }) {
   // eslint-disable-next-line no-unused-vars
   // const [uploadedFile, setuploadedFile] = useState([]);
@@ -46,12 +47,19 @@ function UploadPolygonBoundary({
     const { files } = e.target;
     setuploadedFile(files[0]);
     try {
-      convertToGeoJSON(files).then(z => {
-        setGeojson(z);
-      });
+      convertToGeoJSON(files)
+        .then(z => {
+          setGeojson(z);
+          setError(false);
+        })
+        .catch(err => {
+          setError(true);
+          setuploadedFile('');
+        });
       // eslint-disable-next-line no-shadow
     } catch (err) {
       setError(true);
+      setuploadedFile('');
     }
   };
 
@@ -84,6 +92,7 @@ function UploadPolygonBoundary({
             style={{ display: 'none' }}
             onChange={e => onChangeFileUpload(e)}
             multiple="multiple"
+            accept="application/zip,application/x-zip,application/x-zip-compressed,application/octet-stream/,.geojson"
           />
         </div>
         {error && (
@@ -125,7 +134,10 @@ function UploadPolygonBoundary({
                 />
               </a>
               <a
-                onClick={() => setuploadedFile('')}
+                onClick={() => {
+                  setuploadedFile('');
+                  setGeojson(null);
+                }}
                 className="hover:naxatw-bg-grey-100 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-justify-center naxatw-items-center naxatw-rounded-lg"
               >
                 <MaterialIcon
@@ -138,7 +150,7 @@ function UploadPolygonBoundary({
         )}
       </div>
 
-      <MapSection geojson={geojson} />
+      <MapSection geojson={geojson} formValues={formValues} />
     </div>
   );
 }

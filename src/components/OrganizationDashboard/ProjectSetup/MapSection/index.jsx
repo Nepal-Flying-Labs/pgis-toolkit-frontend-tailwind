@@ -34,7 +34,12 @@ const { setDrawnGeojsonData } = Creators;
 
 const { API_URL } = process.env;
 
-export default function MapSection({ isDraw, geojson, locationType }) {
+export default function MapSection({
+  isDraw,
+  geojson,
+  locationType,
+  formValues,
+}) {
   const dispatch = useDispatch();
   const [selectedGeomType, setSelectedGeomType] = useState('');
   const [redraw, setRedraw] = useState(false);
@@ -52,8 +57,8 @@ export default function MapSection({ isDraw, geojson, locationType }) {
 
   // zoom to project location on initial map load
   useEffect(() => {
-    if (!map || !Object.keys(project).length > 0) return;
-    const bbox = project?.bbox;
+    if (!map || !Object.keys(formValues)?.length > 0) return;
+    const bbox = formValues?.bbox;
     if (!bbox) return;
     const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
     if (isExtentValid(zoomExtent)) {
@@ -63,7 +68,7 @@ export default function MapSection({ isDraw, geojson, locationType }) {
         constrainResolution: true,
       });
     }
-  }, [map, project]);
+  }, [map, formValues]);
 
   const handleClick = () => {
     const layers = map.getLayers().getArray();
@@ -144,12 +149,13 @@ export default function MapSection({ isDraw, geojson, locationType }) {
         <LayerSwitcherControl />
         <Scalebar />
         {geojson && <MapVectorLayer geojson={geojson} zoomToLayer />}
-        {project?.id && (
-          <MapVectorTileLayer
-            url={`${API_URL}projects/project_location_vectortile/{z}/{x}/{y}/?project=${project.id}`}
-            authToken={localStorage.getItem('userToken')}
-          />
-        )}
+        {formValues?.id &&
+          (formValues?.file || project?.location_type === 'Custom Draw') && (
+            <MapVectorTileLayer
+              url={`${API_URL}projects/project_location_vectortile/{z}/{x}/{y}/?project=${formValues?.id}`}
+              authToken={localStorage.getItem('userToken')}
+            />
+          )}
 
         {locationType === 'Custom Draw' && (
           <CustomAddFeature

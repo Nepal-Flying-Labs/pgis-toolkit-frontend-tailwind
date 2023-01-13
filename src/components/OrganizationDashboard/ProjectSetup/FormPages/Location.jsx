@@ -288,6 +288,7 @@ const Location = ({ page, setPage }) => {
       </div>
       {values?.location_type === 'File Upload' && (
         <UploadPolygonBoundary
+          formValues={values}
           uploadedFile={values?.file}
           setuploadedFile={file => {
             handleCustomChange('file', file);
@@ -296,7 +297,7 @@ const Location = ({ page, setPage }) => {
       )}
 
       {values?.location_type === 'Custom Draw' && (
-        <MapSection locationType={values.location_type} />
+        <MapSection locationType={values.location_type} formValues={values} />
       )}
       <div
         className={`naxatw-flex ${

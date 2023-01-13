@@ -52,6 +52,7 @@ const getProjectsSuccess = (state, action) => {
 
 const getIndividualProjectSuccess = (state, action) => {
   const {
+    id,
     name,
     cover_image,
     description,
@@ -111,6 +112,7 @@ const getIndividualProjectSuccess = (state, action) => {
         partners,
       },
       stepTwo: {
+        id,
         bbox,
         country,
         file: file

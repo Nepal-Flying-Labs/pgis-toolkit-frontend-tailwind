@@ -176,12 +176,12 @@ export default function ProjectCard({
     // </div>
 
     <div
-      className={`naxatw-flex naxatw-border naxatw-rounded-xl naxatw-cursor-pointer hover:naxatw-bg-[#F8F8F8] hover:naxatw-border-[#484848]  ${
+      className={`naxatw-flex naxatw-border naxatw-border-grey-300 naxatw-rounded-xl naxatw-cursor-pointer hover:naxatw-bg-[#F8F8F8] hover:naxatw-border-[#484848]  ${
         status === 'draft' ? 'naxatw-bg-[#F5F5F5]' : 'naxatw-bg-white'
       }`}
       onClick={onClick}
     >
-      <div className=" naxatw-w-[120px] naxatw-h-[164px] naxatw-min-w-[120px]">
+      <div className=" naxatw-w-[120px] naxatw-h-[164px] naxatw-min-w-[120px] naxatw-border naxatw-border-grey-200 naxatw-rounded-l-xl">
         <img
           className=" naxatw-object-cover naxatw-w-full naxatw-h-full naxatw-rounded-l-xl"
           src={coverImage || AvatarImage}

@@ -340,7 +340,7 @@ const Location = ({ page, setPage }) => {
             }}
             className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
           >
-            Save as Draft
+            Save Draft
           </Button>
         )}
       </div>

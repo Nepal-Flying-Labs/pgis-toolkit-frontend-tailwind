@@ -16,6 +16,7 @@ import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSw
 import CustomLayerSwitcher from '@Components/common/OpenLayersComponent/CustomLayerSwitcher';
 import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
+import CircleMarker from '@Components/common/OpenLayersComponent/CustomLayer/CircleMarker';
 import Spinner from '@Components/common/Spinner';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import 'ol/ol.css';
@@ -74,6 +75,8 @@ export default function MapSection() {
     }
   }, [map, roadNetworkLayer]);
 
+  console.log(analysisResults, 'analysisResultsx');
+
   return (
     <div className="naxatw-w-full naxatw-relative">
       {isMapDataLoading && (
@@ -123,6 +126,23 @@ export default function MapSection() {
             )),
           ),
         )}
+
+        {analysisResults.map(result => (
+          <React.Fragment key={result.id}>
+            <CircleMarker
+              coordinates={[result.origin_lat, result.origin_long]}
+              style={{ ...startPointStyles }}
+              zIndex={10}
+              map={map}
+            />
+            <CircleMarker
+              coordinates={[result.destination_lat, result.destination_long]}
+              style={{ ...destinationPointStyles }}
+              zIndex={10}
+              map={map}
+            />
+          </React.Fragment>
+        ))}
 
         <DrawTool
           enable={!!drawPointType}

@@ -54,6 +54,6 @@ Tab.defaultProps = {
 
 Tab.propTypes = {
   data: PropTypes.array.isRequired,
-  activeId: PropTypes.number,
+  activeId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   contentClassName: PropTypes.string,
 };

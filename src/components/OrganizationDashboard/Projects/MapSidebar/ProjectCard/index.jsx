@@ -1,12 +1,18 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useRef, useEffect, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import { useHistory, useParams } from 'react-router';
 import AvatarImage from '@Assets/images/img-sm-avatar.png';
+import { Creators as CommonCreator } from '@Actions/common';
+import { Creators } from '@Actions/organizationDashboard';
 import Button from '@Components/common/Button/index';
 import { format } from 'date-fns';
+
+const { togglePromptDialog } = CommonCreator;
+const { setSelectedProject } = Creators;
 
 const getStatusColor = status => {
   switch (status) {
@@ -46,6 +52,7 @@ export default function ProjectCard({
   endDate,
   thematicAreas,
 }) {
+  const dispatch = useDispatch();
   const ref = useRef();
   const statusColor = getStatusColor(status);
   const onOutsideClick = useCallback(
@@ -95,7 +102,10 @@ export default function ProjectCard({
           <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: () => {
+        dispatch(setSelectedProject({ id, name: title }));
+        dispatch(togglePromptDialog('delete-project'));
+      },
     },
   ];
 

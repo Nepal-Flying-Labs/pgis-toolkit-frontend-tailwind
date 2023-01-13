@@ -7,6 +7,7 @@ import { getUserGroupRequest } from '@Sagas/organizationDashboard';
 
 const initialState = {
   projects: null,
+  selectedProject: null,
   countryList: [],
   individualProject: {
     contactPerson: [],
@@ -413,6 +414,26 @@ const toggleSidebar = state => ({
   hideSidebar: !state.hideSidebar,
 });
 
+const setSelectedProject = (state, action) => ({
+  ...state,
+  selectedProject: action.payload,
+});
+
+const deleteProjectSuccess = (state, action) => {
+  const data = action.payload;
+  const newData = state.projects?.results.filter(
+    project => project.id !== data.id,
+  );
+
+  return {
+    ...state,
+    projects: {
+      ...state.projects,
+      results: newData,
+    },
+  };
+};
+
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
@@ -444,6 +465,8 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.UPDATE_ORGANIZATION_SUCCESS]: updateOrganizationSuccess,
   [Types.GET_ORGANIZATION_BY_ID_SUCCESS]: getOrganizationByIdSuccess,
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
+  [Types.SET_SELECTED_PROJECT]: setSelectedProject,
+  [Types.DELETE_PROJECT_SUCCESS]: deleteProjectSuccess,
 });
 
 export default organizationDashboardReducer;

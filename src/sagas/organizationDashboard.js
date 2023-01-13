@@ -345,6 +345,19 @@ export function* getOrganizationByIdRequest({ id }) {
   }
 }
 
+export function* deleteProjectRequest({ id, payload }) {
+  try {
+    const formData = prepareFormData(payload);
+    const response = yield call(patchProject, id, formData);
+    yield put(organizationDashboardActions.deleteProjectSuccess(response.data));
+    yield put(commonActions.togglePromptDialog());
+    yield put(toastActions.error({ message: 'Project Deleted Successfully' }));
+  } catch (error) {
+    yield put(organizationDashboardActions.deleteProjectFailure());
+    throw error;
+  }
+}
+
 function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
@@ -422,6 +435,10 @@ function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_BY_ID_REQUEST,
     withLoader(withErrorHandler(getOrganizationByIdRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_PROJECT_REQUEST,
+    withLoader(withErrorHandler(deleteProjectRequest)),
   );
 }
 

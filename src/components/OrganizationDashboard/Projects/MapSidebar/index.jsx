@@ -69,7 +69,7 @@ export default function MapSidebar() {
 
   return (
     <div
-      className={`naxatw-relative naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-5 naxatw-pt-5`}
+      className={`naxatw-relative naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-2 naxatw-pt-5`}
       style={{
         width: hideSidebar ? '0' : '44.375rem',
         minWidth: hideSidebar ? '0' : '40rem',
@@ -79,7 +79,7 @@ export default function MapSidebar() {
     >
       {!hasNoProject && (
         <>
-          <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-gap-2">
+          <div className="naxatw-flex naxatw-items-center naxatw-pr-5 naxatw-justify-between naxatw-gap-2">
             <Searchbar
               className="naxatw-bg-white"
               value={searchValue}
@@ -96,7 +96,7 @@ export default function MapSidebar() {
             </Button>
           </div>
 
-          <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+          <div className="naxatw-flex naxatw-justify-between naxatw-pr-5 naxatw-items-center">
             <div className="naxatw-flex naxatw-mt-2 naxatw-gap-2">
               <Chip
                 name={`All( ${organizationDetail?.projects || ''} )`}
@@ -144,7 +144,7 @@ export default function MapSidebar() {
       )}
 
       <div
-        className={`naxatw-mt-5 naxatw-overflow-y-auto scrollbar ${
+        className={`naxatw-mt-5 naxatw-overflow-y-auto naxatw-pr-4 scrollbar ${
           viewType === 'list'
             ? ' naxatw-flex naxatw-flex-col naxatw-gap-2 '
             : 'naxatw-grid naxatw-grid-cols-2 naxatw-gap-5 naxatw-overflow-x-hidden'

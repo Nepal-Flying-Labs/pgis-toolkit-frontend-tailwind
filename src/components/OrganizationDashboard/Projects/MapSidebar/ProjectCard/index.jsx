@@ -1,11 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-<<<<<<< HEAD
-import React, { useRef, useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-=======
 import React, { useRef, useEffect, useCallback, useState } from 'react';
->>>>>>> 46941b6b26c6a8fd54ed891fac0457b00e96d3c2
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import { useHistory, useParams } from 'react-router';

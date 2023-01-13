@@ -30,8 +30,10 @@ import commonActions from '@Actions/common';
 import toastActions from '@Actions/toast';
 import { withLoader, withErrorHandler } from '@Utils/sagaUtils';
 import prepareFormData from '@Utils/prepareFormData';
-import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
-import { pointTypes } from '@Components/common/OpenLayersComponent/Legend/LegendItem';
+import {
+  defaultStyles,
+  pointTypes,
+} from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { isEmpty } from '@Utils/commonUtils';
 
 export function* getProjectThemesRequest({ params }) {

@@ -12,7 +12,7 @@ import {
   MapContainer as MapComponent,
 } from '@Components/common/OpenLayersComponent';
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher';
-import CustomLayerSwitcher from '@Components/common/OpenLayersComponent/CustomLayerSwitcher/index';
+import CustomLayerSwitcher from '@Components/common/OpenLayersComponent/CustomLayerSwitcher';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileLayer';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
@@ -29,13 +29,12 @@ import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import AddFeature from '@Components/common/OpenLayersComponent/CustomLayer/AddFeature';
 import EditableLayer from '@Components/common/OpenLayersComponent/CustomLayer/EditableLayer';
-// import DrawTool from '@Components/common/OpenLayersComponent/DrawTool/index';
+// import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
+import { apiURL } from '@Services';
 import SidebarToggle from '../SidebarToggle';
 import Toolbox from '../Toolbox';
 import QueryResultPopup from '../QueryResultPopup';
-
-const { API_URL } = process.env;
 
 const {
   setZoomToLayerId,
@@ -212,7 +211,7 @@ export default function MapSection() {
           item.layer_type === 'Vector' ? (
             <VectorTileLayer
               key={item.id}
-              url={`${API_URL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+              url={`${apiURL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
               authToken={localStorage.getItem('userToken')}
               visibleOnMap={item.checked}
               setStyle={(feature, resolution) =>
@@ -246,7 +245,7 @@ export default function MapSection() {
         {queryResults.map(item => (
           <VectorTileLayer
             key={item.id}
-            url={`${API_URL}maps/advance_filter_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+            url={`${apiURL}maps/advance_filter_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
             authToken={localStorage.getItem('userToken')}
             visibleOnMap={item.checked}
             style={item?.style || { ...defaultStyles }}

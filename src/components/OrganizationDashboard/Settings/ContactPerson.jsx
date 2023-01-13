@@ -43,8 +43,8 @@ const ContactPerson = () => {
     onSubmit: data => {
       dispatch(
         postContactPersonRequest(
-          { ...data, project: organizationId },
-          { project: organizationId, type: 'organization' },
+          { ...data, organization: organizationId },
+          { organization: organizationId, type: 'organization' },
         ),
       );
       resetFormState();
@@ -54,7 +54,7 @@ const ContactPerson = () => {
   return (
     <>
       <h4>Contact Person Details</h4>
-      <div className="">
+      {/* <div className="">
         {contactPerson?.map(person => {
           return (
             <div
@@ -72,7 +72,7 @@ const ContactPerson = () => {
             </div>
           );
         })}
-      </div>
+      </div> */}
       <Input
         type="text"
         label="Name of contact Person"

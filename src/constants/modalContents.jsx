@@ -35,7 +35,9 @@ import UploadGallery from '@Components/ProjectDashboard/ModalContent/UploadGalle
 import DeleteOrganizationUser from '@Components/OrganizationDashboard/ModalContent/DeleteOrganizationUser';
 import DeleteUser from '@Components/Users/ModalContent/DeleteUser';
 import DeleteProjectUser from '@Components/ProjectDashboard/ModalContent/DeleteProjectUser/index';
+import DeleteProject from '@Components/OrganizationDashboard/ModalContent/DeleteProject';
 import DeleteTemplateAttribute from '@Components/ProjectDashboard/ModalContent/DeleteTemplateAttribute';
+import DeleteError from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteError';
 
 export function getModalContent(content) {
   switch (content) {
@@ -286,6 +288,19 @@ export function getPromptDialogContent(content) {
         title: 'Delete Attribute',
         content: <DeleteTemplateAttribute />,
       };
+    // data cleaning > manual fix
+    case 'delete-error':
+      return {
+        title: '',
+        content: <DeleteError />,
+      };
+
+    case 'delete-project':
+      return {
+        title: 'Delete Project',
+        content: <DeleteProject />,
+      };
+
     default:
       return '';
   }

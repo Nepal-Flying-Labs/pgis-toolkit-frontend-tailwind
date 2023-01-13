@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable arrow-body-style */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import { Creators, Types } from '@Actions/organizationDashboard';
@@ -88,6 +88,27 @@ const Users = () => {
   });
   const [rowPerPage, setRowPerPage] = useState(10);
 
+  const getUserRoleById = id => {
+    const filteredList = roles.filter(item => item.value === id);
+    return filteredList?.[0]?.name;
+  };
+
+  const filteredData = useMemo(
+    () =>
+      users
+        ?.filter(
+          item =>
+            item?.full_name
+              ?.toLowerCase()
+              ?.includes(searchText.toLowerCase()) ||
+            item?.email?.toLowerCase()?.includes(searchText.toLowerCase()),
+        )
+        ?.filter(d =>
+          userRole ? d?.group === getUserRoleById(userRole) : d,
+        ) || [],
+    [searchText, userRole, users],
+  );
+
   const {
     next,
     prev,
@@ -98,8 +119,8 @@ const Users = () => {
     // begin,
     // end,
     currentList,
-    // handleSorting,
-  } = usePagination(users || [], rowPerPage);
+    handleSorting,
+  } = usePagination(filteredData || [], rowPerPage);
 
   useEffect(() => {
     if (users.length < 1) {
@@ -198,11 +219,6 @@ const Users = () => {
     },
   ];
 
-  const getUserRoleById = id => {
-    const filteredList = roles.filter(item => item.value === id);
-    return filteredList?.[0]?.name;
-  };
-
   return (
     <div className="naxatw-mt-3 ">
       <div className="naxatw-flex naxatw-gap-x-3 naxatw-justify-start ">
@@ -229,21 +245,7 @@ const Users = () => {
         <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-h-[calc(100vh-23rem)]">
           {!loading ? (
             <Table
-              data={
-                currentList
-                  ?.filter(
-                    item =>
-                      item?.full_name
-                        ?.toLowerCase()
-                        ?.includes(searchText.toLowerCase()) ||
-                      item?.email
-                        ?.toLowerCase()
-                        ?.includes(searchText.toLowerCase()),
-                  )
-                  ?.filter(d =>
-                    userRole ? d?.group === getUserRoleById(userRole) : d,
-                  ) || []
-              }
+              data={currentList || []}
               className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               headerWidths={[
@@ -265,13 +267,14 @@ const Users = () => {
                   <SortingContainer
                     name="Name"
                     isActive={ordering === 'full_name'}
-                    handleSort={() =>
+                    handleSort={() => {
                       dispatch(
                         setUsersOrdering(
                           ordering === 'full_name' ? null : 'full_name',
                         ),
-                      )
-                    }
+                      );
+                      handleSorting('full_name');
+                    }}
                   />
                 }
                 dataFormat={row => (
@@ -283,8 +286,10 @@ const Users = () => {
                     />
                     <span
                       className={` ${
-                        ordering === 'full_name' ? 'naxatw-font-bold' : ''
-                      } naxatw-text-base`}
+                        ordering === 'full_name'
+                          ? 'naxatw-text-body-btn'
+                          : 'naxatw-text-body-lg'
+                      } `}
                     >
                       {row.full_name || '-'}
                     </span>
@@ -299,18 +304,22 @@ const Users = () => {
                   <SortingContainer
                     name="Role"
                     isActive={ordering === 'group'}
-                    handleSort={() =>
+                    handleSort={() => {
                       dispatch(
                         setUsersOrdering(ordering === 'group' ? null : 'group'),
-                      )
-                    }
+                      );
+                      handleSorting('group');
+                    }}
                   />
                 }
                 dataFormat={row => (
                   <span
                     className={` ${
-                      ordering === 'group' ? 'naxatw-font-bold' : ''
-                    } naxatw-text-base`}
+                      ordering === 'group'
+                        ? 'naxatw-text-body-btn'
+                        : 'naxatw-text-body-lg'
+                    }
+                    `}
                   >
                     {row.group}
                   </span>
@@ -322,7 +331,9 @@ const Users = () => {
                 rowcolSpan="rowSpan_2"
                 // dataHeader={<SortingContainer name="Phone" />}
                 dataFormat={row => (
-                  <span className="naxatw-text-base">{row.contact || '-'}</span>
+                  <span className="naxatw-text-body-lg">
+                    {row.contact || '-'}
+                  </span>
                 )}
               />
               <TableHeader
@@ -331,7 +342,7 @@ const Users = () => {
                 rowcolSpan="rowSpan_2"
                 // dataHeader={<SortingContainer name="Email" />}
                 dataFormat={row => (
-                  <span className="naxatw-text-base">{row.email}</span>
+                  <span className="naxatw-text-body-lg">{row.email}</span>
                 )}
               />
               <TableHeader
@@ -388,9 +399,9 @@ const Users = () => {
           previousPage={prev}
           jumpTo={jump}
           currentPage={currentPage}
-          count={users?.length || 0}
+          count={filteredData?.length || 0}
           paginatedCounts={getSelectedRange(
-            users?.length,
+            currentList?.length,
             rowPerPage,
             currentPage,
           )}

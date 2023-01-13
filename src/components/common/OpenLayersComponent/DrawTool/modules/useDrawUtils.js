@@ -15,7 +15,7 @@ export default function useDrawUtils({
         wrapX: false,
         filter: (_, layer) => layerUid?.current === layer?.ol_uid,
       }),
-    [],
+    [layerUid],
   );
 
   const modify = useMemo(
@@ -34,6 +34,8 @@ export default function useDrawUtils({
       }),
     [select],
   );
+
+  // const snap = useMemo(() => new Snap({ source }), [source]);
 
   useEffect(() => {
     modify.on('modifyend', e => {
@@ -76,6 +78,7 @@ export default function useDrawUtils({
     select,
     modify,
     translate,
+    // snap,
     addInteraction,
     removeInteraction,
   };

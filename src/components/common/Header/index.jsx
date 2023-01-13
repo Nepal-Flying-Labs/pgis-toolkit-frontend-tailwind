@@ -3,8 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 
 import LoginLogo from '@Assets/images/logo.png';
 import { useSelector } from 'react-redux';
-import HeaderProfile from './HeaderProfile';
 import { isEmpty } from '@Utils/commonUtils';
+import HeaderProfile from './HeaderProfile';
 // import HeaderNotification from './HeaderNotification';
 
 export default function Header() {

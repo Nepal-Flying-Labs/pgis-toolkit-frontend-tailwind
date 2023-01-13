@@ -46,9 +46,9 @@ export default function Settings() {
 
   return (
     <div className="naxatw-bg-[#F5F5F5]">
-      <div className="naxatw-ml-[40px] naxatw-pt-3 naxatw-flex naxatw-gap-x-5 naxatw-h-[calc(100vh-60px)]">
-        <div className="naxatw-pl-[200px]">
-          <div className="naxatw-rounded-xl naxatw-border naxatw-py-3 fl md:naxatw-w-[325px] naxatw-bg-white">
+      <div className="naxatw-ml-[40px] naxatw-pt-3 naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-x-5 naxatw-h-[calc(100vh-60px)]">
+        <div className="xl:naxatw-pl-[200px]">
+          <div className="naxatw-rounded-xl naxatw-border naxatw-py-3 md:naxatw-w-[325px] naxatw-bg-white">
             <ul>
               {linkOptions.map(link => (
                 <li
@@ -82,19 +82,19 @@ export default function Settings() {
           </div>
         </div>
         <div className=" naxatw-overflow-y-auto scrollbar  naxatw-w-full">
-          <div className="naxatw-w-[50rem] naxatw-p-7 naxatw-bg-white naxatw-rounded-xl ">
+          <div className="xl:naxatw-w-[50rem] naxatw-p-7 naxatw-bg-white naxatw-rounded-xl ">
             {!loading ? (
               <>
                 {active === 1 && (
                   <div className="naxatw-space-y-7 ">
-                    <h3>Basic Info</h3>
+                    <h3 className="-naxatw-mb-5">Basic Info</h3>
                     <BasicInfo />
                   </div>
                 )}
 
                 {active === 2 && (
                   <div className="naxatw-space-y-7">
-                    <h3>Location</h3>
+                    <h3 className="-naxatw-mb-5">Location</h3>
                     <Location />
                   </div>
                 )}

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable arrow-body-style */
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import { Creators, Types } from '@Actions/projectDashboard';
@@ -63,10 +63,6 @@ const UserList = () => {
       Types.RESEND_INVITATION_REQUEST,
     ]),
   );
-
-  // const userRole = useSelector(
-  //   state => state.organizationDashboard.usersFilter.userRole,
-  // );
 
   const userOptions = [
     {
@@ -172,6 +168,20 @@ const UserList = () => {
 
   const [rowPerPage, setRowPerPage] = useState(10);
 
+  const filteredData = useMemo(
+    () =>
+      users
+        ?.filter(
+          item =>
+            item?.full_name
+              ?.toLowerCase()
+              ?.includes(searchText.toLowerCase()) ||
+            item?.email?.toLowerCase()?.includes(searchText.toLowerCase()),
+        )
+        ?.filter(d => (userRole ? d?.group === userRole : d)) || [],
+    [searchText, userRole, users],
+  );
+
   const {
     next,
     prev,
@@ -182,8 +192,8 @@ const UserList = () => {
     // begin,
     // end,
     currentList,
-    // handleSorting,
-  } = usePagination(users || [], rowPerPage);
+    handleSorting,
+  } = usePagination(filteredData || [], rowPerPage);
 
   // useEffect(() => {
   //   if (!users) {
@@ -242,19 +252,7 @@ const UserList = () => {
         >
           {!loading ? (
             <Table
-              data={
-                currentList
-                  ?.filter(
-                    item =>
-                      item?.full_name
-                        ?.toLowerCase()
-                        ?.includes(searchText.toLowerCase()) ||
-                      item?.email
-                        ?.toLowerCase()
-                        ?.includes(searchText.toLowerCase()),
-                  )
-                  ?.filter(d => (userRole ? d?.group === userRole : d)) || []
-              }
+              data={currentList || []}
               className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               headerWidths={[
@@ -277,13 +275,14 @@ const UserList = () => {
                     name="Name"
                     className=""
                     isActive={ordering === 'name'}
-                    handleSort={() =>
+                    handleSort={() => {
                       dispatch(
                         setUserState({
                           ordering: ordering === 'name' ? null : 'name',
                         }),
-                      )
-                    }
+                      );
+                      handleSorting('full_name');
+                    }}
                   />
                 }
                 dataFormat={row => (
@@ -295,8 +294,10 @@ const UserList = () => {
                     />
                     <span
                       className={` ${
-                        ordering === 'name' ? 'naxatw-font-bold' : ''
-                      } naxatw-text-base`}
+                        ordering === 'name'
+                          ? 'naxatw-text-body-btn'
+                          : 'naxatw-text-body-lg'
+                      } `}
                     >
                       {row.full_name}
                     </span>
@@ -330,20 +331,23 @@ const UserList = () => {
                     name="Role"
                     className=""
                     isActive={ordering === 'group'}
-                    handleSort={() =>
+                    handleSort={() => {
                       dispatch(
                         setUserState({
                           ordering: ordering === 'group' ? null : 'group',
                         }),
-                      )
-                    }
+                      );
+                      handleSorting('group');
+                    }}
                   />
                 }
                 dataFormat={row => (
                   <span
                     className={` ${
-                      ordering === 'group' ? 'naxatw-font-bold' : ''
-                    } naxatw-text-base`}
+                      ordering === 'group'
+                        ? 'naxatw-text-body-btn'
+                        : 'naxatw-text-body-lg'
+                    } `}
                   >
                     {row.group}
                   </span>
@@ -355,7 +359,9 @@ const UserList = () => {
                 rowcolSpan="rowSpan_2"
                 // dataHeader={<SortingContainer name="Phone" />}
                 dataFormat={row => (
-                  <span className="naxatw-text-base">{row.contact || '-'}</span>
+                  <span className="naxatw-text-body-lg">
+                    {row.contact || '-'}
+                  </span>
                 )}
               />
               <TableHeader
@@ -364,27 +370,27 @@ const UserList = () => {
                 rowcolSpan="rowSpan_2"
                 // dataHeader={<SortingContainer name="Email" />}
                 dataFormat={row => (
-                  <span className="naxatw-text-base">{row.email}</span>
+                  <span className="naxatw-text-body-lg">{row.email}</span>
                 )}
               />
               <TableHeader
                 dataField="Status"
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"
-                dataHeader={
-                  <SortingContainer
-                    name="Status"
-                    className=""
-                    isActive={ordering === 'status'}
-                    handleSort={() =>
-                      dispatch(
-                        setUserState({
-                          ordering: ordering === 'status' ? null : 'status',
-                        }),
-                      )
-                    }
-                  />
-                }
+                // dataHeader={
+                // <SortingContainer
+                //   name="Status"
+                //   className=""
+                //   isActive={ordering === 'status'}
+                //   handleSort={() =>
+                //     dispatch(
+                //       setUserState({
+                //         ordering: ordering === 'status' ? null : 'status',
+                //       }),
+                //     )
+                //   }
+                // />
+                // }
                 dataFormat={row => (
                   <Status
                     status={row.active}
@@ -434,9 +440,9 @@ const UserList = () => {
           previousPage={prev}
           jumpTo={jump}
           currentPage={currentPage}
-          count={users?.length || 0}
+          count={filteredData?.length || 0}
           paginatedCounts={getSelectedRange(
-            users?.length,
+            currentList?.length,
             rowPerPage,
             currentPage,
           )}

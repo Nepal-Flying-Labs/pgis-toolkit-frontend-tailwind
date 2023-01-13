@@ -1,9 +1,11 @@
+/* eslint-disable prefer-const */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable arrow-body-style */
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { Creators, Types } from '@Actions/organizationDashboard';
@@ -13,14 +15,21 @@ import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button/index';
 import { Creators as CommonCreators } from '@Actions/common';
 import Chip from '@Components/common/Chip';
-import Select from '@Components/common/Select';
+import FormErrorMessage from '@Components/common/FormErrorMessage/index';
+import CustomSelect from '@Components/common/CustomSelect';
 import removeObjectKeys from '@Utils/removeObjectKeys';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import hasKey from '@Utils/hasKey';
 import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetup/UploadPolygonBoundary/index';
 import MapSection from '../MapSection/index';
 
 const { togglePromptDialog } = CommonCreators;
-const { setIndividualProject, patchProjectRequest } = Creators;
+const {
+  setIndividualProject,
+  patchProjectRequest,
+  postContactPersonRequest,
+  patchContactPersonRequest,
+} = Creators;
 
 function diffObject(a, b) {
   const diffObj = Object.keys(b).reduce((diff, key) => {
@@ -33,9 +42,53 @@ function diffObject(a, b) {
   return diffObj;
 }
 
+const validateContactPerson = contact => {
+  if (
+    !contact.name &&
+    !contact.position &&
+    !contact.email &&
+    !contact.contact
+  ) {
+    return false;
+  }
+  return true;
+};
+
+const validation = formValues => {
+  let errors = {};
+  if (
+    hasKey(formValues, 'location_type') &&
+    formValues.location_type === 'File Upload' &&
+    !formValues.file
+  ) {
+    errors.location = 'Please upload a file';
+  }
+
+  if (
+    hasKey(formValues, 'location_type') &&
+    formValues.location_type === 'Custom Draw' &&
+    !formValues.location_wkt
+  ) {
+    errors.location = 'Please draw area on map';
+  }
+
+  if (
+    !hasKey(formValues, 'location_type') &&
+    hasKey(formValues, 'file') &&
+    !formValues.file &&
+    !formValues.location_wkt
+  ) {
+    errors.location = 'Please upload a file';
+  }
+
+  return errors;
+};
+
 const Location = ({ page, setPage }) => {
   const { projectId, organizationId, tabname } = useParams();
   const dispatch = useDispatch();
+  const [errors, setErrors] = useState({});
+
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.PATCH_PROJECT_REQUEST]),
   );
@@ -53,6 +106,9 @@ const Location = ({ page, setPage }) => {
   );
   const project = useSelector(
     state => state.organizationDashboard.individualProject.project,
+  );
+  const contactDetails = useSelector(
+    state => state.organizationDashboard.individualProject.contactDetails,
   );
 
   const getFileType = file => {
@@ -75,23 +131,41 @@ const Location = ({ page, setPage }) => {
   const { values, handleChange, handleCustomChange, handleSubmit } = useForm({
     initialValues: stepTwo,
     onSubmit: data => {
+      const {
+        contactName,
+        contactPosition,
+        contactEmail,
+        contactPhone,
+        ...basicInfo
+      } = stepOne;
+      const contactPerson = {
+        name: contactName,
+        email: contactEmail,
+        contact: contactPhone,
+        position: contactPosition,
+      };
       const finalObj = {
-        ...stepOne,
+        ...basicInfo,
         ...values,
         organization: organizationId,
       };
-
       const diffObj = diffObject(project, finalObj);
+      const diffContact = diffObject(contactDetails, contactPerson);
+      const tabName =
+        tabname === 'project-setup'
+          ? 'Complete your project profile'
+          : 'Edit a Project';
 
       const payloadData = diffObj?.file?.existedData
         ? removeObjectKeys(diffObj, ['file'])
         : { ...diffObj, file_type: getFileType(values.file) };
+
       const finalPayloadData = payloadData?.cover_image?.existedData
         ? removeObjectKeys(payloadData, ['cover_image'])
         : payloadData;
 
       const newData =
-        finalPayloadData.location_type === 'Custom Draw'
+        values.location_type === 'Custom Draw' && drawnGeojsonData
           ? {
               ...finalPayloadData,
               location_wkt: [drawnGeojsonData],
@@ -102,17 +176,49 @@ const Location = ({ page, setPage }) => {
               ...finalPayloadData,
             };
 
-      if (values.file || values.location_wkt) {
+      const error = validation(newData);
+
+      if (Object.keys(error).length < 1) {
+        if (Object.keys(diffContact).length > 0) {
+          if (stepOne.contactId) {
+            validateContactPerson(diffContact)
+              ? dispatch(
+                  patchContactPersonRequest(stepOne.contactId, {
+                    ...diffContact,
+                    type: 'project',
+                  }),
+                )
+              : dispatch(
+                  patchContactPersonRequest(stepOne.contactId, {
+                    is_deleted: true,
+                    type: 'project',
+                  }),
+                );
+          } else {
+            dispatch(
+              postContactPersonRequest(
+                {
+                  ...contactPerson,
+                  project: projectId,
+                  organization: organizationId,
+                },
+                { project: projectId, type: 'project' },
+              ),
+            );
+          }
+        }
         dispatch(
           patchProjectRequest(projectId, {
             ...newData,
             status: 'ongoing',
             page: tabname === 'settings',
+            tabName,
           }),
         );
       } else {
+        setErrors(error);
         dispatch(
-          toastActions.error({ message: 'Geographic Boundary is Required' }),
+          toastActions.error({ message: 'Please fill required (*) field' }),
         );
       }
     },
@@ -137,7 +243,7 @@ const Location = ({ page, setPage }) => {
       </div>
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Country</label>
-        <Select
+        <CustomSelect
           options={countryList}
           placeholder="Choose"
           onChange={data => {
@@ -178,26 +284,27 @@ const Location = ({ page, setPage }) => {
             }}
           />
         </div>
+        {errors.location && <FormErrorMessage message={errors.location} />}
       </div>
       {values?.location_type === 'File Upload' && (
         <UploadPolygonBoundary
+          formValues={values}
           uploadedFile={values?.file}
           setuploadedFile={file => {
-            console.log('files ', file);
             handleCustomChange('file', file);
           }}
         />
       )}
 
       {values?.location_type === 'Custom Draw' && (
-        <MapSection locationType={values.location_type} />
+        <MapSection locationType={values.location_type} formValues={values} />
       )}
       <div
         className={`naxatw-flex ${
           tabname !== 'settings'
-            ? 'naxatw-justify-between naxatw-pb-7'
+            ? 'naxatw-justify-between naxatw-pb-5'
             : 'naxatw-justify-center'
-        }  naxatw-pt-7 `}
+        }  naxatw-pt-5 `}
       >
         {page > 1 ? (
           <Button
@@ -234,7 +341,7 @@ const Location = ({ page, setPage }) => {
             }}
             className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
           >
-            Save as Draft
+            Save Draft
           </Button>
         )}
       </div>

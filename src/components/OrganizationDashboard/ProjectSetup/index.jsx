@@ -56,7 +56,7 @@ const pageStatus = [
 ];
 
 const ProjectSetup = () => {
-  const { projectId, tabname } = useParams();
+  const { projectId, organizationId, tabname } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   const [page, setPage] = useState(1);
@@ -90,7 +90,9 @@ const ProjectSetup = () => {
           </div>
           <button
             type="button"
-            onClick={() => history.goBack()}
+            onClick={() =>
+              history.push(`/organizations/${organizationId}/projects`)
+            }
             className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center naxatw-"
           >
             <i className="material-icons">close</i>

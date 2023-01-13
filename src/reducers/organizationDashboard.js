@@ -7,6 +7,7 @@ import { getUserGroupRequest } from '@Sagas/organizationDashboard';
 
 const initialState = {
   projects: null,
+  selectedProject: null,
   countryList: [],
   individualProject: {
     contactPerson: [],
@@ -33,6 +34,7 @@ const initialState = {
   assignList: [],
   organizationAssignList: [],
   userTab: 'users',
+  hideSidebar: false,
 };
 
 const getOrganizationDetailSuccess = (state, action) => ({
@@ -40,13 +42,17 @@ const getOrganizationDetailSuccess = (state, action) => ({
   organizationDetail: action.payload,
 });
 
-const getProjectsSuccess = (state, action) => ({
-  ...state,
-  projects: action.payload,
-});
+const getProjectsSuccess = (state, action) => {
+  const { data, hasNoProject } = action.payload;
+  return {
+    ...state,
+    projects: { ...data, hasNoProject },
+  };
+};
 
 const getIndividualProjectSuccess = (state, action) => {
   const {
+    id,
     name,
     cover_image,
     description,
@@ -75,8 +81,20 @@ const getIndividualProjectSuccess = (state, action) => {
     ...state,
     individualProject: {
       ...state.individualProject,
-      project: action.payload,
+      project: {
+        ...action.payload,
+        file: file
+          ? {
+              fileURL: file,
+              name: fileName,
+              type: file_type,
+              lastModifiedDate: last_updated,
+              existedData: true,
+            }
+          : '',
+      },
       stepOne: {
+        ...state.individualProject.stepOne,
         name,
         cover_image: cover_image
           ? {
@@ -94,6 +112,7 @@ const getIndividualProjectSuccess = (state, action) => {
         partners,
       },
       stepTwo: {
+        id,
         bbox,
         country,
         file: file
@@ -127,12 +146,26 @@ const setIndividualProject = (state, action) => {
 
 const getContactPersonSuccess = (state, action) => {
   const { data, type } = action.payload;
+  const { name, email, position, contact, id } = data[0] || {};
   if (type === 'project') {
     return {
       ...state,
       individualProject: {
         ...state.individualProject,
-        contactPerson: data,
+        stepOne: {
+          ...state.individualProject.stepOne,
+          contactName: name || '',
+          contactPosition: position || '',
+          contactPhone: contact || '',
+          contactEmail: email || '',
+          contactId: id,
+        },
+        contactDetails: {
+          name: name || '',
+          position: position || '',
+          email: email || '',
+          contact: contact || '',
+        },
       },
     };
   }
@@ -140,26 +173,39 @@ const getContactPersonSuccess = (state, action) => {
     ...state,
     individualOrganization: {
       ...state.individualOrganization,
-      contactPerson: data,
+      contactPerson: {
+        name: name || '',
+        position: position || '',
+        email: email || '',
+        contact: contact || '',
+        contactId: id || null,
+      },
     },
   };
 };
 
 const postContactPersonSuccess = (state, action) => {
   const { data, type } = action.payload;
-
+  const { name, position, email, contact, id } = data || {};
   if (type === 'project') {
     return {
       ...state,
       individualProject: {
         ...state.individualProject,
-        contactPerson: [...state.individualProject.contactPerson, data],
+        stepOne: {
+          ...state.individualProject.stepOne,
+          contactName: name || '',
+          contactPosition: position || '',
+          contactPhone: contact || '',
+          contactEmail: email || '',
+          contactId: id,
+        },
       },
     };
   }
   return {
     ...state,
-    individualProject: {
+    individualOrganization: {
       ...state.individualOrganization,
       contactPerson: [...state.individualOrganization.contactPerson, data],
     },
@@ -168,15 +214,30 @@ const postContactPersonSuccess = (state, action) => {
 
 const patchContactPersonSuccess = (state, action) => {
   const { data, type } = action.payload;
+  const { name, position, email, contact, id, is_deleted } = data || {};
   if (type === 'project') {
-    const newData = state.individualProject.contactPerson.filter(
-      person => person.id !== data.id,
-    );
+    const newData = !is_deleted
+      ? {
+          contactName: name || '',
+          contactPosition: position || '',
+          contactPhone: contact || '',
+          contactEmail: email || '',
+          contactId: id,
+        }
+      : {
+          contactName: '',
+          contactPosition: '',
+          contactPhone: '',
+          contactEmail: '',
+        };
     return {
       ...state,
       individualProject: {
         ...state.individualProject,
-        contactPerson: newData,
+        stepOne: {
+          ...state.individualProject.stepOne,
+          ...newData,
+        },
       },
     };
   }
@@ -342,13 +403,44 @@ const updateOrganizationSuccess = (state, action) => ({
   organizationDetail: action.payload,
 });
 
-const getOrganizationByIdSuccess = (state, action) => ({
+const getOrganizationByIdSuccess = (state, action) => {
+  const data = action.payload;
+  return {
+    ...state,
+    individualOrganization: {
+      ...state.individualOrganization,
+      item: {
+        ...data,
+        cover_image: data?.cover_image ? { image: data.cover_image } : {},
+      },
+    },
+  };
+};
+
+const toggleSidebar = state => ({
   ...state,
-  individualOrganization: {
-    ...state.individualOrganization,
-    item: action.payload,
-  },
+  hideSidebar: !state.hideSidebar,
 });
+
+const setSelectedProject = (state, action) => ({
+  ...state,
+  selectedProject: action.payload,
+});
+
+const deleteProjectSuccess = (state, action) => {
+  const data = action.payload;
+  const newData = state.projects?.results.filter(
+    project => project.id !== data.id,
+  );
+
+  return {
+    ...state,
+    projects: {
+      ...state.projects,
+      results: newData,
+    },
+  };
+};
 
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
@@ -380,6 +472,9 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.SET_USER_STATE]: setUserState,
   [Types.UPDATE_ORGANIZATION_SUCCESS]: updateOrganizationSuccess,
   [Types.GET_ORGANIZATION_BY_ID_SUCCESS]: getOrganizationByIdSuccess,
+  [Types.TOGGLE_SIDEBAR]: toggleSidebar,
+  [Types.SET_SELECTED_PROJECT]: setSelectedProject,
+  [Types.DELETE_PROJECT_SUCCESS]: deleteProjectSuccess,
 });
 
 export default organizationDashboardReducer;

@@ -23,16 +23,16 @@ const LocationInfo = () => {
 
   const dispatch = useDispatch();
 
-  const { getProjectCountryRequest, getProjectStateRequest } = Creators;
+  const { getProjectCountryRequest } = Creators;
   // console.log('project info', info);
   useEffect(() => {
     if (!isEmpty(info)) {
-      if (info.country) {
+      if (!isEmpty(info.country)) {
         dispatch(getProjectCountryRequest({ id: info.country[0] }));
-        dispatch(getProjectStateRequest({ project: info.country[0] }));
+        // dispatch(getProjectStateRequest({ project: info.country[0] })); getProjectStateRequest
       }
     }
-  }, [dispatch, info]);
+  }, [dispatch, getProjectCountryRequest, info]);
 
   return (
     <div className="naxatw-w-1/3 naxatw-min-w-[440px] naxatw-bg-white naxatw-rounded-[20px] naxatw-border naxatw-overflow-hidden naxatw-border-grey-300">
@@ -49,20 +49,20 @@ const LocationInfo = () => {
             <p className="naxatw-text-body-lg">
               {!isEmpty(locationState)
                 ? locationState.map(d => (
-                    <span key={d.id} className="">
+                    <span key={d.id} className="naxatw-text-body-lg">
                       {d.name} <span>, </span>
                     </span>
                   ))
                 : '-'}
               {!isEmpty(locationCountry)
                 ? locationCountry.map((d, index) => (
-                    <span key={d.id} className="">
+                    <span key={d.id} className="naxatw-text-body-lg">
                       {d.name}
                       <span
                         className={`${
                           index === locationCountry.length - 1
                             ? 'naxatw-hidden'
-                            : ''
+                            : 'naxatw-text-body-lg'
                         }`}
                       >
                         ,{' '}

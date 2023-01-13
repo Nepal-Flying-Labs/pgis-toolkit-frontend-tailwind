@@ -1,6 +1,8 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useMemo } from 'react';
-import { Draw, Snap } from 'ol/interaction';
+import { Draw } from 'ol/interaction';
+import { lineTypes, pointTypes } from '../../helpers/styleUtils';
 
 export default function AddFeature({
   onClick,
@@ -15,27 +17,29 @@ export default function AddFeature({
     () =>
       new Draw({
         source: vectorLayer?.getSource(),
-        type,
+        type: pointTypes.includes(type)
+          ? 'Point'
+          : lineTypes.includes(type)
+          ? 'LineString'
+          : 'Polygon',
       }),
     [vectorLayer, type],
   );
 
-  const snap = useMemo(
-    () => new Snap({ source: vectorLayer?.getSource() }),
-    [vectorLayer],
-  );
+  // const snap = useMemo(
+  //   () => new Snap({ source: vectorLayer?.getSource() }),
+  //   [vectorLayer],
+  // );
 
   useEffect(() => {
     if (!vectorLayer || !enable) return;
     addInteraction(drawInstance);
-    addInteraction(snap);
-  }, [addInteraction, vectorLayer, type, enable, drawInstance, snap]);
+  }, [addInteraction, vectorLayer, type, enable, drawInstance]);
 
   useEffect(() => {
     if (enable) return;
     removeInteraction(drawInstance);
-    removeInteraction(snap);
-  }, [removeInteraction, enable, drawInstance, snap]);
+  }, [removeInteraction, enable, drawInstance]);
 
   // on draw end
   useEffect(() => {
@@ -46,8 +50,20 @@ export default function AddFeature({
   }, [drawInstance, onDrawEnd]);
 
   return (
-    <button type="button" title="Draw Polygon" onClick={onClick}>
-      <i className="material-icons-outlined">square</i>
+    <button
+      type="button"
+      onClick={onClick}
+      className={`naxatw-icon-btn naxatw-icon-btn-sm ${
+        enable ? 'naxatw-text-secondary-400' : ''
+      }`}
+    >
+      <i className="material-symbols-outlined">
+        {pointTypes.includes(type)
+          ? 'location_on'
+          : lineTypes.includes(type)
+          ? 'line_end'
+          : 'square'}
+      </i>
     </button>
   );
 }

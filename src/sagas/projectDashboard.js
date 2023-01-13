@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {
   call,
   put,
@@ -45,6 +46,7 @@ import {
   updateGallery,
   updateUserRole,
   updateInvitedUserStatus,
+  downloadProjectLayer,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -115,6 +117,43 @@ export function* uploadDatasetsRequest({ payload }) {
   }
 }
 
+function getFileExtension(file) {
+  switch (file) {
+    case 'shapefile':
+      return 'layers.zip';
+    case 'geojson':
+      return 'layers.geojson';
+    case 'csv':
+      return 'layers.csv';
+    case 'kml':
+      return 'layers.kml';
+    case 'gpx':
+      return 'layers.gpx';
+    default:
+      return '';
+  }
+}
+
+export function* downloadProjectLayerRequest({ params }) {
+  const { output_format } = params;
+  try {
+    const response = yield call(downloadProjectLayer, params);
+    console.log(response, 'response');
+    const blob = new Blob([response.data], {
+      type: 'application/octet-stream',
+    });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = getFileExtension(output_format);
+    link.click();
+    yield put(toastActions.success({ message: 'Layer Download Completed.' }));
+  } catch (error) {
+    console.log(error, 'saga error');
+    yield put(projectDashboardActions.downloadProjectLayerFailure());
+    throw error;
+  }
+}
+
 export function* deleteDataRequest({ id, payload }) {
   try {
     const formdata = prepareFormData(payload);
@@ -132,7 +171,7 @@ export function* checkUploadStatusRequest({ id }) {
     let responseData = { upload_status: 'uploading' };
     yield put(projectDashboardActions.setUploadStatusCheckingId(id));
     while (responseData?.upload_status === 'uploading') {
-      yield delay(1000 * 15); // call api in 10 second interval
+      yield delay(15 * 1000); // call api in 10 second interval
       const response = yield call(getLayerById, id);
       responseData = response.data;
     }
@@ -685,6 +724,10 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.UPLOAD_DOCUMENT_DATA_REQUEST,
     withLoader(withErrorHandler(uploadDocumentDataRequest)),
+  );
+  yield takeLatest(
+    Types.DOWNLOAD_PROJECT_LAYER_REQUEST,
+    withLoader(withErrorHandler(downloadProjectLayerRequest)),
   );
   yield takeLatest(
     Types.UPDATE_DOCUMENT_DATA_REQUEST,

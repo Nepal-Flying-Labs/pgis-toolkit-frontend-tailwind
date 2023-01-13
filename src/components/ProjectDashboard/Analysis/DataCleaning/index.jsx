@@ -1,0 +1,41 @@
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Creators } from '@Actions/dataCleaning';
+import StepOne from './StepOne';
+import StepTwo from './StepTwo';
+import ManualFix from './ManualFix';
+
+function getStepWiseContent(step) {
+  switch (step) {
+    case 1:
+      return <StepOne />;
+    case 2:
+      return <StepTwo />;
+    default:
+      return <StepOne />;
+  }
+}
+
+const { resetDataCleaningState } = Creators;
+
+export default function DataCleaning() {
+  const stepIndex = useSelector(state => state.dataCleaning.stepIndex);
+  const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
+  const dispatch = useDispatch();
+
+  // reset reducer state on unmount
+  useEffect(
+    () => () => {
+      dispatch(resetDataCleaningState());
+    },
+    [dispatch],
+  );
+
+  return selectedLayer ? (
+    <ManualFix />
+  ) : (
+    <div className="naxatw-flex naxatw-grow naxatw-justify-center naxatw-py-[19px] naxatw-overflow-y-auto scrollbar">
+      <div className="naxatw-w-[34.5rem]">{getStepWiseContent(stepIndex)}</div>
+    </div>
+  );
+}

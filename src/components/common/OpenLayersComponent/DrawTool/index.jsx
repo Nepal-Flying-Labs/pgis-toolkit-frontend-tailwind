@@ -2,22 +2,23 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { Collection } from 'ol';
+import { Snap } from 'ol/interaction';
 import GeoJSON from 'ol/format/GeoJSON';
 import { get } from 'ol/proj';
 import { getUid } from 'ol/util';
 import { Vector as VectorSource } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 import Tooltip from '@Components/common/Tooltip';
-import { defaultStyles, getStyles } from '../helpers/styleUtils';
+import { defaultStyles, getStyles, pointTypes } from '../helpers/styleUtils';
 import getFeatureGeojson from './helpers/getFeatureGeojson';
 import {
   useDrawUtils,
   AddFeature,
   EditFeature,
   DragFeature,
-  RotateFeature,
+  // RotateFeature,
 } from './modules';
-import { pointTypes } from '../Legend/LegendItem';
 
 const source = new VectorSource();
 
@@ -31,6 +32,8 @@ export default function DrawTool({
   onSave = () => {},
   onCancel,
   onError,
+  enable,
+  selectedDrawType,
 }) {
   const [vectorLayer, setVectorLayer] = useState(null);
   const [drawType, setDrawType] = useState(null);
@@ -38,20 +41,29 @@ export default function DrawTool({
   const [modifiedFeature, setModifiedFeature] = useState(null);
   const layerUid = useRef(null);
 
-  const handleFeatureEdit = useCallback(modifiedFeatures => {
-    const featureGeojson = getFeatureGeojson(modifiedFeatures[0]);
-    setModifiedStates(prev => [...prev, featureGeojson]);
-    setModifiedFeature(modifiedFeatures);
-    onChange(featureGeojson);
-  }, []); // eslint-disable-line
+  const handleFeatureEdit = useCallback(
+    modifiedFeatures => {
+      const featureGeojson = getFeatureGeojson(modifiedFeatures[0]);
+      setModifiedStates(prev => [...prev, featureGeojson]);
+      setModifiedFeature(modifiedFeatures);
+      onChange(featureGeojson);
+    },
+    [onChange],
+  );
 
   const { select, modify, translate, addInteraction, removeInteraction } =
     useDrawUtils({
       mapInstance: map,
       layerUid,
+      source,
       onModifyEnd: handleFeatureEdit,
       onDragEnd: handleFeatureEdit,
     });
+
+  // set selected draw type
+  useEffect(() => {
+    if (enable) setDrawType(selectedDrawType);
+  }, [enable, selectedDrawType]);
 
   // add geojson for edit feature
   useEffect(() => {
@@ -71,34 +83,78 @@ export default function DrawTool({
     select.getFeatures().push(features[0]);
     setModifiedStates([geojson]);
     setModifiedFeature(features[0]);
-  }, [map, geojson, zIndex, select]);
+  }, [map, geojson, zIndex, select, style]);
 
-  // clean up on geojson remove
-  useEffect(() => {
-    if (!map || geojson || !vectorLayer) return;
+  // reset state and remove layer
+  const resetState = useCallback(() => {
+    if (!map || enable || !vectorLayer) return;
     select.getFeatures().clear();
     source.clear();
     setDrawType(null);
+    setVectorLayer(null);
     map.removeLayer(vectorLayer);
-  }, [map, vectorLayer, geojson, select]);
+  }, [map, vectorLayer, enable, select]);
 
-  const handleAddFeatureClick = () => {
-    if (modifiedFeature !== null) return;
-    setDrawType('add-polygon');
-  };
+  // clean up on geojson remove
+  useEffect(() => {
+    if (!map || enable || !vectorLayer) return;
+    resetState();
+  }, [map, vectorLayer, enable, resetState]);
 
-  const handleDrawEnd = useCallback(feature => {
-    const featureGeojson = getFeatureGeojson(feature);
-    setModifiedStates(prev => [...prev, featureGeojson]);
-    setModifiedFeature(feature);
-    setDrawType(null);
-  }, []);
+  // add snap interaction
+  useEffect(() => {
+    if (!map || !drawType) return;
+    const snapCollection = new Collection([], {
+      unique: true,
+    });
+    setTimeout(() => {
+      const layers = map.getLayers();
+      layers.forEach(layer => {
+        const properties = layer.getProperties();
+        if (properties.layerId === 'snaplayer') {
+          const features = layer.getSource().getFeatures();
+          snapCollection.push(features[0]);
+        }
+      });
+      const snapInteraction = new Snap({
+        features: snapCollection,
+      });
+      map.addInteraction(snapInteraction);
+    }, 500);
+  }, [map, drawType]);
+
+  const handleDrawEnd = useCallback(
+    feature => {
+      const featureGeojson = getFeatureGeojson(feature);
+      setModifiedStates(prev => [...prev, featureGeojson]);
+      setModifiedFeature(feature);
+      setDrawType(null);
+      onChange(featureGeojson);
+    },
+    [onChange],
+  );
+
+  // handle add-feature click
+  useEffect(() => {
+    if (drawType === 'add-feature') {
+      const vectorLyr = new VectorLayer({
+        source,
+        zIndex: zIndex + 1,
+        style: (feature, resolution) =>
+          getStyles({ style, feature, resolution }),
+      });
+      layerUid.current = getUid(vectorLyr);
+      map.addLayer(vectorLyr);
+      setVectorLayer(vectorLyr);
+      setDrawType('add-feature');
+    }
+  }, [drawType, map, zIndex, style]);
 
   const handleDelete = () => {
     source.clear();
     // setModifiedStates((prev) => [...prev, null]);
     setModifiedFeature(null);
-    setDrawType('add-polygon');
+    // setDrawType('add-feature');
   };
 
   // on undo click
@@ -123,12 +179,17 @@ export default function DrawTool({
   // on save click
   const handleSave = () => {
     if (!modifiedFeature) {
-      onError('Please draw polygon to save');
+      onError('Please draw feature to save');
       return;
     }
     const lastModifiedFeature = modifiedStates[modifiedStates.length - 1];
     if (!lastModifiedFeature) return;
     onSave(lastModifiedFeature);
+  };
+
+  const handleCancel = () => {
+    onCancel();
+    resetState();
   };
 
   const props = {
@@ -143,11 +204,24 @@ export default function DrawTool({
 
   return (
     <div
-      className="naxatw-absolute naxatw-py-1 naxatw-px-[1px] naxatw-rounded-lg naxatw-top-28 naxatw-left-4
+      className="naxatw-absolute naxatw-py-1 naxatw-px-[1px] naxatw-rounded-lg naxatw-top-24 naxatw-left-4
         naxatw-bg-white naxatw-z-10 naxatw-shadow-3xl naxatw-text-grey-800 naxatw-flex naxatw-flex-col
         naxatw-border naxatw-border-grey-300"
-      style={{ display: !geojson ? 'none' : '' }}
+      style={{ display: !enable ? 'none' : '' }}
     >
+      <Tooltip content="Add Feature" direction="right">
+        <AddFeature
+          type={geometryType}
+          enable={drawType === 'add-feature'}
+          onClick={() => {
+            if (vectorLayer) return;
+            setDrawType('add-feature');
+          }}
+          onDrawEnd={handleDrawEnd}
+          {...props}
+        />
+      </Tooltip>
+
       <Tooltip content="Drag" direction="right">
         <DragFeature
           enable={drawType === 'drag-feature'}
@@ -166,7 +240,7 @@ export default function DrawTool({
         </Tooltip>
       )}
 
-      {!pointTypes.includes(geometryType) && (
+      {/* {!pointTypes.includes(geometryType) && (
         <Tooltip content="Rotate" direction="right">
           <RotateFeature
             enable={drawType === 'rotate-feature'}
@@ -174,7 +248,7 @@ export default function DrawTool({
             {...props}
           />
         </Tooltip>
-      )}
+      )} */}
 
       <Tooltip content="Delete" direction="right">
         <button
@@ -197,87 +271,37 @@ export default function DrawTool({
         </button>
       </Tooltip>
 
-      {/*
-          <button
-            className="naxatw-icon-btn naxatw-icon-btn-sm"
-            type="button"
-            title="Save"
-            onClick={handleSave}
-          >
-            <i className="material-symbols-outlined">save</i>
-          </button>
-          <button
-            className="naxatw-icon-btn naxatw-icon-btn-sm"
-            type="button"
-            title="Cancel"
-            onClick={onCancel}
-          >
-            <i className="material-icons">close</i>
-          </button>
-        */}
+      <Tooltip content="Save" direction="right">
+        <button
+          className="naxatw-icon-btn naxatw-icon-btn-sm"
+          type="button"
+          onClick={handleSave}
+        >
+          <i className="material-symbols-outlined">save</i>
+        </button>
+      </Tooltip>
+
+      <Tooltip content="Cancel" direction="right">
+        <button
+          className="naxatw-icon-btn naxatw-icon-btn-sm"
+          type="button"
+          onClick={handleCancel}
+        >
+          <i className="material-symbols-outlined">close</i>
+        </button>
+      </Tooltip>
     </div>
   );
-
-  // return (
-  //   <div className={`toolbar__container ${geojson ? 'visible' : ''}`}>
-  //     <div className="toolbar__title">
-  //       <h6>Draw Toolbar</h6>
-  //     </div>
-  //     <div className="toolbar__items">
-  //       <AddFeature
-  //         type="Polygon"
-  //         enable={drawType === 'add-polygon'}
-  //         onClick={handleAddFeatureClick}
-  //         onDrawEnd={handleDrawEnd}
-  //         {...props}
-  //       />
-  //
-  //       <EditFeature
-  //         enable={drawType === 'edit-feature'}
-  //         onClick={() => setDrawType('edit-feature')}
-  //         {...props}
-  //       />
-  //
-  //       <DragFeature
-  //         enable={drawType === 'drag-feature'}
-  //         onClick={() => setDrawType('drag-feature')}
-  //         {...props}
-  //       />
-  //
-  //       <RotateFeature
-  //         enable={drawType === 'rotate-feature'}
-  //         onClick={() => setDrawType('rotate-feature')}
-  //         {...props}
-  //       />
-  //
-  //       <button type="button" title="Delete" onClick={handleDelete}>
-  //         <i className="material-icons">delete</i>
-  //       </button>
-  //
-  //       <button type="button" title="Undo" onClick={handleUndo}>
-  //         <i className="material-icons">undo</i>
-  //       </button>
-  //     </div>
-  //
-  //     <div className="toolbar__footer">
-  //       <button type="button" title="Save" onClick={handleSave}>
-  //         Save
-  //       </button>
-  //       <button type="button" title="Cancel" onClick={onCancel}>
-  //         Cancel
-  //       </button>
-  //     </div>
-  //   </div>
-  // );
 }
 
 DrawTool.defaultProps = {
+  geojson: null,
   zIndex: 0,
   style: { ...defaultStyles, fillOpacity: 30, fillColor: '#0000ff' },
 };
 
 DrawTool.propTypes = {
-  geojson: PropTypes.object.isRequired,
+  geojson: PropTypes.object,
   style: PropTypes.object,
   zIndex: PropTypes.number,
 };

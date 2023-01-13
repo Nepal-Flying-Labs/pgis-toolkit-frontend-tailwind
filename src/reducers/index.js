@@ -10,7 +10,8 @@ import organizationDashboard from './organizationDashboard';
 import projectDashboard from './projectDashboard';
 import projectMap from './projectMap';
 import users from './users';
-import analysis from './analysis';
+import dataCleaning from './dataCleaning';
+import routeAnalysis from './routeAnalysis';
 
 export default combineReducers({
   router: connectRouter(history),
@@ -23,5 +24,6 @@ export default combineReducers({
   projectDashboard,
   projectMap,
   users,
-  analysis,
+  dataCleaning,
+  routeAnalysis,
 });

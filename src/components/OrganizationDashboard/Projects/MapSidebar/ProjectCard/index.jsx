@@ -1,12 +1,18 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import { useHistory, useParams } from 'react-router';
 import AvatarImage from '@Assets/images/img-sm-avatar.png';
+import { Creators as CommonCreator } from '@Actions/common';
+import { Creators } from '@Actions/organizationDashboard';
 import Button from '@Components/common/Button/index';
 import { format } from 'date-fns';
+
+const { togglePromptDialog } = CommonCreator;
+const { setSelectedProject } = Creators;
 
 const getStatusColor = status => {
   switch (status) {
@@ -46,6 +52,7 @@ export default function ProjectCard({
   endDate,
   thematicAreas,
 }) {
+  const dispatch = useDispatch();
   const ref = useRef();
   const statusColor = getStatusColor(status);
   const onOutsideClick = useCallback(
@@ -56,6 +63,15 @@ export default function ProjectCard({
     },
     [setToggle],
   );
+
+  const [hideTitle, setHideTitle] = useState(false);
+  const titleLimit = 40;
+
+  useEffect(() => {
+    if (title.length > titleLimit) {
+      setHideTitle(true);
+    }
+  }, [title]);
 
   useEffect(() => {
     if (toggle) {
@@ -95,7 +111,10 @@ export default function ProjectCard({
           <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: () => {
+        dispatch(setSelectedProject({ id, name: title }));
+        dispatch(togglePromptDialog('delete-project'));
+      },
     },
   ];
 
@@ -166,12 +185,12 @@ export default function ProjectCard({
     // </div>
 
     <div
-      className={`naxatw-flex naxatw-border naxatw-rounded-xl naxatw-cursor-pointer hover:naxatw-bg-[#F8F8F8] hover:naxatw-border-[#484848]  ${
+      className={`naxatw-flex naxatw-border naxatw-border-grey-300 naxatw-rounded-xl naxatw-cursor-pointer hover:naxatw-bg-[#F8F8F8] hover:naxatw-border-[#484848]  ${
         status === 'draft' ? 'naxatw-bg-[#F5F5F5]' : 'naxatw-bg-white'
       }`}
       onClick={onClick}
     >
-      <div className=" naxatw-w-[120px] naxatw-h-[164px] naxatw-min-w-[120px]">
+      <div className=" naxatw-w-[120px] naxatw-h-full naxatw-min-w-[120px] naxatw-border naxatw-border-grey-200 naxatw-rounded-l-xl">
         <img
           className=" naxatw-object-cover naxatw-w-full naxatw-h-full naxatw-rounded-l-xl"
           src={coverImage || AvatarImage}
@@ -181,7 +200,30 @@ export default function ProjectCard({
 
       <div className=" naxatw-pt-2 naxatw-pl-4 naxatw-pr-2 naxatw-pb-3 naxatw-flex  naxatw-w-full naxatw-justify-between naxatw-rounded-r-xl">
         <div className="">
-          <h5>{title || 'N/A'}</h5>
+          <h5
+            className={`${
+              !hideTitle
+                ? 'naxatw-h-fit'
+                : 'naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden'
+            } `}
+          >
+            {hideTitle ? title.slice(0, titleLimit + 10) : title || 'N/A'}
+            {hideTitle && (
+              <span className="naxatw-inline-flex">
+                <span className="naxatw-px-1">...</span>
+                <button
+                  type="button"
+                  className="naxatw-text-secondary-400 hover:naxatw-underline"
+                  onClick={e => {
+                    e.stopPropagation();
+                    setHideTitle(!hideTitle);
+                  }}
+                >
+                  See more
+                </button>
+              </span>
+            )}
+          </h5>
           <div className="naxatw-flex naxatw-flex-wrap naxatw-mt-2.5 naxatw-gap-x-3">
             <span className="naxatw-text-body-md">{`${
               format(new Date(startDate), 'MMM dd, yyyy') || 'N/A'
@@ -201,9 +243,11 @@ export default function ProjectCard({
             <p className="naxatw-text-body-sm naxatw-text-[#989898] naxatw-uppercase">
               Thematic areas
             </p>
-            <span className="naxatw-text-body-md">
-              {thematicAreas ? thematicAreas.toString() : 'N/A'}
-            </span>
+            <div className="naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden">
+              <span className="naxatw-text-body-md">
+                {thematicAreas ? thematicAreas.toString() : 'N/A'}
+              </span>
+            </div>
           </div>
         </div>
         <div className="naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-items-end  ">

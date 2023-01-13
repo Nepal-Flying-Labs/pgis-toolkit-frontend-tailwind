@@ -1,5 +1,12 @@
 import { Fill, Stroke, Style, Icon, Circle, Text } from 'ol/style';
 
+export const pointTypes = ['Point', 'MultiPoint'];
+export const lineTypes = ['LineString', 'MultiLineString'];
+// const polygonTypes = ['Polygon', 'MultiPolygon'];
+
+export const hoverEffectColor = '#7BCBC3';
+export const selectEffectColor = '#fde047';
+
 export function hexToRgba(hex, opacity = 100) {
   if (!hex) return '';
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -27,10 +34,10 @@ export function getRandomColor() {
 
 export const defaultStyles = {
   lineColor: '#2C675A',
-  lineOpacity: 40,
+  lineOpacity: 100,
   fillColor: '#2C675A',
   fillOpacity: 0,
-  lineThickness: 1,
+  lineThickness: 2,
   circleRadius: 5,
   dashline: 0,
   showLabel: false,

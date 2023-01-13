@@ -16,6 +16,7 @@ import {
   updateUserRole,
   updateInvitedUserStatus,
   organizationById,
+  updateOrganization,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
@@ -39,9 +40,24 @@ export function* getOrganizationDetailRequest({ id }) {
 }
 
 export function* getProjectsRequest({ params }) {
+  const { search } = params;
   try {
     const response = yield call(getProjects, params);
-    yield put(organizationDashboardActions.getProjectsSuccess(response.data));
+    if (!search && response.data.results.length < 1) {
+      yield put(
+        organizationDashboardActions.getProjectsSuccess({
+          data: response.data,
+          hasNoProject: true,
+        }),
+      );
+    } else {
+      yield put(
+        organizationDashboardActions.getProjectsSuccess({
+          data: response.data,
+          hasNoProject: false,
+        }),
+      );
+    }
   } catch (error) {
     yield put(organizationDashboardActions.getProjectsFailure());
     throw error;
@@ -80,7 +96,7 @@ export function* getIndividualProjectRequest({ id }) {
 }
 
 export function* patchProjectRequest({ id, payload }) {
-  const { status, organization, page } = payload;
+  const { status, organization, page, tabName } = payload;
   const newPayload = payload;
   delete newPayload.page;
   try {
@@ -90,15 +106,18 @@ export function* patchProjectRequest({ id, payload }) {
     // yield put(organizationDashboardActions.toggleModal(''));
     if (!page) {
       yield put(push(`/organizations/${organization}/projects`));
-      if (status === 'ongoing') {
+      if (status === 'ongoing' && tabName !== 'Edit a Project') {
         yield put(push(`/organizations/${organization}/projects`));
         yield put(commonActions.toggleModal('create-project-success'));
       } else {
-        yield put(commonActions.togglePromptDialog(''));
+        // yield put(commonActions.togglePromptDialog(''));
         yield put(push(`/organizations/${organization}/projects`));
       }
     } else {
       yield put(organizationDashboardActions.getIndividualProjectRequest(id));
+    }
+    if (status === 'draft') {
+      yield put(commonActions.togglePromptDialog());
     }
 
     yield put(toastActions.success({ message: 'Data saved successfully' }));
@@ -125,6 +144,7 @@ export function* getContactPersonRequest({ params }) {
 }
 
 export function* postContactPersonRequest({ params, payload }) {
+  const { type } = params;
   try {
     const formData = prepareFormData(payload);
     const formParams = removeObjectKeys(params, ['type']);
@@ -132,7 +152,7 @@ export function* postContactPersonRequest({ params, payload }) {
     yield put(
       organizationDashboardActions.postContactPersonSuccess({
         data: response.data,
-        type: payload.type,
+        type,
       }),
     );
   } catch (error) {
@@ -297,27 +317,16 @@ export function* resendInvitationRequest({ id, payload }) {
 }
 
 export function* updateOrganizationRequest({ id, payload }) {
-  console.log('action values', payload, id);
   const newPayload = payload;
   delete newPayload.page;
   try {
-    // const formData = prepareFormData(newPayload);
-    // const response = yield call(patchProject, id, formData);
-    // yield put(organizationDashboardActions.patchProjectSuccess(response.data));
-    // // yield put(organizationDashboardActions.toggleModal(''));
-    // if (!page) {
-    //   yield put(push(`/organizations/${organization}/projects`));
-    //   if (status === 'ongoing') {
-    //     yield put(push(`/organizations/${organization}/projects`));
-    //     yield put(commonActions.toggleModal('create-project-success'));
-    //   } else {
-    //     yield put(commonActions.togglePromptDialog(''));
-    //     yield put(push(`/organizations/${organization}/projects`));
-    //   }
-    // } else {
-    //   yield put(organizationDashboardActions.getIndividualProjectRequest(id));
-    // }
-    // yield put(toastActions.success({ message: 'Data saved successfully' }));
+    const formData = prepareFormData(newPayload);
+    const response = yield call(updateOrganization, id, formData);
+    yield put(
+      organizationDashboardActions.updateOrganizationSuccess(response.data),
+    );
+    // yield put(organizationDashboardActions.toggleModal(''));
+    yield put(toastActions.success({ message: 'Data saved successfully' }));
   } catch (error) {
     yield put(organizationDashboardActions.updateOrganizationFailure());
     throw error;
@@ -331,8 +340,20 @@ export function* getOrganizationByIdRequest({ id }) {
       organizationDashboardActions.getOrganizationByIdSuccess(response.data),
     );
   } catch (error) {
-    console.log('err', error);
     yield put(organizationDashboardActions.getOrganizationByIdFailure());
+    throw error;
+  }
+}
+
+export function* deleteProjectRequest({ id, payload }) {
+  try {
+    const formData = prepareFormData(payload);
+    const response = yield call(patchProject, id, formData);
+    yield put(organizationDashboardActions.deleteProjectSuccess(response.data));
+    yield put(commonActions.togglePromptDialog());
+    yield put(toastActions.error({ message: 'Project Deleted Successfully' }));
+  } catch (error) {
+    yield put(organizationDashboardActions.deleteProjectFailure());
     throw error;
   }
 }
@@ -414,6 +435,10 @@ function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_BY_ID_REQUEST,
     withLoader(withErrorHandler(getOrganizationByIdRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_PROJECT_REQUEST,
+    withLoader(withErrorHandler(deleteProjectRequest)),
   );
 }
 

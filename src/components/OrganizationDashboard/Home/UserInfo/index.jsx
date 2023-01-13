@@ -1,6 +1,7 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable camelcase */
 /* eslint-disable arrow-body-style */
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import UserIcon from '@Assets/images/user-icon.png';
@@ -28,11 +29,13 @@ const roles = [
 ];
 
 const UserInfo = () => {
+  const [searchTerm, setSearchTErm] = useState('');
+  const [userRole, setUserRole] = useState('');
   const { organizationId } = useParams();
   const history = useHistory();
   const users = useSelector(state => state.organizationDashboard.users);
   return (
-    <div className="naxatw-w-1/3 naxatw-min-w-[440px] naxatw-bg-white naxatw-rounded-xl naxatw-border naxatw-border-[#D7D7D7]">
+    <div className="naxatw-w-full md:naxatw-w-1/3  naxatw-bg-white naxatw-rounded-xl naxatw-border naxatw-border-[#D7D7D7]">
       <div className="naxatw-flex naxatw-p-2 naxatw-justify-between naxatw-items-center naxatw-border-b-[1px] naxatw-rounded-t-xl naxatw-pl-4">
         <div>
           <div className="naxatw-flex naxatw-gap-x-5">
@@ -56,28 +59,44 @@ const UserInfo = () => {
           View all
         </Button>
       </div>
-      <div className="naxatw-overflow-y-auto scrollbar naxatw-h-full">
-        <div className="naxatw-py-3 naxatw-px-5 naxatw-flex naxatw-gap-x-2">
-          <Searchbar isSmall className="naxatw-w-[290px]" />
+      <div className="naxatw-overflow-y-auto naxatw-overflow-x-hidden scrollbar naxatw-h-full">
+        <div className="naxatw-py-3 naxatw-px-5 naxatw-flex naxatw-items-center naxatw-gap-x-2">
+          <Searchbar
+            isSmall
+            className="naxatw-w-[290px] naxatw-bg-grey-100"
+            value={searchTerm}
+            onChange={e => setSearchTErm(e.target.value)}
+          />
           <Select
             options={roles}
             className="naxatw-h-[40px] naxatw-pl-3"
             placeholder="Role"
+            selected={userRole}
+            onChange={data => setUserRole(data.name)}
           />
         </div>
         <div>
-          {users?.map(
-            ({ full_name, image_thumbnail, group, active, user_id }) => (
-              <UserCard
-                key={user_id}
-                id={user_id}
-                name={full_name}
-                image={image_thumbnail}
-                role={group}
-                active={active}
-              />
-            ),
-          )}
+          {users
+            .filter(user =>
+              user?.full_name
+                ?.toLowerCase()
+                ?.includes(searchTerm.toLowerCase()),
+            )
+            .filter(user =>
+              user?.group?.toLowerCase()?.includes(userRole?.toLowerCase()),
+            )
+            .map(
+              ({ full_name, image_thumbnail, group, active, user_id }, i) => (
+                <UserCard
+                  key={i}
+                  id={user_id}
+                  name={full_name}
+                  image={image_thumbnail}
+                  role={group}
+                  active={active}
+                />
+              ),
+            )}
         </div>
       </div>
     </div>

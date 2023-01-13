@@ -13,13 +13,14 @@ const OrganizationInfo = () => {
   const organizationDetails = useSelector(
     state => state.organizationDashboard.organizationDetail,
   );
+  console.log('org details ', organizationDetails);
   return (
     <div className="naxatw-w-full naxatw-bg-white naxatw-rounded-xl naxatw-h-full naxatw-border naxatw-border-[#D7D7D7]">
       {/* Header */}
-      <div className="naxatw-p-7  naxatw-rounded-t-lg naxatw-flex naxatw-gap-x-5">
+      <div className="naxatw-p-7  naxatw-rounded-t-lg naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-x-5">
         <div className="naxatw-w-[60px] naxatw-h-[60px] naxatw-rounded-full">
           <img
-            src={AvatarImage}
+            src={organizationDetails?.cover_image || AvatarImage}
             alt="organization-img"
             className="naxatw-w-[60px] naxatw-h-[60px] naxatw-rounded-full"
           />
@@ -29,7 +30,7 @@ const OrganizationInfo = () => {
           <p className="naxatw-mt-[4px] naxatw-text-body-lg">
             {organizationDetails?.address || 'N/A'}
           </p>
-          <div className="naxatw-mt-5 naxatw-flex naxatw-gap-x-7">
+          <div className="naxatw-mt-5 naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-x-7">
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
               <MaterialIcon
                 name="phone"
@@ -61,7 +62,7 @@ const OrganizationInfo = () => {
         </div>
       </div>
       {/* Project Description */}
-      <div className="naxatw-bg-[#F5F5F5] naxatw-p-7 naxatw-flex naxatw-gap-x-5 naxatw-items-center naxatw-justify-between">
+      <div className="naxatw-bg-[#F5F5F5] naxatw-p-7 naxatw-flex naxatw-flex-col naxatw-gap-y-2 md:naxatw-flex-row naxatw-gap-x-5 naxatw-items-center naxatw-justify-between">
         <div className="naxatw-flex naxatw-gap-x-5 ">
           <img
             className="naxatw-w-[60px] naxatw-h-[60px] naxatw-py-[3px]"
@@ -70,7 +71,7 @@ const OrganizationInfo = () => {
           />
           <div>
             <h5>Projects</h5>
-            <h3>{organizationDetails?.projects || 'N/A'}</h3>
+            <h3>{organizationDetails?.projects}</h3>
           </div>
         </div>
         <div className="naxatw-space-y-2.5">
@@ -80,7 +81,7 @@ const OrganizationInfo = () => {
               className={`naxatw-bg-[#0076FF] naxatw-w-2 naxatw-h-2 naxatw-rounded-full`}
             />
             <p className={` naxatw-capitalize naxatw-text-body-lg `}>Ongoing</p>
-            <h5>{organizationDetails?.ongoing || 'N/A'}</h5>
+            <h5>{organizationDetails?.ongoing}</h5>
           </div>
           <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
             <div
@@ -93,7 +94,7 @@ const OrganizationInfo = () => {
             <h5>{organizationDetails?.completed}</h5>
           </div>
         </div>
-        <div className="naxatw-flex naxatw-w-[450px]">
+        <div className="naxatw-flex naxatw-w-full md:naxatw-w-[450px]">
           <div
             style={{
               width: `${getWidth(
@@ -121,14 +122,16 @@ const OrganizationInfo = () => {
             <span className="naxatw-text-body-md naxatw-w-[160px]">
               Organization Size
             </span>
-            <span className="naxatw-text-body-lg">200+</span>
+            <span className="naxatw-text-body-lg naxatw-font-bold">
+              {organizationDetails?.size}
+            </span>
           </div>
           <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
             <span className="naxatw-text-body-md naxatw-w-[160px]">
               Thematic focus areas
             </span>
-            <span className="naxatw-text-body-lg">
-              {organizationDetails?.thematicAreas?.toString() || 'N/A'}
+            <span className="naxatw-text-body-lg naxatw-font-bold">
+              {organizationDetails?.thematic_areas?.toString() || 'N/A'}
             </span>
           </div>
         </div>

@@ -25,6 +25,7 @@ import CustomAddFeature from '@Components/common/OpenLayersComponent/CustomLayer
 import Button from '@Components/common/Button/index';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import '@Components/common/OpenLayersComponent/map.css';
+import polygonIcon from '@Assets/images/icons8-polygon-80.png';
 import { Creators } from '@Actions/organizationDashboard';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import Tooltip from '@Components/common/Tooltip/index';
@@ -78,17 +79,32 @@ export default function MapSection({ isDraw, geojson, locationType }) {
     });
     setRedraw(false);
     setDrawComplete(false);
-    // dispatch(setDrawnGeojsonData(null));
+    dispatch(setDrawnGeojsonData(null));
     setTimeout(() => setRedraw(true), 100);
   };
 
   return (
-    <div className="naxatw-w-full">
+    <div className="naxatw-w-full naxatw-relative">
       {locationType === 'Custom Draw' && (
-        <div className="naxatw-flex naxatw-gap-x-4 naxatw-items-center naxatw-h-[40px] naxatw-my-2">
-          <div className="naxatw-flex ">
+        <div className="naxatw-flex naxatw-gap-x-4 naxatw-items-center naxatw-h-[40px] naxatw-my-2 naxatw-absolute naxatw-z-[9999999] naxatw-right-1 naxatw-top-5">
+          <div className="naxatw-flex naxatw-flex-col">
             <Tooltip content="Draw Polygon" direction="right">
-              <MaterialIcon
+              <div
+                className="naxatw-p-3 naxatw-h-[48px] naxatw-bg-white naxatw-border naxatw-border-grey-400 naxatw-w-[48px]
+                 hover:naxatw-bg-[#F5F5F5] naxatw-rounded-lg naxatw-cursor-pointer"
+                onClick={() => {
+                  setSelectedGeomType('Polygon');
+                  handleClick();
+                }}
+              >
+                <img
+                  src={polygonIcon}
+                  className="naxatw-w-6 naxatw-h-6"
+                  alt="polygon"
+                />
+              </div>
+
+              {/* <MaterialIcon
                 name="polyline"
                 className="naxatw-text-icon-md"
                 wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer ${
@@ -98,14 +114,14 @@ export default function MapSection({ isDraw, geojson, locationType }) {
                   setSelectedGeomType('Polygon');
                   handleClick();
                 }}
-              />
+              /> */}
             </Tooltip>
             <Tooltip content="Draw rectangle" direction="right">
               <MaterialIcon
                 name="rectangle"
                 className="naxatw-text-icon-md material-symbols-outlined"
-                wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer ${
-                  selectedGeomType === 'Box' ? 'naxatw-bg-[#F5F5F5]' : ''
+                wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer naxatw-border naxatw-border-grey-400 naxatw-bg-white ${
+                  selectedGeomType === 'Box' ? 'naxatw-bg-gray-100' : ''
                 }`}
                 onIconClick={() => {
                   setSelectedGeomType('Box');
@@ -114,19 +130,6 @@ export default function MapSection({ isDraw, geojson, locationType }) {
               />
             </Tooltip>
           </div>
-          {/* {drawComplete ? (
-            <Button
-              iconLeft="edit"
-              className="naxatw-btn-secondary naxatw-btn-noborder"
-              onClick={handleClick}
-            >
-              Draw
-            </Button>
-          ) : (
-            <span className="naxatw-text-body-lg">
-              Select project boundary by drawing on map
-            </span>
-          )} */}
         </div>
       )}
 
@@ -154,7 +157,7 @@ export default function MapSection({ isDraw, geojson, locationType }) {
             geometryType={selectedGeomType}
             style={{
               ...defaultStyles,
-              lineColor: '#d12313',
+              lineColor: '#000000',
               lineOpacity: 50,
               fillColor: '#2C675A',
               fillOpacity: 0,

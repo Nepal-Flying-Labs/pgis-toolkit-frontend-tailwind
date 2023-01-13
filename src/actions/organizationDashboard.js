@@ -102,6 +102,12 @@ export const { Types, Creators } = createActions(
     getOrganizationByIdSuccess: ['payload'],
     getOrganizationByIdFailure: null,
 
+    setSelectedProject: ['payload'],
+
+    deleteProjectRequest: ['id', 'payload'],
+    deleteProjectSuccess: ['payload'],
+    deleteProjectFailure: null,
+
     toggleSidebar: null,
   },
   { prefix: 'organizationDashboard/' },

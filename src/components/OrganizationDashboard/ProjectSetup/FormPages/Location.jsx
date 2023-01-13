@@ -288,6 +288,7 @@ const Location = ({ page, setPage }) => {
       </div>
       {values?.location_type === 'File Upload' && (
         <UploadPolygonBoundary
+          formValues={values}
           uploadedFile={values?.file}
           setuploadedFile={file => {
             handleCustomChange('file', file);
@@ -296,7 +297,7 @@ const Location = ({ page, setPage }) => {
       )}
 
       {values?.location_type === 'Custom Draw' && (
-        <MapSection locationType={values.location_type} />
+        <MapSection locationType={values.location_type} formValues={values} />
       )}
       <div
         className={`naxatw-flex ${
@@ -340,7 +341,7 @@ const Location = ({ page, setPage }) => {
             }}
             className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
           >
-            Save as Draft
+            Save Draft
           </Button>
         )}
       </div>

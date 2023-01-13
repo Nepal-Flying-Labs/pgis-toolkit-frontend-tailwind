@@ -40,9 +40,24 @@ export function* getOrganizationDetailRequest({ id }) {
 }
 
 export function* getProjectsRequest({ params }) {
+  const { search } = params;
   try {
     const response = yield call(getProjects, params);
-    yield put(organizationDashboardActions.getProjectsSuccess(response.data));
+    if (!search && response.data.results.length < 1) {
+      yield put(
+        organizationDashboardActions.getProjectsSuccess({
+          data: response.data,
+          hasNoProject: true,
+        }),
+      );
+    } else {
+      yield put(
+        organizationDashboardActions.getProjectsSuccess({
+          data: response.data,
+          hasNoProject: false,
+        }),
+      );
+    }
   } catch (error) {
     yield put(organizationDashboardActions.getProjectsFailure());
     throw error;

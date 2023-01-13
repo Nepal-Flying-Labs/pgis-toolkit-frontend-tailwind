@@ -45,6 +45,9 @@ export default function MapSidebar() {
   const organizationDetail = useSelector(
     state => state.organizationDashboard.organizationDetail,
   );
+  const hasNoProject = useSelector(
+    state => state.organizationDashboard.projects?.hasNoProject,
+  );
   const dispatch = useDispatch();
   const [searchValue, handleChange] = useDebouncedInput({
     ms: 300,
@@ -74,66 +77,71 @@ export default function MapSidebar() {
         transition: 'ease-in-out 300ms',
       }}
     >
-      <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-gap-2">
-        <Searchbar
-          className="naxatw-bg-white"
-          value={searchValue}
-          onChange={handleChange}
-          isSmall
-        />
+      {!hasNoProject && (
+        <>
+          <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-gap-2">
+            <Searchbar
+              className="naxatw-bg-white"
+              value={searchValue}
+              onChange={handleChange}
+              isSmall
+            />
 
-        <Button
-          className="naxatw-btn-primary naxatw-btn-sm naxatw-min-w-fit"
-          iconLeft="add"
-          onClick={() => dispatch(toggleModal('create-project'))}
-        >
-          Create Project
-        </Button>
-      </div>
-      <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-        <div className="naxatw-flex naxatw-mt-2 naxatw-gap-2">
-          <Chip
-            name={`All( ${organizationDetail?.projects || ''} )`}
-            status={chipStatus}
-            value="all"
-            onClick={() => {
-              setChipStatus('all');
-            }}
-          />
-          <Chip
-            name={`Ongoing( ${organizationDetail?.ongoing || ''} )`}
-            status={chipStatus}
-            value="ongoing"
-            onClick={() => {
-              setChipStatus('ongoing');
-            }}
-          />
-        </div>
-        <div className="naxatw-flex naxatw-gap-x-2">
-          <a onClick={() => setViewType('list')}>
-            <MaterialIcon
-              name="view_list"
-              className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
-                viewType === 'list' ? 'naxatw-text-primary-500' : ''
-              }`}
-              wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-primary-50 naxatw-group ${
-                viewType === 'list' ? 'naxatw-bg-primary-50' : ''
-              }`}
-            />
-          </a>
-          <a onClick={() => setViewType('grid')}>
-            <MaterialIcon
-              name="grid_view"
-              className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
-                viewType === 'grid' ? 'naxatw-text-primary-500' : ''
-              }`}
-              wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-primary-50 naxatw-group ${
-                viewType === 'grid' ? 'naxatw-bg-primary-50' : ''
-              }`}
-            />
-          </a>
-        </div>
-      </div>
+            <Button
+              className="naxatw-btn-primary naxatw-btn-sm naxatw-min-w-fit"
+              iconLeft="add"
+              onClick={() => dispatch(toggleModal('create-project'))}
+            >
+              Create Project
+            </Button>
+          </div>
+
+          <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+            <div className="naxatw-flex naxatw-mt-2 naxatw-gap-2">
+              <Chip
+                name={`All( ${organizationDetail?.projects || ''} )`}
+                status={chipStatus}
+                value="all"
+                onClick={() => {
+                  setChipStatus('all');
+                }}
+              />
+              <Chip
+                name={`Ongoing( ${organizationDetail?.ongoing || ''} )`}
+                status={chipStatus}
+                value="ongoing"
+                onClick={() => {
+                  setChipStatus('ongoing');
+                }}
+              />
+            </div>
+            <div className="naxatw-flex naxatw-gap-x-2">
+              <a onClick={() => setViewType('list')}>
+                <MaterialIcon
+                  name="view_list"
+                  className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
+                    viewType === 'list' ? 'naxatw-text-primary-500' : ''
+                  }`}
+                  wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-primary-50 naxatw-group ${
+                    viewType === 'list' ? 'naxatw-bg-primary-50' : ''
+                  }`}
+                />
+              </a>
+              <a onClick={() => setViewType('grid')}>
+                <MaterialIcon
+                  name="grid_view"
+                  className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
+                    viewType === 'grid' ? 'naxatw-text-primary-500' : ''
+                  }`}
+                  wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-primary-50 naxatw-group ${
+                    viewType === 'grid' ? 'naxatw-bg-primary-50' : ''
+                  }`}
+                />
+              </a>
+            </div>
+          </div>
+        </>
+      )}
 
       <div
         className={`naxatw-mt-5 naxatw-overflow-y-auto scrollbar ${
@@ -205,7 +213,7 @@ export default function MapSidebar() {
                   </div>
                 ),
             )
-          ) : (
+          ) : hasNoProject ? (
             <div className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-center naxatw-h-full">
               <div>
                 <img
@@ -225,6 +233,13 @@ export default function MapSidebar() {
               >
                 Create Project
               </Button>
+            </div>
+          ) : (
+            <div className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-center naxatw-h-full">
+              <span className="naxatw-text-body-lg naxatw-text-center naxatw-w-[60%]">
+                No projects found. Please ensure that your search parameters are
+                correct and try again.
+              </span>
             </div>
           )
         ) : (

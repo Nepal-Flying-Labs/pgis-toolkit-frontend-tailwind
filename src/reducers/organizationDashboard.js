@@ -41,10 +41,13 @@ const getOrganizationDetailSuccess = (state, action) => ({
   organizationDetail: action.payload,
 });
 
-const getProjectsSuccess = (state, action) => ({
-  ...state,
-  projects: action.payload,
-});
+const getProjectsSuccess = (state, action) => {
+  const { data, hasNoProject } = action.payload;
+  return {
+    ...state,
+    projects: { ...data, hasNoProject },
+  };
+};
 
 const getIndividualProjectSuccess = (state, action) => {
   const {

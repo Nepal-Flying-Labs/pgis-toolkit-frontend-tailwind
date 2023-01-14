@@ -174,7 +174,7 @@ export default function DataInput() {
           </div>
 
           <Container>
-            <div className="naxatw-flex">
+            <div className="naxatw-flex naxatw-select-none">
               <div className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-between naxatw-text-grey-600 naxatw-py-1">
                 <i className="material-icons naxatw-text-lg">
                   radio_button_unchecked
@@ -188,7 +188,12 @@ export default function DataInput() {
                 {drawPointData.map(({ label, value, icon }) => (
                   <Chip
                     key={value}
-                    className="!naxatw-w-full"
+                    className={`!naxatw-w-full ${
+                      (value === 'start' && startGeojson) ||
+                      (value === 'destination' && destinationGeojson)
+                        ? '!naxatw-bg-white'
+                        : ''
+                    }`}
                     label={
                       value === 'start' && startGeojson
                         ? getGeojsonCoordinates(startGeojson)
@@ -218,7 +223,17 @@ export default function DataInput() {
                 ))}
               </div>
               <div className="naxatw-ml-1 naxatw-flex naxatw-flex-col naxatw-justify-center">
-                <IconButton name="swap_vert" />
+                <IconButton
+                  name="swap_vert"
+                  onClick={() => {
+                    dispatch(
+                      setDataInputState({
+                        startGeojson: destinationGeojson,
+                        destinationGeojson: startGeojson,
+                      }),
+                    );
+                  }}
+                />
               </div>
             </div>
           </Container>

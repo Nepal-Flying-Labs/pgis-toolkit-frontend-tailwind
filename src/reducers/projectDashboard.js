@@ -23,6 +23,7 @@ const initialState = {
     item: {},
     delete: {},
     searchText: '',
+    ordering: '',
   },
   info: {
     details: {},
@@ -36,6 +37,7 @@ const initialState = {
     item: {},
     delete: {},
     searchText: '',
+    ordering: '',
   },
   contactPerson: [],
   user: {

@@ -165,6 +165,25 @@ export default function MapSection() {
           ),
         )}
 
+        {analysisResults.map(result =>
+          result.routes.map(route =>
+            route.data.map(item =>
+              item.obstacles.map(obstacle => (
+                <VectorTileLayer
+                  url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${
+                    obstacle.layer_id
+                  }&ids=${obstacle.feature_mirror_ids.join(',')}`}
+                  authToken={localStorage.getItem('userToken')}
+                  visibleOnMap
+                  style={item.style}
+                  zIndex={3}
+                  // properties={{ layerId: selectedLayer.id }}
+                />
+              )),
+            ),
+          ),
+        )}
+
         {analysisResults.map(result => (
           <React.Fragment key={result.id}>
             <CircleMarker

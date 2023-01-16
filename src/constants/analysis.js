@@ -41,6 +41,7 @@ export const checkErrorData = [
 
 export const startingPointColor = '#00A699';
 export const destinationPointColor = '#FF5A5F';
+export const obstaclePointColor = '#FFB100';
 
 const drawPointStyles = {
   ...defaultStyles,

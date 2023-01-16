@@ -31,10 +31,10 @@ export default function DeleteDocument() {
 
   return (
     <div>
-      <div className="naxatw-px-4 -naxatw-mt-5">
+      <div className="naxatw-px-4">
         <h4>Are you sure to delete {deleteDocument?.name}?</h4>
       </div>
-      <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-gap-2">
+      <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-mt-12 naxatw-gap-2">
         <Button
           className="naxatw-btn-secondary naxatw-btn-noborder"
           onClick={() => {

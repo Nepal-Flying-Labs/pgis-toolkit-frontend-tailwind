@@ -178,7 +178,7 @@ export default function DataQuery() {
       >
         <div className="">
           <div className="naxatw-space-y-2">
-            <label className="naxatw-label">
+            <label className="naxatw-label naxatw-mt-5">
               Select the layer you want to query
             </label>
             <Select
@@ -201,31 +201,40 @@ export default function DataQuery() {
         {fields !== null && (
           <>
             <div className="naxatw-flex naxatw-gap-2 naxatw-h-[15rem]">
-              <div
-                className="naxatw-w-full naxatw-border naxatw-border-grey-400 
-                  naxatw-rounded-lg naxatw-overflow-y-auto scrollbar"
-              >
-                <ul>
-                  {fields.map(({ name, alias }) => (
-                    <li
-                      key={name}
-                      role="presentation"
-                      className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
+              <div className="naxatw-w-full naxatw-space-y-2 ">
+                <span className="naxatw-text-body-btn naxatw-flex naxatw-justify-center">
+                  Field
+                </span>
+                <div
+                  className="naxatw-w-full naxatw-border naxatw-border-grey-400 
+                  naxatw-rounded-lg naxatw-overflow-y-auto scrollbar naxatw-h-[13rem]"
+                >
+                  <ul>
+                    {fields.map(({ name, alias }) => (
+                      <li
+                        key={name}
+                        role="presentation"
+                        className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
                         naxatw-cursor-pointer hover:naxatw-bg-grey-100"
-                      onClick={() => {
-                        handleFieldSelect(name);
-                        handleQuerySelect(name, 'field');
-                      }}
-                    >
-                      {alias || name}
-                    </li>
-                  ))}
-                </ul>
+                        onClick={() => {
+                          handleFieldSelect(name);
+                          handleQuerySelect(name, 'field');
+                        }}
+                      >
+                        {alias || name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-              <div className="naxatw-w-full">
+
+              <div className="naxatw-w-full naxatw-space-y-4 naxatw-h-[13rem]">
+                <span className="naxatw-text-body-btn naxatw-flex naxatw-justify-center">
+                  Operator
+                </span>
                 <div
                   className="naxatw-grid naxatw-grid-cols-3 naxatw-items-center naxatw-justify-items-center
-                    naxatw-gap-2"
+                    naxatw-gap-2 "
                 >
                   {dataQueryOperators.map(({ id, label, value, type }) => (
                     <a
@@ -256,35 +265,40 @@ export default function DataQuery() {
                   ))}
                 </div>
               </div>
-              <div className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-overflow-y-auto scrollbar">
-                {isValuesFetching && (
-                  <div className="naxatw-h-full naxatw-flex naxatw-items-center naxatw-justify-center">
-                    <Spinner className="!naxatw-h-7 !naxatw-w-7 naxatw-fill-grey-500" />
-                  </div>
-                )}
-                <ul>
-                  {values?.map(item => (
-                    <li
-                      key={item}
-                      role="presentation"
-                      className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
+              <div className="naxatw-w-full naxatw-space-y-2">
+                <span className="naxatw-text-body-btn naxatw-flex naxatw-justify-center">
+                  Value
+                </span>
+                <div className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-overflow-y-auto scrollbar naxatw-h-[13rem]">
+                  {isValuesFetching && (
+                    <div className="naxatw-h-full naxatw-flex naxatw-items-center naxatw-justify-center">
+                      <Spinner className="!naxatw-h-7 !naxatw-w-7 naxatw-fill-grey-500" />
+                    </div>
+                  )}
+                  <ul>
+                    {values?.map(item => (
+                      <li
+                        key={item}
+                        role="presentation"
+                        className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
                         naxatw-cursor-pointer hover:naxatw-bg-grey-100"
-                      onClick={() => {
-                        if (!lastQueryItem?.operator) {
-                          dispatch(
-                            toastActions.error({
-                              message: 'Please select operator first.',
-                            }),
-                          );
-                          return;
-                        }
-                        handleQuerySelect(item, 'value');
-                      }}
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+                        onClick={() => {
+                          if (!lastQueryItem?.operator) {
+                            dispatch(
+                              toastActions.error({
+                                message: 'Please select operator first.',
+                              }),
+                            );
+                            return;
+                          }
+                          handleQuerySelect(item, 'value');
+                        }}
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
 
@@ -300,7 +314,7 @@ export default function DataQuery() {
                     readOnly
                   />
                   <Button
-                    className="naxatw-btn naxatw-btn-sm naxatw-btn-secondary naxatw-btn-noborder naxatw-h-fit"
+                    className={`${btnClassname} naxatw-ml-1 naxatw-btn-link`}
                     onClick={handleBackspace}
                   >
                     <i className="material-symbols-outlined">backspace</i>

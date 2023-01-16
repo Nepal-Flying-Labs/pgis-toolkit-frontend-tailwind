@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import Input from '@Components/common/Input';
+import TextArea from '@Components/common/TextArea';
 import MultiSelect from '@Components/common/MultiSelect/index';
 import { Creators, Types } from '@Actions/organizationDashboard';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
@@ -226,7 +227,7 @@ const BasicInfo = ({ setPage }) => {
         {errors.name && <FormErrorMessage message={errors.name} />}
       </div>
 
-      <Input
+      {/* <Input
         type="textarea"
         label="Project Objectives"
         className="naxatw-h-[77px] naxatw-pb-8"
@@ -234,7 +235,14 @@ const BasicInfo = ({ setPage }) => {
         value={values?.description || ''}
         onChange={handleChange}
         placeholder="Write a short summary of a project"
+      /> */}
+      <TextArea
+        label="Project Objectives"
+        name="description"
+        value={values?.description || ''}
+        onChange={handleChange}
       />
+
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Upload Cover Image</label>
         <UploadPhotos

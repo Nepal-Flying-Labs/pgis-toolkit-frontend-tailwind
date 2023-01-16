@@ -7,7 +7,7 @@ const TableSkeleton = ({ itemNumber }) => {
     <table className=" naxatw-animate-pulse naxatw-w-full naxatw-border-separate naxatw-border-spacing-y-4 ">
       {Array.from({ length: itemNumber }, (_, i) => (
         <thead key={i} className="naxatw-w-full">
-          <tr className=" naxatw-w-full naxatw-flex naxatw-gap-x-40 naxatw-w-full naxatw-h-8">
+          <tr className=" naxatw-w-full naxatw-flex naxatw-gap-x-40 naxatw-h-8">
             <th className="naxatw-bg-gray-100 naxatw-w-[200px]">
               <div
                 className="naxatw-bg-gray-200"

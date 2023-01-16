@@ -26,7 +26,7 @@ export default function Pagination({
   const [jump, setJump] = useState(1);
 
   return (
-    <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-mt-8">
+    <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-mt-3">
       <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
         <span className="naxatw-text-body-lg">Row per page</span>
         <DropdownSelect

@@ -81,8 +81,8 @@ function GalleryList() {
 
   return (
     <div className="">
-      <div className="naxatw-py-2 naxatw-flex naxatw-items-center naxatw-justify-between">
-        <div className="naxatw-flex naxatw-items-center naxatw-w-60 naxatw-mt-4 ">
+      <div className="naxatw-py-1 naxatw-flex naxatw-items-center naxatw-justify-between">
+        <div className="naxatw-flex naxatw-items-center naxatw-w-60">
           <Searchbar
             isSmall
             placeholder="Search"
@@ -93,7 +93,7 @@ function GalleryList() {
         <div className="">
           <Button
             isLoading={isDownloading}
-            className="naxatw-btn-secondary naxatw-btn-noborder "
+            className="naxatw-btn-secondary  naxatw-btn-sm naxatw-btn-noborder "
             iconLeft="download"
             onClick={handleDownloadAll}
           >
@@ -110,7 +110,7 @@ function GalleryList() {
           height: `calc(100vh - 234px)`,
           transition: 'ease-in-out 300ms',
         }}
-        className="naxatw-py-3 naxatw-overflow-hidden naxatw-overflow-y-auto scrollbar"
+        className="naxatw-py-2 naxatw-overflow-hidden naxatw-overflow-y-auto scrollbar"
       >
         <div className="naxatw-flex naxatw-flex-wrap naxatw-gap-5">
           {(!isEmpty(resultList) &&

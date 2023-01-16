@@ -113,7 +113,7 @@ export default function OrganizationList() {
         />
       </div>
 
-      <div className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative naxatw-mt-[1.875rem]">
+      <div className="naxa-table naxatw-overflow-x-auto naxatw-h-[calc(100vh-23rem)] scrollbar naxatw-relative naxatw-mt-[1.875rem]">
         {!loading ? (
           <Table
             data={organizationData?.results || []}
@@ -220,23 +220,18 @@ export default function OrganizationList() {
         ) : (
           <TableSkeleton itemNumber={5} />
         )}
-
-        <Pagination
-          nextPage={next}
-          previousPage={previous}
-          jumpTo={jump}
-          currentPage={currentPage}
-          count={totalCount || 0}
-          paginatedCounts={getSelectedRange(
-            totalCount,
-            rowPerPage,
-            currentPage,
-          )}
-          maxPage={getMaxPage(totalCount, rowPerPage)}
-          rowSelect={rowPerPage}
-          handleSelect={data => dispatch(handleRowSelect(data))}
-        />
       </div>
+      <Pagination
+        nextPage={next}
+        previousPage={previous}
+        jumpTo={jump}
+        currentPage={currentPage}
+        count={totalCount || 0}
+        paginatedCounts={getSelectedRange(totalCount, rowPerPage, currentPage)}
+        maxPage={getMaxPage(totalCount, rowPerPage)}
+        rowSelect={rowPerPage}
+        handleSelect={data => dispatch(handleRowSelect(data))}
+      />
     </>
   );
 }

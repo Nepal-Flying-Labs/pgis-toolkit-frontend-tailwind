@@ -16,7 +16,7 @@
 }
 
 .naxatw-dropdown-items{
-    @apply naxatw-whitespace-nowrap naxatw-px-2 naxatw-py-1  naxatw-mt-1
+    @apply naxatw-whitespace-nowrap naxatw-px-3 naxatw-py-2
     naxatw-cursor-pointer naxatw-rounded-sm 
    hover:naxatw-bg-[#F5F5F5]
 }

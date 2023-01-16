@@ -45,9 +45,9 @@ export default function Settings() {
   }, [dispatch, projectId]);
 
   return (
-    <div className="naxatw-bg-[#F5F5F5]">
-      <div className="naxatw-ml-[40px] naxatw-pt-3 naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-x-5 naxatw-h-[calc(100vh-60px)]">
-        <div className="xl:naxatw-pl-[200px]">
+    <div className="naxatw-bg-[#F5F5F5] naxatw-w-full naxatw-flex naxatw-justify-center">
+      <div className="naxatw-pt-3 naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-x-5 naxatw-h-[calc(100vh-60px)] naxatw-px-10">
+        <div className="naxatw-mb-5 md:naxatw-mb-0">
           <div className="naxatw-rounded-xl naxatw-border naxatw-py-3 md:naxatw-w-[325px] naxatw-bg-white">
             <ul>
               {linkOptions.map(link => (

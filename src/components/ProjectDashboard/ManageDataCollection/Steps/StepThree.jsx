@@ -52,7 +52,7 @@ const StepThree = () => {
         <span className="naxatw-flex naxatw-justify-center naxatw-text-body-sm naxatw-mt-3">
           OR
         </span>
-        <div className="naxatw-px-4 naxatw-py-3 naxatw-mt-6 naxatw-border naxatw-border-grey-300 naxatw-rounded-xl">
+        <div className="naxatw-px-4 naxatw-py-3 naxatw-mt-6 naxatw-border naxatw-border-grey-300 naxatw-rounded-xl naxatw-bg-grey-100 naxatw-cursor-not-allowed">
           <h5>Download data in QField Project</h5>
 
           <p className="naxatw-text-body-md naxatw-mt-2">
@@ -64,6 +64,7 @@ const StepThree = () => {
           <div className="naxatw-mt-2 naxatw-flex naxatw-items-center naxatw-gap-x-3 ">
             <Button
               iconLeft="download"
+              disabled
               className="naxatw-btn-secondary naxatw-btn-noborder naxatw-mt-3 "
             >
               Download

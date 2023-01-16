@@ -185,7 +185,7 @@ const ManageDataCollection = () => {
                   )
                 }
               >
-                Save
+                Done
               </Button>
             )}
             <div />

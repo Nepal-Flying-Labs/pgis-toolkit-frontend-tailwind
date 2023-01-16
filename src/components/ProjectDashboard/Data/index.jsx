@@ -8,9 +8,9 @@ import ImportFromOSM from '@Assets/images/project/import-osm.png';
 import WMSLayer from '@Assets/images/project/wms-layer.png';
 import { isEmpty } from '@Utils/commonUtils';
 import Button from '@Components/common/Button/index';
+import Tooltip from '@Components/common/Tooltip/index';
 import NoDataYet from './NoDataYet';
 import LayerList from './LayerList';
-import Tooltip from '@Components/common/Tooltip/index';
 
 const { getProjectLayersRequest, checkUploadStatusRequest } =
   ProjectDashboardCreators;

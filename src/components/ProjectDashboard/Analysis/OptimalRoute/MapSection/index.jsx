@@ -140,7 +140,7 @@ export default function MapSection() {
               <VectorTileLayer
                 url={`${apiURL}maps/optimum_route_vectortile/{z}/{x}/{y}/?route=${item.id}`}
                 authToken={localStorage.getItem('userToken')}
-                visibleOnMap
+                visibleOnMap={item.checked}
                 style={item.style}
                 zIndex={2}
                 // properties={{ layerId: selectedLayer.id }}

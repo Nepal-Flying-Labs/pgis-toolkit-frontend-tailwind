@@ -85,7 +85,11 @@ export default function Results() {
                       onChange={e => {
                         const { id, checked } = e.target;
                         dispatch(
-                          handleRouteCheckbox({ id, checked, name: 'result' }),
+                          handleRouteCheckbox({
+                            resultId: +id,
+                            checked,
+                            name: 'result',
+                          }),
                         );
                       }}
                     />
@@ -106,7 +110,17 @@ export default function Results() {
                           type="checkbox"
                           className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
                           checked={route.checked}
-                          onChange={() => {}}
+                          onChange={e => {
+                            const { id, checked } = e.target;
+                            dispatch(
+                              handleRouteCheckbox({
+                                resultId: result.id,
+                                routeId: +id,
+                                checked,
+                                name: 'route',
+                              }),
+                            );
+                          }}
                         />
 
                         <label
@@ -130,7 +144,18 @@ export default function Results() {
                               type="checkbox"
                               className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
                               checked={item.checked}
-                              onChange={() => {}}
+                              onChange={e => {
+                                const { id, checked } = e.target;
+                                dispatch(
+                                  handleRouteCheckbox({
+                                    resultId: result.id,
+                                    routeId: route.id,
+                                    dataId: +id,
+                                    checked,
+                                    name: 'data',
+                                  }),
+                                );
+                              }}
                             />
 
                             <label

@@ -230,12 +230,12 @@ export function getPromptDialogContent(content) {
       };
     case 'delete-document':
       return {
-        title: '',
+        title: 'Delete',
         content: <DeleteDocument />,
       };
     case 'delete-gallery':
       return {
-        title: '',
+        title: 'Delete',
         content: <DeleteGallery />,
       };
     case 'save-data-query':

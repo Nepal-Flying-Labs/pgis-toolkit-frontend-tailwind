@@ -85,7 +85,7 @@ const ManageAttributes = () => {
           Attribute
         </Button>
       </div>
-      <div className=" naxatw-overflow-x-hidden naxatw-relative naxatw-mt-[1.875rem]">
+      <div className=" naxatw-overflow-x-hidden naxatw-relative naxatw-mt-[0.625rem]">
         {!loading ? (
           <Table
             data={checkedData || []}

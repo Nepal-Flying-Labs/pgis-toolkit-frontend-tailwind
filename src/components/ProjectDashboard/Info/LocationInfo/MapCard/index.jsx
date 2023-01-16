@@ -50,7 +50,7 @@ export default function MapCard({ isDraw, geojson }) {
         ref={mapRef}
         mapInstance={map}
         style={{
-          height: `calc(100vh - 175px)`,
+          height: `calc(100vh - 165px)`,
         }}
       >
         <LayerSwitcherControl />

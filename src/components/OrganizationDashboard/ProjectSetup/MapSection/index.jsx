@@ -129,9 +129,9 @@ export default function MapSection({
   return (
     <div className="naxatw-w-full naxatw-relative">
       {locationType === 'Custom Draw' && (
-        <div className="naxatw-flex naxatw-gap-x-4 naxatw-items-center naxatw-h-[40px] naxatw-my-2 naxatw-absolute naxatw-z-[9999999] naxatw-right-1 naxatw-top-5">
+        <div className="naxatw-flex naxatw-gap-x-4 naxatw-items-center naxatw-h-[40px] naxatw-my-2 naxatw-absolute naxatw-z-[9999999] naxatw-left-5 naxatw-top-10">
           <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-1">
-            <Tooltip content="Draw Polygon">
+            <Tooltip content="Draw Polygon" direction="right">
               <div
                 className="naxatw-p-3 naxatw-h-[40px] naxatw-bg-white naxatw-border naxatw-border-grey-400 naxatw-w-[40px]
                  hover:naxatw-bg-[#F5F5F5] naxatw-rounded-lg naxatw-cursor-pointer"
@@ -147,7 +147,7 @@ export default function MapSection({
                 />
               </div>
             </Tooltip>
-            <Tooltip content="Draw rectangle">
+            <Tooltip content="Draw rectangle" direction="right">
               <MaterialIcon
                 name="rectangle"
                 className="naxatw-text-icon-sm material-symbols-outlined"

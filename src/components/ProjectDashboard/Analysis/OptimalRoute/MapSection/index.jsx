@@ -26,10 +26,12 @@ import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
 import {
   startPointStyles,
   destinationPointStyles,
+  obstaclePointColor,
 } from '@src/constants/analysis';
 import { analysisHeaderHeight } from '@src/constants';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import { apiURL } from '@Services';
+import { isEmpty } from '@Utils/commonUtils';
 import HelpBox from './HelpBox';
 import RoutePopup from './RoutePopup';
 
@@ -115,6 +117,8 @@ export default function MapSection() {
     });
   }, [map, dispatch]);
 
+  console.log(analysisResults, 'analysisResultsx');
+
   return (
     <div className="naxatw-w-full naxatw-relative">
       {isMapDataLoading && (
@@ -168,18 +172,26 @@ export default function MapSection() {
         {analysisResults.map(result =>
           result.routes.map(route =>
             route.data.map(item =>
-              item.obstacles.map(obstacle => (
-                <VectorTileLayer
-                  url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${
-                    obstacle.layer_id
-                  }&ids=${obstacle.feature_mirror_ids.join(',')}`}
-                  authToken={localStorage.getItem('userToken')}
-                  visibleOnMap
-                  style={obstacle.style}
-                  zIndex={4}
-                  // properties={{ layerId: selectedLayer.id }}
-                />
-              )),
+              item.obstacles.map(obstacle =>
+                !isEmpty(obstacle.feature_mirror_ids) ? (
+                  <VectorTileLayer
+                    url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${
+                      obstacle.layer_id
+                    }&ids=${obstacle.feature_mirror_ids.join(',')}`}
+                    authToken={localStorage.getItem('userToken')}
+                    visibleOnMap
+                    style={{
+                      ...startPointStyles,
+                      fillColor: obstaclePointColor,
+                      circleRadius: 6,
+                    }}
+                    zIndex={4}
+                    // properties={{ layerId: selectedLayer.id }}
+                  />
+                ) : (
+                  ''
+                ),
+              ),
             ),
           ),
         )}

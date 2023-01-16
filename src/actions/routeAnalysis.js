@@ -19,6 +19,10 @@ export const { Types, Creators } = createActions(
     checkProcessingStatusRequest: ['payload'],
     checkProcessingStatusSuccess: ['payload'],
     checkProcessingStatusFailure: null,
+
+    getRoutePopupDataRequest: ['payload'],
+    getRoutePopupDataSuccess: ['payload'],
+    getRoutePopupDataFailure: null,
   },
   { prefix: 'routeAnalysis/' },
 );

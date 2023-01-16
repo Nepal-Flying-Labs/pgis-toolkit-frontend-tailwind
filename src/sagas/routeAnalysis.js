@@ -4,6 +4,7 @@ import toastActions from '@Actions/toast';
 import {
   getAnalysisLayer,
   getAnalysisTaskResponse,
+  getNetworkRoute,
   optimumRouteAnalysis,
 } from '@Services/routeAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
@@ -66,6 +67,16 @@ export function* checkProcessingStatusRequest({ payload }) {
   }
 }
 
+export function* getRoutePopupDataRequest({ payload: id }) {
+  try {
+    const response = yield call(getNetworkRoute, id);
+    yield put(routeAnalysisActions.getRoutePopupDataSuccess(response.data));
+  } catch (error) {
+    yield put(routeAnalysisActions.getRoutePopupDataFailure());
+    throw error;
+  }
+}
+
 function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.COPY_DATA_CLEANING_STATE_REQUEST,
@@ -78,6 +89,10 @@ function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.CHECK_PROCESSING_STATUS_REQUEST,
     withLoader(withErrorHandler(checkProcessingStatusRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ROUTE_POPUP_DATA_REQUEST,
+    withLoader(withErrorHandler(getRoutePopupDataRequest)),
   );
 }
 

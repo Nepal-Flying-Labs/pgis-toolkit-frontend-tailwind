@@ -28,6 +28,8 @@ import {
 //   obstacleLayers: [],
 //   analysisTaskId: null,
 //   analysisId: null,
+// selectedRouteId: null,
+// routePopupData: null,
 // };
 
 const initialState = {
@@ -73,7 +75,7 @@ const initialState = {
                   },
                 ],
                 name: 'Route 1',
-                checked: true,
+                checked: false,
                 style: {
                   lineColor: '#00A699',
                   lineOpacity: '100',
@@ -110,7 +112,7 @@ const initialState = {
                 },
               },
             ],
-            checked: true,
+            checked: false,
           },
           {
             id: 2,
@@ -131,7 +133,7 @@ const initialState = {
                   },
                 ],
                 name: 'Route 2',
-                checked: true,
+                checked: false,
                 style: {
                   lineColor: '#FF5A5F',
                   lineOpacity: '100',
@@ -182,7 +184,7 @@ const initialState = {
                   },
                 ],
                 name: 'Route 3',
-                checked: true,
+                checked: false,
                 style: {
                   lineColor: '#FF5A5F',
                   lineOpacity: '100',
@@ -219,7 +221,188 @@ const initialState = {
                 },
               },
             ],
+            checked: false,
+          },
+        ],
+        checked: false,
+      },
+      {
+        id: 64,
+        name: 'Test Route Multiple',
+        geom_type: 'LineString',
+        bbox: [85.3467437, 27.6588639, 85.3507671, 27.6616054],
+        mode: 'drive',
+        origin_long: 85.3509667117063,
+        origin_lat: 27.660950379237136,
+        destination_long: 85.34667514527918,
+        destination_lat: 27.659041061288107,
+        routes: [
+          {
+            id: 1,
+            name: 'Optimal Route',
+            data: [
+              {
+                id: 107,
+                route_no: 1,
+                is_optimum: true,
+                obstacles: [
+                  {
+                    layer_id: 545,
+                    feature_mirror_ids: [11002],
+                  },
+                  {
+                    layer_id: 546,
+                    feature_mirror_ids: [],
+                  },
+                ],
+                name: 'Route 1',
+                checked: true,
+                style: {
+                  lineColor: '#00A699',
+                  lineOpacity: '100',
+                  fillColor: '#45a535',
+                  fillOpacity: 0,
+                  lineThickness: '2',
+                  circleRadius: 5,
+                  dashline: 0,
+                  showLabel: false,
+                  labelField: '',
+                  labelFont: 'Calibri',
+                  labelFontSize: 14,
+                  labelColor: '#000000',
+                  labelOpacity: 100,
+                  labelOutlineWidth: 3,
+                  labelOutlineColor: '#ffffff',
+                  labelOffsetX: 0,
+                  labelOffsetY: 0,
+                  labelText: 'normal',
+                  labelMaxResolution: 1200,
+                  labelAlign: 'center',
+                  labelBaseline: 'middle',
+                  labelRotationDegree: 0,
+                  labelFontWeight: 'normal',
+                  labelPlacement: 'point',
+                  labelMaxAngleDegree: 0.7853981633974483,
+                  labelOverflow: false,
+                  labelLineHeight: 1,
+                  icon: {},
+                  showSublayer: false,
+                  sublayerColumnName: '',
+                  sublayer: {},
+                  geometryType: 'LineString',
+                },
+              },
+            ],
             checked: true,
+          },
+          {
+            id: 2,
+            name: 'Alternate Route',
+            data: [
+              {
+                id: 109,
+                route_no: 3,
+                is_optimum: false,
+                obstacles: [
+                  {
+                    layer_id: 545,
+                    feature_mirror_ids: [],
+                  },
+                  {
+                    layer_id: 546,
+                    feature_mirror_ids: [],
+                  },
+                ],
+                name: 'Route 3',
+                checked: false,
+                style: {
+                  lineColor: '#FF5A5F',
+                  lineOpacity: '100',
+                  fillColor: '#45a535',
+                  fillOpacity: 0,
+                  lineThickness: '2',
+                  circleRadius: 5,
+                  dashline: 0,
+                  showLabel: false,
+                  labelField: '',
+                  labelFont: 'Calibri',
+                  labelFontSize: 14,
+                  labelColor: '#000000',
+                  labelOpacity: 100,
+                  labelOutlineWidth: 3,
+                  labelOutlineColor: '#ffffff',
+                  labelOffsetX: 0,
+                  labelOffsetY: 0,
+                  labelText: 'normal',
+                  labelMaxResolution: 1200,
+                  labelAlign: 'center',
+                  labelBaseline: 'middle',
+                  labelRotationDegree: 0,
+                  labelFontWeight: 'normal',
+                  labelPlacement: 'point',
+                  labelMaxAngleDegree: 0.7853981633974483,
+                  labelOverflow: false,
+                  labelLineHeight: 1,
+                  icon: {},
+                  showSublayer: false,
+                  sublayerColumnName: '',
+                  sublayer: {},
+                  geometryType: 'LineString',
+                },
+              },
+              {
+                id: 108,
+                route_no: 2,
+                is_optimum: false,
+                obstacles: [
+                  {
+                    layer_id: 545,
+                    feature_mirror_ids: [11002],
+                  },
+                  {
+                    layer_id: 546,
+                    feature_mirror_ids: [],
+                  },
+                ],
+                name: 'Route 2',
+                checked: false,
+                style: {
+                  lineColor: '#FF5A5F',
+                  lineOpacity: '100',
+                  fillColor: '#45a535',
+                  fillOpacity: 0,
+                  lineThickness: '2',
+                  circleRadius: 5,
+                  dashline: 0,
+                  showLabel: false,
+                  labelField: '',
+                  labelFont: 'Calibri',
+                  labelFontSize: 14,
+                  labelColor: '#000000',
+                  labelOpacity: 100,
+                  labelOutlineWidth: 3,
+                  labelOutlineColor: '#ffffff',
+                  labelOffsetX: 0,
+                  labelOffsetY: 0,
+                  labelText: 'normal',
+                  labelMaxResolution: 1200,
+                  labelAlign: 'center',
+                  labelBaseline: 'middle',
+                  labelRotationDegree: 0,
+                  labelFontWeight: 'normal',
+                  labelPlacement: 'point',
+                  labelMaxAngleDegree: 0.7853981633974483,
+                  labelOverflow: false,
+                  labelLineHeight: 1,
+                  icon: {},
+                  showSublayer: false,
+                  sublayerColumnName: '',
+                  sublayer: {},
+                  geometryType: 'LineString',
+                },
+              },
+            ],
+            checked: false,
           },
         ],
         checked: true,
@@ -381,6 +564,32 @@ const initialState = {
     theme: 479,
     checked: true,
   },
+  selectedRouteId: 107,
+  routePopupData: {
+    id: 107,
+    route_no: 1,
+    length: 0.01,
+    travel_time: 0.01,
+    is_optimum: true,
+    origin: '(85.3509667117063, 27.660950379237136)',
+    destination: '(85.34667514527918, 27.659041061288107)',
+    obstacles: [
+      {
+        layer_id: 545,
+        feature_mirror_ids: [11002],
+        layer_name: 'Sample Obstacle 2',
+        count: 1,
+        checked: true,
+      },
+      {
+        layer_id: 546,
+        feature_mirror_ids: [],
+        layer_name: 'Sample Obstacle 3',
+        count: 0,
+        checked: true,
+      },
+    ],
+  },
 };
 
 const setRouteAnalysisState = (state, action) => ({
@@ -493,6 +702,16 @@ const handleRouteCheckbox = (state, action) =>
     }
   });
 
+const getRoutePopupDataSuccess = (state, action) => {
+  const data = action.payload;
+  return produce(state, draft => {
+    draft.routePopupData = {
+      ...data,
+      obstacles: data.obstacles.map(item => ({ ...item, checked: true })),
+    };
+  });
+};
+
 const routeAnalysisReducer = createReducer(initialState, {
   [Types.SET_ROUTE_ANALYSIS_STATE]: setRouteAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
@@ -501,6 +720,7 @@ const routeAnalysisReducer = createReducer(initialState, {
   [Types.APPLY_ROUTE_ANALYSIS_SUCCESS]: applyRouteAnalysisSuccess,
   [Types.CHECK_PROCESSING_STATUS_SUCCESS]: checkProcessingStatusSuccess,
   [Types.HANDLE_ROUTE_CHECKBOX]: handleRouteCheckbox,
+  [Types.GET_ROUTE_POPUP_DATA_SUCCESS]: getRoutePopupDataSuccess,
 });
 
 export default routeAnalysisReducer;

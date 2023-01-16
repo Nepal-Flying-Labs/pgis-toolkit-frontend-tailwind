@@ -33,7 +33,8 @@ import { apiURL } from '@Services';
 import HelpBox from './HelpBox';
 import RoutePopup from './RoutePopup';
 
-const { setDataInputState, setResultsState } = RouteAnalysisCreators;
+const { setDataInputState, setResultsState, setRouteAnalysisState } =
+  RouteAnalysisCreators;
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -99,6 +100,20 @@ export default function MapSection() {
       });
     }
   }, [map, roadNetworkLayer]);
+
+  // click handler for route layer
+  useEffect(() => {
+    if (!map) return;
+    map.on('click', evt => {
+      const features = map.getFeaturesAtPixel(evt.pixel);
+      if (features.length < 1) {
+        return;
+      }
+      const properties = features[0].getProperties();
+      if (properties.layer !== 'route') return;
+      dispatch(setRouteAnalysisState({ selectedRouteId: properties.id }));
+    });
+  }, [map, dispatch]);
 
   return (
     <div className="naxatw-w-full naxatw-relative">

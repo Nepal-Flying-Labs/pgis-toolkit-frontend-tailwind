@@ -400,6 +400,17 @@ const checkProcessingStatusSuccess = (state, action) =>
     draft.results.analysisResults.push(analysisResult);
   });
 
+const handleRouteCheckbox = (state, action) =>
+  produce(state, draft => {
+    const { id, checked, name } = action.payload;
+    if (name === 'result') {
+      const result = draft.results.analysisResults.find(
+        item => item.id === +id,
+      );
+      result.checked = checked;
+    }
+  });
+
 const routeAnalysisReducer = createReducer(initialState, {
   [Types.SET_ROUTE_ANALYSIS_STATE]: setRouteAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
@@ -407,6 +418,7 @@ const routeAnalysisReducer = createReducer(initialState, {
   [Types.HANDLE_CHECKBOX]: handleCheckbox,
   [Types.APPLY_ROUTE_ANALYSIS_SUCCESS]: applyRouteAnalysisSuccess,
   [Types.CHECK_PROCESSING_STATUS_SUCCESS]: checkProcessingStatusSuccess,
+  [Types.HANDLE_ROUTE_CHECKBOX]: handleRouteCheckbox,
 });
 
 export default routeAnalysisReducer;

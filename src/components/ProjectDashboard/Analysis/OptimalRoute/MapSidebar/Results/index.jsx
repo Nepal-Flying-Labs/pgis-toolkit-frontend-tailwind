@@ -5,7 +5,7 @@ import { analysisHeaderHeight } from '@src/constants';
 import Accordion from '@Components/common/Accordion';
 import DropdownOptions from '@Components/common/DropdownOptions';
 
-const { setResultsState } = Creators;
+const { setResultsState, handleRouteCheckbox } = Creators;
 
 export default function Results() {
   const analysisResults = useSelector(
@@ -82,7 +82,12 @@ export default function Results() {
                       type="checkbox"
                       className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
                       checked={result.checked}
-                      onChange={() => {}}
+                      onChange={e => {
+                        const { id, checked } = e.target;
+                        dispatch(
+                          handleRouteCheckbox({ id, checked, name: 'result' }),
+                        );
+                      }}
                     />
                     <h5 className="naxatw-text-grey-800">{result.name}</h5>
                   </div>

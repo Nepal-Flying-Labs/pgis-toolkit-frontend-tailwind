@@ -1,14 +1,18 @@
 /* eslint-disable no-nested-ternary */
 import React, { useMemo, useState } from 'react';
-// import { useParams, useHistory } from 'react-router';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
 import Button from '@Components/common/Button';
 import Accordion from '@Components/common/Accordion';
 import IconButton from '@Components/common/IconButton';
 
-const { checkErrorRequest, handleAutofixCheckbox, autoFixErrorRequest } =
-  DataCleaningCreators;
+const {
+  checkErrorRequest,
+  handleAutofixCheckbox,
+  autoFixErrorRequest,
+  startAnalysisRequest,
+} = DataCleaningCreators;
 
 function getStatusIcon(status) {
   switch (status) {
@@ -26,8 +30,7 @@ function getStatusIcon(status) {
 }
 
 export default function StepTwo() {
-  // const { organizationId, projectId, analysisType } = useParams();
-  // const history = useHistory();
+  const params = useParams();
   const selectedRoadLayer = useSelector(
     state => state.dataCleaning.optimalRoute.selectedRoadLayer,
   );
@@ -225,6 +228,9 @@ export default function StepTwo() {
       <div className="naxatw-flex naxatw-justify-end naxatw-my-10">
         <Button
           className="naxatw-btn-primary"
+          onClick={() => {
+            dispatch(startAnalysisRequest(params));
+          }}
           // onClick={() => {
           //   history.push(
           //     `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}`,

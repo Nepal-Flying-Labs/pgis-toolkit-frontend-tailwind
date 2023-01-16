@@ -1,7 +1,21 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
+import { useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { Creators, Types } from '@Actions/routeAnalysis';
+import toastActions from '@Actions/toast';
 import { analysisHeaderHeight } from '@src/constants';
 import Button from '@Components/common/Button';
+import { checkIfLoading } from '@Utils/loaderSelector';
+import {
+  destinationPointColor,
+  startingPointColor,
+} from '@src/constants/analysis';
 import Chip from '../Chip';
+import IconButton from '@Components/common/IconButton/index';
+
+const { setDataInputState, handleCheckbox, applyRouteAnalysisRequest } =
+  Creators;
 
 const modeOfTransportData = [
   { label: 'Drive', value: 'drive', icon: 'directions_car' },
@@ -15,11 +29,17 @@ const originPointData = [
   { label: 'Layer', value: 'layer', icon: 'format_list_bulleted' },
 ];
 
-const obstaclesData = [
-  { id: 1, name: 'Road Accident' },
-  { id: 2, name: 'Road Accident' },
-  { id: 3, name: 'Road Accident' },
-  { id: 4, name: 'Road Accident' },
+const drawPointData = [
+  {
+    label: 'Draw Starting Point',
+    value: 'start',
+    icon: 'radio_button_checked',
+  },
+  {
+    label: 'Draw Destination Point',
+    value: 'destination',
+    icon: 'radio_button_checked',
+  },
 ];
 
 // eslint-disable-next-line
@@ -27,119 +47,269 @@ function Container({ children }) {
   return <div className="naxatw-space-y-2">{children}</div>;
 }
 
-function ModeOfTransport() {
-  return (
-    <Container>
-      <label className="naxatw-label">Mode of Transport</label>
-      <div className="naxatw-flex naxatw-space-x-2">
-        {modeOfTransportData.map(({ label, value, icon }) => (
-          <Chip
-            key={value}
-            active={value === 'drive'}
-            label={label}
-            iconClassName="material-symbols-outlined"
-            iconLeft={icon}
-            onClick={() => {}}
-          />
-        ))}
-      </div>
-    </Container>
-  );
-}
-
-function OriginPoint() {
-  return (
-    <Container>
-      <label className="naxatw-label">Origin & Destination Point</label>
-      <div className="naxatw-flex naxatw-space-x-2">
-        {originPointData.map(({ label, value, icon }) => (
-          <Chip
-            key={value}
-            active={value === 'map'}
-            label={label}
-            iconClassName="material-symbols-outlined"
-            iconLeft={icon}
-            onClick={() => {}}
-          />
-        ))}
-      </div>
-    </Container>
-  );
-}
-
-function Obstacles() {
-  return (
-    <Container>
-      <label className="naxatw-label">Obstacles</label>
-      <div
-        className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg
-          naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem] naxatw-bg-white"
-      >
-        <ul>
-          {obstaclesData.map(item => (
-            <li
-              key={item.id}
-              role="presentation"
-              className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
-                      hover:naxatw-bg-grey-100 naxatw-flex naxatw-items-center"
-              onClick={() => {}}
-            >
-              <input
-                id={item.id}
-                type="checkbox"
-                className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
-                        naxatw-accent-grey-800 naxatw-cursor-pointer"
-                // checked={values.selectedObstacleLayers?.some(
-                //   i => i.id === item.id,
-                // )}
-                onChange={e => {
-                  // const { checked } = e.target;
-                  // handleChange({
-                  //   target: {
-                  //     name: 'selectedObstacleLayers',
-                  //     value: checked
-                  //       ? [...selectedObstacleLayers, item]
-                  //       : values.selectedObstacleLayers.filter(
-                  //           i => i.id !== item.id,
-                  //         ),
-                  //   },
-                  // });
-                }}
-              />
-              <label htmlFor={item.id} className="naxatw-cursor-pointer">
-                {item.name}
-              </label>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Container>
-  );
+function getGeojsonCoordinates(geojson) {
+  const {
+    coordinates: [lat, lng],
+  } = geojson.geometry;
+  const latitude = lat.toFixed(5);
+  const longitude = lng.toFixed(5);
+  return `${latitude}, ${longitude}`;
 }
 
 export default function DataInput() {
+  const { projectId } = useParams();
+  const roadNetworkLayer = useSelector(
+    state => state.routeAnalysis.roadNetworkLayer,
+  );
+  const obstacleLayers = useSelector(
+    state => state.routeAnalysis.obstacleLayers,
+  );
+  const selectedModeOfTransport = useSelector(
+    state => state.routeAnalysis.dataInput.selectedModeOfTransport,
+  );
+  const originPointType = useSelector(
+    state => state.routeAnalysis.dataInput.originPointType,
+  );
+  const drawPointType = useSelector(
+    state => state.routeAnalysis.dataInput.drawPointType,
+  );
+  const startGeojson = useSelector(
+    state => state.routeAnalysis.dataInput.startGeojson,
+  );
+  const destinationGeojson = useSelector(
+    state => state.routeAnalysis.dataInput.destinationGeojson,
+  );
+  const alternativePaths = useSelector(
+    state => state.routeAnalysis.dataInput.alternativePaths,
+  );
+  const outputName = useSelector(
+    state => state.routeAnalysis.dataInput.outputName,
+  );
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.APPLY_ROUTE_ANALYSIS_REQUEST]),
+  );
+  const dispatch = useDispatch();
+
+  const handleApply = () => {
+    if (!startGeojson || !destinationGeojson || !outputName) {
+      dispatch(
+        toastActions.error({
+          message: 'Please input all the required fields!',
+        }),
+      );
+      return;
+    }
+    const [originLong, originLat] = startGeojson.geometry.coordinates;
+    const [destinationLong, destinationLat] =
+      destinationGeojson.geometry.coordinates;
+    const selectedObstacles = obstacleLayers
+      .filter(item => item.checked)
+      .map(item => item.id);
+    const payloadData = {
+      source: 'system',
+      road_network: roadNetworkLayer.id,
+      mode: selectedModeOfTransport,
+      origin_long: originLong,
+      origin_lat: originLat,
+      destination_long: destinationLong,
+      destination_lat: destinationLat,
+      paths: alternativePaths,
+      obstacles: JSON.stringify(selectedObstacles),
+      name: outputName,
+      project: projectId,
+      type: 'Optimum Path Analysis',
+    };
+    dispatch(applyRouteAnalysisRequest(payloadData));
+  };
+
   return (
     <div className=" naxatw-h-full">
       <div
         className="naxatw-flex naxatw-flex-col naxatw-gap-y-5 naxatw-overflow-y-auto scrollbar"
         style={{
-          maxHeight: `calc(100vh - ${analysisHeaderHeight} - 7.5rem)`,
+          height: `calc(100vh - ${analysisHeaderHeight} - 7.5rem)`,
         }}
       >
-        <ModeOfTransport />
+        <Container>
+          <label className="naxatw-label">Mode of Transport</label>
+          <div className="naxatw-flex naxatw-space-x-2">
+            {modeOfTransportData.map(({ label, value, icon }) => (
+              <Chip
+                key={value}
+                active={selectedModeOfTransport === value}
+                label={label}
+                iconClassName="material-symbols-outlined"
+                iconLeft={icon}
+                onClick={() => {
+                  dispatch(
+                    setDataInputState({
+                      selectedModeOfTransport: value,
+                    }),
+                  );
+                }}
+              />
+            ))}
+          </div>
+        </Container>
 
-        <OriginPoint />
+        <Container>
+          <label className="naxatw-label">Origin & Destination Point</label>
+          <div className="naxatw-flex naxatw-space-x-2">
+            {originPointData.map(({ label, value, icon }) => (
+              <Chip
+                key={value}
+                active={originPointType === value}
+                label={label}
+                iconClassName="material-symbols-outlined"
+                iconLeft={icon}
+                onClick={() => {
+                  dispatch(
+                    setDataInputState({
+                      originPointType: value,
+                    }),
+                  );
+                }}
+              />
+            ))}
+          </div>
 
-        <Obstacles />
+          <Container>
+            <div className="naxatw-flex naxatw-select-none">
+              <div className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-between naxatw-text-grey-600 naxatw-py-1">
+                <i className="material-icons naxatw-text-lg">
+                  radio_button_unchecked
+                </i>
+                <div className="naxatw-w-8 naxatw-border-t-2 naxatw-border-dashed naxatw-border-grey-600 naxatw-rotate-90" />
+                <i className="material-symbols-outlined naxatw-text-lg">
+                  place
+                </i>
+              </div>
+              <div className="naxatw-flex-1 naxatw-space-y-2">
+                {drawPointData.map(({ label, value, icon }) => (
+                  <Chip
+                    key={value}
+                    className={`!naxatw-w-full ${
+                      (value === 'start' && startGeojson) ||
+                      (value === 'destination' && destinationGeojson)
+                        ? '!naxatw-bg-white'
+                        : ''
+                    }`}
+                    label={
+                      value === 'start' && startGeojson
+                        ? getGeojsonCoordinates(startGeojson)
+                        : value === 'destination' && destinationGeojson
+                        ? getGeojsonCoordinates(destinationGeojson)
+                        : label
+                    }
+                    iconLeft={icon}
+                    iconStyle={{
+                      color:
+                        value === 'start' && startGeojson
+                          ? startingPointColor
+                          : value === 'destination' && destinationGeojson
+                          ? destinationPointColor
+                          : '',
+                    }}
+                    active={drawPointType === value}
+                    onClick={() => {
+                      if (drawPointType) return;
+                      dispatch(
+                        setDataInputState({
+                          drawPointType: value,
+                        }),
+                      );
+                    }}
+                  />
+                ))}
+              </div>
+              <div className="naxatw-ml-1 naxatw-flex naxatw-flex-col naxatw-justify-center">
+                <IconButton
+                  name="swap_vert"
+                  onClick={() => {
+                    dispatch(
+                      setDataInputState({
+                        startGeojson: destinationGeojson,
+                        destinationGeojson: startGeojson,
+                      }),
+                    );
+                  }}
+                />
+              </div>
+            </div>
+          </Container>
+        </Container>
+
+        <Container>
+          <label className="naxatw-label">Obstacles</label>
+          <div
+            className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg
+              naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem] naxatw-bg-white"
+          >
+            <ul>
+              {obstacleLayers.map(item => (
+                <li
+                  key={item.id}
+                  role="presentation"
+                  className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
+                      hover:naxatw-bg-grey-100 naxatw-flex naxatw-items-center"
+                  onClick={() => {}}
+                >
+                  <input
+                    id={item.id}
+                    type="checkbox"
+                    className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
+                        naxatw-accent-grey-800 naxatw-cursor-pointer"
+                    checked={item.checked}
+                    onChange={e => {
+                      const { id, checked } = e.target;
+                      dispatch(
+                        handleCheckbox({
+                          stateName: 'obstacleLayers',
+                          id,
+                          checked,
+                        }),
+                      );
+                    }}
+                  />
+                  <label htmlFor={item.id} className="naxatw-cursor-pointer">
+                    {item.name}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Container>
 
         <Container>
           <label className="naxatw-label">Preferred alternative path</label>
-          <input type="number" className="naxatw-input" />
+          <input
+            type="number"
+            className="naxatw-input"
+            value={alternativePaths || ''}
+            onChange={e => {
+              dispatch(
+                setDataInputState({
+                  alternativePaths: e.target.value,
+                }),
+              );
+            }}
+          />
         </Container>
 
         <Container>
           <label className="naxatw-label">Output Name</label>
-          <input type="text" className="naxatw-input" />
+          <input
+            type="text"
+            className="naxatw-input"
+            value={outputName}
+            onChange={e => {
+              dispatch(
+                setDataInputState({
+                  outputName: e.target.value,
+                }),
+              );
+            }}
+          />
         </Container>
       </div>
 
@@ -147,7 +317,13 @@ export default function DataInput() {
         className="naxatw-mt-auto naxatw-flex naxatw-items-center
           naxatw-justify-center naxatw-py-3"
       >
-        <Button className="naxatw-btn-primary">Apply</Button>
+        <Button
+          className="naxatw-btn-primary"
+          isLoading={loading}
+          onClick={handleApply}
+        >
+          Apply
+        </Button>
       </div>
     </div>
   );

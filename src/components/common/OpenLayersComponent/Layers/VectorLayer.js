@@ -39,7 +39,7 @@ const VectorLayer = ({
           featureProjection: get('EPSG:3857'),
         }),
       }),
-      declutter: true,
+      // declutter: true,
     });
 
     setVectorLayer(vectorLyr);

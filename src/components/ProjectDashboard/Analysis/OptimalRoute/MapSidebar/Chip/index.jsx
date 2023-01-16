@@ -8,6 +8,8 @@ export default function Chip({
   iconLeft,
   iconRight,
   iconClassName,
+  iconStyle,
+  className,
 }) {
   return (
     <div
@@ -15,18 +17,19 @@ export default function Chip({
       role="button"
       onClick={onClick}
       className={`naxatw-px-4 naxatw-py-1.5 naxatw-w-fit hover:naxatw-bg-white 
-        naxatw-bg-white naxatw-rounded-3xl naxatw-border naxatw-flex
-        naxatw-items-center naxatw-space-x-1 ${
+        naxatw-bg-white naxatw-rounded-3xl naxatw-border naxatw-flex 
+        naxatw-items-center naxatw-space-x-1 naxatw-select-none ${
           active
             ? 'naxatw-border-grey-800'
             : 'naxatw-border-grey-300 naxatw-bg-grey-100'
-        }`}
+        } ${className}`}
     >
       {iconLeft && (
         <i
           role="button"
           tabIndex="0"
           className={`naxatw-text-[24px] naxatw-text-grey-800 ${iconClassName}`}
+          style={iconStyle}
         >
           {iconLeft}
         </i>
@@ -38,6 +41,7 @@ export default function Chip({
           role="button"
           tabIndex="0"
           className={`naxatw-text-[24px] naxatw-text-grey-800 ${iconClassName}`}
+          style={iconStyle}
         >
           {iconRight}
         </i>
@@ -46,6 +50,16 @@ export default function Chip({
   );
 }
 
+Chip.defaultProps = {
+  active: false,
+  onClick: () => {},
+  iconLeft: null,
+  iconRight: null,
+  iconClassName: 'material-icons',
+  iconStyle: {},
+  className: '',
+};
+
 Chip.propTypes = {
   label: PropTypes.string.isRequired,
   active: PropTypes.bool,
@@ -53,12 +67,6 @@ Chip.propTypes = {
   iconLeft: PropTypes.node,
   iconRight: PropTypes.node,
   iconClassName: PropTypes.string,
-};
-
-Chip.defaultProps = {
-  active: false,
-  onClick: () => {},
-  iconLeft: null,
-  iconRight: null,
-  iconClassName: 'material-icons',
+  iconStyle: PropTypes.object,
+  className: PropTypes.string,
 };

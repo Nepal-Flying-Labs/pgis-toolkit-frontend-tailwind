@@ -182,9 +182,9 @@ function DocumentList() {
                   '10px',
                   '220px',
                   '250px',
-                  '90px',
                   '100px',
-                  '100px',
+                  '150px',
+                  '150px',
                   '100px',
                 ]}
               >
@@ -229,7 +229,7 @@ function DocumentList() {
                         ordering === 'name'
                           ? 'naxatw-text-body-btn'
                           : 'naxatw-text-body-lg'
-                      }`}
+                      } naxatw-overflow-ellipsis naxatw-w-[200px] naxatw-whitespace-nowrap naxatw-overflow-hidden`}
                     >
                       {row.name || '-'}
                     </span>
@@ -241,7 +241,7 @@ function DocumentList() {
                   // rowcolSpan="rowSpan_2"
                   // dataHeader={<SortingContainer name="description" />}
                   dataFormat={row => (
-                    <span className="naxatw-text-body-lg">
+                    <span className="naxatw-text-body-lg naxatw-overflow-ellipsis naxatw-w-[200px] naxatw-whitespace-nowrap naxatw-overflow-hidden">
                       {row.description || '-'}
                     </span>
                   )}

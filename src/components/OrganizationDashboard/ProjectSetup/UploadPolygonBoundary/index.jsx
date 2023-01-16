@@ -49,8 +49,13 @@ function UploadPolygonBoundary({
     try {
       convertToGeoJSON(files)
         .then(z => {
-          setGeojson(z);
-          setError(false);
+          if (typeof z === 'object' && !Array.isArray(z) && z !== null) {
+            setGeojson(z);
+            setError(false);
+          } else {
+            setError(true);
+            setuploadedFile('');
+          }
         })
         .catch(err => {
           setError(true);

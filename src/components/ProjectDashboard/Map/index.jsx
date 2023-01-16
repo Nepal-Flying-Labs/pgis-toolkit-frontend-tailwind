@@ -9,7 +9,7 @@ import MapSection from './MapSection';
 import MapExportSidebar from './MapExportSection/MapExportSidebar';
 import MapExport from './MapExportSection/MapExport';
 
-const { toggleModal } = CommonCreators;
+const { setModalContent, toggleModal } = CommonCreators;
 
 const {
   getProjectThemesRequest,
@@ -32,6 +32,8 @@ export default function Map() {
   );
   const dispatch = useDispatch();
 
+  const showModal = useSelector(state => state.common.showModal);
+
   // project map section
   useEffect(() => {
     if (!projectDetail) return;
@@ -49,10 +51,13 @@ export default function Map() {
   // reset project map state
   useEffect(
     () => () => {
-      dispatch(toggleModal());
       dispatch(resetProjectMapState());
+      if (showModal) {
+        dispatch(toggleModal());
+        dispatch(setModalContent(''));
+      }
     },
-    [dispatch],
+    [dispatch, showModal],
   );
 
   return (

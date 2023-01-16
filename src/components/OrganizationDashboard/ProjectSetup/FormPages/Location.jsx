@@ -273,6 +273,9 @@ const Location = ({ page, setPage }) => {
             value="File Upload"
             onClick={() => {
               handleCustomChange('location_type', 'File Upload');
+              values.location_type !== 'File Upload'
+                ? setErrors({ ...errors, location: null })
+                : '';
             }}
           />
           <Chip
@@ -281,6 +284,9 @@ const Location = ({ page, setPage }) => {
             value="Custom Draw"
             onClick={() => {
               handleCustomChange('location_type', 'Custom Draw');
+              values.location_type !== 'Custom Draw'
+                ? setErrors({ ...errors, location: null })
+                : '';
             }}
           />
         </div>

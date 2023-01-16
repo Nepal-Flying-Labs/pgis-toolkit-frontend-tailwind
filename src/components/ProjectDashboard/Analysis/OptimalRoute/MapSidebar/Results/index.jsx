@@ -1,17 +1,17 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { Creators } from '@Actions/routeAnalysis';
+import { Creators } from '@Actions/routeAnalysis';
 import { analysisHeaderHeight } from '@src/constants';
 import Accordion from '@Components/common/Accordion';
 import DropdownOptions from '@Components/common/DropdownOptions';
 
-// const {} = Creators;
+const { setResultsState, handleRouteCheckbox } = Creators;
 
 export default function Results() {
   const analysisResults = useSelector(
     state => state.routeAnalysis.results.analysisResults,
   );
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const dropdownOptions = [
     {
@@ -23,7 +23,11 @@ export default function Results() {
         </span>
       ),
       onClick: data => {
-        // dispatch(setZoomToLayerId(data.id));
+        dispatch(
+          setResultsState({
+            zoomToRouteId: data.id,
+          }),
+        );
       },
     },
     {
@@ -78,11 +82,20 @@ export default function Results() {
                       type="checkbox"
                       className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
                       checked={result.checked}
-                      onChange={() => {}}
+                      onChange={e => {
+                        const { id, checked } = e.target;
+                        dispatch(
+                          handleRouteCheckbox({
+                            resultId: +id,
+                            checked,
+                            name: 'result',
+                          }),
+                        );
+                      }}
                     />
                     <h5 className="naxatw-text-grey-800">{result.name}</h5>
                   </div>
-                  <DropdownOptions options={dropdownOptions} />
+                  <DropdownOptions options={dropdownOptions} data={result} />
                 </div>
               </div>
             }
@@ -97,7 +110,17 @@ export default function Results() {
                           type="checkbox"
                           className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
                           checked={route.checked}
-                          onChange={() => {}}
+                          onChange={e => {
+                            const { id, checked } = e.target;
+                            dispatch(
+                              handleRouteCheckbox({
+                                resultId: result.id,
+                                routeId: +id,
+                                checked,
+                                name: 'route',
+                              }),
+                            );
+                          }}
                         />
 
                         <label
@@ -121,7 +144,18 @@ export default function Results() {
                               type="checkbox"
                               className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
                               checked={item.checked}
-                              onChange={() => {}}
+                              onChange={e => {
+                                const { id, checked } = e.target;
+                                dispatch(
+                                  handleRouteCheckbox({
+                                    resultId: result.id,
+                                    routeId: route.id,
+                                    dataId: +id,
+                                    checked,
+                                    name: 'data',
+                                  }),
+                                );
+                              }}
                             />
 
                             <label

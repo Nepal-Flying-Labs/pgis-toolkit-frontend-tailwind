@@ -29,6 +29,7 @@ import polygonIcon from '@Assets/images/icons8-polygon-80.png';
 import { Creators } from '@Actions/organizationDashboard';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import Tooltip from '@Components/common/Tooltip/index';
+import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 
 const { setDrawnGeojsonData } = Creators;
 
@@ -44,9 +45,19 @@ export default function MapSection({
   const [selectedGeomType, setSelectedGeomType] = useState('');
   const [redraw, setRedraw] = useState(false);
   const [drawComplete, setDrawComplete] = useState(false);
+  const [drawnGeojson, setDrawnGeojson] = useState(null);
+  const [showLayer, setShowLayer] = useState(true);
+
+  const fileUploadGeojson = useSelector(
+    state => state.organizationDashboard.individualProject.fileUploadGeojson,
+  );
 
   const project = useSelector(
     state => state.organizationDashboard.individualProject.project,
+  );
+
+  const projectGeojson = useSelector(
+    state => state.organizationDashboard.individualProject.projectGeojson,
   );
 
   const { mapRef, map } = useOLMap({
@@ -68,6 +79,12 @@ export default function MapSection({
         constrainResolution: true,
       });
     }
+    if (
+      formValues?.location_type === 'File Upload' &&
+      !formValues?.file?.existedData
+    ) {
+      setShowLayer(false);
+    }
   }, [map, formValues]);
 
   const handleClick = () => {
@@ -82,20 +99,41 @@ export default function MapSection({
     vectorTileLayer.forEach(layer => {
       map.removeLayer(layer);
     });
+    setShowLayer(false);
+    setDrawnGeojson(false);
     setRedraw(false);
     setDrawComplete(false);
     dispatch(setDrawnGeojsonData(null));
     setTimeout(() => setRedraw(true), 100);
   };
 
+  const handleDelete = () => {
+    const layers = map.getLayers().getArray();
+    const vectorLayer = layers.filter(layer => layer instanceof VectorLayer);
+    vectorLayer.forEach(layer => {
+      map.removeLayer(layer);
+    });
+    const vectorTileLayer = layers.filter(
+      layer => layer instanceof VectorTileLayer,
+    );
+    vectorTileLayer.forEach(layer => {
+      map.removeLayer(layer);
+    });
+    setDrawnGeojson(false);
+    setRedraw(false);
+    setDrawComplete(false);
+    dispatch(setDrawnGeojsonData(null));
+    // setTimeout(() => setRedraw(true), 100);
+  };
+
   return (
     <div className="naxatw-w-full naxatw-relative">
       {locationType === 'Custom Draw' && (
         <div className="naxatw-flex naxatw-gap-x-4 naxatw-items-center naxatw-h-[40px] naxatw-my-2 naxatw-absolute naxatw-z-[9999999] naxatw-right-1 naxatw-top-5">
-          <div className="naxatw-flex naxatw-flex-col">
+          <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-1">
             <Tooltip content="Draw Polygon">
               <div
-                className="naxatw-p-3 naxatw-h-[48px] naxatw-bg-white naxatw-border naxatw-border-grey-400 naxatw-w-[48px]
+                className="naxatw-p-3 naxatw-h-[40px] naxatw-bg-white naxatw-border naxatw-border-grey-400 naxatw-w-[40px]
                  hover:naxatw-bg-[#F5F5F5] naxatw-rounded-lg naxatw-cursor-pointer"
                 onClick={() => {
                   setSelectedGeomType('Polygon');
@@ -104,33 +142,32 @@ export default function MapSection({
               >
                 <img
                   src={polygonIcon}
-                  className="naxatw-w-6 naxatw-h-6"
+                  className="naxatw-w-4 naxatw-h-4"
                   alt="polygon"
                 />
               </div>
-
-              {/* <MaterialIcon
-                name="polyline"
-                className="naxatw-text-icon-md"
-                wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer ${
-                  selectedGeomType === 'Polygon' ? 'naxatw-bg-[#F5F5F5]' : ''
-                }`}
-                onIconClick={() => {
-                  setSelectedGeomType('Polygon');
-                  handleClick();
-                }}
-              /> */}
             </Tooltip>
             <Tooltip content="Draw rectangle">
               <MaterialIcon
                 name="rectangle"
-                className="naxatw-text-icon-md material-symbols-outlined"
-                wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer naxatw-border naxatw-border-grey-400 naxatw-bg-white ${
+                className="naxatw-text-icon-sm material-symbols-outlined"
+                wrapperClassName={`naxatw-icon-btn !naxatw-pl-2.5 naxatw-icon-btn-sm naxatw-cursor-pointer naxatw-border naxatw-border-grey-400 naxatw-bg-white ${
                   selectedGeomType === 'Box' ? 'naxatw-bg-gray-100' : ''
                 }`}
                 onIconClick={() => {
                   setSelectedGeomType('Box');
                   handleClick();
+                }}
+              />
+            </Tooltip>
+            <Tooltip content="Delete Area" direction="right">
+              <MaterialIcon
+                name="delete_outline"
+                className="naxatw-text-icon-sm material icons naxatw-text-red-500"
+                wrapperClassName={`naxatw-icon-btn !naxatw-pl-2.5 naxatw-icon-btn-sm naxatw-cursor-pointer naxatw-border naxatw-border-grey-400 naxatw-bg-white `}
+                onIconClick={() => {
+                  // setSelectedGeomType('Box');
+                  handleDelete();
                 }}
               />
             </Tooltip>
@@ -148,14 +185,22 @@ export default function MapSection({
       >
         <LayerSwitcherControl />
         <Scalebar />
-        {geojson && <MapVectorLayer geojson={geojson} zoomToLayer />}
-        {formValues?.id &&
+        {fileUploadGeojson && formValues.location_type === 'File Upload' && (
+          <MaskedLayer geojson={fileUploadGeojson} zoomToLayer />
+        )}
+        {/* {formValues?.id &&
           (formValues?.file || project?.location_type === 'Custom Draw') && (
             <MapVectorTileLayer
               url={`${API_URL}projects/project_location_vectortile/{z}/{x}/{y}/?project=${formValues?.id}`}
               authToken={localStorage.getItem('userToken')}
             />
-          )}
+          )} */}
+
+        {projectGeojson &&
+          project?.location_type === formValues?.location_type &&
+          showLayer && <MaskedLayer geojson={projectGeojson} />}
+
+        {drawnGeojson && <MaskedLayer geojson={drawnGeojson} />}
 
         {locationType === 'Custom Draw' && (
           <CustomAddFeature
@@ -172,6 +217,7 @@ export default function MapSection({
             onDrawFinish={geojsonx => {
               setDrawComplete(true);
               setRedraw(false);
+              setDrawnGeojson(geojsonx);
               const wktString = stringify(geojsonx);
               dispatch(setDrawnGeojsonData(wktString));
             }}

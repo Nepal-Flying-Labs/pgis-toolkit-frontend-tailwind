@@ -17,6 +17,7 @@ import {
   updateInvitedUserStatus,
   organizationById,
   updateOrganization,
+  getProjectGeojson,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
@@ -358,6 +359,17 @@ export function* deleteProjectRequest({ id, payload }) {
   }
 }
 
+export function* getProjectGeojsonRequest({ params }) {
+  try {
+    const response = yield call(getProjectGeojson, params);
+    yield put(
+      organizationDashboardActions.getProjectGeojsonSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.getProjectGeojsonFailure());
+  }
+}
+
 function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
@@ -439,6 +451,10 @@ function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.DELETE_PROJECT_REQUEST,
     withLoader(withErrorHandler(deleteProjectRequest)),
+  );
+  yield takeLatest(
+    Types.GET_PROJECT_GEOJSON_REQUEST,
+    withLoader(getProjectGeojsonRequest),
   );
 }
 

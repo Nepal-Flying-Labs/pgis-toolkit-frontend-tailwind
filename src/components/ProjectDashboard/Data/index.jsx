@@ -10,6 +10,7 @@ import { isEmpty } from '@Utils/commonUtils';
 import Button from '@Components/common/Button/index';
 import NoDataYet from './NoDataYet';
 import LayerList from './LayerList';
+import Tooltip from '@Components/common/Tooltip/index';
 
 const { getProjectLayersRequest, checkUploadStatusRequest } =
   ProjectDashboardCreators;
@@ -63,9 +64,9 @@ export default function Data() {
       title: 'Import from OSM',
       description:
         'The selected data will be downloaded from OSM. But the downloaded data will be filled.',
-      onClick: () => {
-        dispatch(toggleModal('import-osm'));
-      },
+      // onClick: () => {
+      //   dispatch(toggleModal('import-osm'));
+      // },
     },
     {
       id: 3,
@@ -114,29 +115,37 @@ export default function Data() {
       </div>
 
       <div className="naxatw-space-y-2">
-        <h4 className="naxatw-text-grey-800">Please upload your dataset</h4>
-        <p className="naxatw-text-body-lg">
+        <h4 className="naxatw-text-grey-800">
+          USAFIRI allows you to upload datasets from multiple sources
+        </h4>
+        {/* <p className="naxatw-text-body-lg">
           Download Datasets for Field Data Collection
-        </p>
+        </p> */}
       </div>
 
       <div className="naxatw-py-6 naxatw-flex naxatw-gap-3">
         {uploadMethods.map(({ id, icon, title, description, onClick }) => (
-          <div
-            key={id}
-            className="naxatw-w-fit naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-p-5 naxatw-cursor-pointer hover:naxatw-bg-grey-100 "
-            onClick={onClick}
+          <Tooltip
+            content={`${id === 2 ? 'The feature is coming soon' : title}`}
           >
-            <div className="naxatw-flex naxatw-gap-5 naxatw-items-center ">
-              <figure>
-                <img height={80} width={80} src={icon} alt="uploadx" />
-              </figure>
-              <div>
-                <h5 className="naxatw-text-grey-800 naxatw-mb-2">{title}</h5>
-                <p className="naxatw-text-body-md">{description}</p>
+            <div
+              key={id}
+              className={`${
+                id === 2 ? 'naxatw-bg-grey-100 naxatw-cursor-not-allowed' : ''
+              } naxatw-w-fit naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-p-5 naxatw-cursor-pointer hover:naxatw-bg-grey-100 `}
+              onClick={onClick}
+            >
+              <div className="naxatw-flex naxatw-gap-5 naxatw-items-center ">
+                <figure>
+                  <img height={80} width={80} src={icon} alt="uploadx" />
+                </figure>
+                <div>
+                  <h5 className="naxatw-text-grey-800 naxatw-mb-2">{title}</h5>
+                  <p className="naxatw-text-body-md">{description}</p>
+                </div>
               </div>
             </div>
-          </div>
+          </Tooltip>
         ))}
       </div>
 

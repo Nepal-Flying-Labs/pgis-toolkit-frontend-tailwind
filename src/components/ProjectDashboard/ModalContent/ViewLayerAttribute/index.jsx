@@ -110,15 +110,17 @@ export default function ViewLayerAttribute() {
 
   useEffect(() => {
     if (modalContent !== 'view-layer-attribute') return;
-    dispatch(
-      getLayerAttributeRequest({
-        layer: selectedLayer.id,
-        search: searchText,
-        page: currentPage,
-        limit: rowPerPage,
-        ordering,
-      }),
-    );
+    if (selectedLayer) {
+      dispatch(
+        getLayerAttributeRequest({
+          layer: selectedLayer?.id,
+          search: searchText,
+          page: currentPage,
+          limit: rowPerPage,
+          ordering,
+        }),
+      );
+    }
   }, [
     dispatch,
     selectedLayer,
@@ -131,15 +133,17 @@ export default function ViewLayerAttribute() {
 
   useEffect(() => {
     if (modalContent !== 'view-query-attribute') return;
-    dispatch(
-      getQueryAttributeRequest({
-        layer: selectedData.id,
-        search: searchText,
-        page: currentPage,
-        limit: rowPerPage,
-        ordering,
-      }),
-    );
+    if (selectedData) {
+      dispatch(
+        getQueryAttributeRequest({
+          layer: selectedData.id,
+          search: searchText,
+          page: currentPage,
+          limit: rowPerPage,
+          ordering,
+        }),
+      );
+    }
   }, [
     dispatch,
     selectedData,

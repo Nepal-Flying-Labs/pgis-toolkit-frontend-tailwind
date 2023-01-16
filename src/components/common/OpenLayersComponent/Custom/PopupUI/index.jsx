@@ -34,7 +34,7 @@ export default function PopupUI({ data = {} }) {
             className="naxatw-flex naxatw-items-center naxatw-text-grey-900"
           >
             <p className="naxatw-w-1/2 naxatw-text-grey-900">{key}</p>
-            <p className="naxatw-text-grey-900">
+            <p className="naxatw-text-grey-900 naxatw-w-1/2">
               {popupData[key]?.toString() || '-'}
             </p>
           </li>

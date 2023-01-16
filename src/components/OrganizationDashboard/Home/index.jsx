@@ -16,7 +16,7 @@ export default function Home() {
       dispatch(getUsersRequest({ organization: organizationId }));
   }, [dispatch, organizationId, users]);
   return (
-    <div className="naxatw-h-[calc(100vh-10px)] naxatw-bg-grey-100 naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-x-5 naxatw-pt-3 naxatw-px-10">
+    <div className="naxatw-h-[calc(100vh-4.375rem)] naxatw-bg-grey-100 naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-x-5 naxatw-pt-3 naxatw-px-10">
       <OrganizationInfo />
       <UserInfo />
     </div>

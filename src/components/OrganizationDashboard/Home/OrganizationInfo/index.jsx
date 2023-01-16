@@ -15,7 +15,7 @@ const OrganizationInfo = () => {
   );
   // console.log('org details ', organizationDetails);
   return (
-    <div className="naxatw-w-full naxatw-bg-white naxatw-rounded-xl naxatw-h-[calc(100vh-5rem)] naxatw-border naxatw-border-[#D7D7D7]">
+    <div className="naxatw-w-full naxatw-bg-white naxatw-rounded-xl naxatw-h-[calc(100vh-5rem)] naxatw-border naxatw-border-[#D7D7D7] naxatw-mb-5 md:naxatw-mb-0">
       <div className="naxatw-h-[calc(100vh-5.35rem)] naxatw-overflow-y-auto naxatw-overflow-hidden scrollbar">
         {/* Header */}
         <div className="naxatw-p-7  naxatw-rounded-t-lg naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-x-5">

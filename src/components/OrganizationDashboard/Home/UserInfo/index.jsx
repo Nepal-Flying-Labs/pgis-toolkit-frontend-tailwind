@@ -58,7 +58,7 @@ const UserInfo = () => {
         <div className="naxatw-py-3 naxatw-px-5 naxatw-flex naxatw-items-center naxatw-gap-x-2">
           <Searchbar
             isSmall
-            className="md:naxatw-w-[220px] naxatw-w-[290px] naxatw-bg-grey-100"
+            className="md:naxatw-w-[220px] sm:naxatw-w-[400px] naxatw-w-full naxatw-bg-grey-100"
             value={searchTerm}
             onChange={e => setSearchTErm(e.target.value)}
           />

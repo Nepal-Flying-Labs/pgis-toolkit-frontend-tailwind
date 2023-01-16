@@ -88,14 +88,32 @@ export default function MapSection({
     setTimeout(() => setRedraw(true), 100);
   };
 
+  const handleDelete = () => {
+    const layers = map.getLayers().getArray();
+    const vectorLayer = layers.filter(layer => layer instanceof VectorLayer);
+    vectorLayer.forEach(layer => {
+      map.removeLayer(layer);
+    });
+    const vectorTileLayer = layers.filter(
+      layer => layer instanceof VectorTileLayer,
+    );
+    vectorTileLayer.forEach(layer => {
+      map.removeLayer(layer);
+    });
+    setRedraw(false);
+    setDrawComplete(false);
+    dispatch(setDrawnGeojsonData(null));
+    // setTimeout(() => setRedraw(true), 100);
+  };
+
   return (
     <div className="naxatw-w-full naxatw-relative">
       {locationType === 'Custom Draw' && (
-        <div className="naxatw-flex naxatw-gap-x-4 naxatw-items-center naxatw-h-[40px] naxatw-my-2 naxatw-absolute naxatw-z-[9999999] naxatw-right-1 naxatw-top-5">
-          <div className="naxatw-flex naxatw-flex-col">
+        <div className="naxatw-flex naxatw-gap-x-4 naxatw-items-center naxatw-h-[40px] naxatw-my-2 naxatw-absolute naxatw-z-[9999999] naxatw-left-5 naxatw-top-10">
+          <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-1">
             <Tooltip content="Draw Polygon" direction="right">
               <div
-                className="naxatw-p-3 naxatw-h-[48px] naxatw-bg-white naxatw-border naxatw-border-grey-400 naxatw-w-[48px]
+                className="naxatw-p-3 naxatw-h-[40px] naxatw-bg-white naxatw-border naxatw-border-grey-400 naxatw-w-[40px]
                  hover:naxatw-bg-[#F5F5F5] naxatw-rounded-lg naxatw-cursor-pointer"
                 onClick={() => {
                   setSelectedGeomType('Polygon');
@@ -104,7 +122,7 @@ export default function MapSection({
               >
                 <img
                   src={polygonIcon}
-                  className="naxatw-w-6 naxatw-h-6"
+                  className="naxatw-w-4 naxatw-h-4"
                   alt="polygon"
                 />
               </div>
@@ -124,13 +142,24 @@ export default function MapSection({
             <Tooltip content="Draw rectangle" direction="right">
               <MaterialIcon
                 name="rectangle"
-                className="naxatw-text-icon-md material-symbols-outlined"
-                wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer naxatw-border naxatw-border-grey-400 naxatw-bg-white ${
+                className="naxatw-text-icon-sm material-symbols-outlined"
+                wrapperClassName={`naxatw-icon-btn !naxatw-pl-2.5 naxatw-icon-btn-sm naxatw-cursor-pointer naxatw-border naxatw-border-grey-400 naxatw-bg-white ${
                   selectedGeomType === 'Box' ? 'naxatw-bg-gray-100' : ''
                 }`}
                 onIconClick={() => {
                   setSelectedGeomType('Box');
                   handleClick();
+                }}
+              />
+            </Tooltip>
+            <Tooltip content="Delete Area" direction="right">
+              <MaterialIcon
+                name="delete_outline"
+                className="naxatw-text-icon-sm material icons naxatw-text-red-500"
+                wrapperClassName={`naxatw-icon-btn !naxatw-pl-2.5 naxatw-icon-btn-sm naxatw-cursor-pointer naxatw-border naxatw-border-grey-400 naxatw-bg-white `}
+                onIconClick={() => {
+                  // setSelectedGeomType('Box');
+                  handleDelete();
                 }}
               />
             </Tooltip>

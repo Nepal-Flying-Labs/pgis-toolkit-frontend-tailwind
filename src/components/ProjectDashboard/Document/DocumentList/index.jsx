@@ -127,8 +127,8 @@ function DocumentList() {
 
   return (
     <div className="">
-      <div className="naxatw-py-2 naxatw-flex naxatw-items-center naxatw-justify-between">
-        <div className="naxatw-flex naxatw-items-center naxatw-w-60 naxatw-mt-4 ">
+      <div className="naxatw-py-1 naxatw-flex naxatw-items-center naxatw-justify-between">
+        <div className="naxatw-flex naxatw-items-center naxatw-w-60">
           <Searchbar
             isSmall
             placeholder="Search"
@@ -138,7 +138,7 @@ function DocumentList() {
         </div>
         <div className="">
           <Button
-            className="naxatw-btn-secondary naxatw-btn-noborder "
+            className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder "
             iconLeft="download"
             isLoading={isDownloading}
             onClick={handleDownloadAll}

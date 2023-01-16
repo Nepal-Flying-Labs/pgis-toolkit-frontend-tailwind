@@ -621,6 +621,8 @@ const handleCheckbox = (state, action) =>
     selectedData.checked = checked;
   });
 
+const resetRouteAnalysisState = () => ({ ...initialState });
+
 const applyRouteAnalysisSuccess = (state, action) =>
   produce(state, draft => {
     draft.analysisTaskId = action.payload.task_id;
@@ -724,6 +726,7 @@ const routeAnalysisReducer = createReducer(initialState, {
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
   [Types.SET_RESULTS_STATE]: setResultsState,
   [Types.HANDLE_CHECKBOX]: handleCheckbox,
+  [Types.RESET_ROUTE_ANALYSIS_STATE]: resetRouteAnalysisState,
   [Types.APPLY_ROUTE_ANALYSIS_SUCCESS]: applyRouteAnalysisSuccess,
   [Types.CHECK_PROCESSING_STATUS_SUCCESS]: checkProcessingStatusSuccess,
   [Types.HANDLE_ROUTE_CHECKBOX]: handleRouteCheckbox,

@@ -7,6 +7,7 @@ export const { Types, Creators } = createActions(
     setResultsState: ['payload'],
     handleCheckbox: ['payload'],
     handleRouteCheckbox: ['payload'],
+    resetRouteAnalysisState: ['payload'],
 
     applyRouteAnalysisRequest: ['payload'],
     applyRouteAnalysisSuccess: ['payload'],

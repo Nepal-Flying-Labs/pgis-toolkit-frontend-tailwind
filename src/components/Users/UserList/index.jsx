@@ -221,7 +221,7 @@ const UserList = () => {
       </div>
       <div className="naxatw-mt-3 ">
         <div
-          style={{ height: `calc(100vh - 25rem)` }}
+          style={{ height: `calc(100vh - 23rem)` }}
           className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative"
         >
           {!loading ? (

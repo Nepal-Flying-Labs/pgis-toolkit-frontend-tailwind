@@ -21,11 +21,6 @@ const roles = [
     value: '2',
     name: 'Organization Admin',
   },
-  {
-    id: 3,
-    value: '3',
-    name: 'Medical Assistant',
-  },
 ];
 
 const UserInfo = () => {

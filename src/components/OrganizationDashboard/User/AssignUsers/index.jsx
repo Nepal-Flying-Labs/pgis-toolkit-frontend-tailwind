@@ -335,7 +335,7 @@ const AssignUsers = () => {
                       className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
                       key={roles.id}
                       id={roles.id}
-                      label={roles.name?.replaceAll('_', ' ')?.toLowerCase()}
+                      label={roles.name?.replaceAll('_', ' ')}
                       onClick={() => handleCheckboxClick(roles)}
                       checked={roles.checked}
                     />
@@ -352,7 +352,7 @@ const AssignUsers = () => {
               <Searchbar
                 isSmall
                 className="naxatw-h-[40px] naxatw-bg-grey-100"
-                placeholder="Search Projects"
+                placeholder="Search organization/project"
                 value={projectSearchText}
                 onChange={e => setProjectSearchText(e.target.value)}
               />
@@ -377,10 +377,11 @@ const AssignUsers = () => {
                         />
                       ))
                   ) : (
-                    <div className="naxatw-h-full naxatw-w-full naxatw-flex naxatw-items-center naxatw-justify-center">
-                      <span className="naxatw-text-body-lg ">
-                        Select User Role
-                      </span>
+                    <div className="naxatw-h-full naxatw-w-full naxatw-flex naxatw-items-center naxatw-justify-center naxatw-px-10">
+                      <p className="naxatw-text-body-lg ">
+                        Please select the user role before assigning
+                        organization/projects.
+                      </p>
                     </div>
                   )
                 ) : (

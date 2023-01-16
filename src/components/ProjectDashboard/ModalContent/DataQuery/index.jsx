@@ -178,7 +178,7 @@ export default function DataQuery() {
       >
         <div className="">
           <div className="naxatw-space-y-2">
-            <label className="naxatw-label">
+            <label className="naxatw-label naxatw-mt-5">
               Select the layer you want to query
             </label>
             <Select
@@ -300,7 +300,7 @@ export default function DataQuery() {
                     readOnly
                   />
                   <Button
-                    className="naxatw-btn naxatw-btn-sm naxatw-btn-secondary naxatw-btn-noborder naxatw-h-fit"
+                    className={`${btnClassname} naxatw-ml-1 naxatw-btn-link`}
                     onClick={handleBackspace}
                   >
                     <i className="material-symbols-outlined">backspace</i>

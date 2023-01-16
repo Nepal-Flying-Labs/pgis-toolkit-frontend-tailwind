@@ -131,7 +131,7 @@ export default function StepTwo() {
                                 id={id}
                                 type="checkbox"
                                 className="naxatw-min-w-[1rem] naxatw-min-h-[1rem]
-                              naxatw-accent-grey-800 naxatw-cursor-pointer"
+                                  naxatw-accent-grey-800 naxatw-cursor-pointer"
                                 checked={errorStates[layer.id].checked}
                                 onChange={e => {
                                   const { checked } = e.target;

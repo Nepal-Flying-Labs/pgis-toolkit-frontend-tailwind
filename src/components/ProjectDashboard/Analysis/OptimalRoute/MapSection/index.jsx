@@ -31,6 +31,7 @@ import { analysisHeaderHeight } from '@src/constants';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import { apiURL } from '@Services';
 import HelpBox from './HelpBox';
+import RoutePopup from './RoutePopup';
 
 const { setDataInputState, setResultsState } = RouteAnalysisCreators;
 
@@ -215,6 +216,8 @@ export default function MapSection() {
             style={{ ...destinationPointStyles }}
           />
         )}
+
+        <RoutePopup />
 
         <MapFooter loading={isMapLoading} />
       </MapComponent>

@@ -2,9 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-export default function Toggle({ id, name, checked, onChange, isSm }) {
+export default function Toggle({
+  id,
+  name,
+  checked,
+  onChange,
+  isSm,
+  className,
+}) {
   return (
-    <label className="naxatw-toggle-label">
+    <label className={`naxatw-toggle-label ${className}`}>
       <input
         type="checkbox"
         id={id}
@@ -31,6 +38,7 @@ Toggle.defaultProps = {
   checked: false,
   isSm: false,
   onChange: () => {},
+  className: '',
 };
 
 Toggle.propTypes = {
@@ -39,4 +47,5 @@ Toggle.propTypes = {
   checked: PropTypes.bool,
   isSm: PropTypes.bool,
   onChange: PropTypes.func,
+  className: PropTypes.string,
 };

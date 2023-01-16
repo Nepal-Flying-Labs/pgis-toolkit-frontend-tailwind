@@ -117,7 +117,7 @@ export default function DataInput() {
       obstacles: JSON.stringify(selectedObstacles),
       name: outputName,
       project: projectId,
-      type: 'Optimum Path Analysis',
+      type: 'optimum_route',
     };
     dispatch(applyRouteAnalysisRequest(payloadData));
   };

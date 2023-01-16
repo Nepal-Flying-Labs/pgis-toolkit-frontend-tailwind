@@ -158,7 +158,7 @@ export default function MapSection() {
                 authToken={localStorage.getItem('userToken')}
                 visibleOnMap={item.checked}
                 style={item.style}
-                zIndex={2}
+                zIndex={item.is_optimum ? 3 : 2}
                 // properties={{ layerId: selectedLayer.id }}
               />
             )),
@@ -175,8 +175,8 @@ export default function MapSection() {
                   }&ids=${obstacle.feature_mirror_ids.join(',')}`}
                   authToken={localStorage.getItem('userToken')}
                   visibleOnMap
-                  style={item.style}
-                  zIndex={3}
+                  style={obstacle.style}
+                  zIndex={4}
                   // properties={{ layerId: selectedLayer.id }}
                 />
               )),

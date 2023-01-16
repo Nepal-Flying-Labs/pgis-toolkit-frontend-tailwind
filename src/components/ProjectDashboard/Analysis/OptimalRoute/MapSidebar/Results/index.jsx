@@ -1,17 +1,17 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { Creators } from '@Actions/routeAnalysis';
+import { Creators } from '@Actions/routeAnalysis';
 import { analysisHeaderHeight } from '@src/constants';
 import Accordion from '@Components/common/Accordion';
 import DropdownOptions from '@Components/common/DropdownOptions';
 
-// const {} = Creators;
+const { setResultsState } = Creators;
 
 export default function Results() {
   const analysisResults = useSelector(
     state => state.routeAnalysis.results.analysisResults,
   );
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const dropdownOptions = [
     {
@@ -23,7 +23,11 @@ export default function Results() {
         </span>
       ),
       onClick: data => {
-        // dispatch(setZoomToLayerId(data.id));
+        dispatch(
+          setResultsState({
+            zoomToRouteId: data.id,
+          }),
+        );
       },
     },
     {
@@ -82,7 +86,7 @@ export default function Results() {
                     />
                     <h5 className="naxatw-text-grey-800">{result.name}</h5>
                   </div>
-                  <DropdownOptions options={dropdownOptions} />
+                  <DropdownOptions options={dropdownOptions} data={result} />
                 </div>
               </div>
             }

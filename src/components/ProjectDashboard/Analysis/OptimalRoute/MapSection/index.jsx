@@ -32,7 +32,7 @@ import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/la
 import { apiURL } from '@Services';
 import HelpBox from './HelpBox';
 
-const { setDataInputState } = RouteAnalysisCreators;
+const { setDataInputState, setResultsState } = RouteAnalysisCreators;
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -55,10 +55,34 @@ export default function MapSection() {
   const analysisResults = useSelector(
     state => state.routeAnalysis.results.analysisResults,
   );
+  const zoomToRouteId = useSelector(
+    state => state.routeAnalysis.results.zoomToRouteId,
+  );
+
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [Types.GET_PROJECT_GEOJSON_REQUEST]),
   );
   const dispatch = useDispatch();
+
+  // zoom to road network layer on initial map load
+  useEffect(() => {
+    if (!map || !zoomToRouteId) return;
+    const bbox = analysisResults.find(item => item.id === zoomToRouteId)?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 2500,
+        constrainResolution: true,
+      });
+      dispatch(
+        setResultsState({
+          zoomToRouteId: null,
+        }),
+      );
+    }
+  }, [map, zoomToRouteId, analysisResults, dispatch]);
 
   // zoom to road network layer on initial map load
   useEffect(() => {

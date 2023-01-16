@@ -4,6 +4,7 @@ export const { Types, Creators } = createActions(
   {
     setRouteAnalysisState: ['payload'],
     setDataInputState: ['payload'],
+    setResultsState: ['payload'],
     handleCheckbox: ['payload'],
 
     copyDataCleaningStateRequest: null,

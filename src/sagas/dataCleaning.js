@@ -170,10 +170,14 @@ export function* startAnalysisRequest({ params }) {
     const { selectedRoadLayer, selectedObstacleLayers } = yield select(
       state => state.dataCleaning.optimalRoute,
     );
+    console.log(selectedObstacleLayers, 'selectedObstacleLayersx');
     yield put(
       routeAnalysisActions.setRouteAnalysisState({
         roadNetworkLayer: selectedRoadLayer,
-        obstacleLayers: selectedObstacleLayers,
+        obstacleLayers: selectedObstacleLayers.map(item => ({
+          ...item,
+          checked: false,
+        })),
       }),
     );
     yield put(

@@ -8,10 +8,6 @@ export const { Types, Creators } = createActions(
     handleCheckbox: ['payload'],
     handleRouteCheckbox: ['payload'],
 
-    copyDataCleaningStateRequest: null,
-    copyDataCleaningStateSuccess: ['payload'],
-    copyDataCleaningStateFailure: null,
-
     applyRouteAnalysisRequest: ['payload'],
     applyRouteAnalysisSuccess: ['payload'],
     applyRouteAnalysisFailure: null,

@@ -43,3 +43,6 @@ export const updateOrganization = (id, payload) =>
 
 export const organizationById = id =>
   authenticated(api).get(`/projects/organization/${id}/`);
+
+export const getProjectGeojson = params =>
+  authenticated(api).get(`/projects/project_location_geojson/`, { params });

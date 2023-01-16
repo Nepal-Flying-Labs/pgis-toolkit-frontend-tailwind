@@ -109,6 +109,12 @@ export const { Types, Creators } = createActions(
     deleteProjectFailure: null,
 
     toggleSidebar: null,
+
+    getProjectGeojsonRequest: ['params'],
+    getProjectGeojsonSuccess: ['payload'],
+    getProjectGeojsonFailure: null,
+
+    setFileUploadGeojson: ['payload'],
   },
   { prefix: 'organizationDashboard/' },
 );

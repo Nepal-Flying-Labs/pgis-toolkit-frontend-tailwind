@@ -29,6 +29,7 @@ import polygonIcon from '@Assets/images/icons8-polygon-80.png';
 import { Creators } from '@Actions/organizationDashboard';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import Tooltip from '@Components/common/Tooltip/index';
+import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 
 const { setDrawnGeojsonData } = Creators;
 
@@ -44,9 +45,19 @@ export default function MapSection({
   const [selectedGeomType, setSelectedGeomType] = useState('');
   const [redraw, setRedraw] = useState(false);
   const [drawComplete, setDrawComplete] = useState(false);
+  const [drawnGeojson, setDrawnGeojson] = useState(null);
+  const [showLayer, setShowLayer] = useState(true);
+
+  const fileUploadGeojson = useSelector(
+    state => state.organizationDashboard.individualProject.fileUploadGeojson,
+  );
 
   const project = useSelector(
     state => state.organizationDashboard.individualProject.project,
+  );
+
+  const projectGeojson = useSelector(
+    state => state.organizationDashboard.individualProject.projectGeojson,
   );
 
   const { mapRef, map } = useOLMap({
@@ -68,6 +79,12 @@ export default function MapSection({
         constrainResolution: true,
       });
     }
+    if (
+      formValues?.location_type === 'File Upload' &&
+      !formValues?.file?.existedData
+    ) {
+      setShowLayer(false);
+    }
   }, [map, formValues]);
 
   const handleClick = () => {
@@ -82,6 +99,8 @@ export default function MapSection({
     vectorTileLayer.forEach(layer => {
       map.removeLayer(layer);
     });
+    setShowLayer(false);
+    setDrawnGeojson(false);
     setRedraw(false);
     setDrawComplete(false);
     dispatch(setDrawnGeojsonData(null));
@@ -100,6 +119,7 @@ export default function MapSection({
     vectorTileLayer.forEach(layer => {
       map.removeLayer(layer);
     });
+    setDrawnGeojson(false);
     setRedraw(false);
     setDrawComplete(false);
     dispatch(setDrawnGeojsonData(null));
@@ -126,18 +146,6 @@ export default function MapSection({
                   alt="polygon"
                 />
               </div>
-
-              {/* <MaterialIcon
-                name="polyline"
-                className="naxatw-text-icon-md"
-                wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer ${
-                  selectedGeomType === 'Polygon' ? 'naxatw-bg-[#F5F5F5]' : ''
-                }`}
-                onIconClick={() => {
-                  setSelectedGeomType('Polygon');
-                  handleClick();
-                }}
-              /> */}
             </Tooltip>
             <Tooltip content="Draw rectangle" direction="right">
               <MaterialIcon
@@ -177,14 +185,22 @@ export default function MapSection({
       >
         <LayerSwitcherControl />
         <Scalebar />
-        {geojson && <MapVectorLayer geojson={geojson} zoomToLayer />}
-        {formValues?.id &&
+        {fileUploadGeojson && formValues.location_type === 'File Upload' && (
+          <MaskedLayer geojson={fileUploadGeojson} zoomToLayer />
+        )}
+        {/* {formValues?.id &&
           (formValues?.file || project?.location_type === 'Custom Draw') && (
             <MapVectorTileLayer
               url={`${API_URL}projects/project_location_vectortile/{z}/{x}/{y}/?project=${formValues?.id}`}
               authToken={localStorage.getItem('userToken')}
             />
-          )}
+          )} */}
+
+        {projectGeojson &&
+          project?.location_type === formValues?.location_type &&
+          showLayer && <MaskedLayer geojson={projectGeojson} />}
+
+        {drawnGeojson && <MaskedLayer geojson={drawnGeojson} />}
 
         {locationType === 'Custom Draw' && (
           <CustomAddFeature
@@ -201,6 +217,7 @@ export default function MapSection({
             onDrawFinish={geojsonx => {
               setDrawComplete(true);
               setRedraw(false);
+              setDrawnGeojson(geojsonx);
               const wktString = stringify(geojsonx);
               dispatch(setDrawnGeojsonData(wktString));
             }}

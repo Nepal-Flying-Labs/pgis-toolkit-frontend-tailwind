@@ -15,6 +15,7 @@ const {
   getIndividualProjectRequest,
   getContactPersonRequest,
   getCountryListRequest,
+  getProjectGeojsonRequest,
 } = Creators;
 
 const getPage = (page, setPage) => {
@@ -72,6 +73,7 @@ const ProjectSetup = () => {
     dispatch(getIndividualProjectRequest(projectId));
     dispatch(getContactPersonRequest({ project: projectId, type: 'project' }));
     dispatch(getCountryListRequest());
+    dispatch(getProjectGeojsonRequest({ project: projectId }));
   }, [dispatch, projectId]);
 
   return (

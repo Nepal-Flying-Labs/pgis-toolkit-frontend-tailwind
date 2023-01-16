@@ -57,6 +57,7 @@ const UserList = () => {
   const users = useSelector(state => state.projectDashboard.user.list);
   const userRole = useSelector(state => state.projectDashboard.user.userRole);
   const ordering = useSelector(state => state.projectDashboard.user.ordering);
+  const selectedData = useSelector(state => state.projectDashboard.user.item);
   const invitationLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.UPDATE_INVITED_USER_STATUS_REQUEST,
@@ -91,6 +92,7 @@ const UserList = () => {
         </span>
       ),
       onClick: data => {
+        dispatch(setUserState({ item: data }));
         dispatch(updateUserStatusRequest(data.id, { active: !data.active }));
       },
     },
@@ -119,6 +121,7 @@ const UserList = () => {
         </span>
       ),
       onClick: data => {
+        dispatch(setUserState({ item: data }));
         dispatch(
           updateInvitedUserStatusRequest(data.id, { status: 'Expired' }),
         );
@@ -133,6 +136,7 @@ const UserList = () => {
         </span>
       ),
       onClick: data => {
+        dispatch(setUserState({ item: data }));
         dispatch(resendInvitationRequest(data.id, { resend: true }));
       },
     },
@@ -395,7 +399,7 @@ const UserList = () => {
                   <Status
                     status={row.active}
                     invitationStatus={row.status || ''}
-                    isLoading={invitationLoading}
+                    isLoading={invitationLoading && row.id === selectedData?.id}
                   />
                 )}
               />

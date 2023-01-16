@@ -51,6 +51,7 @@ const UserList = () => {
   const dispatch = useDispatch();
   // const [byGroup, setByGroup] = useState('role');
   const users = useSelector(state => state.users.userData);
+  const selectedData = useSelector(state => state.users.item);
   const searchText = useSelector(state => state.users.searchText);
   const [rowPerPage, setRowPerPage] = useState(10);
   const invitationLoading = useSelector(state =>
@@ -87,6 +88,7 @@ const UserList = () => {
         </span>
       ),
       onClick: data => {
+        dispatch(setUserState({ item: data }));
         dispatch(updateUserStatusRequest(data.id, { active: !data.active }));
       },
     },
@@ -115,6 +117,7 @@ const UserList = () => {
         </span>
       ),
       onClick: data => {
+        dispatch(setUserState({ item: data }));
         dispatch(
           updateInvitedUserStatusRequest(data.id, { status: 'Expired' }),
         );
@@ -129,6 +132,7 @@ const UserList = () => {
         </span>
       ),
       onClick: data => {
+        dispatch(setUserState({ item: data }));
         dispatch(resendInvitationRequest(data.id, { resend: true }));
       },
     },
@@ -389,7 +393,7 @@ const UserList = () => {
                 dataFormat={row => (
                   <Status
                     status={row.active}
-                    isLoading={invitationLoading}
+                    isLoading={invitationLoading && row.id === selectedData?.id}
                     invitationStatus={row.status || ''}
                   />
                 )}

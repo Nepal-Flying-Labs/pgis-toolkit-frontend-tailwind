@@ -83,6 +83,7 @@ export default function Pagination({
             type="number"
             className="naxatw-input naxatw-w-[60px]"
             value={jump}
+            // eslint-disable-next-line consistent-return
             onChange={e => {
               const { value } = e.target;
               if (value <= maxPage) {

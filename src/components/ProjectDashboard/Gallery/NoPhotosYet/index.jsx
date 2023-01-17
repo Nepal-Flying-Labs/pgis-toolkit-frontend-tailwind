@@ -11,7 +11,7 @@ export default function NoPhotosYet() {
 
   return (
     <div className="naxatw-h-[calc(100vh-10rem)] naxatw-w-full naxatw-flex naxatw-items-center naxatw-justify-center">
-      <div className="naxatw-flex naxatw-flex-col naxatw-px-5 naxatw-py-10 naxatw-items-center">
+      <div className="naxatw-flex naxatw-flex-col naxatw-px-5 naxatw-py-10 naxatw-items-center -naxatw-mt-20">
         <img width={60} height={60} src={NoPhotoYetImg} alt="no-data-yet" />
         <h3 className="naxatw-mt-7 naxatw-font-bold">No Images yet</h3>
         <p className="naxatw-mt-2 naxatw-text-center naxatw-text-body-lg">

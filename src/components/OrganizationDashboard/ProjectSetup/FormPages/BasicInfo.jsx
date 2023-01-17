@@ -211,7 +211,7 @@ const BasicInfo = ({ setPage }) => {
             tabname !== 'settings' ? 'naxatw-text-center' : ''
           }`}
         >
-          As a user you cannot proceed forward with the basic setup.Fill up the
+          As a user you cannot proceed forward with the basic setup. Fill up the
           basic info form to proceed ahead
         </span>
       </div>

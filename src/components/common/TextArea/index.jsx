@@ -28,8 +28,9 @@ const TextArea = ({
         id={id}
         name={name}
         value={value || ''}
-        className={`naxatw-input naxatw-min-h-[80px]  ${className} naxatw-pr-6`}
+        className={`naxatw-input naxatw-min-h-[100px] naxatw-max-h-[200px] naxatw-overflow-y-auto scrollbar ${className} naxatw-pr-6`}
         onChange={onChange}
+        rows={5}
         disabled={disabled}
         {...rest}
       />

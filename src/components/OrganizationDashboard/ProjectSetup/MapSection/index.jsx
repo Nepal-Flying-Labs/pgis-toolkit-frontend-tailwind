@@ -215,8 +215,8 @@ export default function MapSection({
             geometryType={selectedGeomType}
             style={{
               ...defaultStyles,
-              lineColor: '#000000',
-              lineOpacity: 50,
+              // lineColor: '#000000',
+              lineOpacity: 100,
               fillColor: '#2C675A',
               fillOpacity: 0,
               lineThickness: 2,

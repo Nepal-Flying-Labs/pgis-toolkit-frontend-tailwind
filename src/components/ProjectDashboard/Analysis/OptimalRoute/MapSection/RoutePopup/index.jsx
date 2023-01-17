@@ -4,26 +4,32 @@ import { Creators } from '@Actions/routeAnalysis';
 import Toggle from '@Components/common/Toggle';
 import IconButton from '@Components/common/IconButton';
 
-const { getRoutePopupDataRequest, setRouteAnalysisState } = Creators;
+const { getRoutePopupDataRequest, setRouteAnalysisState, handleRouteCheckbox } =
+  Creators;
 
 export default function RoutePopup() {
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
-  const selectedRouteId = useSelector(
-    state => state.routeAnalysis.selectedRouteId,
-  );
+  const selectedRoute = useSelector(state => state.routeAnalysis.selectedRoute);
   const routePopupData = useSelector(
     state => state.routeAnalysis.routePopupData,
+  );
+  const analysisResults = useSelector(
+    state => state.routeAnalysis.results.analysisResults,
   );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!selectedRouteId) return;
-    dispatch(getRoutePopupDataRequest(selectedRouteId));
-  }, [dispatch, selectedRouteId]);
+    if (!selectedRoute?.id) return;
+    dispatch(getRoutePopupDataRequest(selectedRoute.id));
+  }, [dispatch, selectedRoute]);
 
-  if (!selectedRouteId) return '';
+  if (!selectedRoute) return '';
+
+  const getCheckedState = item => {
+    return item.checked;
+  };
 
   return (
     <div
@@ -42,7 +48,7 @@ export default function RoutePopup() {
           <IconButton
             name="close"
             onClick={() =>
-              dispatch(setRouteAnalysisState({ selectedRouteId: null }))
+              dispatch(setRouteAnalysisState({ selectedRoute: null }))
             }
           />
         </div>
@@ -73,7 +79,22 @@ export default function RoutePopup() {
             <React.Fragment key={item.layer_id}>
               <p>{item.layer_name}</p>
               <p>{item.count}</p>
-              <Toggle isSm className="naxatw-ml-auto" checked={item.checked} />
+              <Toggle
+                isSm
+                className="naxatw-ml-auto"
+                checked={getCheckedState(item)}
+                onChange={e => {
+                  dispatch(
+                    handleRouteCheckbox({
+                      resultId: selectedRoute.analysisId,
+                      routeId: selectedRoute.id,
+                      checked: e.target.checked,
+                      name: 'obstacle',
+                      obstacleId: item.layer_id,
+                    }),
+                  );
+                }}
+              />
             </React.Fragment>
           ))}
         </div>

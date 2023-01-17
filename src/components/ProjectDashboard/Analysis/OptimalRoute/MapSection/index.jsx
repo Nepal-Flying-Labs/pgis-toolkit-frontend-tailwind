@@ -23,6 +23,7 @@ import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
+import { obstacleLayersSelector } from '@Selectors/routeAnalysis';
 import {
   startPointStyles,
   destinationPointStyles,
@@ -62,7 +63,7 @@ export default function MapSection() {
   const zoomToRouteId = useSelector(
     state => state.routeAnalysis.results.zoomToRouteId,
   );
-
+  const obstacleLayers = useSelector(obstacleLayersSelector);
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [Types.GET_PROJECT_GEOJSON_REQUEST]),
   );
@@ -113,7 +114,14 @@ export default function MapSection() {
       }
       const properties = features[0].getProperties();
       if (properties.layer !== 'route') return;
-      dispatch(setRouteAnalysisState({ selectedRouteId: properties.id }));
+      dispatch(
+        setRouteAnalysisState({
+          selectedRoute: {
+            id: properties.id,
+            analysisId: properties.analysis_id,
+          },
+        }),
+      );
     });
   }, [map, dispatch]);
 
@@ -167,32 +175,23 @@ export default function MapSection() {
           ),
         )}
 
-        {analysisResults.map(result =>
-          result.routes.map(route =>
-            route.data.map(item =>
-              item.obstacles.map(obstacle =>
-                !isEmpty(obstacle.feature_mirror_ids) ? (
-                  <VectorTileLayer
-                    url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${
-                      obstacle.layer_id
-                    }&ids=${obstacle.feature_mirror_ids.join(',')}`}
-                    authToken={localStorage.getItem('userToken')}
-                    visibleOnMap
-                    style={{
-                      ...startPointStyles,
-                      fillColor: obstaclePointColor,
-                      circleRadius: 6,
-                    }}
-                    zIndex={4}
-                    // properties={{ layerId: selectedLayer.id }}
-                  />
-                ) : (
-                  ''
-                ),
-              ),
-            ),
-          ),
-        )}
+        {obstacleLayers.map(item => (
+          <VectorTileLayer
+            key={item.layer_id}
+            url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${
+              item.layer_id
+            }&ids=${item.feature_mirror_ids.join(',')}`}
+            authToken={localStorage.getItem('userToken')}
+            visibleOnMap
+            style={{
+              ...startPointStyles,
+              fillColor: obstaclePointColor,
+              circleRadius: 6,
+            }}
+            zIndex={4}
+            // properties={{ layerId: selectedLayer.id }}
+          />
+        ))}
 
         {analysisResults.map(result => (
           <React.Fragment key={result.id}>

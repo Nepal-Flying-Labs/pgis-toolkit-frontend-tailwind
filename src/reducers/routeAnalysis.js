@@ -29,7 +29,7 @@ import {
 //   obstacleLayers: [],
 //   analysisTaskId: null,
 //   analysisId: null,
-//   selectedRouteId: null,
+//   selectedRoute: null,
 //   routePopupData: null,
 // };
 
@@ -333,7 +333,7 @@ const initialState = {
   ],
   analysisTaskId: null,
   analysisId: null,
-  selectedRouteId: null,
+  selectedRoute: null,
   routePopupData: null,
 };
 
@@ -424,7 +424,8 @@ const checkProcessingStatusSuccess = (state, action) =>
 
 const handleRouteCheckbox = (state, action) =>
   produce(state, draft => {
-    const { resultId, routeId, dataId, checked, name } = action.payload;
+    const { resultId, routeId, dataId, obstacleId, checked, name } =
+      action.payload;
     const result = draft.results.analysisResults.find(
       item => item.id === resultId,
     );
@@ -436,6 +437,14 @@ const handleRouteCheckbox = (state, action) =>
           item.checked = checked;
         });
       });
+      return;
+    }
+    if (name === 'obstacle') {
+      const allRoutes = result.routes
+        .reduce((arr, item) => [...arr, ...item.data.map(i => i.obstacles)], [])
+        .flat();
+      const obstacle = allRoutes.find(item => item.layer_id === obstacleId);
+      obstacle.checked = checked;
       return;
     }
     const route = result.routes.find(item => item.id === routeId);

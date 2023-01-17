@@ -163,7 +163,10 @@ export default function UploadDataset() {
 
   return (
     <div>
-      <p>Note: System supports WGS84 Coordinate System only.</p>
+      <p className="naxatw-text-body-lg">
+        Note: The system currently supports datasets with WGS 84 Geographic
+        Coordinate System only.
+      </p>
 
       <div
         className="naxatw-mt-2 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-auto scrollbar naxatw-max-h-96"

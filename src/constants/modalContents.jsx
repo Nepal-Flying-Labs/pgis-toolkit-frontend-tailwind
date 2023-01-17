@@ -189,7 +189,7 @@ export function getModalContent(content) {
         title: 'Add WMS Layer',
         content: <AddWMSLayer />,
         subtitle:
-          'USAFIRI allows you to do different sorts of analysis with your map datasets. Below are some of the analysis functions we have in the tool at the moment.',
+          'To add a WMS layer to the system, please provide the WMS endpoint URL and the desired layer name.',
       };
     case 'manage-attributes':
       return {

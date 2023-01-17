@@ -53,7 +53,7 @@ const LocationInfo = () => {
                       {d.name} <span>, </span>
                     </span>
                   ))
-                : '-'}
+                : ''}
               {!isEmpty(locationCountry)
                 ? locationCountry.map((d, index) => (
                     <span key={d.id} className="naxatw-text-body-lg">

@@ -115,7 +115,7 @@ export default function LayerList() {
               '120px',
               '120px',
               '160px',
-              '50px',
+              '150px',
             ]}
             onBtnClick={row => {
               dispatch(setDataState({ selectedData: row }));
@@ -218,7 +218,7 @@ export default function LayerList() {
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <span className="naxatw-text-base">
+                <span className="naxatw-text-body-lg">
                   <Button className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder !naxatw-min-w-fit">
                     Add Field Data
                   </Button>
@@ -226,11 +226,11 @@ export default function LayerList() {
               )}
             />
             <TableHeader
-              dataField="recheck"
+              dataField="Data Quality"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <span className="naxatw-text-base">
+                <span className="naxatw-text-body-lg">
                   <Button className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder">
                     Recheck
                   </Button>

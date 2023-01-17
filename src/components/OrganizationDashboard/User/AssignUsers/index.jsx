@@ -12,7 +12,7 @@ import {
 } from '@Selectors/organizationDashboard';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Searchbar from '@Components/common/Searchbar/index';
-import MultiSelect from '@Components/common/MultiSelect/index';
+import CustomMultiSelect from '@Components/common/CustomMultiSelect/index';
 import Button from '@Components/common/Button/index';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import Spinner from '@Components/common/Spinner';
@@ -202,7 +202,7 @@ const AssignUsers = () => {
             <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
               Assign User
             </label>
-            <MultiSelect
+            <CustomMultiSelect
               options={uniqueUsers}
               placeholder="Choose User"
               field="full_name"
@@ -314,93 +314,97 @@ const AssignUsers = () => {
         )}
 
         {/* Select Roles and Project */}
-        <div className="naxatw-flex naxatw-gap-x-5">
-          <div className="naxatw-space-y-2 naxatw-pt-5 naxatw-basis-1/2">
-            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
-              Assign as
-            </label>
-            <div className="naxatw-space-y-2">
-              <Searchbar
-                isSmall
-                className="naxatw-h-[40px] naxatw-bg-grey-100"
-                placeholder="Search Role"
-                value={roleSearchText}
-                onChange={e => setRoleSearchText(e.target.value)}
-              />
-              <div className="naxatw-w-full naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7]  naxatw-py-2 naxatw-min-h-[200px] naxatw-max-h-[200px] naxatw-overflow-x-auto scrollbar">
-                {selectedRolesList
-                  .filter(i => i.name?.toLowerCase()?.includes(roleSearchText))
-                  .map(roles => (
-                    <Checkbox
-                      className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
-                      key={roles.id}
-                      id={roles.id}
-                      label={roles.name?.replaceAll('_', ' ')?.toLowerCase()}
-                      onClick={() => handleCheckboxClick(roles)}
-                      checked={roles.checked}
-                    />
-                  ))}
+        <div>
+          <div className="naxatw-flex naxatw-gap-x-5">
+            <div className="naxatw-space-y-2 naxatw-pt-5 naxatw-basis-1/2">
+              <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
+                Assign as
+              </label>
+              <div className="naxatw-space-y-2">
+                <Searchbar
+                  isSmall
+                  className="naxatw-h-[40px] naxatw-bg-grey-100"
+                  placeholder="Search Role"
+                  value={roleSearchText}
+                  onChange={e => setRoleSearchText(e.target.value)}
+                />
+                <div className="naxatw-w-full naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7]  naxatw-py-2 naxatw-min-h-[200px] naxatw-max-h-[200px] naxatw-overflow-x-auto scrollbar">
+                  {selectedRolesList
+                    .filter(i =>
+                      i.name?.toLowerCase()?.includes(roleSearchText),
+                    )
+                    .map(roles => (
+                      <Checkbox
+                        className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
+                        key={roles.id}
+                        id={roles.id}
+                        label={roles.name?.replaceAll('_', ' ')?.toLowerCase()}
+                        onClick={() => handleCheckboxClick(roles)}
+                        checked={roles.checked}
+                      />
+                    ))}
+                </div>
               </div>
+              {errors && <FormErrorMessage message={errors.group} />}
             </div>
-            {errors && <FormErrorMessage message={errors.group} />}
-          </div>
-          <div className="naxatw-space-y-2 naxatw-pt-5 naxatw-basis-1/2">
-            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
-              Assign to
-            </label>
-            <div className="naxatw-space-y-2">
-              <Searchbar
-                isSmall
-                className="naxatw-h-[40px] naxatw-bg-grey-100"
-                placeholder="Search Projects"
-                value={projectSearchText}
-                onChange={e => setProjectSearchText(e.target.value)}
-              />
-              <div className="naxatw-w-full naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-py-2 naxatw-max-h-[200px] naxatw-min-h-[200px] naxatw-h-[200px] naxatw-overflow-x-auto scrollbar">
-                {!userListLoading ? (
-                  selectedRolesList
-                    ?.map(list => list.checked)
-                    ?.includes(true) ? (
-                    selectedProjectList
-                      .filter(i =>
-                        i.name?.toLowerCase()?.includes(projectSearchText),
-                      )
-                      .map(project => (
-                        <Checkbox
-                          key={project.id}
-                          id={project.id}
-                          className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
-                          label={project.name}
-                          checked={project.checked}
-                          disabled={project.disabled}
-                          onClick={() => handleProjectCheckboxClick(project)}
-                        />
-                      ))
+            <div className="naxatw-space-y-2 naxatw-pt-5 naxatw-basis-1/2">
+              <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
+                Assign to
+              </label>
+              <div className="naxatw-space-y-2">
+                <Searchbar
+                  isSmall
+                  className="naxatw-h-[40px] naxatw-bg-grey-100"
+                  placeholder="Search Projects"
+                  value={projectSearchText}
+                  onChange={e => setProjectSearchText(e.target.value)}
+                />
+                <div className="naxatw-w-full naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-py-2 naxatw-max-h-[200px] naxatw-min-h-[200px] naxatw-h-[200px] naxatw-overflow-x-auto scrollbar">
+                  {!userListLoading ? (
+                    selectedRolesList
+                      ?.map(list => list.checked)
+                      ?.includes(true) ? (
+                      selectedProjectList
+                        .filter(i =>
+                          i.name?.toLowerCase()?.includes(projectSearchText),
+                        )
+                        .map(project => (
+                          <Checkbox
+                            key={project.id}
+                            id={project.id}
+                            className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
+                            label={project.name}
+                            checked={project.checked}
+                            disabled={project.disabled}
+                            onClick={() => handleProjectCheckboxClick(project)}
+                          />
+                        ))
+                    ) : (
+                      <div className="naxatw-h-full naxatw-w-full naxatw-flex naxatw-items-center naxatw-justify-center">
+                        <span className="naxatw-text-body-lg ">
+                          Select User Role
+                        </span>
+                      </div>
+                    )
                   ) : (
-                    <div className="naxatw-h-full naxatw-w-full naxatw-flex naxatw-items-center naxatw-justify-center">
-                      <span className="naxatw-text-body-lg ">
-                        Select User Role
-                      </span>
+                    <div className="naxatw-flex naxatw-h-full naxatw-items-center naxatw-justify-center">
+                      <Spinner className="naxatw-w-8 naxatw-h-8 naxatw-fill-grey-500" />
                     </div>
-                  )
-                ) : (
-                  <div className="naxatw-flex naxatw-h-full naxatw-items-center naxatw-justify-center">
-                    <Spinner className="naxatw-w-8 naxatw-h-8 naxatw-fill-grey-500" />
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="naxatw-mt-5 naxatw-flex naxatw-justify-center">
-          <Button
-            className="naxatw-w-[86px] naxatw-btn-primary naxatw-min-w-fit"
-            isLoading={loading}
-            loaderClassName="naxatw-fill-secondary-400"
-            onClick={handleSubmit}
-          >
-            {activeTab === 'invite' ? 'Invite and Assign' : 'Assign'}
-          </Button>
+          <div className="naxatw-mt-5 naxatw-flex naxatw-justify-center">
+            <Button
+              className="naxatw-w-[86px] naxatw-btn-primary naxatw-min-w-fit"
+              isLoading={loading}
+              loaderClassName="naxatw-fill-secondary-400"
+              onClick={handleSubmit}
+            >
+              {activeTab === 'invite' ? 'Invite and Assign' : 'Assign'}
+            </Button>
+          </div>
         </div>
       </div>
     </div>

@@ -54,36 +54,6 @@ const validateContactPerson = contact => {
   return true;
 };
 
-const validation = formValues => {
-  let errors = {};
-  if (
-    hasKey(formValues, 'location_type') &&
-    formValues.location_type === 'File Upload' &&
-    !formValues.file
-  ) {
-    errors.location = 'Please upload a file';
-  }
-
-  if (
-    hasKey(formValues, 'location_type') &&
-    formValues.location_type === 'Custom Draw' &&
-    !formValues.location_wkt
-  ) {
-    errors.location = 'Please draw area on map';
-  }
-
-  if (
-    !hasKey(formValues, 'location_type') &&
-    hasKey(formValues, 'file') &&
-    !formValues.file &&
-    !formValues.location_wkt
-  ) {
-    errors.location = 'Please upload a file';
-  }
-
-  return errors;
-};
-
 const Location = ({ page, setPage }) => {
   const { projectId, organizationId, tabname } = useParams();
   const dispatch = useDispatch();
@@ -110,6 +80,45 @@ const Location = ({ page, setPage }) => {
   const contactDetails = useSelector(
     state => state.organizationDashboard.individualProject.contactDetails,
   );
+
+  const validation = formValues => {
+    let error = {};
+    if (
+      hasKey(formValues, 'location_type') &&
+      formValues.location_type === 'File Upload' &&
+      !formValues.file
+    ) {
+      error.location = 'Please upload a file';
+    }
+
+    if (
+      hasKey(formValues, 'location_type') &&
+      formValues.location_type === 'Custom Draw' &&
+      !formValues.location_wkt
+    ) {
+      error.location = 'Please draw area on map';
+    }
+
+    if (
+      !hasKey(formValues, 'location_type') &&
+      hasKey(formValues, 'file') &&
+      !formValues.file &&
+      !formValues.location_wkt
+    ) {
+      error.location = 'Please upload a file';
+    }
+
+    if (
+      !project.file &&
+      project.location_type === 'File Upload' &&
+      !formValues.file &&
+      formValues.location_type !== 'Custom Draw'
+    ) {
+      error.location = 'Please Upload a file';
+    }
+
+    return error;
+  };
 
   const getFileType = file => {
     if (file) {

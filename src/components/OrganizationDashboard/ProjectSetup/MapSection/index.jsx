@@ -129,7 +129,7 @@ export default function MapSection({
   return (
     <div className="naxatw-w-full naxatw-relative">
       {locationType === 'Custom Draw' && (
-        <div className="naxatw-flex naxatw-gap-x-4 naxatw-items-center naxatw-h-[40px] naxatw-my-2 naxatw-absolute naxatw-z-[9999999] naxatw-left-5 naxatw-top-14">
+        <div className="naxatw-flex naxatw-gap-x-4 naxatw-items-center naxatw-h-[40px] naxatw-my-2 naxatw-absolute naxatw-z-[99999] naxatw-left-5 naxatw-top-14">
           <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-1">
             <Tooltip content="Draw Polygon" direction="right">
               <div

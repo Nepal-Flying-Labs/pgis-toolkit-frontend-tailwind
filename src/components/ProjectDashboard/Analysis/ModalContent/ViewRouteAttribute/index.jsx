@@ -1,14 +1,13 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators } from '@Actions/routeAnalysis';
+import { Creators, Types } from '@Actions/routeAnalysis';
 import Table, { TableHeader } from '@Components/common/CustomTable';
 import '@Components/OrganizationDashboard/User/Users/index.css';
-import TableSkeleton from '@Components/common/TableSkeleton/index';
+import TableSkeleton from '@Components/common/TableSkeleton';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { getAnalysisDataRequest } = Creators;
-
-const loading = false;
 
 export default function ViewRouteAttribute() {
   const dispatch = useDispatch();
@@ -17,6 +16,9 @@ export default function ViewRouteAttribute() {
   );
   const individualAnalysisData = useSelector(
     state => state.routeAnalysis.results.individualAnalysisData,
+  );
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.GET_ANALYSIS_DATA_REQUEST]),
   );
 
   useEffect(() => {
@@ -27,7 +29,9 @@ export default function ViewRouteAttribute() {
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-2 naxatw-w-full naxatw-h-full">
       <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative  naxatw-w-full naxatw-max-h-[calc(100vh-25rem)] naxatw-min-h-[calc(100vh-25rem)]">
-        {!loading ? (
+        {loading ? (
+          <TableSkeleton itemNumber={5} />
+        ) : (
           <Table
             data={individualAnalysisData || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
@@ -90,8 +94,6 @@ export default function ViewRouteAttribute() {
               )}
             />
           </Table>
-        ) : (
-          <TableSkeleton itemNumber={5} />
         )}
       </div>
     </div>

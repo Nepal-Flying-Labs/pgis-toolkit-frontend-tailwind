@@ -69,7 +69,7 @@ export default function Results() {
       <div
         className="naxatw-flex naxatw-flex-col naxatw-gap-y-5 naxatw-overflow-y-auto scrollbar"
         style={{
-          height: `calc(100vh - ${analysisHeaderHeight} - 7.5rem)`,
+          height: `calc(100vh - ${analysisHeaderHeight} - 3.5rem)`,
         }}
       >
         {analysisResults.map(result => (

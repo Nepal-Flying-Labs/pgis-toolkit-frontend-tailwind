@@ -136,7 +136,7 @@ export default function DrawTool({
 
   // handle add-feature click
   useEffect(() => {
-    if (drawType === 'add-feature') {
+    if (enable && drawType === 'add-feature') {
       const vectorLyr = new VectorLayer({
         source,
         zIndex: zIndex + 1,
@@ -148,7 +148,7 @@ export default function DrawTool({
       setVectorLayer(vectorLyr);
       setDrawType('add-feature');
     }
-  }, [drawType, map, zIndex, style]);
+  }, [enable, drawType, map, zIndex, style]);
 
   const handleDelete = () => {
     source.clear();

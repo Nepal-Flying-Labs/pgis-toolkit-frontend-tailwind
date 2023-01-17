@@ -163,6 +163,7 @@ export default function MapSection() {
           result.routes.map(route =>
             route.data.map(item => (
               <VectorTileLayer
+                key={`${result.id}-${route.id}-${item.id}`}
                 url={`${apiURL}maps/optimum_route_vectortile/{z}/{x}/{y}/?route=${item.id}`}
                 authToken={localStorage.getItem('userToken')}
                 visibleOnMap={item.checked}

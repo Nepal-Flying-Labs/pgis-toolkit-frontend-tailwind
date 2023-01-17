@@ -49,6 +49,7 @@ export const obstacleLayersSelector = createSelector(
         });
       });
     });
+    // console.log(checkedObstacles, 'checkedObstaclesx');
     return checkedObstacles;
   },
 );

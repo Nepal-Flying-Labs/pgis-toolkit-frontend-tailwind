@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators } from '@Actions/routeAnalysis';
+import { Creators, Types } from '@Actions/routeAnalysis';
 import Toggle from '@Components/common/Toggle';
 import IconButton from '@Components/common/IconButton';
+import RoutePopupSkeleton from '@Components/common/SkeletonLoader/RoutePopupSkeleton';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const {
   getRoutePopupDataRequest,
@@ -17,6 +19,9 @@ export default function RoutePopup() {
   const selectedRoute = useSelector(state => state.routeAnalysis.selectedRoute);
   const routePopupData = useSelector(
     state => state.routeAnalysis.routePopupData,
+  );
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.GET_ROUTE_POPUP_DATA_REQUEST]),
   );
   const dispatch = useDispatch();
 
@@ -56,41 +61,47 @@ export default function RoutePopup() {
           maxHeight: `calc(100vh - ${projectHeaderHeight}px - 14rem)`,
         }}
       >
-        <div className="naxatw-grid naxatw-grid-cols-2 naxatw-items-center naxatw-gap-2.5">
-          <p>Origin Point</p>
-          <p>Point A</p>
-          <p>Destination Point</p>
-          <p>Point B</p>
-          <p>Route Type</p>
-          <p>Line</p>
-          <p>Length</p>
-          <p>{routePopupData?.length} m</p>
-          <p>Travel Time</p>
-          <p>{routePopupData?.travel_time} seconds</p>
-        </div>
+        {loading ? (
+          <RoutePopupSkeleton />
+        ) : (
+          <>
+            <div className="naxatw-grid naxatw-grid-cols-2 naxatw-items-center naxatw-gap-2.5">
+              <p>Origin Point</p>
+              <p>Point A</p>
+              <p>Destination Point</p>
+              <p>Point B</p>
+              <p>Route Type</p>
+              <p>Line</p>
+              <p>Length</p>
+              <p>{routePopupData?.length} m</p>
+              <p>Travel Time</p>
+              <p>{routePopupData?.travel_time} seconds</p>
+            </div>
 
-        <p className="naxatw-btn-text naxatw-mt-3 naxatw-mb-2">Obstacles</p>
-        <div className="naxatw-grid naxatw-grid-cols-3 naxatw-items-center naxatw-gap-2.5">
-          {routePopupData?.obstacles?.map(item => (
-            <React.Fragment key={item.layer_id}>
-              <p>{item.layer_name}</p>
-              <p>{item.count}</p>
-              <Toggle
-                isSm
-                className="naxatw-ml-auto"
-                checked={item.checked}
-                onChange={e => {
-                  dispatch(
-                    handleObstaclesToggle({
-                      layerId: item.layer_id,
-                      checked: e.target.checked,
-                    }),
-                  );
-                }}
-              />
-            </React.Fragment>
-          ))}
-        </div>
+            <p className="naxatw-btn-text naxatw-mt-3 naxatw-mb-2">Obstacles</p>
+            <div className="naxatw-grid naxatw-grid-cols-3 naxatw-items-center naxatw-gap-2.5">
+              {routePopupData?.obstacles?.map(item => (
+                <React.Fragment key={item.layer_id}>
+                  <p>{item.layer_name}</p>
+                  <p>{item.count}</p>
+                  <Toggle
+                    isSm
+                    className="naxatw-ml-auto"
+                    checked={item.checked}
+                    onChange={e => {
+                      dispatch(
+                        handleObstaclesToggle({
+                          layerId: item.layer_id,
+                          checked: e.target.checked,
+                        }),
+                      );
+                    }}
+                  />
+                </React.Fragment>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

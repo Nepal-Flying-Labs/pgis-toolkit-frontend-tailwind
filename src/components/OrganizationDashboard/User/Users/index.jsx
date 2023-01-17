@@ -243,7 +243,7 @@ const Users = () => {
         </div>
       </div>
       <div className="naxatw-mt-3 ">
-        <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-h-[calc(100vh-23rem)]">
+        <div className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative naxatw-h-[calc(100vh-20rem)] xl:naxatw-h-[calc(100vh-23rem)]">
           {!loading ? (
             <Table
               data={currentList || []}

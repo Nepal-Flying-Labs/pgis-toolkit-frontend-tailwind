@@ -99,6 +99,7 @@ export default function MapSidebar() {
           <div className="naxatw-flex naxatw-justify-between naxatw-pr-5 naxatw-items-center">
             <div className="naxatw-flex naxatw-mt-2 naxatw-gap-2">
               <Chip
+                isSmall
                 name={`All( ${organizationDetail?.projects || ''} )`}
                 status={chipStatus}
                 value="all"
@@ -107,6 +108,7 @@ export default function MapSidebar() {
                 }}
               />
               <Chip
+                isSmall
                 name={`Ongoing( ${organizationDetail?.ongoing || ''} )`}
                 status={chipStatus}
                 value="ongoing"

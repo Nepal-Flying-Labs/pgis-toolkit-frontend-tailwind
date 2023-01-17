@@ -123,7 +123,7 @@ export default function Data() {
         </p> */}
       </div>
 
-      <div className="naxatw-py-6 naxatw-flex naxatw-gap-3">
+      <div className="xl:naxatw-py-6 naxatw-py-4 naxatw-flex naxatw-gap-3">
         {uploadMethods.map(({ id, icon, title, description, onClick }) => (
           <Tooltip
             content={`${id === 2 ? 'The feature is coming soon' : title}`}

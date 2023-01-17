@@ -23,7 +23,7 @@ const OrganizationInfo = () => {
             <img
               src={organizationDetails?.cover_image || AvatarImage}
               alt="organization-img"
-              className="naxatw-w-[60px] naxatw-h-[60px] naxatw-rounded-full"
+              className="naxatw-w-[60px] naxatw-min-w-[60px] naxatw-h-[60px] naxatw-rounded-full"
             />
           </div>
           <div>
@@ -31,7 +31,7 @@ const OrganizationInfo = () => {
             <p className="naxatw-mt-[4px] naxatw-text-body-lg">
               {organizationDetails?.address || 'N/A'}
             </p>
-            <div className="naxatw-mt-5 naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-x-7">
+            <div className="naxatw-mt-5 naxatw-flex naxatw-flex-wrap naxatw-gap-x-7 naxatw-gap-y-3">
               <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
                 <MaterialIcon
                   name="phone"
@@ -97,7 +97,7 @@ const OrganizationInfo = () => {
               <h5>{organizationDetails?.completed}</h5>
             </div>
           </div>
-          <div className="naxatw-flex naxatw-w-full md:naxatw-w-[450px]">
+          <div className="naxatw-flex naxatw-w-full md:naxatw-w-[calc(100vw-51rem)] md:naxatw-max-w-[450px]">
             <div
               style={{
                 width: `${getWidth(

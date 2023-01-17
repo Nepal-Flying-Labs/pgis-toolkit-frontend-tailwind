@@ -158,7 +158,7 @@ function DocumentList() {
         }}
         className="naxatw-py-3 naxatw-flex naxatw-overflow-auto scrollbar"
       >
-        <div className="naxatw-mt-3 naxatw-w-full">
+        <div className="xl:naxatw-mt-3 naxatw-w-full">
           <div
             style={{
               height: `calc(100vh - 270px)`,
@@ -286,15 +286,15 @@ function DocumentList() {
                   headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
                   // rowcolSpan="rowSpan_3"
                   dataFormat={row => (
-                    <div className="naxatw-flex naxatw-gap-3 naxatw-py-2">
+                    <div className="naxatw-flex naxatw-gap-1">
                       <MaterialIcon
                         onIconClick={e => {
                           e.stopPropagation();
                           dispatch(dispatch(getDocumentByIdRequest(row.id)));
                           dispatch(toggleModal('edit-document'));
                         }}
-                        wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                        className="naxatw-text-[22px]"
+                        wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
+                        className="naxatw-text-icon-sm"
                         name="edit"
                       />
                       <MaterialIcon
@@ -305,8 +305,8 @@ function DocumentList() {
                           );
                           dispatch(togglePromptDialog('delete-document'));
                         }}
-                        wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                        className="naxatw-text-[22px] naxatw-text-delete_btn"
+                        wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
+                        className="naxatw-text-icon-sm naxatw-text-delete_btn"
                         name="delete_outline"
                       />
                       <MaterialIcon
@@ -314,8 +314,8 @@ function DocumentList() {
                           e.stopPropagation();
                           handleDownload(row.id);
                         }}
-                        wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                        className="naxatw-text-[22px]"
+                        wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
+                        className="naxatw-text-icon-sm"
                         name="file_download"
                       />
                     </div>

@@ -175,7 +175,7 @@ export default function ViewLayerAttribute() {
         />
       </div>
 
-      <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative  naxatw-w-full naxatw-max-h-[calc(100vh-25rem)] naxatw-min-h-[calc(100vh-25rem)]">
+      <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative  naxatw-w-full naxatw-max-h-[calc(100vh-19rem)] naxatw-min-h-[calc(100vh-19rem)] xl:naxatw-max-h-[calc(100vh-25rem)] xl:naxatw-min-h-[calc(100vh-25rem)]">
         {!loading && headerKeys.length > 0 ? (
           <Table
             data={attributeList || []}

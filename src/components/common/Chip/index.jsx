@@ -4,7 +4,15 @@ import PropTypes from 'prop-types';
 
 // import './MultiSelectDropdown.css';
 
-const Chip = ({ name, onClick, status, value, iconRight, onIconClick }) => {
+const Chip = ({
+  name,
+  onClick,
+  status,
+  value,
+  iconRight,
+  onIconClick,
+  isSmall,
+}) => {
   const [activeChip, setActiveChip] = useState(false);
 
   useEffect(() => {
@@ -24,7 +32,9 @@ const Chip = ({ name, onClick, status, value, iconRight, onIconClick }) => {
       tabIndex={0}
       role="button"
       onClick={onClick}
-      className={`naxatw-px-5 naxatw-py-2.5 naxatw-w-fit hover:naxatw-bg-[#F5F5F5] naxatw-bg-white
+      className={`naxatw-px-5 ${
+        isSmall ? 'naxatw-py-[0.462rem]' : 'naxatw-py-2.5'
+      } naxatw-w-fit hover:naxatw-bg-[#F5F5F5] naxatw-bg-white
         naxatw-rounded-3xl naxatw-border naxatw-flex naxatw-items-center ${
           activeChip
             ? ' naxatw-border-[#484848] naxatw-bg-[#F5F5F5]'
@@ -53,12 +63,14 @@ Chip.propTypes = {
   value: PropTypes.string.isRequired,
   onIconClick: PropTypes.func,
   iconRight: PropTypes.string,
+  isSmall: PropTypes.bool,
 };
 
 Chip.defaultProps = {
   onClick: () => {},
   onIconClick: () => {},
   iconRight: null,
+  isSmall: false,
 };
 
 export default Chip;

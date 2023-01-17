@@ -129,7 +129,7 @@ export default function ProjectHeader() {
                       : AvatarIcon
                   }
                   alt="avatar-placeholder"
-                  className="naxatw-rounded-full naxatw-w-[40px] naxatw-h-[40px] naxatw-object-cover"
+                  className="naxatw-rounded-full naxatw-w-[40px] naxatw-min-w-[40px] naxatw-h-[40px] naxatw-object-cover"
                 />
               </figure>
               <h4>{headerTitle}</h4>
@@ -147,7 +147,7 @@ export default function ProjectHeader() {
                       tabname === route
                         ? 'naxatw-text-grey-800 naxatw-border-b-[2px] naxatw-border-grey-800'
                         : ''
-                    } hover:naxatw-text-secondary-400`}
+                    } hover:naxatw-text-secondary-400 naxatw-text-body-btn`}
                     to={
                       projectId
                         ? `/organizations/${organizationId}/projects/${projectId}/${route}`

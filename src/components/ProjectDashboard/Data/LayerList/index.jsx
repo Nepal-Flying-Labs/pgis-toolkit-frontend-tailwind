@@ -199,6 +199,7 @@ export default function LayerList() {
               dataFormat={row => (
                 <span className="naxatw-flex">
                   <Toggle
+                    isSm
                     checked={row.display_on_map}
                     onChange={e => {
                       const { checked } = e.target;

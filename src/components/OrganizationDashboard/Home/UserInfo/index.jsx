@@ -54,22 +54,24 @@ const UserInfo = () => {
           View all
         </Button>
       </div>
-      <div className="naxatw-overflow-y-auto naxatw-overflow-x-hidden scrollbar naxatw-h-[calc(100vh-10.25rem)]">
-        <div className="naxatw-py-3 naxatw-px-5 naxatw-flex naxatw-items-center naxatw-gap-x-2">
-          <Searchbar
-            isSmall
-            className="md:naxatw-w-[220px] sm:naxatw-w-[400px] naxatw-w-full naxatw-bg-grey-100"
-            value={searchTerm}
-            onChange={e => setSearchTErm(e.target.value)}
-          />
-          <Select
-            options={roles}
-            className="naxatw-h-[40px] naxatw-pl-3 naxatw-pr-2 naxatw-w-fit"
-            placeholder="Role"
-            selected={userRole}
-            onChange={data => setUserRole(data.name)}
-          />
-        </div>
+
+      <div className="naxatw-py-3 naxatw-px-5 naxatw-flex naxatw-items-center naxatw-gap-x-2">
+        <Searchbar
+          isSmall
+          // md:naxatw-w-[220px] sm:naxatw-w-[400px] naxatw-w-full
+          className=" naxatw-bg-grey-100"
+          value={searchTerm}
+          onChange={e => setSearchTErm(e.target.value)}
+        />
+        <Select
+          options={roles}
+          className="naxatw-h-[40px] naxatw-pl-3 naxatw-pr-2 naxatw-w-[180px] naxatw-min-w-[180px]"
+          placeholder="Role"
+          selected={userRole}
+          onChange={data => setUserRole(data.name)}
+        />
+      </div>
+      <div className="naxatw-overflow-y-auto naxatw-overflow-x-hidden scrollbar naxatw-h-[calc(100vh-14.5rem)]">
         <div>
           {users
             .filter(user =>

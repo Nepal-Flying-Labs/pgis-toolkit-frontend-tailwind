@@ -6,29 +6,32 @@ import { Creators } from '@Actions/common';
 const analysisData = [
   {
     id: 1,
-    title: 'Service Area Analysis',
-    description: 'Baseline Datasets contains different levels of boundaries.',
+    title: 'Service area analysis',
+    description:
+      'This method is used to identify areas that can be reached by a certain service or facility within a specified travel time or distance. ',
     analysisType: 'service-area',
     disabled: true,
   },
   {
     id: 2,
-    title: 'Buffer Analysis',
-    description: 'Baseline Datasets contains different levels of boundaries.',
+    title: 'Buffer analysis',
+    description:
+      'This method creates a zone around a selected feature, distance or time-based, known as a buffer, to find features that are within a certain distance of another feature.',
     analysisType: 'buffer-analysis',
     disabled: true,
   },
   {
     id: 3,
-    title: 'Nearest Distance Analysis',
+    title: 'Nearest distance analysis',
     description: 'Baseline Datasets contains different levels of boundaries.',
     analysisType: 'nearest-distance',
     disabled: true,
   },
   {
     id: 4,
-    title: 'Optimal Route Analysis',
-    description: 'Baseline Datasets contains different levels of boundaries.',
+    title: 'Optimal route analysis',
+    description:
+      'This method is used to find the most efficient path between multiple locations based on factors such as distance, time, and road conditions..',
     analysisType: 'optimal-route',
     disabled: false,
   },

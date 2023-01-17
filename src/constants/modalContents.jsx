@@ -126,7 +126,7 @@ export function getModalContent(content) {
         title: 'Analysis',
         content: <Analysis />,
         subtitle:
-          'USAFIRI allows you to do different sorts of analysis with your map datasets. Below are some of the analysis functions we have in the tool at the moment.',
+          'USAFIRI allows you to do different sorts of spatial analysis with the existing datasets in the project. Below are some of the analysis functions we have in the tool at the moment.',
       };
     case 'buffer-analysis':
       return {

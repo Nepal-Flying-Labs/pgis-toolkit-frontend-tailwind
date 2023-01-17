@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
-import { Creators as CommonCreators } from '@Actions/common';
+// import { Creators as CommonCreators } from '@Actions/common';
 import { isEmpty } from '@Utils/commonUtils';
 import MapSidebar from './MapSidebar';
 import MapSection from './MapSection';
 import MapExportSidebar from './MapExportSection/MapExportSidebar';
 import MapExport from './MapExportSection/MapExport';
 
-const { setModalContent, toggleModal } = CommonCreators;
+// const { setModalContent, toggleModal } = CommonCreators;
 
 const {
   getProjectThemesRequest,
@@ -32,7 +32,7 @@ export default function Map() {
   );
   const dispatch = useDispatch();
 
-  const showModal = useSelector(state => state.common.showModal);
+  // const showModal = useSelector(state => state.common.showModal);
 
   // project map section
   useEffect(() => {
@@ -52,12 +52,12 @@ export default function Map() {
   useEffect(
     () => () => {
       dispatch(resetProjectMapState());
-      if (showModal) {
-        dispatch(toggleModal());
-        dispatch(setModalContent(''));
-      }
+      // if (showModal) {
+      //   dispatch(toggleModal());
+      //   dispatch(setModalContent(''));
+      // }
     },
-    [dispatch, showModal],
+    [dispatch],
   );
 
   return (

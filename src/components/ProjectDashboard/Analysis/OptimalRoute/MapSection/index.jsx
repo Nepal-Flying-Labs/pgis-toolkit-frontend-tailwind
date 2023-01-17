@@ -70,26 +70,6 @@ export default function MapSection() {
 
   // zoom to road network layer on initial map load
   useEffect(() => {
-    if (!map || !zoomToRouteId) return;
-    const bbox = analysisResults.find(item => item.id === zoomToRouteId)?.bbox;
-    if (!bbox) return;
-    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
-    if (isExtentValid(zoomExtent)) {
-      map.getView().fit(zoomExtent, {
-        padding: [50, 50, 50, 50],
-        duration: 2500,
-        constrainResolution: true,
-      });
-      dispatch(
-        setResultsState({
-          zoomToRouteId: null,
-        }),
-      );
-    }
-  }, [map, zoomToRouteId, analysisResults, dispatch]);
-
-  // zoom to road network layer on initial map load
-  useEffect(() => {
     if (!map || !roadNetworkLayer) return;
     const bbox = roadNetworkLayer?.bbox;
     if (!bbox) return;
@@ -102,6 +82,26 @@ export default function MapSection() {
       });
     }
   }, [map, roadNetworkLayer]);
+
+  // zoom to road network layer
+  useEffect(() => {
+    if (!map || !zoomToRouteId) return;
+    const bbox = analysisResults.find(item => item.id === zoomToRouteId)?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 2000,
+        constrainResolution: true,
+      });
+      dispatch(
+        setResultsState({
+          zoomToRouteId: null,
+        }),
+      );
+    }
+  }, [map, zoomToRouteId, analysisResults, dispatch]);
 
   // click handler for route layer
   useEffect(() => {
@@ -116,8 +116,6 @@ export default function MapSection() {
       dispatch(setRouteAnalysisState({ selectedRouteId: properties.id }));
     });
   }, [map, dispatch]);
-
-  console.log(analysisResults, 'analysisResultsx');
 
   return (
     <div className="naxatw-w-full naxatw-relative">

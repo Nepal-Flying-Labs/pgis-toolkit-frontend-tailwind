@@ -158,7 +158,7 @@ function DocumentList() {
         }}
         className="naxatw-py-3 naxatw-flex naxatw-overflow-auto scrollbar"
       >
-        <div className="naxatw-mt-3 naxatw-w-full">
+        <div className="xl:naxatw-mt-3 naxatw-w-full">
           <div
             style={{
               height: `calc(100vh - 270px)`,

@@ -42,7 +42,7 @@ function AdditionalSidebar({ onCloseClick, onDownload, onDelete, onEdit }) {
   return (
     <div
       style={{ height: `calc(100vh - 52px)` }}
-      className="naxatw-min-w-[364px] naxatw-max-w-[364px] naxatw-px-5 naxatw-bg-grey-100 naxatw-border-grey-300 naxatw-border-l-[1px] naxatw-border-b-[1px]  naxatw-transition-all naxatw-ease-in-out naxatw-duration-200 -naxatw-translate-x-1"
+      className="naxatw-min-w-[364px] naxatw-max-w-[364px] naxatw-pl-5 naxatw-bg-grey-100 naxatw-border-grey-300 naxatw-border-l-[1px] naxatw-border-b-[1px]  naxatw-transition-all naxatw-ease-in-out naxatw-duration-200 -naxatw-translate-x-1"
     >
       {loading ? (
         <>
@@ -72,7 +72,7 @@ function AdditionalSidebar({ onCloseClick, onDownload, onDelete, onEdit }) {
           </div>
         </>
       ) : (
-        <>
+        <div className="naxatw-overflow-hidden naxatw-overflow-y-auto naxatw-pr-5 scrollbar naxatw-h-[calc(100vh-52px)]">
           <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
             <h4 className="">
               {flag?.toLowerCase() === 'gallery'
@@ -153,7 +153,7 @@ function AdditionalSidebar({ onCloseClick, onDownload, onDelete, onEdit }) {
               />
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

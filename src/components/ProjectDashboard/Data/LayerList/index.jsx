@@ -86,9 +86,9 @@ export default function LayerList() {
   ];
 
   return (
-    <div className="naxatw-space-y-10 naxatw-mt-5">
-      <div className="naxatw-flex naxatw-justify-end">
-        {/*
+    <div className="naxatw-space-y-10 xl:naxatw-mt-5">
+      {/* <div className="naxatw-flex naxatw-justify-end"> */}
+      {/*
           <Button
             className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
             iconLeft="download"
@@ -96,8 +96,8 @@ export default function LayerList() {
             Download All
           </Button>
         */}
-      </div>
-      <div className="naxa-table naxatw-h-[calc(100vh-26rem)] naxatw-overflow-x-auto  scrollbar naxatw-relative">
+      {/* </div> */}
+      <div className="naxa-table xl:naxatw-h-[calc(100vh-26rem)] naxatw-h-[calc(100vh-20rem)] naxatw-overflow-x-auto  scrollbar naxatw-relative">
         {!loading ? (
           <Table
             rowClassName="naxatw-py-1 naxatw-px-3"

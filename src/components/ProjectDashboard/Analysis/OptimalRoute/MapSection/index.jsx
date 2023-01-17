@@ -32,7 +32,6 @@ import {
 import { analysisHeaderHeight } from '@src/constants';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import { apiURL } from '@Services';
-import { isEmpty } from '@Utils/commonUtils';
 import HelpBox from './HelpBox';
 import RoutePopup from './RoutePopup';
 

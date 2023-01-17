@@ -11,3 +11,6 @@ export const getAnalysisLayer = params =>
 
 export const getNetworkRoute = id =>
   authenticated(api).get(`/maps/network_route_collection/${id}/`);
+
+export const getNetworkRouteCollection = params =>
+  authenticated(api).get(`/maps/network_route_collection/`, { params });

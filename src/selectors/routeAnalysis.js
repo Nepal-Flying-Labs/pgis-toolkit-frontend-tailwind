@@ -43,7 +43,7 @@ export const obstacleLayersSelector = createSelector(
                 )?.checked
               )
                 return;
-              checkedObstacles.push(obstacle);
+              checkedObstacles = [...checkedObstacles, obstacle];
             }
           });
         });

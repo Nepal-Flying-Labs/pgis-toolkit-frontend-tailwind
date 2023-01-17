@@ -5,6 +5,7 @@ import {
   getAnalysisLayer,
   getAnalysisTaskResponse,
   getNetworkRoute,
+  getNetworkRouteCollection,
   optimumRouteAnalysis,
 } from '@Services/routeAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
@@ -60,6 +61,16 @@ export function* getRoutePopupDataRequest({ payload: id }) {
   }
 }
 
+export function* getAnalysisDataRequest({ params }) {
+  try {
+    const response = yield call(getNetworkRouteCollection, params);
+    yield put(routeAnalysisActions.getAnalysisDataSuccess(response.data));
+  } catch (error) {
+    yield put(routeAnalysisActions.getAnalysisDataFailure());
+    throw error;
+  }
+}
+
 function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_ROUTE_ANALYSIS_REQUEST,
@@ -72,6 +83,10 @@ function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.GET_ROUTE_POPUP_DATA_REQUEST,
     withLoader(withErrorHandler(getRoutePopupDataRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ANALYSIS_DATA_REQUEST,
+    withLoader(withErrorHandler(getAnalysisDataRequest)),
   );
 }
 

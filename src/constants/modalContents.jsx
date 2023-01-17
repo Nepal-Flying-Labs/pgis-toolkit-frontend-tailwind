@@ -38,6 +38,7 @@ import DeleteProjectUser from '@Components/ProjectDashboard/ModalContent/DeleteP
 import DeleteProject from '@Components/OrganizationDashboard/ModalContent/DeleteProject';
 import DeleteTemplateAttribute from '@Components/ProjectDashboard/ModalContent/DeleteTemplateAttribute';
 import DeleteError from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteError';
+import ViewRouteAttribute from '@Components/ProjectDashboard/Analysis/ModalContent/ViewRouteAttribute';
 
 export function getModalContent(content) {
   switch (content) {
@@ -202,6 +203,13 @@ export function getModalContent(content) {
         title: 'Add Attributes',
         content: <AddAttributes />,
         className: '!naxatw-w-[56.25rem]',
+      };
+    // route analysis
+    case 'view-route-attribute':
+      return {
+        title: 'Route Attribute',
+        content: <ViewRouteAttribute />,
+        className: '!naxatw-w-[calc(100vw-10rem)]',
       };
     default:
       return {

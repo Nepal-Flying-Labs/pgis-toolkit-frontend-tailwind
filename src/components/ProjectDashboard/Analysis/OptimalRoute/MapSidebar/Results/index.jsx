@@ -1,11 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators } from '@Actions/routeAnalysis';
+import { Creators as RouteAnalysisCreators } from '@Actions/routeAnalysis';
+import { Creators as CommonCreators } from '@Actions/common';
 import { analysisHeaderHeight } from '@src/constants';
 import Accordion from '@Components/common/Accordion';
 import DropdownOptions from '@Components/common/DropdownOptions';
 
-const { setResultsState, handleRouteCheckbox } = Creators;
+const { setResultsState, handleRouteCheckbox } = RouteAnalysisCreators;
+const { toggleModal } = CommonCreators;
 
 export default function Results() {
   const analysisResults = useSelector(
@@ -39,27 +41,27 @@ export default function Results() {
         </span>
       ),
       onClick: data => {
-        // dispatch(
-        //   setProjectMapState({
-        //     selectedLayer: data,
-        //   }),
-        // );
-        // dispatch(toggleModal('view-layer-attribute'));
+        dispatch(
+          setResultsState({
+            selectedAnalysis: data,
+          }),
+        );
+        dispatch(toggleModal('view-route-attribute'));
       },
     },
-    {
-      id: 'delete-layer',
-      label: (
-        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
-          <i className="material-icons naxatw-mr-2">delete_outline</i>
-          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
-        </span>
-      ),
-      onClick: data => {
-        // dispatch(setDeleteLayer(data));
-        // dispatch(togglePromptDialog('delete-layer'));
-      },
-    },
+    // {
+    //   id: 'delete-layer',
+    //   label: (
+    //     <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+    //       <i className="material-icons naxatw-mr-2">delete_outline</i>
+    //       <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+    //     </span>
+    //   ),
+    //   onClick: data => {
+    //     // dispatch(setDeleteLayer(data));
+    //     // dispatch(togglePromptDialog('delete-layer'));
+    //   },
+    // },
   ];
 
   return (

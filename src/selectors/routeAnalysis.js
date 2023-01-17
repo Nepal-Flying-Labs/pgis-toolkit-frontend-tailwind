@@ -3,10 +3,12 @@ import { isEmpty } from '@Utils/commonUtils';
 
 export const analysisResultsSelector = state =>
   state.routeAnalysis.results.analysisResults;
+export const routePopupDataSelector = state =>
+  state.routeAnalysis.routePopupData;
 
 export const obstacleLayersSelector = createSelector(
-  [analysisResultsSelector],
-  analysisResults => {
+  [analysisResultsSelector, routePopupDataSelector],
+  (analysisResults, routePopupData) => {
     let checkedObstacles = [];
     analysisResults.forEach(result => {
       if (!result.checked) return;
@@ -34,6 +36,13 @@ export const obstacleLayersSelector = createSelector(
                   : { ...obstacle },
               );
             } else {
+              if (
+                routePopupData &&
+                !routePopupData.obstacles.find(
+                  i => i.layer_id === obstacle.layer_id,
+                )?.checked
+              )
+                return;
               checkedObstacles.push(obstacle);
             }
           });

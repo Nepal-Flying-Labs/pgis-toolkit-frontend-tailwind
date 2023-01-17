@@ -4,8 +4,11 @@ import { Creators } from '@Actions/routeAnalysis';
 import Toggle from '@Components/common/Toggle';
 import IconButton from '@Components/common/IconButton';
 
-const { getRoutePopupDataRequest, setRouteAnalysisState, handleRouteCheckbox } =
-  Creators;
+const {
+  getRoutePopupDataRequest,
+  setRouteAnalysisState,
+  handleObstaclesToggle,
+} = Creators;
 
 export default function RoutePopup() {
   const projectHeaderHeight = useSelector(
@@ -15,9 +18,6 @@ export default function RoutePopup() {
   const routePopupData = useSelector(
     state => state.routeAnalysis.routePopupData,
   );
-  const analysisResults = useSelector(
-    state => state.routeAnalysis.results.analysisResults,
-  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,10 +26,6 @@ export default function RoutePopup() {
   }, [dispatch, selectedRoute]);
 
   if (!selectedRoute) return '';
-
-  const getCheckedState = item => {
-    return item.checked;
-  };
 
   return (
     <div
@@ -82,15 +78,12 @@ export default function RoutePopup() {
               <Toggle
                 isSm
                 className="naxatw-ml-auto"
-                checked={getCheckedState(item)}
+                checked={item.checked}
                 onChange={e => {
                   dispatch(
-                    handleRouteCheckbox({
-                      resultId: selectedRoute.analysisId,
-                      routeId: selectedRoute.id,
+                    handleObstaclesToggle({
+                      layerId: item.layer_id,
                       checked: e.target.checked,
-                      name: 'obstacle',
-                      obstacleId: item.layer_id,
                     }),
                   );
                 }}

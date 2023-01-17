@@ -475,6 +475,16 @@ const getRoutePopupDataSuccess = (state, action) => {
   });
 };
 
+const handleObstaclesToggle = (state, action) => {
+  const { layerId, checked } = action.payload;
+  return produce(state, draft => {
+    const obstacle = draft.routePopupData.obstacles.find(
+      item => item.layer_id === layerId,
+    );
+    obstacle.checked = checked;
+  });
+};
+
 const routeAnalysisReducer = createReducer(initialState, {
   [Types.SET_ROUTE_ANALYSIS_STATE]: setRouteAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
@@ -485,6 +495,7 @@ const routeAnalysisReducer = createReducer(initialState, {
   [Types.CHECK_PROCESSING_STATUS_SUCCESS]: checkProcessingStatusSuccess,
   [Types.HANDLE_ROUTE_CHECKBOX]: handleRouteCheckbox,
   [Types.GET_ROUTE_POPUP_DATA_SUCCESS]: getRoutePopupDataSuccess,
+  [Types.HANDLE_OBSTACLES_TOGGLE]: handleObstaclesToggle,
 });
 
 export default routeAnalysisReducer;

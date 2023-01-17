@@ -17,7 +17,7 @@ export default function CreateOrganizationSuccess() {
         <h4 className="naxatw-font-light">
           An Organization has been successfully created.
         </h4>
-        <p>Invite email has been sent to the following email addresses:</p>
+        <p>Email invitations have been sent to the listed email addresses:</p>
         <div>
           {createOrganizationDetail?.email?.map(item => (
             <div

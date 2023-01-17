@@ -3,7 +3,7 @@
   }
   
   .naxa-table table th {
-    @apply naxatw-sticky naxatw-top-0 naxatw-z-[1] naxatw-w-full   naxatw-bg-white ;
+    @apply naxatw-sticky naxatw-top-0 naxatw-z-[100] naxatw-w-full naxatw-text-body-sm naxatw-bg-white ;
   }
   
   .naxa-table table tr {

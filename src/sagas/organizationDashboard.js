@@ -74,7 +74,11 @@ export function* postProjectInviteRequest({ payload }) {
       organizationDashboardActions.postProjectInviteSuccess(response.data),
     );
     yield put(commonActions.toggleModal(''));
-    yield put(toastActions.success({ message: 'Invitation sent success' }));
+    yield put(
+      toastActions.success({
+        message: 'Email Invitation has been sent successfully',
+      }),
+    );
     yield put(
       organizationDashboardActions.getProjectsRequest({ organization }),
     );
@@ -121,7 +125,11 @@ export function* patchProjectRequest({ id, payload }) {
       yield put(commonActions.togglePromptDialog());
     }
 
-    yield put(toastActions.success({ message: 'Data saved successfully' }));
+    yield put(
+      toastActions.success({
+        message: "Thank you for filling in the project's basic details. ",
+      }),
+    );
   } catch (error) {
     yield put(organizationDashboardActions.patchProjectFailure());
     throw error;

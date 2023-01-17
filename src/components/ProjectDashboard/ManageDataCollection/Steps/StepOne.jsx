@@ -11,18 +11,20 @@ const StepOne = ({ option, setOption }) => {
   return (
     <div className="naxatw-container ">
       <div className="md:naxatw-w-[800px] md:naxatw-mx-auto">
-        <h4 className="naxatw-mb-2">Get Started & Manage Data</h4>
+        <h4 className="naxatw-mb-2">Data Import</h4>
         <p className="naxatw-text-body-lg">
-          USAFIRI allows you to import data in two different ways. Prior to data
-          management, please make sure you go through the data requirement
-          document and necessary list of datasets and templates.
+          USAFIRI allows for data import from multiple sources, but it is
+          important to review the Data Requirement document before beginning the
+          data management process.
         </p>
         <div className="naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-items-center naxatw-gap-x-3 naxatw-my-5">
           <div className="">
-            <p className="naxatw-text-body-btn">Data Requirement document </p>
+            <p className="naxatw-text-body-btn">Data Requirement </p>
             <span className="naxatw-text-body-md">
-              USAFIRI allows you to import data from multiple sources. Prior to
-              data management, please make sure you
+              The Data Requirement document is a critical tool for ensuring that
+              the data imported into USAFIRI meets the necessary specifications
+              and requirements. It is important to review this document before
+              beginning the data management process.
             </span>
           </div>
           <Button

@@ -337,12 +337,13 @@ const AssignUsers = () => {
                     )
                     .map(roles => (
                       <Checkbox
-                        className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
+                        className="hover:naxatw-bg-grey-100 naxatw-py-2 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
                         key={roles.id}
                         id={roles.id}
                         label={roles.name?.replaceAll('_', ' ')}
                         onClick={() => handleCheckboxClick(roles)}
                         checked={roles.checked}
+                        labelClassName="naxatw-capitalize"
                       />
                     ))}
                 </div>

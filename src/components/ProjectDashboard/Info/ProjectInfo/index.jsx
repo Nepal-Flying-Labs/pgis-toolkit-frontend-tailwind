@@ -65,7 +65,7 @@ const ProjectInfo = () => {
           <div className="">
             <p className="naxatw-text-body-btn naxatw-mb-1">Project partners</p>
             <p className="naxatw-text-body-lg">
-              {info?.partners?.value?.join(', ') || '-'}
+              {info?.partners?.map(partner => <li>{partner.value}</li>) || '-'}
             </p>
           </div>
         </div>

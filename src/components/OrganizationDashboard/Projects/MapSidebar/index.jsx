@@ -226,7 +226,8 @@ export default function MapSidebar() {
               </div>
               <h3 className="naxatw-mt-7 naxatw-mb-2">No Projects yet</h3>
               <p className="naxatw-text-body-lg">
-                Create a project with basic info and project location.
+                Create a project with basic info and project location to
+                proceed.
               </p>
               <Button
                 iconLeft="add"

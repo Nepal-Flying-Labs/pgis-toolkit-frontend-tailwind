@@ -13,19 +13,19 @@ const CreateProjectSuccess = () => {
   const history = useHistory();
   return (
     <div>
-      <div className="naxatw-py-7">
+      <div className="naxatw-pb-7">
         <div className="naxatw-flex naxatw-gap-x-5 naxatw-items-center">
           <span className="naxatw-h-[48px] naxatw-w-[48px] naxatw-bg-[#DFF2F1] naxatw-rounded-full naxatw-flex naxatw-items-center naxatw-justify-center">
             <i className="material-icons naxatw-text-[32px] naxatw-text-[#00A699]">
               check
             </i>
           </span>
-          <h4>Project Successfully Created</h4>
+          <h4>A Project has been successfully created</h4>
         </div>
         <div className="naxatw-mt-7">
           <span className="naxatw-text-body-lg">
-            Congratulations on creating your project. You can now add Data,
-            Documents, and Images to this project.
+            You can now proceed by adding data, documents and images to the
+            project.
           </span>
         </div>
       </div>

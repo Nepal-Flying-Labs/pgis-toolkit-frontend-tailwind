@@ -69,8 +69,9 @@ const ManageDataCollection = () => {
           <h3>Manage Data Collection</h3>
           <span className="naxatw-text-body-lg ">
             Data Management is an integral component of USAFIRI. This allows
-            users to import data in multiple ways, store datasets and manage the
-            datasets properly.
+            users to import and export standard data templates from multiple
+            sources before data collection procedure as per the user&apos;s
+            requirement.
           </span>
         </div>
 

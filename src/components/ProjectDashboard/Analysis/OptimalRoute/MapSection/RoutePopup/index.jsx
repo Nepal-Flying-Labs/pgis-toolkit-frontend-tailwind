@@ -33,18 +33,18 @@ export default function RoutePopup() {
         naxatw-bg-white naxatw-text-grey-800 naxatw-rounded-[20px] naxatw-border naxatw-border-grey-300 
         naxatw-shadow-3xl naxatw-w-[20.3rem]"
     >
-      <div
-        className="naxatw-px-5 naxatw-py-3.5 naxatw-flex naxatw-items-center naxatw-justify-between naxatw-rounded-t-[20px]"
-        // style={{
-        //   boxShadow: '0px 2px 20px 4px rgb(0 0 0 / 12%)',
-        // }}
-      >
-        <h4>Route 1</h4>
+      <div className="naxatw-px-5 naxatw-py-3.5 naxatw-flex naxatw-items-center naxatw-justify-between naxatw-rounded-t-[20px]">
+        <h4>Route {routePopupData?.route_no}</h4>
         <div className="naxatw-flex naxatw-items-center">
           <IconButton
             name="close"
             onClick={() =>
-              dispatch(setRouteAnalysisState({ selectedRoute: null }))
+              dispatch(
+                setRouteAnalysisState({
+                  selectedRoute: null,
+                  routePopupData: null,
+                }),
+              )
             }
           />
         </div>
@@ -64,12 +64,12 @@ export default function RoutePopup() {
           <p>Route Type</p>
           <p>Line</p>
           <p>Length</p>
-          <p>{routePopupData?.length}</p>
+          <p>{routePopupData?.length} m</p>
           <p>Travel Time</p>
-          <p>{routePopupData?.travel_time}</p>
+          <p>{routePopupData?.travel_time} seconds</p>
         </div>
 
-        <p className="naxatw-btn-text naxatw-mt-3">Obstacles</p>
+        <p className="naxatw-btn-text naxatw-mt-3 naxatw-mb-2">Obstacles</p>
         <div className="naxatw-grid naxatw-grid-cols-3 naxatw-items-center naxatw-gap-2.5">
           {routePopupData?.obstacles?.map(item => (
             <React.Fragment key={item.layer_id}>

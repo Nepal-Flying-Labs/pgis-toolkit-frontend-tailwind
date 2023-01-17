@@ -245,9 +245,9 @@ const Location = ({ page, setPage }) => {
             tabname !== 'settings' ? 'naxatw-text-center' : ''
           } `}
         >
-          Select the location boundary for the area you are working. You can
-          either manually draw the boundary for the project site or you can
-          upload a location data to define the boundary areas
+          You may define the boundaries of your project area following the two
+          options, either manually draw the boundary for the project area or
+          upload geographic boundary data of the project area.
         </span>
       </div>
       <div className="naxatw-space-y-2">
@@ -267,17 +267,17 @@ const Location = ({ page, setPage }) => {
       </div>
       <Input
         type="text"
-        label="Name of Geographical Region"
+        label="Local Address"
         name="geographical_region"
         value={values.geographical_region}
         onChange={handleChange}
-        placeholder="Enter name of Geographical Region"
+        placeholder="Bagmati Province, Kathmandu, Street No. 3214 Thamel Road "
       />
       <div className="naxatw-space-y-2">
-        <label className="naxatw-label">Choose the Geographic Boundary*</label>
+        <label className="naxatw-label">Define the geographic boundary*</label>
         <div className="naxatw-flex naxatw-gap-x-2">
           <Chip
-            name="Upload Area"
+            name="Upload project area"
             status={values.location_type || ''}
             value="File Upload"
             onClick={() => {

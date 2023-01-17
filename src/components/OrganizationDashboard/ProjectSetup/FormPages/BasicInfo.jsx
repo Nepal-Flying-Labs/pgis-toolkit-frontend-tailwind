@@ -211,8 +211,9 @@ const BasicInfo = ({ setPage }) => {
             tabname !== 'settings' ? 'naxatw-text-center' : ''
           }`}
         >
-          As a user you cannot proceed forward with the basic setup. Fill up the
-          basic info form to proceed ahead
+          To continue, please fill out the basic information of the form. You
+          will not be able to proceed further until you fill in the required
+          form fields.
         </span>
       </div>
       <div>
@@ -376,16 +377,16 @@ const BasicInfo = ({ setPage }) => {
         name="contactEmail"
         value={values.contactEmail}
         onChange={handleChange}
-        placeholder="example.com"
+        placeholder="example@gmail.com"
       />
 
       <Input
-        label="Phone"
+        label="Contact Number"
         type="text"
         name="contactPhone"
         value={values.contactPhone}
         onChange={handleChange}
-        placeholder="Phone Number"
+        placeholder="Contact Number"
       />
 
       <div

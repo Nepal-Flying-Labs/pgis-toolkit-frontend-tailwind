@@ -73,7 +73,7 @@ export function getModalContent(content) {
     // project dashboard
     case 'create-project':
       return {
-        title: '',
+        title: 'Basic Project Setup & Invitation',
         content: <CreateProject />,
       };
     case 'create-project-success':

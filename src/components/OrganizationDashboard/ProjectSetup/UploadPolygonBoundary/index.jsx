@@ -90,7 +90,8 @@ function UploadPolygonBoundary({
           </Button>
           <div>
             <span className="naxatw-text-body-md naxatw-text-[#484848]">
-              SHP or GEOJSON format supported
+              Please ensure to upload a zipped file containing (.shp, .shx,
+              .dbf, .prj) for shapefile.
             </span>
           </div>
           <input

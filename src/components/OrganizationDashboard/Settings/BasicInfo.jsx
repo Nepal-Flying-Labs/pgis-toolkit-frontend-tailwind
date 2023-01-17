@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable arrow-body-style */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
@@ -226,8 +227,7 @@ const BasicInfo = () => {
     <>
       <div className="naxatw-flex">
         <span className="naxatw-text-body-lg naxatw-text-start">
-          As a user you cannot proceed forward with the basic setup.Fill up the
-          basic info form to proceed ahead
+          You can update the organization's profile information.
         </span>
       </div>
       <div className="naxatw-flex naxatw-gap-x-5">

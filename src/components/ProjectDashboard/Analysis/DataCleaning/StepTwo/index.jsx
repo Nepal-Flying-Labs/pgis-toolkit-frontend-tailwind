@@ -46,6 +46,8 @@ export default function StepTwo() {
     [selectedRoadLayer, selectedObstacleLayers],
   );
 
+  const isAllChecked = Object.keys(errorStates).length === data.length;
+
   return (
     <div>
       <h4>Data</h4>
@@ -227,15 +229,13 @@ export default function StepTwo() {
 
       <div className="naxatw-flex naxatw-justify-end naxatw-my-10">
         <Button
-          className="naxatw-btn-primary"
+          className={`naxatw-btn-primary ${
+            !isAllChecked ? 'naxatw-btn-disabled' : ''
+          }`}
           onClick={() => {
             dispatch(startAnalysisRequest(params));
           }}
-          // onClick={() => {
-          //   history.push(
-          //     `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}`,
-          //   );
-          // }}
+          disabled={!isAllChecked}
         >
           Start Analysis
         </Button>

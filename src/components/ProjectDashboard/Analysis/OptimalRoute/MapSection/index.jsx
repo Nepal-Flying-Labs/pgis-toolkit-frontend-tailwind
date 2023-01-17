@@ -198,14 +198,16 @@ export default function MapSection() {
           <React.Fragment key={result.id}>
             <CircleMarker
               coordinates={[result.origin_lat, result.origin_long]}
-              style={{ ...startPointStyles }}
+              visibleOnMap={result.checked}
               zIndex={10}
+              style={{ ...startPointStyles }}
               map={map}
             />
             <CircleMarker
               coordinates={[result.destination_lat, result.destination_long]}
-              style={{ ...destinationPointStyles }}
+              visibleOnMap={result.checked}
               zIndex={10}
+              style={{ ...destinationPointStyles }}
               map={map}
             />
           </React.Fragment>

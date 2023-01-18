@@ -128,7 +128,7 @@ export default function Results() {
 
                         <label
                           className="naxatw-text-body-lg naxatw-text-grey-800"
-                          htmlFor={route.id}
+                          // htmlFor={route.id}
                         >
                           {route.name}
                         </label>
@@ -167,7 +167,7 @@ export default function Results() {
                             />
                             <label
                               className="naxatw-text-body-lg naxatw-text-grey-800"
-                              htmlFor={item.id}
+                              // htmlFor={item.id}
                             >
                               {item.name}
                             </label>

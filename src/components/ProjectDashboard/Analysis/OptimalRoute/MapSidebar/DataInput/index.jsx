@@ -117,7 +117,7 @@ export default function DataInput() {
       obstacles: JSON.stringify(selectedObstacles),
       name: outputName,
       project: projectId,
-      type: 'Optimum Path Analysis',
+      type: 'optimum_route',
     };
     dispatch(applyRouteAnalysisRequest(payloadData));
   };
@@ -285,11 +285,15 @@ export default function DataInput() {
           <input
             type="number"
             className="naxatw-input"
+            min="1"
+            max="5"
             value={alternativePaths || ''}
             onChange={e => {
+              const { value } = e.target;
+              if (value < 1 || value > 5) return;
               dispatch(
                 setDataInputState({
-                  alternativePaths: e.target.value,
+                  alternativePaths: value,
                 }),
               );
             }}

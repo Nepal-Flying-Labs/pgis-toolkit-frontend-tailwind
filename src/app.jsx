@@ -12,6 +12,7 @@ import PromptDialog from '@Components/common/PromptDialog';
 import ManageAttributeHeader from '@Components/ProjectDashboard/ModalContent/HeaderContents/MangeAttributeHeader';
 import AddAttributeHeader from '@Components/ProjectDashboard/ModalContent/HeaderContents/AddAttributesHeader';
 import ViewLayerAttributeHeader from '@Components/ProjectDashboard/ModalContent/HeaderContents/ViewLayerAttributeHeader';
+import ViewRouteAttributeHeader from '@Components/ProjectDashboard/Analysis/ModalContent/HeaderContents/ViewRouteAttributeHeader';
 import indexRoutes from './routes';
 import {
   getModalContent,
@@ -34,6 +35,8 @@ function getHeaderContent(modalContents) {
       return <AddAttributeHeader />;
     case 'view-layer-attribute':
       return <ViewLayerAttributeHeader />;
+    case 'view-route-attribute':
+      return <ViewRouteAttributeHeader />;
     default:
       return null;
   }

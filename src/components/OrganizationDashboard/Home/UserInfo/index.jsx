@@ -55,7 +55,7 @@ const UserInfo = () => {
         </Button>
       </div>
 
-      <div className="naxatw-py-3 naxatw-px-5 naxatw-flex naxatw-items-center naxatw-gap-x-2">
+      <div className="naxatw-py-3 naxatw-px-5 naxatw-flex naxatw-items-center naxatw-justify-between naxatw-gap-x-2">
         <Searchbar
           isSmall
           // md:naxatw-w-[220px] sm:naxatw-w-[400px] naxatw-w-full

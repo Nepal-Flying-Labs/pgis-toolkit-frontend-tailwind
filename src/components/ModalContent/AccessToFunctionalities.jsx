@@ -59,7 +59,8 @@ const AccessToFunctionalities = () => {
             </span>
             <h4 className="naxatw-font-normal">
               You are now logged in as {getArticle(userProfile?.role)}{' '}
-              <span className="naxatw-font-primary naxatw-text-primary-400 naxatw-text-[1.25rem] naxatw-font-bold naxatw-leading-[1.75rem] naxatw-tracking-normal">
+              {/* naxatw-font-bold */}
+              <span className="naxatw-font-primary naxatw-text-primary-400 naxatw-text-[1.25rem] naxatw-leading-[1.75rem] naxatw-tracking-normal">
                 {userProfile?.role || 'N/A'}
               </span>
             </h4>

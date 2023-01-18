@@ -16,7 +16,6 @@ import {
   getMaxPage,
 } from '@Components/common/Pagination/getSelectedItem';
 import Pagination from '@Components/common/Pagination';
-import Tooltip from '@Components/common/Tooltip/index';
 
 const {
   getLayerAttributeRequest,
@@ -181,7 +180,7 @@ export default function ViewLayerAttribute() {
             data={attributeList || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            headerWidths={[...headerKeys.map(() => '150px'), '100px']}
+            headerWidths={[...headerKeys.map(() => '150px'), '10px']}
             // eslint-disable-next-line
             // onRowClick={row => {}}
           >
@@ -203,17 +202,15 @@ export default function ViewLayerAttribute() {
                   />
                 }
                 dataFormat={row => (
-                  <Tooltip content={row[key]} direction="right">
-                    <p
-                      className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden ${
-                        ordering === key
-                          ? 'naxatw-text-body-btn'
-                          : 'naxatw-text-body-lg'
-                      } `}
-                    >
-                      {row[key] || '-'}
-                    </p>
-                  </Tooltip>
+                  <p
+                    className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden ${
+                      ordering === key
+                        ? 'naxatw-text-body-btn'
+                        : 'naxatw-text-body-lg'
+                    } `}
+                  >
+                    {row[key] || '-'}
+                  </p>
                 )}
               />
             ))}

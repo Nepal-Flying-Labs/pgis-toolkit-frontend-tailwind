@@ -140,10 +140,9 @@
 
 ### ISSUES JAN 18
 - [x] On second analysis, doesn't direct to results tab stays in data input tab 
+- [x] Zoom to layer speed duration
 - [ ] Category ID is seen in Data Catalog table after upload success.
-- [ ] After data upload is successful, repeatative toast message is shown
 - [ ] Project Boundary line color not displaying on map.
-- [ ] Zoom to layer speed duration
 - [ ] Obstacle Layer needs to be displayed by default while analysis
 - [ ] Show help text for preferred alternative path
 - [ ] In alternative route input, UI redesign (+, -)
@@ -155,3 +154,4 @@
 - [ ] Check error text review
 
 - [ ] Cross icon for processing exeution
+- [ ] After data upload is successful, repeatative toast message is shown

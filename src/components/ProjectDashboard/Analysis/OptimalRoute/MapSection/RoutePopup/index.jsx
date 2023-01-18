@@ -18,7 +18,9 @@ export default function RoutePopup() {
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
-  const selectedRoute = useSelector(state => state.routeAnalysis.selectedRoute);
+  const selectedRouteId = useSelector(
+    state => state.routeAnalysis.selectedRouteId,
+  );
   const routePopupData = useSelector(
     state => state.routeAnalysis.routePopupData,
   );
@@ -28,11 +30,11 @@ export default function RoutePopup() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!selectedRoute?.id) return;
-    dispatch(getRoutePopupDataRequest(selectedRoute.id));
-  }, [dispatch, selectedRoute]);
+    if (!selectedRouteId) return;
+    dispatch(getRoutePopupDataRequest(selectedRouteId));
+  }, [dispatch, selectedRouteId]);
 
-  if (!selectedRoute) return '';
+  if (!selectedRouteId) return '';
 
   return (
     <div
@@ -48,7 +50,7 @@ export default function RoutePopup() {
             onClick={() =>
               dispatch(
                 setRouteAnalysisState({
-                  selectedRoute: null,
+                  selectedRouteId: null,
                   routePopupData: null,
                 }),
               )

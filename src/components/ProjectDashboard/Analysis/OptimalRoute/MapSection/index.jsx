@@ -115,10 +115,7 @@ export default function MapSection() {
       if (properties.layer !== 'route') return;
       dispatch(
         setRouteAnalysisState({
-          selectedRoute: {
-            id: properties.id,
-            analysisId: properties.analysis_id,
-          },
+          selectedRouteId: properties.id,
         }),
       );
     });

@@ -31,7 +31,7 @@ import {
 //   obstacleLayers: [],
 //   analysisTaskId: null,
 //   analysisId: null,
-//   selectedRoute: null,
+//   selectedRouteId: null,
 //   routePopupData: null,
 // };
 
@@ -339,7 +339,7 @@ const initialState = {
   ],
   analysisTaskId: null,
   analysisId: null,
-  selectedRoute: null,
+  selectedRouteId: null,
   routePopupData: null,
 };
 
@@ -380,6 +380,7 @@ const applyRouteAnalysisSuccess = (state, action) =>
 
 const checkProcessingStatusSuccess = (state, action) =>
   produce(state, draft => {
+    let optimalRouteId = null;
     const data = action.payload;
     const analysisResult = {
       ...data,
@@ -390,16 +391,20 @@ const checkProcessingStatusSuccess = (state, action) =>
           name: 'Optimal Route',
           data: data.routes
             .filter(item => item.is_optimum)
-            .map(item => ({
-              ...item,
-              name: `Route ${item.route_no}`,
-              checked: true,
-              style: {
-                ...draft.roadNetworkLayer.style,
-                lineColor: startingPointColor,
-                lineThickness: +draft.roadNetworkLayer.style.lineThickness + 2,
-              },
-            })),
+            .map(item => {
+              optimalRouteId = item.id;
+              return {
+                ...item,
+                name: `Route ${item.route_no}`,
+                checked: true,
+                style: {
+                  ...draft.roadNetworkLayer.style,
+                  lineColor: startingPointColor,
+                  lineThickness:
+                    +draft.roadNetworkLayer.style.lineThickness + 2,
+                },
+              };
+            }),
           checked: true,
         },
         {
@@ -426,6 +431,7 @@ const checkProcessingStatusSuccess = (state, action) =>
     draft.results.analysisResults.push(analysisResult);
     draft.results.zoomToRouteId = analysisResult.id;
     draft.activeTab = 'results';
+    draft.selectedRouteId = optimalRouteId;
   });
 
 const handleRouteCheckbox = (state, action) =>

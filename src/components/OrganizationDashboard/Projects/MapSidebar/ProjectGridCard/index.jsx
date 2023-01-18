@@ -148,10 +148,7 @@ export default function ProjectGridCard({
 
         <div className="naxatw-pl-4 naxatw-py-3 naxatw-pr-2">
           <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
-            <h5
-              title={title}
-              className="naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden naxatw-overflow-x-unset"
-            >
+            <h5 title={title} className="naxatw-line-clamp-2">
               {title || 'N/A'}
             </h5>{' '}
             <DropdownOptions
@@ -177,9 +174,9 @@ export default function ProjectGridCard({
             <p className="naxatw-text-body-sm naxatw-text-[#989898] naxatw-uppercase">
               Thematic areas
             </p>
-            <div className="naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden">
+            <div className="naxatw-line-clamp-2">
               <span className="naxatw-text-body-md">
-                {thematicAreas ? ellipsify(thematicAreas.toString()) : 'N/A'}
+                {thematicAreas ? thematicAreas.toString() : 'N/A'}
               </span>
             </div>
           </div>

@@ -120,71 +120,6 @@ export default function ProjectCard({
   ];
 
   return (
-    // <div
-    //   className={`naxatw-w-full naxatw-px-5 naxatw-py-4 ${
-    //     status === 'draft' ? 'naxatw-bg-[#D7D7D7]' : 'naxatw-bg-white'
-    //   } naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-cursor-pointer hover:naxatw-border-grey-800`}
-    //   onClick={onClick}
-    // >
-    //   <div className="naxatw-flex naxatw-justify-between">
-    //     <h5>{title}</h5>
-    //     {/* <DropdownOptions options={dropdownOptions} data={id} stopPropagation /> */}
-    //     <div className="naxatw-relative naxatw-w-10 naxatw-flex">
-    //       <a
-    //         ref={ref}
-    //         className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium naxatw-text-center naxatw-text-grey-800  naxatw-rounded-lg hover:naxatw-bg-grey-100 focus:naxatw-ring-4 focus:naxatw-outline-none focus:ring-grey-50 naxatw-select-none"
-    //         onClick={e => {
-    //           setToggle(id);
-
-    //           e.stopPropagation();
-    //         }}
-    //       >
-    //         <i className="material-icons">more_vert</i>
-    //       </a>
-    //       <div
-    //         id="dropdownDots"
-    //         className={`${
-    //           toggle ? '' : 'naxatw-hidden'
-    //         } naxatw-absolute naxatw-top-[2px] naxatw-right-[42px] naxatw-z-10 naxatw-w-[12.5rem] naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100 naxatw-shadow-3xl`}
-    //       >
-    //         <ul
-    //           className="naxatw-py-2 naxatw-text-sm naxatw-text-grey-700"
-    //           aria-labelledby="dropdownMenuIconButton"
-    //         >
-    //           {dropdownOptions.map(
-    //             ({ id: optionId, label, onClick: handleClick }) => (
-    //               <li
-    //                 key={optionId}
-    //                 className="naxatw-block naxatw-py-[13px] naxatw-px-3 hover:naxatw-bg-grey-100 naxatw-cursor-pointer"
-    //               >
-    //                 <a
-    //                   onClick={e => {
-    //                     handleClick(id);
-    //                     e.stopPropagation();
-    //                   }}
-    //                 >
-    //                   {label}
-    //                 </a>
-    //               </li>
-    //             ),
-    //           )}
-    //         </ul>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <div className="naxatw-mt-2 naxatw-flex naxatw-gap-x-3 naxatw-items-center">
-    //     <p>{address}</p>
-    //     <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
-    //       <span
-    //         className={`naxatw-w-2 naxatw-h-2 naxatw-rounded-full naxatw-bg-[${getStatusColor(
-    //           status,
-    //         )}]`}
-    //       />
-    //       <span>{status}</span>
-    //     </div>
-    //   </div>
-    // </div>
-
     <div
       className={`naxatw-flex naxatw-border naxatw-border-grey-300 naxatw-rounded-xl naxatw-cursor-pointer hover:naxatw-bg-[#F8F8F8] hover:naxatw-border-[#484848]  ${
         status === 'draft' ? 'naxatw-bg-[#F5F5F5]' : 'naxatw-bg-white'
@@ -201,10 +136,7 @@ export default function ProjectCard({
 
       <div className=" naxatw-pt-2 naxatw-pl-4 naxatw-pr-2 naxatw-pb-3 naxatw-flex  naxatw-w-full naxatw-justify-between naxatw-rounded-r-xl">
         <div className="">
-          <h5
-            title={title}
-            className="naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden"
-          >
+          <h5 title={title} className="naxatw-line-clamp-2">
             {title || 'N/A'}
             {/* <h5
                 className={`${
@@ -250,7 +182,7 @@ export default function ProjectCard({
             <p className="naxatw-text-body-sm naxatw-text-[#989898] naxatw-uppercase">
               Thematic areas
             </p>
-            <div className="naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden">
+            <div className="naxatw-line-clamp-2">
               <span className="naxatw-text-body-md">
                 {thematicAreas ? thematicAreas.toString() : 'N/A'}
               </span>

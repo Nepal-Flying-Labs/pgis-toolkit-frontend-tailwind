@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   mode: 'jit',
@@ -104,6 +105,6 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/line-clamp')],
   prefix: 'naxatw-',
 };

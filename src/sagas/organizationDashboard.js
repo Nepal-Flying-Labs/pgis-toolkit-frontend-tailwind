@@ -330,10 +330,10 @@ export function* updateOrganizationRequest({ id, payload }) {
   delete newPayload.page;
   try {
     const formData = prepareFormData(newPayload);
-    const response = yield call(updateOrganization, id, formData);
-    yield put(
-      organizationDashboardActions.updateOrganizationSuccess(response.data),
-    );
+    yield call(updateOrganization, id, formData);
+    // yield put(
+    //   organizationDashboardActions.updateOrganizationSuccess(response.data),
+    // );
     // yield put(organizationDashboardActions.toggleModal(''));
     yield put(toastActions.success({ message: 'Data saved successfully' }));
   } catch (error) {

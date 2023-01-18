@@ -76,6 +76,7 @@ export default function Results() {
         {analysisResults.map(result => (
           <Accordion
             key={result.id}
+            className="!naxatw-py-2 !naxatw-px-4"
             header={
               <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
                 <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">

@@ -23,7 +23,7 @@ const UserPanel = () => {
     dispatch(getUsersRequest());
   }, [dispatch]);
   return (
-    <div className="">
+    <div className="naxatw-mt-5">
       {/* <div className="naxatw-flex naxatw-justify-between naxatw-py-5 ">
         <h3>Users</h3>
         <Button

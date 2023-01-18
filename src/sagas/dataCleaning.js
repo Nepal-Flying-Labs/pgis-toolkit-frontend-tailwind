@@ -173,7 +173,10 @@ export function* startAnalysisRequest({ params }) {
     yield put(
       routeAnalysisActions.setRouteAnalysisState({
         roadNetworkLayer: selectedRoadLayer,
-        obstacleLayers: selectedObstacleLayers,
+        obstacleLayers: selectedObstacleLayers.map(item => ({
+          ...item,
+          checked: false,
+        })),
       }),
     );
     yield put(

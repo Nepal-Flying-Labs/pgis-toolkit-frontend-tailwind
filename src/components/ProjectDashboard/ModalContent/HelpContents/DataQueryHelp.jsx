@@ -27,7 +27,7 @@ export default function DataQueryHelp() {
 
       <div className="naxatw-space-y-10">
         {helpData.map(({ id, title, image }) => (
-          <div className="naxatw-space-y-3.5">
+          <div key={id} className="naxatw-space-y-3.5">
             <div className="naxatw-mt-5 naxatw-flex naxatw-space-x-3">
               <p className="naxatw-btn-text naxatw-text-secondary-400">{id}</p>
               <h5>{title}</h5>

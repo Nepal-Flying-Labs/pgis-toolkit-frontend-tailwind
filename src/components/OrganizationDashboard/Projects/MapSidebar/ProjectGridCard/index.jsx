@@ -11,7 +11,6 @@ import { Creators as CommonCreator } from '@Actions/common';
 import { Creators } from '@Actions/organizationDashboard';
 import { format } from 'date-fns';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
-import Tooltip from '@Components/common/Tooltip/index';
 
 const { togglePromptDialog } = CommonCreator;
 const { setSelectedProject, setZoomToLayer } = Creators;
@@ -149,11 +148,12 @@ export default function ProjectGridCard({
 
         <div className="naxatw-pl-4 naxatw-py-3 naxatw-pr-2">
           <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
-            <Tooltip content={title} direction="top">
-              <h5 className="naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden">
-                {title || 'N/A'}
-              </h5>{' '}
-            </Tooltip>
+            <h5
+              title={title}
+              className="naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden naxatw-overflow-x-unset"
+            >
+              {title || 'N/A'}
+            </h5>{' '}
             <DropdownOptions
               options={dropdownOptions}
               data={id}

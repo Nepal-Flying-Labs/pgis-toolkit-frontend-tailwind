@@ -209,7 +209,7 @@ export function getModalContent(content) {
       return {
         title: 'Route Attribute',
         content: <ViewRouteAttribute />,
-        className: '!naxatw-w-[calc(100vw-10rem)]',
+        className: '!naxatw-w-[calc(100vw-15rem)]',
       };
     default:
       return {

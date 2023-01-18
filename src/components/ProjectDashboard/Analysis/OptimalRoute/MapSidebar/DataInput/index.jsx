@@ -11,8 +11,8 @@ import {
   destinationPointColor,
   startingPointColor,
 } from '@src/constants/analysis';
+import IconButton from '@Components/common/IconButton';
 import Chip from '../Chip';
-import IconButton from '@Components/common/IconButton/index';
 
 const { setDataInputState, handleCheckbox, applyRouteAnalysisRequest } =
   Creators;

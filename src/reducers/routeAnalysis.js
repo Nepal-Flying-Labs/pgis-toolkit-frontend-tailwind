@@ -370,7 +370,10 @@ const checkProcessingStatusSuccess = (state, action) =>
     };
     draft.analysisTaskId = null;
     draft.dataInput = initialState.dataInput;
-    draft.results.analysisResults.push(analysisResult);
+    draft.results.analysisResults = [
+      analysisResult,
+      ...draft.results.analysisResults,
+    ];
     draft.results.zoomToRouteId = analysisResult.id;
     draft.activeTab = 'results';
     draft.selectedRouteId = optimalRouteId;

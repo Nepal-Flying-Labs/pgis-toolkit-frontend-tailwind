@@ -142,16 +142,16 @@
 - [x] On second analysis, doesn't direct to results tab stays in data input tab 
 - [x] Zoom to layer speed duration
 - [x] Show help text for preferred alternative path
-- [ ] Latest analysis result to be shown in top
+- [x] Latest analysis result to be shown in top
 - [ ] Obstacle Layer needs to be displayed by default while analysis
 - [ ] Route pop-up close on layertoggle
 - [ ] Number  of obstacle in route layer(result) attribute table
 - [ ] Check error text review
-- [ ] Project Boundary line color not displaying on map.
 - [ ] Draw tool issue
-- [ ] Clear All and SHow query result design review
+- [ ] Clear All and Show query result design review
 - [ ] Category ID is seen in Data Catalog table after upload success.
 
 - [ ] Cross icon for processing exeution
 - [ ] After data upload is successful, repeatative toast message is shown
 - [ ] In alternative route input, UI redesign (+, -)
+- [ ] Project Boundary line color not displaying on map.

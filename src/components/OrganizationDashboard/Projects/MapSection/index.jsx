@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
 import {
   useOLMap,
@@ -10,10 +10,14 @@ import Scalebar from '@Components/common/OpenLayersComponent/Scalebar/index';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import '@Components/common/OpenLayersComponent/map.css';
+import { Creators } from '@Actions/organizationDashboard';
+
+const { setZoomToLayer } = Creators;
 
 const { API_URL } = process.env;
 
 export default function MapSection() {
+  const dispatch = useDispatch();
   const projects = useSelector(state => state.organizationDashboard.projects);
   const organizationDetail = useSelector(
     state => state.organizationDashboard.organizationDetail,
@@ -24,6 +28,11 @@ export default function MapSection() {
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
+
+  const zoomToLayer = useSelector(
+    state => state.organizationDashboard.zoomToLayer,
+  );
+
   const { mapRef, map } = useOLMap({
     center: fromLonLat([85.3, 27.7]),
     zoom: 2,
@@ -53,6 +62,22 @@ export default function MapSection() {
       });
     }
   }, [map, organizationDetail]);
+
+  // zoom to layer id
+  useEffect(() => {
+    if (!map || !zoomToLayer) return;
+    const bbox = zoomToLayer?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 3500,
+        constrainResolution: true,
+      });
+    }
+    dispatch(setZoomToLayer(null));
+  }, [dispatch, map, zoomToLayer]);
 
   return (
     <div className="naxatw-w-full">

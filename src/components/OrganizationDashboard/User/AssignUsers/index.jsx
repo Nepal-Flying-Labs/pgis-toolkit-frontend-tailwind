@@ -330,14 +330,14 @@ const AssignUsers = () => {
                   value={roleSearchText}
                   onChange={e => setRoleSearchText(e.target.value)}
                 />
-                <div className="naxatw-w-full naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7]  naxatw-py-2 naxatw-min-h-[200px] naxatw-max-h-[200px] naxatw-overflow-x-auto scrollbar">
+                <div className="naxatw-w-full naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-min-h-[200px] naxatw-max-h-[200px] naxatw-overflow-x-auto scrollbar">
                   {selectedRolesList
                     .filter(i =>
                       i.name?.toLowerCase()?.includes(roleSearchText),
                     )
                     .map(roles => (
                       <Checkbox
-                        className="hover:naxatw-bg-grey-100 naxatw-py-2 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
+                        className="hover:naxatw-bg-grey-100 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
                         key={roles.id}
                         id={roles.id}
                         label={roles.name?.replaceAll('_', ' ')}
@@ -362,7 +362,7 @@ const AssignUsers = () => {
                   value={projectSearchText}
                   onChange={e => setProjectSearchText(e.target.value)}
                 />
-                <div className="naxatw-w-full naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-py-2 naxatw-max-h-[200px] naxatw-min-h-[200px] naxatw-h-[200px] naxatw-overflow-x-auto scrollbar">
+                <div className="naxatw-w-full naxatw-rounded-2xl naxatw-border naxatw-border-[#D7D7D7] naxatw-max-h-[200px] naxatw-min-h-[200px] naxatw-h-[200px] naxatw-overflow-x-auto scrollbar">
                   {!userListLoading ? (
                     selectedRolesList
                       ?.map(list => list.checked)
@@ -375,7 +375,7 @@ const AssignUsers = () => {
                           <Checkbox
                             key={project.id}
                             id={project.id}
-                            className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
+                            className="hover:naxatw-bg-grey-100  naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
                             label={project.name}
                             checked={project.checked}
                             disabled={project.disabled}
@@ -384,7 +384,7 @@ const AssignUsers = () => {
                         ))
                     ) : (
                       <div className="naxatw-h-full naxatw-w-full naxatw-flex naxatw-items-center naxatw-justify-center naxatw-px-5">
-                        <span className="naxatw-text-body-lg ">
+                        <span className="naxatw-text-body-lg">
                           Please select the user role before assigning
                           organization/projects.
                         </span>

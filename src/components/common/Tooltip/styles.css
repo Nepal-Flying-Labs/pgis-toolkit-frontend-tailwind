@@ -2,7 +2,7 @@
 :root {
   --tooltip-text-color: white;
   --tooltip-background-color: #484848;
-  --tooltip-margin: 0.5rem;
+  --tooltip-margin: 2rem;
   --tooltip-arrow-size: 6px;
 }
 

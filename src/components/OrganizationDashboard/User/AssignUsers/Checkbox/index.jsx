@@ -13,7 +13,7 @@ const Checkbox = ({
 }) => {
   return (
     <div
-      className={`${className} naxatw-flex naxatw-items-center naxatw-gap-x-2 `}
+      className={`${className} naxatw-flex naxatw-items-center naxatw-gap-x-2 naxatw-px-2 naxatw-py-3 naxatw-w-full`}
     >
       <input
         id={id}
@@ -26,7 +26,7 @@ const Checkbox = ({
 
       <label
         htmlFor={id}
-        className={`naxatw-text-body-lg naxatw-text-[#484848] ${labelClassName}`}
+        className={`naxatw-text-body-lg naxatw-text-[#484848] naxatw-block naxatw-w-full ${labelClassName}`}
       >
         {label}
       </label>

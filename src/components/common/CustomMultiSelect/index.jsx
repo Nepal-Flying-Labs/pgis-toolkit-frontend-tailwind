@@ -113,39 +113,32 @@ function CustomMultiSelect({
                   opt[field].toLowerCase().includes(searchText.toLowerCase()),
                 )
                 .map(item => (
-                  <li
-                    key={item?.id || item.code || item?.name}
-                    role="menuitem"
-                    tabIndex="0"
-                    onKeyDown={() => {}}
+                  //     <li
+                  //       key={item?.id || item.code || item?.name}
+                  //       role="menuitem"
+                  //       tabIndex="0"
+                  //       onKeyDown={() => {}}
+                  //       onClick={() => {
+                  //         handleSelect(item);
+                  //       }}
+                  //       className={`naxatw-whitespace-nowrap  naxatw-h-[48px] naxatw-py-2 naxatw-mt-1
+                  //   naxatw-cursor-pointer  naxatw-text-body-lg naxatw-text-[#484848]
+                  //  hover:naxatw-bg-gray-100  naxatw-flex naxatw-justify-between naxatw-gap-x-2 naxatw-items-center ${
+                  //    selectedValues.includes(item[field])
+                  //      ? 'naxatw-bg-gray-100'
+                  //      : ''
+                  //  }`}
+                  //     >
+                  <Checkbox
+                    className="hover:naxatw-bg-grey-100  naxatw-cursor-pointer "
+                    key={item.id}
+                    id={item.id}
+                    label={item[field]}
                     onClick={() => {
                       handleSelect(item);
                     }}
-                    className={`naxatw-whitespace-nowrap  naxatw-h-[48px] naxatw-py-2 naxatw-mt-1
-                naxatw-cursor-pointer  naxatw-text-body-lg naxatw-text-[#484848]
-               hover:naxatw-bg-gray-100  naxatw-flex naxatw-justify-between naxatw-gap-x-2 naxatw-items-center ${
-                 selectedValues.includes(item[field])
-                   ? 'naxatw-bg-gray-100'
-                   : ''
-               }`}
-                  >
-                    <Checkbox
-                      className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
-                      key={item.id}
-                      id={item.id}
-                      label={item[field]}
-                      onClick={() => {
-                        handleSelect(item);
-                      }}
-                      checked={selectedValues.includes(item[field])}
-                    />
-                    {/* {item[field]}
-                  {selectedValues.includes(item[field]) && (
-                    <i className="material-icons naxatw-text-secondary-400">
-                      check
-                    </i>
-                  )} */}
-                  </li>
+                    checked={selectedValues.includes(item[field])}
+                  />
                 ))
             ) : (
               <li>{noDataMessage}</li>

@@ -69,7 +69,7 @@ function Select({
             // }}
           >
             <ul>
-              {options ? (
+              {options.length > 0 ? (
                 options.map(item => {
                   return (
                     <li
@@ -92,7 +92,9 @@ function Select({
                   );
                 })
               ) : (
-                <li>{noDataMessage}</li>
+                <li className="naxatw-dropdown-items naxatw-text-body-lg">
+                  {noDataMessage}
+                </li>
               )}
             </ul>
           </div>
@@ -112,7 +114,7 @@ Select.defaultProps = {
   disabled: false,
   onChange: () => {},
   selected: '',
-  noDataMessage: '',
+  noDataMessage: 'No data available',
   errorValue: false,
   errorClassName: false,
   dataKey: 'name',

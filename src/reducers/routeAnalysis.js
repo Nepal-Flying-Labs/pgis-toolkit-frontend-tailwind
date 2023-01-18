@@ -3,10 +3,9 @@ import { createReducer } from 'reduxsauce';
 import produce from 'immer';
 import { Types } from '@Actions/routeAnalysis';
 import {
-  destinationPointColor,
-  startingPointColor,
   startPointStyles,
   obstaclePointColor,
+  routeColors,
 } from '@src/constants/analysis';
 
 // const initialState = {
@@ -17,7 +16,7 @@ import {
 //     drawPointType: null, // 'start', 'destination'
 //     startGeojson: null,
 //     destinationGeojson: null,
-//     alternativePaths: null,
+//     alternativePaths: 1,
 //     outputName: '',
 //   },
 //   results: {
@@ -43,7 +42,7 @@ const initialState = {
     drawPointType: null,
     startGeojson: null,
     destinationGeojson: null,
-    alternativePaths: null,
+    alternativePaths: 1,
     outputName: '',
   },
   results: {
@@ -399,7 +398,7 @@ const checkProcessingStatusSuccess = (state, action) =>
                 checked: true,
                 style: {
                   ...draft.roadNetworkLayer.style,
-                  lineColor: startingPointColor,
+                  lineColor: routeColors[item.route_no],
                   lineThickness:
                     +draft.roadNetworkLayer.style.lineThickness + 2,
                 },
@@ -418,7 +417,7 @@ const checkProcessingStatusSuccess = (state, action) =>
               checked: true,
               style: {
                 ...draft.roadNetworkLayer.style,
-                lineColor: destinationPointColor,
+                lineColor: routeColors[item.route_no],
                 lineThickness: +draft.roadNetworkLayer.style.lineThickness + 2,
               },
             })),

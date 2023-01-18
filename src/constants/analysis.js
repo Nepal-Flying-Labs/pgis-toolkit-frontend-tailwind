@@ -61,3 +61,12 @@ export const destinationPointStyles = {
   ...drawPointStyles,
   fillColor: destinationPointColor,
 };
+
+export const routeColors = {
+  1: '#00A699',
+  2: '#FF5A5F',
+  3: '#AB47BC',
+  4: '#5c6bc0',
+  5: '#ffb300',
+  6: '#7cb342',
+};

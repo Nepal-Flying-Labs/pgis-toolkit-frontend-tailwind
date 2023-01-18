@@ -48,9 +48,10 @@ const StepTwo = () => {
     <div>
       <h4>Preparation for data collection</h4>
       <p className="naxatw-text-body-lg naxatw-mt-2">
-        Choose the desired datasets from the two options below. You may choose
-        data from both of the options below but make sure to choose the same
-        data only once.
+        To facilitate your data collection process, we offer a list of standard
+        layer templates with standard attributes. You also have the option to
+        add additional attributes to the templates as per your data needs.
+        Please select one or multiple checkboxes to choose the layer templates.
       </p>
       <div className="naxatw-mt-5 naxatw-flex naxatw-justify-between naxatw-items-center ">
         <p>List of data templates for field data collection</p>
@@ -136,9 +137,10 @@ const StepTwo = () => {
         )}
       </div>
       <p className="naxatw-text-body-md naxatw-text-[#484848] naxatw-py-3">
-        Are you confused? Please check our guide document,{' '}
+        If you are facing challenges, we recommend consulting our guide document
+        for assistance.
         <a className="naxatw-text-body-md naxatw-text-secondary-400">
-          click here to view.
+          Click here to access it.
         </a>
       </p>
     </div>

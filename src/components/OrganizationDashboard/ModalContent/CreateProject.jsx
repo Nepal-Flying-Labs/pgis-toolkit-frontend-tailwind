@@ -47,11 +47,12 @@ const CreateProject = () => {
 
   return (
     <div className="naxatw-space-y-8">
-      <h3>Basic Project Setup & Invitation</h3>
+      {/* <h3>Basic Project Setup & Invitation</h3> */}
       <div className="naxatw-flex">
         <span className="naxatw-text-body-lg ">
-          Setup basic information of your project and assign a project manager.
-          The project manager can then complete the full details.
+          To get started, please provide the basic details of the project and
+          designate a Project Manager. The designated Project Manager will then
+          have the authority to fully set up the project.
         </span>
       </div>
       <div>

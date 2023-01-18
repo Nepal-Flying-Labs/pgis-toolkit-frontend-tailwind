@@ -48,7 +48,7 @@ export default function Settings() {
     <div className="naxatw-bg-[#F5F5F5] naxatw-w-full naxatw-flex naxatw-justify-center">
       <div className="naxatw-pt-3 naxatw-flex naxatw-flex-col md:naxatw-flex-row naxatw-gap-x-5 naxatw-h-[calc(100vh-60px)] naxatw-px-10">
         <div className="naxatw-mb-5 md:naxatw-mb-0">
-          <div className="naxatw-rounded-xl naxatw-border naxatw-py-3 md:naxatw-w-[325px] naxatw-bg-white">
+          <div className="naxatw-rounded-xl naxatw-border naxatw-py-3 md:naxatw-w-[290px] lg:naxatw-w-[325px] naxatw-bg-white">
             <ul>
               {linkOptions.map(link => (
                 <li
@@ -60,7 +60,7 @@ export default function Settings() {
                 >
                   <div className="naxatw-flex naxatw-items-center naxatw-gap-x-3">
                     <span
-                      className={`naxatw-text-[13px] naxatw-font-bold ${
+                      className={`naxatw-text-body-btn naxatw-font-bold ${
                         active === link.id
                           ? 'naxatw-text-primary-400'
                           : 'naxatw-text-grey-600'

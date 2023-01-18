@@ -46,16 +46,16 @@ const type = [
 ];
 
 const source = [
-  {
-    id: 1,
-    name: 'osm',
-    displayName: 'OSM',
-  },
-  {
-    id: 2,
-    name: 'usafiri',
-    displayName: 'USAFIRI',
-  },
+  // {
+  //   id: 1,
+  //   name: 'osm',
+  //   displayName: 'OSM',
+  // },
+  // {
+  //   id: 2,
+  //   name: 'usafiri',
+  //   displayName: 'USAFIRI',
+  // },
   {
     id: 3,
     name: 'custom',
@@ -145,9 +145,8 @@ const AddAttributes = () => {
                 onChange={data => {
                   handleCustomChange('source', data.name);
                 }}
-                selected={
-                  source.filter(s => s.name === values.source)?.[0]?.displayName
-                }
+                selected={source.filter(s => s.id === 3)?.[0]?.displayName}
+                disabled
               />
             </div>
           </div>

@@ -113,7 +113,7 @@ export default function OrganizationList() {
         />
       </div>
 
-      <div className="naxa-table naxatw-overflow-x-auto naxatw-h-[calc(100vh-23rem)] scrollbar naxatw-relative naxatw-mt-[1.875rem]">
+      <div className="naxa-table naxatw-overflow-x-auto naxatw-h-[calc(100vh-20rem)] xl:naxatw-h-[calc(100vh-23rem)] scrollbar naxatw-relative naxatw-mt-[1.875rem]">
         {!loading ? (
           <Table
             data={organizationData?.results || []}

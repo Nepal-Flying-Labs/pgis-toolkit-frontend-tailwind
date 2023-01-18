@@ -165,7 +165,7 @@ const AssignUsers = () => {
             <li className="">
               {' '}
               <a
-                className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-[13px] naxatw-leading-[18px] naxatw-font-bold ${
+                className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-body-lg naxatw-leading-[18px] naxatw-font-bold ${
                   activeTab === 'assign'
                     ? 'naxatw-border-b-[2px] naxatw-border-[#484848] naxatw-text-[#484848]'
                     : 'naxatw-text-[#989898] hover:naxatw-text-[#00A699]'
@@ -181,7 +181,7 @@ const AssignUsers = () => {
             <li className="">
               {' '}
               <a
-                className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-[13px] naxatw-leading-[18px] naxatw-font-bold ${
+                className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 naxatw-text-body-lg naxatw-leading-[18px] naxatw-font-bold ${
                   activeTab === 'invite'
                     ? 'naxatw-border-b-[2px] naxatw-border-[#484848] naxatw-text-[#484848]'
                     : 'naxatw-text-[#989898] hover:naxatw-text-[#00A699]'
@@ -199,7 +199,7 @@ const AssignUsers = () => {
         {/* Assign Users */}
         {activeTab === 'assign' && (
           <div className="naxatw-space-y-2 naxatw-pt-2">
-            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
+            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-body-lg">
               Assign User
             </label>
             <CustomMultiSelect
@@ -214,13 +214,15 @@ const AssignUsers = () => {
               )}
             />
             {errors && <FormErrorMessage message={errors.email} />}
-            <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-2 ">
+            <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-3 !naxatw-mt-3">
               {emailList.map(item => (
                 <div
                   key={item.id}
-                  className="naxatw-flex naxatw-justify-between naxatw-items-center hover:naxatw-border-[#484848] naxatw-cursor-pointer naxatw-gap-x-2 naxatw-rounded-3xl naxatw-bg-[#F5F5F5] naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-[7px]"
+                  className="naxatw-flex naxatw-justify-between naxatw-items-center hover:naxatw-border-[#484848] naxatw-cursor-pointer naxatw-gap-x-2 naxatw-rounded-3xl naxatw-bg-[#F5F5F5] naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-[3px]"
                 >
-                  <p className="naxatw-text-[#484848]">{item.email}</p>
+                  <p className="naxatw-text-[#484848] naxatw-text-body-md">
+                    {item.email}
+                  </p>
 
                   <i
                     className="material-icons naxatw-text-lg naxatw-text-[#484848] naxatw-cursor-pointer"
@@ -239,7 +241,7 @@ const AssignUsers = () => {
         {/* Invite Users */}
         {activeTab === 'invite' && (
           <div className="naxatw-space-y-2 naxatw-pt-2">
-            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
+            <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-body-lg">
               Invite User
             </label>
             <div className="naxatw-flex naxatw-items-center naxatw-relative">
@@ -291,13 +293,13 @@ const AssignUsers = () => {
               </a>
             </div>
             {errors && <FormErrorMessage message={errors.email} />}
-            <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-2 ">
+            <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-3 !naxatw-mt-3">
               {emailList.map(item => (
                 <div
                   key={item.id}
-                  className="naxatw-flex naxatw-justify-between naxatw-items-center hover:naxatw-border-[#484848] naxatw-cursor-pointer naxatw-gap-x-2 naxatw-rounded-3xl naxatw-bg-[#F5F5F5] naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-[7px]"
+                  className="naxatw-flex naxatw-justify-between naxatw-items-center hover:naxatw-border-[#484848] naxatw-cursor-pointer naxatw-gap-x-2 naxatw-rounded-3xl naxatw-bg-[#F5F5F5] naxatw-border naxatw-border-[#D7D7D7] naxatw-px-3 naxatw-py-[3px]"
                 >
-                  <p className="naxatw-text-[#484848]">{item.email}</p>
+                  <p className="naxatw-text-body-lg">{item.email}</p>
 
                   <i
                     className="material-icons naxatw-text-lg naxatw-text-[#484848] naxatw-cursor-pointer"
@@ -317,7 +319,7 @@ const AssignUsers = () => {
         <div>
           <div className="naxatw-flex naxatw-gap-x-5">
             <div className="naxatw-space-y-2 naxatw-pt-5 naxatw-basis-1/2">
-              <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
+              <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-body-lg">
                 Assign as
               </label>
               <div className="naxatw-space-y-2">
@@ -335,12 +337,13 @@ const AssignUsers = () => {
                     )
                     .map(roles => (
                       <Checkbox
-                        className="hover:naxatw-bg-grey-100 naxatw-py-1 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
+                        className="hover:naxatw-bg-grey-100 naxatw-py-2 naxatw-px-3 naxatw-cursor-pointer !naxatw-min-w-[1.25rem]"
                         key={roles.id}
                         id={roles.id}
-                        label={roles.name?.replaceAll('_', ' ')?.toLowerCase()}
+                        label={roles.name?.replaceAll('_', ' ')}
                         onClick={() => handleCheckboxClick(roles)}
                         checked={roles.checked}
+                        labelClassName="naxatw-capitalize"
                       />
                     ))}
                 </div>
@@ -348,7 +351,7 @@ const AssignUsers = () => {
               {errors && <FormErrorMessage message={errors.group} />}
             </div>
             <div className="naxatw-space-y-2 naxatw-pt-5 naxatw-basis-1/2">
-              <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[13px]">
+              <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-body-lg">
                 Assign to
               </label>
               <div className="naxatw-space-y-2">
@@ -380,9 +383,10 @@ const AssignUsers = () => {
                           />
                         ))
                     ) : (
-                      <div className="naxatw-h-full naxatw-w-full naxatw-flex naxatw-items-center naxatw-justify-center">
+                      <div className="naxatw-h-full naxatw-w-full naxatw-flex naxatw-items-center naxatw-justify-center naxatw-px-5">
                         <span className="naxatw-text-body-lg ">
-                          Select User Role
+                          Please select the user role before assigning
+                          organization/projects.
                         </span>
                       </div>
                     )

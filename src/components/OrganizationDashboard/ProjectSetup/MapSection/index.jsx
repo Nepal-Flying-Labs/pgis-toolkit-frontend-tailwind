@@ -129,7 +129,7 @@ export default function MapSection({
   return (
     <div className="naxatw-w-full naxatw-relative">
       {locationType === 'Custom Draw' && (
-        <div className="naxatw-flex naxatw-gap-x-4 naxatw-items-center naxatw-h-[40px] naxatw-my-2 naxatw-absolute naxatw-z-[9999999] naxatw-left-5 naxatw-top-10">
+        <div className="naxatw-flex naxatw-gap-x-4 naxatw-items-center naxatw-h-[40px] naxatw-my-2 naxatw-absolute naxatw-z-[99999] naxatw-left-5 naxatw-top-14">
           <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-1">
             <Tooltip content="Draw Polygon" direction="right">
               <div
@@ -188,6 +188,9 @@ export default function MapSection({
         {fileUploadGeojson && formValues.location_type === 'File Upload' && (
           <MaskedLayer geojson={fileUploadGeojson} zoomToLayer />
         )}
+        {fileUploadGeojson && formValues.location_type === 'File Upload' && (
+          <MapVectorLayer geojson={fileUploadGeojson} zoomToLayer />
+        )}
         {/* {formValues?.id &&
           (formValues?.file || project?.location_type === 'Custom Draw') && (
             <MapVectorTileLayer
@@ -200,6 +203,10 @@ export default function MapSection({
           project?.location_type === formValues?.location_type &&
           showLayer && <MaskedLayer geojson={projectGeojson} />}
 
+        {projectGeojson &&
+          project?.location_type === formValues?.location_type &&
+          showLayer && <MapVectorLayer geojson={projectGeojson} />}
+
         {drawnGeojson && <MaskedLayer geojson={drawnGeojson} />}
 
         {locationType === 'Custom Draw' && (
@@ -208,8 +215,8 @@ export default function MapSection({
             geometryType={selectedGeomType}
             style={{
               ...defaultStyles,
-              lineColor: '#000000',
-              lineOpacity: 50,
+              // lineColor: '#000000',
+              lineOpacity: 100,
               fillColor: '#2C675A',
               fillOpacity: 0,
               lineThickness: 2,

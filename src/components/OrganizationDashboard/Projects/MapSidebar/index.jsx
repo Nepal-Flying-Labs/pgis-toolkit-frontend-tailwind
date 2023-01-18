@@ -99,6 +99,7 @@ export default function MapSidebar() {
           <div className="naxatw-flex naxatw-justify-between naxatw-pr-5 naxatw-items-center">
             <div className="naxatw-flex naxatw-mt-2 naxatw-gap-2">
               <Chip
+                isSmall
                 name={`All( ${organizationDetail?.projects || ''} )`}
                 status={chipStatus}
                 value="all"
@@ -107,6 +108,7 @@ export default function MapSidebar() {
                 }}
               />
               <Chip
+                isSmall
                 name={`Ongoing( ${organizationDetail?.ongoing || ''} )`}
                 status={chipStatus}
                 value="ongoing"
@@ -224,7 +226,8 @@ export default function MapSidebar() {
               </div>
               <h3 className="naxatw-mt-7 naxatw-mb-2">No Projects yet</h3>
               <p className="naxatw-text-body-lg">
-                Create a project with basic info and project location.
+                Create a project with basic info and project location to
+                proceed.
               </p>
               <Button
                 iconLeft="add"

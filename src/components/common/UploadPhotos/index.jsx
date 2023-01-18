@@ -44,7 +44,7 @@ function UploadPhotos({
               className="naxatw-text-red-400 naxatw-text-[32px] naxatw-font-normal"
             />
             <span className="naxatw-text-body-md naxatw-text-[#757575]">
-              Please Upload Documents (DOCX,PDF,Excel or CSV file format)
+              Please upload an image file in either JPEG or PNG format.
             </span>
             <input
               type="file"

@@ -88,9 +88,9 @@ export default function LayerList() {
   ];
 
   return (
-    <div className="naxatw-space-y-10 naxatw-mt-5">
-      <div className="naxatw-flex naxatw-justify-end">
-        {/*
+    <div className="naxatw-space-y-10 xl:naxatw-mt-5">
+      {/* <div className="naxatw-flex naxatw-justify-end"> */}
+      {/*
           <Button
             className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
             iconLeft="download"
@@ -98,15 +98,15 @@ export default function LayerList() {
             Download All
           </Button>
         */}
-      </div>
-      <div className="naxa-table naxatw-h-[calc(100vh-26rem)] naxatw-overflow-x-auto  scrollbar naxatw-relative">
+      {/* </div> */}
+      <div className="naxa-table xl:naxatw-h-[calc(100vh-26rem)] naxatw-h-[calc(100vh-20rem)] naxatw-overflow-x-auto  scrollbar naxatw-relative">
         {!loading ? (
           <Table
             rowClassName="naxatw-py-1 naxatw-px-3"
             noColumnCondition={{ key: 'upload_status', value: 'uploading' }}
             data={layers || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
-            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+            headerClassName="naxatw-py-1 naxatw-px-3"
             headerWidths={[
               '1%',
               '400px',
@@ -134,7 +134,7 @@ export default function LayerList() {
           >
             <TableHeader
               dataField="SN"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+              headerClassName="naxatw-py-1 naxatw-px-3"
               rowcolSpan="rowSpan_0"
               dataHeader={<SortingContainer name="S.N" />}
               dataFormat={(row, _, index) => (
@@ -145,7 +145,7 @@ export default function LayerList() {
             />
             <TableHeader
               dataField="Data"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+              headerClassName="naxatw-py-1 naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
                 <span className="naxatw-text-body-lg naxatw-font-bold naxatw-flex naxatw-gap-2">
@@ -155,7 +155,7 @@ export default function LayerList() {
             />
             <TableHeader
               dataField="Category"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+              headerClassName="naxatw-py-1 naxatw-px-3"
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
                 <span className="naxatw-text-body-lg">{row.theme || '-'}</span>
@@ -163,7 +163,7 @@ export default function LayerList() {
             />
             <TableHeader
               dataField="Geometry"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+              headerClassName="naxatw-py-1 naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
                 <span className="naxatw-text-body-lg">{row.geom_type}</span>
@@ -171,7 +171,7 @@ export default function LayerList() {
             />
             <TableHeader
               dataField="Features"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+              headerClassName="naxatw-py-1 naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
                 <span className="naxatw-text-body-lg">{row.features}</span>
@@ -179,7 +179,7 @@ export default function LayerList() {
             />
             <TableHeader
               dataField="Source"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+              headerClassName="naxatw-py-1 naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
                 <span className="naxatw-text-body-lg">{row.source}</span>
@@ -187,7 +187,7 @@ export default function LayerList() {
             />
             <TableHeader
               dataField="Status"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+              headerClassName="naxatw-py-1 naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataHeader={<SortingContainer name="Status" />}
               dataFormat={row => (
@@ -196,11 +196,12 @@ export default function LayerList() {
             />
             <TableHeader
               dataField="Add to map"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+              headerClassName="naxatw-py-1 naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
                 <span className="naxatw-flex">
                   <Toggle
+                    isSm
                     checked={row.display_on_map}
                     onChange={e => {
                       const { checked } = e.target;
@@ -217,7 +218,7 @@ export default function LayerList() {
             />
             <TableHeader
               dataField="add_field_data"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+              headerClassName="naxatw-py-1 naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
                 <span className="naxatw-text-body-lg">
@@ -229,7 +230,7 @@ export default function LayerList() {
             />
             <TableHeader
               dataField="Data Quality"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+              headerClassName="naxatw-py-1 naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
                 <span className="naxatw-text-body-lg">
@@ -241,7 +242,7 @@ export default function LayerList() {
             />
             <TableHeader
               dataField=""
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
+              headerClassName="naxatw-py-1 naxatw-px-3 naxatw-text-right"
               rowcolSpan="rowSpan_3"
               dataFormat={row => (
                 <DropdownOptions options={dropdownOptions} data={row} />

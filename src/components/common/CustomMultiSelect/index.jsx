@@ -121,7 +121,7 @@ function CustomMultiSelect({
                     onClick={() => {
                       handleSelect(item);
                     }}
-                    className={`naxatw-whitespace-nowrap naxatw-px-3 naxatw-h-[48px] naxatw-py-2 naxatw-mt-1
+                    className={`naxatw-whitespace-nowrap  naxatw-h-[48px] naxatw-py-2 naxatw-mt-1
                 naxatw-cursor-pointer  naxatw-text-body-lg naxatw-text-[#484848]
                hover:naxatw-bg-gray-100  naxatw-flex naxatw-justify-between naxatw-gap-x-2 naxatw-items-center ${
                  selectedValues.includes(item[field])

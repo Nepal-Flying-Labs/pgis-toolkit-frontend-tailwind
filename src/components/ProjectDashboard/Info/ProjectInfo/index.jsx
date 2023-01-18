@@ -28,7 +28,7 @@ const ProjectInfo = () => {
   };
 
   return (
-    <div className="naxatw-w-full naxatw-bg-white naxatw-rounded-[20px] naxatw-h-full naxatw-overflow-y-auto scrollbar naxatw-border naxatw-border-grey-300">
+    <div className="naxatw-w-full naxatw-bg-white naxatw-rounded-[20px] naxatw-h-full naxatw-overflow-y-auto scrollbar naxatw-border naxatw-border-grey-300 naxatw-mb-5 md:naxatw-mb-0">
       {/* Header */}
       <div className="naxatw-p-7  naxatw-rounded-t-lg xl:naxatw-flex">
         <div className="naxatw-w-full xl:naxatw-w-3/4 naxatw-pr-5">
@@ -65,7 +65,7 @@ const ProjectInfo = () => {
           <div className="">
             <p className="naxatw-text-body-btn naxatw-mb-1">Project partners</p>
             <p className="naxatw-text-body-lg">
-              {info?.partners?.value?.join(', ') || '-'}
+              {info?.partners?.map(partner => <li>{partner.value}</li>) || '-'}
             </p>
           </div>
         </div>

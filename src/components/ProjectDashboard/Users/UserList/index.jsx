@@ -242,6 +242,7 @@ const UserList = () => {
             options={roles}
             dataKey="name"
             placeholder="Role"
+            className="naxatw-select-md !naxatw-pl-3"
             onChange={data => {
               dispatch(setUserState({ userRole: data.name }));
             }}
@@ -249,16 +250,13 @@ const UserList = () => {
           />
         </div>
       </div>
-      <div className="naxatw-mt-3 ">
-        <div
-          style={{ height: `calc(100vh - 24rem)` }}
-          className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative"
-        >
+      <div className="xl:naxatw-mt-3 ">
+        <div className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative naxatw-h-[calc(100vh-19rem)] xl:naxatw-h-[calc(100vh-24rem)]">
           {!loading ? (
             <Table
               data={currentList || []}
               className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+              headerClassName="naxatw-py-1 naxatw-px-3"
               headerWidths={[
                 '396px',
                 '220px',
@@ -272,7 +270,7 @@ const UserList = () => {
             >
               <TableHeader
                 dataField="Name"
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                headerClassName="naxatw-py-1 naxatw-px-3"
                 rowcolSpan="rowSpan_2"
                 dataHeader={
                   <SortingContainer
@@ -310,7 +308,7 @@ const UserList = () => {
               />
               {/* <TableHeader
                 dataField="Organization Name"
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+                headerClassName="naxatw-py-1 naxatw-px-3 "
                 rowcolSpan="rowSpan_2"
                 dataHeader={<SortingContainer name="Organization Name" />}
                 dataFormat={row => (
@@ -319,7 +317,7 @@ const UserList = () => {
               />
               <TableHeader
                 dataField="Project"
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+                headerClassName="naxatw-py-1 naxatw-px-3 "
                 rowcolSpan="rowSpan_2"
                 dataHeader={<SortingContainer name="Project" />}
                 dataFormat={row => (
@@ -328,7 +326,7 @@ const UserList = () => {
               /> */}
               <TableHeader
                 dataField="Role"
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+                headerClassName="naxatw-py-1 naxatw-px-3 "
                 rowcolSpan="rowSpan_2"
                 dataHeader={
                   <SortingContainer
@@ -359,7 +357,7 @@ const UserList = () => {
               />
               <TableHeader
                 dataField="Phone"
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                headerClassName="naxatw-py-1 naxatw-px-3"
                 rowcolSpan="rowSpan_2"
                 // dataHeader={<SortingContainer name="Phone" />}
                 dataFormat={row => (
@@ -370,7 +368,7 @@ const UserList = () => {
               />
               <TableHeader
                 dataField="Email"
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                headerClassName="naxatw-py-1 naxatw-px-3"
                 rowcolSpan="rowSpan_2"
                 // dataHeader={<SortingContainer name="Email" />}
                 dataFormat={row => (
@@ -379,7 +377,7 @@ const UserList = () => {
               />
               <TableHeader
                 dataField="Status"
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                headerClassName="naxatw-py-1 naxatw-px-3"
                 rowcolSpan="rowSpan_2"
                 // dataHeader={
                 // <SortingContainer
@@ -405,7 +403,7 @@ const UserList = () => {
               />
               <TableHeader
                 dataField=""
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
+                headerClassName="naxatw-py-1 naxatw-px-3 naxatw-text-right"
                 rowcolSpan="rowSpan_3"
                 dataFormat={row => (
                   <DropdownOptions

@@ -5,6 +5,8 @@ import Toggle from '@Components/common/Toggle';
 import IconButton from '@Components/common/IconButton';
 import RoutePopupSkeleton from '@Components/common/SkeletonLoader/RoutePopupSkeleton';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import secondsToHMS from '@Utils/secondsToHMS';
+import meterToKM from '@Utils/meterToKM';
 
 const {
   getRoutePopupDataRequest,
@@ -73,9 +75,9 @@ export default function RoutePopup() {
               <p>Route Type</p>
               <p>Line</p>
               <p>Length</p>
-              <p>{routePopupData?.length} m</p>
+              <p>{meterToKM(routePopupData?.length)}</p>
               <p>Travel Time</p>
-              <p>{routePopupData?.travel_time} seconds</p>
+              <p>{secondsToHMS(routePopupData?.travel_time)}</p>
             </div>
 
             <p className="naxatw-btn-text naxatw-mt-3 naxatw-mb-2">Obstacles</p>

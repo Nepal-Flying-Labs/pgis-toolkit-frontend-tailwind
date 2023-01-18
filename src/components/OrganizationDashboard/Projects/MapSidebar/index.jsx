@@ -96,52 +96,54 @@ export default function MapSidebar() {
             </Button>
           </div>
 
-          <div className="naxatw-flex naxatw-justify-between naxatw-pr-5 naxatw-items-center">
-            <div className="naxatw-flex naxatw-mt-2 naxatw-gap-2">
-              <Chip
-                isSmall
-                name={`All( ${organizationDetail?.projects || ''} )`}
-                status={chipStatus}
-                value="all"
-                onClick={() => {
-                  setChipStatus('all');
-                }}
-              />
-              <Chip
-                isSmall
-                name={`Ongoing( ${organizationDetail?.ongoing || ''} )`}
-                status={chipStatus}
-                value="ongoing"
-                onClick={() => {
-                  setChipStatus('ongoing');
-                }}
-              />
-            </div>
-            <div className="naxatw-flex naxatw-gap-x-2">
-              <a onClick={() => setViewType('list')}>
-                <MaterialIcon
-                  name="view_list"
-                  className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
-                    viewType === 'list' ? 'naxatw-text-primary-500' : ''
-                  }`}
-                  wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-primary-50 naxatw-group ${
-                    viewType === 'list' ? 'naxatw-bg-primary-50' : ''
-                  }`}
+          {projects?.results.length > 0 && (
+            <div className="naxatw-flex naxatw-justify-between naxatw-pr-5 naxatw-items-center">
+              <div className="naxatw-flex naxatw-mt-2 naxatw-gap-2">
+                <Chip
+                  isSmall
+                  name={`All( ${organizationDetail?.projects || ''} )`}
+                  status={chipStatus}
+                  value="all"
+                  onClick={() => {
+                    setChipStatus('all');
+                  }}
                 />
-              </a>
-              <a onClick={() => setViewType('grid')}>
-                <MaterialIcon
-                  name="grid_view"
-                  className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
-                    viewType === 'grid' ? 'naxatw-text-primary-500' : ''
-                  }`}
-                  wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-primary-50 naxatw-group ${
-                    viewType === 'grid' ? 'naxatw-bg-primary-50' : ''
-                  }`}
+                <Chip
+                  isSmall
+                  name={`Ongoing( ${organizationDetail?.ongoing || ''} )`}
+                  status={chipStatus}
+                  value="ongoing"
+                  onClick={() => {
+                    setChipStatus('ongoing');
+                  }}
                 />
-              </a>
+              </div>
+              <div className="naxatw-flex naxatw-gap-x-2">
+                <a onClick={() => setViewType('list')}>
+                  <MaterialIcon
+                    name="view_list"
+                    className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
+                      viewType === 'list' ? 'naxatw-text-primary-500' : ''
+                    }`}
+                    wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-primary-50 naxatw-group ${
+                      viewType === 'list' ? 'naxatw-bg-primary-50' : ''
+                    }`}
+                  />
+                </a>
+                <a onClick={() => setViewType('grid')}>
+                  <MaterialIcon
+                    name="grid_view"
+                    className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
+                      viewType === 'grid' ? 'naxatw-text-primary-500' : ''
+                    }`}
+                    wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-primary-50 naxatw-group ${
+                      viewType === 'grid' ? 'naxatw-bg-primary-50' : ''
+                    }`}
+                  />
+                </a>
+              </div>
             </div>
-          </div>
+          )}
         </>
       )}
 

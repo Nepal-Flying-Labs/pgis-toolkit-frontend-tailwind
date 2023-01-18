@@ -121,7 +121,7 @@ export default function ProjectGridCard({
   return (
     <div
       // naxatw-min-h-[408px] naxatw-max-h-[415px] naxatw-min-w-[321px]
-      className={` naxatw-border naxatw-border-grey-300 naxatw-rounded-xl hover:naxatw-bg-[#F5F5F5] naxatw-h-full hover:naxatw-border-grey-800  naxatw-cursor-pointer naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-pb-1 ${
+      className={` naxatw-border naxatw-border-grey-300 naxatw-rounded-xl naxatw-max-h-[420px] hover:naxatw-bg-[#F5F5F5] naxatw-h-full hover:naxatw-border-grey-800  naxatw-cursor-pointer naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-pb-1 ${
         status === 'draft' ? 'naxatw-bg-[#F5F5F5]' : 'naxatw-bg-white'
       }`}
       onClick={onClick}

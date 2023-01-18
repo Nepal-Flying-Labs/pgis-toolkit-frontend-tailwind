@@ -77,16 +77,18 @@ export default function StepTwo() {
                   naxatw-w-full"
                   >
                     <h5 className="naxatw-text-grey-800">{layer.name}</h5>
-                    <div className="naxatw-flex naxatw-gap-2">
-                      <span
-                        className="naxatw-p-1 hover:naxatw-bg-grey-100
-                      hover:naxatw-rounded-lg naxatw-cursor-pointer"
-                      >
-                        <IconButton
-                          name="edit"
-                          className="material-icons-outlined naxatw-mt-1"
-                        />
-                      </span>
+                    <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
+                      {/*
+                        <span
+                          className="naxatw-p-1 hover:naxatw-bg-grey-100
+                        hover:naxatw-rounded-lg naxatw-cursor-pointer"
+                        >
+                          <IconButton
+                            name="edit"
+                            className="material-icons-outlined naxatw-mt-1"
+                          />
+                        </span>
+                      */}
                       <Button
                         className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
                         disabled={isLayerCheckingError}

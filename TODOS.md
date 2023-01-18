@@ -135,5 +135,7 @@
 
 - [ ] tooltip direction bottom prop
 - [ ] remove gpx option for Polygon and MultiPolygon
-- [ ] NO DATA in select component 
-- [ ] project setup project objectives textarea
+- [ ] NO DATA in select component
+- [x] project setup project objectives textarea
+- [ ] viewlayer attribute table text alignment
+- [ ] select min width assign users

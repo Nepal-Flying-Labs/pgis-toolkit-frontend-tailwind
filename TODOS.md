@@ -145,13 +145,13 @@
 - [x] Latest analysis result to be shown in top
 - [x] Route pop-up close on layertoggle
 - [x] Number  of obstacle in route layer(result) attribute table
+- [x] Clear All and Show query result design review
+
 - [ ] Check error text review
 - [ ] Obstacle Layer needs to be displayed by default while analysis
 - [ ] Draw tool issue
-- [ ] Clear All and Show query result design review
-- [ ] Category ID is seen in Data Catalog table after upload success.
-
 - [ ] Cross icon for processing exeution
 - [ ] After data upload is successful, repeatative toast message is shown
 - [ ] In alternative route input, UI redesign (+, -)
 - [ ] Project Boundary line color not displaying on map.
+- [ ] Category ID is seen in Data Catalog table after upload success.

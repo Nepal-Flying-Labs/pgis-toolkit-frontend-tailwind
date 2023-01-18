@@ -394,6 +394,10 @@ const handleRouteCheckbox = (state, action) =>
           item.checked = checked;
         });
       });
+      if (!checked) {
+        draft.analysisId = null;
+        draft.selectedRouteId = null;
+      }
       return;
     }
     if (name === 'obstacle') {

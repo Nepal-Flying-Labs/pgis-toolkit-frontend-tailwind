@@ -93,6 +93,22 @@ export default function ViewRouteAttribute() {
                 </p>
               )}
             />
+            <TableHeader
+              dataField="No. of Obstacles"
+              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+              rowcolSpan="rowSpan_2"
+              dataFormat={row => {
+                const totalObstacles = row.obstacles.reduce(
+                  (sum, item) => sum + item.count,
+                  0,
+                );
+                return (
+                  <p className="naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
+                    {totalObstacles}
+                  </p>
+                );
+              }}
+            />
           </Table>
         )}
       </div>

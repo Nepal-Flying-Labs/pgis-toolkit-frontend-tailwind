@@ -143,10 +143,10 @@
 - [x] Zoom to layer speed duration
 - [x] Show help text for preferred alternative path
 - [x] Latest analysis result to be shown in top
-- [ ] Obstacle Layer needs to be displayed by default while analysis
-- [ ] Route pop-up close on layertoggle
-- [ ] Number  of obstacle in route layer(result) attribute table
+- [x] Route pop-up close on layertoggle
+- [x] Number  of obstacle in route layer(result) attribute table
 - [ ] Check error text review
+- [ ] Obstacle Layer needs to be displayed by default while analysis
 - [ ] Draw tool issue
 - [ ] Clear All and Show query result design review
 - [ ] Category ID is seen in Data Catalog table after upload success.

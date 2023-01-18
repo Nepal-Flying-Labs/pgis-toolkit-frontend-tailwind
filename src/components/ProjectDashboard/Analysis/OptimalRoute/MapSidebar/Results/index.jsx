@@ -5,6 +5,7 @@ import { Creators as CommonCreators } from '@Actions/common';
 import { analysisHeaderHeight } from '@src/constants';
 import Accordion from '@Components/common/Accordion';
 import DropdownOptions from '@Components/common/DropdownOptions';
+import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 
 const { setResultsState, handleRouteCheckbox } = RouteAnalysisCreators;
 const { toggleModal } = CommonCreators;
@@ -160,6 +161,10 @@ export default function Results() {
                               }}
                             />
 
+                            <LegendItem
+                              styles={item.style}
+                              className="naxatw-mr-2"
+                            />
                             <label
                               className="naxatw-text-body-lg naxatw-text-grey-800"
                               htmlFor={item.id}

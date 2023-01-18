@@ -91,6 +91,14 @@ export default function MaskedLayer({ map, geojson }) {
     return () => {
       if (!isEmpty(tileLayers)) {
         tileLayers.map(item => item.removeFilter(maskedLayer));
+        map.setView(
+          new View({
+            center: map.getView().getCenter(),
+            extent: undefined,
+            zoom: map.getView().getZoom(),
+            minZoom: 0,
+          }),
+        );
       }
     };
   }, [map, tileLayers, geojson]);

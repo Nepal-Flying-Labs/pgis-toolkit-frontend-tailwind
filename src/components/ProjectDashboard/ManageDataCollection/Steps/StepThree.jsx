@@ -24,18 +24,22 @@ const StepThree = () => {
   return (
     <div className="naxatw-container ">
       <div className="md:naxatw-w-[800px] naxatw-mx-auto">
-        <h4 className="naxatw-mb-2">Download Data & Template</h4>
+        <h4 className="naxatw-mb-2">Download Layer Template</h4>
         <p className="naxatw-text-body-lg">
-          Download Datasets for Field Data Collection
+          Download selected layer templates for field data collection
         </p>
         <div className="naxatw-px-4 naxatw-py-3 naxatw-mt-6 naxatw-border naxatw-border-grey-300 naxatw-rounded-xl">
-          <h5>Download data in Standard format</h5>
-          <span className="naxatw-text-[12px] naxatw-font-bold naxatw-leading-[16px]">
+          <h5>
+            Download selected templates in standard format as provided by
+            USAFIRI.
+          </h5>
+          {/* <span className="naxatw-text-[12px] naxatw-font-bold naxatw-leading-[16px]">
             (shp, csv, geojson or gpkg)
-          </span>
+          </span> */}
           <p className="naxatw-text-body-md naxatw-mt-2">
-            These are the templates that will help you collect data in
-            pre-defined format.
+            These templates will assist you in collecting data in USAFIRI
+            pre-defined format which further eases the data analysis operation
+            in the next phase.
           </p>
           <div className="naxatw-mt-2 naxatw-flex naxatw-items-center naxatw-gap-x-3">
             <Button
@@ -52,7 +56,7 @@ const StepThree = () => {
         <span className="naxatw-flex naxatw-justify-center naxatw-text-body-sm naxatw-mt-3">
           OR
         </span>
-        <div className="naxatw-px-4 naxatw-py-3 naxatw-mt-6 naxatw-border naxatw-border-grey-300 naxatw-rounded-xl">
+        <div className="naxatw-px-4 naxatw-py-3 naxatw-mt-6 naxatw-border naxatw-border-grey-300 naxatw-rounded-xl naxatw-bg-grey-100 naxatw-cursor-not-allowed">
           <h5>Download data in QField Project</h5>
 
           <p className="naxatw-text-body-md naxatw-mt-2">
@@ -64,6 +68,7 @@ const StepThree = () => {
           <div className="naxatw-mt-2 naxatw-flex naxatw-items-center naxatw-gap-x-3 ">
             <Button
               iconLeft="download"
+              disabled
               className="naxatw-btn-secondary naxatw-btn-noborder naxatw-mt-3 "
             >
               Download

@@ -49,9 +49,10 @@ export default function MapCard({ isDraw, geojson }) {
       <MapComponent
         ref={mapRef}
         mapInstance={map}
-        style={{
-          height: `calc(100vh - 175px)`,
-        }}
+        className="naxatw-h-[calc(100vh-150px)] lg:naxatw-h-[calc(100vh-160px)] 2xl:naxatw-h-[calc(100vh-170px)]"
+        // style={{
+        //   height: `calc(100vh - 165px)`,
+        // }}
       >
         <LayerSwitcherControl />
         <Scalebar />

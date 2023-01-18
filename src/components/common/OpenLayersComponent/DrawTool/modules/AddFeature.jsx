@@ -12,6 +12,7 @@ export default function AddFeature({
   addInteraction,
   removeInteraction,
   onDrawEnd,
+  map,
 }) {
   const drawInstance = useMemo(
     () =>
@@ -32,14 +33,24 @@ export default function AddFeature({
   // );
 
   useEffect(() => {
-    if (!vectorLayer || !enable) return;
+    if (!vectorLayer || !enable) {
+      removeInteraction(drawInstance);
+      return;
+    }
     addInteraction(drawInstance);
-  }, [addInteraction, vectorLayer, type, enable, drawInstance]);
+  }, [
+    addInteraction,
+    removeInteraction,
+    vectorLayer,
+    type,
+    enable,
+    drawInstance,
+  ]);
 
-  useEffect(() => {
-    if (enable) return;
-    removeInteraction(drawInstance);
-  }, [removeInteraction, enable, drawInstance]);
+  // useEffect(() => {
+  //   if (enable) return;
+  //   removeInteraction(drawInstance);
+  // }, [removeInteraction, enable, drawInstance]);
 
   // on draw end
   useEffect(() => {

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable arrow-body-style */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
@@ -20,7 +21,8 @@ import getImageSource from '@Utils/getImageSource';
 import AvatarIcon from '@Assets/images/icons/avatar-icon.svg';
 import useCustomUpload from '@Hooks/useCustomUpload';
 import { isEmpty } from '@Utils/commonUtils';
-import ContactPerson from './ContactPerson';
+import TextArea from '@Components/common/TextArea/index';
+// import ContactPerson from './ContactPerson';
 // import ContactPerson from './ContactPerson';
 
 const {
@@ -226,41 +228,53 @@ const BasicInfo = () => {
     <>
       <div className="naxatw-flex">
         <span className="naxatw-text-body-lg naxatw-text-start">
-          As a user you cannot proceed forward with the basic setup.Fill up the
-          basic info form to proceed ahead
+          You can update the organization's profile information.
         </span>
       </div>
       <div className="naxatw-flex naxatw-gap-x-5">
         <div className="naxatw-w-full naxatw-space-y-7">
-          <Input
-            type="text"
-            label="Name of Organization*"
-            name="name"
-            value={values?.name}
-            onChange={handleChange}
-            placeholder="Enter name of organization"
-          />
-          {errorFields?.name && <FormErrorMessage message={errorFields.name} />}
+          <div className="naxatw-space-y-2">
+            <Input
+              type="text"
+              label="Name of Organization*"
+              name="name"
+              value={values?.name}
+              onChange={handleChange}
+              placeholder="Enter name of organization"
+            />
+            {errorFields?.name && (
+              <FormErrorMessage message={errorFields.name} />
+            )}
+          </div>
 
-          <Input
-            type="textarea"
-            label="About Organization"
-            className="naxatw-h-[77px] naxatw-pb-8"
-            name="description"
-            value={values?.description || ''}
-            onChange={handleChange}
-            placeholder="Write a short summary of an organization"
-          />
-          {errorFields?.description && (
-            <FormErrorMessage message={errorFields.description} />
-          )}
+          <div className="naxatw-space-y-2">
+            {/* <Input
+              type="textarea"
+              label="About Organization"
+              className="naxatw-h-[77px] naxatw-pb-8"
+              name="description"
+              value={values?.description || ''}
+              onChange={handleChange}
+              placeholder="Write a short summary of an organization"
+            /> */}
+            <TextArea
+              label="About Organization"
+              name="description"
+              value={values?.description || ''}
+              onChange={handleChange}
+              placeholder="Write a short summary of an organization"
+            />
+            {errorFields?.description && (
+              <FormErrorMessage message={errorFields.description} />
+            )}
+          </div>
         </div>
         <div className="naxatw-w-32 naxatw-min-w-32">
           {/* <div className="naxatw-w-full naxatw-flex naxatw-items-center naxatw-justify-center"> */}
           <img
             src={values?.cover_image ? values.cover_image.image : AvatarIcon}
             alt="img"
-            className="naxatw-w-32 naxatw-min-w-32 naxatw-h-[6.5rem] naxatw-min-h-[6.5rem] naxatw-object-cover naxatw-border naxatw-rounded-full"
+            className="naxatw-w-32 naxatw-min-w-[128px] naxatw-max-w-32 naxatw-h-32 naxatw-min-h-32 naxatw-max-h-32 naxatw-object-cover naxatw-overflow-hidden naxatw-border naxatw-rounded-full"
           />
           <Button
             className="naxatw-btn-secondary naxatw-w-full naxatw-mt-5"
@@ -298,7 +312,7 @@ const BasicInfo = () => {
             placeholder="address"
           />
         </div>
-        <div className="naxatw-w-1/2">
+        <div className="naxatw-w-1/2 naxatw-space-y-2">
           <Input
             type="text"
             label="Email"
@@ -313,7 +327,7 @@ const BasicInfo = () => {
         </div>
       </div>
       <div className="naxatw-flex naxatw-gap-x-2">
-        <div className="naxatw-w-1/2">
+        <div className="naxatw-w-1/2 naxatw-space-y-2">
           <Input
             type="text"
             label="Contact"
@@ -326,7 +340,7 @@ const BasicInfo = () => {
             <FormErrorMessage message={errorFields.contact} />
           )}
         </div>
-        <div className="naxatw-w-1/2">
+        <div className="naxatw-w-1/2 naxatw-space-y-2">
           <Input
             type="text"
             label="Website"
@@ -380,54 +394,62 @@ const BasicInfo = () => {
       {/* <ContactPerson /> */}
       <div className="naxatw-space-y-5">
         <h4>Contact Person Details</h4>
-        <Input
-          type="text"
-          label="Name of contact Person"
-          name="name"
-          value={values?.contact_person?.name || ''}
-          onChange={handleContactPersonValues}
-          placeholder="Full Name"
-        />
-        {errorFields?.contactName && (
-          <FormErrorMessage message={errorFields.contactName} />
-        )}
+        <div className="naxatw-space-y-2">
+          <Input
+            type="text"
+            label="Name of contact Person"
+            name="name"
+            value={values?.contact_person?.name || ''}
+            onChange={handleContactPersonValues}
+            placeholder="Full Name"
+          />
+          {errorFields?.contactName && (
+            <FormErrorMessage message={errorFields.contactName} />
+          )}
+        </div>
 
-        <Input
-          label="Position"
-          type="text"
-          name="position"
-          value={values?.contact_person?.position || ''}
-          onChange={handleContactPersonValues}
-          placeholder="Position"
-        />
-        {errorFields?.contactPosition && (
-          <FormErrorMessage message={errorFields.contactPosition} />
-        )}
+        <div className="naxatw-space-y-2">
+          <Input
+            label="Position"
+            type="text"
+            name="position"
+            value={values?.contact_person?.position || ''}
+            onChange={handleContactPersonValues}
+            placeholder="Position"
+          />
+          {errorFields?.contactPosition && (
+            <FormErrorMessage message={errorFields.contactPosition} />
+          )}
+        </div>
 
-        <Input
-          type="email"
-          label="Email"
-          name="email"
-          value={values?.contact_person?.email || ''}
-          onChange={handleContactPersonValues}
-          placeholder="example.com"
-        />
-        {errorFields?.contactEmail && (
-          <FormErrorMessage message={errorFields.contactEmail} />
-        )}
+        <div className="naxatw-space-y-2">
+          <Input
+            type="email"
+            label="Email"
+            name="email"
+            value={values?.contact_person?.email || ''}
+            onChange={handleContactPersonValues}
+            placeholder="example.com"
+          />
+          {errorFields?.contactEmail && (
+            <FormErrorMessage message={errorFields.contactEmail} />
+          )}
+        </div>
 
-        <Input
-          label="Phone"
-          type="text"
-          name="contact"
-          value={values?.contact_person?.contact || ''}
-          onChange={handleContactPersonValues}
-          placeholder="Phone Number"
-        />
+        <div className="naxatw-space-y-2">
+          <Input
+            label="Phone"
+            type="text"
+            name="contact"
+            value={values?.contact_person?.contact || ''}
+            onChange={handleContactPersonValues}
+            placeholder="Phone Number"
+          />
+          {errorFields?.contactContact && (
+            <FormErrorMessage message={errorFields.contactContact} />
+          )}
+        </div>
       </div>
-      {errorFields?.contactContact && (
-        <FormErrorMessage message={errorFields.contactContact} />
-      )}
 
       <div className="naxatw-flex naxatw-justify-center naxatw-pb-7 naxatw-pt-7">
         <Button

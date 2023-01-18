@@ -17,7 +17,7 @@ export default function Searchbar({
         <div className="naxatw-absolute naxatw-inset-y-0 naxatw-left-0 naxatw-flex naxatw-items-center naxatw-pl-3 naxatw-pointer-events-none">
           <svg
             aria-hidden="true"
-            className="naxatw-w-5 naxatw-h-5 naxatw-text-grey-800"
+            className="naxatw-w-[22px] naxatw-h-[22px] naxatw-text-grey-800"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"

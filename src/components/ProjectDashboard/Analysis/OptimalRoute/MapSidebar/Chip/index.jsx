@@ -9,6 +9,7 @@ export default function Chip({
   iconRight,
   iconClassName,
   iconStyle,
+  className,
 }) {
   return (
     <div
@@ -21,7 +22,7 @@ export default function Chip({
           active
             ? 'naxatw-border-grey-800'
             : 'naxatw-border-grey-300 naxatw-bg-grey-100'
-        }`}
+        } ${className}`}
     >
       {iconLeft && (
         <i
@@ -56,6 +57,7 @@ Chip.defaultProps = {
   iconRight: null,
   iconClassName: 'material-icons',
   iconStyle: {},
+  className: '',
 };
 
 Chip.propTypes = {
@@ -66,4 +68,5 @@ Chip.propTypes = {
   iconRight: PropTypes.node,
   iconClassName: PropTypes.string,
   iconStyle: PropTypes.object,
+  className: PropTypes.string,
 };

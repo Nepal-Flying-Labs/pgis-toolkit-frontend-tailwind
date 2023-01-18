@@ -4,14 +4,17 @@
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { formatBytes, getFileExtension } from '@Utils/commonUtils';
 import useCustomUpload from '@Hooks/useCustomUpload';
 import { convertSHPToGeoJSON, validateGeoJSON } from '@Utils/convertLayerUtils';
+import { Creators } from '@Actions/organizationDashboard';
 import { format } from 'date-fns';
 import Button from '../../../common/Button/index';
 import MaterialIcon from '../../../common/MaterialIcon/index';
 import MapSection from '../MapSection/index';
+
+const { setFileUploadGeojson } = Creators;
 
 function convertToGeoJSON(file) {
   const filename = file[0].name;
@@ -36,8 +39,7 @@ function UploadPolygonBoundary({
   locationType,
   formValues,
 }) {
-  // eslint-disable-next-line no-unused-vars
-  // const [uploadedFile, setuploadedFile] = useState([]);
+  const dispatch = useDispatch();
   const [error, setError] = useState(false);
   const [inputRef, onFileUpload] = useCustomUpload();
   const [geojson, setGeojson] = useState(null);
@@ -49,8 +51,13 @@ function UploadPolygonBoundary({
     try {
       convertToGeoJSON(files)
         .then(z => {
-          setGeojson(z);
-          setError(false);
+          if (typeof z === 'object' && !Array.isArray(z) && z !== null) {
+            dispatch(setFileUploadGeojson(z));
+            setError(false);
+          } else {
+            setError(true);
+            setuploadedFile('');
+          }
         })
         .catch(err => {
           setError(true);
@@ -83,7 +90,8 @@ function UploadPolygonBoundary({
           </Button>
           <div>
             <span className="naxatw-text-body-md naxatw-text-[#484848]">
-              SHP or GEOJSON format supported
+              Please ensure to upload a zipped file containing (.shp, .shx,
+              .dbf, .prj) for shapefile.
             </span>
           </div>
           <input
@@ -136,7 +144,7 @@ function UploadPolygonBoundary({
               <a
                 onClick={() => {
                   setuploadedFile('');
-                  setGeojson(null);
+                  dispatch(setFileUploadGeojson(null));
                 }}
                 className="hover:naxatw-bg-grey-100 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-justify-center naxatw-items-center naxatw-rounded-lg"
               >

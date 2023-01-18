@@ -16,7 +16,6 @@ import {
   getMaxPage,
 } from '@Components/common/Pagination/getSelectedItem';
 import Pagination from '@Components/common/Pagination';
-import Tooltip from '@Components/common/Tooltip/index';
 
 const {
   getLayerAttributeRequest,
@@ -110,15 +109,17 @@ export default function ViewLayerAttribute() {
 
   useEffect(() => {
     if (modalContent !== 'view-layer-attribute') return;
-    dispatch(
-      getLayerAttributeRequest({
-        layer: selectedLayer.id,
-        search: searchText,
-        page: currentPage,
-        limit: rowPerPage,
-        ordering,
-      }),
-    );
+    if (selectedLayer) {
+      dispatch(
+        getLayerAttributeRequest({
+          layer: selectedLayer?.id,
+          search: searchText,
+          page: currentPage,
+          limit: rowPerPage,
+          ordering,
+        }),
+      );
+    }
   }, [
     dispatch,
     selectedLayer,
@@ -131,15 +132,17 @@ export default function ViewLayerAttribute() {
 
   useEffect(() => {
     if (modalContent !== 'view-query-attribute') return;
-    dispatch(
-      getQueryAttributeRequest({
-        layer: selectedData.id,
-        search: searchText,
-        page: currentPage,
-        limit: rowPerPage,
-        ordering,
-      }),
-    );
+    if (selectedData) {
+      dispatch(
+        getQueryAttributeRequest({
+          layer: selectedData.id,
+          search: searchText,
+          page: currentPage,
+          limit: rowPerPage,
+          ordering,
+        }),
+      );
+    }
   }, [
     dispatch,
     selectedData,
@@ -171,13 +174,13 @@ export default function ViewLayerAttribute() {
         />
       </div>
 
-      <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative  naxatw-w-full naxatw-max-h-[calc(100vh-25rem)] naxatw-min-h-[calc(100vh-25rem)]">
+      <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative  naxatw-w-full naxatw-max-h-[calc(100vh-19rem)] naxatw-min-h-[calc(100vh-19rem)] xl:naxatw-max-h-[calc(100vh-25rem)] xl:naxatw-min-h-[calc(100vh-25rem)]">
         {!loading && headerKeys.length > 0 ? (
           <Table
             data={attributeList || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            headerWidths={[...headerKeys.map(() => '150px'), '100px']}
+            headerWidths={[...headerKeys.map(() => '150px'), '10px']}
             // eslint-disable-next-line
             // onRowClick={row => {}}
           >
@@ -199,17 +202,15 @@ export default function ViewLayerAttribute() {
                   />
                 }
                 dataFormat={row => (
-                  <Tooltip content={row[key]} direction="right">
-                    <p
-                      className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden ${
-                        ordering === key
-                          ? 'naxatw-text-body-btn'
-                          : 'naxatw-text-body-lg'
-                      } `}
-                    >
-                      {row[key] || '-'}
-                    </p>
-                  </Tooltip>
+                  <p
+                    className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden ${
+                      ordering === key
+                        ? 'naxatw-text-body-btn'
+                        : 'naxatw-text-body-lg'
+                    } `}
+                  >
+                    {row[key] || '-'}
+                  </p>
                 )}
               />
             ))}

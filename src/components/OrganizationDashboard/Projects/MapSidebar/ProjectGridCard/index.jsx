@@ -1,13 +1,19 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useRef, useEffect, useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import { useHistory, useParams, useRouteMatch } from 'react-router';
 import AvatarImage from '@Assets/images/img-sm-avatar.png';
 import Button from '@Components/common/Button/index';
+import { Creators as CommonCreator } from '@Actions/common';
+import { Creators } from '@Actions/organizationDashboard';
 import { format } from 'date-fns';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
+
+const { togglePromptDialog } = CommonCreator;
+const { setSelectedProject, setZoomToLayer } = Creators;
 
 const getStatusColor = status => {
   switch (status) {
@@ -46,7 +52,10 @@ export default function ProjectGridCard({
   startDate,
   endDate,
   thematicAreas,
+  bbox,
 }) {
+  const dispatch = useDispatch();
+
   const { url } = useRouteMatch();
 
   function ellipsify(str) {
@@ -113,14 +122,17 @@ export default function ProjectGridCard({
           <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: () => {
+        dispatch(setSelectedProject({ id, name: title }));
+        dispatch(togglePromptDialog('delete-project'));
+      },
     },
   ];
 
   return (
     <div
       // naxatw-min-h-[408px] naxatw-max-h-[415px] naxatw-min-w-[321px]
-      className={` naxatw-border naxatw-border-grey-300 naxatw-rounded-xl hover:naxatw-bg-[#F5F5F5] naxatw-h-fit hover:naxatw-border-grey-800  naxatw-cursor-pointer naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-pb-1 ${
+      className={` naxatw-border naxatw-border-grey-300 naxatw-rounded-xl naxatw-max-h-[420px] hover:naxatw-bg-[#F5F5F5] naxatw-h-full hover:naxatw-border-grey-800  naxatw-cursor-pointer naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-pb-1 ${
         status === 'draft' ? 'naxatw-bg-[#F5F5F5]' : 'naxatw-bg-white'
       }`}
       onClick={onClick}
@@ -136,30 +148,9 @@ export default function ProjectGridCard({
 
         <div className="naxatw-pl-4 naxatw-py-3 naxatw-pr-2">
           <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
-            <h5
-              className={`${
-                !hideTitle
-                  ? 'naxatw-h-fit'
-                  : 'naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden'
-              } `}
-            >
-              {hideTitle ? title.slice(0, titleLimit) : title || 'N/A'}
-              {hideTitle && (
-                <span className="naxatw-inline-flex">
-                  <span className="naxatw-px-1">...</span>
-                  <button
-                    type="button"
-                    className="naxatw-text-secondary-400 hover:naxatw-underline"
-                    onClick={e => {
-                      e.stopPropagation();
-                      setHideTitle(!hideTitle);
-                    }}
-                  >
-                    See more
-                  </button>
-                </span>
-              )}
-            </h5>
+            <h5 title={title} className="naxatw-line-clamp-2">
+              {title || 'N/A'}
+            </h5>{' '}
             <DropdownOptions
               options={dropdownOptions}
               data={id}
@@ -183,9 +174,9 @@ export default function ProjectGridCard({
             <p className="naxatw-text-body-sm naxatw-text-[#989898] naxatw-uppercase">
               Thematic areas
             </p>
-            <div className="naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden">
+            <div className="naxatw-line-clamp-2">
               <span className="naxatw-text-body-md">
-                {thematicAreas ? ellipsify(thematicAreas.toString()) : 'N/A'}
+                {thematicAreas ? thematicAreas.toString() : 'N/A'}
               </span>
             </div>
           </div>
@@ -207,8 +198,8 @@ export default function ProjectGridCard({
           <Button
             className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-w-[160.5px]"
             onClick={e => {
-              // console.log('clicked');
               e.stopPropagation();
+              dispatch(setZoomToLayer({ id, bbox }));
             }}
           >
             View on Map

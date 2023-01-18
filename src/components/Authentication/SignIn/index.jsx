@@ -108,30 +108,29 @@ export default function SignIn() {
                 {!isVisible ? 'visibility' : 'visibility_off'}
               </span>
             </div>
-
-            <div className="naxatw-flex naxatw-items-center naxatw-mb-6 naxatw-justify-between">
-              <div className="naxatw-flex naxatw-items-start naxatw-gap-3">
-                <input
-                  id="keep-me"
-                  type="checkbox"
-                  value=""
-                  className="naxatw-w-4 naxatw-h-4"
-                />
-                <label
-                  htmlFor="keep-me"
-                  className="naxatw-text-body-md naxatw-text-grey-800"
-                >
-                  Keep me signed in
-                </label>
-              </div>
-              <div>
-                <ButtonLink
-                  to="/forgot-password"
-                  onClick={() => dispatch(setInfoDialogContent(''))}
-                >
-                  Forgot your password?
-                </ButtonLink>
-              </div>
+          </div>
+          <div className="naxatw-flex naxatw-items-center naxatw-mb-5 naxatw-mt-2 naxatw-justify-between">
+            <div className="naxatw-flex naxatw-items-start naxatw-gap-3">
+              <input
+                id="keep-me"
+                type="checkbox"
+                value=""
+                className="naxatw-w-4 naxatw-h-4"
+              />
+              <label
+                htmlFor="keep-me"
+                className="naxatw-text-body-md naxatw-text-grey-800"
+              >
+                Keep me signed in
+              </label>
+            </div>
+            <div>
+              <ButtonLink
+                to="/forgot-password"
+                onClick={() => dispatch(setInfoDialogContent(''))}
+              >
+                Forgot your password?
+              </ButtonLink>
             </div>
           </div>
 

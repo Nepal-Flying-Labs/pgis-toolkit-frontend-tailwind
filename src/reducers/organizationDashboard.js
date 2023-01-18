@@ -7,9 +7,12 @@ import { getUserGroupRequest } from '@Sagas/organizationDashboard';
 
 const initialState = {
   projects: null,
+  zoomToLayer: null,
   selectedProject: null,
   countryList: [],
   individualProject: {
+    projectGeojson: null,
+    fileUploadGeojson: null,
     contactPerson: [],
     project: {},
     stepOne: {},
@@ -442,6 +445,27 @@ const deleteProjectSuccess = (state, action) => {
   };
 };
 
+const getProjectGeojsonSuccess = (state, action) => ({
+  ...state,
+  individualProject: {
+    ...state.individualProject,
+    projectGeojson: action.payload,
+  },
+});
+
+const setFileUploadGeojson = (state, action) => ({
+  ...state,
+  individualProject: {
+    ...state.individualProject,
+    fileUploadGeojson: action.payload,
+  },
+});
+
+const setZoomToLayer = (state, action) => ({
+  ...state,
+  zoomToLayer: action.payload,
+});
+
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
@@ -475,6 +499,9 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
   [Types.SET_SELECTED_PROJECT]: setSelectedProject,
   [Types.DELETE_PROJECT_SUCCESS]: deleteProjectSuccess,
+  [Types.GET_PROJECT_GEOJSON_SUCCESS]: getProjectGeojsonSuccess,
+  [Types.SET_FILE_UPLOAD_GEOJSON]: setFileUploadGeojson,
+  [Types.SET_ZOOM_TO_LAYER]: setZoomToLayer,
 });
 
 export default organizationDashboardReducer;

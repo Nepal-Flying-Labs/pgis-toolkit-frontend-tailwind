@@ -12,11 +12,11 @@
 }
 
 .naxatw-dropdown{
-    @apply naxatw-absolute naxatw-left-0 naxatw-z-50 naxatw-w-full naxatw-transition-all  naxatw-ease-in-out naxatw-duration-100 naxatw-mt-2 naxatw-origin-top-right naxatw-bg-white naxatw-border naxatw-border-[#D7D7D7] naxatw-rounded-md naxatw-shadow-lg
+    @apply naxatw-absolute naxatw-left-0 naxatw-z-[90000] naxatw-w-full naxatw-transition-all  naxatw-ease-in-out naxatw-duration-100 naxatw-mt-2 naxatw-origin-top-right naxatw-bg-white naxatw-border naxatw-border-[#D7D7D7] naxatw-rounded-md naxatw-shadow-lg
 }
 
 .naxatw-dropdown-items{
-    @apply naxatw-whitespace-nowrap naxatw-px-2 naxatw-py-1  naxatw-mt-1
+    @apply naxatw-whitespace-nowrap naxatw-px-3 naxatw-py-2
     naxatw-cursor-pointer naxatw-rounded-sm 
    hover:naxatw-bg-[#F5F5F5]
 }

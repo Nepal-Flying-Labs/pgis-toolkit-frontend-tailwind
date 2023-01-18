@@ -17,6 +17,7 @@ import {
   updateInvitedUserStatus,
   organizationById,
   updateOrganization,
+  getProjectGeojson,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
@@ -73,7 +74,11 @@ export function* postProjectInviteRequest({ payload }) {
       organizationDashboardActions.postProjectInviteSuccess(response.data),
     );
     yield put(commonActions.toggleModal(''));
-    yield put(toastActions.success({ message: 'Invitation sent success' }));
+    yield put(
+      toastActions.success({
+        message: 'Email Invitation has been sent successfully',
+      }),
+    );
     yield put(
       organizationDashboardActions.getProjectsRequest({ organization }),
     );
@@ -120,7 +125,11 @@ export function* patchProjectRequest({ id, payload }) {
       yield put(commonActions.togglePromptDialog());
     }
 
-    yield put(toastActions.success({ message: 'Data saved successfully' }));
+    yield put(
+      toastActions.success({
+        message: "Thank you for filling in the project's basic details. ",
+      }),
+    );
   } catch (error) {
     yield put(organizationDashboardActions.patchProjectFailure());
     throw error;
@@ -321,10 +330,10 @@ export function* updateOrganizationRequest({ id, payload }) {
   delete newPayload.page;
   try {
     const formData = prepareFormData(newPayload);
-    const response = yield call(updateOrganization, id, formData);
-    yield put(
-      organizationDashboardActions.updateOrganizationSuccess(response.data),
-    );
+    yield call(updateOrganization, id, formData);
+    // yield put(
+    //   organizationDashboardActions.updateOrganizationSuccess(response.data),
+    // );
     // yield put(organizationDashboardActions.toggleModal(''));
     yield put(toastActions.success({ message: 'Data saved successfully' }));
   } catch (error) {
@@ -355,6 +364,17 @@ export function* deleteProjectRequest({ id, payload }) {
   } catch (error) {
     yield put(organizationDashboardActions.deleteProjectFailure());
     throw error;
+  }
+}
+
+export function* getProjectGeojsonRequest({ params }) {
+  try {
+    const response = yield call(getProjectGeojson, params);
+    yield put(
+      organizationDashboardActions.getProjectGeojsonSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.getProjectGeojsonFailure());
   }
 }
 
@@ -439,6 +459,10 @@ function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.DELETE_PROJECT_REQUEST,
     withLoader(withErrorHandler(deleteProjectRequest)),
+  );
+  yield takeLatest(
+    Types.GET_PROJECT_GEOJSON_REQUEST,
+    withLoader(getProjectGeojsonRequest),
   );
 }
 

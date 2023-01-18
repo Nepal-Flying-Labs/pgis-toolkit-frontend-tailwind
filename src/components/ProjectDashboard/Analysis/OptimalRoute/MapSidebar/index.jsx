@@ -1,5 +1,6 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Creators } from '@Actions/routeAnalysis';
 import Tab from '@Components/common/Tab';
 import { analysisHeaderHeight } from '@src/constants';
 import DataInput from './DataInput';
@@ -11,8 +12,11 @@ const tabData = [
   { id: 'layers', title: 'Layers', content: '', disabled: true },
 ];
 
+const { setRouteAnalysisState } = Creators;
+
 export default function MapSidebar() {
   const activeTab = useSelector(state => state.routeAnalysis.activeTab);
+  const dispatch = useDispatch();
 
   return (
     <div
@@ -24,6 +28,13 @@ export default function MapSidebar() {
           contentClassName={`naxatw-h-[calc(100vh-${analysisHeaderHeight}-2.2rem)]`}
           data={tabData}
           activeId={activeTab}
+          onChange={tabId => {
+            dispatch(
+              setRouteAnalysisState({
+                activeTab: tabId,
+              }),
+            );
+          }}
         />
       </div>
     </div>

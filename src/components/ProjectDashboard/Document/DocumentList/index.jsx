@@ -17,6 +17,7 @@ import { format } from 'date-fns';
 import CustomCheckbox from '@Components/common/CustomCheckbox/index';
 import { isEmpty } from '@Utils/commonUtils';
 import { useParams } from 'react-router';
+import sortByKey from '@Utils/sortFn';
 // import { baseURL } from '@Services';
 // import { saveAs } from 'file-saver';
 
@@ -38,6 +39,9 @@ function DocumentList() {
     state => state.projectDashboard.document.searchText,
   );
   const documents = useSelector(state => state.projectDashboard.document.list);
+  const ordering = useSelector(
+    state => state.projectDashboard.document.ordering,
+  );
   const [value, handleSearch] = useDebouncedInput({
     ms: 300,
     init: searchText,
@@ -53,6 +57,14 @@ function DocumentList() {
   const isDownloading = useSelector(state =>
     checkIfLoading(state, [Types.DOWNLOAD_DOCUMENT_REQUEST]),
   );
+
+  const [documentList, setDocumentList] = useState([]);
+
+  useEffect(() => {
+    if (!isEmpty(documents)) {
+      setDocumentList(documents);
+    }
+  }, [documents]);
 
   useEffect(() => {
     // if (searchText) {
@@ -99,11 +111,24 @@ function DocumentList() {
   //   }&project=${projectId}`;
   //   saveAs(downloadLink);
   // };
+  const [sortAssending, setSortAssending] = useState(true);
+
+  const handleSorting = title => {
+    let newList = [];
+    if (sortAssending) {
+      newList = sortByKey(documentList, title, 'descending');
+      setDocumentList(newList);
+    } else {
+      newList = sortByKey(documentList, title, 'ascending');
+      setDocumentList(newList);
+    }
+    setSortAssending(prevState => !prevState);
+  };
 
   return (
     <div className="">
-      <div className="naxatw-py-2 naxatw-flex naxatw-items-center naxatw-justify-between">
-        <div className="naxatw-flex naxatw-items-center naxatw-w-60 naxatw-mt-4 ">
+      <div className="naxatw-py-1 naxatw-flex naxatw-items-center naxatw-justify-between">
+        <div className="naxatw-flex naxatw-items-center naxatw-w-60">
           <Searchbar
             isSmall
             placeholder="Search"
@@ -113,7 +138,7 @@ function DocumentList() {
         </div>
         <div className="">
           <Button
-            className="naxatw-btn-secondary naxatw-btn-noborder "
+            className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder "
             iconLeft="download"
             isLoading={isDownloading}
             onClick={handleDownloadAll}
@@ -133,7 +158,7 @@ function DocumentList() {
         }}
         className="naxatw-py-3 naxatw-flex naxatw-overflow-auto scrollbar"
       >
-        <div className="naxatw-mt-3 naxatw-w-full">
+        <div className="xl:naxatw-mt-3 naxatw-w-full">
           <div
             style={{
               height: `calc(100vh - 270px)`,
@@ -141,9 +166,9 @@ function DocumentList() {
             }}
             className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-w-full"
           >
-            {!loading ? (
+            {!loading && documentList.length > 0 ? (
               <Table
-                data={documents || []}
+                data={documentList || []}
                 onRowClick={data => {
                   // console.log(data);
                   dispatch(getDocumentByIdRequest(data.id));
@@ -152,24 +177,22 @@ function DocumentList() {
                   );
                 }}
                 className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                headerClassName="naxatw-py-1 naxatw-px-3"
                 headerWidths={[
-                  '90px',
+                  '10px',
                   '220px',
                   '250px',
-                  '90px',
-                  '90px',
-                  '50px',
+                  '100px',
+                  '150px',
+                  '150px',
                   '100px',
                 ]}
               >
                 <TableHeader
                   dataField="CheckBox"
-                  headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                  headerClassName="naxatw-py-1 naxatw-px-3"
                   // rowcolSpan="rowSpan_0"
-                  dataHeader={
-                    <SortingContainer name="" className="naxatw-text-black" />
-                  }
+                  dataHeader={<SortingContainer name="" className="" />}
                   dataFormat={row => (
                     <span className="text-base">
                       <CustomCheckbox
@@ -183,46 +206,64 @@ function DocumentList() {
                   )}
                 />
                 <TableHeader
-                  dataField="TITLE"
-                  headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                  dataField="Name"
+                  headerClassName="naxatw-py-1 naxatw-px-3"
                   // rowcolSpan="rowSpan_2"
                   dataHeader={
                     <SortingContainer
                       name="name"
-                      className="naxatw-text-black"
+                      isActive={ordering === 'name'}
+                      handleSort={() => {
+                        dispatch(
+                          setDocumentState({
+                            ordering: `${ordering === 'name' ? null : 'name'}`,
+                          }),
+                        );
+                        handleSorting('name');
+                      }}
                     />
                   }
                   dataFormat={row => (
-                    <span className="text-base">{row.name || '-'}</span>
+                    <span
+                      className={` ${
+                        ordering === 'name'
+                          ? 'naxatw-text-body-btn'
+                          : 'naxatw-text-body-lg'
+                      } naxatw-overflow-ellipsis naxatw-w-[200px] naxatw-whitespace-nowrap naxatw-overflow-hidden`}
+                    >
+                      {row.name || '-'}
+                    </span>
                   )}
                 />
                 <TableHeader
                   dataField="DESCRIPTION"
-                  headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+                  headerClassName="naxatw-py-1 naxatw-px-3 "
                   // rowcolSpan="rowSpan_2"
-                  dataHeader={<SortingContainer name="description" />}
+                  // dataHeader={<SortingContainer name="description" />}
                   dataFormat={row => (
-                    <span className="text-base">{row.description || '-'}</span>
+                    <span className="naxatw-text-body-lg naxatw-overflow-ellipsis naxatw-w-[200px] naxatw-whitespace-nowrap naxatw-overflow-hidden">
+                      {row.description || '-'}
+                    </span>
                   )}
                 />
                 <TableHeader
                   dataField="FILE TYPES"
-                  headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                  headerClassName="naxatw-py-1 naxatw-px-3"
                   // rowcolSpan="rowSpan_2"
-                  dataHeader={<SortingContainer name="file_types" />}
+                  // dataHeader={<SortingContainer name="file_types" />}
                   dataFormat={row => (
-                    <span className="naxatw-text-base">
+                    <span className="naxatw-text-body-lg">
                       {row.fileTypes || '-'}
                     </span>
                   )}
                 />
                 <TableHeader
                   dataField="UPLOADED ON"
-                  headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                  headerClassName="naxatw-py-1 naxatw-px-3"
                   // rowcolSpan="rowSpan_2"
-                  dataHeader={<SortingContainer name="uploaded_on" />}
+                  // dataHeader={<SortingContainer name="uploaded_on" />}
                   dataFormat={row => (
-                    <span className="naxatw-text-base">
+                    <span className="naxatw-text-body-lg">
                       {format(new Date(row?.uploaded_date), 'MMM dd, yyyy') ||
                         '-'}
                     </span>
@@ -230,11 +271,11 @@ function DocumentList() {
                 />
                 <TableHeader
                   dataField="CREATED ON"
-                  headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                  headerClassName="naxatw-py-1 naxatw-px-3"
                   // rowcolSpan="rowSpan_2"
-                  dataHeader={<SortingContainer name="created_on" />}
+                  // dataHeader={<SortingContainer name="created_on" />
                   dataFormat={row => (
-                    <span className="naxatw-text-base">
+                    <span className="naxatw-text-body-lg">
                       {`${row.published_month}  ${row?.published_day} , ${row?.published_year}` ||
                         '-'}
                     </span>
@@ -242,18 +283,18 @@ function DocumentList() {
                 />
                 <TableHeader
                   dataField=""
-                  headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
+                  headerClassName="naxatw-py-1 naxatw-px-3 naxatw-text-right"
                   // rowcolSpan="rowSpan_3"
                   dataFormat={row => (
-                    <div className="naxatw-flex naxatw-gap-3 naxatw-py-2">
+                    <div className="naxatw-flex naxatw-gap-1">
                       <MaterialIcon
                         onIconClick={e => {
                           e.stopPropagation();
                           dispatch(dispatch(getDocumentByIdRequest(row.id)));
                           dispatch(toggleModal('edit-document'));
                         }}
-                        wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                        className="naxatw-text-[22px]"
+                        wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
+                        className="naxatw-text-icon-sm"
                         name="edit"
                       />
                       <MaterialIcon
@@ -264,8 +305,8 @@ function DocumentList() {
                           );
                           dispatch(togglePromptDialog('delete-document'));
                         }}
-                        wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                        className="naxatw-text-[22px] naxatw-text-delete_btn"
+                        wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
+                        className="naxatw-text-icon-sm naxatw-text-delete_btn"
                         name="delete_outline"
                       />
                       <MaterialIcon
@@ -273,8 +314,8 @@ function DocumentList() {
                           e.stopPropagation();
                           handleDownload(row.id);
                         }}
-                        wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                        className="naxatw-text-[22px]"
+                        wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
+                        className="naxatw-text-icon-sm"
                         name="file_download"
                       />
                     </div>

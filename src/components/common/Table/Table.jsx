@@ -237,7 +237,7 @@ export default class Table extends Component {
               </span>
             </td>
             <td colSpan={7} className={rowClassName}>
-              <span className="naxatw-text-base naxatw-font-bold naxatw-flex naxatw-gap-10  naxatw-items-center">
+              <span className="naxatw-text-body-lg naxatw-font-bold naxatw-flex naxatw-gap-10  naxatw-items-center">
                 <div className="naxatw-flex naxatw-items-center naxatw-gap-5 naxatw-text-[#FF0F0F]">
                   <i className="material-icons">error_outline</i>
                   Upload Failed

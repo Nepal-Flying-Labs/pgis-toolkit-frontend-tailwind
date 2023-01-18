@@ -51,6 +51,7 @@ const UserList = () => {
   const dispatch = useDispatch();
   // const [byGroup, setByGroup] = useState('role');
   const users = useSelector(state => state.users.userData);
+  const selectedData = useSelector(state => state.users.item);
   const searchText = useSelector(state => state.users.searchText);
   const [rowPerPage, setRowPerPage] = useState(10);
   const invitationLoading = useSelector(state =>
@@ -87,6 +88,7 @@ const UserList = () => {
         </span>
       ),
       onClick: data => {
+        dispatch(setUserState({ item: data }));
         dispatch(updateUserStatusRequest(data.id, { active: !data.active }));
       },
     },
@@ -115,6 +117,7 @@ const UserList = () => {
         </span>
       ),
       onClick: data => {
+        dispatch(setUserState({ item: data }));
         dispatch(
           updateInvitedUserStatusRequest(data.id, { status: 'Expired' }),
         );
@@ -129,6 +132,7 @@ const UserList = () => {
         </span>
       ),
       onClick: data => {
+        dispatch(setUserState({ item: data }));
         dispatch(resendInvitationRequest(data.id, { resend: true }));
       },
     },
@@ -216,18 +220,15 @@ const UserList = () => {
         </div> */}
       </div>
       <div className="naxatw-mt-3 ">
-        <div
-          style={{ height: `calc(100vh - 25rem)` }}
-          className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative"
-        >
+        <div className="naxa-table naxatw-overflow-x-auto naxatw-h-[calc(100vh-21rem)] xl:naxatw-h-[calc(100vh-23rem)] scrollbar naxatw-relative">
           {!loading ? (
             <Table
               data={currentList || []}
               className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+              headerClassName="naxatw-py-1 naxatw-px-3"
               headerWidths={[
                 '396px',
-                '220px',
+                '280px',
                 '220px',
                 '220px',
                 '290px',
@@ -239,7 +240,7 @@ const UserList = () => {
             >
               <TableHeader
                 dataField="Name"
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                headerClassName="naxatw-py-1 naxatw-px-3"
                 rowcolSpan="rowSpan_2"
                 dataHeader={
                   <SortingContainer
@@ -278,7 +279,7 @@ const UserList = () => {
               />
               <TableHeader
                 dataField="Organization Name"
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+                headerClassName="naxatw-py-1 naxatw-px-3"
                 rowcolSpan="rowSpan_2"
                 dataHeader={
                   <SortingContainer
@@ -319,7 +320,7 @@ const UserList = () => {
               /> */}
               <TableHeader
                 dataField="Role"
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
+                headerClassName="naxatw-py-1 naxatw-px-3"
                 rowcolSpan="rowSpan_2"
                 dataHeader={
                   <SortingContainer
@@ -349,7 +350,7 @@ const UserList = () => {
               />
               <TableHeader
                 dataField="Phone"
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                headerClassName="naxatw-py-1 naxatw-px-3"
                 rowcolSpan="rowSpan_2"
                 // dataHeader={<SortingContainer name="Phone" />}
                 dataFormat={row => (
@@ -366,7 +367,7 @@ const UserList = () => {
               />
               <TableHeader
                 dataField="Email"
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                headerClassName="naxatw-py-1 naxatw-px-3"
                 rowcolSpan="rowSpan_2"
                 // dataHeader={<SortingContainer name="Email" />}
                 dataFormat={row => (
@@ -383,20 +384,20 @@ const UserList = () => {
               />
               <TableHeader
                 dataField="Status"
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                headerClassName="naxatw-py-1 naxatw-px-3"
                 rowcolSpan="rowSpan_2"
                 // dataHeader={<SortingContainer name="Status" />}
                 dataFormat={row => (
                   <Status
                     status={row.active}
-                    isLoading={invitationLoading}
+                    isLoading={invitationLoading && row.id === selectedData?.id}
                     invitationStatus={row.status || ''}
                   />
                 )}
               />
               <TableHeader
                 dataField=""
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
+                headerClassName="naxatw-py-1 naxatw-px-3 naxatw-text-right"
                 rowcolSpan="rowSpan_3"
                 dataFormat={row => (
                   <DropdownOptions

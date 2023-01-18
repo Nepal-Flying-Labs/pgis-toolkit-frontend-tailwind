@@ -46,6 +46,8 @@ export default function StepTwo() {
     [selectedRoadLayer, selectedObstacleLayers],
   );
 
+  const isAllChecked = Object.keys(errorStates).length === data.length;
+
   return (
     <div>
       <h4>Data</h4>
@@ -75,16 +77,18 @@ export default function StepTwo() {
                   naxatw-w-full"
                   >
                     <h5 className="naxatw-text-grey-800">{layer.name}</h5>
-                    <div className="naxatw-flex naxatw-gap-2">
-                      <span
-                        className="naxatw-p-1 hover:naxatw-bg-grey-100
-                      hover:naxatw-rounded-lg naxatw-cursor-pointer"
-                      >
-                        <IconButton
-                          name="edit"
-                          className="material-icons-outlined naxatw-mt-1"
-                        />
-                      </span>
+                    <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
+                      {/*
+                        <span
+                          className="naxatw-p-1 hover:naxatw-bg-grey-100
+                        hover:naxatw-rounded-lg naxatw-cursor-pointer"
+                        >
+                          <IconButton
+                            name="edit"
+                            className="material-icons-outlined naxatw-mt-1"
+                          />
+                        </span>
+                      */}
                       <Button
                         className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
                         disabled={isLayerCheckingError}
@@ -131,7 +135,7 @@ export default function StepTwo() {
                                 id={id}
                                 type="checkbox"
                                 className="naxatw-min-w-[1rem] naxatw-min-h-[1rem]
-                              naxatw-accent-grey-800 naxatw-cursor-pointer"
+                                  naxatw-accent-grey-800 naxatw-cursor-pointer"
                                 checked={errorStates[layer.id].checked}
                                 onChange={e => {
                                   const { checked } = e.target;
@@ -227,15 +231,13 @@ export default function StepTwo() {
 
       <div className="naxatw-flex naxatw-justify-end naxatw-my-10">
         <Button
-          className="naxatw-btn-primary"
+          className={`naxatw-btn-primary ${
+            !isAllChecked ? 'naxatw-btn-disabled' : ''
+          }`}
           onClick={() => {
             dispatch(startAnalysisRequest(params));
           }}
-          // onClick={() => {
-          //   history.push(
-          //     `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}`,
-          //   );
-          // }}
+          disabled={!isAllChecked}
         >
           Start Analysis
         </Button>

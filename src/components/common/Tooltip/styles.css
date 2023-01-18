@@ -2,7 +2,7 @@
 :root {
   --tooltip-text-color: white;
   --tooltip-background-color: #484848;
-  --tooltip-margin: 0.5rem;
+  --tooltip-margin: 2rem;
   --tooltip-arrow-size: 6px;
 }
 
@@ -25,7 +25,7 @@
   font-weight: 700;
   font-family: sans-serif;
   line-height: 1;
-  z-index: 100;
+  z-index: 10000;
   white-space: nowrap;
   display: flex;
   align-items: center;

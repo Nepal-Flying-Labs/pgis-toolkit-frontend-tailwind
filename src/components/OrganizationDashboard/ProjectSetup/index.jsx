@@ -15,6 +15,7 @@ const {
   getIndividualProjectRequest,
   getContactPersonRequest,
   getCountryListRequest,
+  getProjectGeojsonRequest,
 } = Creators;
 
 const getPage = (page, setPage) => {
@@ -72,6 +73,7 @@ const ProjectSetup = () => {
     dispatch(getIndividualProjectRequest(projectId));
     dispatch(getContactPersonRequest({ project: projectId, type: 'project' }));
     dispatch(getCountryListRequest());
+    dispatch(getProjectGeojsonRequest({ project: projectId }));
   }, [dispatch, projectId]);
 
   return (
@@ -85,7 +87,8 @@ const ProjectSetup = () => {
                 : 'Edit a Project'}
             </h3>
             <span className="naxatw-text-body-lg naxatw-mt-1">
-              The functions works in 2 steps as highlighted below.
+              Process ahead with the two steps outlined below to aid you in the
+              process of editing your project.
             </span>
           </div>
           <button
@@ -93,7 +96,7 @@ const ProjectSetup = () => {
             onClick={() =>
               history.push(`/organizations/${organizationId}/projects`)
             }
-            className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center naxatw-"
+            className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-start "
           >
             <i className="material-icons">close</i>
             <span className="naxatw-sr-only">Close modal</span>

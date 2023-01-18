@@ -4,11 +4,11 @@ export const { Types, Creators } = createActions(
   {
     setRouteAnalysisState: ['payload'],
     setDataInputState: ['payload'],
+    setResultsState: ['payload'],
     handleCheckbox: ['payload'],
-
-    copyDataCleaningStateRequest: null,
-    copyDataCleaningStateSuccess: ['payload'],
-    copyDataCleaningStateFailure: null,
+    handleRouteCheckbox: ['payload'],
+    resetRouteAnalysisState: ['payload'],
+    handleObstaclesToggle: ['payload'],
 
     applyRouteAnalysisRequest: ['payload'],
     applyRouteAnalysisSuccess: ['payload'],
@@ -17,6 +17,14 @@ export const { Types, Creators } = createActions(
     checkProcessingStatusRequest: ['payload'],
     checkProcessingStatusSuccess: ['payload'],
     checkProcessingStatusFailure: null,
+
+    getRoutePopupDataRequest: ['payload'],
+    getRoutePopupDataSuccess: ['payload'],
+    getRoutePopupDataFailure: null,
+
+    getAnalysisDataRequest: ['params'],
+    getAnalysisDataSuccess: ['payload'],
+    getAnalysisDataFailure: null,
   },
   { prefix: 'routeAnalysis/' },
 );

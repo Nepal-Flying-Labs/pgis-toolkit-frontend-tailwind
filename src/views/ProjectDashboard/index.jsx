@@ -68,7 +68,12 @@ export default function ProjectDashboard() {
     return <AppLoader />;
   }
 
-  if (layers && layers.length < 2 && !pushedToManageDataPage.current) {
+  if (
+    layers &&
+    layers.length < 2 &&
+    !pushedToManageDataPage.current &&
+    tabname !== 'info'
+  ) {
     pushedToManageDataPage.current = true;
     history.push(
       `/organizations/${organizationId}/projects/${projectId}/manage-data`,

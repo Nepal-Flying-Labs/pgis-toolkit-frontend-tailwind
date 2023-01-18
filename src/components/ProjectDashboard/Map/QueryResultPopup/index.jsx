@@ -27,7 +27,7 @@ export default function QueryResultPopup() {
     <div
       className="naxatw-absolute naxatw-top-20 naxatw-right-4  naxatw-z-10
         naxatw-bg-white naxatw-text-grey-800 naxatw-rounded-[20px] naxatw-border naxatw-border-grey-300 
-        naxatw-shadow-3xl naxatw-w-[20.3rem]"
+        naxatw-shadow-3xl naxatw-w-[21.2rem]"
     >
       <div
         className={`naxatw-px-5 naxatw-py-3.5 naxatw-flex naxatw-items-center naxatw-justify-between naxatw-rounded-t-[20px] ${
@@ -85,7 +85,7 @@ export default function QueryResultPopup() {
               </div>
               <div className="naxatw-space-y-1">
                 <p className="naxatw-font-bold naxatw-text-xs naxatw-uppercase">
-                  Filter results
+                  Query
                 </p>
                 <p>{stringifyQuery(item.query)}</p>
               </div>

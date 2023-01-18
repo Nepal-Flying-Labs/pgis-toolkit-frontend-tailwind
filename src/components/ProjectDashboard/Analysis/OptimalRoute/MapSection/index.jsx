@@ -23,16 +23,20 @@ import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
+import { obstacleLayersSelector } from '@Selectors/routeAnalysis';
 import {
   startPointStyles,
   destinationPointStyles,
+  obstaclePointColor,
 } from '@src/constants/analysis';
 import { analysisHeaderHeight } from '@src/constants';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import { apiURL } from '@Services';
 import HelpBox from './HelpBox';
+import RoutePopup from './RoutePopup';
 
-const { setDataInputState } = RouteAnalysisCreators;
+const { setDataInputState, setResultsState, setRouteAnalysisState } =
+  RouteAnalysisCreators;
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -55,6 +59,10 @@ export default function MapSection() {
   const analysisResults = useSelector(
     state => state.routeAnalysis.results.analysisResults,
   );
+  const zoomToRouteId = useSelector(
+    state => state.routeAnalysis.results.zoomToRouteId,
+  );
+  const obstacleLayers = useSelector(obstacleLayersSelector);
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [Types.GET_PROJECT_GEOJSON_REQUEST]),
   );
@@ -74,6 +82,44 @@ export default function MapSection() {
       });
     }
   }, [map, roadNetworkLayer]);
+
+  // zoom to road network layer
+  useEffect(() => {
+    if (!map || !zoomToRouteId) return;
+    const bbox = analysisResults.find(item => item.id === zoomToRouteId)?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 2000,
+        constrainResolution: true,
+      });
+      dispatch(
+        setResultsState({
+          zoomToRouteId: null,
+        }),
+      );
+    }
+  }, [map, zoomToRouteId, analysisResults, dispatch]);
+
+  // click handler for route layer
+  useEffect(() => {
+    if (!map) return;
+    map.on('click', evt => {
+      const features = map.getFeaturesAtPixel(evt.pixel);
+      if (features.length < 1) {
+        return;
+      }
+      const properties = features[0].getProperties();
+      if (properties.layer !== 'route') return;
+      dispatch(
+        setRouteAnalysisState({
+          selectedRouteId: properties.id,
+        }),
+      );
+    });
+  }, [map, dispatch]);
 
   return (
     <div className="naxatw-w-full naxatw-relative">
@@ -114,29 +160,50 @@ export default function MapSection() {
           result.routes.map(route =>
             route.data.map(item => (
               <VectorTileLayer
+                key={`${result.id}-${route.id}-${item.id}`}
                 url={`${apiURL}maps/optimum_route_vectortile/{z}/{x}/{y}/?route=${item.id}`}
                 authToken={localStorage.getItem('userToken')}
-                visibleOnMap
+                visibleOnMap={item.checked}
                 style={item.style}
-                zIndex={2}
+                zIndex={item.is_optimum ? 3 : 2}
                 // properties={{ layerId: selectedLayer.id }}
               />
             )),
           ),
         )}
 
+        {obstacleLayers.map(item => (
+          <VectorTileLayer
+            key={`${item.layer_id}-${item.feature_mirror_ids.join('-')}`}
+            url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${
+              item.layer_id
+            }&ids=${item.feature_mirror_ids.join(',')}`}
+            authToken={localStorage.getItem('userToken')}
+            visibleOnMap
+            style={{
+              ...startPointStyles,
+              fillColor: obstaclePointColor,
+              circleRadius: 6,
+            }}
+            zIndex={4}
+            // properties={{ layerId: selectedLayer.id }}
+          />
+        ))}
+
         {analysisResults.map(result => (
           <React.Fragment key={result.id}>
             <CircleMarker
               coordinates={[result.origin_lat, result.origin_long]}
-              style={{ ...startPointStyles }}
+              visibleOnMap={result.checked}
               zIndex={10}
+              style={{ ...startPointStyles }}
               map={map}
             />
             <CircleMarker
               coordinates={[result.destination_lat, result.destination_long]}
-              style={{ ...destinationPointStyles }}
+              visibleOnMap={result.checked}
               zIndex={10}
+              style={{ ...destinationPointStyles }}
               map={map}
             />
           </React.Fragment>
@@ -191,6 +258,8 @@ export default function MapSection() {
             style={{ ...destinationPointStyles }}
           />
         )}
+
+        <RoutePopup />
 
         <MapFooter loading={isMapLoading} />
       </MapComponent>

@@ -11,6 +11,7 @@ import {
   destinationPointColor,
   startingPointColor,
 } from '@src/constants/analysis';
+import IconButton from '@Components/common/IconButton';
 import Chip from '../Chip';
 
 const { setDataInputState, handleCheckbox, applyRouteAnalysisRequest } =
@@ -116,7 +117,7 @@ export default function DataInput() {
       obstacles: JSON.stringify(selectedObstacles),
       name: outputName,
       project: projectId,
-      type: 'Optimum Path Analysis',
+      type: 'optimum_route',
     };
     dispatch(applyRouteAnalysisRequest(payloadData));
   };
@@ -173,36 +174,68 @@ export default function DataInput() {
           </div>
 
           <Container>
-            {drawPointData.map(({ label, value, icon }) => (
-              <Chip
-                key={value}
-                label={
-                  value === 'start' && startGeojson
-                    ? getGeojsonCoordinates(startGeojson)
-                    : value === 'destination' && destinationGeojson
-                    ? getGeojsonCoordinates(destinationGeojson)
-                    : label
-                }
-                iconLeft={icon}
-                iconStyle={{
-                  color:
-                    value === 'start' && startGeojson
-                      ? startingPointColor
-                      : value === 'destination' && destinationGeojson
-                      ? destinationPointColor
-                      : '',
-                }}
-                active={drawPointType === value}
-                onClick={() => {
-                  if (drawPointType) return;
-                  dispatch(
-                    setDataInputState({
-                      drawPointType: value,
-                    }),
-                  );
-                }}
-              />
-            ))}
+            <div className="naxatw-flex naxatw-select-none">
+              <div className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-between naxatw-text-grey-600 naxatw-py-1">
+                <i className="material-icons naxatw-text-lg">
+                  radio_button_unchecked
+                </i>
+                <div className="naxatw-w-8 naxatw-border-t-2 naxatw-border-dashed naxatw-border-grey-600 naxatw-rotate-90" />
+                <i className="material-symbols-outlined naxatw-text-lg">
+                  place
+                </i>
+              </div>
+              <div className="naxatw-flex-1 naxatw-space-y-2">
+                {drawPointData.map(({ label, value, icon }) => (
+                  <Chip
+                    key={value}
+                    className={`!naxatw-w-full ${
+                      (value === 'start' && startGeojson) ||
+                      (value === 'destination' && destinationGeojson)
+                        ? '!naxatw-bg-white'
+                        : ''
+                    }`}
+                    label={
+                      value === 'start' && startGeojson
+                        ? getGeojsonCoordinates(startGeojson)
+                        : value === 'destination' && destinationGeojson
+                        ? getGeojsonCoordinates(destinationGeojson)
+                        : label
+                    }
+                    iconLeft={icon}
+                    iconStyle={{
+                      color:
+                        value === 'start' && startGeojson
+                          ? startingPointColor
+                          : value === 'destination' && destinationGeojson
+                          ? destinationPointColor
+                          : '',
+                    }}
+                    active={drawPointType === value}
+                    onClick={() => {
+                      if (drawPointType) return;
+                      dispatch(
+                        setDataInputState({
+                          drawPointType: value,
+                        }),
+                      );
+                    }}
+                  />
+                ))}
+              </div>
+              <div className="naxatw-ml-1 naxatw-flex naxatw-flex-col naxatw-justify-center">
+                <IconButton
+                  name="swap_vert"
+                  onClick={() => {
+                    dispatch(
+                      setDataInputState({
+                        startGeojson: destinationGeojson,
+                        destinationGeojson: startGeojson,
+                      }),
+                    );
+                  }}
+                />
+              </div>
+            </div>
           </Container>
         </Container>
 
@@ -249,14 +282,19 @@ export default function DataInput() {
 
         <Container>
           <label className="naxatw-label">Preferred alternative path</label>
+          <p className="naxatw-text-body-sm">(Values between 1 and 5)</p>
           <input
             type="number"
             className="naxatw-input"
+            min="1"
+            max="5"
             value={alternativePaths || ''}
             onChange={e => {
+              const { value } = e.target;
+              if (value < 1 || value > 5) return;
               dispatch(
                 setDataInputState({
-                  alternativePaths: e.target.value,
+                  alternativePaths: value,
                 }),
               );
             }}

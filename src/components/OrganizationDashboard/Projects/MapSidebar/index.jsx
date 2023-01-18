@@ -96,50 +96,54 @@ export default function MapSidebar() {
             </Button>
           </div>
 
-          <div className="naxatw-flex naxatw-justify-between naxatw-pr-5 naxatw-items-center">
-            <div className="naxatw-flex naxatw-mt-2 naxatw-gap-2">
-              <Chip
-                name={`All( ${organizationDetail?.projects || ''} )`}
-                status={chipStatus}
-                value="all"
-                onClick={() => {
-                  setChipStatus('all');
-                }}
-              />
-              <Chip
-                name={`Ongoing( ${organizationDetail?.ongoing || ''} )`}
-                status={chipStatus}
-                value="ongoing"
-                onClick={() => {
-                  setChipStatus('ongoing');
-                }}
-              />
-            </div>
-            <div className="naxatw-flex naxatw-gap-x-2">
-              <a onClick={() => setViewType('list')}>
-                <MaterialIcon
-                  name="view_list"
-                  className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
-                    viewType === 'list' ? 'naxatw-text-primary-500' : ''
-                  }`}
-                  wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-primary-50 naxatw-group ${
-                    viewType === 'list' ? 'naxatw-bg-primary-50' : ''
-                  }`}
+          {projects?.results.length > 0 && (
+            <div className="naxatw-flex naxatw-justify-between naxatw-pr-5 naxatw-items-center">
+              <div className="naxatw-flex naxatw-mt-2 naxatw-gap-2">
+                <Chip
+                  isSmall
+                  name={`All( ${organizationDetail?.projects || ''} )`}
+                  status={chipStatus}
+                  value="all"
+                  onClick={() => {
+                    setChipStatus('all');
+                  }}
                 />
-              </a>
-              <a onClick={() => setViewType('grid')}>
-                <MaterialIcon
-                  name="grid_view"
-                  className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
-                    viewType === 'grid' ? 'naxatw-text-primary-500' : ''
-                  }`}
-                  wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-primary-50 naxatw-group ${
-                    viewType === 'grid' ? 'naxatw-bg-primary-50' : ''
-                  }`}
+                <Chip
+                  isSmall
+                  name={`Ongoing( ${organizationDetail?.ongoing || ''} )`}
+                  status={chipStatus}
+                  value="ongoing"
+                  onClick={() => {
+                    setChipStatus('ongoing');
+                  }}
                 />
-              </a>
+              </div>
+              <div className="naxatw-flex naxatw-gap-x-2">
+                <a onClick={() => setViewType('list')}>
+                  <MaterialIcon
+                    name="view_list"
+                    className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
+                      viewType === 'list' ? 'naxatw-text-primary-500' : ''
+                    }`}
+                    wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-primary-50 naxatw-group ${
+                      viewType === 'list' ? 'naxatw-bg-primary-50' : ''
+                    }`}
+                  />
+                </a>
+                <a onClick={() => setViewType('grid')}>
+                  <MaterialIcon
+                    name="grid_view"
+                    className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
+                      viewType === 'grid' ? 'naxatw-text-primary-500' : ''
+                    }`}
+                    wrapperClassName={`naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-primary-50 naxatw-group ${
+                      viewType === 'grid' ? 'naxatw-bg-primary-50' : ''
+                    }`}
+                  />
+                </a>
+              </div>
             </div>
-          </div>
+          )}
         </>
       )}
 
@@ -164,6 +168,7 @@ export default function MapSidebar() {
                 start_date,
                 end_date,
                 thematic_areas,
+                bbox,
               }) =>
                 viewType === 'list' ? (
                   <ProjectCard
@@ -178,6 +183,7 @@ export default function MapSidebar() {
                     status={status}
                     toggle={toggleId === id}
                     setToggle={setToggleId}
+                    bbox={bbox}
                     onClick={
                       status !== 'draft'
                         ? () => history.push(`${url}/${id}/map`)
@@ -201,6 +207,7 @@ export default function MapSidebar() {
                       status={status}
                       toggle={toggleId === id}
                       setToggle={setToggleId}
+                      bbox={bbox}
                       onClick={
                         status !== 'draft'
                           ? () => history.push(`${url}/${id}/map`)
@@ -224,7 +231,8 @@ export default function MapSidebar() {
               </div>
               <h3 className="naxatw-mt-7 naxatw-mb-2">No Projects yet</h3>
               <p className="naxatw-text-body-lg">
-                Create a project with basic info and project location.
+                Create a project with basic info and project location to
+                proceed.
               </p>
               <Button
                 iconLeft="add"
@@ -249,7 +257,7 @@ export default function MapSidebar() {
 
       <div>
         <a
-          className="naxatw-absolute naxatw-top-4 -naxatw-right-12 naxatw-z-10 naxatw-bg-white naxatw-text-grey-800 naxatw-h-10 naxatw-p-2 naxatw-rounded-lg naxatw-border naxatw-border-grey-300 naxatw-flex naxatw-items-center naxatw-shadow-3xl hover:naxatw-bg-[#F5F5F5]"
+          className="naxatw-absolute naxatw-top-4 -naxatw-right-12 naxatw-z-10 naxatw-bg-white naxatw-text-grey-800 naxatw-h-10 naxatw-p-2 naxatw-rounded-lg naxatw-border naxatw-border-grey-300 naxatw-flex naxatw-items-center hover:naxatw-bg-[#F5F5F5]"
           onClick={() => dispatch(toggleSidebar())}
         >
           <i className="material-icons ">

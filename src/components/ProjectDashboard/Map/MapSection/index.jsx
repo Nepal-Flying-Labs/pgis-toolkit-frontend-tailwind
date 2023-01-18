@@ -117,7 +117,7 @@ export default function MapSection() {
     if (isExtentValid(zoomExtent)) {
       map.getView().fit(zoomExtent, {
         padding: [50, 50, 50, 50],
-        duration: 3500,
+        duration: 2000,
         constrainResolution: true,
       });
     }

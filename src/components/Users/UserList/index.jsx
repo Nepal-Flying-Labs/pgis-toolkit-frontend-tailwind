@@ -220,7 +220,7 @@ const UserList = () => {
         </div> */}
       </div>
       <div className="naxatw-mt-3 ">
-        <div className="naxa-table naxatw-overflow-x-auto naxatw-h-[calc(100vh-20rem)] xl:naxatw-h-[calc(100vh-23rem)] scrollbar naxatw-relative">
+        <div className="naxa-table naxatw-overflow-x-auto naxatw-h-[calc(100vh-21rem)] xl:naxatw-h-[calc(100vh-23rem)] scrollbar naxatw-relative">
           {!loading ? (
             <Table
               data={currentList || []}
@@ -228,7 +228,7 @@ const UserList = () => {
               headerClassName="naxatw-py-1 naxatw-px-3"
               headerWidths={[
                 '396px',
-                '220px',
+                '280px',
                 '220px',
                 '220px',
                 '290px',

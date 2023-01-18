@@ -10,7 +10,6 @@ import { Creators as CommonCreator } from '@Actions/common';
 import { Creators } from '@Actions/organizationDashboard';
 import Button from '@Components/common/Button/index';
 import { format } from 'date-fns';
-import Tooltip from '@Components/common/Tooltip/index';
 
 const { togglePromptDialog } = CommonCreator;
 const { setSelectedProject } = Creators;
@@ -201,10 +200,12 @@ export default function ProjectCard({
 
       <div className=" naxatw-pt-2 naxatw-pl-4 naxatw-pr-2 naxatw-pb-3 naxatw-flex  naxatw-w-full naxatw-justify-between naxatw-rounded-r-xl">
         <div className="">
-          <Tooltip content={title} direction="top">
-            <h5 className="naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden">
-              {title || 'N/A'}
-              {/* <h5
+          <h5
+            title={title}
+            className="naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden"
+          >
+            {title || 'N/A'}
+            {/* <h5
                 className={`${
                       !hideTitle
                         ? 'naxatw-h-fit'
@@ -228,8 +229,7 @@ export default function ProjectCard({
                 </span>
               )}
              */}
-            </h5>
-          </Tooltip>
+          </h5>
           <div className="naxatw-flex naxatw-flex-wrap naxatw-mt-2.5 naxatw-gap-x-3">
             <span className="naxatw-text-body-md">{`${
               format(new Date(startDate), 'MMM dd, yyyy') || 'N/A'

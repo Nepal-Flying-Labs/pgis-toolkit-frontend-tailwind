@@ -1,14 +1,20 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useRef, useEffect, useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import { useHistory, useParams, useRouteMatch } from 'react-router';
 import AvatarImage from '@Assets/images/img-sm-avatar.png';
 import Button from '@Components/common/Button/index';
+import { Creators as CommonCreator } from '@Actions/common';
+import { Creators } from '@Actions/organizationDashboard';
 import { format } from 'date-fns';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import Tooltip from '@Components/common/Tooltip/index';
+
+const { togglePromptDialog } = CommonCreator;
+const { setSelectedProject, setZoomToLayer } = Creators;
 
 const getStatusColor = status => {
   switch (status) {
@@ -47,7 +53,10 @@ export default function ProjectGridCard({
   startDate,
   endDate,
   thematicAreas,
+  bbox,
 }) {
+  const dispatch = useDispatch();
+
   const { url } = useRouteMatch();
 
   function ellipsify(str) {
@@ -114,7 +123,10 @@ export default function ProjectGridCard({
           <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: () => {
+        dispatch(setSelectedProject({ id, name: title }));
+        dispatch(togglePromptDialog('delete-project'));
+      },
     },
   ];
 
@@ -189,8 +201,8 @@ export default function ProjectGridCard({
           <Button
             className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-w-[160.5px]"
             onClick={e => {
-              // console.log('clicked');
               e.stopPropagation();
+              dispatch(setZoomToLayer({ id, bbox }));
             }}
           >
             View on Map

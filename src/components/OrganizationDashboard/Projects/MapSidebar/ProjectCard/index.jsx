@@ -13,7 +13,7 @@ import { format } from 'date-fns';
 import Tooltip from '@Components/common/Tooltip/index';
 
 const { togglePromptDialog } = CommonCreator;
-const { setSelectedProject } = Creators;
+const { setSelectedProject, setZoomToLayer } = Creators;
 
 const getStatusColor = status => {
   switch (status) {
@@ -52,6 +52,7 @@ export default function ProjectCard({
   startDate,
   endDate,
   thematicAreas,
+  bbox,
 }) {
   const dispatch = useDispatch();
   const ref = useRef();
@@ -279,6 +280,7 @@ export default function ProjectCard({
                 className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-w-[124px]"
                 onClick={e => {
                   e.stopPropagation();
+                  dispatch(setZoomToLayer({ id, bbox }));
                 }}
               >
                 View on Map

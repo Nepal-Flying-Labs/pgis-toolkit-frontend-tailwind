@@ -168,6 +168,7 @@ export default function MapSidebar() {
                 start_date,
                 end_date,
                 thematic_areas,
+                bbox,
               }) =>
                 viewType === 'list' ? (
                   <ProjectCard
@@ -182,6 +183,7 @@ export default function MapSidebar() {
                     status={status}
                     toggle={toggleId === id}
                     setToggle={setToggleId}
+                    bbox={bbox}
                     onClick={
                       status !== 'draft'
                         ? () => history.push(`${url}/${id}/map`)
@@ -205,6 +207,7 @@ export default function MapSidebar() {
                       status={status}
                       toggle={toggleId === id}
                       setToggle={setToggleId}
+                      bbox={bbox}
                       onClick={
                         status !== 'draft'
                           ? () => history.push(`${url}/${id}/map`)

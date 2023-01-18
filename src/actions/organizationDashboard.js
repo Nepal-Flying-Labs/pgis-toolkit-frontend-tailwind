@@ -115,6 +115,8 @@ export const { Types, Creators } = createActions(
     getProjectGeojsonFailure: null,
 
     setFileUploadGeojson: ['payload'],
+
+    setZoomToLayer: ['payload'],
   },
   { prefix: 'organizationDashboard/' },
 );

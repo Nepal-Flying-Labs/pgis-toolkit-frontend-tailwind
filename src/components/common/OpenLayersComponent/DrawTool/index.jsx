@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Collection } from 'ol';
-import { Snap } from 'ol/interaction';
+import { Draw, Snap } from 'ol/interaction';
 import GeoJSON from 'ol/format/GeoJSON';
 import { get } from 'ol/proj';
 import { getUid } from 'ol/util';
@@ -93,6 +93,12 @@ export default function DrawTool({
     setDrawType(null);
     setVectorLayer(null);
     map.removeLayer(vectorLayer);
+    const interactions = map.getInteractions();
+    interactions.forEach(interaction => {
+      if (interaction instanceof Draw) {
+        map.removeInteraction(interaction);
+      }
+    });
   }, [map, vectorLayer, enable, select]);
 
   // clean up on geojson remove
@@ -200,6 +206,7 @@ export default function DrawTool({
     removeInteraction,
     vectorLayer,
     source,
+    map,
   };
 
   return (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
-export default function Tab({ data, activeId, contentClassName }) {
+export default function Tab({ data, activeId, contentClassName, onChange }) {
   const [activeTabId, setActiveTabId] = useState(data[0]?.id || null);
 
   useEffect(() => {
@@ -25,6 +25,7 @@ export default function Tab({ data, activeId, contentClassName }) {
             onClick={() => {
               if (disabled) return;
               setActiveTabId(id);
+              onChange(id);
             }}
           >
             <a

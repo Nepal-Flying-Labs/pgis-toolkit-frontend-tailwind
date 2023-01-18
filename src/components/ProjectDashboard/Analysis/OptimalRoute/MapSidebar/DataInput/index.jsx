@@ -285,11 +285,15 @@ export default function DataInput() {
           <input
             type="number"
             className="naxatw-input"
+            min="0"
+            max="5"
             value={alternativePaths || ''}
             onChange={e => {
+              const { value } = e.target;
+              if (value < 0 || value > 5) return;
               dispatch(
                 setDataInputState({
-                  alternativePaths: e.target.value,
+                  alternativePaths: value,
                 }),
               );
             }}

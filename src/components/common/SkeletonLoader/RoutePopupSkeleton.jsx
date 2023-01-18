@@ -1,10 +1,11 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 
 export default function RoutePopupSkeleton() {
   return (
     <div className="naxatw-grid naxatw-grid-cols-2 naxatw-gap-4">
-      {Array.from({ length: 5 }).map(() => (
-        <>
+      {Array.from({ length: 5 }).map((_, idx) => (
+        <React.Fragment key={idx}>
           <div
             role="status"
             className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-w-28
@@ -29,7 +30,7 @@ export default function RoutePopupSkeleton() {
               viewBox="0 0 384 512"
             />
           </div>
-        </>
+        </React.Fragment>
       ))}
     </div>
   );

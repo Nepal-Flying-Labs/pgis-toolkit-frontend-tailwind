@@ -177,7 +177,7 @@ export default function MapSection() {
 
         {obstacleLayers.map(item => (
           <VectorTileLayer
-            key={item.layer_id}
+            key={`${item.layer_id}-${item.feature_mirror_ids.join('-')}`}
             url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${
               item.layer_id
             }&ids=${item.feature_mirror_ids.join(',')}`}

@@ -50,6 +50,8 @@ export const { Types, Creators } = createActions({
   changePasswordRequest: ['payload'],
   changePasswordSuccess: null,
   changePasswordFailure: null,
+
+  resetAuthenticationState: null,
 });
 
 export default Creators;

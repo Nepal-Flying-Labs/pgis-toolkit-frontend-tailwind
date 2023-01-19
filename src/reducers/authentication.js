@@ -56,6 +56,10 @@ const getUserProfileSuccess = (state, action) => ({
   },
 });
 
+const resetAuthenticationState = () => ({
+  ...initialState,
+});
+
 // const updateUserSuccess = (state, action) => ({
 //   ...state,
 //   userProfile: { ...state.userProfile, ...action.payload },
@@ -79,6 +83,7 @@ const authenticationReducer = createReducer(initialState, {
   [Types.GET_USER_PERMISSIONS_SUCCESS]: getUserPermissionsSuccess,
   [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
   [Types.GET_USER_PROFILE_SUCCESS]: getUserProfileSuccess,
+  [Types.RESET_AUTHENTICATION_STATE]: resetAuthenticationState,
   // [Types.UPDATE_USER_SUCCESS]: updateUserSuccess,
 });
 

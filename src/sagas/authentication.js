@@ -97,6 +97,7 @@ function* logoutRequest() {
   try {
     localStorage.clear();
     yield put(authActions.logoutSuccess());
+    yield put(authActions.resetAuthenticationState());
     yield put(push('/login'));
     yield put(
       toastActions.success({ message: 'You logged out successfully.' }),

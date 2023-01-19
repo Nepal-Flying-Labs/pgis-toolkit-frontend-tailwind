@@ -2,6 +2,11 @@
     @apply naxatw-inline-flex naxatw-w-full naxatw-items-center naxatw-justify-between  naxatw-rounded-md naxatw-border hover:naxatw-border-[#484848] naxatw-border-[#D7D7D7] naxatw-bg-white 
 }
 
+.naxatw-select-disabled{
+    @apply naxatw-inline-flex naxatw-w-full naxatw-items-center naxatw-justify-between  naxatw-rounded-md naxatw-border naxatw-h-[48px] naxatw-px-2 naxatw-py-[14px]  naxatw-border-[#D7D7D7] naxatw-bg-grey-100
+
+}
+
 .naxatw-select.naxatw-select-md{
     @apply naxatw-px-2 naxatw-py-[14px] naxatw-h-[48px]
 }

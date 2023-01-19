@@ -42,23 +42,35 @@ function Select({
   return (
     // eslint-disable-next-line react/jsx-curly-brace-presence
     <div
-      className={`naxatw-inline-flex  naxatw-rounded-md naxatw-w-full `}
+      className={`naxatw-inline-flex  naxatw-rounded-md naxatw-w-full ${
+        disabled ? 'naxatw-bg-grey-100' : ''
+      } `}
       ref={divRef}
     >
       <div className="naxatw-relative naxatw-group naxatw-w-full">
         <button
           type="button"
           onClick={disabled ? () => {} : () => handleToggle()}
-          className={`naxatw-select  ${className}  ${
+          className={`${
+            disabled ? 'naxatw-select-disabled' : 'naxatw-select'
+          }  ${className}  ${
             toggle ? 'naxatw-bg-[#F5F5F5] naxatw-border-[#484848]' : ''
           }`}
           style={style}
           {...rest}
         >
-          <span className="naxatw-text-body-lg">{getSelectedValue()}</span>
+          <span
+            className={`naxatw-text-body-lg ${
+              disabled ? 'naxatw-text-grey-400' : ''
+            }`}
+          >
+            {getSelectedValue()}
+          </span>
           <MaterialIcon
             name={`${!toggle ? 'arrow_drop_down' : 'arrow_drop_up'}`}
-            className="naxatw-text-icon-md"
+            className={`naxatw-text-icon-md ${
+              disabled ? 'naxatw-text-grey-400' : ''
+            }`}
           />
         </button>
         {toggle && (

@@ -61,9 +61,9 @@ export default function Document() {
               Documents
             </h3>
             <p className="naxatw-text-body-lg">
-              You can add any sort of relevant documents to the project. It
-              includes relevant report, findings etc. in file format DOCX, PDF,
-              Excel or CSV.
+              You can add any sort of relevant documents to the project. It may
+              include relevant report, findings etc. in various file formats
+              such as docs, pdf, csv,etc.
             </p>
           </div>
           <div className="naxatw-flex naxatw-py-[26px]">

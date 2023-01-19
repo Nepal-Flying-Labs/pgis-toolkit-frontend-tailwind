@@ -99,6 +99,15 @@ const validation = formValues => {
     if (!result) errors.contactEmail = 'Enter a valid Email';
   }
 
+  if (
+    (formValues.contactEmail ||
+      formValues.contactPhone ||
+      formValues.contactPosition) &&
+    !formValues.contactName
+  ) {
+    errors.contactName = 'Name field is required';
+  }
+
   return errors;
 };
 
@@ -360,14 +369,19 @@ const BasicInfo = ({ setPage }) => {
       {/* <ContactPerson /> */}
 
       <h4 className="naxatw-font-bold">Contact Person Details</h4>
-      <Input
-        type="text"
-        label="Name of contact Person"
-        name="contactName"
-        value={values.contactName}
-        onChange={handleChange}
-        placeholder="Full Name"
-      />
+      <div>
+        <Input
+          type="text"
+          label="Name of contact Person"
+          name="contactName"
+          value={values.contactName}
+          onChange={handleChange}
+          placeholder="Full Name"
+        />
+        {errors.contactName && (
+          <FormErrorMessage message={errors.contactName} />
+        )}
+      </div>
 
       <Input
         label="Position"

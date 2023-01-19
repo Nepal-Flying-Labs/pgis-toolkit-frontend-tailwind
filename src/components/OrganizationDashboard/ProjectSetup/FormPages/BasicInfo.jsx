@@ -433,7 +433,7 @@ const BasicInfo = ({ setPage }) => {
                 setErrors(error);
                 dispatch(
                   toastActions.error({
-                    message: 'Please fill all required (*) fields',
+                    message: 'An error has occurred while filling the form',
                   }),
                 );
               } else {

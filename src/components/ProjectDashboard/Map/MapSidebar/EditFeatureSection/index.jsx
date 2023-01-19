@@ -69,6 +69,7 @@ export default function EditFeatureSection() {
     setValues,
     setRequiredFields,
     inputProps,
+    isFieldsChanged,
   } = useForm({
     initialValues: {},
     onErrorSubmit: () => {
@@ -78,7 +79,7 @@ export default function EditFeatureSection() {
         }),
       );
     },
-    onSubmit: (data, isFieldsChanged) => {
+    onSubmit: data => {
       const payloadData = {};
       if (sidebarContent === 'add-feature') {
         if (!drawnFeatureWkt) {
@@ -129,12 +130,16 @@ export default function EditFeatureSection() {
       }),
       {},
     );
+    setValues(formState);
+  }, [individualAttributeData, setValues]);
+
+  useEffect(() => {
+    if (!individualAttributeData || !isFieldsChanged) return;
     const mandatoryFields = individualAttributeData
       .filter(item => item.mandatory)
       .map(item => item.name);
-    setValues(formState);
     setRequiredFields(mandatoryFields);
-  }, [individualAttributeData, setValues, setRequiredFields]);
+  }, [individualAttributeData, setRequiredFields, isFieldsChanged]);
 
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-5">

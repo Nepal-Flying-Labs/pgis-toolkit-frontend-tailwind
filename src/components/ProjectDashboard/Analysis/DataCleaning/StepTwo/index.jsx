@@ -176,8 +176,8 @@ export default function StepTwo() {
                               </p>
                             ) : status === 'fix-failed' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">
-                                <b>{errorData}</b> out of <b>{totalData}</b>{' '}
-                                fixed
+                                <b>{errorData}</b> fixed out of{' '}
+                                <b>{totalData}</b> errors
                               </p>
                             ) : status === 'checking' ? (
                               <p className="naxatw-text-body-btn naxatw-text-primary-400">

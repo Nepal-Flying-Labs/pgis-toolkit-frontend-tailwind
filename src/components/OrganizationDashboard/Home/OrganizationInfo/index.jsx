@@ -58,9 +58,10 @@ const OrganizationInfo = () => {
                 <span className="naxatw-text-body-lg">
                   <a
                     className="naxatw-text-body-lg"
-                    href={organizationDetails?.link || ''}
+                    href={organizationDetails?.link || null}
                     target="_blank"
                     rel="noreferrer"
+                    // onClick={organizationDetails?.link ? () => {} : () => false}
                   >
                     {organizationDetails?.link || 'N/A'}
                   </a>

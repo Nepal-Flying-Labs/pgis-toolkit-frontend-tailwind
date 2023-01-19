@@ -22,14 +22,14 @@ const CreateProjectSuccess = () => {
           </span>
           <h4>A Project has been successfully created</h4>
         </div>
-        <div className="naxatw-mt-7">
+        <div className="naxatw-mt-6">
           <span className="naxatw-text-body-lg">
             You can now proceed by adding data, documents and images to the
             project.
           </span>
         </div>
       </div>
-      <div className="naxatw-mt-7 naxatw-flex naxatw-justify-center">
+      <div className="naxatw-mt-5 naxatw-flex naxatw-justify-center">
         <Button
           className="naxatw-btn-primary naxatw-mt-2 naxatw-w-[5rem]"
           //   isLoading={loading}

@@ -30,8 +30,8 @@ const initialState = {
   obstacleLayers: [],
   analysisTaskId: null,
   analysisId: null,
-  selectedRouteId: null,
-  routePopupData: null,
+  selectedRouteId: null, // route id for fetching route popup data
+  routePopupData: null, // data for route popup
 };
 
 const setRouteAnalysisState = (state, action) => ({
@@ -119,7 +119,10 @@ const checkProcessingStatusSuccess = (state, action) =>
     };
     draft.analysisTaskId = null;
     draft.dataInput = initialState.dataInput;
-    draft.results.analysisResults.push(analysisResult);
+    draft.results.analysisResults = [
+      analysisResult,
+      ...draft.results.analysisResults,
+    ];
     draft.results.zoomToRouteId = analysisResult.id;
     draft.activeTab = 'results';
     draft.selectedRouteId = optimalRouteId;
@@ -140,6 +143,10 @@ const handleRouteCheckbox = (state, action) =>
           item.checked = checked;
         });
       });
+      if (!checked) {
+        draft.analysisId = null;
+        draft.selectedRouteId = null;
+      }
       return;
     }
     if (name === 'obstacle') {

@@ -74,7 +74,7 @@ function diffObject(a, b) {
 const BasicInfo = () => {
   const { organizationId } = useParams();
   const [inputRef, onFileUpload] = useCustomUpload();
-  const [errorFields, setErrorFields] = useState([]);
+  const [errorFields, setErrorFields] = useState({});
 
   const dispatch = useDispatch();
   const project = useSelector(
@@ -118,8 +118,8 @@ const BasicInfo = () => {
     if (formValues.thematic_areas.length < 1)
       errors.thematic_areas = 'This field is required';
 
-    if (formValues.description && formValues.description?.length > 252)
-      errors.description = 'Ensure this field has no more than 252 characters';
+    // if (formValues.description && formValues.description?.length > 252)
+    //   errors.description = 'Ensure this field has no more than 252 characters';
 
     if (formValues.link) {
       // eslint-disable-next-line prefer-regex-literals
@@ -170,6 +170,7 @@ const BasicInfo = () => {
     if (loading) return;
     const error = validation(values);
     if (Object.keys(error).length < 1) {
+      setErrorFields({});
       const diffObj = diffObject(settingInfo, values);
       const orgInfo = removeObjectKeys(diffObj, ['contact_person']);
       // console.log('org details ', orgInfo);
@@ -200,7 +201,7 @@ const BasicInfo = () => {
       setErrorFields(error);
       dispatch(
         toastActions.error({
-          message: 'Please fill out all the required fields.',
+          message: 'An error has occurred while filling the form.',
         }),
       );
     }

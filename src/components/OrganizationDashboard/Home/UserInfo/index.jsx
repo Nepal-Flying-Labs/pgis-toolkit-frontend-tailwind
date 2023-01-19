@@ -1,31 +1,31 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable camelcase */
 /* eslint-disable arrow-body-style */
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import UserIcon from '@Assets/images/user-icon.png';
 import Button from '@Components/common/Button/index';
-import Searchbar from '@Components/common/Searchbar/index';
-import Select from '@Components/common/Select/index';
+// import Searchbar from '@Components/common/Searchbar/index';
+// import Select from '@Components/common/Select/index';
 import UserCard from '../UserCard/index';
 
-const roles = [
-  {
-    id: 1,
-    value: '1',
-    name: 'Project Manager',
-  },
-  {
-    id: 2,
-    value: '2',
-    name: 'Organization Admin',
-  },
-];
+// const roles = [
+//   {
+//     id: 1,
+//     value: '1',
+//     name: 'Project Manager',
+//   },
+//   {
+//     id: 2,
+//     value: '2',
+//     name: 'Organization Admin',
+//   },
+// ];
 
 const UserInfo = () => {
-  const [searchTerm, setSearchTErm] = useState('');
-  const [userRole, setUserRole] = useState('');
+  // const [searchTerm, setSearchTErm] = useState('');
+  // const [userRole, setUserRole] = useState('');
   const { organizationId } = useParams();
   const history = useHistory();
   const users = useSelector(state => state.organizationDashboard.users);
@@ -55,7 +55,7 @@ const UserInfo = () => {
         </Button>
       </div>
 
-      <div className="naxatw-py-3 naxatw-px-5 naxatw-flex naxatw-items-center naxatw-justify-between naxatw-gap-x-2">
+      {/* <div className="naxatw-py-3 naxatw-px-5 naxatw-flex naxatw-items-center naxatw-justify-between naxatw-gap-x-2">
         <Searchbar
           isSmall
           // md:naxatw-w-[220px] sm:naxatw-w-[400px] naxatw-w-full
@@ -70,19 +70,20 @@ const UserInfo = () => {
           selected={userRole}
           onChange={data => setUserRole(data.name)}
         />
-      </div>
-      <div className="naxatw-overflow-y-auto naxatw-overflow-x-hidden scrollbar naxatw-h-[calc(100vh-14.5rem)]">
+      </div> */}
+      <div className="naxatw-overflow-y-auto naxatw-overflow-x-auto scrollbar naxatw-h-[calc(100vh-10.5rem)]">
         <div>
-          {users
-            .filter(user =>
-              user?.full_name
-                ?.toLowerCase()
-                ?.includes(searchTerm.toLowerCase()),
-            )
-            .filter(user =>
-              user?.group?.toLowerCase()?.includes(userRole?.toLowerCase()),
-            )
-            .map(
+          {
+            // users
+            //   .filter(user =>
+            //     user?.full_name
+            //       ?.toLowerCase()
+            //       ?.includes(searchTerm.toLowerCase()),
+            //   )
+            //   .filter(user =>
+            //     user?.group?.toLowerCase()?.includes(userRole?.toLowerCase()),
+            //   )
+            users.map(
               ({ full_name, image_thumbnail, group, active, user_id }, i) => (
                 <UserCard
                   key={i}
@@ -93,7 +94,8 @@ const UserInfo = () => {
                   active={active}
                 />
               ),
-            )}
+            )
+          }
         </div>
       </div>
     </div>

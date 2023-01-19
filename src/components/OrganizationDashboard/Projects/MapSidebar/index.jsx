@@ -21,11 +21,11 @@ import ProjectCard from './ProjectCard';
 import ProjectGridCard from './ProjectGridCard/index';
 import ProjectCardSkeleton from './ProjectCardSkeleton/index';
 
-const { getProjectsRequest, toggleSidebar } = OrganizationDashboardCreators;
+const { getProjectsRequest, toggleSidebar, setProjectStatus } =
+  OrganizationDashboardCreators;
 const { toggleModal } = CommonCreators;
 
 export default function MapSidebar() {
-  const [chipStatus, setChipStatus] = useState('all');
   const [viewType, setViewType] = useState('list');
   const [toggleId, setToggleId] = useState(null);
   const { organizationId } = useParams();
@@ -48,6 +48,12 @@ export default function MapSidebar() {
   const hasNoProject = useSelector(
     state => state.organizationDashboard.projects?.hasNoProject,
   );
+  const projectStatus = useSelector(
+    state => state.organizationDashboard.projectStatus,
+  );
+
+  // const [chipStatus, setChipStatus] = useState(projectStatus);
+
   const dispatch = useDispatch();
   const [searchValue, handleChange] = useDebouncedInput({
     ms: 300,
@@ -64,8 +70,12 @@ export default function MapSidebar() {
 
   // get projects list
   useEffect(() => {
-    dispatch(getProjectsRequest({ organization: organizationId }));
-  }, [dispatch, organizationId]);
+    const params = { organization: organizationId };
+    if (!!projectStatus) {
+      params.status = projectStatus;
+    }
+    dispatch(getProjectsRequest(params));
+  }, [dispatch, organizationId, projectStatus]);
 
   return (
     <div
@@ -102,19 +112,21 @@ export default function MapSidebar() {
                 <Chip
                   isSmall
                   name={`All( ${organizationDetail?.projects || ''} )`}
-                  status={chipStatus}
-                  value="all"
+                  status={projectStatus}
+                  value={null}
                   onClick={() => {
-                    setChipStatus('all');
+                    // setChipStatus('all');
+                    dispatch(setProjectStatus(null));
                   }}
                 />
                 <Chip
                   isSmall
                   name={`Ongoing( ${organizationDetail?.ongoing || ''} )`}
-                  status={chipStatus}
+                  status={projectStatus}
                   value="ongoing"
                   onClick={() => {
-                    setChipStatus('ongoing');
+                    // setChipStatus('ongoing');
+                    dispatch(setProjectStatus('ongoing'));
                   }}
                 />
               </div>

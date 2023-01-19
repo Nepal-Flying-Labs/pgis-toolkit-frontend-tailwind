@@ -7,6 +7,7 @@ import { getUserGroupRequest } from '@Sagas/organizationDashboard';
 
 const initialState = {
   projects: null,
+  projectStatus: null,
   zoomToLayer: null,
   selectedProject: null,
   countryList: [],
@@ -466,6 +467,11 @@ const setZoomToLayer = (state, action) => ({
   zoomToLayer: action.payload,
 });
 
+const setProjectStatus = (state, action) => ({
+  ...state,
+  projectStatus: action.payload,
+});
+
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
@@ -502,6 +508,7 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_GEOJSON_SUCCESS]: getProjectGeojsonSuccess,
   [Types.SET_FILE_UPLOAD_GEOJSON]: setFileUploadGeojson,
   [Types.SET_ZOOM_TO_LAYER]: setZoomToLayer,
+  [Types.SET_PROJECT_STATUS]: setProjectStatus,
 });
 
 export default organizationDashboardReducer;

@@ -310,7 +310,7 @@ const BasicInfo = () => {
             name="address"
             value={values?.address}
             onChange={handleChange}
-            placeholder="address"
+            placeholder="Address"
           />
         </div>
         <div className="naxatw-w-1/2 naxatw-space-y-2">
@@ -331,11 +331,11 @@ const BasicInfo = () => {
         <div className="naxatw-w-1/2 naxatw-space-y-2">
           <Input
             type="text"
-            label="Contact"
+            label="Contact Number"
             name="contact"
             value={values?.contact}
             onChange={handleChange}
-            placeholder="phone"
+            placeholder="Contact Number"
           />
           {errorFields?.contact && (
             <FormErrorMessage message={errorFields.contact} />

@@ -87,8 +87,7 @@ const ProjectSetup = () => {
                 : 'Edit a Project'}
             </h3>
             <span className="naxatw-text-body-lg naxatw-mt-1">
-              Process ahead with the two steps outlined below to aid you in the
-              process of editing your project.
+              Process ahead with the two steps outlined below.
             </span>
           </div>
           <button

@@ -14,7 +14,7 @@ function CustomCheckbox({
       onClick={onClick}
       className={`${
         status ? `${activeClassName}` : ''
-      } ${wrapperClassName} naxatw-h-[22px] naxatw-w-[22px] naxatw-cursor-pointer naxatw-border-2 naxatw-border-[#989898] naxatw-rounded-[4px]`}
+      } ${wrapperClassName} naxatw-h-[20px] naxatw-w-[20px] naxatw-cursor-pointer naxatw-border-2 naxatw-border-[#989898] naxatw-rounded-[4px]`}
     >
       {status ? (
         <i

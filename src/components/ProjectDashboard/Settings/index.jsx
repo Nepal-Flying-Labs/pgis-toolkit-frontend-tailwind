@@ -14,6 +14,7 @@ const {
   getIndividualProjectRequest,
   getContactPersonRequest,
   getCountryListRequest,
+  getProjectGeojsonRequest,
 } = Creators;
 
 const linkOptions = [
@@ -42,6 +43,7 @@ export default function Settings() {
     dispatch(getIndividualProjectRequest(projectId));
     dispatch(getContactPersonRequest({ project: projectId, type: 'project' }));
     dispatch(getCountryListRequest());
+    dispatch(getProjectGeojsonRequest({ project: projectId }));
   }, [dispatch, projectId]);
 
   return (

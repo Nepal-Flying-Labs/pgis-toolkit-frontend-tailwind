@@ -41,8 +41,8 @@ const UserInfo = () => {
             />
 
             <div>
-              <h5>Users</h5>
-              <h3>{users?.length || 'N/A'}</h3>
+              <h5>Active Users</h5>
+              <h3>{users?.filter(user => user.active).length || 'N/A'}</h3>
             </div>
           </div>
         </div>
@@ -72,7 +72,7 @@ const UserInfo = () => {
         />
       </div> */}
       <div className="naxatw-overflow-y-auto naxatw-overflow-x-auto scrollbar naxatw-h-[calc(100vh-10.5rem)]">
-        <div>
+        <div className="naxatw-pt-2">
           {
             // users
             //   .filter(user =>
@@ -83,18 +83,20 @@ const UserInfo = () => {
             //   .filter(user =>
             //     user?.group?.toLowerCase()?.includes(userRole?.toLowerCase()),
             //   )
-            users.map(
-              ({ full_name, image_thumbnail, group, active, user_id }, i) => (
-                <UserCard
-                  key={i}
-                  id={user_id}
-                  name={full_name}
-                  image={image_thumbnail}
-                  role={group}
-                  active={active}
-                />
-              ),
-            )
+            users
+              .filter(user => user.active)
+              .map(
+                ({ full_name, image_thumbnail, group, active, user_id }, i) => (
+                  <UserCard
+                    key={i}
+                    id={user_id}
+                    name={full_name}
+                    image={image_thumbnail}
+                    role={group}
+                    active={active}
+                  />
+                ),
+              )
           }
         </div>
       </div>

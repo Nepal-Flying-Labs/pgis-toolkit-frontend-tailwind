@@ -55,8 +55,8 @@ export default function Gallery() {
               Gallery
             </h3>
             <p className="naxatw-text-body-lg">
-              You can add any sort of relevant photographs and images or maps,
-              in file format JPEG, PNG, GIF or PDF.
+              You can add any sort of project relevant photographs, images or
+              maps, in various file format such as jpeg, png. tiff, etc.
             </p>
           </div>
           <div className="naxatw-flex naxatw-py-[26px] ">

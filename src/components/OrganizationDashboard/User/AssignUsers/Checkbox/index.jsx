@@ -15,14 +15,16 @@ const Checkbox = ({
     <div
       className={`${className} naxatw-flex naxatw-items-center naxatw-gap-x-2 naxatw-px-2 naxatw-py-3 naxatw-w-full`}
     >
-      <input
-        id={id}
-        type="checkbox"
-        className={`naxatw-h-5 naxatw-w-5 naxatw-accent-grey-800 ${className}`}
-        onChange={onClick}
-        checked={checked}
-        disabled={disabled}
-      />
+      <div className="naxatw-p-1 naxatw-w-6 naxatw-h-6  naxatw-flex naxatw-items-center naxatw-justify-center">
+        <input
+          id={id}
+          type="checkbox"
+          className={` naxatw-min-h-[1rem] naxatw-min-w-[1rem] naxatw-accent-grey-800  ${className}`}
+          onChange={onClick}
+          checked={checked}
+          disabled={disabled}
+        />
+      </div>
 
       <label
         htmlFor={id}

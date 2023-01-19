@@ -3,6 +3,7 @@
   --tooltip-text-color: white;
   --tooltip-background-color: #484848;
   --tooltip-margin: 2rem;
+  --tooltip-margin-x:0.5rem;
   --tooltip-arrow-size: 6px;
 }
 
@@ -57,7 +58,7 @@
 
 /* Absolute positioning */
 .Tooltip-Tip.right {
-  left: calc(100% + var(--tooltip-margin));
+  left: calc(100% + var(--tooltip-margin-x));
   top: 50%;
   transform: translateX(0) translateY(-50%);
 }
@@ -82,7 +83,7 @@
 /* Absolute positioning */
 .Tooltip-Tip.left {
   left: auto;
-  right: calc(100% + var(--tooltip-margin));
+  right: calc(100% + var(--tooltip-margin-x));
   top: 50%;
   transform: translateX(0) translateY(-50%);
 }

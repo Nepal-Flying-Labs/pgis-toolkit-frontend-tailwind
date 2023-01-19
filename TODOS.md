@@ -133,18 +133,19 @@
 
 ### Need to fix
 
-- [ ] tooltip direction bottom prop
+- [x] tooltip direction bottom prop
 - [ ] remove gpx option for Polygon and MultiPolygon
-- [ ] NO DATA in select component 
+- [ ] NO DATA in select component
 - [ ] project setup project objectives textarea
 
 ### ISSUES JAN 18
-- [x] On second analysis, doesn't direct to results tab stays in data input tab 
+
+- [x] On second analysis, doesn't direct to results tab stays in data input tab
 - [x] Zoom to layer speed duration
 - [x] Show help text for preferred alternative path
 - [x] Latest analysis result to be shown in top
 - [x] Route pop-up close on layertoggle
-- [x] Number  of obstacle in route layer(result) attribute table
+- [x] Number of obstacle in route layer(result) attribute table
 - [x] Clear All and Show query result design review
 
 - [ ] Check error text review

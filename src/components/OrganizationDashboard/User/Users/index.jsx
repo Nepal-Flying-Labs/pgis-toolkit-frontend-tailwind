@@ -234,7 +234,7 @@ const Users = () => {
             options={roles}
             dataKey="name"
             placeholder="Role"
-            className="naxatw-select-md !naxatw-pl-3"
+            className="naxatw-select-md !naxatw-pl-3 naxatw-min-w-[180px]"
             onChange={data => {
               dispatch(setUserRole(data.value));
             }}

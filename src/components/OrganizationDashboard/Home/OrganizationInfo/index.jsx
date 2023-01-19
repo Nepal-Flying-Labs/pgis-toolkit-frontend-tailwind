@@ -56,7 +56,14 @@ const OrganizationInfo = () => {
                   className="naxatw-text-icon-md naxatw-text-primary-400"
                 />
                 <span className="naxatw-text-body-lg">
-                  {organizationDetails?.link || 'N/A'}
+                  <a
+                    className="naxatw-text-body-lg"
+                    href={organizationDetails?.link || ''}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {organizationDetails?.link || 'N/A'}
+                  </a>
                 </span>
               </div>
             </div>
@@ -126,7 +133,7 @@ const OrganizationInfo = () => {
                 Organization Size
               </span>
               <span className="naxatw-text-body-lg naxatw-font-bold">
-                {organizationDetails?.size}
+                {organizationDetails?.size || 'N/A'}
               </span>
             </div>
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
@@ -134,7 +141,7 @@ const OrganizationInfo = () => {
                 Thematic focus areas
               </span>
               <span className="naxatw-text-body-lg naxatw-font-bold">
-                {organizationDetails?.thematic_areas?.toString() || 'N/A'}
+                {organizationDetails?.thematic_areas?.join(', ') || 'N/A'}
               </span>
             </div>
           </div>

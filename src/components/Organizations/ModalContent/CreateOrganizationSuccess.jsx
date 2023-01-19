@@ -15,9 +15,9 @@ export default function CreateOrganizationSuccess() {
     <div className="">
       <div className="naxatw-mb-10 naxatw-space-y-8 ">
         <h4 className="naxatw-font-light">
-          An Organization has been successfully created.
+          An organization has been successfully created.
         </h4>
-        <p>Email invitations have been sent to the listed email addresses:</p>
+        <p>An email invitation has been sent to the listed email addresses :</p>
         <div>
           {createOrganizationDetail?.email?.map(item => (
             <div
@@ -45,9 +45,9 @@ export default function CreateOrganizationSuccess() {
         </p>
       </div>
 
-      <div className=" naxatw-mt-4 naxatw-flex naxatw-items-center naxatw-justify-center">
+      <div className=" naxatw-flex naxatw-items-center naxatw-justify-center">
         <Button
-          className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold naxatw-mt-12"
+          className="naxatw-px-5 naxatw-py-3 naxatw-bg-primary-400 naxatw-rounded-lg naxatw-text-white naxatw-font-bold "
           onClick={() => dispatch(toggleModal())}
         >
           Done

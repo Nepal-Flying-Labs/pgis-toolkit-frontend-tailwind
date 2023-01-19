@@ -76,11 +76,14 @@ export function* postProjectInviteRequest({ payload }) {
     yield put(commonActions.toggleModal(''));
     yield put(
       toastActions.success({
-        message: 'Email Invitation has been sent successfully',
+        message: 'Email invitation has been sent successfully',
       }),
     );
     yield put(
       organizationDashboardActions.getProjectsRequest({ organization }),
+    );
+    yield put(
+      organizationDashboardActions.getOrganizationDetailRequest(organization),
     );
   } catch (error) {
     yield put(organizationDashboardActions.postProjectInviteFailure());
@@ -335,7 +338,13 @@ export function* updateOrganizationRequest({ id, payload }) {
     //   organizationDashboardActions.updateOrganizationSuccess(response.data),
     // );
     // yield put(organizationDashboardActions.toggleModal(''));
-    yield put(toastActions.success({ message: 'Data saved successfully' }));
+    yield put(organizationDashboardActions.getOrganizationDetailRequest(id));
+    yield put(push(`/organizations/${id}/home`));
+    yield put(
+      toastActions.success({
+        message: 'Organization details updated successfully',
+      }),
+    );
   } catch (error) {
     yield put(organizationDashboardActions.updateOrganizationFailure());
     throw error;
@@ -358,9 +367,15 @@ export function* deleteProjectRequest({ id, payload }) {
   try {
     const formData = prepareFormData(payload);
     const response = yield call(patchProject, id, formData);
+    const organization = response?.data?.organization;
     yield put(organizationDashboardActions.deleteProjectSuccess(response.data));
     yield put(commonActions.togglePromptDialog());
-    yield put(toastActions.error({ message: 'Project Deleted Successfully' }));
+    yield put(
+      organizationDashboardActions.getOrganizationDetailRequest(organization),
+    );
+    yield put(
+      toastActions.success({ message: 'Project deleted successfully' }),
+    );
   } catch (error) {
     yield put(organizationDashboardActions.deleteProjectFailure());
     throw error;

@@ -24,7 +24,7 @@ const useForm = ({
   const [inputs, setInputs] = useState(initialValues);
   const [requiredFields, setRequiredFields] = useState(required);
   const [meta, setMeta] = useState(getMetaState(initialValues, required));
-  const [fieldsChanged, setFieldsChanged] = useState(false);
+  const [isFieldsChanged, setIsFieldsChanged] = useState(false);
   const isRequiredFieldsChanged = useRef(false);
 
   useEffect(() => {
@@ -47,7 +47,9 @@ const useForm = ({
 
   const handleChange = e => {
     const { name, value, type, files } = e.target;
-    setFieldsChanged(true);
+    if (!isFieldsChanged) {
+      setIsFieldsChanged(true);
+    }
     setInputs(prev => ({ ...prev, [name]: type === 'file' ? files : value }));
     if (!requiredFields.includes(name)) return;
     setMeta(prev => {
@@ -107,7 +109,7 @@ const useForm = ({
       );
       onErrorSubmit();
     } else {
-      onSubmit(inputs, fieldsChanged);
+      onSubmit(inputs);
     }
   };
 
@@ -131,6 +133,7 @@ const useForm = ({
     setValues: setInputs,
     setRequiredFields,
     resetFormState,
+    isFieldsChanged,
   };
 };
 

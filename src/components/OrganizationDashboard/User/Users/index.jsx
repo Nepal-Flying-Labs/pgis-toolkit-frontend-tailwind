@@ -250,7 +250,8 @@ const Users = () => {
               className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
               headerClassName="naxatw-py-1 naxatw-px-3"
               headerWidths={[
-                '396px',
+                '300px',
+                '220px',
                 '220px',
                 '220px',
                 '280px',
@@ -324,6 +325,38 @@ const Users = () => {
                   >
                     {row.group}
                   </span>
+                )}
+              />
+              <TableHeader
+                dataField="Project"
+                headerClassName="naxatw-py-1 naxatw-px-3 "
+                rowcolSpan="rowSpan_2"
+                dataHeader={
+                  <SortingContainer
+                    name="Project"
+                    isActive={ordering === 'project'}
+                    handleSort={() => {
+                      dispatch(
+                        setUsersOrdering(
+                          ordering === 'project' ? null : 'project',
+                        ),
+                      );
+                      handleSorting('project');
+                    }}
+                  />
+                }
+                dataFormat={row => (
+                  <p
+                    title={row.project || ''}
+                    className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden ${
+                      ordering === 'project'
+                        ? 'naxatw-text-body-btn'
+                        : 'naxatw-text-body-lg'
+                    }
+                    `}
+                  >
+                    {row.project || '-'}
+                  </p>
                 )}
               />
               <TableHeader

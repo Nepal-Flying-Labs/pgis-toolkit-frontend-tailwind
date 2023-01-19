@@ -92,6 +92,22 @@ const validation = formValues => {
     errors.thematicFocusArea = 'Choose Thematic Area';
   }
 
+  if (formValues.contactName && formValues.contactEmail) {
+    const pattern =
+      /[a-zA-Z0-9]+[.]?([a-zA-Z0-9]+)?[@][a-z]{3,9}[.][a-z]{2,5}/g;
+    const result = pattern.test(formValues.contactEmail);
+    if (!result) errors.contactEmail = 'Enter a valid Email';
+  }
+
+  if (
+    (formValues.contactEmail ||
+      formValues.contactPhone ||
+      formValues.contactPosition) &&
+    !formValues.contactName
+  ) {
+    errors.contactName = 'Name field is required';
+  }
+
   return errors;
 };
 
@@ -352,15 +368,20 @@ const BasicInfo = ({ setPage }) => {
       <hr />
       {/* <ContactPerson /> */}
 
-      <h4>Contact Person Details</h4>
-      <Input
-        type="text"
-        label="Name of contact Person"
-        name="contactName"
-        value={values.contactName}
-        onChange={handleChange}
-        placeholder="Full Name"
-      />
+      <h4 className="naxatw-font-bold">Contact Person Details</h4>
+      <div>
+        <Input
+          type="text"
+          label="Name of contact Person"
+          name="contactName"
+          value={values.contactName}
+          onChange={handleChange}
+          placeholder="Full Name"
+        />
+        {errors.contactName && (
+          <FormErrorMessage message={errors.contactName} />
+        )}
+      </div>
 
       <Input
         label="Position"
@@ -371,14 +392,19 @@ const BasicInfo = ({ setPage }) => {
         placeholder="Position"
       />
 
-      <Input
-        type="email"
-        label="Email"
-        name="contactEmail"
-        value={values.contactEmail}
-        onChange={handleChange}
-        placeholder="example@gmail.com"
-      />
+      <div>
+        <Input
+          type="email"
+          label="Email"
+          name="contactEmail"
+          value={values.contactEmail}
+          onChange={handleChange}
+          placeholder="example@gmail.com"
+        />
+        {errors.contactEmail && (
+          <FormErrorMessage message={errors.contactEmail} />
+        )}
+      </div>
 
       <Input
         label="Contact Number"
@@ -407,7 +433,7 @@ const BasicInfo = ({ setPage }) => {
                 setErrors(error);
                 dispatch(
                   toastActions.error({
-                    message: 'Please fill all required (*) fields',
+                    message: 'An error has occurred while filling the form',
                   }),
                 );
               } else {

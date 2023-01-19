@@ -16,15 +16,15 @@ const User = () => {
   const { organizationId } = useParams();
   const dispatch = useDispatch();
   const activeTab = useSelector(state => state.organizationDashboard.userTab);
-  const users = useSelector(state => state.organizationDashboard.users);
+  const userGroup = useSelector(state => state.organizationDashboard.userGroup);
 
   useEffect(() => {
-    if (users.length < 1)
+    if (userGroup.length < 1)
       dispatch(getUserGroupRequest({ organization: organizationId }));
     return () => {
       dispatch(clearUsersFilter());
     };
-  }, [dispatch, organizationId, users]);
+  }, [dispatch, organizationId, userGroup]);
   return (
     <div className="naxatw-mx-10">
       <div className="naxatw-flex naxatw-justify-between naxatw-py-5 ">

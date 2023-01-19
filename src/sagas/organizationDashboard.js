@@ -126,13 +126,18 @@ export function* patchProjectRequest({ id, payload }) {
     }
     if (status === 'draft') {
       yield put(commonActions.togglePromptDialog());
+      yield put(
+        toastActions.success({
+          message: 'Draft has been saved.',
+        }),
+      );
+    } else {
+      yield put(
+        toastActions.success({
+          message: "Thank you for filling in the project's basic details.",
+        }),
+      );
     }
-
-    yield put(
-      toastActions.success({
-        message: "Thank you for filling in the project's basic details. ",
-      }),
-    );
   } catch (error) {
     yield put(organizationDashboardActions.patchProjectFailure());
     throw error;

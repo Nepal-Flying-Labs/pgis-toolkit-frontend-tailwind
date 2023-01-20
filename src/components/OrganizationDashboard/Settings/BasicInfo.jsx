@@ -158,6 +158,19 @@ const BasicInfo = () => {
       if (!result) errors.contactEmail = 'Enter a valid Email';
     }
 
+    if (formValues.contact_person.name && formValues.contact_person.contact) {
+      const pattern = /^[0-9\b]+$/;
+      const result = pattern.test(formValues.contact_person.contact);
+      if (!result) {
+        errors.contactContact = 'Enter a valid contact number';
+      } else {
+        formValues.contact_person.contact.length < 7 ||
+        formValues.contact_person.contact.length > 15
+          ? (errors.contactContact = 'Enter a valid contact number')
+          : '';
+      }
+    }
+
     if (
       (formValues.contact_person.email ||
         formValues.contact_person.contact ||
@@ -329,7 +342,7 @@ const BasicInfo = () => {
             name="email"
             value={values?.email}
             onChange={handleChange}
-            placeholder="example@example.com"
+            placeholder="example@gmail.com"
           />
           {errorFields?.email && (
             <FormErrorMessage message={errorFields.email} />
@@ -340,11 +353,11 @@ const BasicInfo = () => {
         <div className="naxatw-w-1/2 naxatw-space-y-2">
           <Input
             type="text"
-            label="Contact Number"
+            label="Contact number"
             name="contact"
             value={values?.contact}
             onChange={handleChange}
-            placeholder="Contact Number"
+            placeholder="Contact number"
           />
           {errorFields?.contact && (
             <FormErrorMessage message={errorFields.contact} />
@@ -357,7 +370,7 @@ const BasicInfo = () => {
             name="link"
             value={values?.link}
             onChange={handleChange}
-            placeholder="example.com"
+            placeholder="example@gmail.com"
           />
           {errorFields?.link && <FormErrorMessage message={errorFields.link} />}
         </div>
@@ -407,7 +420,7 @@ const BasicInfo = () => {
         <div className="naxatw-space-y-2">
           <Input
             type="text"
-            label="Name of contact Person"
+            label="Name of contact person"
             name="name"
             value={values?.contact_person?.name || ''}
             onChange={handleContactPersonValues}
@@ -439,7 +452,7 @@ const BasicInfo = () => {
             name="email"
             value={values?.contact_person?.email || ''}
             onChange={handleContactPersonValues}
-            placeholder="example.com"
+            placeholder="example@gmail.com"
           />
           {errorFields?.contactEmail && (
             <FormErrorMessage message={errorFields.contactEmail} />
@@ -448,12 +461,12 @@ const BasicInfo = () => {
 
         <div className="naxatw-space-y-2">
           <Input
-            label="Phone"
+            label="Contact number"
             type="text"
             name="contact"
             value={values?.contact_person?.contact || ''}
             onChange={handleContactPersonValues}
-            placeholder="Phone Number"
+            placeholder="Contact number"
           />
           {errorFields?.contactContact && (
             <FormErrorMessage message={errorFields.contactContact} />

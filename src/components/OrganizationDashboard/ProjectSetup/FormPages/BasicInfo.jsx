@@ -99,6 +99,18 @@ const validation = formValues => {
     if (!result) errors.contactEmail = 'Enter a valid Email';
   }
 
+  if (formValues.contactName && formValues.contactPhone) {
+    const pattern = /^[0-9\b]+$/;
+    const result = pattern.test(formValues.contactPhone);
+    if (!result) {
+      errors.contactPhone = 'Enter a valid contact number';
+    } else {
+      formValues.contactPhone.length < 7 || formValues.contactPhone.length > 15
+        ? (errors.contactPhone = 'Enter a valid contact number')
+        : '';
+    }
+  }
+
   if (
     (formValues.contactEmail ||
       formValues.contactPhone ||
@@ -372,7 +384,7 @@ const BasicInfo = ({ setPage }) => {
       <div>
         <Input
           type="text"
-          label="Name of contact Person"
+          label="Name of contact person"
           name="contactName"
           value={values.contactName}
           onChange={handleChange}
@@ -406,14 +418,19 @@ const BasicInfo = ({ setPage }) => {
         )}
       </div>
 
-      <Input
-        label="Contact Number"
-        type="text"
-        name="contactPhone"
-        value={values.contactPhone}
-        onChange={handleChange}
-        placeholder="Contact Number"
-      />
+      <div>
+        <Input
+          label="Contact number"
+          type="text"
+          name="contactPhone"
+          value={values.contactPhone}
+          onChange={handleChange}
+          placeholder="Contact number"
+        />
+        {errors.contactPhone && (
+          <FormErrorMessage message={errors.contactPhone} />
+        )}
+      </div>
 
       <div
         className={`naxatw-flex ${

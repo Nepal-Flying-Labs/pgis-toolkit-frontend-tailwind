@@ -141,7 +141,7 @@ export default function LayerList({ dropdownOptions }) {
                     onMouseLeave={() => setHoverId(null)}
                   >
                     <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-                      <div className="naxatw-w-6 naxatw-h-6 naxatw-p-1 naxatw-mr-4 naxatw-flex naxatw-items-center naxatw-justify-center">
+                      <div className="naxatw-w-6 naxatw-h-6 naxatw-p-[3px] naxatw-mr-3 naxatw-flex naxatw-items-center naxatw-justify-center">
                         <input
                           id={layer.id}
                           type="checkbox"
@@ -160,7 +160,7 @@ export default function LayerList({ dropdownOptions }) {
                       <LegendItem
                         styles={layer.style}
                         className="naxatw-mr-2"
-                        size="24px"
+                        size="21px"
                       />
 
                       <label

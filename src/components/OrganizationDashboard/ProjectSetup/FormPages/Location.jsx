@@ -190,7 +190,7 @@ const Location = ({ page, setPage }) => {
       if (Object.keys(error).length < 1) {
         if (Object.keys(diffContact).length > 0) {
           if (stepOne.contactId) {
-            validateContactPerson(diffContact)
+            validateContactPerson(contactPerson)
               ? dispatch(
                   patchContactPersonRequest(stepOne.contactId, {
                     ...diffContact,

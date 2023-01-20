@@ -24,7 +24,7 @@ const CreateProjectSuccess = () => {
         </div>
         <div className="naxatw-mt-6">
           <span className="naxatw-text-body-lg">
-            You can now proceed by adding data, documents and images to the
+            You can now proceed and add data, documents and images to the
             project.
           </span>
         </div>

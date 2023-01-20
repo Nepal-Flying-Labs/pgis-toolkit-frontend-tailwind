@@ -415,7 +415,7 @@ const getOrganizationByIdSuccess = (state, action) => {
       ...state.individualOrganization,
       item: {
         ...data,
-        cover_image: data?.cover_image ? { image: data.cover_image } : {},
+        cover_image: data?.cover_image ? { image: data.cover_image } : null,
       },
     },
   };

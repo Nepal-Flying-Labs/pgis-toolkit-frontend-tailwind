@@ -115,7 +115,7 @@ const SaveAsDraft = () => {
     const diffContact = diffObject(contactDetails, contactPerson);
     if (Object.keys(diffContact).length > 0) {
       if (finalObj.contactId) {
-        validateContactPerson(diffContact)
+        validateContactPerson(contactDetails)
           ? dispatch(
               patchContactPersonRequest(finalObj.contactId, {
                 ...diffContact,

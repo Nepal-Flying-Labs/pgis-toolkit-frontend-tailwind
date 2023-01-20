@@ -52,7 +52,7 @@ export default function Organizations() {
               iconLeft="add"
               onClick={() => dispatch(toggleModal('create-organization'))}
             >
-              Create Organization
+              Create an Organization
             </Button>
           )}
         </div>

@@ -70,7 +70,9 @@ export default function LayerList({ dropdownOptions }) {
               <div className="naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-w-full">
                 <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
                   <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
-                    <h5 className="naxatw-text-grey-800">{theme.name}</h5>
+                    <h5 className="naxatw-text-grey-800 naxatw-font-semibold">
+                      {theme.name}
+                    </h5>
                     {/*
                     <span className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer">
                       <MaterialIcon
@@ -139,23 +141,26 @@ export default function LayerList({ dropdownOptions }) {
                     onMouseLeave={() => setHoverId(null)}
                   >
                     <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-                      <input
-                        id={layer.id}
-                        type="checkbox"
-                        className="naxatw-w-5 naxatw-h-5 naxatw-mr-4 naxatw-accent-grey-800"
-                        checked={layer.checked}
-                        onChange={e =>
-                          handleLayerCheck({
-                            checked: e.target.checked,
-                            layerId: layer.id,
-                            themeId: theme.id,
-                          })
-                        }
-                      />
+                      <div className="naxatw-w-6 naxatw-h-6 naxatw-p-1 naxatw-mr-4 naxatw-flex naxatw-items-center naxatw-justify-center">
+                        <input
+                          id={layer.id}
+                          type="checkbox"
+                          className="naxatw-w-full naxatw-h-full  naxatw-accent-grey-800"
+                          checked={layer.checked}
+                          onChange={e =>
+                            handleLayerCheck({
+                              checked: e.target.checked,
+                              layerId: layer.id,
+                              themeId: theme.id,
+                            })
+                          }
+                        />
+                      </div>
 
                       <LegendItem
                         styles={layer.style}
                         className="naxatw-mr-2"
+                        size="24px"
                       />
 
                       <label

@@ -15,7 +15,6 @@ import { Style, Fill, Stroke } from 'ol/style';
 import { Overlay } from 'ol';
 import { Polygon, LineString } from 'ol/geom';
 import { unByKey } from 'ol/Observable';
-import './styles.scss';
 
 function MeasureControl({ map, style, buttonText, measureBoth = false }) {
   const controlRef = useRef(null);
@@ -169,7 +168,7 @@ function MeasureControl({ map, style, buttonText, measureBoth = false }) {
   return (
     <div
       ref={controlRef}
-      className="setting__list"
+      className="naxatw-pt-1 "
       style={{ ...style, cursor: 'pointer' }}
     >
       <a
@@ -179,16 +178,20 @@ function MeasureControl({ map, style, buttonText, measureBoth = false }) {
         }
         type="button"
         title="Measure"
-        className="sidebar-collapse"
+        className=""
       >
         {buttonText}
       </a>
-
       <ul
-        className="is__dropdown"
-        style={{ right: '36px', display: options ? '' : 'none' }}
+        className="naxatw-bg-white naxatw-rounded-sm"
+        style={{
+          position: 'absolute',
+          right: '0px',
+          top: '42px',
+          display: options ? '' : 'none',
+        }}
       >
-        <li>
+        <li className="naxatw-p-2 naxatw-h-10 naxatw-items-center naxatw-justify-center hover:naxatw-bg-grey-100">
           <a
             onClick={() => clickHandler({ type: 'LineString' })}
             title="Add Coordinate"
@@ -196,7 +199,7 @@ function MeasureControl({ map, style, buttonText, measureBoth = false }) {
             <i className="material-icons">show_chart</i>
           </a>
         </li>
-        <li>
+        <li className="naxatw-p-2 naxatw-h-10 naxatw-items-center naxatw-justify-center hover:naxatw-bg-grey-100">
           <a
             onClick={() => clickHandler({ type: 'Polygon' })}
             title="Measure Length and Area"

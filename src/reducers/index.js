@@ -12,6 +12,7 @@ import projectMap from './projectMap';
 import users from './users';
 import dataCleaning from './dataCleaning';
 import routeAnalysis from './routeAnalysis';
+import bufferAnalysis from './bufferAnalysis';
 
 export default combineReducers({
   router: connectRouter(history),
@@ -26,4 +27,5 @@ export default combineReducers({
   users,
   dataCleaning,
   routeAnalysis,
+  bufferAnalysis,
 });

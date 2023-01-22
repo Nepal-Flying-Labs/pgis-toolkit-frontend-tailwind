@@ -7,6 +7,7 @@ import Header from './Header';
 import HelpContent from './HelpContent';
 import DataCleaning from './DataCleaning';
 import OptimalRoute from './OptimalRoute';
+import BufferAnalysis from './BufferAnalysis';
 import AnalysisLoader from './AnalysisLoader';
 
 const { checkProcessingStatusRequest } = Creators;
@@ -15,6 +16,8 @@ function getAnalysisContent(type) {
   switch (type) {
     case 'optimal-route':
       return <OptimalRoute />;
+    case 'buffer-analysis':
+      return <BufferAnalysis />;
 
     default:
       return '';

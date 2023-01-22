@@ -7,6 +7,10 @@ const headerData = {
     description:
       'This method is used to find the most efficient path between multiple locations based on factors such as distance, time, and road conditions..',
   },
+  'buffer-analysis': {
+    title: 'Buffer Analysis',
+    description: 'Baseline Datasets contains different levels of boundaries.',
+  },
 };
 
 export default function Header() {

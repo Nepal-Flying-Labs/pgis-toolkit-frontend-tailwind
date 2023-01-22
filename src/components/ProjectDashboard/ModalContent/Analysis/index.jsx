@@ -18,7 +18,7 @@ const analysisData = [
     description:
       'Creates a zone around a selected feature, distance or time-based, known as a buffer, to find features that are within a certain distance of another feature.',
     analysisType: 'buffer-analysis',
-    disabled: true,
+    disabled: false,
   },
   {
     id: 3,
@@ -57,9 +57,15 @@ export default function Analysis() {
               onClick={() => {
                 if (disabled) return;
                 dispatch(toggleModal());
-                history.push(
-                  `/organizations/${organizationId}/projects/${projectId}/data-cleaning/${analysisType}`,
-                );
+
+                // eslint-disable-next-line no-unused-expressions
+                id !== 2
+                  ? history.push(
+                      `/organizations/${organizationId}/projects/${projectId}/data-cleaning/${analysisType}`,
+                    )
+                  : history.push(
+                      `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}`,
+                    );
               }}
             >
               <h5 className="naxatw-text-grey-800">{title}</h5>

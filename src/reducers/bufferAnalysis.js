@@ -28,9 +28,12 @@ const setDataInputState = (state, action) => ({
   },
 });
 
+const resetBufferAnalysisState = () => ({ ...initialState });
+
 const bufferAnalysisReducer = createReducer(initialState, {
   [Types.SET_BUFFER_ANALYSIS_STATE]: setBufferAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
+  [Types.RESET_BUFFER_ANALYSIS_STATE]: resetBufferAnalysisState,
 });
 
 export default bufferAnalysisReducer;

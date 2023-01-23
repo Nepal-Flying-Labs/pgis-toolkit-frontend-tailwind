@@ -10,7 +10,7 @@ import Select from '@Components/common/Select/index';
 import { Creators } from '@Actions/bufferAnalysis';
 import Chip from '../Chip';
 
-const { setDataInputState } = Creators;
+const { setDataInputState, applyBufferAnalysisRequest } = Creators;
 
 const originPointData = [
   { label: 'Search', value: 'search', icon: 'search' },
@@ -73,7 +73,7 @@ export default function DataInput() {
       type: 'buffer',
     };
     console.log(payloadData, 'payloadData');
-    // dispatch(applyBufferAnalysisRequest(payloadData));
+    dispatch(applyBufferAnalysisRequest(payloadData));
   };
 
   return (

@@ -171,8 +171,8 @@ export default function StepTwo() {
                           <span>
                             {status === 'error' || status === 'success' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">
-                                <b>{errorData}</b> out of <b>{totalData}</b>{' '}
-                                errors
+                                <b>{errorData}</b> error out of{' '}
+                                <b>{totalData}</b> data
                               </p>
                             ) : status === 'fix-failed' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">

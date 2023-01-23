@@ -6,6 +6,7 @@ import {
   takeEvery,
   all,
   delay,
+  select,
 } from 'redux-saga/effects';
 
 import projectDashboardActions, { Types } from '@Actions/projectDashboard';
@@ -175,7 +176,13 @@ export function* checkUploadStatusRequest({ id }) {
       const response = yield call(getLayerById, id);
       responseData = response.data;
     }
-    yield put(projectDashboardActions.checkUploadStatusSuccess(responseData));
+    const { themes } = yield select(state => state.projectMap);
+    yield put(
+      projectDashboardActions.checkUploadStatusSuccess({
+        ...responseData,
+        theme: themes.find(theme => theme.id === responseData.theme)?.name,
+      }),
+    );
     if (responseData.upload_status === 'successful') {
       yield put(
         toastActions.success({

@@ -5,3 +5,6 @@ export const getOrganizations = params =>
 
 export const createOrganization = data =>
   authenticated(api).post('/users/preliminary_user_create/', data);
+
+export const deleteOrganization = (id, payload) =>
+  authenticated(api).patch(`/projects/organization/${id}/`, payload);

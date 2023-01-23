@@ -1,5 +1,9 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { createOrganization, getOrganizations } from '@Services/organizations';
+import {
+  createOrganization,
+  getOrganizations,
+  deleteOrganization,
+} from '@Services/organizations';
 import commonActions from '@Actions/common';
 import organizationsActions, { Types } from '@Actions/organizations';
 // import toastActions from '@Actions/toast';
@@ -34,6 +38,20 @@ export function* createOrganizationRequest({ payload }) {
   }
 }
 
+export function* deleteOrganizationRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(deleteOrganization, id, formdata);
+    yield put(organizationsActions.deleteOrganizationSuccess(response.data));
+    yield put(commonActions.togglePromptDialog());
+
+    // yield put(organizationsActions.getOrganizationsRequest());
+  } catch (error) {
+    yield put(organizationsActions.deleteOrganizationFailure());
+    throw error;
+  }
+}
+
 function* organizationsWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATIONS_REQUEST,
@@ -42,6 +60,10 @@ function* organizationsWatcher() {
   yield takeLatest(
     Types.CREATE_ORGANIZATION_REQUEST,
     withLoader(withErrorHandler(createOrganizationRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_ORGANIZATION_REQUEST,
+    withLoader(withErrorHandler(deleteOrganizationRequest)),
   );
 }
 

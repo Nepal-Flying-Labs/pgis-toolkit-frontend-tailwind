@@ -80,7 +80,9 @@ export default function StepTwo() {
                     className="naxatw-flex naxatw-items-center naxatw-justify-between
                   naxatw-w-full"
                   >
-                    <h5 className="naxatw-text-grey-800">{layer.name}</h5>
+                    <h5 className="naxatw-text-grey-800 naxatw-font-semibold">
+                      {layer.name}
+                    </h5>
                     <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
                       {/*
                         <span

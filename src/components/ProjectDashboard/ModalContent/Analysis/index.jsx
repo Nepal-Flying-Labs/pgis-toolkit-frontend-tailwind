@@ -68,8 +68,10 @@ export default function Analysis() {
                     );
               }}
             >
-              <h5 className="naxatw-text-grey-800">{title}</h5>
-              <p className="naxatw-text-body-md">{description}</p>
+              <h5 className="naxatw-text-grey-800 naxatw-font-semibold">
+                {title}
+              </h5>
+              <p className="naxatw-text-body-md naxatw-mt-1">{description}</p>
             </div>
           ),
         )}

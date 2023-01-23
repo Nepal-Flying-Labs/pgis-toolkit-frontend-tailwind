@@ -5,12 +5,12 @@ import Tab from '@Components/common/Tab';
 import { analysisHeaderHeight } from '@src/constants';
 import DataInput from './DataInput';
 import Results from './Results';
-import Layers from './Layers';
+import LayerSection from '../../LayerSection';
 
 const tabData = [
   { id: 'dataInput', title: 'Data Input', content: <DataInput /> },
   { id: 'results', title: 'Results', content: <Results /> },
-  { id: 'layers', title: 'Layers', content: <Layers /> },
+  { id: 'layers', title: 'Layers', content: <LayerSection /> },
 ];
 
 const { setRouteAnalysisState } = Creators;

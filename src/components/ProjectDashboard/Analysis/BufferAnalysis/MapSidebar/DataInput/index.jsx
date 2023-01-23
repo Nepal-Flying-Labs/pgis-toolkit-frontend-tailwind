@@ -1,15 +1,16 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import { analysisHeaderHeight } from '@src/constants';
-// import toastActions from '@Actions/toast';
+import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar/index';
 import Select from '@Components/common/Select/index';
 import { Creators } from '@Actions/bufferAnalysis';
 import Chip from '../Chip';
 
-const { setBufferAnalysisState, setDataInputState } = Creators;
+const { setDataInputState } = Creators;
 
 const originPointData = [
   { label: 'Search', value: 'search', icon: 'search' },
@@ -24,6 +25,7 @@ function Container({ children }) {
 
 export default function DataInput() {
   const dispatch = useDispatch();
+  const { projectId } = useParams();
 
   const originPointType = useSelector(
     state => state.bufferAnalysis.dataInput.originPointType,
@@ -48,26 +50,31 @@ export default function DataInput() {
     state => state.bufferAnalysis.dataInput.dissolveOutput,
   );
 
-  // const handleApply = () => {
-  //   if (!originGeojson || !bufferRadius || !outputName) {
-  //     dispatch(
-  //       toastActions.error({
-  //         message: 'Please input all the required fields!',
-  //       }),
-  //     );
-  //     return;
-  //   }
+  const handleApply = () => {
+    if (!originGeojson || !bufferRadius || !outputName) {
+      dispatch(
+        toastActions.error({
+          message: 'Please input all the required fields!',
+        }),
+      );
+      return;
+    }
 
-  //   const payloadData = {
-  //     origins,
-  //     dissolve_output:dissolveOutput,
-  //     radius:bufferRadius,
-  //     name: outputName,
-  //     project: projectId,
-  //     type: 'buffer',
-  //   };
-  //   dispatch(applyBufferAnalysisRequest(payloadData));
-  // };
+    const originData = originGeojson.map(
+      origin => origin.geojson.geometry.coordinates,
+    );
+
+    const payloadData = {
+      origins: originData,
+      dissolve_output: dissolveOutput,
+      radius: bufferRadius,
+      name: outputName,
+      project: projectId,
+      type: 'buffer',
+    };
+    console.log(payloadData, 'payloadData');
+    // dispatch(applyBufferAnalysisRequest(payloadData));
+  };
 
   return (
     <div className=" naxatw-h-full">
@@ -104,7 +111,11 @@ export default function DataInput() {
               <div>
                 <Chip
                   className="!naxatw-w-full !naxatw-bg-white "
-                  label="Starting Point"
+                  label={
+                    originGeojson && originGeojson.length > 0
+                      ? 'Add another point'
+                      : 'Starting Point'
+                  }
                   iconLeft="search"
                   active={drawPoint}
                   onClick={() => {
@@ -117,26 +128,24 @@ export default function DataInput() {
                 />
                 <div className="naxatw-mt-2 naxatw-max-h-[100px] naxatw-overflow-y-auto naxatw-space-y-1 scrollbar">
                   {originGeojson &&
-                    originGeojson.map(geojson => {
-                      const { coordinates } = geojson.geometry;
-                      return (
-                        <Chip
-                          key={geojson}
-                          label={`${parseFloat(coordinates[0]).toFixed(
-                            3,
-                          )}-${parseFloat(coordinates[1]).toFixed(3)}`}
-                          iconClassName="material-symbols-outlined"
-                          iconLeft="location_on"
-                          // onClick={() => {
-                          //   dispatch(
-                          //     setDataInputState({
-                          //       originPointType: value,
-                          //     }),
-                          //   );
-                          // }}
-                        />
-                      );
-                    })}
+                    originGeojson.map(origin => (
+                      <Chip
+                        key={origin.id}
+                        label={origin.name}
+                        iconClassName="material-symbols-outlined"
+                        iconLeft="location_on"
+                        onClick={() => {
+                          const newData = originGeojson.filter(
+                            origins => origins.id !== origin.id,
+                          );
+                          dispatch(
+                            setDataInputState({
+                              originGeojson: newData,
+                            }),
+                          );
+                        }}
+                      />
+                    ))}
                 </div>
               </div>
             )}
@@ -227,13 +236,7 @@ export default function DataInput() {
         <Button
           className="naxatw-btn-primary"
           // isLoading={loading}
-          onClick={() => {
-            dispatch(
-              setBufferAnalysisState({
-                activeTab: 'results',
-              }),
-            );
-          }}
+          onClick={handleApply}
         >
           Apply
         </Button>

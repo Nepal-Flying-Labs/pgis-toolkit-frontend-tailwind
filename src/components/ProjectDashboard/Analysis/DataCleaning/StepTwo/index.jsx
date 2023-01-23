@@ -50,7 +50,11 @@ export default function StepTwo() {
 
   return (
     <div>
-      <h4>Data</h4>
+      {/* <h4>Data</h4> */}
+      <p className="naxatw-mt-2 naxatw-text-body-lg">
+        To continue with the data cleaning phase, please click on &quot;Check
+        Error&quot; button to verify each layer before performing analysis.
+      </p>
 
       <div className="naxatw-mt-5 naxatw-space-y-5">
         {data.map(layer => {
@@ -171,8 +175,8 @@ export default function StepTwo() {
                           <span>
                             {status === 'error' || status === 'success' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">
-                                <b>{errorData}</b> out of <b>{totalData}</b>{' '}
-                                errors
+                                <b>{errorData}</b> errors out of{' '}
+                                <b>{totalData}</b> data
                               </p>
                             ) : status === 'fix-failed' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">

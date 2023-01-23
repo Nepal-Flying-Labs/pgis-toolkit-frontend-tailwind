@@ -147,16 +147,18 @@ const OrganizationInfo = () => {
             </div>
           </div>
           <div className="naxatw-mt-7">
-            <h4>About</h4>
+            <h4 className="naxatw-font-semibold">About</h4>
             <p className="naxatw-text-body-lg naxatw-mt-2">
               {organizationDetails?.description || 'N/A'}
             </p>
           </div>
           <div className="naxatw-mt-7">
-            <h4 className="naxatw-mb-3">Focal Contact Person</h4>
+            <h4 className="naxatw-mb-3 naxatw-font-semibold">
+              Focal Contact Person
+            </h4>
             {organizationDetails?.contact_person?.length > 0 ? (
               organizationDetails?.contact_person?.map(person => (
-                <div>
+                <div className="naxatw-mt-2">
                   <p className="naxatw-text-body-btn naxatw-mb-1">
                     {person.name}
                   </p>

@@ -115,9 +115,11 @@ export default function Data() {
       </div>
 
       <div className="naxatw-space-y-2">
-        <h4 className="naxatw-text-grey-800">
-          USAFIRI allows you to upload datasets from multiple sources
-        </h4>
+        <p className="naxatw-text-grey-800 naxatw-text-body-lg">
+          USAFIRI supports data upload from multiple external sources. You may
+          add data collected from field, extract data from OSM and simply add
+          WMS layer in the data catalog.
+        </p>
         {/* <p className="naxatw-text-body-lg">
           Download Datasets for Field Data Collection
         </p> */}

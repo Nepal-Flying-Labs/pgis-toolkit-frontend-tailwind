@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
 import Button from '@Components/common/Button';
 import Accordion from '@Components/common/Accordion';
-import IconButton from '@Components/common/IconButton';
+// import IconButton from '@Components/common/IconButton';
 
 const {
   checkErrorRequest,
@@ -50,7 +50,11 @@ export default function StepTwo() {
 
   return (
     <div>
-      <h4>Data</h4>
+      {/* <h4>Data</h4> */}
+      <p className="naxatw-mt-2 naxatw-text-body-lg">
+        To continue with the data cleaning phase, please click on &quot;Check
+        Error&quot; button to verify each layer before performing analysis.
+      </p>
 
       <div className="naxatw-mt-5 naxatw-space-y-5">
         {data.map(layer => {

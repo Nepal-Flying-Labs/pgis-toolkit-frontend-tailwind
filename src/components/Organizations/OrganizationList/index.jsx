@@ -8,6 +8,7 @@ import {
   getMaxPage,
 } from '@Components/common/Pagination/getSelectedItem';
 // import { userRowsOption } from '@src/constants/paginationRowOptions';
+import { Creators as CommonCreator } from '@Actions/common';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import { Creators, Types } from '@Actions/organizations';
 import Table, { TableHeader } from '@Components/common/Table/Table';
@@ -18,6 +19,8 @@ import Pagination from '@Components/common/Pagination';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import TableSkeleton from '@Components/common/TableSkeleton';
 
+const { togglePromptDialog } = CommonCreator;
+
 const {
   setSearchText,
   handleNextClick,
@@ -25,6 +28,7 @@ const {
   handleJumpsTo,
   handleRowSelect,
   handleOrdering,
+  setSelectedOrganization,
 } = Creators;
 const dataPerPage = 10;
 
@@ -81,7 +85,9 @@ export default function OrganizationList() {
           <p className="naxatw-text-body-lg">Edit</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: data => {
+        history.push(`/organizations/${data.id}/settings`);
+      },
     },
     {
       id: 2,
@@ -91,7 +97,10 @@ export default function OrganizationList() {
           <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: data => {
+        dispatch(setSelectedOrganization(data));
+        dispatch(togglePromptDialog('delete-an-organization'));
+      },
     },
   ];
 
@@ -116,7 +125,7 @@ export default function OrganizationList() {
       <div className="naxa-table naxatw-overflow-x-auto naxatw-h-[calc(100vh-20rem)] xl:naxatw-h-[calc(100vh-23rem)] scrollbar naxatw-relative naxatw-mt-[1.875rem]">
         {!loading ? (
           <Table
-            data={organizationData?.results || []}
+            data={organizationData || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-body-sm"
             headerClassName="naxatw-py-1 naxatw-px-3"
             headerWidths={['30px', '200px', '150px', '150px', '50px']}

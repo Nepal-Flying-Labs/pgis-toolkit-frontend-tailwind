@@ -2,7 +2,8 @@ import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/organizations';
 
 const initialState = {
-  organizationData: {},
+  organizationData: [],
+  selectedOrganization: null,
   createOrganizationDetail: null,
   searchText: '',
   ordering: 'name',
@@ -16,10 +17,10 @@ const initialState = {
 };
 
 const getOrganizationsSuccess = (state, action) => {
-  const { counts, next, previous } = action.payload;
+  const { counts, next, previous, results } = action.payload;
   return {
     ...state,
-    organizationData: action.payload,
+    organizationData: results,
     pagination: {
       ...state.pagination,
       count: counts,
@@ -87,6 +88,22 @@ const handleOrdering = (state, action) => ({
   ordering: action.payload,
 });
 
+const setSelectedOrganization = (state, action) => ({
+  ...state,
+  selectedOrganization: action.payload,
+});
+
+const deleteOrganizationSuccess = (state, action) => {
+  const data = action.payload;
+  const newData = state.organizationData.filter(
+    orgData => orgData.id !== data.id,
+  );
+  return {
+    ...state,
+    organizationData: newData,
+  };
+};
+
 const organizationsReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATIONS_SUCCESS]: getOrganizationsSuccess,
   [Types.CREATE_ORGANIZATION_SUCCESS]: createOrganizationSuccess,
@@ -96,6 +113,8 @@ const organizationsReducer = createReducer(initialState, {
   [Types.HANDLE_JUMPS_TO]: handleJumpsTo,
   [Types.HANDLE_ROW_SELECT]: handleRowSelect,
   [Types.HANDLE_ORDERING]: handleOrdering,
+  [Types.SET_SELECTED_ORGANIZATION]: setSelectedOrganization,
+  [Types.DELETE_ORGANIZATION_SUCCESS]: deleteOrganizationSuccess,
 });
 
 export default organizationsReducer;

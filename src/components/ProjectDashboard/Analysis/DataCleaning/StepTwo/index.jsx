@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
 import Button from '@Components/common/Button';
 import Accordion from '@Components/common/Accordion';
-import IconButton from '@Components/common/IconButton';
+// import IconButton from '@Components/common/IconButton';
 
 const {
   checkErrorRequest,
@@ -175,7 +175,7 @@ export default function StepTwo() {
                           <span>
                             {status === 'error' || status === 'success' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">
-                                <b>{errorData}</b> errors out of{' '}
+                                <b>{errorData}</b> error out of{' '}
                                 <b>{totalData}</b> data
                               </p>
                             ) : status === 'fix-failed' ? (

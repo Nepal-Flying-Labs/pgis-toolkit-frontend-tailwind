@@ -4,6 +4,7 @@ export const { Types, Creators } = createActions(
   {
     setBufferAnalysisState: ['payload'],
     setDataInputState: ['payload'],
+    setResultsState: ['payload'],
 
     resetBufferAnalysisState: ['payload'],
 
@@ -15,6 +16,8 @@ export const { Types, Creators } = createActions(
     checkProcessingStatusFailure: null,
 
     handleCheckbox: ['payload'],
+
+    handleRouteCheckbox: ['payload'],
   },
   { prefix: 'bufferAnalysis/' },
 );

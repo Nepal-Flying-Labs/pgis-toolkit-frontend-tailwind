@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
@@ -7,7 +8,9 @@ import {
 } from '@Components/common/OpenLayersComponent';
 import { startPointStyles } from '@src/constants/analysis';
 import { Creators as BufferAnalysisCreators } from '@Actions/bufferAnalysis';
+import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
+import CircleMarker from '@Components/common/OpenLayersComponent/CustomLayer/CircleMarker';
 import toastActions from '@Actions/toast';
 import { analysisHeaderHeight } from '@src/constants';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool/index';
@@ -15,6 +18,7 @@ import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSw
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 
 import Scalebar from '@Components/common/OpenLayersComponent/Scalebar/index';
+import { apiURL } from '@Services';
 
 import '@Components/common/OpenLayersComponent/map.css';
 
@@ -34,7 +38,7 @@ export default function MapSection() {
   );
 
   const analysisResults = useSelector(
-    state => state.routeAnalysis.results.analysisResults,
+    state => state.bufferAnalysis.results.analysisResults,
   );
 
   const projectDetail = useSelector(
@@ -128,6 +132,33 @@ export default function MapSection() {
         />
         <LayerSwitcherControl />
         <Scalebar />
+
+        {analysisResults.map(result =>
+          result.buffer_areas.map((area, index) => (
+            <CircleMarker
+              key={index}
+              coordinates={[area.origin[1], area.origin[0]]}
+              visibleOnMap={area.checked}
+              zIndex={10}
+              style={area.originStyle}
+              map={map}
+            />
+          )),
+        )}
+
+        {analysisResults.map(result =>
+          result.buffer_areas.map(area => (
+            <VectorTileLayer
+              key={area.id}
+              url={`${apiURL}maps/buffer_area_vectortile/{z}/{x}/{y}/?area=${area.id}`}
+              authToken={localStorage.getItem('userToken')}
+              visibleOnMap={area.checked}
+              style={result.style}
+              zIndex={4}
+              // properties={{ layerId: selectedLayer.id }}
+            />
+          )),
+        )}
 
         {originGeojson &&
           originGeojson.map(origin => (

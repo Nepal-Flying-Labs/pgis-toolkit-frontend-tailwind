@@ -1,52 +1,15 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators as RouteAnalysisCreators } from '@Actions/routeAnalysis';
-import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as BufferAnalysisCreators } from '@Actions/bufferAnalysis';
+// import { Creators as CommonCreators } from '@Actions/common';
 import { analysisHeaderHeight } from '@src/constants';
 import Accordion from '@Components/common/Accordion';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
-// import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
+import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 
-const { setResultsState } = RouteAnalysisCreators;
-const { toggleModal } = CommonCreators;
-
-// const analysisResults = [
-//   {
-//     id: 1,
-//     checked: true,
-//     name: 'Buffer Result 1 ',
-//     routes: [
-//       {
-//         id: '1',
-//         checked: false,
-//         name: 'Result Area 1',
-//       },
-//       {
-//         id: '2',
-//         checked: true,
-//         name: 'Result Area 2',
-//       },
-//     ],
-//   },
-//   {
-//     id: 2,
-//     checked: true,
-//     name: 'Buffer Result 2 ',
-//     routes: [
-//       {
-//         id: '1',
-//         checked: false,
-//         name: 'Result Area 1',
-//       },
-//       {
-//         id: '2',
-//         checked: true,
-//         name: 'Result Area 2',
-//       },
-//     ],
-//   },
-// ];
+const { handleRouteCheckbox } = BufferAnalysisCreators;
+// const { toggleModal } = CommonCreators;
 
 export default function Results() {
   const analysisResults = useSelector(
@@ -63,13 +26,7 @@ export default function Results() {
           <p className="naxatw-text-body-lg">Zoom To Layer</p>
         </span>
       ),
-      onClick: data => {
-        dispatch(
-          setResultsState({
-            zoomToRouteId: data.id,
-          }),
-        );
-      },
+      onClick: () => {},
     },
     {
       id: 'attribute-table',
@@ -79,14 +36,7 @@ export default function Results() {
           <p className="naxatw-text-body-lg">Attribute Table</p>
         </span>
       ),
-      onClick: data => {
-        dispatch(
-          setResultsState({
-            selectedAnalysis: data,
-          }),
-        );
-        dispatch(toggleModal('view-route-attribute'));
-      },
+      onClick: () => {},
     },
     // {
     //   id: 'delete-layer',
@@ -124,18 +74,24 @@ export default function Results() {
                       type="checkbox"
                       className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
                       checked={result.checked}
-                      // onChange={e => {
-                      //   const { id, checked } = e.target;
-                      //   dispatch(
-                      //     handleRouteCheckbox({
-                      //       resultId: +id,
-                      //       checked,
-                      //       name: 'result',
-                      //     }),
-                      //   );
-                      // }}
+                      onChange={e => {
+                        const { id, checked } = e.target;
+                        dispatch(
+                          handleRouteCheckbox({
+                            resultId: +id,
+                            checked,
+                            name: 'result',
+                          }),
+                        );
+                      }}
                     />
-                    <h5 className="naxatw-text-grey-800">{result.name}</h5>
+                    <LegendItem styles={result.style} className="naxatw-mr-2" />
+                    <label
+                      htmlFor={result.id}
+                      className="naxatw-text-grey-800 naxatw-text-body-lg"
+                    >
+                      {result.name}
+                    </label>
                   </div>
                   <DropdownOptions options={dropdownOptions} data={result} />
                 </div>
@@ -143,33 +99,38 @@ export default function Results() {
             }
             body={
               <div className="naxatw-pl-2">
-                {result.buffer_areas.map(route => (
-                  <div key={route.id}>
+                {result.buffer_areas.map(area => (
+                  <div key={area.id}>
                     <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                       <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-10">
                         <input
-                          id={route.id}
+                          id={area.id}
                           type="checkbox"
                           className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                          checked={route.checked}
-                          // onChange={e => {
-                          //   const { id, checked } = e.target;
-                          //   dispatch(
-                          //     handleRouteCheckbox({
-                          //       resultId: result.id,
-                          //       routeId: +id,
-                          //       checked,
-                          //       name: 'route',
-                          //     }),
-                          //   );
-                          // }}
+                          checked={area.checked}
+                          onChange={e => {
+                            const { id, checked } = e.target;
+                            dispatch(
+                              handleRouteCheckbox({
+                                resultId: result.id,
+                                areaId: +id,
+                                checked,
+                                name: 'area',
+                              }),
+                            );
+                          }}
+                        />
+                        <LegendItem
+                          styles={area.originStyle}
+                          className="naxatw-mr-2 !naxatw-rounded-full"
+                          size="20px"
                         />
 
                         <label
                           className="naxatw-text-body-lg naxatw-text-grey-800"
-                          htmlFor={route.id}
+                          htmlFor={area.id}
                         >
-                          {route.name || '-'}
+                          {area.name || '-'}
                         </label>
                       </div>
                       <MaterialIcon
@@ -177,47 +138,6 @@ export default function Results() {
                         className="naxatw-cursor-pointer"
                       />
                     </div>
-
-                    {/* <div className="naxatw-pl-3">
-                      {route.data.map(item => (
-                        <div
-                          key={item.id}
-                          className="naxatw-flex naxatw-justify-between naxatw-items-center"
-                        >
-                          <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-10">
-                            <input
-                              id={item.id}
-                              type="checkbox"
-                              className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                              checked={item.checked}
-                              onChange={e => {
-                                const { id, checked } = e.target;
-                                dispatch(
-                                  handleRouteCheckbox({
-                                    resultId: result.id,
-                                    routeId: route.id,
-                                    dataId: +id,
-                                    checked,
-                                    name: 'data',
-                                  }),
-                                );
-                              }}
-                            />
-
-                            <LegendItem
-                              styles={item.style}
-                              className="naxatw-mr-2"
-                            />
-                            <label
-                              className="naxatw-text-body-lg naxatw-text-grey-800"
-                              // htmlFor={item.id}
-                            >
-                              {item.name}
-                            </label>
-                          </div>
-                        </div>
-                      ))}
-                    </div> */}
                   </div>
                 ))}
               </div>

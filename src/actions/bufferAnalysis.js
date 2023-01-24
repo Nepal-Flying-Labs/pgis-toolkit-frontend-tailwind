@@ -16,6 +16,8 @@ export const { Types, Creators } = createActions(
     checkProcessingStatusFailure: null,
 
     handleCheckbox: ['payload'],
+
+    handleRouteCheckbox: ['payload'],
   },
   { prefix: 'bufferAnalysis/' },
 );

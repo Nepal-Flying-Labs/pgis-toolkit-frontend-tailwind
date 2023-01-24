@@ -8,38 +8,12 @@ import {
   routeColors,
 } from '@src/constants/analysis';
 
-// const initialState = {
-//   activeTab: 'dataInput', // 'dataInput', 'results', 'layers'
-//   dataInput: {
-//     selectedModeOfTransport: 'drive', // 'drive', 'cycle', 'walk'
-//     originPointType: 'map', // 'search', 'map', 'layer'
-//     drawPointType: null, // 'start', 'destination'
-//     startGeojson: null,
-//     destinationGeojson: null,
-//     alternativePaths: 1,
-//     outputName: '',
-//   },
-//   results: {
-//     analysisResults: [],
-//     zoomToRouteId: null,
-//     selectedAnalysis: null,
-//     individualAnalysisData: null,
-//   },
-//   layers: {},
-//   roadNetworkLayer: null,
-//   obstacleLayers: [],
-//   analysisTaskId: null,
-//   analysisId: null,
-//   selectedRouteId: null, // route id for fetching route popup data
-//   routePopupData: null, // data for route popup
-// };
-
 const initialState = {
-  activeTab: 'dataInput',
+  activeTab: 'dataInput', // 'dataInput', 'results', 'layers'
   dataInput: {
-    selectedModeOfTransport: 'drive',
-    originPointType: 'map',
-    drawPointType: null,
+    selectedModeOfTransport: 'drive', // 'drive', 'cycle', 'walk'
+    originPointType: 'map', // 'search', 'map', 'layer'
+    drawPointType: null, // 'start', 'destination'
     startGeojson: null,
     destinationGeojson: null,
     alternativePaths: 1,
@@ -52,161 +26,11 @@ const initialState = {
     individualAnalysisData: null,
   },
   layers: {},
-  roadNetworkLayer: {
-    id: 523,
-    name: 'Sample Road Network',
-    layer_type: 'Vector',
-    upload_status: 'successful',
-    is_clean: false,
-    icon: null,
-    std_icon: null,
-    style: {
-      lineColor: '#9b2268',
-      lineOpacity: '100',
-      fillColor: '#45a535',
-      fillOpacity: 0,
-      lineThickness: '2',
-      circleRadius: 5,
-      dashline: 0,
-      showLabel: false,
-      labelField: '',
-      labelFont: 'Calibri',
-      labelFontSize: 14,
-      labelColor: '#000000',
-      labelOpacity: 100,
-      labelOutlineWidth: 3,
-      labelOutlineColor: '#ffffff',
-      labelOffsetX: 0,
-      labelOffsetY: 0,
-      labelText: 'normal',
-      labelMaxResolution: 1200,
-      labelAlign: 'center',
-      labelBaseline: 'middle',
-      labelRotationDegree: 0,
-      labelFontWeight: 'normal',
-      labelPlacement: 'point',
-      labelMaxAngleDegree: 0.7853981633974483,
-      labelOverflow: false,
-      labelLineHeight: 1,
-      icon: {},
-      showSublayer: false,
-      sublayerColumnName: '',
-      sublayer: {},
-      geometryType: 'LineString',
-    },
-    bbox: [85.3339292, 27.6472155, 85.3648767, 27.6658351],
-    geom_type: 'LineString',
-    sub_layer: [],
-    theme: 479,
-    checked: false,
-  },
-  obstacleLayers: [
-    {
-      id: 545,
-      name: 'Sample Obstacle 2',
-      layer_type: 'Vector',
-      upload_status: 'successful',
-      is_clean: false,
-      icon: null,
-      std_icon: null,
-      style: {
-        lineColor: '#2C675A',
-        lineOpacity: 100,
-        fillColor: '#9f8999',
-        fillOpacity: 100,
-        lineThickness: 2,
-        circleRadius: 5,
-        dashline: 0,
-        showLabel: false,
-        labelField: '',
-        labelFont: 'Calibri',
-        labelFontSize: 14,
-        labelColor: '#000000',
-        labelOpacity: 100,
-        labelOutlineWidth: 3,
-        labelOutlineColor: '#ffffff',
-        labelOffsetX: 0,
-        labelOffsetY: 0,
-        labelText: 'normal',
-        labelMaxResolution: 1200,
-        labelAlign: 'center',
-        labelBaseline: 'middle',
-        labelRotationDegree: 0,
-        labelFontWeight: 'normal',
-        labelPlacement: 'point',
-        labelMaxAngleDegree: 0.7853981633974483,
-        labelOverflow: false,
-        labelLineHeight: 1,
-        icon: {},
-        showSublayer: false,
-        sublayerColumnName: '',
-        sublayer: {},
-        geometryType: 'Point',
-      },
-      bbox: [
-        85.33781939802816, 27.652739899999965, 85.35413949999989,
-        27.664180636852794,
-      ],
-      geom_type: 'Point',
-      sub_layer: [],
-      theme: 480,
-      checked: false,
-    },
-    {
-      id: 546,
-      name: 'Sample Obstacle 3',
-      layer_type: 'Vector',
-      upload_status: 'successful',
-      is_clean: false,
-      icon: null,
-      std_icon: null,
-      style: {
-        lineColor: '#2C675A',
-        lineOpacity: 100,
-        fillColor: '#7126e4',
-        fillOpacity: 100,
-        lineThickness: 2,
-        circleRadius: 5,
-        dashline: 0,
-        showLabel: false,
-        labelField: '',
-        labelFont: 'Calibri',
-        labelFontSize: 14,
-        labelColor: '#000000',
-        labelOpacity: 100,
-        labelOutlineWidth: 3,
-        labelOutlineColor: '#ffffff',
-        labelOffsetX: 0,
-        labelOffsetY: 0,
-        labelText: 'normal',
-        labelMaxResolution: 1200,
-        labelAlign: 'center',
-        labelBaseline: 'middle',
-        labelRotationDegree: 0,
-        labelFontWeight: 'normal',
-        labelPlacement: 'point',
-        labelMaxAngleDegree: 0.7853981633974483,
-        labelOverflow: false,
-        labelLineHeight: 1,
-        icon: {},
-        showSublayer: false,
-        sublayerColumnName: '',
-        sublayer: {},
-        geometryType: 'Point',
-      },
-      bbox: [
-        85.33776889999996, 27.65237, 85.35316820000006, 27.662021100000022,
-      ],
-      geom_type: 'Point',
-      sub_layer: [],
-      theme: 480,
-      checked: false,
-    },
-  ],
-  analysisTaskId: null,
+  roadNetworkLayer: null,
+  obstacleLayers: [],
   analysisId: null,
-  selectedRouteId: null,
-  routePopupData: null,
+  selectedRouteId: null, // route id for fetching route popup data
+  routePopupData: null, // data for route popup
 };
 
 const setRouteAnalysisState = (state, action) => ({
@@ -238,11 +62,6 @@ const handleCheckbox = (state, action) =>
   });
 
 const resetRouteAnalysisState = () => ({ ...initialState });
-
-const applyRouteAnalysisSuccess = (state, action) =>
-  produce(state, draft => {
-    draft.analysisTaskId = action.payload.task_id;
-  });
 
 const checkProcessingStatusSuccess = (state, action) =>
   produce(state, draft => {
@@ -292,7 +111,6 @@ const checkProcessingStatusSuccess = (state, action) =>
         },
       ],
     };
-    draft.analysisTaskId = null;
     draft.dataInput = initialState.dataInput;
     draft.results.analysisResults = [
       analysisResult,
@@ -381,7 +199,6 @@ const routeAnalysisReducer = createReducer(initialState, {
   [Types.SET_RESULTS_STATE]: setResultsState,
   [Types.HANDLE_CHECKBOX]: handleCheckbox,
   [Types.RESET_ROUTE_ANALYSIS_STATE]: resetRouteAnalysisState,
-  [Types.APPLY_ROUTE_ANALYSIS_SUCCESS]: applyRouteAnalysisSuccess,
   [Types.CHECK_PROCESSING_STATUS_SUCCESS]: checkProcessingStatusSuccess,
   [Types.HANDLE_ROUTE_CHECKBOX]: handleRouteCheckbox,
   [Types.GET_ROUTE_POPUP_DATA_SUCCESS]: getRoutePopupDataSuccess,

@@ -1,7 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import bufferAnalysisActions, { Types } from '@Actions/bufferAnalysis';
 import analysisActions from '@Actions/analysis';
-
 import prepareFormData from '@Utils/prepareFormData';
 // import toastActions from '@Actions/toast';
 import { applyBufferAnalysis } from '@Services/bufferAnalysis';

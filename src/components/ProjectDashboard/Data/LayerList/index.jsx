@@ -40,8 +40,6 @@ export default function LayerList() {
 
   const dispatch = useDispatch();
 
-  console.log(loading, 'loadingx');
-
   const dropdownOptions = [
     {
       id: 1,

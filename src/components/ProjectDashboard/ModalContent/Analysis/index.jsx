@@ -4,14 +4,14 @@ import { useHistory, useParams } from 'react-router';
 import { Creators } from '@Actions/common';
 
 const analysisData = [
-  {
-    id: 1,
-    title: 'Service area analysis',
-    description:
-      'Identifies areas that can be reached by a certain service or facility within a specified travel time or distance. ',
-    analysisType: 'service-area',
-    disabled: true,
-  },
+  // {
+  //   id: 1,
+  //   title: 'Service area analysis',
+  //   description:
+  //     'Identifies areas that can be reached by a certain service or facility within a specified travel time or distance. ',
+  //   analysisType: 'service-area',
+  //   disabled: true,
+  // },
   {
     id: 2,
     title: 'Buffer analysis',
@@ -20,18 +20,18 @@ const analysisData = [
     analysisType: 'buffer-analysis',
     disabled: false,
   },
-  {
-    id: 3,
-    title: 'Nearest distance analysis',
-    description: 'Baseline Datasets contains different levels of boundaries.',
-    analysisType: 'nearest-distance',
-    disabled: true,
-  },
+  // {
+  //   id: 3,
+  //   title: 'Nearest distance analysis',
+  //   description: 'Baseline Datasets contains different levels of boundaries.',
+  //   analysisType: 'nearest-distance',
+  //   disabled: true,
+  // },
   {
     id: 4,
     title: 'Optimal route analysis',
     description:
-      'Finds the most efficient path between multiple locations based on factors such as distance, time, and road conditions..',
+      'Finds the most efficient path between multiple locations based on factors such as distance, time, and road conditions.',
     analysisType: 'optimal-route',
     disabled: false,
   },
@@ -68,8 +68,10 @@ export default function Analysis() {
                     );
               }}
             >
-              <h5 className="naxatw-text-grey-800">{title}</h5>
-              <p className="naxatw-text-body-md">{description}</p>
+              <h5 className="naxatw-text-grey-800 naxatw-font-semibold">
+                {title}
+              </h5>
+              <p className="naxatw-text-body-md naxatw-mt-1">{description}</p>
             </div>
           ),
         )}

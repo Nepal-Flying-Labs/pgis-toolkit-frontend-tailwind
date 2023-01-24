@@ -1,7 +1,7 @@
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/dataCleaning';
-import { checkErrorData } from '@src/constants/analysis';
-import { lineTypes } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import { checkErrorData, pointCheckExceptions } from '@src/constants/analysis';
+import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
 const initialState = {
   stepIndex: 1,
@@ -51,8 +51,8 @@ const setErrorStates = (state, action) => {
     ...state,
     errorStates: {
       ...state.errorStates,
-      [layerId]: !lineTypes.includes(geometryType)
-        ? errorStateData.filter(item => item.id !== 'isolated')
+      [layerId]: pointTypes.includes(geometryType)
+        ? errorStateData.filter(item => !pointCheckExceptions.includes(item.id))
         : errorStateData,
     },
   };

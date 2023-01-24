@@ -1,33 +1,21 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { analysisHeaderHeight } from '@src/constants';
+// import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar/index';
 import Select from '@Components/common/Select/index';
 import { Creators } from '@Actions/bufferAnalysis';
 import Chip from '../Chip';
 
-const { setBufferAnalysisState } = Creators;
+const { setBufferAnalysisState, setDataInputState } = Creators;
 
 const originPointData = [
   { label: 'Search', value: 'search', icon: 'search' },
   { label: 'Map', value: 'map', icon: 'map' },
   { label: 'Layer', value: 'layer', icon: 'format_list_bulleted' },
 ];
-
-// const drawPointData = [
-//   {
-//     label: 'Draw Starting Point',
-//     value: 'start',
-//     icon: 'radio_button_checked',
-//   },
-//   {
-//     label: 'Draw Destination Point',
-//     value: 'destination',
-//     icon: 'radio_button_checked',
-//   },
-// ];
 
 // eslint-disable-next-line
 function Container({ children }) {
@@ -36,7 +24,51 @@ function Container({ children }) {
 
 export default function DataInput() {
   const dispatch = useDispatch();
-  const [originPointType, setOriginPointType] = useState('search');
+
+  const originPointType = useSelector(
+    state => state.bufferAnalysis.dataInput.originPointType,
+  );
+  const drawPoint = useSelector(
+    state => state.bufferAnalysis.dataInput.drawPoint,
+  );
+
+  const originGeojson = useSelector(
+    state => state.bufferAnalysis.dataInput.originGeojson,
+  );
+
+  const bufferRadius = useSelector(
+    state => state.bufferAnalysis.dataInput.bufferRadius,
+  );
+
+  const outputName = useSelector(
+    state => state.bufferAnalysis.dataInput.outputName,
+  );
+
+  const dissolveOutput = useSelector(
+    state => state.bufferAnalysis.dataInput.dissolveOutput,
+  );
+
+  // const handleApply = () => {
+  //   if (!originGeojson || !bufferRadius || !outputName) {
+  //     dispatch(
+  //       toastActions.error({
+  //         message: 'Please input all the required fields!',
+  //       }),
+  //     );
+  //     return;
+  //   }
+
+  //   const payloadData = {
+  //     origins,
+  //     dissolve_output:dissolveOutput,
+  //     radius:bufferRadius,
+  //     name: outputName,
+  //     project: projectId,
+  //     type: 'buffer',
+  //   };
+  //   dispatch(applyBufferAnalysisRequest(payloadData));
+  // };
+
   return (
     <div className=" naxatw-h-full">
       <div
@@ -56,7 +88,11 @@ export default function DataInput() {
                 iconClassName="material-symbols-outlined"
                 iconLeft={icon}
                 onClick={() => {
-                  setOriginPointType(value);
+                  dispatch(
+                    setDataInputState({
+                      originPointType: value,
+                    }),
+                  );
                 }}
               />
             ))}
@@ -65,7 +101,44 @@ export default function DataInput() {
           <Container>
             {originPointType === 'search' && <Searchbar placeholder="Search" />}
             {originPointType === 'map' && (
-              <Searchbar placeholder="Starting Point" />
+              <div>
+                <Chip
+                  className="!naxatw-w-full !naxatw-bg-white "
+                  label="Starting Point"
+                  iconLeft="search"
+                  active={drawPoint}
+                  onClick={() => {
+                    dispatch(
+                      setDataInputState({
+                        drawPoint: !drawPoint,
+                      }),
+                    );
+                  }}
+                />
+                <div className="naxatw-mt-2 naxatw-max-h-[100px] naxatw-overflow-y-auto naxatw-space-y-1 scrollbar">
+                  {originGeojson &&
+                    originGeojson.map(geojson => {
+                      const { coordinates } = geojson.geometry;
+                      return (
+                        <Chip
+                          key={geojson}
+                          label={`${parseFloat(coordinates[0]).toFixed(
+                            3,
+                          )}-${parseFloat(coordinates[1]).toFixed(3)}`}
+                          iconClassName="material-symbols-outlined"
+                          iconLeft="location_on"
+                          // onClick={() => {
+                          //   dispatch(
+                          //     setDataInputState({
+                          //       originPointType: value,
+                          //     }),
+                          //   );
+                          // }}
+                        />
+                      );
+                    })}
+                </div>
+              </div>
             )}
             {originPointType === 'layer' && (
               <Container>
@@ -89,6 +162,17 @@ export default function DataInput() {
                   className="naxatw-input"
                   min="1"
                   max="5"
+                  step={0.1}
+                  value={bufferRadius || ''}
+                  onChange={e => {
+                    const { value } = e.target;
+                    if (value < 1 && value > 5) return;
+                    dispatch(
+                      setDataInputState({
+                        bufferRadius: value,
+                      }),
+                    );
+                  }}
                   placeholder="Buffer Radius"
                 />
                 <p>Meter</p>
@@ -99,8 +183,14 @@ export default function DataInput() {
                 id="dissolve-output"
                 type="checkbox"
                 className="naxatw-h-4 naxatw-w-4 naxatw-accent-grey-800"
-                min="1"
-                max="5"
+                checked={dissolveOutput}
+                onChange={() => {
+                  dispatch(
+                    setDataInputState({
+                      dissolveOutput: !dissolveOutput,
+                    }),
+                  );
+                }}
               />
               <label
                 htmlFor="dissolve-output"
@@ -118,6 +208,14 @@ export default function DataInput() {
             type="text"
             className="naxatw-input"
             placeholder="Enter Output Name"
+            value={outputName}
+            onChange={e => {
+              dispatch(
+                setDataInputState({
+                  outputName: e.target.value,
+                }),
+              );
+            }}
           />
         </Container>
       </div>

@@ -39,6 +39,12 @@ export const checkErrorData = [
   },
 ];
 
+export const pointCheckExceptions = [
+  'overlapping',
+  'self_instersect',
+  'isolated',
+];
+
 export const startingPointColor = '#00A699';
 export const destinationPointColor = '#FF5A5F';
 export const obstaclePointColor = '#808080';

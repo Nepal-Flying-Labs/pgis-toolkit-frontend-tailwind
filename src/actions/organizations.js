@@ -17,6 +17,12 @@ export const { Types, Creators } = createActions(
     handlePreviousClick: null,
     handleJumpsTo: ['payload'],
     handleRowSelect: ['payload'],
+
+    setSelectedOrganization: ['payload'],
+
+    deleteOrganizationRequest: ['id', 'payload'],
+    deleteOrganizationSuccess: ['payload'],
+    deleteOrganizationFailure: null,
   },
   { prefix: '/organizations' },
 );

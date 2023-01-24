@@ -39,6 +39,7 @@ import DeleteProject from '@Components/OrganizationDashboard/ModalContent/Delete
 import DeleteTemplateAttribute from '@Components/ProjectDashboard/ModalContent/DeleteTemplateAttribute';
 import DeleteError from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteError';
 import ViewRouteAttribute from '@Components/ProjectDashboard/Analysis/ModalContent/ViewRouteAttribute';
+import DeleteAnOrganization from '@Components/Organizations/ModalContent/DeleteAnOrganization';
 
 export function getModalContent(content) {
   switch (content) {
@@ -307,6 +308,12 @@ export function getPromptDialogContent(content) {
       return {
         title: 'Delete Project',
         content: <DeleteProject />,
+      };
+
+    case 'delete-an-organization':
+      return {
+        title: 'Delete an organization',
+        content: <DeleteAnOrganization />,
       };
 
     default:

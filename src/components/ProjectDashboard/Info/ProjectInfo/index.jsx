@@ -94,14 +94,14 @@ const ProjectInfo = () => {
 
       {/* Project objectives */}
       <div className="naxatw-pt-3 naxatw-px-7 naxatw-mb-7">
-        <h4 className="naxatw-mb-2">Objectives</h4>
+        <h4 className="naxatw-mb-2 naxatw-font-semibold">Objectives</h4>
         <p className="naxatw-text-body-lg naxatw-text-justify">
           {info?.description || '-'}
         </p>
       </div>
       {/* contact person */}
       <div className="naxatw-px-7 naxatw-pb-5">
-        <h4 className="naxatw-mb-3">Contact person </h4>
+        <h4 className="naxatw-mb-3 naxatw-font-semibold">Contact person </h4>
         {!isEmpty(contactPerson) ? (
           contactPerson?.map(item => (
             <div className="naxatw-mb-5" key={item.id}>

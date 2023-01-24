@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
 import Button from '@Components/common/Button';
 import Accordion from '@Components/common/Accordion';
-import IconButton from '@Components/common/IconButton';
+// import IconButton from '@Components/common/IconButton';
 
 const {
   checkErrorRequest,
@@ -50,7 +50,11 @@ export default function StepTwo() {
 
   return (
     <div>
-      <h4>Data</h4>
+      {/* <h4>Data</h4> */}
+      <p className="naxatw-mt-2 naxatw-text-body-lg">
+        To continue with the data cleaning phase, please click on &quot;Check
+        Error&quot; button to verify each layer before performing analysis.
+      </p>
 
       <div className="naxatw-mt-5 naxatw-space-y-5">
         {data.map(layer => {
@@ -76,7 +80,9 @@ export default function StepTwo() {
                     className="naxatw-flex naxatw-items-center naxatw-justify-between
                   naxatw-w-full"
                   >
-                    <h5 className="naxatw-text-grey-800">{layer.name}</h5>
+                    <h5 className="naxatw-text-grey-800 naxatw-font-semibold">
+                      {layer.name}
+                    </h5>
                     <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
                       {/*
                         <span
@@ -171,8 +177,8 @@ export default function StepTwo() {
                           <span>
                             {status === 'error' || status === 'success' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">
-                                <b>{errorData}</b> out of <b>{totalData}</b>{' '}
-                                errors
+                                <b>{errorData}</b> error out of{' '}
+                                <b>{totalData}</b> data
                               </p>
                             ) : status === 'fix-failed' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">

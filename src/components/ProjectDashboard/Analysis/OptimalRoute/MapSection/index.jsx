@@ -30,7 +30,7 @@ import {
   destinationPointStyles,
   obstaclePointColor,
 } from '@src/constants/analysis';
-import { mapStateSelector } from '@Selectors/projectMap';
+import { mapStateSelector } from '@Selectors/analysis';
 import {
   defaultStyles,
   getStyles,

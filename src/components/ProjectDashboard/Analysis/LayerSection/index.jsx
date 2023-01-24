@@ -2,9 +2,8 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-array-index-key */
 import React, { useState } from 'react';
-import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
+import { Creators as AnalysisCreators, Types } from '@Actions/analysis';
 import Accordion from '@Components/common/Accordion';
 import { isEmpty } from '@Utils/commonUtils';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
@@ -16,11 +15,9 @@ import {
 import DropdownOptions from '@Components/common/DropdownOptions';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
-const { handleCheckbox, saveMapConfigRequest, setZoomToLayerId } =
-  ProjectMapCreators;
+const { handleLayerCheckbox, setZoomToLayerId } = AnalysisCreators;
 
 export default function LayerSection() {
-  const { projectId } = useParams();
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
@@ -28,7 +25,6 @@ export default function LayerSection() {
   const titleLimit = 40;
   const themes = useSelector(filteredThemesSelector);
   const layers = useSelector(filteredLayersSelector);
-  const mapSettings = useSelector(state => state.analysis.mapSettings);
   const isLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,
@@ -39,24 +35,11 @@ export default function LayerSection() {
 
   const handleLayerCheck = ({ checked, layerId, themeId }) => {
     dispatch(
-      handleCheckbox({
+      handleLayerCheckbox({
         layerId,
         themeId,
         checked,
       }),
-    );
-    dispatch(
-      saveMapConfigRequest(
-        { project: projectId },
-        {
-          map_config: JSON.stringify({
-            ...mapSettings,
-            checkedLayers: checked
-              ? [...new Set([...mapSettings.checkedLayers, layerId])]
-              : mapSettings.checkedLayers.filter(id => id !== layerId),
-          }),
-        },
-      ),
     );
   };
 

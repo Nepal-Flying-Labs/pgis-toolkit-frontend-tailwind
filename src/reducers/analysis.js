@@ -68,10 +68,39 @@ const getProjectThemeLayersSuccess = (state, action) => {
   };
 };
 
+const handleLayerCheckbox = (state, action) => {
+  const { layerId, themeId, checked } = action.payload;
+  const layers = {
+    ...state.layers,
+    [themeId]: state.layers[themeId].map(item =>
+      item.id === layerId ? { ...item, checked } : { ...item },
+    ),
+  };
+  const mapSettings = {
+    ...state.mapSettings,
+    checkedLayers: checked
+      ? [...new Set([...state.mapSettings.checkedLayers, layerId])]
+      : state.mapSettings.checkedLayers.filter(id => id !== layerId),
+  };
+
+  return {
+    ...state,
+    layers,
+    mapSettings,
+  };
+};
+
+const setZoomToLayerId = (state, action) => ({
+  ...state,
+  zoomToLayerId: action.payload,
+});
+
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
+  [Types.HANDLE_LAYER_CHECKBOX]: handleLayerCheckbox,
+  [Types.SET_ZOOM_TO_LAYER_ID]: setZoomToLayerId,
 });
 
 export default analysisReducer;

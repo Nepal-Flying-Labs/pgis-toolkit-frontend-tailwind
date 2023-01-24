@@ -12,6 +12,9 @@ export const { Types, Creators } = createActions(
     getProjectThemeLayersRequest: ['params'],
     getProjectThemeLayersSuccess: ['payload'],
     getProjectThemeLayersFailure: null,
+
+    handleLayerCheckbox: ['payload'],
+    setZoomToLayerId: ['payload'],
   },
   { prefix: 'analysis/' },
 );

@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  Creators as AnalysisCreators,
+  Types as AnalysisTypes,
+} from '@Actions/analysis';
+
 import { Creators, Types } from '@Actions/routeAnalysis';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Header from './Header';
@@ -11,6 +16,8 @@ import BufferAnalysis from './BufferAnalysis';
 import AnalysisLoader from './AnalysisLoader';
 
 const { checkProcessingStatusRequest } = Creators;
+const { checkProcessingStatusRequest: checkAnalysisProcessingStatusRequest } =
+  AnalysisCreators;
 
 function getAnalysisContent(type) {
   switch (type) {
@@ -29,8 +36,14 @@ export default function Analysis() {
   const analysisTaskId = useSelector(
     state => state.routeAnalysis.analysisTaskId,
   );
+  const commonAnalysisTaskId = useSelector(
+    state => state.analysis.analysisTaskId,
+  );
   const isProcessing = useSelector(state =>
-    checkIfLoading(state, [Types.CHECK_PROCESSING_STATUS_REQUEST]),
+    checkIfLoading(state, [
+      Types.CHECK_PROCESSING_STATUS_REQUEST,
+      AnalysisTypes.CHECK_PROCESSING_STATUS_REQUEST,
+    ]),
   );
   const dispatch = useDispatch();
 
@@ -40,6 +53,17 @@ export default function Analysis() {
       checkProcessingStatusRequest({ projectId, taskId: analysisTaskId }),
     );
   }, [dispatch, analysisTaskId, projectId]);
+
+  useEffect(() => {
+    if (!commonAnalysisTaskId) return;
+    dispatch(
+      checkAnalysisProcessingStatusRequest({
+        projectId,
+        taskId: commonAnalysisTaskId,
+        analysisType,
+      }),
+    );
+  }, [dispatch, commonAnalysisTaskId, analysisType, projectId]);
 
   return (
     <div>

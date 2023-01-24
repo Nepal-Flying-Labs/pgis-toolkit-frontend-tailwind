@@ -11,6 +11,7 @@ import projectDashboard from './projectDashboard';
 import projectMap from './projectMap';
 import users from './users';
 import dataCleaning from './dataCleaning';
+import analysis from './analysis';
 import routeAnalysis from './routeAnalysis';
 import bufferAnalysis from './bufferAnalysis';
 
@@ -26,6 +27,7 @@ export default combineReducers({
   projectMap,
   users,
   dataCleaning,
+  analysis,
   routeAnalysis,
   bufferAnalysis,
 });

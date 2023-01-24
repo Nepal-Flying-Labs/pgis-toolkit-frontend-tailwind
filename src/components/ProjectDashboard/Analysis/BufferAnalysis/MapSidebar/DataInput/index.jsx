@@ -10,7 +10,8 @@ import Select from '@Components/common/Select/index';
 import { Creators } from '@Actions/bufferAnalysis';
 import Chip from '@Components/common/Chip';
 
-const { setDataInputState, applyBufferAnalysisRequest } = Creators;
+const { setDataInputState, applyBufferAnalysisRequest, handleCheckbox } =
+  Creators;
 
 const originPointData = [
   { label: 'Search', value: 'search', icon: 'search' },
@@ -50,6 +51,8 @@ export default function DataInput() {
     state => state.bufferAnalysis.dataInput.dissolveOutput,
   );
 
+  const poiLayers = useSelector(state => state.bufferAnalysis.poiLayers);
+
   const handleApply = () => {
     if (!originGeojson || !bufferRadius || !outputName) {
       dispatch(
@@ -64,15 +67,19 @@ export default function DataInput() {
       origin => origin.geojson.geometry.coordinates,
     );
 
+    const selectedPOI = poiLayers
+      .filter(item => item.checked)
+      .map(item => item.id);
+
     const payloadData = {
       origins: originData,
       dissolve_output: dissolveOutput,
       radius: bufferRadius,
       name: outputName,
       project: projectId,
+      pois: selectedPOI,
       type: 'buffer',
     };
-    console.log(payloadData, 'payloadData');
     dispatch(applyBufferAnalysisRequest(payloadData));
   };
 
@@ -208,6 +215,47 @@ export default function DataInput() {
                 Dissolve Output
               </label>
             </div>
+          </div>
+        </Container>
+
+        <Container>
+          <label className="naxatw-label">POI</label>
+          <div
+            className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg
+              naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem] naxatw-bg-white"
+          >
+            <ul>
+              {poiLayers.map(item => (
+                <li
+                  key={item.id}
+                  role="presentation"
+                  className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
+                      hover:naxatw-bg-grey-100 naxatw-flex naxatw-items-center"
+                  onClick={() => {}}
+                >
+                  <input
+                    id={item.id}
+                    type="checkbox"
+                    className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
+                        naxatw-accent-grey-800 naxatw-cursor-pointer"
+                    checked={item.checked}
+                    onChange={e => {
+                      const { id, checked } = e.target;
+                      dispatch(
+                        handleCheckbox({
+                          stateName: 'poiLayers',
+                          id,
+                          checked,
+                        }),
+                      );
+                    }}
+                  />
+                  <label htmlFor={item.id} className="naxatw-cursor-pointer">
+                    {item.name}
+                  </label>
+                </li>
+              ))}
+            </ul>
           </div>
         </Container>
 

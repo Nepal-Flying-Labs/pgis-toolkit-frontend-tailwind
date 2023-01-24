@@ -1,6 +1,10 @@
 import { createSelector } from 'reselect';
 import { isEmpty } from '@Utils/commonUtils';
-import { obstacleThemeName, transportThemeName } from '@src/constants/map';
+import {
+  obstacleThemeName,
+  transportThemeName,
+  poiThemeName,
+} from '@src/constants/map';
 
 const themesSelector = state => state.projectMap.themes;
 const layersSelector = state => state.projectMap.layers;
@@ -65,4 +69,9 @@ export const roadLayersThemeIdSelector = createSelector(
 export const obstacleLayersThemeIdSelector = createSelector(
   [themesSelector],
   themes => themes?.find(theme => theme.name === obstacleThemeName)?.id,
+);
+
+export const poiLayersThemeIdSelector = createSelector(
+  [themesSelector],
+  themes => themes?.find(theme => theme.name === poiThemeName)?.id,
 );

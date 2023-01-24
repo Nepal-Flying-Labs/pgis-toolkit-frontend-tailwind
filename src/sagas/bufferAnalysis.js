@@ -1,5 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import bufferAnalysisActions, { Types } from '@Actions/bufferAnalysis';
+import analysisActions from '@Actions/analysis';
+
 import prepareFormData from '@Utils/prepareFormData';
 // import toastActions from '@Actions/toast';
 import { applyBufferAnalysis } from '@Services/bufferAnalysis';
@@ -9,7 +11,11 @@ export function* applyBufferAnalysisRequest({ payload }) {
   const formData = prepareFormData(payload);
   try {
     const response = yield call(applyBufferAnalysis, formData);
-    yield put(bufferAnalysisActions.applyBufferAnalysisSuccess(response.data));
+    yield put(
+      analysisActions.setAnalysisState({
+        analysisTaskId: response.data.task_id,
+      }),
+    );
   } catch (error) {
     yield put(bufferAnalysisActions.applyBufferAnalysisFailure());
     throw error;

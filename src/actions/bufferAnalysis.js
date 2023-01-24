@@ -10,6 +10,11 @@ export const { Types, Creators } = createActions(
     applyBufferAnalysisRequest: ['payload'],
     applyBufferAnalysisSuccess: ['payload'],
     applyBufferAnalysisFailure: null,
+
+    checkProcessingStatusSuccess: ['payload'],
+    checkProcessingStatusFailure: null,
+
+    handleCheckbox: ['payload'],
   },
   { prefix: 'bufferAnalysis/' },
 );

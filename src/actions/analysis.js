@@ -15,6 +15,10 @@ export const { Types, Creators } = createActions(
 
     handleLayerCheckbox: ['payload'],
     setZoomToLayerId: ['payload'],
+
+    copyLayerDataRequest: ['payload'],
+    copyLayerDataSuccess: ['payload'],
+    copyLayerDataFailure: null,
   },
   { prefix: 'analysis/' },
 );

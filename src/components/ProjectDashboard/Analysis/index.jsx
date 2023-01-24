@@ -35,6 +35,7 @@ export default function Analysis() {
   const { tabname, analysisType, projectId } = useParams();
   const analysisTaskId = useSelector(state => state.analysis.analysisTaskId);
   const themes = useSelector(state => state.analysis.themes);
+  const layers = useSelector(state => state.analysis.layers);
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
@@ -56,17 +57,17 @@ export default function Analysis() {
 
   // project map section
   useEffect(() => {
-    if (!projectDetail) return;
+    if (!projectDetail || themes) return;
     dispatch(getProjectThemesRequest({ project: projectId }));
     dispatch(getProjectGeojsonRequest({ project: projectId }));
-  }, [dispatch, projectId, projectDetail]);
+  }, [dispatch, projectId, projectDetail, themes]);
 
   useEffect(() => {
-    if (isEmpty(themes)) return;
+    if (isEmpty(themes) || layers) return;
     themes.forEach(({ id }) => {
       dispatch(getProjectThemeLayersRequest({ theme: id }));
     });
-  }, [dispatch, themes]);
+  }, [dispatch, themes, layers]);
 
   return (
     <div>

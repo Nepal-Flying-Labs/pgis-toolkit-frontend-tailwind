@@ -6,8 +6,11 @@ import {
   takeEvery,
   all,
   delay,
+  select,
 } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
 import chroma from 'chroma-js';
+import commonActions from '@Actions/common';
 import analysisActions, { Types } from '@Actions/analysis';
 import bufferAnalysisActions from '@Actions/bufferAnalysis';
 import routeAnalysisActions from '@Actions/routeAnalysis';
@@ -28,6 +31,37 @@ import {
   pointTypes,
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import prepareFormData from '@Utils/prepareFormData';
+
+export function* copyLayerDataRequest({ payload }) {
+  try {
+    const { analysisType, organizationId, projectId } = payload;
+    yield put(commonActions.toggleModal());
+    // copy layers to analysis reducer state
+    const { themes, layers } = yield select(state => state.projectMap);
+    yield put(
+      analysisActions.setAnalysisState({
+        layers,
+        themes,
+      }),
+    );
+    if (analysisType === 'buffer-analysis') {
+      yield put(
+        push(
+          `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}`,
+        ),
+      );
+    } else {
+      yield put(
+        push(
+          `/organizations/${organizationId}/projects/${projectId}/data-cleaning/${analysisType}`,
+        ),
+      );
+    }
+  } catch (error) {
+    yield put(analysisActions.copyLayerDataFailure());
+    throw error;
+  }
+}
 
 export function* checkProcessingStatusRequest({ payload }) {
   const { projectId, taskId, analysisType } = payload;
@@ -112,6 +146,10 @@ export function* getProjectThemeLayersRequest({ params }) {
 }
 
 function* analysisWatcher() {
+  yield takeLatest(
+    Types.COPY_LAYER_DATA_REQUEST,
+    withLoader(withErrorHandler(copyLayerDataRequest)),
+  );
   yield takeLatest(
     Types.CHECK_PROCESSING_STATUS_REQUEST,
     withLoader(withErrorHandler(checkProcessingStatusRequest)),

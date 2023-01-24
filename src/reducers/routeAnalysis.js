@@ -28,7 +28,6 @@ const initialState = {
   layers: {},
   roadNetworkLayer: null,
   obstacleLayers: [],
-  analysisTaskId: null,
   analysisId: null,
   selectedRouteId: null, // route id for fetching route popup data
   routePopupData: null, // data for route popup
@@ -63,11 +62,6 @@ const handleCheckbox = (state, action) =>
   });
 
 const resetRouteAnalysisState = () => ({ ...initialState });
-
-const applyRouteAnalysisSuccess = (state, action) =>
-  produce(state, draft => {
-    draft.analysisTaskId = action.payload.task_id;
-  });
 
 const checkProcessingStatusSuccess = (state, action) =>
   produce(state, draft => {
@@ -117,7 +111,6 @@ const checkProcessingStatusSuccess = (state, action) =>
         },
       ],
     };
-    draft.analysisTaskId = null;
     draft.dataInput = initialState.dataInput;
     draft.results.analysisResults = [
       analysisResult,
@@ -206,7 +199,6 @@ const routeAnalysisReducer = createReducer(initialState, {
   [Types.SET_RESULTS_STATE]: setResultsState,
   [Types.HANDLE_CHECKBOX]: handleCheckbox,
   [Types.RESET_ROUTE_ANALYSIS_STATE]: resetRouteAnalysisState,
-  [Types.APPLY_ROUTE_ANALYSIS_SUCCESS]: applyRouteAnalysisSuccess,
   [Types.CHECK_PROCESSING_STATUS_SUCCESS]: checkProcessingStatusSuccess,
   [Types.HANDLE_ROUTE_CHECKBOX]: handleRouteCheckbox,
   [Types.GET_ROUTE_POPUP_DATA_SUCCESS]: getRoutePopupDataSuccess,

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
 import {
@@ -16,6 +16,7 @@ import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSw
 import CustomLayerSwitcher from '@Components/common/OpenLayersComponent/CustomLayerSwitcher';
 import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
+import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileLayer';
 import CircleMarker from '@Components/common/OpenLayersComponent/CustomLayer/CircleMarker';
 import Spinner from '@Components/common/Spinner';
 import { checkIfLoading } from '@Utils/loaderSelector';
@@ -29,6 +30,11 @@ import {
   destinationPointStyles,
   obstaclePointColor,
 } from '@src/constants/analysis';
+import { mapStateSelector } from '@Selectors/projectMap';
+import {
+  defaultStyles,
+  getStyles,
+} from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { analysisHeaderHeight } from '@src/constants';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import { apiURL } from '@Services';
@@ -62,6 +68,8 @@ export default function MapSection() {
   const zoomToRouteId = useSelector(
     state => state.routeAnalysis.results.zoomToRouteId,
   );
+  const mapState = useSelector(mapStateSelector);
+  const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const obstacleLayers = useSelector(obstacleLayersSelector);
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [Types.GET_PROJECT_GEOJSON_REQUEST]),
@@ -121,6 +129,22 @@ export default function MapSection() {
     });
   }, [map, dispatch]);
 
+  const setLayerStyle = useCallback((style, feature, resolution) => {
+    const stylex = { ...style };
+    const properties = feature.getProperties();
+    const { id: featureId } = properties;
+    // if (editFeatureId === featureId) {
+    //   stylex.fillOpacity = 0;
+    //   stylex.lineOpacity = 0;
+    //   stylex.icon = {};
+    // }
+    return getStyles({
+      style: stylex,
+      feature,
+      resolution,
+    });
+  }, []);
+
   return (
     <div className="naxatw-w-full naxatw-relative">
       {isMapDataLoading && (
@@ -145,6 +169,40 @@ export default function MapSection() {
 
         <HelpBox />
 
+        {mapState.map((item, index) =>
+          item.layer_type === 'Vector' ? (
+            <VectorTileLayer
+              key={item.id}
+              url={`${apiURL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+              authToken={localStorage.getItem('userToken')}
+              visibleOnMap={item.checked}
+              setStyle={(feature, resolution) =>
+                setLayerStyle(
+                  item.id === selectedLayer?.id
+                    ? selectedLayer.style
+                    : item?.style || { ...defaultStyles },
+                  feature,
+                  resolution,
+                )
+              }
+              // style={
+              //   item.id === selectedLayer?.id
+              //     ? selectedLayer.style
+              //     : item?.style || { ...defaultStyles }
+              // }
+              zIndex={mapState.length + 10 - index}
+              properties={{ layerId: item.id }}
+            />
+          ) : item.layer_type === 'WMS' ? (
+            <WMSTileLayer
+              key={item.id}
+              url={item.url}
+              visibleOnMap={item.checked}
+            />
+          ) : (
+            ''
+          ),
+        )}
         {roadNetworkLayer && (
           <VectorTileLayer
             url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${roadNetworkLayer.id}`}

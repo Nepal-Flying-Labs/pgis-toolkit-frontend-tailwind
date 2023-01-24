@@ -1,6 +1,8 @@
+/* eslint-disable no-nested-ternary */
 import { call, put, takeLatest, delay } from 'redux-saga/effects';
 import analysisActions, { Types } from '@Actions/analysis';
 import bufferAnalysisActions from '@Actions/bufferAnalysis';
+import routeAnalysisActions from '@Actions/routeAnalysis';
 import toastActions from '@Actions/toast';
 import {
   getAnalysisLayer,
@@ -13,6 +15,8 @@ export function* checkProcessingStatusRequest({ payload }) {
   const action =
     analysisType === 'buffer-analysis'
       ? bufferAnalysisActions
+      : analysisType === 'optimal-route'
+      ? routeAnalysisActions
       : analysisActions;
 
   try {
@@ -32,10 +36,6 @@ export function* checkProcessingStatusRequest({ payload }) {
         analysis_id: responseData.analysis_id,
       };
       const analysisResponse = yield call(getAnalysisLayer, params);
-
-      console.log(analysisResponse, 'analysis response');
-      console.log(action, 'action name');
-
       yield put(action.checkProcessingStatusSuccess(analysisResponse.data));
     }
   } catch (error) {

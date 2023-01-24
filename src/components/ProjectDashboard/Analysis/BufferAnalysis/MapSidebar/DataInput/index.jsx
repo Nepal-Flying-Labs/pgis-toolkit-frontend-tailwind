@@ -8,7 +8,7 @@ import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar/index';
 import Select from '@Components/common/Select/index';
 import { Creators } from '@Actions/bufferAnalysis';
-import Chip from '../Chip';
+import Chip from '@Components/common/Chip';
 
 const { setDataInputState, applyBufferAnalysisRequest } = Creators;
 

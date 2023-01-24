@@ -1,76 +1,72 @@
-/* eslint-disable jsx-a11y/interactive-supports-focus */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-// import './MultiSelectDropdown.css';
-
-const Chip = ({
-  name,
+export default function Chip({
+  label,
+  active,
   onClick,
-  status,
-  value,
+  iconLeft,
   iconRight,
-  onIconClick,
-  isSmall,
-}) => {
-  const [activeChip, setActiveChip] = useState(false);
-
-  useEffect(() => {
-    if (Array.isArray(status)) {
-      if (status.includes(value)) {
-        return setActiveChip(true);
-      }
-    } else if (status === value) {
-      return setActiveChip(true);
-    }
-
-    return setActiveChip(false);
-  }, [name, status, value]);
-
+  iconClassName,
+  iconStyle,
+  className,
+}) {
   return (
     <div
       tabIndex={0}
       role="button"
       onClick={onClick}
-      className={`naxatw-px-5 ${
-        isSmall ? 'naxatw-py-[0.462rem]' : 'naxatw-py-2.5'
-      } naxatw-w-fit hover:naxatw-bg-[#F5F5F5] naxatw-bg-white
-        naxatw-rounded-3xl naxatw-border naxatw-flex naxatw-items-center ${
-          activeChip
-            ? ' naxatw-border-[#484848] naxatw-bg-[#F5F5F5]'
-            : 'naxatw-border-[#D7D7D7]'
-        }`}
+      className={`naxatw-px-4 naxatw-py-1.5 naxatw-w-fit hover:naxatw-bg-white 
+        naxatw-bg-white naxatw-rounded-3xl naxatw-border naxatw-flex 
+        naxatw-items-center naxatw-space-x-1 naxatw-select-none ${
+          active
+            ? 'naxatw-border-grey-800'
+            : 'naxatw-border-grey-300 naxatw-bg-grey-100'
+        } ${className}`}
     >
-      <span className="naxatw-text-body-lg">{name}</span>
+      {iconLeft && (
+        <i
+          role="button"
+          tabIndex="0"
+          className={`naxatw-text-[24px] naxatw-text-grey-800 ${iconClassName}`}
+          style={iconStyle}
+        >
+          {iconLeft}
+        </i>
+      )}
+      <span className="naxatw-text-body-lg">{label}</span>
 
       {iconRight && (
         <i
           role="button"
           tabIndex="0"
-          onClick={onIconClick}
-          className="material-icons naxatw-mr-2 naxatw-text-[22px]"
+          className={`naxatw-text-[24px] naxatw-text-grey-800 ${iconClassName}`}
+          style={iconStyle}
         >
           {iconRight}
         </i>
       )}
     </div>
   );
-};
-Chip.propTypes = {
-  name: PropTypes.string.isRequired,
-  status: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
-  onClick: PropTypes.func,
-  value: PropTypes.string.isRequired,
-  onIconClick: PropTypes.func,
-  iconRight: PropTypes.string,
-  isSmall: PropTypes.bool,
-};
+}
 
 Chip.defaultProps = {
+  active: false,
   onClick: () => {},
-  onIconClick: () => {},
+  iconLeft: null,
   iconRight: null,
-  isSmall: false,
+  iconClassName: 'material-icons',
+  iconStyle: {},
+  className: '',
 };
 
-export default Chip;
+Chip.propTypes = {
+  label: PropTypes.string.isRequired,
+  active: PropTypes.bool,
+  onClick: PropTypes.func,
+  iconLeft: PropTypes.node,
+  iconRight: PropTypes.node,
+  iconClassName: PropTypes.string,
+  iconStyle: PropTypes.object,
+  className: PropTypes.string,
+};

@@ -110,20 +110,16 @@ export default function MapSidebar() {
             <div className="naxatw-flex naxatw-justify-between naxatw-pr-5 naxatw-items-center">
               <div className="naxatw-flex naxatw-mt-2 naxatw-gap-2">
                 <Chip
-                  isSmall
-                  name={`All( ${organizationDetail?.projects || ''} )`}
-                  status={projectStatus}
-                  value={null}
+                  label={`All( ${organizationDetail?.projects || ''} )`}
+                  active={projectStatus === null}
                   onClick={() => {
                     // setChipStatus('all');
                     dispatch(setProjectStatus(null));
                   }}
                 />
                 <Chip
-                  isSmall
-                  name={`Ongoing( ${organizationDetail?.ongoing || ''} )`}
-                  status={projectStatus}
-                  value="ongoing"
+                  label={`Ongoing( ${organizationDetail?.ongoing || ''} )`}
+                  active={projectStatus === 'ongoing'}
                   onClick={() => {
                     // setChipStatus('ongoing');
                     dispatch(setProjectStatus('ongoing'));

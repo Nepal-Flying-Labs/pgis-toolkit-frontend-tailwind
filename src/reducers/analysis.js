@@ -1,10 +1,17 @@
-/* eslint-disable no-param-reassign */
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/analysis';
+import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
 const initialState = {
   analysisTaskId: null,
   analysisId: null,
+  themes: null, // []
+  layers: null, // {}
+  mapSettings: {
+    layerOrder: [],
+    checkedLayers: [],
+  },
+  searchText: '',
 };
 
 const setAnalysisState = (state, action) => ({
@@ -12,8 +19,59 @@ const setAnalysisState = (state, action) => ({
   ...action.payload,
 });
 
+const getProjectThemesSuccess = (state, action) => ({
+  ...state,
+  themes: action.payload,
+});
+
+const getProjectThemeLayersSuccess = (state, action) => {
+  const { data: layerData, theme } = action.payload;
+  const projectAreaLayerId = !state.projectAreaLayerId
+    ? layerData.find(item => item.name === 'Boundary')?.id || null
+    : state.projectAreaLayerId;
+  const data = layerData.filter(item => item.upload_status === 'successful');
+  const notPresentLayers = data
+    .filter(item => !state.mapSettings.layerOrder.includes(item.id))
+    .map(item => item.id);
+  const layerOrder = [...notPresentLayers, ...state.mapSettings.layerOrder];
+  const layers = {
+    ...state.layers,
+    [theme]: data.map(item => ({
+      ...item,
+      theme,
+      checked:
+        item.id === projectAreaLayerId
+          ? true
+          : state.mapSettings.checkedLayers.includes(item.id),
+      style: {
+        ...defaultStyles,
+        ...item.style,
+        geometryType: item.geom_type,
+        icon: item.icon
+          ? {
+              id: 1,
+              url: item.icon,
+              scale: item.style?.icon?.scale || 0.9,
+            }
+          : {},
+      },
+    })),
+  };
+  return {
+    ...state,
+    layers,
+    mapSettings: {
+      ...state.mapSettings,
+      layerOrder,
+    },
+    projectAreaLayerId,
+  };
+};
+
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
+  [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
+  [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
 });
 
 export default analysisReducer;

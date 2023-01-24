@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators, Types } from '@Actions/analysis';
+import { Creators as AnalysisCreators, Types } from '@Actions/analysis';
+import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import { isEmpty } from '@Utils/commonUtils';
 import Header from './Header';
 import HelpContent from './HelpContent';
 import DataCleaning from './DataCleaning';
@@ -10,7 +12,12 @@ import OptimalRoute from './OptimalRoute';
 import BufferAnalysis from './BufferAnalysis';
 import AnalysisLoader from './AnalysisLoader';
 
-const { checkProcessingStatusRequest } = Creators;
+const {
+  checkProcessingStatusRequest,
+  getProjectThemesRequest,
+  getProjectThemeLayersRequest,
+} = AnalysisCreators;
+const { getProjectGeojsonRequest } = ProjectMapCreators;
 
 function getAnalysisContent(type) {
   switch (type) {
@@ -27,6 +34,10 @@ function getAnalysisContent(type) {
 export default function Analysis() {
   const { tabname, analysisType, projectId } = useParams();
   const analysisTaskId = useSelector(state => state.analysis.analysisTaskId);
+  const themes = useSelector(state => state.analysis.themes);
+  const projectDetail = useSelector(
+    state => state.projectDashboard.projectDetail,
+  );
   const isProcessing = useSelector(state =>
     checkIfLoading(state, [Types.CHECK_PROCESSING_STATUS_REQUEST]),
   );
@@ -42,6 +53,20 @@ export default function Analysis() {
       }),
     );
   }, [dispatch, analysisTaskId, projectId, analysisType]);
+
+  // project map section
+  useEffect(() => {
+    if (!projectDetail) return;
+    dispatch(getProjectThemesRequest({ project: projectId }));
+    dispatch(getProjectGeojsonRequest({ project: projectId }));
+  }, [dispatch, projectId, projectDetail]);
+
+  useEffect(() => {
+    if (isEmpty(themes)) return;
+    themes.forEach(({ id }) => {
+      dispatch(getProjectThemeLayersRequest({ theme: id }));
+    });
+  }, [dispatch, themes]);
 
   return (
     <div>

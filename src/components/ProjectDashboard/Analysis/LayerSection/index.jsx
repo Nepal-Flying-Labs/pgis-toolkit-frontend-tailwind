@@ -12,14 +12,14 @@ import LayerAccordion from '@Components/common/SkeletonLoader/LayerAccordion';
 import {
   filteredLayersSelector,
   filteredThemesSelector,
-} from '@Selectors/projectMap';
+} from '@Selectors/analysis';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { handleCheckbox, saveMapConfigRequest, setZoomToLayerId } =
   ProjectMapCreators;
 
-export default function LayerSection({ stateName = 'routeAnalysis' }) {
+export default function LayerSection() {
   const { projectId } = useParams();
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
@@ -28,7 +28,7 @@ export default function LayerSection({ stateName = 'routeAnalysis' }) {
   const titleLimit = 40;
   const themes = useSelector(filteredThemesSelector);
   const layers = useSelector(filteredLayersSelector);
-  const mapSettings = useSelector(state => state.projectMap.mapSettings);
+  const mapSettings = useSelector(state => state.analysis.mapSettings);
   const isLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,

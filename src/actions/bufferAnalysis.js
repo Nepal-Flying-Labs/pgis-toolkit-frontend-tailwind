@@ -4,6 +4,7 @@ export const { Types, Creators } = createActions(
   {
     setBufferAnalysisState: ['payload'],
     setDataInputState: ['payload'],
+    setResultsState: ['payload'],
 
     resetBufferAnalysisState: ['payload'],
 

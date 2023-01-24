@@ -7,7 +7,8 @@ import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar/index';
 import Select from '@Components/common/Select/index';
-import { Creators } from '@Actions/bufferAnalysis';
+import { Creators, Types } from '@Actions/bufferAnalysis';
+import { checkIfLoading } from '@Utils/loaderSelector';
 import Chip from '@Components/common/Chip';
 
 const { setDataInputState, applyBufferAnalysisRequest, handleCheckbox } =
@@ -52,6 +53,10 @@ export default function DataInput() {
   );
 
   const poiLayers = useSelector(state => state.bufferAnalysis.poiLayers);
+
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.APPLY_BUFFER_ANALYSIS_REQUEST]),
+  );
 
   const handleApply = () => {
     if (!originGeojson || !bufferRadius || !outputName) {
@@ -176,13 +181,13 @@ export default function DataInput() {
                 <input
                   type="number"
                   className="naxatw-input"
-                  min="1"
-                  max="5"
+                  min="1.0"
+                  max="5000.0"
                   step={0.1}
                   value={bufferRadius || ''}
                   onChange={e => {
                     const { value } = e.target;
-                    if (value < 1 && value > 5) return;
+                    if (value < 1 && value > 5000) return;
                     dispatch(
                       setDataInputState({
                         bufferRadius: value,
@@ -225,7 +230,7 @@ export default function DataInput() {
               naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem] naxatw-bg-white"
           >
             <ul>
-              {poiLayers.map(item => (
+              {poiLayers?.map(item => (
                 <li
                   key={item.id}
                   role="presentation"
@@ -283,7 +288,7 @@ export default function DataInput() {
       >
         <Button
           className="naxatw-btn-primary"
-          // isLoading={loading}
+          isLoading={loading}
           onClick={handleApply}
         >
           Apply

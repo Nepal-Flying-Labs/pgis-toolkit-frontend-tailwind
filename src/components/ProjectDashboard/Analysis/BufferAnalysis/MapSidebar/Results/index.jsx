@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Creators as RouteAnalysisCreators } from '@Actions/routeAnalysis';
 import { Creators as CommonCreators } from '@Actions/common';
 import { analysisHeaderHeight } from '@src/constants';
@@ -11,47 +11,47 @@ import MaterialIcon from '@Components/common/MaterialIcon/index';
 const { setResultsState } = RouteAnalysisCreators;
 const { toggleModal } = CommonCreators;
 
-const analysisResults = [
-  {
-    id: 1,
-    checked: true,
-    name: 'Buffer Result 1 ',
-    routes: [
-      {
-        id: '1',
-        checked: false,
-        name: 'Result Area 1',
-      },
-      {
-        id: '2',
-        checked: true,
-        name: 'Result Area 2',
-      },
-    ],
-  },
-  {
-    id: 2,
-    checked: true,
-    name: 'Buffer Result 2 ',
-    routes: [
-      {
-        id: '1',
-        checked: false,
-        name: 'Result Area 1',
-      },
-      {
-        id: '2',
-        checked: true,
-        name: 'Result Area 2',
-      },
-    ],
-  },
-];
+// const analysisResults = [
+//   {
+//     id: 1,
+//     checked: true,
+//     name: 'Buffer Result 1 ',
+//     routes: [
+//       {
+//         id: '1',
+//         checked: false,
+//         name: 'Result Area 1',
+//       },
+//       {
+//         id: '2',
+//         checked: true,
+//         name: 'Result Area 2',
+//       },
+//     ],
+//   },
+//   {
+//     id: 2,
+//     checked: true,
+//     name: 'Buffer Result 2 ',
+//     routes: [
+//       {
+//         id: '1',
+//         checked: false,
+//         name: 'Result Area 1',
+//       },
+//       {
+//         id: '2',
+//         checked: true,
+//         name: 'Result Area 2',
+//       },
+//     ],
+//   },
+// ];
 
 export default function Results() {
-  // const analysisResults = useSelector(
-  //   state => state.routeAnalysis.results.analysisResults,
-  // );
+  const analysisResults = useSelector(
+    state => state.bufferAnalysis.results.analysisResults,
+  );
   const dispatch = useDispatch();
 
   const dropdownOptions = [
@@ -143,7 +143,7 @@ export default function Results() {
             }
             body={
               <div className="naxatw-pl-2">
-                {result.routes.map(route => (
+                {result.buffer_areas.map(route => (
                   <div key={route.id}>
                     <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                       <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-10">
@@ -169,7 +169,7 @@ export default function Results() {
                           className="naxatw-text-body-lg naxatw-text-grey-800"
                           htmlFor={route.id}
                         >
-                          {route.name}
+                          {route.name || '-'}
                         </label>
                       </div>
                       <MaterialIcon

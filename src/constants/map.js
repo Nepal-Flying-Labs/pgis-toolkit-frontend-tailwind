@@ -18,3 +18,4 @@ export const dataQueryOperators = [
 
 export const transportThemeName = 'Transportation Network';
 export const obstacleThemeName = 'Transportation Obstacles';
+export const poiThemeName = 'POI';

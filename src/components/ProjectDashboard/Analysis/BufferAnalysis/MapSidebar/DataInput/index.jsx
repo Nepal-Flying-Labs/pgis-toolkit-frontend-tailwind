@@ -1,15 +1,17 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import { analysisHeaderHeight } from '@src/constants';
-// import toastActions from '@Actions/toast';
+import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar/index';
 import Select from '@Components/common/Select/index';
 import { Creators } from '@Actions/bufferAnalysis';
-import Chip from '../Chip';
+import Chip from '@Components/common/Chip';
 
-const { setBufferAnalysisState, setDataInputState } = Creators;
+const { setDataInputState, applyBufferAnalysisRequest, handleCheckbox } =
+  Creators;
 
 const originPointData = [
   { label: 'Search', value: 'search', icon: 'search' },
@@ -24,6 +26,7 @@ function Container({ children }) {
 
 export default function DataInput() {
   const dispatch = useDispatch();
+  const { projectId } = useParams();
 
   const originPointType = useSelector(
     state => state.bufferAnalysis.dataInput.originPointType,
@@ -48,26 +51,37 @@ export default function DataInput() {
     state => state.bufferAnalysis.dataInput.dissolveOutput,
   );
 
-  // const handleApply = () => {
-  //   if (!originGeojson || !bufferRadius || !outputName) {
-  //     dispatch(
-  //       toastActions.error({
-  //         message: 'Please input all the required fields!',
-  //       }),
-  //     );
-  //     return;
-  //   }
+  const poiLayers = useSelector(state => state.bufferAnalysis.poiLayers);
 
-  //   const payloadData = {
-  //     origins,
-  //     dissolve_output:dissolveOutput,
-  //     radius:bufferRadius,
-  //     name: outputName,
-  //     project: projectId,
-  //     type: 'buffer',
-  //   };
-  //   dispatch(applyBufferAnalysisRequest(payloadData));
-  // };
+  const handleApply = () => {
+    if (!originGeojson || !bufferRadius || !outputName) {
+      dispatch(
+        toastActions.error({
+          message: 'Please input all the required fields!',
+        }),
+      );
+      return;
+    }
+
+    const originData = originGeojson.map(
+      origin => origin.geojson.geometry.coordinates,
+    );
+
+    const selectedPOI = poiLayers
+      .filter(item => item.checked)
+      .map(item => item.id);
+
+    const payloadData = {
+      origins: originData,
+      dissolve_output: dissolveOutput,
+      radius: bufferRadius,
+      name: outputName,
+      project: projectId,
+      pois: selectedPOI,
+      type: 'buffer',
+    };
+    dispatch(applyBufferAnalysisRequest(payloadData));
+  };
 
   return (
     <div className=" naxatw-h-full">
@@ -104,7 +118,11 @@ export default function DataInput() {
               <div>
                 <Chip
                   className="!naxatw-w-full !naxatw-bg-white "
-                  label="Starting Point"
+                  label={
+                    originGeojson && originGeojson.length > 0
+                      ? 'Add another point'
+                      : 'Starting Point'
+                  }
                   iconLeft="search"
                   active={drawPoint}
                   onClick={() => {
@@ -117,26 +135,24 @@ export default function DataInput() {
                 />
                 <div className="naxatw-mt-2 naxatw-max-h-[100px] naxatw-overflow-y-auto naxatw-space-y-1 scrollbar">
                   {originGeojson &&
-                    originGeojson.map(geojson => {
-                      const { coordinates } = geojson.geometry;
-                      return (
-                        <Chip
-                          key={geojson}
-                          label={`${parseFloat(coordinates[0]).toFixed(
-                            3,
-                          )}-${parseFloat(coordinates[1]).toFixed(3)}`}
-                          iconClassName="material-symbols-outlined"
-                          iconLeft="location_on"
-                          // onClick={() => {
-                          //   dispatch(
-                          //     setDataInputState({
-                          //       originPointType: value,
-                          //     }),
-                          //   );
-                          // }}
-                        />
-                      );
-                    })}
+                    originGeojson.map(origin => (
+                      <Chip
+                        key={origin.id}
+                        label={origin.name}
+                        iconClassName="material-symbols-outlined"
+                        iconLeft="location_on"
+                        onClick={() => {
+                          const newData = originGeojson.filter(
+                            origins => origins.id !== origin.id,
+                          );
+                          dispatch(
+                            setDataInputState({
+                              originGeojson: newData,
+                            }),
+                          );
+                        }}
+                      />
+                    ))}
                 </div>
               </div>
             )}
@@ -203,6 +219,47 @@ export default function DataInput() {
         </Container>
 
         <Container>
+          <label className="naxatw-label">POI</label>
+          <div
+            className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg
+              naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem] naxatw-bg-white"
+          >
+            <ul>
+              {poiLayers.map(item => (
+                <li
+                  key={item.id}
+                  role="presentation"
+                  className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
+                      hover:naxatw-bg-grey-100 naxatw-flex naxatw-items-center"
+                  onClick={() => {}}
+                >
+                  <input
+                    id={item.id}
+                    type="checkbox"
+                    className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
+                        naxatw-accent-grey-800 naxatw-cursor-pointer"
+                    checked={item.checked}
+                    onChange={e => {
+                      const { id, checked } = e.target;
+                      dispatch(
+                        handleCheckbox({
+                          stateName: 'poiLayers',
+                          id,
+                          checked,
+                        }),
+                      );
+                    }}
+                  />
+                  <label htmlFor={item.id} className="naxatw-cursor-pointer">
+                    {item.name}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Container>
+
+        <Container>
           <label className="naxatw-label">Output Name</label>
           <input
             type="text"
@@ -227,13 +284,7 @@ export default function DataInput() {
         <Button
           className="naxatw-btn-primary"
           // isLoading={loading}
-          onClick={() => {
-            dispatch(
-              setBufferAnalysisState({
-                activeTab: 'results',
-              }),
-            );
-          }}
+          onClick={handleApply}
         >
           Apply
         </Button>

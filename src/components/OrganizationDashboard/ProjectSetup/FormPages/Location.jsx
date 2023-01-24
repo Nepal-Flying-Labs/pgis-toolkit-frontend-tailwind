@@ -277,9 +277,9 @@ const Location = ({ page, setPage }) => {
         <label className="naxatw-label">Define the geographic boundary*</label>
         <div className="naxatw-flex naxatw-gap-x-2">
           <Chip
-            name="Upload project area"
-            status={values.location_type || ''}
-            value="File Upload"
+            label="Upload project area"
+            className="!naxatw-px-4 !naxatw-py-2"
+            active={values.location_type === 'File Upload'}
             onClick={() => {
               handleCustomChange('location_type', 'File Upload');
               values.location_type !== 'File Upload'
@@ -288,9 +288,9 @@ const Location = ({ page, setPage }) => {
             }}
           />
           <Chip
-            name="Draw Area on Map"
-            status={values.location_type || ''}
-            value="Custom Draw"
+            label="Draw Area on Map"
+            className="!naxatw-px-4 !naxatw-py-2"
+            active={values.location_type === 'Custom Draw'}
             onClick={() => {
               handleCustomChange('location_type', 'Custom Draw');
               values.location_type !== 'Custom Draw'

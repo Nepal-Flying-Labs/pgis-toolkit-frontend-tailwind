@@ -7,6 +7,7 @@ import {
 } from '@Components/common/OpenLayersComponent';
 import { startPointStyles } from '@src/constants/analysis';
 import { Creators as BufferAnalysisCreators } from '@Actions/bufferAnalysis';
+import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
 import toastActions from '@Actions/toast';
 import { analysisHeaderHeight } from '@src/constants';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool/index';
@@ -49,13 +50,19 @@ export default function MapSection() {
           zIndex={10}
           style={{ ...startPointStyles }}
           onSave={geojson => {
-            console.log(geojson, 'geojson');
             dispatch(
               setDataInputState({
                 originGeojson: originGeojson
-                  ? [...originGeojson, geojson]
-                  : [geojson],
-                drawPoint: true,
+                  ? [
+                      ...originGeojson,
+                      {
+                        id: originGeojson.length + 1,
+                        name: `Coordinate ${originGeojson.length + 1}`,
+                        geojson,
+                      },
+                    ]
+                  : [{ id: 1, name: 'Coordinate 1', geojson }],
+                drawPoint: false,
               }),
             );
           }}
@@ -72,6 +79,17 @@ export default function MapSection() {
         />
         <LayerSwitcherControl />
         <Scalebar />
+
+        {originGeojson &&
+          originGeojson.map(origin => (
+            <VectorLayer
+              key={origin.id}
+              geojson={origin.geojson}
+              visibleOnMap
+              zIndex={10}
+              style={{ ...startPointStyles }}
+            />
+          ))}
       </MapComponent>
     </div>
   );

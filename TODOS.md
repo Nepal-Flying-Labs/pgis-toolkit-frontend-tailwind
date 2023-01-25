@@ -156,3 +156,10 @@
 - [ ] In alternative route input, UI redesign (+, -)
 - [ ] Project Boundary line color not displaying on map.
 - [ ] Category ID is seen in Data Catalog table after upload success.
+
+### BUFFER ANALYSIS
+
+- [ ] copy feature before buffer analysis (saga api call before apply click saga/datacleaning)
+- [ ] show features inside buffer
+- [ ] BufferPopup UI
+- [ ] zoom to individual buffer

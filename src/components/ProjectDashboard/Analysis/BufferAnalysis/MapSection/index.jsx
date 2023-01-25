@@ -95,6 +95,14 @@ export default function MapSection() {
           height: `calc(100vh - ${analysisHeaderHeight})`,
         }}
       >
+        {drawPoint && (
+          <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-bg-inherit naxatw-w-full naxatw-absolute naxatw-z-10">
+            <p className="naxatw-p-3 naxatw-bg-white naxatw-w-fit naxatw-rounded-lg naxatw-mt-1 naxatw-text-center naxatw-flex naxatw-justify-center">
+              Please click on&nbsp;<i className="material-icons">save</i>
+              &nbsp;save icon to save the buffer points.
+            </p>
+          </div>
+        )}
         <DrawTool
           enable={drawPoint}
           // geojson={featureGeojson}

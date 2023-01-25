@@ -203,16 +203,6 @@ export default function MapSection() {
             ''
           ),
         )}
-        {roadNetworkLayer && (
-          <VectorTileLayer
-            url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${roadNetworkLayer.id}`}
-            authToken={localStorage.getItem('userToken')}
-            visibleOnMap
-            style={roadNetworkLayer.style}
-            zIndex={1}
-            // properties={{ layerId: selectedLayer.id }}
-          />
-        )}
 
         {analysisResults.map(result =>
           result.routes.map(route =>

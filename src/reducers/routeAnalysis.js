@@ -25,7 +25,6 @@ const initialState = {
     selectedAnalysis: null,
     individualAnalysisData: null,
   },
-  layers: {},
   roadNetworkLayer: null,
   obstacleLayers: [],
   analysisId: null,

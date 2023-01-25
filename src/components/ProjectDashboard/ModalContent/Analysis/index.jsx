@@ -1,11 +1,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
-import { Creators } from '@Actions/common';
+import { useParams } from 'react-router';
+import { Creators } from '@Actions/analysis';
+
+const { copyLayerDataRequest } = Creators;
 
 const analysisData = [
   // {
-  //   id: 1,
   //   title: 'Service area analysis',
   //   description:
   //     'Identifies areas that can be reached by a certain service or facility within a specified travel time or distance. ',
@@ -13,7 +14,6 @@ const analysisData = [
   //   disabled: true,
   // },
   {
-    id: 2,
     title: 'Buffer analysis',
     description:
       'Creates a zone around a selected feature, distance or time-based, known as a buffer, to find features that are within a certain distance of another feature.',
@@ -21,14 +21,12 @@ const analysisData = [
     disabled: false,
   },
   // {
-  //   id: 3,
   //   title: 'Nearest distance analysis',
   //   description: 'Baseline Datasets contains different levels of boundaries.',
   //   analysisType: 'nearest-distance',
   //   disabled: true,
   // },
   {
-    id: 4,
     title: 'Optimal route analysis',
     description:
       'Finds the most efficient path between multiple locations based on factors such as distance, time, and road conditions.',
@@ -37,44 +35,36 @@ const analysisData = [
   },
 ];
 
-const { toggleModal } = Creators;
-
 export default function Analysis() {
   const { organizationId, projectId } = useParams();
   const dispatch = useDispatch();
-  const history = useHistory();
 
   return (
     <div>
       <div className="naxatw-grid naxatw-grid-cols-2 naxatw-gap-3">
-        {analysisData.map(
-          ({ id, title, description, analysisType, disabled }) => (
-            <div
-              key={id}
-              className={`naxatw-border naxatw-border-grey-200 naxatw-rounded-lg naxatw-px-4 naxatw-py-3 naxatw-cursor-pointer
+        {analysisData.map(({ title, description, analysisType, disabled }) => (
+          <div
+            key={analysisType}
+            className={`naxatw-border naxatw-border-grey-200 naxatw-rounded-lg naxatw-px-4 naxatw-py-3 naxatw-cursor-pointer
                 ${disabled ? 'naxatw-cursor-not-allowed' : ''}
                 `}
-              onClick={() => {
-                if (disabled) return;
-                dispatch(toggleModal());
-
-                // eslint-disable-next-line no-unused-expressions
-                id !== 2
-                  ? history.push(
-                      `/organizations/${organizationId}/projects/${projectId}/data-cleaning/${analysisType}`,
-                    )
-                  : history.push(
-                      `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}`,
-                    );
-              }}
-            >
-              <h5 className="naxatw-text-grey-800 naxatw-font-semibold">
-                {title}
-              </h5>
-              <p className="naxatw-text-body-md naxatw-mt-1">{description}</p>
-            </div>
-          ),
-        )}
+            onClick={() => {
+              if (disabled) return;
+              dispatch(
+                copyLayerDataRequest({
+                  analysisType,
+                  organizationId,
+                  projectId,
+                }),
+              );
+            }}
+          >
+            <h5 className="naxatw-text-grey-800 naxatw-font-semibold">
+              {title}
+            </h5>
+            <p className="naxatw-text-body-md naxatw-mt-1">{description}</p>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -30,7 +30,7 @@ import {
   destinationPointStyles,
   obstaclePointColor,
 } from '@src/constants/analysis';
-import { mapStateSelector } from '@Selectors/projectMap';
+import { mapStateSelector } from '@Selectors/analysis';
 import {
   defaultStyles,
   getStyles,
@@ -202,16 +202,6 @@ export default function MapSection() {
           ) : (
             ''
           ),
-        )}
-        {roadNetworkLayer && (
-          <VectorTileLayer
-            url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${roadNetworkLayer.id}`}
-            authToken={localStorage.getItem('userToken')}
-            visibleOnMap
-            style={roadNetworkLayer.style}
-            zIndex={1}
-            // properties={{ layerId: selectedLayer.id }}
-          />
         )}
 
         {analysisResults.map(result =>

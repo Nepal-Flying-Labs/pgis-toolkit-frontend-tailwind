@@ -18,10 +18,12 @@ import {
 } from '@Services/dataCleaning';
 import dataCleaningActions, { Types } from '@Actions/dataCleaning';
 import commonActions from '@Actions/common';
+import analysisActions from '@Actions/analysis';
 import routeAnalysisActions from '@Actions/routeAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { getLayerAttributeFields } from '@Services/projectMap';
 import { isEmpty } from '@Utils/commonUtils';
+import { roadLayersThemeIdSelector } from '@Selectors/projectMap';
 
 export function* checkErrorRequest({ payload }) {
   try {
@@ -29,7 +31,7 @@ export function* checkErrorRequest({ payload }) {
     yield put(dataCleaningActions.setErrorStates({ layerId, geometryType }));
     yield call(copyFeatures, { layer: layerId.toString() });
     const { errorStates } = yield select(state => state.dataCleaning);
-    const errorData = errorStates[layerId];
+    const errorData = errorStates;
     for (let i = 0; i < errorData.length; i += 1) {
       const { id, checkAPI } = errorData[i];
       yield put(
@@ -170,20 +172,36 @@ export function* startAnalysisRequest({ params }) {
     const { selectedRoadLayer, selectedObstacleLayers } = yield select(
       state => state.dataCleaning.optimalRoute,
     );
-    yield put(
-      routeAnalysisActions.setRouteAnalysisState({
-        roadNetworkLayer: selectedRoadLayer,
-        obstacleLayers: selectedObstacleLayers.map(item => ({
-          ...item,
-          checked: false,
-        })),
-      }),
-    );
-    yield put(
-      push(
-        `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}`,
-      ),
-    );
+    if (analysisType === 'optimal-route') {
+      yield put(
+        routeAnalysisActions.setRouteAnalysisState({
+          roadNetworkLayer: selectedRoadLayer,
+          obstacleLayers: selectedObstacleLayers.map(item => ({
+            ...item,
+            checked: false,
+          })),
+        }),
+      );
+      const roadLayersThemeId = yield select(roadLayersThemeIdSelector);
+      const { layers } = yield select(state => state.analysis);
+      yield put(
+        analysisActions.setAnalysisState({
+          layers: {
+            ...layers,
+            [roadLayersThemeId]: layers[roadLayersThemeId].map(item =>
+              item.id === selectedRoadLayer.id
+                ? { ...item, checked: true }
+                : { ...item },
+            ),
+          },
+        }),
+      );
+      yield put(
+        push(
+          `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}`,
+        ),
+      );
+    }
     // yield put(dataCleaningActions.startAnalysisSuccess(responseData));
   } catch (error) {
     yield put(dataCleaningActions.startAnalysisFailure());

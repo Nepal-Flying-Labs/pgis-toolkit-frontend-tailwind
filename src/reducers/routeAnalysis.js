@@ -118,6 +118,10 @@ const checkProcessingStatusSuccess = (state, action) =>
     draft.results.zoomToRouteId = analysisResult.id;
     draft.activeTab = 'results';
     draft.selectedRouteId = optimalRouteId;
+    draft.obstacleLayers = draft.obstacleLayers.map(item => ({
+      ...item,
+      checked: false,
+    }));
   });
 
 const handleRouteCheckbox = (state, action) =>
@@ -192,6 +196,17 @@ const getAnalysisDataSuccess = (state, action) =>
     draft.results.individualAnalysisData = action.payload;
   });
 
+const saveRouteLayerSuccess = (state, action) =>
+  produce(state, draft => {
+    const { analysisId } = action.payload;
+    draft.results.analysisResults = draft.results.analysisResults.filter(
+      item => item.id !== analysisId,
+    );
+    draft.activeTab = 'layers';
+    draft.selectedRouteId = null;
+    draft.routePopupData = null;
+  });
+
 const routeAnalysisReducer = createReducer(initialState, {
   [Types.SET_ROUTE_ANALYSIS_STATE]: setRouteAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
@@ -203,6 +218,7 @@ const routeAnalysisReducer = createReducer(initialState, {
   [Types.GET_ROUTE_POPUP_DATA_SUCCESS]: getRoutePopupDataSuccess,
   [Types.HANDLE_OBSTACLES_TOGGLE]: handleObstaclesToggle,
   [Types.GET_ANALYSIS_DATA_SUCCESS]: getAnalysisDataSuccess,
+  [Types.SAVE_ROUTE_LAYER_SUCCESS]: saveRouteLayerSuccess,
 });
 
 export default routeAnalysisReducer;

@@ -24,6 +24,10 @@ export const { Types, Creators } = createActions(
     getAnalysisDataRequest: ['params'],
     getAnalysisDataSuccess: ['payload'],
     getAnalysisDataFailure: null,
+
+    saveRouteLayerRequest: ['payload'],
+    saveRouteLayerSuccess: ['payload'],
+    saveRouteLayerFailure: null,
   },
   { prefix: 'routeAnalysis/' },
 );

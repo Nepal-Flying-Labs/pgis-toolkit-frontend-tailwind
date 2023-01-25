@@ -40,6 +40,7 @@ import DeleteTemplateAttribute from '@Components/ProjectDashboard/ModalContent/D
 import DeleteError from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteError';
 import ViewRouteAttribute from '@Components/ProjectDashboard/Analysis/ModalContent/ViewRouteAttribute';
 import DeleteAnOrganization from '@Components/Organizations/ModalContent/DeleteAnOrganization';
+import SaveRouteLayer from '@Components/ProjectDashboard/Analysis/ModalContent/SaveRouteLayer';
 
 export function getModalContent(content) {
   switch (content) {
@@ -309,11 +310,16 @@ export function getPromptDialogContent(content) {
         title: 'Delete Project',
         content: <DeleteProject />,
       };
-
     case 'delete-an-organization':
       return {
         title: 'Delete an organization',
         content: <DeleteAnOrganization />,
+      };
+    // route analysis
+    case 'save-route-layer':
+      return {
+        title: 'Save Layer',
+        content: <SaveRouteLayer />,
       };
 
     default:

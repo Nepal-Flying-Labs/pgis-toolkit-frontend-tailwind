@@ -31,7 +31,7 @@ export function* checkErrorRequest({ payload }) {
     yield put(dataCleaningActions.setErrorStates({ layerId, geometryType }));
     yield call(copyFeatures, { layer: layerId.toString() });
     const { errorStates } = yield select(state => state.dataCleaning);
-    const errorData = errorStates;
+    const errorData = errorStates[layerId];
     for (let i = 0; i < errorData.length; i += 1) {
       const { id, checkAPI } = errorData[i];
       yield put(

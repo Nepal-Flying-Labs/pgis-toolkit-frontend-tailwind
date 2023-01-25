@@ -14,3 +14,6 @@ export const getNetworkRoute = id =>
 
 export const getNetworkRouteCollection = params =>
   authenticated(api).get(`/maps/network_route_collection/`, { params });
+
+export const saveRouteLayer = data =>
+  authenticated(api).post(`/maps/layer_from_optimum_path/`, data);

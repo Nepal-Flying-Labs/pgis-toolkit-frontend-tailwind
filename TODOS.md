@@ -157,8 +157,13 @@
 - [ ] Project Boundary line color not displaying on map.
 - [ ] Category ID is seen in Data Catalog table after upload success.
 
+### ROUTE ANALYSIS
+- [ ] route to data cleaning on reload
+    
 ### BUFFER ANALYSIS
 - [ ] copy feature before buffer analysis
 - [ ] show features inside buffer
 - [ ] BufferPopup UI
 - [ ] zoom to individual buffer
+
+

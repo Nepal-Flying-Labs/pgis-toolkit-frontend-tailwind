@@ -68,6 +68,7 @@ export default function MapSection() {
   const zoomToRouteId = useSelector(
     state => state.routeAnalysis.results.zoomToRouteId,
   );
+  const zoomToLayerId = useSelector(state => state.analysis.zoomToLayerId);
   const mapState = useSelector(mapStateSelector);
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const obstacleLayers = useSelector(obstacleLayersSelector);
@@ -110,6 +111,26 @@ export default function MapSection() {
       );
     }
   }, [map, zoomToRouteId, analysisResults, dispatch]);
+
+  // zoom to road network layer
+  useEffect(() => {
+    if (!map || !zoomToLayerId) return;
+    const bbox = mapState.find(item => item.id === zoomToLayerId)?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 2000,
+        constrainResolution: true,
+      });
+      dispatch(
+        setResultsState({
+          zoomToLayerId: null,
+        }),
+      );
+    }
+  }, [map, zoomToLayerId, mapState, dispatch]);
 
   // click handler for route layer
   useEffect(() => {

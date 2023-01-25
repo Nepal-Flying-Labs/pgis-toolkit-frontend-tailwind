@@ -138,7 +138,11 @@ export default function DataInput() {
                     );
                   }}
                 />
-                <div className="naxatw-mt-2 naxatw-max-h-[100px] naxatw-overflow-y-auto naxatw-space-y-1 scrollbar">
+                <div
+                  className={`naxatw-mt-2 ${
+                    originGeojson ? 'naxatw-bg-[#ffffff73]' : ''
+                  } naxatw-p-2 naxatw-rounded-[20px] naxatw-py-1 naxatw-max-h-[100px] naxatw-w-[333px] naxatw-flex naxatw-flex-wrap naxatw-overflow-y-scroll scrollbar`}
+                >
                   {originGeojson &&
                     originGeojson.map(origin => (
                       <Chip
@@ -217,7 +221,7 @@ export default function DataInput() {
                 htmlFor="dissolve-output"
                 className="naxatw-text-body-lg naxatw-text-grey-800"
               >
-                Dissolve Output
+                Dissolve Output (optional)
               </label>
             </div>
           </div>

@@ -40,7 +40,13 @@ export function* copyLayerDataRequest({ payload }) {
     const { themes, layers } = yield select(state => state.projectMap);
     yield put(
       analysisActions.setAnalysisState({
-        layers,
+        layers: Object.entries(layers).reduce(
+          (obj, [key, val]) => ({
+            ...obj,
+            [key]: val.map(item => ({ ...item, checked: false })),
+          }),
+          {},
+        ),
         themes,
       }),
     );

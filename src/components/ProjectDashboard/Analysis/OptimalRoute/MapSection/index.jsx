@@ -169,6 +169,11 @@ export default function MapSection() {
     });
   }, []);
 
+  const getLayerStyles = layerId => {
+    const style = mapState.find(item => item.id === layerId)?.style;
+    return style || { ...defaultStyles };
+  };
+
   return (
     <div className="naxatw-w-full naxatw-relative">
       {isMapDataLoading && (
@@ -266,11 +271,7 @@ export default function MapSection() {
             }&ids=${item.feature_mirror_ids.join(',')}`}
             authToken={localStorage.getItem('userToken')}
             visibleOnMap
-            style={{
-              ...startPointStyles,
-              fillColor: obstaclePointColor,
-              circleRadius: 6,
-            }}
+            style={getLayerStyles(item.layer_id)}
             zIndex={4}
             // properties={{ layerId: selectedLayer.id }}
           />

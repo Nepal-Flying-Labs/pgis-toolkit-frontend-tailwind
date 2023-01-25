@@ -68,6 +68,9 @@ export default function MapSection() {
   const zoomToRouteId = useSelector(
     state => state.routeAnalysis.results.zoomToRouteId,
   );
+  const selectedObstacles = useSelector(
+    state => state.routeAnalysis.obstacleLayers,
+  );
   const zoomToLayerId = useSelector(state => state.analysis.zoomToLayerId);
   const mapState = useSelector(mapStateSelector);
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
@@ -225,6 +228,18 @@ export default function MapSection() {
           ),
         )}
 
+        {selectedObstacles.map(item => (
+          <VectorTileLayer
+            key={item.id}
+            url={`${apiURL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+            authToken={localStorage.getItem('userToken')}
+            visibleOnMap={item.checked}
+            style={item.style}
+            zIndex={4}
+            properties={{ layerId: item.id }}
+          />
+        ))}
+
         {analysisResults.map(result =>
           result.routes.map(route =>
             route.data.map(item => (
@@ -241,9 +256,11 @@ export default function MapSection() {
           ),
         )}
 
-        {obstacleLayers.map(item => (
+        {obstacleLayers.map((item, idx) => (
           <VectorTileLayer
-            key={`${item.layer_id}-${item.feature_mirror_ids.join('-')}`}
+            key={`${item.layer_id}-${item.feature_mirror_ids.join(
+              '-',
+            )} - ${idx}`}
             url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${
               item.layer_id
             }&ids=${item.feature_mirror_ids.join(',')}`}

@@ -28,7 +28,6 @@ import { obstacleLayersSelector } from '@Selectors/routeAnalysis';
 import {
   startPointStyles,
   destinationPointStyles,
-  obstaclePointColor,
 } from '@src/constants/analysis';
 import { mapStateSelector } from '@Selectors/analysis';
 import {
@@ -56,11 +55,11 @@ export default function MapSection() {
   const drawPointType = useSelector(
     state => state.routeAnalysis.dataInput.drawPointType,
   );
-  const startGeojson = useSelector(
-    state => state.routeAnalysis.dataInput.startGeojson,
+  const startingPoint = useSelector(
+    state => state.routeAnalysis.dataInput.startingPoint,
   );
-  const destinationGeojson = useSelector(
-    state => state.routeAnalysis.dataInput.destinationGeojson,
+  const destinationPoint = useSelector(
+    state => state.routeAnalysis.dataInput.destinationPoint,
   );
   const analysisResults = useSelector(
     state => state.routeAnalysis.results.analysisResults,
@@ -311,8 +310,8 @@ export default function MapSection() {
             dispatch(
               setDataInputState({
                 [drawPointType === 'start'
-                  ? 'startGeojson'
-                  : 'destinationGeojson']: geojson,
+                  ? 'startingPoint'
+                  : 'destinationPoint']: { id: 1, name: '', geojson },
                 drawPointType: null,
               }),
             );
@@ -329,17 +328,17 @@ export default function MapSection() {
           }}
         />
 
-        {startGeojson && (
+        {startingPoint?.geojson && (
           <VectorLayer
-            geojson={startGeojson}
+            geojson={startingPoint.geojson}
             visibleOnMap
             zIndex={10}
             style={{ ...startPointStyles }}
           />
         )}
-        {destinationGeojson && (
+        {destinationPoint?.geojson && (
           <VectorLayer
-            geojson={destinationGeojson}
+            geojson={destinationPoint.geojson}
             visibleOnMap
             zIndex={10}
             style={{ ...destinationPointStyles }}

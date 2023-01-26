@@ -14,8 +14,8 @@ const initialState = {
     selectedModeOfTransport: 'drive', // 'drive', 'cycle', 'walk'
     originPointType: 'search', // 'search', 'map', 'layer'
     drawPointType: null, // 'start', 'destination'
-    startGeojson: null,
-    destinationGeojson: null,
+    startingPoint: null, // { id: '', name: '', geojson: null }
+    destinationPoint: null, // { id: '', name: '', geojson: null }
     alternativePaths: 1,
     outputName: '',
   },

@@ -37,11 +37,11 @@ export default function MapContent() {
   const drawPointType = useSelector(
     state => state.routeAnalysis.dataInput.drawPointType,
   );
-  const startGeojson = useSelector(
-    state => state.routeAnalysis.dataInput.startGeojson,
+  const startingPoint = useSelector(
+    state => state.routeAnalysis.dataInput.startingPoint,
   );
-  const destinationGeojson = useSelector(
-    state => state.routeAnalysis.dataInput.destinationGeojson,
+  const destinationPoint = useSelector(
+    state => state.routeAnalysis.dataInput.destinationPoint,
   );
   const dispatch = useDispatch();
 
@@ -57,24 +57,24 @@ export default function MapContent() {
           <Chip
             key={value}
             className={`!naxatw-w-full ${
-              (value === 'start' && startGeojson) ||
-              (value === 'destination' && destinationGeojson)
+              (value === 'start' && startingPoint?.geojson) ||
+              (value === 'destination' && destinationPoint?.geojson)
                 ? '!naxatw-bg-white'
                 : ''
             }`}
             label={
-              value === 'start' && startGeojson
-                ? getGeojsonCoordinates(startGeojson)
-                : value === 'destination' && destinationGeojson
-                ? getGeojsonCoordinates(destinationGeojson)
+              value === 'start' && startingPoint?.geojson
+                ? getGeojsonCoordinates(startingPoint?.geojson)
+                : value === 'destination' && destinationPoint?.geojson
+                ? getGeojsonCoordinates(destinationPoint?.geojson)
                 : label
             }
             iconLeft={icon}
             iconStyle={{
               color:
-                value === 'start' && startGeojson
+                value === 'start' && startingPoint?.geojson
                   ? startingPointColor
-                  : value === 'destination' && destinationGeojson
+                  : value === 'destination' && destinationPoint?.geojson
                   ? destinationPointColor
                   : '',
             }}
@@ -96,8 +96,8 @@ export default function MapContent() {
           onClick={() => {
             dispatch(
               setDataInputState({
-                startGeojson: destinationGeojson,
-                destinationGeojson: startGeojson,
+                startingPoint: destinationPoint,
+                destinationPoint: startingPoint,
               }),
             );
           }}

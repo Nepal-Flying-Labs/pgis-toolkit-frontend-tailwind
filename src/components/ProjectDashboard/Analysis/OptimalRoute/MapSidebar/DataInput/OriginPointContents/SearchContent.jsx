@@ -8,11 +8,11 @@ import SearchOSM from '@Components/common/SearchOSM';
 const { setDataInputState } = Creators;
 
 export default function SearchContent() {
-  const startGeojson = useSelector(
-    state => state.routeAnalysis.dataInput.startGeojson,
+  const startingPoint = useSelector(
+    state => state.routeAnalysis.dataInput.startingPoint,
   );
-  const destinationGeojson = useSelector(
-    state => state.routeAnalysis.dataInput.destinationGeojson,
+  const destinationPoint = useSelector(
+    state => state.routeAnalysis.dataInput.destinationPoint,
   );
   const [startingPointInput, setStartingPointInput] = useState('');
   const dispatch = useDispatch();
@@ -39,8 +39,8 @@ export default function SearchContent() {
           onClick={() => {
             dispatch(
               setDataInputState({
-                startGeojson: destinationGeojson,
-                destinationGeojson: startGeojson,
+                startingPoint: destinationPoint,
+                destinationPoint: startingPoint,
               }),
             );
           }}

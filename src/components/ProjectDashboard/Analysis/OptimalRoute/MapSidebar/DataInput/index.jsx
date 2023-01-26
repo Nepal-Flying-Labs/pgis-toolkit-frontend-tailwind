@@ -51,11 +51,11 @@ export default function DataInput() {
   const outputName = useSelector(
     state => state.routeAnalysis.dataInput.outputName,
   );
-  const startGeojson = useSelector(
-    state => state.routeAnalysis.dataInput.startGeojson,
+  const startingPoint = useSelector(
+    state => state.routeAnalysis.dataInput.startingPoint,
   );
-  const destinationGeojson = useSelector(
-    state => state.routeAnalysis.dataInput.destinationGeojson,
+  const destinationPoint = useSelector(
+    state => state.routeAnalysis.dataInput.destinationPoint,
   );
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.APPLY_ROUTE_ANALYSIS_REQUEST]),
@@ -63,7 +63,7 @@ export default function DataInput() {
   const dispatch = useDispatch();
 
   const handleApply = () => {
-    if (!startGeojson || !destinationGeojson || !outputName) {
+    if (!startingPoint || !destinationPoint || !outputName) {
       dispatch(
         toastActions.error({
           message: 'Please input all the required fields!',
@@ -71,9 +71,9 @@ export default function DataInput() {
       );
       return;
     }
-    const [originLong, originLat] = startGeojson.geometry.coordinates;
+    const [originLong, originLat] = startingPoint.geojson.geometry.coordinates;
     const [destinationLong, destinationLat] =
-      destinationGeojson.geometry.coordinates;
+      destinationPoint.geojson.geometry.coordinates;
     const selectedObstacles = obstacleLayers
       .filter(item => item.checked)
       .map(item => item.id);

@@ -27,7 +27,11 @@ function debounce(func, timeout = 300) {
  * });
  *
  */
-const useDebouncedInput = ({ ms = 200, init, onChange = () => {} }) => {
+export default function useDebouncedInput({
+  ms = 200,
+  init,
+  onChange = () => {},
+}) {
   const [input, setInput] = useState(init);
 
   useEffect(() => setInput(init), [init]);
@@ -47,6 +51,4 @@ const useDebouncedInput = ({ ms = 200, init, onChange = () => {} }) => {
   );
 
   return [input, handleChange];
-};
-
-export default useDebouncedInput;
+}

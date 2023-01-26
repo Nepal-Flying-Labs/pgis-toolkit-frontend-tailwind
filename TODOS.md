@@ -159,6 +159,7 @@
 
 ### ROUTE ANALYSIS
 - [ ] route to data cleaning on reload
+- [ ] geometry type polygon after route layer save 
     
 ### BUFFER ANALYSIS
 - [ ] copy feature before buffer analysis

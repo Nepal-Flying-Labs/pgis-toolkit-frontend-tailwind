@@ -5,6 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Creators } from '@Actions/routeAnalysis';
 import IconButton from '@Components/common/IconButton';
 import SearchOSM from '@Components/common/SearchOSM';
+import {
+  startingPointColor,
+  destinationPointColor,
+} from '@src/constants/analysis';
 
 const { setDataInputState } = Creators;
 
@@ -28,6 +32,10 @@ export default function SearchContent() {
         <SearchOSM
           isSmall
           placeholder="Starting Point"
+          iconName={startingPoint ? 'radio_button_checked' : 'search'}
+          iconStyle={{
+            color: startingPoint ? startingPointColor : '',
+          }}
           value={startingPoint}
           onSelect={selectedItem => {
             const geojson = point(selectedItem.value);
@@ -41,6 +49,10 @@ export default function SearchContent() {
         <SearchOSM
           isSmall
           placeholder="Destination Point"
+          iconName={destinationPoint ? 'radio_button_checked' : 'search'}
+          iconStyle={{
+            color: destinationPoint ? destinationPointColor : '',
+          }}
           value={destinationPoint}
           onSelect={selectedItem => {
             const geojson = point(selectedItem.value);

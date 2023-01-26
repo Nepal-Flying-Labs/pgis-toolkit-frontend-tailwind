@@ -28,6 +28,7 @@ export default function SearchContent() {
         <SearchOSM
           isSmall
           placeholder="Starting Point"
+          value={startingPoint}
           onSelect={selectedItem => {
             const geojson = point(selectedItem.value);
             dispatch(
@@ -40,6 +41,7 @@ export default function SearchContent() {
         <SearchOSM
           isSmall
           placeholder="Destination Point"
+          value={destinationPoint}
           onSelect={selectedItem => {
             const geojson = point(selectedItem.value);
             dispatch(

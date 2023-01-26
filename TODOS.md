@@ -160,6 +160,11 @@
 ### ROUTE ANALYSIS
 - [ ] route to data cleaning on reload
 - [ ] geometry type polygon after route layer save 
+- [ ] osm search
+  - [ ] zoom to feature after select
+  - [ ] swap locations
+  - [ ] add marker
+  - [ ] design errors
     
 ### BUFFER ANALYSIS
 - [ ] copy feature before buffer analysis

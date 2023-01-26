@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import searchOSMQuery from '@Utils/searchOSMQuery';
@@ -8,6 +8,7 @@ export default function SearchOSM({
   isSmall,
   className,
   onSelect,
+  value,
 }) {
   const [data, setData] = useState(null);
   const [showDropdown, setShowDropdown] = useState(true);
@@ -17,13 +18,13 @@ export default function SearchOSM({
     ms: 200,
     init: '',
     onChange: async debouncedEvent => {
-      const { value } = debouncedEvent.target;
-      if (value.length < 2) {
+      const searchedText = debouncedEvent.target.value;
+      if (searchedText.length < 2) {
         setData(null);
         return;
       }
       const params = {};
-      params.q = value;
+      params.q = searchedText;
       params.format = 'json';
       params.limit = 5;
       const results = await searchOSMQuery(params);
@@ -37,8 +38,13 @@ export default function SearchOSM({
     },
   });
 
+  useEffect(() => {
+    if (!value) return;
+    setSelectedItem(value);
+  }, [value]);
+
   const handleSelect = item => {
-    setSelectedItem(item);
+    // setSelectedItem(item);
     onSelect(item);
     setShowDropdown(false);
   };
@@ -93,8 +99,6 @@ export default function SearchOSM({
             placeholder={placeholder}
             value={searchText}
             onChange={handleChange}
-            // onFocus={() => setShowDropdown(true)}
-            // onBlur={() => setShowDropdown(false)}
           />
         )}
       </div>
@@ -105,11 +109,8 @@ export default function SearchOSM({
             naxatw-transition-all  naxatw-ease-in-out naxatw-duration-100 naxatw-mt-2
             naxatw-origin-top-right naxatw-bg-white naxatw-border naxatw-border-[#D7D7D7]
             naxatw-rounded-md naxatw-shadow-lg"
-          // style={{
-          //   display: toggle ? 'block' : 'none',
-          // }}
         >
-          <ul className="naxatw-h-[14rem] naxatw-overflow-y-auto scrollbar">
+          <ul className="naxatw-max-h-[14rem] naxatw-overflow-y-auto scrollbar">
             {data.map(item => (
               <li
                 key={item.id}
@@ -137,6 +138,7 @@ SearchOSM.defaultProps = {
   isSmall: false,
   className: '',
   onSelect: () => {},
+  value: null,
 };
 
 SearchOSM.propTypes = {
@@ -144,4 +146,5 @@ SearchOSM.propTypes = {
   isSmall: PropTypes.bool,
   className: PropTypes.string,
   onSelect: PropTypes.func,
+  value: PropTypes.object,
 };

@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState } from 'react';
+import React from 'react';
+import { point } from '@turf/helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators } from '@Actions/routeAnalysis';
 import IconButton from '@Components/common/IconButton';
@@ -14,7 +15,6 @@ export default function SearchContent() {
   const destinationPoint = useSelector(
     state => state.routeAnalysis.dataInput.destinationPoint,
   );
-  const [startingPointInput, setStartingPointInput] = useState('');
   const dispatch = useDispatch();
 
   return (
@@ -28,10 +28,27 @@ export default function SearchContent() {
         <SearchOSM
           isSmall
           placeholder="Starting Point"
-          value={startingPointInput}
-          onChange={e => setStartingPointInput(e.target.value)}
+          onSelect={selectedItem => {
+            const geojson = point(selectedItem.value);
+            dispatch(
+              setDataInputState({
+                startingPoint: { ...selectedItem, name: '', geojson },
+              }),
+            );
+          }}
         />
-        <SearchOSM isSmall placeholder="Destination Point" />
+        <SearchOSM
+          isSmall
+          placeholder="Destination Point"
+          onSelect={selectedItem => {
+            const geojson = point(selectedItem.value);
+            dispatch(
+              setDataInputState({
+                destinationPoint: { ...selectedItem, name: '', geojson },
+              }),
+            );
+          }}
+        />
       </div>
       <div className="naxatw-ml-1 naxatw-flex naxatw-flex-col naxatw-justify-center">
         <IconButton

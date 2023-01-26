@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
+import searchOSMQuery from '@Utils/searchOSMQuery';
 
-async function searchOSMQueries(params) {
-  const searchParams = new URLSearchParams(params);
-  const res = await fetch(
-    `https://nominatim.openstreetmap.org/search?${searchParams}`,
-  );
-  const json = res.json();
-  return json;
-}
-
-// eslint-disable-next-line
-export default function SearchOSM({ placeholder, isSmall, className }) {
+export default function SearchOSM({
+  placeholder,
+  isSmall,
+  className,
+  onSelect,
+}) {
   const [data, setData] = useState(null);
   const [showDropdown, setShowDropdown] = useState(true);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -30,12 +26,12 @@ export default function SearchOSM({ placeholder, isSmall, className }) {
       params.q = value;
       params.format = 'json';
       params.limit = 5;
-      const results = await searchOSMQueries(params);
+      const results = await searchOSMQuery(params);
       setData(
         results.map(item => ({
           id: item.place_id,
           label: item.display_name,
-          value: [+item.lat, +item.lon],
+          value: [+item.lon, +item.lat],
         })),
       );
     },
@@ -43,6 +39,7 @@ export default function SearchOSM({ placeholder, isSmall, className }) {
 
   const handleSelect = item => {
     setSelectedItem(item);
+    onSelect(item);
     setShowDropdown(false);
   };
 
@@ -137,8 +134,14 @@ export default function SearchOSM({ placeholder, isSmall, className }) {
 
 SearchOSM.defaultProps = {
   placeholder: 'Search',
+  isSmall: false,
+  className: '',
+  onSelect: () => {},
 };
 
 SearchOSM.propTypes = {
   placeholder: PropTypes.string,
+  isSmall: PropTypes.bool,
+  className: PropTypes.string,
+  onSelect: PropTypes.func,
 };

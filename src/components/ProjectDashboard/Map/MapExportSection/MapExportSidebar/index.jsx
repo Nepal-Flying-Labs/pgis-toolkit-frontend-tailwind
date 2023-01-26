@@ -1,15 +1,82 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Creators } from '@Actions/projectMap';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import Select from '@Components/common/Select';
 import Toggle from '@Components/common/Toggle';
 import Button from '@Components/common/Button/index';
+import html2canvas from 'html2canvas';
+import { saveAs } from 'file-saver';
+import { formats } from './constants';
 
 const { setProjectMapState } = Creators;
 
-export default function MapSidebar() {
+export default function MapSidebar({exportMap, exportMapRef, exportPaperRef}) {
   const dispatch = useDispatch();
+  const [currentFormat, setCurrentFormat] = useState(formats.PNG)
+
+  const handlePrint = () => {
+    const style = document.createElement('style');
+    document.head.appendChild(style);
+    style.sheet?.insertRule('body > div:last-child img { display: inline-block; }');
+    exportMap.once('rendercomplete', function () {
+        html2canvas(exportPaperRef, {
+            allowTaint: true,
+            useCORS: true,
+            ignoreElements: (el) => {
+                return (
+                    el.classList.contains('ol-control') ||
+                    el.classList.contains('controlMenu')
+                );
+            },
+        }).then((canvas) => {
+            if (currentFormat === formats.Clipboard) {
+                canvas.toBlob((blob) => {
+                    try {
+                        navigator.clipboard.write([
+                            new window.ClipboardItem(
+                                Object.defineProperty({}, blob.type, {
+                                    value: blob,
+                                    enumerable: true
+                                })
+                            )
+                        ]);
+                    } catch (err) {
+                        console.log(err);
+                    }
+                });
+            } else if (currentFormat === formats.PNG) {
+                canvas.toBlob((blob) => { if (blob) saveAs(blob, 'map.png') });
+            } else if (currentFormat === formats.JPEG) {
+                canvas.toBlob((blob) => { if (blob) { saveAs(blob, 'map.jpg') } });
+            } 
+            // else if (currentFormat === formats.PDF) {
+            //     const orientation = currentPaperOrientation === paperOrientation.Landscape ? 'landscape' : 'portrait';
+            //     const pageSize = 'A4';
+            //     const pdf = new JsPDF(orientation, undefined, pageSize);
+            //     const dim = currentPaperSize;
+            //     const size = exportMap.getSize();
+            //     const scale = Math.max(
+            //         size[1] / ((orientation === 'landscape' ? dim[1] : dim[0]) - 20),
+            //         size[0] / ((orientation === 'landscape' ? dim[0] : dim[1]) - 20)
+            //     );
+            //     const finalSize = [size[0] / scale, size[1] / scale];
+
+            //     const [x, y] = [
+            //         Math.abs(
+            //             ((orientation === 'landscape' ? dim[0] : dim[1]) - finalSize[0]) / 2
+            //         ),
+            //         Math.abs(
+            //             ((orientation === 'landscape' ? dim[1] : dim[0]) - finalSize[1]) / 2
+            //         ),
+            //     ];
+            //     pdf.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', x, y, finalSize[0], finalSize[1]);
+            //     pdf.save('map.pdf');
+            // }
+        });
+    });
+    exportMap.renderSync();
+}
 
   return (
     <div
@@ -108,7 +175,7 @@ export default function MapSidebar() {
         <Button
           className="naxatw-btn-primary"
           iconLeft="file_download"
-          // onClick={() => {}}
+          onClick={handlePrint}
         >
           Export
         </Button>

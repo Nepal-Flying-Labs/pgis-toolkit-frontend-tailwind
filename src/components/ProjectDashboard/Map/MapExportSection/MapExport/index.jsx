@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
 import VectorTile from 'ol/layer/VectorTile';
@@ -16,8 +16,6 @@ import {
   getStyles,
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import '@Components/common/OpenLayersComponent/map.css';
-import html2canvas from 'html2canvas';
-import { saveAs } from 'file-saver';
 import { exportMap } from '@Components/common/OpenLayersComponent/helpers/export-map';
 
 const dims = {
@@ -37,62 +35,23 @@ function getScale() {
   return (dpi / 76) * 5;
 }
 
-export default function MapExport() {
+export default function MapExport({setExportMap, setExportMapRef, setExportPaperRef}) {
   const { mapRef, map } = useOLMap({
     center: fromLonLat([85.3, 27.7]),
     zoom: 2,
     maxZoom: 25,
   });
+  const paperRef = useRef(null)
 
-  // useEffect(() => {
-  //   if (!map) return;
-  //   async function drawMap() {
-  //     const mapElement = document.getElementById('ol-map');
-  //     const sidebarElement = document.getElementById('sidebar-export');
-  //     const { width: mapWidth } = mapElement.getBoundingClientRect();
-  //     const { width: sidebarWidth } = sidebarElement.getBoundingClientRect();
-  //     const mapFinalWidth =
-  //       (mapWidth / (mapWidth + sidebarWidth)) * dims[selectedDim][0];
-  //     const mapFinalHeight = dims[selectedDim][1];
-  //     const mapCanvas = await exportMap(map, {
-  //       title: '',
-  //       layout: 'landscape',
-  //       pageSize: selectedDim,
-  //       resolution: '150',
-  //       legend: true,
-  //       northArrow: true,
-  //       scaleBar: true,
-  //       dims: {
-  //         ...dims,
-  //         [selectedDim]: [mapFinalWidth, mapFinalHeight],
-  //       },
-  //     });
-  //     const sidebarCanvas = await html2canvas(sidebarElement, {
-  //       scale: getScale(),
-  //     });
-  //     const finalCanvas = document.createElement('canvas');
-  //     const width = Math.round((dims[selectedDim][0] * dpi) / 25.4);
-  //     const height = Math.round((dims[selectedDim][1] * dpi) / 25.4);
-  //     finalCanvas.width = width;
-  //     finalCanvas.height = height;
-  //     const ctx = finalCanvas.getContext('2d');
-  //     ctx.drawImage(mapCanvas, 0, 0);
-  //     ctx.drawImage(sidebarCanvas, mapCanvas.width, 0);
-  //     finalCanvas.toBlob(blob => {
-  //       const file = new File([blob], 'map.png', {
-  //         type: 'image/png',
-  //       });
-  //       saveAs(file);
-  //     });
-  //   }
-  //   setTimeout(() => {
-  //     drawMap();
-  //   }, 11000);
-  // }, [map]);
+  useEffect(()=>{
+    setExportMap(map)
+    setExportMapRef(mapRef.current)
+    setExportPaperRef(paperRef.current)
+  }, [map, mapRef, paperRef])
 
   return (
     <div className="naxatw-bg-grey-300 naxatw-w-full naxatw-h-full naxatw-flex naxatw-items-center naxatw-justify-center">
-      <div className="naxatw-bg-white naxatw-w-[56rem] naxatw-h-[36rem] naxatw-flex">
+      <div ref={paperRef} className="naxatw-bg-white naxatw-w-[56rem] naxatw-h-[36rem] naxatw-flex">
         <div className="naxatw-bg-white naxatw-w-3/4">
           <MapComponent
             ref={mapRef}

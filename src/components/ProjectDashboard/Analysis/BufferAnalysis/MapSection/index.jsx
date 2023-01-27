@@ -114,6 +114,7 @@ export default function MapSection() {
 
   const setLayerStyle = useCallback((style, feature, resolution) => {
     const stylex = { ...style };
+    // eslint-disable-next-line no-unused-vars
     const properties = feature.getProperties();
     // const { id: featureId } = properties;
     // if (editFeatureId === featureId) {
@@ -127,6 +128,10 @@ export default function MapSection() {
       resolution,
     });
   }, []);
+  const getLayerStyles = layerId => {
+    const style = mapState.find(item => item.id === layerId)?.style;
+    return style || { ...defaultStyles };
+  };
   return (
     <div className="naxatw-w-full naxatw-relative">
       <MapComponent
@@ -216,16 +221,18 @@ export default function MapSection() {
           ),
         )}
         {analysisResults.map(result =>
-          result.buffer_areas.map((area, index) => (
-            <CircleMarker
-              key={index}
-              coordinates={[area.origin[1], area.origin[0]]}
-              visibleOnMap={area.checked}
-              zIndex={10}
-              style={area.originStyle}
-              map={map}
-            />
-          )),
+          result.buffer_areas.map(area =>
+            area.origin.map((areaOrigin, index) => (
+              <CircleMarker
+                key={index}
+                coordinates={[areaOrigin[1], areaOrigin[0]]}
+                visibleOnMap={result.checked}
+                zIndex={10}
+                style={area.originStyle}
+                map={map}
+              />
+            )),
+          ),
         )}
 
         {analysisResults.map(result =>
@@ -250,15 +257,7 @@ export default function MapSection() {
                   url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${poi.layer_id}&sub_layer=&ids=${poi.feature_mirror_ids}`}
                   authToken={localStorage.getItem('userToken')}
                   visibleOnMap={result.checked}
-                  setStyle={(feature, resolution) =>
-                    setLayerStyle(
-                      // item.id === selectedLayer?.id
-                      // ? selectedLayer.style
-                      { ...defaultStyles },
-                      feature,
-                      resolution,
-                    )
-                  }
+                  style={getLayerStyles(poi.layer_id)}
                   zIndex={4}
                   // properties={{ layerId: selectedLayer.id }}
                 />

@@ -1,10 +1,12 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import routeAnalysisActions, { Types } from '@Actions/routeAnalysis';
 import analysisActions from '@Actions/analysis';
+import commonActions from '@Actions/common';
 import {
   getNetworkRoute,
   getNetworkRouteCollection,
   optimumRouteAnalysis,
+  saveRouteLayer,
 } from '@Services/routeAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 
@@ -42,6 +44,37 @@ export function* getAnalysisDataRequest({ params }) {
   }
 }
 
+export function* saveRouteLayerRequest({ payload }) {
+  try {
+    const response = yield call(saveRouteLayer, payload);
+    const responseData = response.data;
+    yield put(
+      routeAnalysisActions.saveRouteLayerSuccess({
+        ...responseData,
+        analysisId: payload.analysis,
+      }),
+    );
+    yield put(commonActions.togglePromptDialog());
+    const { layers } = yield select(state => state.analysis);
+    const { theme, layer } = responseData;
+    yield put(
+      analysisActions.setAnalysisState({
+        layers: {
+          ...layers,
+          [theme]: [
+            { ...responseData, checked: true, layer_type: 'Vector', id: layer },
+            ...layers[theme],
+          ],
+        },
+        zoomToLayerId: layer,
+      }),
+    );
+  } catch (error) {
+    yield put(routeAnalysisActions.saveRouteLayerFailure());
+    throw error;
+  }
+}
+
 function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_ROUTE_ANALYSIS_REQUEST,
@@ -54,6 +87,10 @@ function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.GET_ANALYSIS_DATA_REQUEST,
     withLoader(withErrorHandler(getAnalysisDataRequest)),
+  );
+  yield takeLatest(
+    Types.SAVE_ROUTE_LAYER_REQUEST,
+    withLoader(withErrorHandler(saveRouteLayerRequest)),
   );
 }
 

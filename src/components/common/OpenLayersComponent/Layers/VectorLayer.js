@@ -32,16 +32,21 @@ const VectorLayer = ({
 
   useEffect(() => {
     if (!map) return;
-
+    const features =
+      geojson.type === 'Feature'
+        ? [
+            new GeoJSON().readFeature(geojson, {
+              featureProjection: get('EPSG:3857'),
+            }),
+          ]
+        : new GeoJSON().readFeatures(geojson, {
+            featureProjection: get('EPSG:3857'),
+          });
     const vectorLyr = new OLVectorLayer({
       source: new VectorSource({
-        features: new GeoJSON().readFeatures(geojson, {
-          featureProjection: get('EPSG:3857'),
-        }),
+        features,
       }),
-      // declutter: true,
     });
-
     setVectorLayer(vectorLyr);
   }, [map, geojson]);
 

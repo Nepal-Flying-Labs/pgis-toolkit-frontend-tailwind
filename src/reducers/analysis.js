@@ -12,6 +12,7 @@ const initialState = {
     checkedLayers: [],
   },
   searchText: '',
+  zoomToLayerId: null,
 };
 
 const setAnalysisState = (state, action) => ({

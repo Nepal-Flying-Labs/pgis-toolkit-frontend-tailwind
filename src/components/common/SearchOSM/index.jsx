@@ -16,7 +16,6 @@ export default function SearchOSM({
 }) {
   const [data, setData] = useState(null);
   const [showDropdown, setShowDropdown] = useState(true);
-  // const [selectedItem, setSelectedItem] = useState(null);
 
   const [searchText, handleChange, setSearchText] = useDebouncedInput({
     ms: 200,
@@ -33,6 +32,7 @@ export default function SearchOSM({
       params.limit = 5;
       if (viewBox) {
         params.viewbox = viewBox.join(',');
+        params.bounded = 1;
       }
       const results = await searchOSMQuery(params);
       setData(
@@ -47,12 +47,10 @@ export default function SearchOSM({
 
   useEffect(() => {
     if (!value) return;
-    // setSelectedItem(value);
     setSearchText('');
   }, [value, setSearchText]);
 
   const handleSelect = item => {
-    // setSelectedItem(item);
     onSelect(item);
     setShowDropdown(false);
   };

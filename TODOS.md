@@ -165,10 +165,12 @@
   - [x] swap locations
   - [x] add marker
   - [x] add masking
-  - [ ] implement bbox
+  - [x] implement bbox
+  - [x] design issues
+  - [x] remove search results outside project area
   - [ ] zoom to feature after select
-  - [ ] design errors
-  - [ ] search only inside project area
+  - [ ] reset on input click
+  - [ ] toggle search/map/layer state issue
 - [ ] add loader to map
     
 ### BUFFER ANALYSIS

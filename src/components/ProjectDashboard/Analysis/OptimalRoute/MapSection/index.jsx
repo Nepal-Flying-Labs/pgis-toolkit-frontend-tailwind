@@ -71,7 +71,7 @@ export default function MapSection() {
   const selectedObstacles = useSelector(
     state => state.routeAnalysis.obstacleLayers,
   );
-  const projectGeojson = useSelector(state => state.projectMap.projectGeojson);
+  const projectGeojson = useSelector(state => state.analysis.projectGeojson);
   const zoomToLayerId = useSelector(state => state.analysis.zoomToLayerId);
   const mapState = useSelector(mapStateSelector);
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
@@ -156,8 +156,8 @@ export default function MapSection() {
 
   const setLayerStyle = useCallback((style, feature, resolution) => {
     const stylex = { ...style };
-    const properties = feature.getProperties();
-    const { id: featureId } = properties;
+    // const properties = feature.getProperties();
+    // const { id: featureId } = properties;
     // if (editFeatureId === featureId) {
     //   stylex.fillOpacity = 0;
     //   stylex.lineOpacity = 0;

@@ -25,6 +25,7 @@ const initialState = {
   },
   analysisTaskId: null,
   poiLayers: [],
+  popupActiveTab: 'Summary',
 };
 
 const setBufferAnalysisState = (state, action) => ({
@@ -114,6 +115,10 @@ const handleRouteCheckbox = (state, action) =>
       area.checked = checked;
     }
   });
+const setPopupActiveTab = (state, action) => ({
+  ...state,
+  popupActiveTab: action.payload,
+});
 
 const bufferAnalysisReducer = createReducer(initialState, {
   [Types.SET_BUFFER_ANALYSIS_STATE]: setBufferAnalysisState,
@@ -124,6 +129,7 @@ const bufferAnalysisReducer = createReducer(initialState, {
   [Types.HANDLE_CHECKBOX]: handleCheckbox,
   [Types.CHECK_PROCESSING_STATUS_SUCCESS]: checkProcessingStatusSuccess,
   [Types.HANDLE_ROUTE_CHECKBOX]: handleRouteCheckbox,
+  [Types.SET_POPUP_ACTIVE_TAB]: setPopupActiveTab,
 });
 
 export default bufferAnalysisReducer;

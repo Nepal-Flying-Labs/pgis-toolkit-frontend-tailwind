@@ -11,8 +11,12 @@ import { Creators, Types } from '@Actions/bufferAnalysis';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Chip from '@Components/common/Chip';
 
-const { setDataInputState, applyBufferAnalysisRequest, handleCheckbox } =
-  Creators;
+const {
+  setDataInputState,
+  applyBufferAnalysisRequest,
+  handleCheckbox,
+  copyFeaturesRequest,
+} = Creators;
 
 const originPointData = [
   { label: 'Search', value: 'search', icon: 'search' },
@@ -30,7 +34,7 @@ export default function DataInput() {
   const { projectId } = useParams();
 
   const originPointType = useSelector(
-    state => state.bufferAnalysis.dataInput.originPointType,
+    state => state.bufferAnalysis.dataInput?.originPointType,
   );
   const drawPoint = useSelector(
     state => state.bufferAnalysis.dataInput.drawPoint,
@@ -85,6 +89,10 @@ export default function DataInput() {
       pois: selectedPOI,
       type: 'buffer',
     };
+    const poiLayersIds = poiLayers
+      .filter(layer => layer.checked)
+      .map(layer => layer.id);
+    dispatch(copyFeaturesRequest(poiLayersIds));
     dispatch(applyBufferAnalysisRequest(payloadData));
   };
 

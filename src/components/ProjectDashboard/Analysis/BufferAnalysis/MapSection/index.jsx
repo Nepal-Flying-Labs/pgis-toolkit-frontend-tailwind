@@ -1,5 +1,6 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-array-index-key */
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
 import {
@@ -21,11 +22,20 @@ import Scalebar from '@Components/common/OpenLayersComponent/Scalebar/index';
 import { apiURL } from '@Services';
 
 import '@Components/common/OpenLayersComponent/map.css';
+import { mapStateSelector } from '@Selectors/analysis';
+import {
+  defaultStyles,
+  getStyles,
+} from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileLayer';
+import BufferPopup from './BufferPopup/index';
 
 const { setDataInputState, setResultsState } = BufferAnalysisCreators;
 
 export default function MapSection() {
   const dispatch = useDispatch();
+  const mapState = useSelector(mapStateSelector);
+
   const drawPoint = useSelector(
     state => state.bufferAnalysis.dataInput.drawPoint,
   );
@@ -50,6 +60,7 @@ export default function MapSection() {
     zoom: 2,
     maxZoom: 25,
   });
+  const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
 
   // zoom to project area
   useEffect(() => {
@@ -85,7 +96,37 @@ export default function MapSection() {
       );
     }
   }, [map, zoomToRouteId, analysisResults, dispatch]);
+  // const setLayerStyle = useCallback((style, feature, resolution) => {
+  //   const stylex = { ...style };
+  //   // const properties = feature.getProperties();
+  //   // const { id: featureId } = properties;
+  //   // if (editFeatureId === featureId) {
+  //   //   stylex.fillOpacity = 0;
+  //   //   stylex.lineOpacity = 0;
+  //   //   stylex.icon = {};
+  //   // }
+  //   return getStyles({
+  //     style: stylex,
+  //     feature,
+  //     resolution,
+  //   });
+  // }, []);
 
+  const setLayerStyle = useCallback((style, feature, resolution) => {
+    const stylex = { ...style };
+    const properties = feature.getProperties();
+    // const { id: featureId } = properties;
+    // if (editFeatureId === featureId) {
+    //   stylex.fillOpacity = 0;
+    //   stylex.lineOpacity = 0;
+    //   stylex.icon = {};
+    // }
+    return getStyles({
+      style: stylex,
+      feature,
+      resolution,
+    });
+  }, []);
   return (
     <div className="naxatw-w-full naxatw-relative">
       <MapComponent
@@ -140,7 +181,40 @@ export default function MapSection() {
         />
         <LayerSwitcherControl />
         <Scalebar />
-
+        {mapState.map((item, index) =>
+          item.layer_type === 'Vector' ? (
+            <VectorTileLayer
+              key={item.id}
+              url={`${apiURL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+              authToken={localStorage.getItem('userToken')}
+              visibleOnMap={item.checked}
+              setStyle={(feature, resolution) =>
+                setLayerStyle(
+                  item.id === selectedLayer?.id
+                    ? selectedLayer.style
+                    : item?.style || { ...defaultStyles },
+                  feature,
+                  resolution,
+                )
+              }
+              // style={
+              //   item.id === selectedLayer?.id
+              //     ? selectedLayer.style
+              //     : item?.style || { ...defaultStyles }
+              // }
+              zIndex={mapState.length + 10 - index}
+              properties={{ layerId: item.id }}
+            />
+          ) : item.layer_type === 'WMS' ? (
+            <WMSTileLayer
+              key={item.id}
+              url={item.url}
+              visibleOnMap={item.checked}
+            />
+          ) : (
+            ''
+          ),
+        )}
         {analysisResults.map(result =>
           result.buffer_areas.map((area, index) => (
             <CircleMarker
@@ -167,6 +241,31 @@ export default function MapSection() {
             />
           )),
         )}
+        {analysisResults.map(result =>
+          result.buffer_areas.map(area =>
+            area.poi.map(poi =>
+              poi.feature_mirror_ids.length > 0 ? (
+                <VectorTileLayer
+                  key={area.id}
+                  url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${poi.layer_id}&sub_layer=&ids=${poi.feature_mirror_ids}`}
+                  authToken={localStorage.getItem('userToken')}
+                  visibleOnMap={result.checked}
+                  setStyle={(feature, resolution) =>
+                    setLayerStyle(
+                      // item.id === selectedLayer?.id
+                      // ? selectedLayer.style
+                      { ...defaultStyles },
+                      feature,
+                      resolution,
+                    )
+                  }
+                  zIndex={4}
+                  // properties={{ layerId: selectedLayer.id }}
+                />
+              ) : null,
+            ),
+          ),
+        )}
 
         {originGeojson &&
           originGeojson.map(origin => (
@@ -178,6 +277,8 @@ export default function MapSection() {
               style={{ ...startPointStyles }}
             />
           ))}
+
+        <BufferPopup />
       </MapComponent>
     </div>
   );

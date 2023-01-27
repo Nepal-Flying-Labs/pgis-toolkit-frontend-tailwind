@@ -131,8 +131,8 @@ export default function MapSection() {
 
   const setLayerStyle = useCallback((style, feature, resolution) => {
     const stylex = { ...style };
-    const properties = feature.getProperties();
-    const { id: featureId } = properties;
+    // const properties = feature.getProperties();
+    // const { id: featureId } = properties;
     // if (editFeatureId === featureId) {
     //   stylex.fillOpacity = 0;
     //   stylex.lineOpacity = 0;

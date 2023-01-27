@@ -163,3 +163,6 @@
 - [ ] show features inside buffer
 - [ ] BufferPopup UI
 - [ ] zoom to individual buffer
+
+- [ ] show vectortile layer from feature_mirror_ids
+- [ ] show origin of all with dissolve feature

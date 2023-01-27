@@ -10,6 +10,7 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import Chip from '../Chip';
 import MapContent from './OriginPointContents/MapContent';
 import SearchContent from './OriginPointContents/SearchContent';
+import LayerContent from './OriginPointContents/LayerContent';
 
 const { setDataInputState, handleCheckbox, applyRouteAnalysisRequest } =
   Creators;
@@ -25,6 +26,19 @@ const originPointData = [
   { label: 'Map', value: 'map', icon: 'map' },
   { label: 'Layer', value: 'layer', icon: 'format_list_bulleted' },
 ];
+
+function getOriginPointsContent(content) {
+  switch (content) {
+    case 'search':
+      return <SearchContent />;
+    case 'map':
+      return <MapContent />;
+    case 'layer':
+      return <LayerContent />;
+    default:
+      return '';
+  }
+}
 
 // eslint-disable-next-line
 function Container({ children }) {
@@ -93,19 +107,6 @@ export default function DataInput() {
     };
     dispatch(applyRouteAnalysisRequest(payloadData));
   };
-
-  function getOriginPointsContent(content) {
-    switch (content) {
-      case 'search':
-        return <SearchContent />;
-      case 'map':
-        return <MapContent />;
-      case 'layer':
-        return '';
-      default:
-        return '';
-    }
-  }
 
   return (
     <div className=" naxatw-h-full">

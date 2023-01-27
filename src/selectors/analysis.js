@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { isEmpty } from '@Utils/commonUtils';
+import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
 const themesSelector = state => state.analysis.themes;
 const layersSelector = state => state.analysis.layers;
@@ -54,4 +55,9 @@ export const filteredThemesSelector = createSelector(
       [],
     );
   },
+);
+
+export const pointLayersSelector = createSelector(
+  [mapStateSelector],
+  mapState => mapState.filter(item => pointTypes.includes(item.geom_type)),
 );

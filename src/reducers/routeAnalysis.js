@@ -12,10 +12,10 @@ const initialState = {
   activeTab: 'dataInput', // 'dataInput', 'results', 'layers'
   dataInput: {
     selectedModeOfTransport: 'drive', // 'drive', 'cycle', 'walk'
-    originPointType: 'map', // 'search', 'map', 'layer'
+    originPointType: 'search', // 'search', 'map', 'layer'
     drawPointType: null, // 'start', 'destination'
-    startGeojson: null,
-    destinationGeojson: null,
+    startingPoint: null, // { id: '', name: '', geojson: null }
+    destinationPoint: null, // { id: '', name: '', geojson: null }
     alternativePaths: 1,
     outputName: '',
   },

@@ -7,12 +7,9 @@ import toastActions from '@Actions/toast';
 import { analysisHeaderHeight } from '@src/constants';
 import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
-import {
-  destinationPointColor,
-  startingPointColor,
-} from '@src/constants/analysis';
-import IconButton from '@Components/common/IconButton';
 import Chip from '../Chip';
+import MapContent from './OriginPointContents/MapContent';
+import SearchContent from './OriginPointContents/SearchContent';
 
 const { setDataInputState, handleCheckbox, applyRouteAnalysisRequest } =
   Creators;
@@ -29,31 +26,9 @@ const originPointData = [
   { label: 'Layer', value: 'layer', icon: 'format_list_bulleted' },
 ];
 
-const drawPointData = [
-  {
-    label: 'Draw Starting Point',
-    value: 'start',
-    icon: 'radio_button_checked',
-  },
-  {
-    label: 'Draw Destination Point',
-    value: 'destination',
-    icon: 'radio_button_checked',
-  },
-];
-
 // eslint-disable-next-line
 function Container({ children }) {
   return <div className="naxatw-space-y-2">{children}</div>;
-}
-
-function getGeojsonCoordinates(geojson) {
-  const {
-    coordinates: [lat, lng],
-  } = geojson.geometry;
-  const latitude = lat.toFixed(5);
-  const longitude = lng.toFixed(5);
-  return `${latitude}, ${longitude}`;
 }
 
 export default function DataInput() {
@@ -70,20 +45,17 @@ export default function DataInput() {
   const originPointType = useSelector(
     state => state.routeAnalysis.dataInput.originPointType,
   );
-  const drawPointType = useSelector(
-    state => state.routeAnalysis.dataInput.drawPointType,
-  );
-  const startGeojson = useSelector(
-    state => state.routeAnalysis.dataInput.startGeojson,
-  );
-  const destinationGeojson = useSelector(
-    state => state.routeAnalysis.dataInput.destinationGeojson,
-  );
   const alternativePaths = useSelector(
     state => state.routeAnalysis.dataInput.alternativePaths,
   );
   const outputName = useSelector(
     state => state.routeAnalysis.dataInput.outputName,
+  );
+  const startingPoint = useSelector(
+    state => state.routeAnalysis.dataInput.startingPoint,
+  );
+  const destinationPoint = useSelector(
+    state => state.routeAnalysis.dataInput.destinationPoint,
   );
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.APPLY_ROUTE_ANALYSIS_REQUEST]),
@@ -91,7 +63,7 @@ export default function DataInput() {
   const dispatch = useDispatch();
 
   const handleApply = () => {
-    if (!startGeojson || !destinationGeojson || !outputName) {
+    if (!startingPoint || !destinationPoint || !outputName) {
       dispatch(
         toastActions.error({
           message: 'Please input all the required fields!',
@@ -99,9 +71,9 @@ export default function DataInput() {
       );
       return;
     }
-    const [originLong, originLat] = startGeojson.geometry.coordinates;
+    const [originLong, originLat] = startingPoint.geojson.geometry.coordinates;
     const [destinationLong, destinationLat] =
-      destinationGeojson.geometry.coordinates;
+      destinationPoint.geojson.geometry.coordinates;
     const selectedObstacles = obstacleLayers
       .filter(item => item.checked)
       .map(item => item.id);
@@ -121,6 +93,19 @@ export default function DataInput() {
     };
     dispatch(applyRouteAnalysisRequest(payloadData));
   };
+
+  function getOriginPointsContent(content) {
+    switch (content) {
+      case 'search':
+        return <SearchContent />;
+      case 'map':
+        return <MapContent />;
+      case 'layer':
+        return '';
+      default:
+        return '';
+    }
+  }
 
   return (
     <div className=" naxatw-h-full">
@@ -173,70 +158,7 @@ export default function DataInput() {
             ))}
           </div>
 
-          <Container>
-            <div className="naxatw-flex naxatw-select-none">
-              <div className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-between naxatw-text-grey-600 naxatw-py-1">
-                <i className="material-icons naxatw-text-lg">
-                  radio_button_unchecked
-                </i>
-                <div className="naxatw-w-8 naxatw-border-t-2 naxatw-border-dashed naxatw-border-grey-600 naxatw-rotate-90" />
-                <i className="material-symbols-outlined naxatw-text-lg">
-                  place
-                </i>
-              </div>
-              <div className="naxatw-flex-1 naxatw-space-y-2">
-                {drawPointData.map(({ label, value, icon }) => (
-                  <Chip
-                    key={value}
-                    className={`!naxatw-w-full ${
-                      (value === 'start' && startGeojson) ||
-                      (value === 'destination' && destinationGeojson)
-                        ? '!naxatw-bg-white'
-                        : ''
-                    }`}
-                    label={
-                      value === 'start' && startGeojson
-                        ? getGeojsonCoordinates(startGeojson)
-                        : value === 'destination' && destinationGeojson
-                        ? getGeojsonCoordinates(destinationGeojson)
-                        : label
-                    }
-                    iconLeft={icon}
-                    iconStyle={{
-                      color:
-                        value === 'start' && startGeojson
-                          ? startingPointColor
-                          : value === 'destination' && destinationGeojson
-                          ? destinationPointColor
-                          : '',
-                    }}
-                    active={drawPointType === value}
-                    onClick={() => {
-                      if (drawPointType) return;
-                      dispatch(
-                        setDataInputState({
-                          drawPointType: value,
-                        }),
-                      );
-                    }}
-                  />
-                ))}
-              </div>
-              <div className="naxatw-ml-1 naxatw-flex naxatw-flex-col naxatw-justify-center">
-                <IconButton
-                  name="swap_vert"
-                  onClick={() => {
-                    dispatch(
-                      setDataInputState({
-                        startGeojson: destinationGeojson,
-                        destinationGeojson: startGeojson,
-                      }),
-                    );
-                  }}
-                />
-              </div>
-            </div>
-          </Container>
+          <Container>{getOriginPointsContent(originPointType)}</Container>
         </Container>
 
         <Container>

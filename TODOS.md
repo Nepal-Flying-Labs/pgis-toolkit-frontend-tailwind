@@ -158,7 +158,20 @@
 - [ ] Category ID is seen in Data Catalog table after upload success.
 
 ### ROUTE ANALYSIS
+- [ ] preferred alternative path +/- button
 - [ ] route to data cleaning on reload
+- [ ] geometry type polygon after route layer save 
+- [ ] osm search
+  - [x] swap locations
+  - [x] add marker
+  - [x] add masking
+  - [x] implement bbox
+  - [x] design issues
+  - [x] remove search results outside project area
+  - [x] reset searched location on input click
+  - [ ] zoom to feature after select
+  - [ ] toggle search/map/layer state issue
+- [ ] add loader to map
     
 ### BUFFER ANALYSIS
 - [ ] copy feature before buffer analysis

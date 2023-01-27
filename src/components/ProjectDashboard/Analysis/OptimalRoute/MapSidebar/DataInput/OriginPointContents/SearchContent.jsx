@@ -28,7 +28,7 @@ export default function SearchContent() {
         <div className="naxatw-w-8 naxatw-border-t-2 naxatw-border-dashed naxatw-border-grey-600 naxatw-rotate-90" />
         <i className="material-symbols-outlined naxatw-text-lg">place</i>
       </div>
-      <div className="naxatw-flex-1 naxatw-space-y-2">
+      <div className="naxatw-flex-1 naxatw-space-y-1">
         <SearchOSM
           isSmall
           placeholder="Starting Point"

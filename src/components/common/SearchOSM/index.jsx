@@ -15,19 +15,19 @@ export default function SearchOSM({
 }) {
   const [data, setData] = useState(null);
   const [showDropdown, setShowDropdown] = useState(true);
-  const [selectedItem, setSelectedItem] = useState(null);
+  // const [selectedItem, setSelectedItem] = useState(null);
 
-  const [searchText, handleChange] = useDebouncedInput({
+  const [searchText, handleChange, setSearchText] = useDebouncedInput({
     ms: 200,
     init: '',
     onChange: async debouncedEvent => {
-      const searchedText = debouncedEvent.target.value;
-      if (searchedText.length < 2) {
+      const val = debouncedEvent.target.value;
+      if (val.length < 2) {
         setData(null);
         return;
       }
       const params = {};
-      params.q = searchedText;
+      params.q = val;
       params.format = 'json';
       params.limit = 5;
       const results = await searchOSMQuery(params);
@@ -43,8 +43,9 @@ export default function SearchOSM({
 
   useEffect(() => {
     if (!value) return;
-    setSelectedItem(value);
-  }, [value]);
+    // setSelectedItem(value);
+    setSearchText('');
+  }, [value, setSearchText]);
 
   const handleSelect = item => {
     // setSelectedItem(item);
@@ -53,7 +54,7 @@ export default function SearchOSM({
   };
 
   return (
-    <div className="naxatw-flex naxatw-relative naxatw-items-center naxatw-w-full naxatw-h-12">
+    <div className="naxatw-flex naxatw-relative naxatw-items-center naxatw-w-full naxatw-h-10">
       <label htmlFor="simple-search" className="naxatw-sr-only">
         {placeholder}
       </label>
@@ -68,29 +69,29 @@ export default function SearchOSM({
             {iconName}
           </i>
         </div>
-        {selectedItem ? (
+        {value ? (
           <p
-            title={selectedItem?.label}
-            className={`naxatw-border naxatw-border-grey-300 naxatw-text-grey-900 naxatw-rounded-full
-              naxatw-bg-white focus:naxatw-outline-none  focus:naxatw-border-[#484848]
-              naxatw-block naxatw-w-[15.7rem] naxatw-pl-[44px] naxatw-pr-3 naxatw-truncate
-              naxatw-overflow-hidden ${
+            title={value?.label}
+            className={`naxatw-border naxatw-border-grey-300 naxatw-text-grey-900 naxatw-text-body-lg
+              naxatw-rounded-full naxatw-bg-white focus:naxatw-outline-none
+              focus:naxatw-border-800 naxatw-block naxatw-w-[15.7rem] naxatw-pl-[44px]
+              naxatw-pr-3 naxatw-truncate naxatw-overflow-hidden ${
                 isSmall
-                  ? 'naxatw-py-2 naxatw-h-[40px]'
+                  ? 'naxatw-py-2 naxatw-h-[38px]'
                   : 'naxatw-py-3 naxatw-h-[48px]'
               }
             ${className}`}
           >
-            {selectedItem?.label}
+            {value?.label}
           </p>
         ) : (
           <input
             type="text"
             className={`naxatw-border naxatw-border-grey-300 naxatw-text-grey-900  naxatw-rounded-full
-              focus:naxatw-outline-none  focus:naxatw-border-[#484848]
+              focus:naxatw-outline-none  focus:naxatw-border-800
               naxatw-block naxatw-w-full naxatw-pl-[44px] naxatw-pr-3 ${
                 isSmall
-                  ? 'naxatw-py-2 naxatw-h-[40px]'
+                  ? 'naxatw-py-2 naxatw-h-[38px]'
                   : 'naxatw-py-3 naxatw-h-[48px]'
               }
             ${className}`}
@@ -105,7 +106,7 @@ export default function SearchOSM({
         <div
           className="naxatw-absolute naxatw-left-0 naxatw-top-10 naxatw-z-[90000] naxatw-w-full
             naxatw-transition-all  naxatw-ease-in-out naxatw-duration-100 naxatw-mt-2
-            naxatw-origin-top-right naxatw-bg-white naxatw-border naxatw-border-[#D7D7D7]
+            naxatw-origin-top-right naxatw-bg-white naxatw-border naxatw-border-300
             naxatw-rounded-md naxatw-shadow-lg"
         >
           <ul className="naxatw-max-h-[14rem] naxatw-overflow-y-auto scrollbar">
@@ -115,7 +116,7 @@ export default function SearchOSM({
                 tabIndex="0"
                 role="menuitem"
                 className="naxatw-px-3 naxatw-py-2 naxatw-cursor-pointer naxatw-rounded-sm 
-                  hover:naxatw-bg-[#F5F5F5]"
+                  hover:naxatw-bg-100"
                 onClick={() => {
                   handleSelect(item);
                 }}

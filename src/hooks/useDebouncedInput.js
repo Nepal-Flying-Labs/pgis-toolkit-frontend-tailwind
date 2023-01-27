@@ -50,5 +50,5 @@ export default function useDebouncedInput({
     [debounceEvent, init],
   );
 
-  return [input, handleChange];
+  return [input, handleChange, setInput];
 }

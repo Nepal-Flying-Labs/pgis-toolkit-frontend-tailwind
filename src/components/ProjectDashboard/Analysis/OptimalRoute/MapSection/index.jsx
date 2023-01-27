@@ -18,6 +18,7 @@ import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLay
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileLayer';
 import CircleMarker from '@Components/common/OpenLayersComponent/CustomLayer/CircleMarker';
+import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import Spinner from '@Components/common/Spinner';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import 'ol/ol.css';
@@ -70,6 +71,7 @@ export default function MapSection() {
   const selectedObstacles = useSelector(
     state => state.routeAnalysis.obstacleLayers,
   );
+  const projectGeojson = useSelector(state => state.projectMap.projectGeojson);
   const zoomToLayerId = useSelector(state => state.analysis.zoomToLayerId);
   const mapState = useSelector(mapStateSelector);
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
@@ -346,6 +348,8 @@ export default function MapSection() {
         )}
 
         <RoutePopup />
+
+        <MaskedLayer geojson={projectGeojson} />
 
         <MapFooter loading={isMapLoading} />
       </MapComponent>

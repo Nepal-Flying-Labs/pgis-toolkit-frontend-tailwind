@@ -164,10 +164,11 @@
 - [ ] osm search
   - [x] swap locations
   - [x] add marker
+  - [x] add masking
   - [ ] implement bbox
   - [ ] zoom to feature after select
-  - [ ] add masking
   - [ ] design errors
+  - [ ] search only inside project area
 - [ ] add loader to map
     
 ### BUFFER ANALYSIS

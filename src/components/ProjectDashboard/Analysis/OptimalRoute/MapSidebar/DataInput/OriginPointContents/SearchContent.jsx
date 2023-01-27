@@ -19,6 +19,9 @@ export default function SearchContent() {
   const destinationPoint = useSelector(
     state => state.routeAnalysis.dataInput.destinationPoint,
   );
+  const projectDetail = useSelector(
+    state => state.projectDashboard.projectDetail,
+  );
   const dispatch = useDispatch();
 
   return (
@@ -36,6 +39,7 @@ export default function SearchContent() {
           iconStyle={{
             color: startingPoint ? startingPointColor : '',
           }}
+          viewBox={projectDetail?.bbox}
           value={startingPoint}
           onSelect={selectedItem => {
             const geojson = point(selectedItem.value);
@@ -53,6 +57,7 @@ export default function SearchContent() {
           iconStyle={{
             color: destinationPoint ? destinationPointColor : '',
           }}
+          viewBox={projectDetail?.bbox}
           value={destinationPoint}
           onSelect={selectedItem => {
             const geojson = point(selectedItem.value);

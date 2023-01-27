@@ -12,6 +12,7 @@ export default function SearchOSM({
   iconStyle,
   iconClassName,
   iconName,
+  viewBox,
 }) {
   const [data, setData] = useState(null);
   const [showDropdown, setShowDropdown] = useState(true);
@@ -30,6 +31,9 @@ export default function SearchOSM({
       params.q = val;
       params.format = 'json';
       params.limit = 5;
+      if (viewBox) {
+        params.viewbox = viewBox.join(',');
+      }
       const results = await searchOSMQuery(params);
       setData(
         results.map(item => ({
@@ -141,6 +145,7 @@ SearchOSM.defaultProps = {
   iconClassName: 'material-icons',
   iconStyle: {},
   iconName: 'search',
+  viewBox: null,
 };
 
 SearchOSM.propTypes = {
@@ -152,4 +157,5 @@ SearchOSM.propTypes = {
   iconClassName: PropTypes.string,
   iconStyle: PropTypes.object,
   iconName: PropTypes.string,
+  viewBox: PropTypes.array,
 };

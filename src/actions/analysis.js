@@ -19,6 +19,10 @@ export const { Types, Creators } = createActions(
     copyLayerDataRequest: ['payload'],
     copyLayerDataSuccess: ['payload'],
     copyLayerDataFailure: null,
+
+    getProjectGeojsonRequest: ['params'],
+    getProjectGeojsonSuccess: ['payload'],
+    getProjectGeojsonFailure: null,
   },
   { prefix: 'analysis/' },
 );

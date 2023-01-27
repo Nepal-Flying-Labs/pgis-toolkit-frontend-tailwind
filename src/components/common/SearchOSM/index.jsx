@@ -42,6 +42,7 @@ export default function SearchOSM({
           value: [+item.lon, +item.lat],
         })),
       );
+      setShowDropdown(true);
     },
   });
 
@@ -83,6 +84,7 @@ export default function SearchOSM({
                   : 'naxatw-py-3 naxatw-h-[48px]'
               }
             ${className}`}
+            onClick={() => onSelect(null)}
           >
             {value?.label}
           </p>

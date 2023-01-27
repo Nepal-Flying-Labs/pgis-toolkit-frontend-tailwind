@@ -42,12 +42,20 @@ export default function SearchContent() {
           viewBox={projectDetail?.bbox}
           value={startingPoint}
           onSelect={selectedItem => {
-            const geojson = point(selectedItem.value);
-            dispatch(
-              setDataInputState({
-                startingPoint: { ...selectedItem, name: '', geojson },
-              }),
-            );
+            if (!selectedItem) {
+              dispatch(
+                setDataInputState({
+                  startingPoint: null,
+                }),
+              );
+            } else {
+              const geojson = point(selectedItem.value);
+              dispatch(
+                setDataInputState({
+                  startingPoint: { ...selectedItem, name: '', geojson },
+                }),
+              );
+            }
           }}
         />
         <SearchOSM
@@ -60,12 +68,20 @@ export default function SearchContent() {
           viewBox={projectDetail?.bbox}
           value={destinationPoint}
           onSelect={selectedItem => {
-            const geojson = point(selectedItem.value);
-            dispatch(
-              setDataInputState({
-                destinationPoint: { ...selectedItem, name: '', geojson },
-              }),
-            );
+            if (!selectedItem) {
+              dispatch(
+                setDataInputState({
+                  destinationPoint: null,
+                }),
+              );
+            } else {
+              const geojson = point(selectedItem.value);
+              dispatch(
+                setDataInputState({
+                  destinationPoint: { ...selectedItem, name: '', geojson },
+                }),
+              );
+            }
           }}
         />
       </div>

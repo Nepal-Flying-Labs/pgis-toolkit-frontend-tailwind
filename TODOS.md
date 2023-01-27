@@ -168,8 +168,8 @@
   - [x] implement bbox
   - [x] design issues
   - [x] remove search results outside project area
+  - [x] reset searched location on input click
   - [ ] zoom to feature after select
-  - [ ] reset on input click
   - [ ] toggle search/map/layer state issue
 - [ ] add loader to map
     

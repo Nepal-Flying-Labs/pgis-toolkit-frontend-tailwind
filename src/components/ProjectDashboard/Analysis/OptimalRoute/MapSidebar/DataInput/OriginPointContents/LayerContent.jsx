@@ -1,12 +1,14 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators } from '@Actions/routeAnalysis';
+import { Creators as AnalysisCreators } from '@Actions/analysis';
+import { Creators as CommonCreators } from '@Actions/common';
 import IconButton from '@Components/common/IconButton';
 import Select from '@Components/common/Select';
 import { pointLayersSelector } from '@Selectors/analysis';
 
-const { setDataInputState } = Creators;
+const { setAnalysisState } = AnalysisCreators;
+const { toggleModal } = CommonCreators;
 
 export default function LayerContent() {
   const pointLayers = useSelector(pointLayersSelector);
@@ -32,6 +34,14 @@ export default function LayerContent() {
           options={pointLayers}
           labelKey="name"
           valueKey="id"
+          onChange={selectedItem => {
+            dispatch(toggleModal('select-layer-feature'));
+            dispatch(
+              setAnalysisState({
+                selectedLayer: selectedItem,
+              }),
+            );
+          }}
         />
         <Select
           placeholder="Select Destination Layer"

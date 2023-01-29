@@ -41,6 +41,7 @@ import DeleteError from '@Components/ProjectDashboard/Analysis/ModalContent/Dele
 import ViewRouteAttribute from '@Components/ProjectDashboard/Analysis/ModalContent/ViewRouteAttribute';
 import DeleteAnOrganization from '@Components/Organizations/ModalContent/DeleteAnOrganization';
 import SaveRouteLayer from '@Components/ProjectDashboard/Analysis/ModalContent/SaveRouteLayer';
+import SelectLayerFeature from '@Components/ProjectDashboard/Analysis/ModalContent/SelectLayerFeature';
 
 export function getModalContent(content) {
   switch (content) {
@@ -211,6 +212,12 @@ export function getModalContent(content) {
       return {
         title: 'Route Attribute',
         content: <ViewRouteAttribute />,
+        className: '!naxatw-w-[calc(100vw-15rem)]',
+      };
+    case 'select-layer-feature':
+      return {
+        title: 'Select Layer Feature',
+        content: <SelectLayerFeature />,
         className: '!naxatw-w-[calc(100vw-15rem)]',
       };
     default:

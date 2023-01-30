@@ -240,10 +240,12 @@ export default function BufferPopup() {
                   </div>
 
                   <div className="naxatw-mt-5">
-                    <div>Listing</div>
+                    <div>{selectedCategory}</div>
                     {detailsListData?.data?.map(itm => (
                       <div className="naxatw-flex naxatw-justify-start naxatw-py-1">
-                        <span>{itm?.Name || itm?.name}</span>
+                        <span>
+                          {itm?.Name || itm?.name || itm[selectedCategory]}
+                        </span>
                       </div>
                     ))}
                   </div>

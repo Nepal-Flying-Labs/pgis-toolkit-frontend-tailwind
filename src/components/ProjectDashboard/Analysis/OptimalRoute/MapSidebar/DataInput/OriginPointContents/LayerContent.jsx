@@ -7,7 +7,10 @@ import { Creators as CommonCreators } from '@Actions/common';
 import IconButton from '@Components/common/IconButton';
 import Select from '@Components/common/Select';
 import { pointLayersSelector } from '@Selectors/analysis';
-import { startingPointColor } from '@src/constants/analysis';
+import {
+  startingPointColor,
+  destinationPointColor,
+} from '@src/constants/analysis';
 import Chip from '@Components/common/Chip';
 
 const { setAnalysisState } = AnalysisCreators;
@@ -78,13 +81,38 @@ export default function LayerContent() {
             }
           />
         )}
-        <Select
-          placeholder="Select Destination Layer"
-          style={{ height: '40px' }}
-          options={pointLayers}
-          labelKey="name"
-          valueKey="id"
-        />
+        {destinationPoint?.geojson ? (
+          <Chip
+            className={`!naxatw-w-full ${
+              destinationPoint?.geojson || destinationPoint?.geojson
+                ? '!naxatw-bg-white'
+                : ''
+            }`}
+            label={destinationPoint?.name}
+            iconLeft="radio_button_checked"
+            iconStyle={{
+              color: destinationPoint?.geojson ? destinationPointColor : '',
+            }}
+            onClick={() => {
+              dispatch(
+                setDataInputState({
+                  destinationPoint: null,
+                }),
+              );
+            }}
+          />
+        ) : (
+          <Select
+            placeholder="Select Destination Layer"
+            style={{ height: '40px' }}
+            options={pointLayers}
+            labelKey="name"
+            valueKey="id"
+            onChange={selectedItem =>
+              handleSelect(selectedItem, 'destinationPoint')
+            }
+          />
+        )}
       </div>
       <div className="naxatw-ml-1 naxatw-flex naxatw-flex-col naxatw-justify-center">
         <IconButton

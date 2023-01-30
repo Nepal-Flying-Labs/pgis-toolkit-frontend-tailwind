@@ -3,11 +3,16 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar';
-import { Creators as AnalysisCreators, Types } from '@Actions/analysis';
-import { Creators as RouteAnalysisCreators } from '@Actions/routeAnalysis';
+import {
+  Creators as AnalysisCreators,
+  Types as AnalysisTypes,
+} from '@Actions/analysis';
+import {
+  Creators as RouteAnalysisCreators,
+  Types as RouteAnalysisTypes,
+} from '@Actions/routeAnalysis';
 import Table, { TableHeader } from '@Components/common/CustomTable';
 import SortingContainer from '@Components/common/SortingContainer';
-import DropdownOptions from '@Components/common/DropdownOptions';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import '@Components/OrganizationDashboard/User/Users/index.css';
 import TableSkeleton from '@Components/common/TableSkeleton';
@@ -32,29 +37,6 @@ const {
 } = AnalysisCreators;
 
 const { getSelectedLayerFeatureRequest } = RouteAnalysisCreators;
-
-const dropdownOptions = [
-  {
-    id: 1,
-    label: (
-      <span className="naxatw-flex naxatw-items-center">
-        <i className="material-icons naxatw-mr-2">edit</i>
-        <p className="naxatw-text-body-lg">Edit</p>
-      </span>
-    ),
-    onClick: () => {},
-  },
-  {
-    id: 2,
-    label: (
-      <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
-        <i className="material-icons naxatw-mr-2">delete_outline</i>
-        <p className="naxatw-text-body-lg naxatw-text-delete_btn">Delete</p>
-      </span>
-    ),
-    onClick: () => {},
-  },
-];
 
 export default function SelectLayerFeature() {
   const dispatch = useDispatch();
@@ -85,7 +67,6 @@ export default function SelectLayerFeature() {
   const previousPage = useSelector(
     state => state.analysis.layerAttributesList.pagination.previous,
   );
-
   const next = () => {
     if (nextPage !== null) dispatch(handleAttributeNextClick());
   };
@@ -105,7 +86,12 @@ export default function SelectLayerFeature() {
     },
   });
   const loading = useSelector(state =>
-    checkIfLoading(state, [Types.GET_LAYER_ATTRIBUTE_REQUEST]),
+    checkIfLoading(state, [AnalysisTypes.GET_LAYER_ATTRIBUTE_REQUEST]),
+  );
+  const isPosting = useSelector(state =>
+    checkIfLoading(state, [
+      RouteAnalysisTypes.GET_SELECTED_LAYER_FEATURE_REQUEST,
+    ]),
   );
 
   useEffect(() => {
@@ -173,7 +159,7 @@ export default function SelectLayerFeature() {
               dataFormat={row => (
                 <input
                   type="checkbox"
-                  className="naxatw-w-5 naxatw-h-5 naxatw-accent-grey-800"
+                  className="naxatw-w-5 naxatw-h-5 naxatw-accent-grey-800 naxatw-m-2"
                   checked={row.checked}
                   onChange={() => dispatch(handleTableCheckbox(row.attrId))}
                 />
@@ -210,21 +196,6 @@ export default function SelectLayerFeature() {
                 )}
               />
             ))}
-            <TableHeader
-              dataField=""
-              headerClassName="sticky-menu"
-              rowClassName="sticky-menu"
-              rowcolSpan="rowSpan_3"
-              dataFormat={row => (
-                <div className="naxatw-flex naxatw-justify-end naxatw-w-full naxatw-shadow-xl naxatw-relative">
-                  <DropdownOptions
-                    options={dropdownOptions}
-                    data={row}
-                    stopPropagation
-                  />
-                </div>
-              )}
-            />
           </Table>
         ) : (
           <TableSkeleton itemNumber={5} />
@@ -242,8 +213,12 @@ export default function SelectLayerFeature() {
         handleSelect={data => dispatch(handleAttributeRowSelect(data))}
       />
 
-      <div>
-        <Button className="naxatw-btn-primary" onClick={handleSave}>
+      <div className="naxatw-flex naxatw-items-center naxatw-justify-center">
+        <Button
+          className="naxatw-btn-primary"
+          isLoading={isPosting}
+          onClick={handleSave}
+        >
           Save
         </Button>
       </div>

@@ -85,9 +85,12 @@ export default function DataInput() {
       );
       return;
     }
-    const [originLong, originLat] = startingPoint.geojson.geometry.coordinates;
+    const [originLong, originLat] =
+      startingPoint.geojson.geometry?.coordinates ||
+      startingPoint.geojson.coordinates;
     const [destinationLong, destinationLat] =
-      destinationPoint.geojson.geometry.coordinates;
+      destinationPoint.geojson.geometry?.coordinates ||
+      destinationPoint.geojson.coordinates;
     const selectedObstacles = obstacleLayers
       .filter(item => item.checked)
       .map(item => item.id);

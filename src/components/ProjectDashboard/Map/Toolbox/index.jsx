@@ -18,25 +18,46 @@ const btnClassname =
   'naxatw-p-2 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-rounded-lg hover:naxatw-bg-grey-100';
 
 export default function Toolbox({ map }) {
+  // const [toggleState, setToggleState] = useState(false);
+  // const [isFullScreen, setIsFullScreen] = useState(false);
   const [showToolbox, setShowToolbox] = useState(false);
   const dispatch = useDispatch();
 
   function fullScreenControl() {
+    const inactiveTag = document.createElement('span');
+    inactiveTag.className = 'material-icons naxatw-border-none';
+    inactiveTag.innerText = 'fullscreen';
+
+    const activeTag = document.createElement('span');
+    activeTag.className = 'material-icons naxatw-border-none';
+    activeTag.innerText = 'close';
     const control = new FullScreen({
       target: document.getElementById('map-fullscreen-id'),
-      label: 'Full screen',
+      label: inactiveTag,
+      labelActive: activeTag,
     });
     return control;
   }
 
   useEffect(() => {
     if (!map) return;
-    fullScreenControl();
-    map.addControl(fullScreenControl());
+    const control = fullScreenControl();
+    map.addControl(control);
+    // console.log(control, 'control');
+    // if (control.isInFullscreen_) {
+    //   setIsFullScreen(true);
+    // } else {
+    //   setIsFullScreen(false);
+    // }
   }, [map]);
 
   return (
-    <div className="naxatw-absolute naxatw-top-4 naxatw-right-4 naxatw-px-2 naxatw-py-1 naxatw-z-10 naxatw-bg-white naxatw-text-grey-800 naxatw-rounded-lg naxatw-border naxatw-border-grey-300 naxatw-flex naxatw-items-center naxatw-shadow-3xl">
+    <div
+      className={`naxatw-absolute naxatw-top-4 naxatw-right-4 naxatw-px-2 naxatw-py-1 naxatw-z-10 
+       naxatw-bg-white naxatw-shadow-3xl naxatw-border naxatw-border-grey-300
+          
+      } naxatw-text-grey-800 naxatw-rounded-lg  naxatw-flex naxatw-items-center `}
+    >
       <a className={btnClassname} onClick={() => setShowToolbox(!showToolbox)}>
         <i className="material-icons">
           {showToolbox ? 'navigate_next' : 'navigate_before'}
@@ -92,11 +113,9 @@ export default function Toolbox({ map }) {
           <i className="material-icons">straighten</i>
         </a> */}
 
-        <div className={btnClassname}>
-          <a onClick={() => {}} id="map-fullscreen-id">
-            <i className="material-icons">fullscreen</i>
-          </a>
-        </div>
+        <a className={btnClassname} onClick={() => {}} id="map-fullscreen-id">
+          <i className="material-icons">fullscreen</i>
+        </a>
 
         {/* <a className={btnClassname} onClick={() => {}}>
           <i className="material-icons">info_outline</i>

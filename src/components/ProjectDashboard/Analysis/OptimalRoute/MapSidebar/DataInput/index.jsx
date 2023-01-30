@@ -7,7 +7,7 @@ import toastActions from '@Actions/toast';
 import { analysisHeaderHeight } from '@src/constants';
 import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
-import Chip from '../Chip';
+import Chip from '@Components/common/Chip';
 import MapContent from './OriginPointContents/MapContent';
 import SearchContent from './OriginPointContents/SearchContent';
 import LayerContent from './OriginPointContents/LayerContent';

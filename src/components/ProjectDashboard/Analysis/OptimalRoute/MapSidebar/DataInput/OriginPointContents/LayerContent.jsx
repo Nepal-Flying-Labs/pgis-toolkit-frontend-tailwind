@@ -7,6 +7,8 @@ import { Creators as CommonCreators } from '@Actions/common';
 import IconButton from '@Components/common/IconButton';
 import Select from '@Components/common/Select';
 import { pointLayersSelector } from '@Selectors/analysis';
+import { startingPointColor } from '@src/constants/analysis';
+import Chip from '@Components/common/Chip';
 
 const { setAnalysisState } = AnalysisCreators;
 const { setDataInputState } = RouteAnalysisCreators;
@@ -35,6 +37,7 @@ export default function LayerContent() {
       }),
     );
   };
+
   return (
     <div className="naxatw-flex naxatw-select-none">
       <div className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-between naxatw-text-grey-600 naxatw-py-1">
@@ -43,14 +46,38 @@ export default function LayerContent() {
         <i className="material-symbols-outlined naxatw-text-lg">place</i>
       </div>
       <div className="naxatw-flex-1 naxatw-space-y-2">
-        <Select
-          placeholder="Select Origin Layer"
-          style={{ height: '40px' }}
-          options={pointLayers}
-          labelKey="name"
-          valueKey="id"
-          onChange={selectedItem => handleSelect(selectedItem, 'startingPoint')}
-        />
+        {startingPoint?.geojson ? (
+          <Chip
+            className={`!naxatw-w-full ${
+              startingPoint?.geojson || destinationPoint?.geojson
+                ? '!naxatw-bg-white'
+                : ''
+            }`}
+            label={startingPoint?.name}
+            iconLeft="radio_button_checked"
+            iconStyle={{
+              color: startingPoint?.geojson ? startingPointColor : '',
+            }}
+            onClick={() => {
+              dispatch(
+                setDataInputState({
+                  startingPoint: null,
+                }),
+              );
+            }}
+          />
+        ) : (
+          <Select
+            placeholder="Select Origin Layer"
+            style={{ height: '40px' }}
+            options={pointLayers}
+            labelKey="name"
+            valueKey="id"
+            onChange={selectedItem =>
+              handleSelect(selectedItem, 'startingPoint')
+            }
+          />
+        )}
         <Select
           placeholder="Select Destination Layer"
           style={{ height: '40px' }}

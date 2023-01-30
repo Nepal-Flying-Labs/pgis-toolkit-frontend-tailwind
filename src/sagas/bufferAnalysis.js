@@ -3,7 +3,10 @@ import bufferAnalysisActions, { Types } from '@Actions/bufferAnalysis';
 import analysisActions from '@Actions/analysis';
 import prepareFormData from '@Utils/prepareFormData';
 // import toastActions from '@Actions/toast';
-import { applyBufferAnalysis } from '@Services/bufferAnalysis';
+import {
+  applyBufferAnalysis,
+  getBufferAnalysisData,
+} from '@Services/bufferAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { copyFeatures } from '@Services/dataCleaning';
 
@@ -38,6 +41,34 @@ export function* copyFeaturesRequest({ payload }) {
     throw error;
   }
 }
+export function* getDetailsCategoryRequest({ params }) {
+  // const formData = prepareFormData(payload);
+  try {
+    const response = yield call(getBufferAnalysisData, params);
+    yield put(
+      bufferAnalysisActions.getDetailsCategorySuccess({
+        data: response.data,
+      }),
+    );
+  } catch (error) {
+    yield put(bufferAnalysisActions.getDetailsCategoryFailure());
+    throw error;
+  }
+}
+export function* getDetailsChartRequest({ params }) {
+  // const formData = prepareFormData(payload);
+  try {
+    const response = yield call(getBufferAnalysisData, params);
+    yield put(
+      bufferAnalysisActions.getDetailsChartSuccess({
+        data: response.data,
+      }),
+    );
+  } catch (error) {
+    yield put(bufferAnalysisActions.getDetailsChartFailure());
+    throw error;
+  }
+}
 
 function* bufferAnalysisWatcher() {
   yield takeLatest(
@@ -47,6 +78,14 @@ function* bufferAnalysisWatcher() {
   yield takeLatest(
     Types.COPY_FEATURES_REQUEST,
     withLoader(withErrorHandler(copyFeaturesRequest)),
+  );
+  yield takeLatest(
+    Types.GET_DETAILS_CATEGORY_REQUEST,
+    withLoader(withErrorHandler(getDetailsCategoryRequest)),
+  );
+  yield takeLatest(
+    Types.GET_DETAILS_CHART_REQUEST,
+    withLoader(withErrorHandler(getDetailsChartRequest)),
   );
 }
 

@@ -1,4 +1,4 @@
-import { call, all, put, takeLatest } from 'redux-saga/effects';
+import { call, all, put, takeLatest, takeEvery } from 'redux-saga/effects';
 import bufferAnalysisActions, { Types } from '@Actions/bufferAnalysis';
 import analysisActions from '@Actions/analysis';
 import prepareFormData from '@Utils/prepareFormData';
@@ -62,6 +62,7 @@ export function* getDetailsChartRequest({ params }) {
     yield put(
       bufferAnalysisActions.getDetailsChartSuccess({
         data: response.data,
+        key: params?.view,
       }),
     );
   } catch (error) {
@@ -83,7 +84,7 @@ function* bufferAnalysisWatcher() {
     Types.GET_DETAILS_CATEGORY_REQUEST,
     withLoader(withErrorHandler(getDetailsCategoryRequest)),
   );
-  yield takeLatest(
+  yield takeEvery(
     Types.GET_DETAILS_CHART_REQUEST,
     withLoader(withErrorHandler(getDetailsChartRequest)),
   );

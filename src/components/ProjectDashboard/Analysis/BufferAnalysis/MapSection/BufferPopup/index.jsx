@@ -46,6 +46,9 @@ export default function BufferPopup() {
   const detailsChartData = useSelector(
     state => state.bufferAnalysis.detailsChartData,
   );
+  const detailsListData = useSelector(
+    state => state.bufferAnalysis.detailsListData,
+  );
 
   // const routePopupData = useSelector(
   //   state => state.routeAnalysis.routePopupData,
@@ -74,6 +77,14 @@ export default function BufferPopup() {
           analysis: analysisResults?.[0]?.id,
           layer: selectedLayer,
           view: 'chart',
+          field: selectedCategory,
+        }),
+      );
+      dispatch(
+        RouteAnalysisActions.getDetailsChartRequest({
+          analysis: analysisResults?.[0]?.id,
+          layer: selectedLayer,
+          view: 'list',
           field: selectedCategory,
         }),
       );
@@ -115,8 +126,6 @@ export default function BufferPopup() {
     }
     return null;
   };
-
-  console.log(chartData, 'dta');
 
   return (
     <div
@@ -232,17 +241,16 @@ export default function BufferPopup() {
 
                   <div className="naxatw-mt-5">
                     <div>Listing</div>
-                    {chartData?.map(itm => (
-                      <div className="naxatw-flex naxatw-justify-between naxatw-py-1">
-                        <span>{itm?.name}</span>
-                        <span>{itm?.value}</span>
+                    {detailsListData?.data?.map(itm => (
+                      <div className="naxatw-flex naxatw-justify-start naxatw-py-1">
+                        <span>{itm?.Name || itm?.name}</span>
                       </div>
                     ))}
                   </div>
 
                   <div className="naxatw-flex naxatw-justify-end naxatw-mt-4">
                     <span
-                      className="naxatw-text-gray-500  naxatw-cursor-pointer "
+                      className="naxatw-text-gray-800  naxatw-px-1 naxatw-cursor-pointer naxatw-border-white naxatw-border-b-[1px] hover:naxatw-border-gray-800"
                       onClick={() => setShowChart(true)}
                     >
                       Chart View

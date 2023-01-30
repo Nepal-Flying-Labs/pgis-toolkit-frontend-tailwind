@@ -295,6 +295,7 @@ const initialState = {
   popupActiveTab: 'Summary',
   detailsCategory: [],
   detailsChartData: {},
+  detailsListData: [],
 };
 
 const setBufferAnalysisState = (state, action) => ({
@@ -410,10 +411,19 @@ const getDetailsCategorySuccess = (state, action) => ({
   ...state,
   detailsCategory: action.payload,
 });
-const getDetailsChartSuccess = (state, action) => ({
-  ...state,
-  detailsChartData: action.payload,
-});
+const getDetailsChartSuccess = (state, action) => {
+  if (action?.payload?.key === 'chart') {
+    return {
+      ...state,
+      detailsChartData: action.payload,
+    };
+  } else {
+    return {
+      ...state,
+      detailsListData: action.payload,
+    };
+  }
+};
 
 const bufferAnalysisReducer = createReducer(initialState, {
   [Types.SET_BUFFER_ANALYSIS_STATE]: setBufferAnalysisState,

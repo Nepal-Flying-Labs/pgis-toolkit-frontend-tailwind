@@ -294,6 +294,7 @@ const initialState = {
   poiLayers: [],
   popupActiveTab: 'Summary',
   detailsCategory: [],
+  detailsChartData: {},
 };
 
 const setBufferAnalysisState = (state, action) => ({

@@ -8,12 +8,27 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import Chip from '@Components/ProjectDashboard/Analysis/OptimalRoute/MapSidebar/Chip/index';
 import { VerticalBlockChart } from '@Components/common/VerticleAndHorizontalBlockChart/index';
 import Select from '@Components/common/Select/index';
+import Modal from '@Components/common/Modal';
+import {
+  BarChart,
+  Bar,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  Text,
+} from 'recharts';
 
 const { setRouteAnalysisState } = Creators;
 
 export default function BufferPopup() {
   const [selectedLayer, setSelectedLayer] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [showChart, setShowChart] = useState(false);
+  const [chartData, setChartData] = useState([]);
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
@@ -26,6 +41,10 @@ export default function BufferPopup() {
   );
   const popupActiveTab = useSelector(
     state => state.bufferAnalysis.popupActiveTab,
+  );
+
+  const detailsChartData = useSelector(
+    state => state.bufferAnalysis.detailsChartData,
   );
 
   // const routePopupData = useSelector(
@@ -61,10 +80,43 @@ export default function BufferPopup() {
     }
     return () => {};
   }, [selectedCategory]);
+
   // useEffect(() => {
   //   if (!selectedRouteId) return;
   //   dispatch(getRoutePopupDataRequest(selectedRouteId));
   // }, [dispatch, selectedRouteId]);
+
+  useEffect(() => {
+    if (Object.keys(detailsChartData)?.length === 0) return;
+    const tempChartData = [];
+    const newD = detailsChartData?.data;
+
+    Object.entries(newD)?.map(([key, value]) => {
+      tempChartData.push({ name: key, value: value });
+    });
+
+    setChartData(tempChartData);
+  }, [detailsChartData]);
+
+  const CustomXAxisTick = ({ x, y, payload }) => {
+    if (payload && payload.value) {
+      return (
+        <Text
+          fontSize={'12px'}
+          width={'12px'}
+          x={x}
+          y={y}
+          textAnchor="middle"
+          verticalAnchor="start"
+        >
+          {payload.value}
+        </Text>
+      );
+    }
+    return null;
+  };
+
+  console.log(chartData, 'dta');
 
   return (
     <div
@@ -152,30 +204,81 @@ export default function BufferPopup() {
                   />
                 </div>
               ) : (
-                <div className="naxatw-space-y-2">
-                  <div>
-                    <label className="naxatw-label">Select Layer*</label>
-                    <Select
-                      options={poiLayersData}
-                      onChange={selected => setSelectedLayer(selected.id)}
-                      selectedValue={selectedLayer}
-                      labelKey="name"
-                      valueKey="id"
-                    />
+                <>
+                  <div className="naxatw-space-y-2">
+                    <div>
+                      <label className="naxatw-label">Select Layer*</label>
+                      <Select
+                        options={poiLayersData}
+                        onChange={selected => setSelectedLayer(selected.id)}
+                        selectedValue={selectedLayer}
+                        labelKey="name"
+                        valueKey="id"
+                      />
+                    </div>
+                    <div>
+                      <label className="naxatw-label">Select Category*</label>
+                      <Select
+                        options={categoryListData}
+                        onChange={selected =>
+                          setSelectedCategory(selected.name)
+                        }
+                        selected={selectedCategory}
+                        labelKey="name"
+                        valueKey="name"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <label className="naxatw-label">Select Category*</label>
-                    <Select
-                      options={categoryListData}
-                      onChange={selected => setSelectedCategory(selected.name)}
-                      selected={selectedCategory}
-                      labelKey="name"
-                      valueKey="name"
-                    />
+
+                  <div className="naxatw-mt-5">
+                    <div>Listing</div>
+                    {chartData?.map(itm => (
+                      <div className="naxatw-flex naxatw-justify-between naxatw-py-1">
+                        <span>{itm?.name}</span>
+                        <span>{itm?.value}</span>
+                      </div>
+                    ))}
                   </div>
-                </div>
+
+                  <div className="naxatw-flex naxatw-justify-end naxatw-mt-4">
+                    <span
+                      className="naxatw-text-gray-500  naxatw-cursor-pointer "
+                      onClick={() => setShowChart(true)}
+                    >
+                      Chart View
+                    </span>
+                  </div>
+                </>
               )}
             </p>
+
+            <Modal
+              show={showChart}
+              title="Chart"
+              onClose={() => setShowChart(false)}
+              zIndex="111111"
+              className="naxatw-w-[62rem]"
+            >
+              <div className="naxatw-w-full naxatw-h-full naxatw-flex naxatw-justify-center">
+                <BarChart
+                  width={800}
+                  height={560}
+                  data={chartData}
+                  margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 40,
+                  }}
+                >
+                  {/* <CartesianGrid strokeDasharray="3 3" /> */}
+                  <XAxis dataKey="name" interval={0} tick={CustomXAxisTick} />
+                  <YAxis allowDecimals={false} />
+                  <Tooltip />
+                  <Bar dataKey="value" fill="#8884d8" radius={[10, 10, 0, 0]} />
+                </BarChart>
+              </div>
+            </Modal>
 
             {/* <div className="naxatw-grid naxatw-grid-cols-3 naxatw-items-center naxatw-gap-2.5">
               {routePopupData?.obstacles?.map(item => (

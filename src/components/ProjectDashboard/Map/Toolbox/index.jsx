@@ -23,8 +23,8 @@ export default function Toolbox({ map }) {
 
   function fullScreenControl() {
     const control = new FullScreen({
-      target: 'fullscreen',
-      className: '',
+      target: document.getElementById('map-fullscreen-id'),
+      label: 'Full screen',
     });
     return control;
   }
@@ -92,8 +92,8 @@ export default function Toolbox({ map }) {
           <i className="material-icons">straighten</i>
         </a> */}
 
-        <div className={btnClassname} id="fullscreen">
-          <a onClick={() => {}}>
+        <div className={btnClassname}>
+          <a onClick={() => {}} id="map-fullscreen-id">
             <i className="material-icons">fullscreen</i>
           </a>
         </div>

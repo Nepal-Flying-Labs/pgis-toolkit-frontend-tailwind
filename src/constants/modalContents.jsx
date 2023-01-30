@@ -27,6 +27,7 @@ import SaveDataQuery from '@Components/ProjectDashboard/ModalContent/SaveDataQue
 import DeleteDataQuery from '@Components/ProjectDashboard/ModalContent/DeleteDataQuery';
 import AccountSettings from '@Components/Authentication/ModalContent/AccountSettings';
 import ViewLayerAttribute from '@Components/ProjectDashboard/ModalContent/ViewLayerAttribute';
+import EditLayerAttribute from '@Components/ProjectDashboard/ModalContent/EditLayerAttribute';
 import DeleteDocument from '@Components/ProjectDashboard/ModalContent/DeleteDocument/index';
 import DataQueryHelp from '@Components/ProjectDashboard/ModalContent/HelpContents/DataQueryHelp';
 import DeleteGallery from '@Components/ProjectDashboard/ModalContent/DeleteGallery/index';
@@ -324,5 +325,21 @@ export function getPromptDialogContent(content) {
 
     default:
       return '';
+  }
+}
+
+export function getModalTwoContent(content) {
+  switch (content) {
+    // authentication
+    case 'edit-layer-attribute':
+      return {
+        title: 'Edit Attribute',
+        content: <EditLayerAttribute />,
+      };
+    default:
+      return {
+        title: '',
+        content: '',
+      };
   }
 }

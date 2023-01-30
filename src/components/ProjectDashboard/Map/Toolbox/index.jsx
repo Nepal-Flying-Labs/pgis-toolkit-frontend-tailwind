@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/require-default-props */
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import Button from '@Components/common/Button';
+import MeasureControl from '@Components/common/OpenLayersComponent/Control/MeasureControl';
+import PropTypes from 'prop-types';
+import { FullScreen } from 'ol/control';
 // import Tooltip from '@Components/common/Tooltip';
 // import { comingSoonMessage } from '@src/constants';
 
@@ -12,9 +17,23 @@ const { setProjectMapState } = ProjectMapCreators;
 const btnClassname =
   'naxatw-p-2 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-rounded-lg hover:naxatw-bg-grey-100';
 
-export default function Toolbox() {
+export default function Toolbox({ map }) {
   const [showToolbox, setShowToolbox] = useState(false);
   const dispatch = useDispatch();
+
+  function fullScreenControl() {
+    const control = new FullScreen({
+      target: 'fullscreen',
+      className: '',
+    });
+    return control;
+  }
+
+  useEffect(() => {
+    if (!map) return;
+    fullScreenControl();
+    map.addControl(fullScreenControl());
+  }, [map]);
 
   return (
     <div className="naxatw-absolute naxatw-top-4 naxatw-right-4 naxatw-px-2 naxatw-py-1 naxatw-z-10 naxatw-bg-white naxatw-text-grey-800 naxatw-rounded-lg naxatw-border naxatw-border-grey-300 naxatw-flex naxatw-items-center naxatw-shadow-3xl">
@@ -61,15 +80,25 @@ export default function Toolbox() {
           <i className="material-symbols-outlined">download</i>
         </a>
 
-        <a className={btnClassname} onClick={() => {}}>
+        <div className={`naxatw-relative ${btnClassname} naxatw-pt-3`}>
+          <MeasureControl
+            map={map}
+            buttonText={<i className="material-icons">straighten</i>}
+            measureBoth
+          />
+        </div>
+
+        {/* <a className={btnClassname} onClick={() => {}}>
           <i className="material-icons">straighten</i>
-        </a>
+        </a> */}
 
-        <a className={btnClassname} onClick={() => {}}>
-          <i className="material-icons">fullscreen</i>
-        </a>
+        <div className={btnClassname} id="fullscreen">
+          <a onClick={() => {}}>
+            <i className="material-icons">fullscreen</i>
+          </a>
+        </div>
 
-        <a className={btnClassname} onClick={() => {}}>
+        {/* <a className={btnClassname} onClick={() => {}}>
           <i className="material-icons">info_outline</i>
         </a>
 
@@ -79,8 +108,12 @@ export default function Toolbox() {
 
         <a className={btnClassname} onClick={() => {}}>
           <i className="material-icons">redo</i>
-        </a>
+        </a> */}
       </div>
     </div>
   );
 }
+
+Toolbox.propTypes = {
+  map: PropTypes.object,
+};

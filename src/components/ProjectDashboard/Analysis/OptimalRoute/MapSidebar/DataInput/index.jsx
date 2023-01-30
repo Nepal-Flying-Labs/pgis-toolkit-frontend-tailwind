@@ -7,9 +7,10 @@ import toastActions from '@Actions/toast';
 import { analysisHeaderHeight } from '@src/constants';
 import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
-import Chip from '../Chip';
+import Chip from '@Components/common/Chip';
 import MapContent from './OriginPointContents/MapContent';
 import SearchContent from './OriginPointContents/SearchContent';
+import LayerContent from './OriginPointContents/LayerContent';
 
 const { setDataInputState, handleCheckbox, applyRouteAnalysisRequest } =
   Creators;
@@ -25,6 +26,19 @@ const originPointData = [
   { label: 'Map', value: 'map', icon: 'map' },
   { label: 'Layer', value: 'layer', icon: 'format_list_bulleted' },
 ];
+
+function getOriginPointsContent(content) {
+  switch (content) {
+    case 'search':
+      return <SearchContent />;
+    case 'map':
+      return <MapContent />;
+    case 'layer':
+      return <LayerContent />;
+    default:
+      return '';
+  }
+}
 
 // eslint-disable-next-line
 function Container({ children }) {
@@ -71,9 +85,12 @@ export default function DataInput() {
       );
       return;
     }
-    const [originLong, originLat] = startingPoint.geojson.geometry.coordinates;
+    const [originLong, originLat] =
+      startingPoint.geojson.geometry?.coordinates ||
+      startingPoint.geojson.coordinates;
     const [destinationLong, destinationLat] =
-      destinationPoint.geojson.geometry.coordinates;
+      destinationPoint.geojson.geometry?.coordinates ||
+      destinationPoint.geojson.coordinates;
     const selectedObstacles = obstacleLayers
       .filter(item => item.checked)
       .map(item => item.id);
@@ -93,19 +110,6 @@ export default function DataInput() {
     };
     dispatch(applyRouteAnalysisRequest(payloadData));
   };
-
-  function getOriginPointsContent(content) {
-    switch (content) {
-      case 'search':
-        return <SearchContent />;
-      case 'map':
-        return <MapContent />;
-      case 'layer':
-        return '';
-      default:
-        return '';
-    }
-  }
 
   return (
     <div className=" naxatw-h-full">

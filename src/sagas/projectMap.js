@@ -377,7 +377,6 @@ function* projectMapWatcher() {
     Types.GET_LAYER_ATTRIBUTE_REQUEST,
     withLoader(withErrorHandler(getLayerAttributeRequest)),
   );
-
   yield takeLatest(
     Types.GET_QUERY_ATTRIBUTE_REQUEST,
     withLoader(withErrorHandler(getQueryAttributeRequest)),

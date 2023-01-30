@@ -20,6 +20,7 @@ import {
   getAnalysisTaskResponse,
 } from '@Services/routeAnalysis';
 import {
+  getLayerAttribute,
   getProjectThemeLayers,
   getProjectThemes,
   updateLayer,
@@ -165,6 +166,16 @@ export function* getProjectGeojsonRequest({ params }) {
   }
 }
 
+export function* getLayerAttributeRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttribute, params);
+    yield put(analysisActions.getLayerAttributeSuccess(response.data));
+  } catch (error) {
+    yield put(analysisActions.getLayerAttributeFailure());
+    throw error;
+  }
+}
+
 function* analysisWatcher() {
   yield takeLatest(
     Types.COPY_LAYER_DATA_REQUEST,
@@ -185,6 +196,10 @@ function* analysisWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_GEOJSON_REQUEST,
     withLoader(withErrorHandler(getProjectGeojsonRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(getLayerAttributeRequest)),
   );
 }
 

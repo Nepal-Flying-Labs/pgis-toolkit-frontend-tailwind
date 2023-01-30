@@ -9,6 +9,7 @@ import {
   saveRouteLayer,
 } from '@Services/routeAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
+import { getFeatureCollection } from '@Services/projectMap';
 
 export function* applyRouteAnalysisRequest({ payload }) {
   try {
@@ -75,6 +76,23 @@ export function* saveRouteLayerRequest({ payload }) {
   }
 }
 
+export function* getSelectedLayerFeatureRequest() {
+  try {
+    const { attributeList } = yield select(
+      state => state.analysis.layerAttributesList,
+    );
+    const selectedFeature = attributeList.find(item => item.checked);
+    const response = yield call(getFeatureCollection, selectedFeature.id);
+    yield put(
+      routeAnalysisActions.getSelectedLayerFeatureSuccess(response.data),
+    );
+    yield put(commonActions.toggleModal());
+  } catch (error) {
+    yield put(routeAnalysisActions.getSelectedLayerFeatureFailure());
+    throw error;
+  }
+}
+
 function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_ROUTE_ANALYSIS_REQUEST,
@@ -91,6 +109,10 @@ function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.SAVE_ROUTE_LAYER_REQUEST,
     withLoader(withErrorHandler(saveRouteLayerRequest)),
+  );
+  yield takeLatest(
+    Types.GET_SELECTED_LAYER_FEATURE_REQUEST,
+    withLoader(withErrorHandler(getSelectedLayerFeatureRequest)),
   );
 }
 

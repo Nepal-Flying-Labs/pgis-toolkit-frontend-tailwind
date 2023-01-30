@@ -93,6 +93,7 @@
 - [ ] icon grey
 - [ ] required field validation while geom edit for feature
 - [ ] save data query modal mt remove
+- [ ] format date/time in all sections (table etc)
 
 ### Backend
 

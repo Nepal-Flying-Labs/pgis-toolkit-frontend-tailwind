@@ -3,7 +3,8 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar';
-import { Creators, Types } from '@Actions/analysis';
+import { Creators as AnalysisCreators, Types } from '@Actions/analysis';
+import { Creators as RouteAnalysisCreators } from '@Actions/routeAnalysis';
 import Table, { TableHeader } from '@Components/common/CustomTable';
 import SortingContainer from '@Components/common/SortingContainer';
 import DropdownOptions from '@Components/common/DropdownOptions';
@@ -28,7 +29,9 @@ const {
   handleAttributeOrdering,
   resetLayerAttributeListState,
   handleTableCheckbox,
-} = Creators;
+} = AnalysisCreators;
+
+const { getSelectedLayerFeatureRequest } = RouteAnalysisCreators;
 
 const dropdownOptions = [
   {
@@ -137,6 +140,10 @@ export default function SelectLayerFeature() {
     [attributeList],
   );
 
+  const handleSave = () => {
+    dispatch(getSelectedLayerFeatureRequest());
+  };
+
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-2 naxatw-w-full naxatw-h-full">
       <div>
@@ -159,7 +166,7 @@ export default function SelectLayerFeature() {
             }}
           >
             <TableHeader
-              dataField=""
+              dataField=" "
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowSpan_2"
               rowClassName=""
@@ -236,7 +243,9 @@ export default function SelectLayerFeature() {
       />
 
       <div>
-        <Button className="naxatw-btn-primary">Save</Button>
+        <Button className="naxatw-btn-primary" onClick={handleSave}>
+          Save
+        </Button>
       </div>
     </div>
   );

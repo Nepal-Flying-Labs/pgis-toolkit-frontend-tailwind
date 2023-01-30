@@ -2,12 +2,14 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as AnalysisCreators } from '@Actions/analysis';
+import { Creators as RouteAnalysisCreators } from '@Actions/routeAnalysis';
 import { Creators as CommonCreators } from '@Actions/common';
 import IconButton from '@Components/common/IconButton';
 import Select from '@Components/common/Select';
 import { pointLayersSelector } from '@Selectors/analysis';
 
 const { setAnalysisState } = AnalysisCreators;
+const { setDataInputState } = RouteAnalysisCreators;
 const { toggleModal } = CommonCreators;
 
 export default function LayerContent() {
@@ -20,6 +22,19 @@ export default function LayerContent() {
   );
   const dispatch = useDispatch();
 
+  const handleSelect = (selectedItem, type) => {
+    dispatch(toggleModal('select-layer-feature'));
+    dispatch(
+      setAnalysisState({
+        selectedLayer: selectedItem,
+      }),
+    );
+    dispatch(
+      setDataInputState({
+        selectedLayerType: type,
+      }),
+    );
+  };
   return (
     <div className="naxatw-flex naxatw-select-none">
       <div className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-between naxatw-text-grey-600 naxatw-py-1">
@@ -34,14 +49,7 @@ export default function LayerContent() {
           options={pointLayers}
           labelKey="name"
           valueKey="id"
-          onChange={selectedItem => {
-            dispatch(toggleModal('select-layer-feature'));
-            dispatch(
-              setAnalysisState({
-                selectedLayer: selectedItem,
-              }),
-            );
-          }}
+          onChange={selectedItem => handleSelect(selectedItem, 'startingPoint')}
         />
         <Select
           placeholder="Select Destination Layer"

@@ -13,6 +13,7 @@ const initialState = {
   },
   searchText: '',
   zoomToLayerId: null,
+  projectGeojson: null,
 };
 
 const setAnalysisState = (state, action) => ({
@@ -96,12 +97,18 @@ const setZoomToLayerId = (state, action) => ({
   zoomToLayerId: action.payload,
 });
 
+const getProjectGeojsonSuccess = (state, action) => ({
+  ...state,
+  projectGeojson: action.payload,
+});
+
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
   [Types.HANDLE_LAYER_CHECKBOX]: handleLayerCheckbox,
   [Types.SET_ZOOM_TO_LAYER_ID]: setZoomToLayerId,
+  [Types.GET_PROJECT_GEOJSON_SUCCESS]: getProjectGeojsonSuccess,
 });
 
 export default analysisReducer;

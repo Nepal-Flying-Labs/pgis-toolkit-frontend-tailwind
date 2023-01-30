@@ -74,6 +74,7 @@ export default function SearchOSM({
         </div>
         {value ? (
           <p
+            role="presentation"
             title={value?.label}
             className={`naxatw-border naxatw-border-grey-300 naxatw-text-grey-900 naxatw-text-body-lg
               naxatw-rounded-full naxatw-bg-white focus:naxatw-outline-none

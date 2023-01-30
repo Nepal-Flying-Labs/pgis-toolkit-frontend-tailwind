@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as AnalysisCreators, Types } from '@Actions/analysis';
-import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
 import Header from './Header';
@@ -16,8 +15,8 @@ const {
   checkProcessingStatusRequest,
   getProjectThemesRequest,
   getProjectThemeLayersRequest,
+  getProjectGeojsonRequest,
 } = AnalysisCreators;
-const { getProjectGeojsonRequest } = ProjectMapCreators;
 
 function getAnalysisContent(type) {
   switch (type) {

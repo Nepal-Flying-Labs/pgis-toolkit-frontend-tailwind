@@ -24,6 +24,14 @@ export const { Types, Creators } = createActions(
     copyFeaturesRequest: ['payload'],
     copyFeaturesSuccess: ['payload'],
     copyFeaturesFailure: ['payload'],
+
+    getDetailsCategoryRequest: ['params'],
+    getDetailsCategorySuccess: ['payload'],
+    getDetailsCategoryFailure: ['payload'],
+
+    getDetailsChartRequest: ['params'],
+    getDetailsChartSuccess: ['payload'],
+    getDetailsChartFailure: ['payload'],
   },
   { prefix: 'bufferAnalysis/' },
 );

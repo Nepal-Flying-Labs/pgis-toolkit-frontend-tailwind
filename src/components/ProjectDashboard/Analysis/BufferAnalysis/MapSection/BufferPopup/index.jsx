@@ -1,34 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/routeAnalysis';
 import RouteAnalysisActions from '@Actions/bufferAnalysis';
-import Toggle from '@Components/common/Toggle';
 import IconButton from '@Components/common/IconButton';
 import RoutePopupSkeleton from '@Components/common/SkeletonLoader/RoutePopupSkeleton';
 import { checkIfLoading } from '@Utils/loaderSelector';
-import secondsToHMS from '@Utils/secondsToHMS';
-import meterToKM from '@Utils/meterToKM';
 import Chip from '@Components/ProjectDashboard/Analysis/OptimalRoute/MapSidebar/Chip/index';
+import { VerticalBlockChart } from '@Components/common/VerticleAndHorizontalBlockChart/index';
+import Select from '@Components/common/Select/index';
 
-const {
-  getRoutePopupDataRequest,
-  setRouteAnalysisState,
-  handleObstaclesToggle,
-} = Creators;
+const { setRouteAnalysisState } = Creators;
 
 export default function BufferPopup() {
+  const [selectedLayer, setSelectedLayer] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
   const analysisResults = useSelector(
     state => state.bufferAnalysis.results.analysisResults,
   );
+  const poiLayersData = useSelector(state => state.bufferAnalysis.poiLayers);
+  const categoryListData = useSelector(
+    state => state.bufferAnalysis.detailsCategory.data,
+  );
   const popupActiveTab = useSelector(
     state => state.bufferAnalysis.popupActiveTab,
   );
-  const selectedRouteId = useSelector(
-    state => state.routeAnalysis.selectedRouteId,
-  );
+
   // const routePopupData = useSelector(
   //   state => state.routeAnalysis.routePopupData,
   // );
@@ -37,6 +36,31 @@ export default function BufferPopup() {
   );
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (selectedLayer !== null) {
+      dispatch(
+        RouteAnalysisActions.getDetailsCategoryRequest({
+          analysis: analysisResults?.[0]?.id,
+          layer: selectedLayer,
+          view: 'chart',
+        }),
+      );
+    }
+    return () => {};
+  }, [selectedLayer]);
+  useEffect(() => {
+    if (selectedCategory !== null) {
+      dispatch(
+        RouteAnalysisActions.getDetailsChartRequest({
+          analysis: analysisResults?.[0]?.id,
+          layer: selectedLayer,
+          view: 'chart',
+          field: selectedCategory,
+        }),
+      );
+    }
+    return () => {};
+  }, [selectedCategory]);
   // useEffect(() => {
   //   if (!selectedRouteId) return;
   //   dispatch(getRoutePopupDataRequest(selectedRouteId));
@@ -92,7 +116,67 @@ export default function BufferPopup() {
               />
             </div>
 
-            <p className="naxatw-btn-text naxatw-mt-3 naxatw-mb-2">Obstacles</p>
+            <p className="naxatw-btn-text naxatw-mt-3 naxatw-mb-2">
+              {popupActiveTab === 'Summary' ? (
+                <div className="naxatw-flex naxatw-flex-col naxatw-px-2 naxatw-gap-3">
+                  {/* <ul className="naxatw-flex naxatw-flex-col naxatw-gap-2">
+                    {graphData?.map(itm => (
+                      <li className="naxatw-flex naxatw-justify-between">
+                        <span className="naxatw-text-body-lg">{itm?.key}</span>
+                        <span className="naxatw-text-body-lg">
+                          {itm?.value}
+                        </span>
+                      </li>
+                    ))}
+                  </ul> */}
+                  {/* <div className="naxatw-flex naxatw-gap-0 naxatw-w-full naxatw-h-5">
+                    {graphData?.map((itm, index) => {
+                      const pWidth = parseInt(
+                        calPercentage(itm?.[dataKey], data, dataKey),
+                        10,
+                      );
+                      return (
+                        <span
+                          className="naxatw-h-full naxatw-border-0 first:naxatw-rounded-tl-lg first:naxatw-rounded-bl-lg last:naxatw-rounded-tr-lg last:naxatw-rounded-br-lg "
+                          style={{
+                            width: `${pWidth}%`,
+                            backgroundColor: `${colorCode[index]}`,
+                          }}
+                        />
+                      );
+                    })}
+                  </div> */}
+                  <VerticalBlockChart
+                    data={analysisResults?.[0]?.poiChartData}
+                    dataKey="count"
+                  />
+                </div>
+              ) : (
+                <div className="naxatw-space-y-2">
+                  <div>
+                    <label className="naxatw-label">Select Layer*</label>
+                    <Select
+                      options={poiLayersData}
+                      onChange={selected => setSelectedLayer(selected.id)}
+                      selectedValue={selectedLayer}
+                      labelKey="name"
+                      valueKey="id"
+                    />
+                  </div>
+                  <div>
+                    <label className="naxatw-label">Select Category*</label>
+                    <Select
+                      options={categoryListData}
+                      onChange={selected => setSelectedCategory(selected.name)}
+                      selected={selectedCategory}
+                      labelKey="name"
+                      valueKey="name"
+                    />
+                  </div>
+                </div>
+              )}
+            </p>
+
             {/* <div className="naxatw-grid naxatw-grid-cols-3 naxatw-items-center naxatw-gap-2.5">
               {routePopupData?.obstacles?.map(item => (
                 <React.Fragment key={item.layer_id}>

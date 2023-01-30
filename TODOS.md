@@ -176,10 +176,9 @@
 
 ### BUFFER ANALYSIS
 
-- [ ] copy feature before buffer analysis (saga api call before apply click saga/datacleaning)
-- [ ] copy feature before buffer analysis
+- [x] copy feature before buffer analysis (saga api call before apply click saga/datacleaning)
 - [ ] show features inside buffer
-- [ ] BufferPopup UI
+- [x] BufferPopup UI
 - [ ] zoom to individual buffer
 
 - [ ] show vectortile layer from feature_mirror_ids

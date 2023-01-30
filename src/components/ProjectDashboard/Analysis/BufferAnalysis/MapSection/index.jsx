@@ -28,6 +28,7 @@ import {
   getStyles,
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileLayer';
+import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import BufferPopup from './BufferPopup/index';
 
 const { setDataInputState, setResultsState } = BufferAnalysisCreators;
@@ -35,6 +36,7 @@ const { setDataInputState, setResultsState } = BufferAnalysisCreators;
 export default function MapSection() {
   const dispatch = useDispatch();
   const mapState = useSelector(mapStateSelector);
+  const projectGeojson = useSelector(state => state.projectMap.projectGeojson);
 
   const drawPoint = useSelector(
     state => state.bufferAnalysis.dataInput.drawPoint,
@@ -60,6 +62,7 @@ export default function MapSection() {
     zoom: 2,
     maxZoom: 25,
   });
+  global.map = map;
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
 
   // zoom to project area
@@ -276,7 +279,7 @@ export default function MapSection() {
               style={{ ...startPointStyles }}
             />
           ))}
-
+        <MaskedLayer geojson={projectGeojson} />
         <BufferPopup />
       </MapComponent>
     </div>

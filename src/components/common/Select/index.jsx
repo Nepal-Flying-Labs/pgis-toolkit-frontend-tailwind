@@ -86,7 +86,7 @@ function Select({
                 options.map(item => {
                   return (
                     <li
-                      key={item.id}
+                      key={item[valueKey]}
                       role="menuitem"
                       className={`naxatw-dropdown-items  ${
                         selected === item[dataKey] || item[valueKey] ? '' : ''

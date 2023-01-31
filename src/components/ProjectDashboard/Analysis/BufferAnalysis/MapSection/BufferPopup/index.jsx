@@ -5,9 +5,9 @@ import RouteAnalysisActions from '@Actions/bufferAnalysis';
 import IconButton from '@Components/common/IconButton';
 import RoutePopupSkeleton from '@Components/common/SkeletonLoader/RoutePopupSkeleton';
 import { checkIfLoading } from '@Utils/loaderSelector';
-import Chip from '@Components/ProjectDashboard/Analysis/OptimalRoute/MapSidebar/Chip/index';
-import { VerticalBlockChart } from '@Components/common/VerticleAndHorizontalBlockChart/index';
-import Select from '@Components/common/Select/index';
+import { VerticalBlockChart } from '@Components/common/VerticleAndHorizontalBlockChart';
+import Chip from '@Components/common/Chip';
+import Select from '@Components/common/Select';
 import Modal from '@Components/common/Modal';
 import {
   BarChart,

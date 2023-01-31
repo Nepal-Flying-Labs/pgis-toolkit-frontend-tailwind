@@ -25,6 +25,9 @@ export default function LayerContent() {
   const destinationPoint = useSelector(
     state => state.routeAnalysis.dataInput.destinationPoint,
   );
+  const selectedOriginPointType = useSelector(
+    state => state.routeAnalysis.dataInput.selectedOriginPointType,
+  );
   const dispatch = useDispatch();
 
   const handleSelect = (selectedItem, type) => {
@@ -41,6 +44,8 @@ export default function LayerContent() {
     );
   };
 
+  const isLayerContentSelected = selectedOriginPointType === 'layer';
+
   return (
     <div className="naxatw-flex naxatw-select-none">
       <div className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-justify-between naxatw-text-grey-600 naxatw-py-1">
@@ -49,7 +54,7 @@ export default function LayerContent() {
         <i className="material-symbols-outlined naxatw-text-lg">place</i>
       </div>
       <div className="naxatw-flex-1 naxatw-space-y-2">
-        {startingPoint?.geojson ? (
+        {isLayerContentSelected && startingPoint?.geojson ? (
           <Chip
             className={`!naxatw-w-full ${
               startingPoint?.geojson || destinationPoint?.geojson
@@ -81,7 +86,7 @@ export default function LayerContent() {
             }
           />
         )}
-        {destinationPoint?.geojson ? (
+        {isLayerContentSelected && destinationPoint?.geojson ? (
           <Chip
             className={`!naxatw-w-full ${
               destinationPoint?.geojson || destinationPoint?.geojson

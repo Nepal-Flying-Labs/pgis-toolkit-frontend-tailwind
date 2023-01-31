@@ -35,7 +35,12 @@ export default function MapContent() {
   const destinationPoint = useSelector(
     state => state.routeAnalysis.dataInput.destinationPoint,
   );
+  const selectedOriginPointType = useSelector(
+    state => state.routeAnalysis.dataInput.selectedOriginPointType,
+  );
   const dispatch = useDispatch();
+
+  const isMapContentSelected = selectedOriginPointType === 'map';
 
   return (
     <div className="naxatw-flex naxatw-select-none">
@@ -49,24 +54,36 @@ export default function MapContent() {
           <Chip
             key={value}
             className={`!naxatw-w-full ${
-              (value === 'start' && startingPoint?.geojson) ||
-              (value === 'destination' && destinationPoint?.geojson)
+              (isMapContentSelected &&
+                value === 'start' &&
+                startingPoint?.geojson) ||
+              (isMapContentSelected &&
+                value === 'destination' &&
+                destinationPoint?.geojson)
                 ? '!naxatw-bg-white'
                 : ''
             }`}
             label={
-              value === 'start' && startingPoint?.geojson
+              isMapContentSelected &&
+              value === 'start' &&
+              startingPoint?.geojson
                 ? getGeojsonCoordinates(startingPoint?.geojson)
-                : value === 'destination' && destinationPoint?.geojson
+                : isMapContentSelected &&
+                  value === 'destination' &&
+                  destinationPoint?.geojson
                 ? getGeojsonCoordinates(destinationPoint?.geojson)
                 : label
             }
             iconLeft={icon}
             iconStyle={{
               color:
-                value === 'start' && startingPoint?.geojson
+                isMapContentSelected &&
+                value === 'start' &&
+                startingPoint?.geojson
                   ? startingPointColor
-                  : value === 'destination' && destinationPoint?.geojson
+                  : isMapContentSelected &&
+                    value === 'destination' &&
+                    destinationPoint?.geojson
                   ? destinationPointColor
                   : '',
             }}
@@ -76,6 +93,11 @@ export default function MapContent() {
               dispatch(
                 setDataInputState({
                   drawPointType: value,
+                  selectedOriginPointType: 'map',
+                  startingPoint: isMapContentSelected ? startingPoint : null,
+                  destinationPoint: isMapContentSelected
+                    ? destinationPoint
+                    : null,
                 }),
               );
             }}

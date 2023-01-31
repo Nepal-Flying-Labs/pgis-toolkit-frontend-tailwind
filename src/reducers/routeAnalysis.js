@@ -14,6 +14,7 @@ const initialState = {
   dataInput: {
     selectedModeOfTransport: 'drive', // 'drive', 'cycle', 'walk'
     originPointType: 'search', // 'search', 'map', 'layer'
+    selectedOriginPointType: null, // 'search', 'map', 'layer'
     drawPointType: null, // 'start', 'destination'
     startingPoint: null, // { id: '', name: '', geojson: null }
     destinationPoint: null, // { id: '', name: '', geojson: null }
@@ -224,6 +225,7 @@ const getSelectedLayerFeatureSuccess = (state, action) =>
       geojson,
     };
     draft.dataInput.selectedLayerType = null;
+    draft.dataInput.selectedOriginPointType = 'layer';
   });
 
 const routeAnalysisReducer = createReducer(initialState, {

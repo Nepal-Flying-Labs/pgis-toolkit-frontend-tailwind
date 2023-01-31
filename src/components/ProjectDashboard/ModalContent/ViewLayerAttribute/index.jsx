@@ -28,6 +28,7 @@ const {
   handleAttributeRowSelect,
   handleAttributeOrdering,
   resetLayerAttributeListState,
+  setSelectedLayerAttribute,
 } = Creators;
 
 const { toggleModalTwo } = CommonCreators;
@@ -153,7 +154,9 @@ export default function ViewLayerAttribute() {
           <p className="naxatw-text-body-lg">Edit</p>
         </span>
       ),
-      onClick: () => {
+      onClick: data => {
+        console.log(data, 'data');
+        dispatch(setSelectedLayerAttribute(data));
         dispatch(toggleModalTwo('edit-layer-attribute'));
       },
     },

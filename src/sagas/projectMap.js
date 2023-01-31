@@ -198,6 +198,8 @@ export function* updateFeatureCollectionRequest({ id, payload }) {
   try {
     const response = yield call(updateFeatureCollection, id, payload);
     yield put(projectMapActions.updateFeatureCollectionSuccess(response.data));
+    yield put(projectMapActions.getFeatureCollectionSuccess(id));
+    yield put(commonActions.toggleModalTwo());
   } catch (error) {
     yield put(projectMapActions.updateFeatureCollectionFailure());
     throw error;
@@ -300,6 +302,22 @@ export function* getQueryAttributeRequest({ params }) {
   }
 }
 
+export function* updateLayerAttributeRequest({ id, payload }) {
+  try {
+    const response = yield call(updateFeatureCollection, id, payload);
+    yield put(commonActions.toggleModalTwo());
+    yield put(projectMapActions.updateLayerAttributeSuccess(response.data));
+    yield put(
+      toastActions.success({
+        message: 'Layer attribute saved successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.updateLayerAttributeFailure());
+    throw error;
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -381,6 +399,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_QUERY_ATTRIBUTE_REQUEST,
     withLoader(withErrorHandler(getQueryAttributeRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_LAYER_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(updateLayerAttributeRequest)),
   );
 }
 

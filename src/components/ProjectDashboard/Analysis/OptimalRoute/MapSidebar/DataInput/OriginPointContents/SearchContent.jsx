@@ -22,7 +22,12 @@ export default function SearchContent() {
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
+  const selectedOriginPointType = useSelector(
+    state => state.routeAnalysis.dataInput.selectedOriginPointType,
+  );
   const dispatch = useDispatch();
+
+  const isSearchContentSelected = selectedOriginPointType === 'search';
 
   return (
     <div className="naxatw-flex naxatw-select-none">
@@ -35,12 +40,19 @@ export default function SearchContent() {
         <SearchOSM
           isSmall
           placeholder="Starting Point"
-          iconName={startingPoint ? 'radio_button_checked' : 'search'}
+          iconName={
+            isSearchContentSelected && startingPoint
+              ? 'radio_button_checked'
+              : 'search'
+          }
           iconStyle={{
-            color: startingPoint ? startingPointColor : '',
+            color:
+              isSearchContentSelected && startingPoint
+                ? startingPointColor
+                : '',
           }}
           viewBox={projectDetail?.bbox}
-          value={startingPoint}
+          value={isSearchContentSelected ? startingPoint : null}
           onSelect={selectedItem => {
             if (!selectedItem) {
               dispatch(
@@ -53,6 +65,10 @@ export default function SearchContent() {
               dispatch(
                 setDataInputState({
                   startingPoint: { ...selectedItem, name: '', geojson },
+                  destinationPoint: isSearchContentSelected
+                    ? destinationPoint
+                    : null,
+                  selectedOriginPointType: 'search',
                 }),
               );
             }
@@ -61,12 +77,19 @@ export default function SearchContent() {
         <SearchOSM
           isSmall
           placeholder="Destination Point"
-          iconName={destinationPoint ? 'radio_button_checked' : 'search'}
+          iconName={
+            isSearchContentSelected && destinationPoint
+              ? 'radio_button_checked'
+              : 'search'
+          }
           iconStyle={{
-            color: destinationPoint ? destinationPointColor : '',
+            color:
+              isSearchContentSelected && destinationPoint
+                ? destinationPointColor
+                : '',
           }}
           viewBox={projectDetail?.bbox}
-          value={destinationPoint}
+          value={isSearchContentSelected ? destinationPoint : null}
           onSelect={selectedItem => {
             if (!selectedItem) {
               dispatch(
@@ -79,6 +102,8 @@ export default function SearchContent() {
               dispatch(
                 setDataInputState({
                   destinationPoint: { ...selectedItem, name: '', geojson },
+                  startingPoint: isSearchContentSelected ? startingPoint : null,
+                  selectedOriginPointType: 'search',
                 }),
               );
             }

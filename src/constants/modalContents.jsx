@@ -349,8 +349,6 @@ export function getModalTwoContent(content) {
       return {
         title: 'Edit Attribute',
         content: <EditLayerAttribute />,
-        className:
-          '!naxatw-w-[calc(100vw-60rem)] !naxatw-min-w-[calc(100vw-60rem)]',
       };
     default:
       return {

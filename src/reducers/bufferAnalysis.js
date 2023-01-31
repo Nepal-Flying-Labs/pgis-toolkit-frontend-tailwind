@@ -289,6 +289,8 @@ const initialState = {
     analysisResults: [],
     // analysisResults: [analysisResultData],
     zoomToRouteId: null,
+    showResultsPopup: false,
+    selectedResultId: null,
   },
   analysisTaskId: null,
   poiLayers: [],
@@ -378,6 +380,8 @@ const checkProcessingStatusSuccess = (state, action) =>
       analysisResult,
     ];
     draft.activeTab = 'results';
+    draft.results.selectedResultId = analysisResult.id;
+    draft.results.showResultsPopup = true;
   });
 
 const handleRouteCheckbox = (state, action) =>

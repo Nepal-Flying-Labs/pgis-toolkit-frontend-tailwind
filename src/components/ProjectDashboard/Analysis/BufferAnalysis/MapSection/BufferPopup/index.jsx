@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators, Types } from '@Actions/routeAnalysis';
-import RouteAnalysisActions from '@Actions/bufferAnalysis';
+import { Creators, Types } from '@Actions/bufferAnalysis';
+// import RouteAnalysisActions from '@Actions/bufferAnalysis';
 import IconButton from '@Components/common/IconButton';
 import RoutePopupSkeleton from '@Components/common/SkeletonLoader/RoutePopupSkeleton';
 import { checkIfLoading } from '@Utils/loaderSelector';
@@ -22,7 +22,12 @@ import {
   Text,
 } from 'recharts';
 
-const { setRouteAnalysisState } = Creators;
+const {
+  getDetailsCategoryRequest,
+  getDetailsChartRequest,
+  setPopupActiveTab,
+  setResultsState,
+} = Creators;
 
 export default function BufferPopup() {
   const [selectedLayer, setSelectedLayer] = useState(null);
@@ -50,9 +55,10 @@ export default function BufferPopup() {
     state => state.bufferAnalysis.detailsListData,
   );
 
-  // const routePopupData = useSelector(
-  //   state => state.routeAnalysis.routePopupData,
-  // );
+  const selectedResultsId = useSelector(
+    state => state.bufferAnalysis.results.selectedResultId,
+  );
+
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_ROUTE_POPUP_DATA_REQUEST]),
   );
@@ -61,8 +67,8 @@ export default function BufferPopup() {
   useEffect(() => {
     if (selectedLayer !== null) {
       dispatch(
-        RouteAnalysisActions.getDetailsCategoryRequest({
-          analysis: analysisResults?.[0]?.id,
+        getDetailsCategoryRequest({
+          analysis: selectedResultsId,
           layer: selectedLayer,
           view: 'chart',
         }),
@@ -73,16 +79,16 @@ export default function BufferPopup() {
   useEffect(() => {
     if (selectedCategory !== null) {
       dispatch(
-        RouteAnalysisActions.getDetailsChartRequest({
-          analysis: analysisResults?.[0]?.id,
+        getDetailsChartRequest({
+          analysis: selectedResultsId,
           layer: selectedLayer,
           view: 'chart',
           field: selectedCategory,
         }),
       );
       dispatch(
-        RouteAnalysisActions.getDetailsChartRequest({
-          analysis: analysisResults?.[0]?.id,
+        getDetailsChartRequest({
+          analysis: selectedResultsId,
           layer: selectedLayer,
           view: 'list',
           field: selectedCategory,
@@ -91,11 +97,6 @@ export default function BufferPopup() {
     }
     return () => {};
   }, [selectedCategory]);
-
-  // useEffect(() => {
-  //   if (!selectedRouteId) return;
-  //   dispatch(getRoutePopupDataRequest(selectedRouteId));
-  // }, [dispatch, selectedRouteId]);
 
   useEffect(() => {
     if (Object.keys(detailsChartData)?.length === 0) return;
@@ -138,13 +139,14 @@ export default function BufferPopup() {
         <div className="naxatw-flex naxatw-items-center">
           <IconButton
             name="close"
-            onClick={() =>
-              dispatch(
-                setRouteAnalysisState({
-                  selectedRouteId: null,
-                  routePopupData: null,
-                }),
-              )
+            onClick={
+              () => dispatch(setResultsState({ showResultsPopup: false }))
+              // dispatch(
+              //   setRouteAnalysisState({
+              //     selectedRouteId: null,
+              //     routePopupData: null,
+              //   }),
+              // )
             }
           />
         </div>
@@ -164,16 +166,12 @@ export default function BufferPopup() {
               <Chip
                 label="Summary"
                 active={popupActiveTab === 'Summary'}
-                onClick={() =>
-                  dispatch(RouteAnalysisActions.setPopupActiveTab('Summary'))
-                }
+                onClick={() => dispatch(setPopupActiveTab('Summary'))}
               />
               <Chip
                 label="Details"
                 active={popupActiveTab === 'Details'}
-                onClick={() =>
-                  dispatch(RouteAnalysisActions.setPopupActiveTab('Details'))
-                }
+                onClick={() => dispatch(setPopupActiveTab('Details'))}
               />
             </div>
 
@@ -208,7 +206,11 @@ export default function BufferPopup() {
                     })}
                   </div> */}
                   <VerticalBlockChart
-                    data={analysisResults?.[0]?.poiChartData}
+                    data={
+                      analysisResults.filter(
+                        result => result.id === selectedResultsId,
+                      )[0]?.poiChartData
+                    }
                     dataKey="count"
                   />
                 </div>

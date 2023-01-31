@@ -57,6 +57,9 @@ export default function MapSection() {
     state => state.projectDashboard.projectDetail,
   );
 
+  const showResultsPopup = useSelector(
+    state => state.bufferAnalysis.results.showResultsPopup,
+  );
   const { mapRef, map } = useOLMap({
     center: fromLonLat([85.3, 27.7]),
     zoom: 2,
@@ -280,7 +283,7 @@ export default function MapSection() {
             />
           ))}
         <MaskedLayer geojson={projectGeojson} />
-        <BufferPopup />
+        {showResultsPopup && <BufferPopup />}
       </MapComponent>
     </div>
   );

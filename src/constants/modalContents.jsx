@@ -27,6 +27,8 @@ import SaveDataQuery from '@Components/ProjectDashboard/ModalContent/SaveDataQue
 import DeleteDataQuery from '@Components/ProjectDashboard/ModalContent/DeleteDataQuery';
 import AccountSettings from '@Components/Authentication/ModalContent/AccountSettings';
 import ViewLayerAttribute from '@Components/ProjectDashboard/ModalContent/ViewLayerAttribute';
+import EditLayerAttribute from '@Components/ProjectDashboard/ModalContent/EditLayerAttribute';
+import DeleteLayerAttribute from '@Components/ProjectDashboard/ModalContent/DeleteLayerAttribute';
 import DeleteDocument from '@Components/ProjectDashboard/ModalContent/DeleteDocument/index';
 import DataQueryHelp from '@Components/ProjectDashboard/ModalContent/HelpContents/DataQueryHelp';
 import DeleteGallery from '@Components/ProjectDashboard/ModalContent/DeleteGallery/index';
@@ -329,7 +331,31 @@ export function getPromptDialogContent(content) {
         content: <SaveRouteLayer />,
       };
 
+    case 'delete-layer-attribute':
+      return {
+        title: 'Delete attribute',
+        content: <DeleteLayerAttribute />,
+      };
+
     default:
       return '';
+  }
+}
+
+export function getModalTwoContent(content) {
+  switch (content) {
+    // authentication
+    case 'edit-layer-attribute':
+      return {
+        title: 'Edit Attribute',
+        content: <EditLayerAttribute />,
+        className:
+          '!naxatw-w-[calc(100vw-60rem)] !naxatw-min-w-[calc(100vw-60rem)]',
+      };
+    default:
+      return {
+        title: '',
+        content: '',
+      };
   }
 }

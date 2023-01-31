@@ -10,6 +10,7 @@ import Select from '@Components/common/Select/index';
 import { Creators, Types } from '@Actions/bufferAnalysis';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Chip from '@Components/common/Chip';
+import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 
 const {
   setDataInputState,
@@ -226,6 +227,7 @@ export default function DataInput() {
                   );
                 }}
               />
+
               <label
                 htmlFor="dissolve-output"
                 className="naxatw-text-body-lg naxatw-text-grey-800"
@@ -267,6 +269,11 @@ export default function DataInput() {
                         }),
                       );
                     }}
+                  />
+                  <LegendItem
+                    styles={item.style}
+                    className="naxatw-mr-2"
+                    size="21px"
                   />
                   <label htmlFor={item.id} className="naxatw-cursor-pointer">
                     {item.name}

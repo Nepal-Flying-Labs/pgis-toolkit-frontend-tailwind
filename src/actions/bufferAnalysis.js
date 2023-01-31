@@ -18,6 +18,20 @@ export const { Types, Creators } = createActions(
     handleCheckbox: ['payload'],
 
     handleRouteCheckbox: ['payload'],
+
+    setPopupActiveTab: ['payload'],
+
+    copyFeaturesRequest: ['payload'],
+    copyFeaturesSuccess: ['payload'],
+    copyFeaturesFailure: ['payload'],
+
+    getDetailsCategoryRequest: ['params'],
+    getDetailsCategorySuccess: ['payload'],
+    getDetailsCategoryFailure: ['payload'],
+
+    getDetailsChartRequest: ['params'],
+    getDetailsChartSuccess: ['payload'],
+    getDetailsChartFailure: ['payload'],
   },
   { prefix: 'bufferAnalysis/' },
 );

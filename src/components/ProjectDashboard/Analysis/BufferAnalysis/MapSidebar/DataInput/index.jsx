@@ -130,13 +130,13 @@ export default function DataInput() {
             {originPointType === 'map' && (
               <div>
                 <Chip
-                  className="!naxatw-w-full !naxatw-bg-white "
+                  className="!naxatw-w-fit "
                   label={
                     originGeojson && originGeojson.length > 0
-                      ? 'Add another point'
+                      ? 'Add new point'
                       : 'Starting Point'
                   }
-                  iconLeft="search"
+                  iconLeft="location_on"
                   active={drawPoint}
                   onClick={() => {
                     dispatch(
@@ -154,6 +154,7 @@ export default function DataInput() {
                   {originGeojson &&
                     originGeojson.map(origin => (
                       <Chip
+                        className="!naxatw-bg-white "
                         key={origin.id}
                         label={origin.name}
                         iconClassName="material-symbols-outlined"

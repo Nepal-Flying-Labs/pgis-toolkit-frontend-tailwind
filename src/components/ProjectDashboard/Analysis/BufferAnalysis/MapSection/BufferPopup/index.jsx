@@ -175,7 +175,7 @@ export default function BufferPopup() {
               />
             </div>
 
-            <p className="naxatw-btn-text naxatw-mt-3 naxatw-mb-2">
+            <p className="naxatw-btn-text naxatw-mt-7 naxatw-mb-2">
               {popupActiveTab === 'Summary' ? (
                 <div className="naxatw-flex naxatw-flex-col naxatw-px-2 naxatw-gap-3">
                   {/* <ul className="naxatw-flex naxatw-flex-col naxatw-gap-2">
@@ -242,12 +242,29 @@ export default function BufferPopup() {
                   </div>
 
                   <div className="naxatw-mt-5">
-                    <div>{selectedCategory}</div>
+                    {/* <div>{selectedCategory}</div> */}
                     {detailsListData?.data?.map(itm => (
-                      <div className="naxatw-flex naxatw-justify-start naxatw-py-1">
-                        <span>
-                          {itm?.Name || itm?.name || itm[selectedCategory]}
-                        </span>
+                      <div className="naxatw-py-2 naxatw-border-b-2">
+                        <div className="naxatw-flex naxatw-justify-between">
+                          <p className="naxatw-text-body-btn">
+                            {itm?.name || itm?.id}
+                          </p>
+                          <span>{itm[selectedCategory]}</span>
+                        </div>
+                        <div className="naxatw-flex naxatw-gap-x-3 naxatw-mt-2">
+                          <div className="naxatw-basis-1/2">
+                            <p className="naxatw-text-body-md">
+                              Buffer Distance
+                            </p>
+                            <p className="naxatw-text-body-lg naxatw-mt-1">
+                              {itm?.buffer_distance?.toFixed(2)}m
+                            </p>
+                          </div>
+                          <div className="naxatw-basis-1/2">
+                            <p className="naxatw-text-body-md">Origin Point</p>
+                            <p className="naxatw-text-body-lg naxatw-mt-1">-</p>
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>

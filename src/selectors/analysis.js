@@ -67,6 +67,6 @@ export const poiLayersSelector = createSelector(
   [themesSelector, layersSelector],
   (themes, layers) => {
     const poiThemeId = themes?.find(theme => theme.name === poiThemeName)?.id;
-    return layers[poiThemeId] || [];
+    return layers?.[poiThemeId] || [];
   },
 );

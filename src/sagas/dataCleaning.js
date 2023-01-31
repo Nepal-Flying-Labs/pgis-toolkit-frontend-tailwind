@@ -13,8 +13,8 @@ import {
   checkError,
   copyFeatures,
   getErrorFeatures,
+  getFeatureMirrorGeojson,
   updateFeatureCollection,
-  getFeatureGeojson,
 } from '@Services/dataCleaning';
 import dataCleaningActions, { Types } from '@Actions/dataCleaning';
 import commonActions from '@Actions/common';
@@ -156,7 +156,7 @@ export function* deleteSelectedFeaturesRequest() {
 export function* getFeatureGeojsonRequest({ payload }) {
   try {
     const responses = yield all(
-      payload.map(id => call(getFeatureGeojson, { mirror_id: id })),
+      payload.map(id => call(getFeatureMirrorGeojson, { mirror_id: id })),
     );
     const responseData = responses.map(res => res.data);
     yield put(dataCleaningActions.getFeatureGeojsonSuccess(responseData));

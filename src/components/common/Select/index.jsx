@@ -8,7 +8,7 @@ import useOutsideClick from '@Hooks/useOutsideClick';
 // import isEmpty from '@Utils/commonUtils';
 import PropTypes from 'prop-types';
 import './styles.css';
-import MaterialIcon from '../MaterialIcon/index';
+import MaterialIcon from '../MaterialIcon';
 
 function Select({
   options,
@@ -75,7 +75,8 @@ function Select({
         </button>
         {toggle && (
           <div
-            className="naxatw-dropdown naxatw-min-w-fit naxatw-py-2"
+            className="naxatw-dropdown naxatw-min-w-fit naxatw-py-2 naxatw-max-h-[14rem]
+              naxatw-overflow-y-auto scrollbar"
             // style={{
             //   display: toggle ? 'block' : 'none',
             // }}
@@ -85,7 +86,7 @@ function Select({
                 options.map(item => {
                   return (
                     <li
-                      key={item.id}
+                      key={item[valueKey]}
                       role="menuitem"
                       className={`naxatw-dropdown-items  ${
                         selected === item[dataKey] || item[valueKey] ? '' : ''

@@ -93,6 +93,7 @@
 - [ ] icon grey
 - [ ] required field validation while geom edit for feature
 - [ ] save data query modal mt remove
+- [ ] format date/time in all sections (table etc)
 
 ### Backend
 
@@ -158,9 +159,10 @@
 - [ ] Category ID is seen in Data Catalog table after upload success.
 
 ### ROUTE ANALYSIS
+
 - [ ] preferred alternative path +/- button
 - [ ] route to data cleaning on reload
-- [ ] geometry type polygon after route layer save 
+- [ ] geometry type polygon after route layer save
 - [ ] osm search
   - [x] swap locations
   - [x] add marker
@@ -172,11 +174,13 @@
   - [ ] zoom to feature after select
   - [ ] toggle search/map/layer state issue
 - [ ] add loader to map
-    
+
 ### BUFFER ANALYSIS
-- [ ] copy feature before buffer analysis
+
+- [x] copy feature before buffer analysis (saga api call before apply click saga/datacleaning)
 - [ ] show features inside buffer
-- [ ] BufferPopup UI
+- [x] BufferPopup UI
 - [ ] zoom to individual buffer
 
-
+- [ ] show vectortile layer from feature_mirror_ids
+- [ ] show origin of all with dissolve feature

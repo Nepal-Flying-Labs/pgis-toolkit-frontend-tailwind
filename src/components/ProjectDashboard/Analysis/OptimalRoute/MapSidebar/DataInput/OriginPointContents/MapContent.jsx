@@ -7,18 +7,10 @@ import {
   startingPointColor,
 } from '@src/constants/analysis';
 import IconButton from '@Components/common/IconButton';
-import Chip from '../../Chip';
+import getGeojsonCoordinates from '@Utils/getGeojsonCoordinates';
+import Chip from '@Components/common/Chip';
 
 const { setDataInputState } = Creators;
-
-function getGeojsonCoordinates(geojson) {
-  const {
-    coordinates: [lat, lng],
-  } = geojson.geometry;
-  const latitude = lat.toFixed(5);
-  const longitude = lng.toFixed(5);
-  return `${latitude}, ${longitude}`;
-}
 
 const drawPointData = [
   {

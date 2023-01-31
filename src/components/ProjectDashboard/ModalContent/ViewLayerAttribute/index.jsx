@@ -196,6 +196,7 @@ export default function ViewLayerAttribute() {
           >
             {headerKeys.map(key => (
               <TableHeader
+                key={map}
                 dataField={key}
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"

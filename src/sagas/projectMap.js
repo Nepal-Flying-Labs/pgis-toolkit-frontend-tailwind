@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {
   call,
   put,
@@ -303,15 +304,25 @@ export function* getQueryAttributeRequest({ params }) {
 }
 
 export function* updateLayerAttributeRequest({ id, payload }) {
+  const { is_deleted } = payload;
   try {
     const response = yield call(updateFeatureCollection, id, payload);
-    yield put(commonActions.toggleModalTwo());
     yield put(projectMapActions.updateLayerAttributeSuccess(response.data));
-    yield put(
-      toastActions.success({
-        message: 'Layer attribute saved successfully.',
-      }),
-    );
+    if (!is_deleted) {
+      yield put(commonActions.toggleModalTwo());
+      yield put(
+        toastActions.success({
+          message: 'Layer attribute saved successfully.',
+        }),
+      );
+    } else {
+      yield put(commonActions.togglePromptDialog());
+      yield put(
+        toastActions.success({
+          message: 'Layer attribute deleted successfully.',
+        }),
+      );
+    }
   } catch (error) {
     yield put(projectMapActions.updateLayerAttributeFailure());
     throw error;

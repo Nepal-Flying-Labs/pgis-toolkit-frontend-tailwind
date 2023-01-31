@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { createReducer } from 'reduxsauce';
 import { parse } from 'wkt';
 import { Types } from '@Actions/projectMap';
@@ -634,15 +635,28 @@ const resetLayerAttributeListState = state => ({
 });
 
 const updateLayerAttributeSuccess = (state, action) => {
-  const { attributes, id } = action.payload;
+  const { attributes, id, is_deleted } = action.payload;
   const newData = state.layerAttributesList.attributeList.map(attribute =>
     attribute.id === id ? { ...attributes } : { ...attribute },
   );
+
+  const newDataDeleted = state.layerAttributesList.attributeList.filter(
+    attribute => attribute.id !== id,
+  );
+  if (!is_deleted) {
+    return {
+      ...state,
+      layerAttributesList: {
+        ...state.layerAttributesList,
+        attributeList: newData,
+      },
+    };
+  }
   return {
     ...state,
     layerAttributesList: {
       ...state.layerAttributesList,
-      attributeList: newData,
+      attributeList: newDataDeleted,
     },
   };
 };

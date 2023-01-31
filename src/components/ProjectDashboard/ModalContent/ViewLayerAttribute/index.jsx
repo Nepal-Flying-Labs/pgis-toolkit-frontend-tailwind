@@ -31,7 +31,7 @@ const {
   setSelectedLayerAttribute,
 } = Creators;
 
-const { toggleModalTwo } = CommonCreators;
+const { toggleModalTwo, togglePromptDialog } = CommonCreators;
 
 export default function ViewLayerAttribute() {
   const dispatch = useDispatch();
@@ -155,7 +155,6 @@ export default function ViewLayerAttribute() {
         </span>
       ),
       onClick: data => {
-        console.log(data, 'data');
         dispatch(setSelectedLayerAttribute(data));
         dispatch(toggleModalTwo('edit-layer-attribute'));
       },
@@ -168,7 +167,10 @@ export default function ViewLayerAttribute() {
           <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: data => {
+        dispatch(setSelectedLayerAttribute(data));
+        dispatch(togglePromptDialog('delete-layer-attribute'));
+      },
     },
   ];
 

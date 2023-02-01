@@ -388,6 +388,11 @@ const checkProcessingStatusSuccess = (state, action) =>
     draft.activeTab = 'results';
     draft.results.selectedResultId = analysisResult.id;
     draft.results.showResultsPopup = true;
+
+    draft.poiLayers = draft.poiLayers.map(item => ({
+      ...item,
+      checked: false,
+    }));
   });
 
 const handleRouteCheckbox = (state, action) =>

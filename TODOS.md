@@ -181,9 +181,9 @@
 - [x] buffer analysis popup hiding on first render
 - [x] change button on add another point
 - [ ] summary chart design .
-- [ ] buffer area color style
+- [x] buffer area color style
 -
 - [ ] lengend style rounded
 - [ ] add zoom to buffer area
 - [ ] show poi on select
-- [ ] show legend on poi
+- [x] show legend on poi

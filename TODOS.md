@@ -180,7 +180,7 @@
 - [ ] proceesing analysis in first render
 - [x] buffer analysis popup hiding on first render
 - [x] change button on add another point
-- [ ] summary chart design .
+- [x] summary chart design .
 - [x] buffer area color style
 -
 - [x] lengend style rounded

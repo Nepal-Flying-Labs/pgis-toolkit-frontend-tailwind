@@ -21,12 +21,14 @@ import {
   ResponsiveContainer,
   Text,
 } from 'recharts';
+import meterToKM from '@Utils/meterToKM';
 
 const {
   getDetailsCategoryRequest,
   getDetailsChartRequest,
   setPopupActiveTab,
   setResultsState,
+  setBufferAnalysisState,
 } = Creators;
 
 export default function BufferPopup() {
@@ -139,24 +141,26 @@ export default function BufferPopup() {
         <div className="naxatw-flex naxatw-items-center">
           <IconButton
             name="close"
-            onClick={
-              () => dispatch(setResultsState({ showResultsPopup: false }))
-              // dispatch(
-              //   setRouteAnalysisState({
-              //     selectedRouteId: null,
-              //     routePopupData: null,
-              //   }),
-              // )
-            }
+            onClick={() => {
+              dispatch(setResultsState({ showResultsPopup: false }));
+              dispatch(
+                setBufferAnalysisState({
+                  popupActiveTab: 'Summary',
+                  detailsCategory: [],
+                  detailsChartData: {},
+                  detailsListData: [],
+                }),
+              );
+            }}
           />
         </div>
       </div>
 
       <div
-        className="naxatw-px-5 naxatw-pb-3.5 naxatw-overflow-y-auto scrollbar naxatw-text-body-md"
-        style={{
-          maxHeight: `calc(100vh - ${projectHeaderHeight}px - 14rem)`,
-        }}
+        className="naxatw-px-5 naxatw-pb-3.5  naxatw-text-body-md"
+        // style={{
+        //   maxHeight: `calc(100vh - ${projectHeaderHeight}px - 14rem)`,
+        // }}
       >
         {loading ? (
           <RoutePopupSkeleton />
@@ -216,18 +220,28 @@ export default function BufferPopup() {
                 </div>
               ) : (
                 <>
-                  <div className="naxatw-space-y-2">
-                    <div>
+                  <div className="naxatw-space-y-3">
+                    <div className="naxatw-space-y-2">
                       <label className="naxatw-label">Select Layer*</label>
                       <Select
                         options={poiLayersData}
-                        onChange={selected => setSelectedLayer(selected.id)}
+                        onChange={selected => {
+                          setSelectedLayer(selected.id);
+                          setSelectedCategory(null);
+                          dispatch(
+                            setBufferAnalysisState({
+                              detailsCategory: [],
+                              detailsChartData: {},
+                              detailsListData: [],
+                            }),
+                          );
+                        }}
                         selectedValue={selectedLayer}
                         labelKey="name"
                         valueKey="id"
                       />
                     </div>
-                    <div>
+                    <div className="naxatw-space-y-2">
                       <label className="naxatw-label">Select Category*</label>
                       <Select
                         options={categoryListData}
@@ -241,7 +255,7 @@ export default function BufferPopup() {
                     </div>
                   </div>
 
-                  <div className="naxatw-mt-5">
+                  <div className="naxatw-mt-5 naxatw-max-h-[10rem] naxatw-overflow-y-auto scrollbar naxatw-pr-2 naxatw-shadow-inner">
                     {/* <div>{selectedCategory}</div> */}
                     {detailsListData?.data?.map(itm => (
                       <div className="naxatw-py-2 naxatw-border-b-2">
@@ -257,7 +271,7 @@ export default function BufferPopup() {
                               Buffer Distance
                             </p>
                             <p className="naxatw-text-body-lg naxatw-mt-1">
-                              {itm?.buffer_distance?.toFixed(2)}m
+                              {meterToKM(itm?.buffer_distance?.toFixed(2))}
                             </p>
                           </div>
                           <div className="naxatw-basis-1/2">

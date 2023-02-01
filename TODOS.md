@@ -93,6 +93,7 @@
 - [ ] icon grey
 - [ ] required field validation while geom edit for feature
 - [ ] save data query modal mt remove
+- [ ] format date/time in all sections (table etc)
 
 ### Backend
 
@@ -158,12 +159,31 @@
 - [ ] Category ID is seen in Data Catalog table after upload success.
 
 ### ROUTE ANALYSIS
+
+- [ ] preferred alternative path +/- button
 - [ ] route to data cleaning on reload
-    
+- [ ] geometry type polygon after route layer save
+- [ ] osm search
+  - [x] swap locations
+  - [x] add marker
+  - [x] add masking
+  - [x] implement bbox
+  - [x] design issues
+  - [x] remove search results outside project area
+  - [x] reset searched location on input click
+  - [ ] zoom to feature after select
+  - [ ] toggle search/map/layer state issue
+- [ ] add loader to map
+
 ### BUFFER ANALYSIS
-- [ ] copy feature before buffer analysis
-- [ ] show features inside buffer
-- [ ] BufferPopup UI
-- [ ] zoom to individual buffer
 
-
+- [ ] proceesing analysis in first render
+- [x] buffer analysis popup hiding on first render
+- [x] change button on add another point
+- [x] summary chart design .
+- [x] buffer area color style
+-
+- [x] lengend style rounded
+- [x] add zoom to buffer area
+- [x] show poi on select
+- [x] show legend on poi

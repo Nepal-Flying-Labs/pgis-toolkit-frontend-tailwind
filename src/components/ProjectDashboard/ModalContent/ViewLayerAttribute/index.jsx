@@ -4,6 +4,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Searchbar from '@Components/common/Searchbar/index';
 import { Creators, Types } from '@Actions/projectMap';
+import { Creators as CommonCreators } from '@Actions/common';
 import Table, { TableHeader } from '@Components/common/CustomTable';
 import SortingContainer from '@Components/common/SortingContainer/index';
 import DropdownOptions from '@Components/common/DropdownOptions/index';
@@ -27,30 +28,10 @@ const {
   handleAttributeRowSelect,
   handleAttributeOrdering,
   resetLayerAttributeListState,
+  setSelectedLayerAttribute,
 } = Creators;
 
-const dropdownOptions = [
-  {
-    id: 1,
-    label: (
-      <span className="naxatw-flex naxatw-items-center">
-        <i className="material-icons naxatw-mr-2">edit</i>
-        <p className="naxatw-text-body-lg">Edit</p>
-      </span>
-    ),
-    onClick: () => {},
-  },
-  {
-    id: 2,
-    label: (
-      <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
-        <i className="material-icons naxatw-mr-2">delete_outline</i>
-        <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
-      </span>
-    ),
-    onClick: () => {},
-  },
-];
+const { toggleModalTwo, togglePromptDialog } = CommonCreators;
 
 export default function ViewLayerAttribute() {
   const dispatch = useDispatch();
@@ -164,6 +145,35 @@ export default function ViewLayerAttribute() {
     [attributeList],
   );
 
+  const dropdownOptions = [
+    {
+      id: 1,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">edit</i>
+          <p className="naxatw-text-body-lg">Edit</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setSelectedLayerAttribute(data));
+        dispatch(toggleModalTwo('edit-layer-attribute'));
+      },
+    },
+    {
+      id: 2,
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setSelectedLayerAttribute(data));
+        dispatch(togglePromptDialog('delete-layer-attribute'));
+      },
+    },
+  ];
+
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-2 naxatw-w-full naxatw-h-full">
       <div>
@@ -186,6 +196,7 @@ export default function ViewLayerAttribute() {
           >
             {headerKeys.map(key => (
               <TableHeader
+                key={key}
                 dataField={key}
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
                 rowcolSpan="rowSpan_2"

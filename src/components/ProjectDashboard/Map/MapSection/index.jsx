@@ -33,6 +33,7 @@ import EditableLayer from '@Components/common/OpenLayersComponent/CustomLayer/Ed
 // import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import { apiURL } from '@Services';
+import { FullScreen, defaults as defaultControls } from 'ol/control';
 import SidebarToggle from '../SidebarToggle';
 import Toolbox from '../Toolbox';
 import QueryResultPopup from '../QueryResultPopup';
@@ -46,6 +47,7 @@ const {
 
 export default function MapSection({ setExportMap }) {
   const { mapRef, map, isMapLoading } = useOLMap({
+    controls: defaultControls().extend([new FullScreen()]),
     center: fromLonLat([85.3, 27.7]),
     zoom: 2,
     maxZoom: 25,
@@ -207,7 +209,7 @@ export default function MapSection({ setExportMap }) {
       >
         <SidebarToggle />
 
-        <Toolbox />
+        <Toolbox map={map} />
 
         <QueryResultPopup />
 

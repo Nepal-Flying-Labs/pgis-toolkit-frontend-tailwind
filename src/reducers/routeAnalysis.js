@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from 'reduxsauce';
 import produce from 'immer';
+import { parse } from 'wkt';
 import { Types } from '@Actions/routeAnalysis';
 import {
   startPointStyles,
@@ -12,10 +13,12 @@ const initialState = {
   activeTab: 'dataInput', // 'dataInput', 'results', 'layers'
   dataInput: {
     selectedModeOfTransport: 'drive', // 'drive', 'cycle', 'walk'
-    originPointType: 'map', // 'search', 'map', 'layer'
+    originPointType: 'search', // 'search', 'map', 'layer'
+    selectedOriginPointType: null, // 'search', 'map', 'layer'
     drawPointType: null, // 'start', 'destination'
-    startGeojson: null,
-    destinationGeojson: null,
+    startingPoint: null, // { id: '', name: '', geojson: null }
+    destinationPoint: null, // { id: '', name: '', geojson: null }
+    selectedLayerType: null, // 'startingPoint', 'destinationPoint'
     alternativePaths: 1,
     outputName: '',
   },
@@ -207,6 +210,24 @@ const saveRouteLayerSuccess = (state, action) =>
     draft.routePopupData = null;
   });
 
+function getAttributeName(attributes) {
+  return attributes?.name || attributes?.Name;
+}
+
+const getSelectedLayerFeatureSuccess = (state, action) =>
+  produce(state, draft => {
+    const { geometry, attributes, id } = action.payload;
+    const { selectedLayerType } = state.dataInput;
+    const geojson = parse(geometry);
+    draft.dataInput[selectedLayerType] = {
+      id: '',
+      name: getAttributeName(attributes) || id,
+      geojson,
+    };
+    draft.dataInput.selectedLayerType = null;
+    draft.dataInput.selectedOriginPointType = 'layer';
+  });
+
 const routeAnalysisReducer = createReducer(initialState, {
   [Types.SET_ROUTE_ANALYSIS_STATE]: setRouteAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
@@ -219,6 +240,7 @@ const routeAnalysisReducer = createReducer(initialState, {
   [Types.HANDLE_OBSTACLES_TOGGLE]: handleObstaclesToggle,
   [Types.GET_ANALYSIS_DATA_SUCCESS]: getAnalysisDataSuccess,
   [Types.SAVE_ROUTE_LAYER_SUCCESS]: saveRouteLayerSuccess,
+  [Types.GET_SELECTED_LAYER_FEATURE_SUCCESS]: getSelectedLayerFeatureSuccess,
 });
 
 export default routeAnalysisReducer;

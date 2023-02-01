@@ -28,6 +28,10 @@ export const { Types, Creators } = createActions(
     saveRouteLayerRequest: ['payload'],
     saveRouteLayerSuccess: ['payload'],
     saveRouteLayerFailure: null,
+
+    getSelectedLayerFeatureRequest: ['payload'],
+    getSelectedLayerFeatureSuccess: ['payload'],
+    getSelectedLayerFeatureFailure: ['payload'],
   },
   { prefix: 'routeAnalysis/' },
 );

@@ -20,6 +20,7 @@ import {
   getAnalysisTaskResponse,
 } from '@Services/routeAnalysis';
 import {
+  getLayerAttribute,
   getProjectThemeLayers,
   getProjectThemes,
   updateLayer,
@@ -31,13 +32,16 @@ import {
   pointTypes,
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import prepareFormData from '@Utils/prepareFormData';
+import { getProjectGeojson } from '@Services/organizationDashboard';
 
 export function* copyLayerDataRequest({ payload }) {
   try {
     const { analysisType, organizationId, projectId } = payload;
     yield put(commonActions.toggleModal());
     // copy layers to analysis reducer state
-    const { themes, layers } = yield select(state => state.projectMap);
+    const { themes, layers, projectGeojson } = yield select(
+      state => state.projectMap,
+    );
     yield put(
       analysisActions.setAnalysisState({
         layers: Object.entries(layers).reduce(
@@ -48,6 +52,7 @@ export function* copyLayerDataRequest({ payload }) {
           {},
         ),
         themes,
+        projectGeojson,
       }),
     );
     if (analysisType === 'buffer-analysis') {
@@ -151,6 +156,26 @@ export function* getProjectThemeLayersRequest({ params }) {
   }
 }
 
+export function* getProjectGeojsonRequest({ params }) {
+  try {
+    const response = yield call(getProjectGeojson, params);
+    yield put(analysisActions.getProjectGeojsonSuccess(response.data));
+  } catch (error) {
+    yield put(analysisActions.getProjectGeojsonFailure());
+    throw error;
+  }
+}
+
+export function* getLayerAttributeRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttribute, params);
+    yield put(analysisActions.getLayerAttributeSuccess(response.data));
+  } catch (error) {
+    yield put(analysisActions.getLayerAttributeFailure());
+    throw error;
+  }
+}
+
 function* analysisWatcher() {
   yield takeLatest(
     Types.COPY_LAYER_DATA_REQUEST,
@@ -167,6 +192,14 @@ function* analysisWatcher() {
   yield takeEvery(
     Types.GET_PROJECT_THEME_LAYERS_REQUEST,
     withLoader(withErrorHandler(getProjectThemeLayersRequest)),
+  );
+  yield takeLatest(
+    Types.GET_PROJECT_GEOJSON_REQUEST,
+    withLoader(withErrorHandler(getProjectGeojsonRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(getLayerAttributeRequest)),
   );
 }
 

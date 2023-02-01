@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { createReducer } from 'reduxsauce';
 import { parse } from 'wkt';
 import { Types } from '@Actions/projectMap';
@@ -50,6 +51,7 @@ const initialState = {
       next: null,
       previous: null,
     },
+    selectedLayerAttribute: null,
   },
 };
 
@@ -632,6 +634,33 @@ const resetLayerAttributeListState = state => ({
   },
 });
 
+const updateLayerAttributeSuccess = (state, action) => {
+  const { attributes, id, is_deleted } = action.payload;
+  const newData = state.layerAttributesList.attributeList.map(attribute =>
+    attribute.id === id ? { ...attributes } : { ...attribute },
+  );
+
+  const newDataDeleted = state.layerAttributesList.attributeList.filter(
+    attribute => attribute.id !== id,
+  );
+  if (!is_deleted) {
+    return {
+      ...state,
+      layerAttributesList: {
+        ...state.layerAttributesList,
+        attributeList: newData,
+      },
+    };
+  }
+  return {
+    ...state,
+    layerAttributesList: {
+      ...state.layerAttributesList,
+      attributeList: newDataDeleted,
+    },
+  };
+};
+
 const getQueryAttributeSuccess = (state, action) => {
   const { counts, next, previous, results } = action.payload;
   return {
@@ -648,6 +677,14 @@ const getQueryAttributeSuccess = (state, action) => {
     },
   };
 };
+
+const setSelectedLayerAttribute = (state, action) => ({
+  ...state,
+  layerAttributesList: {
+    ...state.layerAttributesList,
+    selectedLayerAttribute: action.payload,
+  },
+});
 
 const resetProjectMapState = () => ({
   ...initialState,
@@ -695,6 +732,8 @@ const projectMapReducer = createReducer(initialState, {
   [Types.HANDLE_ATTRIBUTE_ORDERING]: handleAttributeOrdering,
   [Types.RESET_LAYER_ATTRIBUTE_LIST_STATE]: resetLayerAttributeListState,
   [Types.GET_QUERY_ATTRIBUTE_SUCCESS]: getQueryAttributeSuccess,
+  [Types.SET_SELECTED_LAYER_ATTRIBUTE]: setSelectedLayerAttribute,
+  [Types.UPDATE_LAYER_ATTRIBUTE_SUCCESS]: updateLayerAttributeSuccess,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

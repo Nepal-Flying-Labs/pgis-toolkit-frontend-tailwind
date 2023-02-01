@@ -19,6 +19,25 @@ export const { Types, Creators } = createActions(
     copyLayerDataRequest: ['payload'],
     copyLayerDataSuccess: ['payload'],
     copyLayerDataFailure: null,
+
+    getProjectGeojsonRequest: ['params'],
+    getProjectGeojsonSuccess: ['payload'],
+    getProjectGeojsonFailure: null,
+
+    getLayerAttributeRequest: ['params'],
+    getLayerAttributeSuccess: ['payload'],
+    getLayerAttributeFailure: null,
+
+    setAttributeTableSearchTerm: ['payload'],
+
+    handleAttributeNextClick: null,
+    handleAttributePreviousClick: null,
+    handleAttributeJumpsTo: ['payload'],
+    handleAttributeRowSelect: ['payload'],
+    handleAttributeOrdering: ['payload'],
+
+    resetLayerAttributeListState: null,
+    handleTableCheckbox: ['payload'],
   },
   { prefix: 'analysis/' },
 );

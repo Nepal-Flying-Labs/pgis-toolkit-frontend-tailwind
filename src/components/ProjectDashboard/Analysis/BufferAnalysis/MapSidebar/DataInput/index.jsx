@@ -10,9 +10,14 @@ import Select from '@Components/common/Select/index';
 import { Creators, Types } from '@Actions/bufferAnalysis';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Chip from '@Components/common/Chip';
+import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 
-const { setDataInputState, applyBufferAnalysisRequest, handleCheckbox } =
-  Creators;
+const {
+  setDataInputState,
+  applyBufferAnalysisRequest,
+  handleCheckbox,
+  copyFeaturesRequest,
+} = Creators;
 
 const originPointData = [
   { label: 'Search', value: 'search', icon: 'search' },
@@ -30,7 +35,7 @@ export default function DataInput() {
   const { projectId } = useParams();
 
   const originPointType = useSelector(
-    state => state.bufferAnalysis.dataInput.originPointType,
+    state => state.bufferAnalysis.dataInput?.originPointType,
   );
   const drawPoint = useSelector(
     state => state.bufferAnalysis.dataInput.drawPoint,
@@ -85,6 +90,10 @@ export default function DataInput() {
       pois: selectedPOI,
       type: 'buffer',
     };
+    const poiLayersIds = poiLayers
+      .filter(layer => layer.checked)
+      .map(layer => layer.id);
+    dispatch(copyFeaturesRequest(poiLayersIds));
     dispatch(applyBufferAnalysisRequest(payloadData));
   };
 
@@ -122,13 +131,13 @@ export default function DataInput() {
             {originPointType === 'map' && (
               <div>
                 <Chip
-                  className="!naxatw-w-full !naxatw-bg-white "
+                  className="!naxatw-w-fit "
                   label={
                     originGeojson && originGeojson.length > 0
-                      ? 'Add another point'
+                      ? 'Add new point'
                       : 'Starting Point'
                   }
-                  iconLeft="search"
+                  iconLeft="location_on"
                   active={drawPoint}
                   onClick={() => {
                     dispatch(
@@ -138,10 +147,15 @@ export default function DataInput() {
                     );
                   }}
                 />
-                <div className="naxatw-mt-2 naxatw-max-h-[100px] naxatw-overflow-y-auto naxatw-space-y-1 scrollbar">
+                <div
+                  className={`naxatw-mt-2 ${
+                    originGeojson ? 'naxatw-bg-[#ffffff73]' : ''
+                  } naxatw-p-2 naxatw-rounded-[20px] naxatw-py-1 naxatw-max-h-[100px] naxatw-w-[333px] naxatw-flex naxatw-flex-wrap naxatw-overflow-y-scroll scrollbar`}
+                >
                   {originGeojson &&
                     originGeojson.map(origin => (
                       <Chip
+                        className="!naxatw-bg-white "
                         key={origin.id}
                         label={origin.name}
                         iconClassName="material-symbols-outlined"
@@ -213,11 +227,12 @@ export default function DataInput() {
                   );
                 }}
               />
+
               <label
                 htmlFor="dissolve-output"
                 className="naxatw-text-body-lg naxatw-text-grey-800"
               >
-                Dissolve Output
+                Dissolve Output (optional)
               </label>
             </div>
           </div>
@@ -254,6 +269,11 @@ export default function DataInput() {
                         }),
                       );
                     }}
+                  />
+                  <LegendItem
+                    styles={item.style}
+                    className="naxatw-mr-2"
+                    size="21px"
                   />
                   <label htmlFor={item.id} className="naxatw-cursor-pointer">
                     {item.name}

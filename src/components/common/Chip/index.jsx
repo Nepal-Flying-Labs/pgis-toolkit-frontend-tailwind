@@ -61,7 +61,7 @@ Chip.defaultProps = {
 };
 
 Chip.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.any.isRequired,
   active: PropTypes.bool,
   onClick: PropTypes.func,
   iconLeft: PropTypes.node,

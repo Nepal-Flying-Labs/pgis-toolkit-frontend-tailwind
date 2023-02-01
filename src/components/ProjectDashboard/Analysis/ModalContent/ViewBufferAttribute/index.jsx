@@ -28,7 +28,10 @@ export default function ViewBufferAttribute() {
 
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-2 naxatw-w-full naxatw-h-full">
-      <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative  naxatw-w-full naxatw-max-h-[calc(100vh-25rem)] naxatw-min-h-[calc(100vh-40rem)]">
+      <div
+        className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative
+          naxatw-w-full naxatw-max-h-[calc(100vh-25rem)] naxatw-min-h-[14rem]"
+      >
         {loading ? (
           <TableSkeleton itemNumber={5} />
         ) : (
@@ -36,14 +39,14 @@ export default function ViewBufferAttribute() {
             data={individualAnalysisData || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            headerWidths={['10px', '200px', '200px']}
+            headerWidths={['100px', '200px', '200px']}
           >
             <TableHeader
               dataField="ID"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <p className="naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg naxatw-p-3">
+                <p className="naxatw-overflow-ellipsis naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg naxatw-p-3">
                   {row.id || '-'}
                 </p>
               )}
@@ -53,7 +56,7 @@ export default function ViewBufferAttribute() {
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <p className="naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
+                <p className="naxatw-overflow-ellipsis naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
                   {row.area?.toFixed(2) || '-'}
                 </p>
               )}
@@ -88,7 +91,7 @@ export default function ViewBufferAttribute() {
                   0,
                 );
                 return (
-                  <p className="naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
+                  <p className="naxatw-overflow-ellipsis naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
                     {totalPoi}
                   </p>
                 );

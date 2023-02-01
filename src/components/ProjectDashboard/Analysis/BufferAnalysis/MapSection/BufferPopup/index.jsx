@@ -61,6 +61,17 @@ export default function BufferPopup() {
     state => state.bufferAnalysis.results.selectedResultId,
   );
 
+  const selectedResultData = analysisResults.find(
+    result => result.id === selectedResultsId,
+  );
+
+  const originCount = selectedResultData?.buffer_areas?.reduce(
+    (total, item) => total + item.origin?.length,
+    0,
+  );
+
+  const poiCount = selectedResultData?.poiChartData?.length;
+
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_ROUTE_POPUP_DATA_REQUEST]),
   );
@@ -137,7 +148,7 @@ export default function BufferPopup() {
         naxatw-shadow-3xl naxatw-w-[20.3rem]"
     >
       <div className="naxatw-px-5 naxatw-py-3.5 naxatw-flex naxatw-items-center naxatw-justify-between naxatw-rounded-t-[20px]">
-        <h4>Buffer Analysis </h4>
+        <h4>{selectedResultData?.name || '-'} </h4>
         <div className="naxatw-flex naxatw-items-center">
           <IconButton
             name="close"
@@ -209,6 +220,25 @@ export default function BufferPopup() {
                       );
                     })}
                   </div> */}
+                  <div className="naxatw-flex naxatw-justify-between naxatw-py-2">
+                    <div className="naxatw-basis-1/2">
+                      <p className="naxatw-text-body-lg naxatw-text-center">
+                        Origin Count
+                      </p>
+                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center">
+                        {originCount || '-'}
+                      </p>
+                    </div>
+                    <div className="naxatw-basis-1/2">
+                      <p className="naxatw-text-body-lg naxatw-text-center">
+                        POI Count
+                      </p>
+                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center">
+                        {poiCount || '-'}
+                      </p>
+                    </div>
+                  </div>
+                  <hr className="naxatw-mb-3" />
                   <VerticalBlockChart
                     data={
                       analysisResults.filter(

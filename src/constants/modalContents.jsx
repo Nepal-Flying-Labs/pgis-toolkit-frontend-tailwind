@@ -229,8 +229,7 @@ export function getModalContent(content) {
       return {
         title: 'Buffer Attribute',
         content: <ViewBufferAttribute />,
-        className:
-          '!naxatw-max-w-[calc(100vw-15rem)] !naxatw-min-w-[calc(100vw-40rem)]',
+        className: '!naxatw-w-[50rem]',
       };
     default:
       return {

@@ -29,6 +29,7 @@ import {
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileLayer';
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
+import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import BufferPopup from './BufferPopup/index';
 
 const { setDataInputState, setResultsState } = BufferAnalysisCreators;
@@ -36,7 +37,7 @@ const { setDataInputState, setResultsState } = BufferAnalysisCreators;
 export default function MapSection() {
   const dispatch = useDispatch();
   const mapState = useSelector(mapStateSelector);
-  const projectGeojson = useSelector(state => state.projectMap.projectGeojson);
+  const projectGeojson = useSelector(state => state.analysis.projectGeojson);
 
   const drawPoint = useSelector(
     state => state.bufferAnalysis.dataInput.drawPoint,
@@ -45,8 +46,8 @@ export default function MapSection() {
     state => state.bufferAnalysis.dataInput.originGeojson,
   );
 
-  const zoomToRouteId = useSelector(
-    state => state.bufferAnalysis.results.zoomToRouteId,
+  const zoomToBuffer = useSelector(
+    state => state.bufferAnalysis.results.zoomToBuffer,
   );
 
   const analysisResults = useSelector(
@@ -57,7 +58,13 @@ export default function MapSection() {
     state => state.projectDashboard.projectDetail,
   );
 
-  const { mapRef, map } = useOLMap({
+  const showResultsPopup = useSelector(
+    state => state.bufferAnalysis.results.showResultsPopup,
+  );
+
+  const poiLayers = useSelector(state => state.bufferAnalysis.poiLayers);
+
+  const { mapRef, map, isMapLoading } = useOLMap({
     center: fromLonLat([85.3, 27.7]),
     zoom: 2,
     maxZoom: 25,
@@ -82,8 +89,8 @@ export default function MapSection() {
 
   // zoom to buffer result layer
   useEffect(() => {
-    if (!map || !zoomToRouteId) return;
-    const bbox = analysisResults.find(item => item.id === zoomToRouteId)?.bbox;
+    if (!map || !zoomToBuffer) return;
+    const bbox = zoomToBuffer?.bbox;
     if (!bbox) return;
     const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
     if (isExtentValid(zoomExtent)) {
@@ -94,11 +101,11 @@ export default function MapSection() {
       });
       dispatch(
         setResultsState({
-          zoomToRouteId: null,
+          zoomToBuffer: null,
         }),
       );
     }
-  }, [map, zoomToRouteId, analysisResults, dispatch]);
+  }, [map, zoomToBuffer, dispatch]);
   // const setLayerStyle = useCallback((style, feature, resolution) => {
   //   const stylex = { ...style };
   //   // const properties = feature.getProperties();
@@ -223,13 +230,49 @@ export default function MapSection() {
             ''
           ),
         )}
+
+        {poiLayers.map((item, index) =>
+          item.layer_type === 'Vector' ? (
+            <VectorTileLayer
+              key={item.id}
+              url={`${apiURL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+              authToken={localStorage.getItem('userToken')}
+              visibleOnMap={item.checked}
+              setStyle={(feature, resolution) =>
+                setLayerStyle(
+                  item.id === selectedLayer?.id
+                    ? selectedLayer.style
+                    : item?.style || { ...defaultStyles },
+                  feature,
+                  resolution,
+                )
+              }
+              // style={
+              //   item.id === selectedLayer?.id
+              //     ? selectedLayer.style
+              //     : item?.style || { ...defaultStyles }
+              // }
+              zIndex={mapState.length + 10 - index}
+              properties={{ layerId: item.id }}
+            />
+          ) : item.layer_type === 'WMS' ? (
+            <WMSTileLayer
+              key={item.id}
+              url={item.url}
+              visibleOnMap={item.checked}
+            />
+          ) : (
+            ''
+          ),
+        )}
+
         {analysisResults.map(result =>
           result.buffer_areas.map(area =>
             area.origin.map((areaOrigin, index) => (
               <CircleMarker
                 key={index}
                 coordinates={[areaOrigin[1], areaOrigin[0]]}
-                visibleOnMap={result.checked}
+                visibleOnMap={area.checked}
                 zIndex={10}
                 style={area.originStyle}
                 map={map}
@@ -259,7 +302,7 @@ export default function MapSection() {
                   key={area.id}
                   url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${poi.layer_id}&sub_layer=&ids=${poi.feature_mirror_ids}`}
                   authToken={localStorage.getItem('userToken')}
-                  visibleOnMap={result.checked}
+                  visibleOnMap={area.checked}
                   style={getLayerStyles(poi.layer_id)}
                   zIndex={4}
                   // properties={{ layerId: selectedLayer.id }}
@@ -280,7 +323,9 @@ export default function MapSection() {
             />
           ))}
         <MaskedLayer geojson={projectGeojson} />
-        <BufferPopup />
+        {showResultsPopup && <BufferPopup />}
+
+        <MapFooter loading={isMapLoading} />
       </MapComponent>
     </div>
   );

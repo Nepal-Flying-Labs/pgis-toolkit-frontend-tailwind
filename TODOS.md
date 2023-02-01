@@ -177,10 +177,13 @@
 
 ### BUFFER ANALYSIS
 
-- [x] copy feature before buffer analysis (saga api call before apply click saga/datacleaning)
-- [ ] show features inside buffer
-- [x] BufferPopup UI
-- [ ] zoom to individual buffer
-
-- [ ] show vectortile layer from feature_mirror_ids
-- [ ] show origin of all with dissolve feature
+- [ ] proceesing analysis in first render
+- [x] buffer analysis popup hiding on first render
+- [x] change button on add another point
+- [x] summary chart design .
+- [x] buffer area color style
+-
+- [x] lengend style rounded
+- [x] add zoom to buffer area
+- [x] show poi on select
+- [x] show legend on poi

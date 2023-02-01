@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators, Types } from '@Actions/routeAnalysis';
-import RouteAnalysisActions from '@Actions/bufferAnalysis';
+import { Creators, Types } from '@Actions/bufferAnalysis';
+// import RouteAnalysisActions from '@Actions/bufferAnalysis';
 import IconButton from '@Components/common/IconButton';
 import RoutePopupSkeleton from '@Components/common/SkeletonLoader/RoutePopupSkeleton';
 import { checkIfLoading } from '@Utils/loaderSelector';
@@ -21,8 +21,15 @@ import {
   ResponsiveContainer,
   Text,
 } from 'recharts';
+import meterToKM from '@Utils/meterToKM';
 
-const { setRouteAnalysisState } = Creators;
+const {
+  getDetailsCategoryRequest,
+  getDetailsChartRequest,
+  setPopupActiveTab,
+  setResultsState,
+  setBufferAnalysisState,
+} = Creators;
 
 export default function BufferPopup() {
   const [selectedLayer, setSelectedLayer] = useState(null);
@@ -50,9 +57,10 @@ export default function BufferPopup() {
     state => state.bufferAnalysis.detailsListData,
   );
 
-  // const routePopupData = useSelector(
-  //   state => state.routeAnalysis.routePopupData,
-  // );
+  const selectedResultsId = useSelector(
+    state => state.bufferAnalysis.results.selectedResultId,
+  );
+
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_ROUTE_POPUP_DATA_REQUEST]),
   );
@@ -61,8 +69,8 @@ export default function BufferPopup() {
   useEffect(() => {
     if (selectedLayer !== null) {
       dispatch(
-        RouteAnalysisActions.getDetailsCategoryRequest({
-          analysis: analysisResults?.[0]?.id,
+        getDetailsCategoryRequest({
+          analysis: selectedResultsId,
           layer: selectedLayer,
           view: 'chart',
         }),
@@ -73,16 +81,16 @@ export default function BufferPopup() {
   useEffect(() => {
     if (selectedCategory !== null) {
       dispatch(
-        RouteAnalysisActions.getDetailsChartRequest({
-          analysis: analysisResults?.[0]?.id,
+        getDetailsChartRequest({
+          analysis: selectedResultsId,
           layer: selectedLayer,
           view: 'chart',
           field: selectedCategory,
         }),
       );
       dispatch(
-        RouteAnalysisActions.getDetailsChartRequest({
-          analysis: analysisResults?.[0]?.id,
+        getDetailsChartRequest({
+          analysis: selectedResultsId,
           layer: selectedLayer,
           view: 'list',
           field: selectedCategory,
@@ -91,11 +99,6 @@ export default function BufferPopup() {
     }
     return () => {};
   }, [selectedCategory]);
-
-  // useEffect(() => {
-  //   if (!selectedRouteId) return;
-  //   dispatch(getRoutePopupDataRequest(selectedRouteId));
-  // }, [dispatch, selectedRouteId]);
 
   useEffect(() => {
     if (Object.keys(detailsChartData)?.length === 0) return;
@@ -138,23 +141,26 @@ export default function BufferPopup() {
         <div className="naxatw-flex naxatw-items-center">
           <IconButton
             name="close"
-            onClick={() =>
+            onClick={() => {
+              dispatch(setResultsState({ showResultsPopup: false }));
               dispatch(
-                setRouteAnalysisState({
-                  selectedRouteId: null,
-                  routePopupData: null,
+                setBufferAnalysisState({
+                  popupActiveTab: 'Summary',
+                  detailsCategory: [],
+                  detailsChartData: {},
+                  detailsListData: [],
                 }),
-              )
-            }
+              );
+            }}
           />
         </div>
       </div>
 
       <div
-        className="naxatw-px-5 naxatw-pb-3.5 naxatw-overflow-y-auto scrollbar naxatw-text-body-md"
-        style={{
-          maxHeight: `calc(100vh - ${projectHeaderHeight}px - 14rem)`,
-        }}
+        className="naxatw-px-5 naxatw-pb-3.5  naxatw-text-body-md"
+        // style={{
+        //   maxHeight: `calc(100vh - ${projectHeaderHeight}px - 14rem)`,
+        // }}
       >
         {loading ? (
           <RoutePopupSkeleton />
@@ -164,20 +170,16 @@ export default function BufferPopup() {
               <Chip
                 label="Summary"
                 active={popupActiveTab === 'Summary'}
-                onClick={() =>
-                  dispatch(RouteAnalysisActions.setPopupActiveTab('Summary'))
-                }
+                onClick={() => dispatch(setPopupActiveTab('Summary'))}
               />
               <Chip
                 label="Details"
                 active={popupActiveTab === 'Details'}
-                onClick={() =>
-                  dispatch(RouteAnalysisActions.setPopupActiveTab('Details'))
-                }
+                onClick={() => dispatch(setPopupActiveTab('Details'))}
               />
             </div>
 
-            <p className="naxatw-btn-text naxatw-mt-3 naxatw-mb-2">
+            <p className="naxatw-btn-text naxatw-mt-7 naxatw-mb-2">
               {popupActiveTab === 'Summary' ? (
                 <div className="naxatw-flex naxatw-flex-col naxatw-px-2 naxatw-gap-3">
                   {/* <ul className="naxatw-flex naxatw-flex-col naxatw-gap-2">
@@ -208,24 +210,38 @@ export default function BufferPopup() {
                     })}
                   </div> */}
                   <VerticalBlockChart
-                    data={analysisResults?.[0]?.poiChartData}
+                    data={
+                      analysisResults.filter(
+                        result => result.id === selectedResultsId,
+                      )[0]?.poiChartData
+                    }
                     dataKey="count"
                   />
                 </div>
               ) : (
                 <>
-                  <div className="naxatw-space-y-2">
-                    <div>
+                  <div className="naxatw-space-y-3">
+                    <div className="naxatw-space-y-2">
                       <label className="naxatw-label">Select Layer*</label>
                       <Select
                         options={poiLayersData}
-                        onChange={selected => setSelectedLayer(selected.id)}
+                        onChange={selected => {
+                          setSelectedLayer(selected.id);
+                          setSelectedCategory(null);
+                          dispatch(
+                            setBufferAnalysisState({
+                              detailsCategory: [],
+                              detailsChartData: {},
+                              detailsListData: [],
+                            }),
+                          );
+                        }}
                         selectedValue={selectedLayer}
                         labelKey="name"
                         valueKey="id"
                       />
                     </div>
-                    <div>
+                    <div className="naxatw-space-y-2">
                       <label className="naxatw-label">Select Category*</label>
                       <Select
                         options={categoryListData}
@@ -239,13 +255,30 @@ export default function BufferPopup() {
                     </div>
                   </div>
 
-                  <div className="naxatw-mt-5">
-                    <div>{selectedCategory}</div>
+                  <div className="naxatw-mt-5 naxatw-max-h-[10rem] naxatw-overflow-y-auto scrollbar naxatw-pr-2 naxatw-shadow-inner">
+                    {/* <div>{selectedCategory}</div> */}
                     {detailsListData?.data?.map(itm => (
-                      <div className="naxatw-flex naxatw-justify-start naxatw-py-1">
-                        <span>
-                          {itm?.Name || itm?.name || itm[selectedCategory]}
-                        </span>
+                      <div className="naxatw-py-2 naxatw-border-b-2">
+                        <div className="naxatw-flex naxatw-justify-between">
+                          <p className="naxatw-text-body-btn">
+                            {itm?.name || itm?.id}
+                          </p>
+                          <span>{itm[selectedCategory]}</span>
+                        </div>
+                        <div className="naxatw-flex naxatw-gap-x-3 naxatw-mt-2">
+                          <div className="naxatw-basis-1/2">
+                            <p className="naxatw-text-body-md">
+                              Buffer Distance
+                            </p>
+                            <p className="naxatw-text-body-lg naxatw-mt-1">
+                              {meterToKM(itm?.buffer_distance?.toFixed(2))}
+                            </p>
+                          </div>
+                          <div className="naxatw-basis-1/2">
+                            <p className="naxatw-text-body-md">Origin Point</p>
+                            <p className="naxatw-text-body-lg naxatw-mt-1">-</p>
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>

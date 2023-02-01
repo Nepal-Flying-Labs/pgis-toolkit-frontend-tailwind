@@ -5,6 +5,7 @@ import produce from 'immer';
 import {
   bufferPolygonStyles,
   bufferPointStyles,
+  bufferColors,
 } from '@src/constants/analysis';
 import * as chroma from 'chroma-js';
 import { Types } from '@Actions/bufferAnalysis';
@@ -288,7 +289,9 @@ const initialState = {
   results: {
     analysisResults: [],
     // analysisResults: [analysisResultData],
-    zoomToRouteId: null,
+    zoomToBuffer: null,
+    showResultsPopup: false,
+    selectedResultId: null,
   },
   analysisTaskId: null,
   poiLayers: [],
@@ -357,12 +360,6 @@ const checkProcessingStatusSuccess = (state, action) =>
       ...data,
       checked: true,
       poiChartData: totalPoiCountChartData,
-      style:
-        draft.results.length > 2
-          ? { ...bufferPolygonStyles, fillColor: chroma.random().hex() }
-          : draft.results.length === 1
-          ? { ...bufferPolygonStyles }
-          : { ...bufferPolygonStyles, fillColor: 'DFF2F1', fillOpacity: '50' },
       buffer_areas: data.buffer_areas.map((areas, index) => ({
         ...areas,
         name: `Result Area ${index + 1}`,
@@ -377,7 +374,25 @@ const checkProcessingStatusSuccess = (state, action) =>
       ...draft.results.analysisResults,
       analysisResult,
     ];
+    const analysisResultStyle = draft.results.analysisResults.map(
+      (result, i) => ({
+        ...result,
+        style: {
+          ...bufferPolygonStyles,
+          fillColor: bufferColors[i + 1] || chroma.random().hex(),
+          fillOpacity: '50',
+        },
+      }),
+    );
+    draft.results.analysisResults = analysisResultStyle;
     draft.activeTab = 'results';
+    draft.results.selectedResultId = analysisResult.id;
+    draft.results.showResultsPopup = true;
+
+    draft.poiLayers = draft.poiLayers.map(item => ({
+      ...item,
+      checked: false,
+    }));
   });
 
 const handleRouteCheckbox = (state, action) =>

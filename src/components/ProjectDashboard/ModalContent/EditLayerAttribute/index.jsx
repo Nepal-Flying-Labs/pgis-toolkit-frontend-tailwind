@@ -43,6 +43,8 @@ const EditLayerAttribute = () => {
             name={attribute}
             value={values[attribute]}
             onChange={handleChange}
+            disabled={attribute === 'id'}
+            className={attribute === 'id' ? 'naxatw-bg-grey-100' : ''}
           />
         ))}
       </div>

@@ -214,7 +214,7 @@ export function getModalContent(content) {
       return {
         title: 'Route Attribute',
         content: <ViewRouteAttribute />,
-        className: '!naxatw-w-[calc(100vw-15rem)]',
+        className: '!naxatw-w-[50rem]',
       };
     case 'select-layer-feature':
       return {

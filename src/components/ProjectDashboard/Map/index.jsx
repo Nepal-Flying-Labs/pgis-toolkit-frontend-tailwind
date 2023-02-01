@@ -6,12 +6,7 @@ import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import { isEmpty } from '@Utils/commonUtils';
 import MapSidebar from './MapSidebar';
 import MapSection from './MapSection';
-import MapExportSidebar from './MapExportSection/MapExportSidebar';
-import MapExport from './MapExportSection/MapExport';
-import {
-  useOLMap
-} from '@Components/common/OpenLayersComponent';
-import { fromLonLat } from 'ol/proj';
+import MapExportSection from './MapExportSection';
 
 // const { setModalContent, toggleModal } = CommonCreators;
 
@@ -35,9 +30,7 @@ export default function Map() {
     state => state.projectMap.toggleMapExport,
   );
   const dispatch = useDispatch();
-  const [exportMap, setExportMap] = useState(null)
-  const [exportMapRef, setExportMapRef] = useState(null)
-  const [exportPaperRef, setExportPaperRef] = useState(null)
+  const [exportMap, setExportMap] = useState(null);
 
   // const showModal = useSelector(state => state.common.showModal);
 
@@ -73,14 +66,11 @@ export default function Map() {
       style={{ height: `calc(100vh - ${projectHeaderHeight}px)` }}
     >
       {toggleMapExport ? (
-        <>
-          <MapExportSidebar exportMap={exportMap} exportMapRef={exportMapRef} exportPaperRef={exportPaperRef} />
-          <MapExport setExportMap={setExportMap} setExportMapRef={setExportMapRef} setExportPaperRef={setExportPaperRef} />
-        </>
+        <MapExportSection exportMap={exportMap} />
       ) : (
         <>
           <MapSidebar />
-          <MapSection />
+          <MapSection setExportMap={setExportMap} />
         </>
       )}
     </div>

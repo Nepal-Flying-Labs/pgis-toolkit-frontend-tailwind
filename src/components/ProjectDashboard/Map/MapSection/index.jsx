@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useCallback, useEffect } from 'react';
 import { stringify } from 'wkt';
 import { useDispatch, useSelector } from 'react-redux';
@@ -43,7 +44,7 @@ const {
   getFeatureCollectionRequest,
 } = Creators;
 
-export default function MapSection() {
+export default function MapSection({ setExportMap }) {
   const { mapRef, map, isMapLoading } = useOLMap({
     center: fromLonLat([85.3, 27.7]),
     zoom: 2,
@@ -178,6 +179,13 @@ export default function MapSection() {
     },
     [editFeatureId],
   );
+
+  // Set Export map
+  useEffect(() => {
+    if (map) {
+      setExportMap(map);
+    }
+  }, [map]);
 
   return (
     <div className="naxatw-w-full naxatw-relative">

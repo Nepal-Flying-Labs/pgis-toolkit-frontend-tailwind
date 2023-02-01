@@ -6,3 +6,6 @@ export const applyBufferAnalysis = data =>
 
 export const getBufferAnalysisData = params =>
   authenticated(api).get(`/maps/buffer_analysis/`, { params });
+
+export const getBufferAreaCollection = params =>
+  authenticated(api).get(`/maps/buffer_area_collection/`, { params });

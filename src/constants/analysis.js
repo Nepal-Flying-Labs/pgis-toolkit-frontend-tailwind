@@ -77,6 +77,11 @@ export const routeColors = {
   6: '#7cb342',
 };
 
+export const bufferColors = {
+  1: '#FF5A5F',
+  2: '#DFF2F1',
+};
+
 export const bufferPointStyles = {
   ...drawPointStyles,
   fillColor: destinationPointColor,

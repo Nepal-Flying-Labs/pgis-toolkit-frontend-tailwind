@@ -196,7 +196,7 @@ export default function MapSection() {
         />
         <LayerSwitcherControl />
         <Scalebar />
-        {mapState.map((item, index) =>
+        {/* {mapState.map((item, index) =>
           item.layer_type === 'Vector' ? (
             <VectorTileLayer
               key={item.id}
@@ -229,9 +229,9 @@ export default function MapSection() {
           ) : (
             ''
           ),
-        )}
+        )} */}
 
-        {poiLayers?.map((item, index) =>
+        {poiLayers?.map(item =>
           item.layer_type === 'Vector' ? (
             <VectorTileLayer
               key={item.id}
@@ -252,7 +252,7 @@ export default function MapSection() {
               //     ? selectedLayer.style
               //     : item?.style || { ...defaultStyles }
               // }
-              zIndex={mapState.length + 10 - index}
+              zIndex={10}
               properties={{ layerId: item.id }}
             />
           ) : item.layer_type === 'WMS' ? (
@@ -304,7 +304,7 @@ export default function MapSection() {
                   authToken={localStorage.getItem('userToken')}
                   visibleOnMap={area.checked}
                   style={getLayerStyles(poi.layer_id)}
-                  zIndex={4}
+                  zIndex={40}
                   // properties={{ layerId: selectedLayer.id }}
                 />
               ) : null,
@@ -318,7 +318,7 @@ export default function MapSection() {
               key={origin.id}
               geojson={origin.geojson}
               visibleOnMap
-              zIndex={10}
+              zIndex={40}
               style={{ ...startPointStyles }}
             />
           ))}

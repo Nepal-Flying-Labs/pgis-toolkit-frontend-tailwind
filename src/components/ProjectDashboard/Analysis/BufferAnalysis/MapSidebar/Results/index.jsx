@@ -26,7 +26,11 @@ export default function Results() {
           <p className="naxatw-text-body-lg">Zoom To Layer</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: data => {
+        dispatch(
+          setResultsState({ zoomToBuffer: { id: data.id, bbox: data.bbox } }),
+        );
+      },
     },
     {
       id: 'attribute-table',
@@ -42,7 +46,7 @@ export default function Results() {
       id: 'visualize',
       label: (
         <span className="naxatw-flex naxatw-items-center">
-          <i className="material-symbols-outlined naxatw-mr-2">table_chart</i>
+          <i className="material-symbols-outlined naxatw-mr-2">monitoring</i>
           <p className="naxatw-text-body-lg">Visualize</p>
         </span>
       ),
@@ -85,7 +89,7 @@ export default function Results() {
             header={
               <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
                 <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
-                  <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
+                  <div className="naxatw-flex naxatw-items-center ">
                     <input
                       id={result.id}
                       type="checkbox"
@@ -102,7 +106,10 @@ export default function Results() {
                         );
                       }}
                     />
-                    <LegendItem styles={result.style} className="naxatw-mr-2" />
+                    <LegendItem
+                      styles={{ ...result.style, geometryType: 'Point' }}
+                      className="naxatw-mr-2"
+                    />
                     <label
                       htmlFor={result.id}
                       className="naxatw-text-grey-800 naxatw-text-body-lg"
@@ -138,7 +145,10 @@ export default function Results() {
                           }}
                         />
                         <LegendItem
-                          styles={area.originStyle}
+                          styles={{
+                            ...area.originStyle,
+                            geometryType: 'Point',
+                          }}
                           className="naxatw-mr-2 !naxatw-rounded-full"
                           size="20px"
                         />
@@ -153,6 +163,13 @@ export default function Results() {
                       <MaterialIcon
                         name="zoom_in"
                         className="naxatw-cursor-pointer"
+                        onIconClick={() =>
+                          dispatch(
+                            setResultsState({
+                              zoomToBuffer: { id: area.id, bbox: area.bbox },
+                            }),
+                          )
+                        }
                       />
                     </div>
                   </div>

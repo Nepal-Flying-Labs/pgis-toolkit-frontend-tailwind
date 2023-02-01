@@ -183,7 +183,7 @@
 - [ ] summary chart design .
 - [x] buffer area color style
 -
-- [ ] lengend style rounded
-- [ ] add zoom to buffer area
-- [ ] show poi on select
+- [x] lengend style rounded
+- [x] add zoom to buffer area
+- [x] show poi on select
 - [x] show legend on poi

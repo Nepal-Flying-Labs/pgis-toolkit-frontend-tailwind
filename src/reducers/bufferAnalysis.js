@@ -289,7 +289,7 @@ const initialState = {
   results: {
     analysisResults: [],
     // analysisResults: [analysisResultData],
-    zoomToRouteId: null,
+    zoomToBuffer: null,
     showResultsPopup: false,
     selectedResultId: null,
   },

@@ -45,8 +45,8 @@ export default function MapSection() {
     state => state.bufferAnalysis.dataInput.originGeojson,
   );
 
-  const zoomToRouteId = useSelector(
-    state => state.bufferAnalysis.results.zoomToRouteId,
+  const zoomToBuffer = useSelector(
+    state => state.bufferAnalysis.results.zoomToBuffer,
   );
 
   const analysisResults = useSelector(
@@ -88,8 +88,8 @@ export default function MapSection() {
 
   // zoom to buffer result layer
   useEffect(() => {
-    if (!map || !zoomToRouteId) return;
-    const bbox = analysisResults.find(item => item.id === zoomToRouteId)?.bbox;
+    if (!map || !zoomToBuffer) return;
+    const bbox = zoomToBuffer?.bbox;
     if (!bbox) return;
     const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
     if (isExtentValid(zoomExtent)) {
@@ -100,11 +100,11 @@ export default function MapSection() {
       });
       dispatch(
         setResultsState({
-          zoomToRouteId: null,
+          zoomToBuffer: null,
         }),
       );
     }
-  }, [map, zoomToRouteId, analysisResults, dispatch]);
+  }, [map, zoomToBuffer, dispatch]);
   // const setLayerStyle = useCallback((style, feature, resolution) => {
   //   const stylex = { ...style };
   //   // const properties = feature.getProperties();

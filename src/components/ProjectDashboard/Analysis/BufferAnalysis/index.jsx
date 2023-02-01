@@ -38,7 +38,10 @@ export default function BufferAnalysis() {
     if (!layers) return;
     dispatch(
       setBufferAnalysisState({
-        poiLayers: layers[poiLayerThemeId],
+        poiLayers: layers[poiLayerThemeId]?.map(layer => ({
+          ...layer,
+          checked: false,
+        })),
       }),
     );
   }, [dispatch, layers, poiLayerThemeId]);

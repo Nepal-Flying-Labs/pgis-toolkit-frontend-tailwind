@@ -8,7 +8,8 @@ import DropdownOptions from '@Components/common/DropdownOptions';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 
-const { handleRouteCheckbox, setResultsState } = BufferAnalysisCreators;
+const { handleRouteCheckbox, setResultsState, setBufferAnalysisState } =
+  BufferAnalysisCreators;
 // const { toggleModal } = CommonCreators;
 
 export default function Results() {
@@ -55,6 +56,14 @@ export default function Results() {
           setResultsState({
             showResultsPopup: true,
             selectedResultId: data.id,
+          }),
+        );
+        dispatch(
+          setBufferAnalysisState({
+            popupActiveTab: 'Summary',
+            detailsCategory: [],
+            detailsChartData: {},
+            detailsListData: [],
           }),
         );
       },

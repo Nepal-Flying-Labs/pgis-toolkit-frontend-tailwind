@@ -287,6 +287,7 @@ export default function MapExportSection({ exportMap }) {
   useEffect(() => {
     exportMap.addControl(customControls.scale);
     exportMap.addControl(customControls.northArrow);
+    exportMap.addControl(customControls.title);
   });
 
   useEffect(() => {
@@ -426,13 +427,6 @@ export default function MapExportSection({ exportMap }) {
             onClick={handleExport}
           >
             Export
-          </Button>
-          <Button
-            className="naxatw-btn-primary"
-            iconLeft="file_download"
-            onClick={addText}
-          >
-            Add Text
           </Button>
         </div>
       </div>

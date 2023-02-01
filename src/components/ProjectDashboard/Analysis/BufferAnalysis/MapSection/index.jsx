@@ -231,7 +231,7 @@ export default function MapSection() {
           ),
         )}
 
-        {poiLayers.map((item, index) =>
+        {poiLayers?.map((item, index) =>
           item.layer_type === 'Vector' ? (
             <VectorTileLayer
               key={item.id}

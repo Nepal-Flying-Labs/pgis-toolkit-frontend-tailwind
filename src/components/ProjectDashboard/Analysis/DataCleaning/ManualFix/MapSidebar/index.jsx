@@ -7,7 +7,7 @@ import Layers from './Layers';
 
 const tabData = [
   { id: 1, title: 'Errors', content: <Errors /> },
-  { id: 2, title: 'Layers', content: <Layers />, disabled: true },
+  { id: 2, title: 'Layers', content: <Layers /> },
 ];
 
 export default function MapSidebar() {

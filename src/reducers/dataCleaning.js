@@ -25,7 +25,7 @@ const initialState = {
   errorStates: {},
 };
 
-const setAnalysisState = (state, action) => ({
+const setDataCleaningState = (state, action) => ({
   ...state,
   ...action.payload,
 });
@@ -274,7 +274,7 @@ const getFeatureGeojsonSuccess = (state, action) => {
 const resetDataCleaningState = () => ({ ...initialState });
 
 const dataCleaningReducer = createReducer(initialState, {
-  [Types.SET_ANALYSIS_STATE]: setAnalysisState,
+  [Types.SET_DATA_CLEANING_STATE]: setDataCleaningState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
   [Types.SET_ERROR_STATES]: setErrorStates,
   [Types.CHECK_ERROR_SUCCESS]: checkErrorSuccess,

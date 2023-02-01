@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
 import { stringify } from 'wkt';
 import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
+import { Creators as AnalysisCreators } from '@Actions/analysis';
 import {
   useOLMap,
   MapContainer as MapComponent,
@@ -17,6 +18,7 @@ import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
+import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileLayer';
 import VectorTile from 'ol/layer/VectorTile';
 import CustomVTLayer from '@Components/common/OpenLayersComponent/CustomLayer/CustomVTLayer';
 import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
@@ -30,9 +32,11 @@ import {
 import { errorFeaturesMapStateSelector } from '@Selectors/dataCleaning';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
 import { isEmpty } from '@Utils/commonUtils';
+import { mapStateSelector } from '@Selectors/analysis';
 import HelpBox from './HelpBox';
 
 const { setManualFixState } = DataCleaningCreators;
+const { setAnalysisState } = AnalysisCreators;
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -58,6 +62,8 @@ export default function MapSection() {
   const geojsonFeatures = useSelector(
     state => state.dataCleaning.manualFix.geojsonFeatures,
   );
+  const mapState = useSelector(mapStateSelector);
+  const zoomToLayerId = useSelector(state => state.analysis.zoomToLayerId);
   const dispatch = useDispatch();
 
   // zoom to selected layer on initial map load
@@ -74,6 +80,26 @@ export default function MapSection() {
       });
     }
   }, [map, selectedLayer]);
+
+  // zoom to layer
+  useEffect(() => {
+    if (!map || !zoomToLayerId) return;
+    const bbox = mapState.find(item => item.id === zoomToLayerId)?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 2000,
+        constrainResolution: true,
+      });
+      dispatch(
+        setAnalysisState({
+          zoomToLayerId: null,
+        }),
+      );
+    }
+  }, [map, zoomToLayerId, mapState, dispatch]);
 
   // refresh vectortile after layer edit
   useEffect(() => {
@@ -122,6 +148,37 @@ export default function MapSection() {
         <CustomLayerSwitcher />
 
         <HelpBox />
+
+        {mapState.map((item, index) =>
+          item.layer_type === 'Vector' ? (
+            <VectorTileLayer
+              key={item.id}
+              url={`${apiURL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+              authToken={localStorage.getItem('userToken')}
+              visibleOnMap={item.checked}
+              // setStyle={(feature, resolution) =>
+              //   setLayerStyle(
+              //     item.id === selectedLayer?.id
+              //       ? selectedLayer.style
+              //       : item?.style || { ...defaultStyles },
+              //     feature,
+              //     resolution,
+              //   )
+              // }
+              style={item?.style || { ...defaultStyles }}
+              zIndex={mapState.length + 10 - index}
+              properties={{ layerId: item.id }}
+            />
+          ) : item.layer_type === 'WMS' ? (
+            <WMSTileLayer
+              key={item.id}
+              url={item.url}
+              visibleOnMap={item.checked}
+            />
+          ) : (
+            ''
+          ),
+        )}
 
         <CustomVTLayer
           url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${selectedLayer.id}`}
@@ -204,7 +261,7 @@ export default function MapSection() {
                     fillOpacity: 100,
                     lineColor: selectEffectColor,
                     lineOpacity: 100,
-                    lineThickness: selectedLayer.style.lineThickness + 1,
+                    lineThickness: +selectedLayer.style.lineThickness + 2,
                   }
                 : {
                     ...defaultStyles,
@@ -212,7 +269,7 @@ export default function MapSection() {
                     fillOpacity: 100,
                     lineColor: selectEffectColor,
                     lineOpacity: 100,
-                    lineThickness: defaultStyles.lineThickness + 1,
+                    lineThickness: +defaultStyles.lineThickness + 2,
                   }
             }
           />

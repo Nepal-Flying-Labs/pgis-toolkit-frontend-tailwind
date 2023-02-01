@@ -1,6 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { errorFeaturesMapStateSelector } from '@Selectors/dataCleaning';
+import {
+  errorFeaturesMapStateSelector,
+  totalErrorsSelector,
+} from '@Selectors/dataCleaning';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
 import Accordion from '@Components/common/Accordion';
@@ -17,6 +20,7 @@ const { togglePromptDialog } = CommonCreators;
 
 export default function ErrorSection() {
   const errorFeaturesMapState = useSelector(errorFeaturesMapStateSelector);
+  const totalErrors = useSelector(totalErrorsSelector);
   const isDeleting = useSelector(state =>
     checkIfLoading(state, [Types.DELETE_SELECTED_FEATURES_REQUEST]),
   );
@@ -46,7 +50,9 @@ export default function ErrorSection() {
                 </div>
               </div>
               <div>
-                <p>43 out of 150 errors</p>
+                <p>
+                  {features.length} out of {totalErrors} errors
+                </p>
               </div>
             </div>
           }

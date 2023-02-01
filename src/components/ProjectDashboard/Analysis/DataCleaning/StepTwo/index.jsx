@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
 import Button from '@Components/common/Button';
 import Accordion from '@Components/common/Accordion';
-// import IconButton from '@Components/common/IconButton';
 
 const {
   checkErrorRequest,
   handleAutofixCheckbox,
   autoFixErrorRequest,
   startAnalysisRequest,
+  setDataCleaningState,
 } = DataCleaningCreators;
 
 function getStatusIcon(status) {
@@ -218,14 +218,19 @@ export default function StepTwo() {
                       >
                         Automatic Fix
                       </Button>
-                      {/*
-                        <Button
-                          className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
-                          disabled={isLayerCheckingError}
-                        >
-                          Manual Fix
-                        </Button>
-                      */}
+                      <Button
+                        className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
+                        disabled={isLayerCheckingError}
+                        onClick={() => {
+                          dispatch(
+                            setDataCleaningState({
+                              selectedLayer: layer,
+                            }),
+                          );
+                        }}
+                      >
+                        Manual Fix
+                      </Button>
                     </div>
                   )}
                 </div>

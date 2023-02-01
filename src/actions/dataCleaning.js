@@ -2,7 +2,7 @@ import { createActions } from 'reduxsauce';
 
 export const { Types, Creators } = createActions(
   {
-    setAnalysisState: ['payload'],
+    setDataCleaningState: ['payload'],
     setOptimalRouteState: ['payload'],
     setErrorStates: ['payload'],
 

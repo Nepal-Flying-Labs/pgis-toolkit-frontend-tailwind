@@ -17,3 +17,13 @@ export const errorFeaturesMapStateSelector = createSelector(
     }));
   },
 );
+
+export const totalErrorsSelector = createSelector(
+  errorFeaturesMapStateSelector,
+  errorFeaturesMapState => {
+    return errorFeaturesMapState.reduce(
+      (sum, item) => (sum += item.features.length),
+      0,
+    );
+  },
+);

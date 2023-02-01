@@ -29,6 +29,7 @@ import {
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileLayer';
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
+import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import BufferPopup from './BufferPopup/index';
 
 const { setDataInputState, setResultsState } = BufferAnalysisCreators;
@@ -63,7 +64,7 @@ export default function MapSection() {
 
   const poiLayers = useSelector(state => state.bufferAnalysis.poiLayers);
 
-  const { mapRef, map } = useOLMap({
+  const { mapRef, map, isMapLoading } = useOLMap({
     center: fromLonLat([85.3, 27.7]),
     zoom: 2,
     maxZoom: 25,
@@ -323,6 +324,8 @@ export default function MapSection() {
           ))}
         <MaskedLayer geojson={projectGeojson} />
         {showResultsPopup && <BufferPopup />}
+
+        <MapFooter loading={isMapLoading} />
       </MapComponent>
     </div>
   );

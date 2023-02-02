@@ -55,12 +55,20 @@ export default function LayerContent() {
         {originGeojson &&
           originGeojson.map(origin => (
             <Chip
-              className="!naxatw-bg-white "
+              className="!naxatw-bg-white naxatw-w-[200px] naxatw-justify-between"
               key={origin.id}
-              label={origin.name}
+              label={
+                <p
+                  className="naxatw-text-body-lg naxatw-truncate naxatw-w-[100px]"
+                  title={origin.name}
+                >
+                  {origin.name}
+                </p>
+              }
               iconClassName="material-symbols-outlined"
               iconLeft="location_on"
-              onClick={() => {
+              iconRight="close"
+              onIconRightClick={() => {
                 const newData = originGeojson.filter(
                   origins => origins.id !== origin.id,
                 );

@@ -56,11 +56,11 @@ export default function SearchContent() {
           {originGeojson &&
             originGeojson.map(origin => (
               <Chip
-                className="!naxatw-bg-white "
+                className="!naxatw-bg-white naxatw-w-[200px] naxatw-justify-between"
                 key={origin.id}
                 label={
                   <p
-                    className="naxatw-truncate naxatw-w-[200px]"
+                    className="naxatw-text-body-lg naxatw-truncate naxatw-w-[100px]"
                     title={origin.name}
                   >
                     {origin.name}
@@ -68,7 +68,8 @@ export default function SearchContent() {
                 }
                 iconClassName="material-symbols-outlined"
                 iconLeft="location_on"
-                onClick={() => {
+                iconRight="close"
+                onIconRightClick={() => {
                   const newData = originGeojson.filter(
                     origins => origins.id !== origin.id,
                   );

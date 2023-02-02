@@ -3,6 +3,7 @@ import { Types } from '@Actions/analysis';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
 const initialState = {
+  analysisType: null,
   analysisTaskId: null,
   analysisId: null,
   themes: null, // []
@@ -227,16 +228,35 @@ const resetLayerAttributeListState = state => ({
   },
 });
 
-const handleTableCheckbox = (state, action) => ({
-  ...state,
-  layerAttributesList: {
-    ...state.layerAttributesList,
-    attributeList: state.layerAttributesList.attributeList.map(item => ({
-      ...item,
-      checked: action.payload === item.attrId,
-    })),
-  },
-});
+const handleTableCheckbox = (state, action) => {
+  const { id, analysisType } = action.payload;
+  if (analysisType === 'bufferAnalysis') {
+    return {
+      ...state,
+      layerAttributesList: {
+        ...state.layerAttributesList,
+        attributeList: state.layerAttributesList.attributeList.map(item => {
+          const { checked } = item;
+
+          return {
+            ...item,
+            checked: id === item.attrId ? !checked : checked,
+          };
+        }),
+      },
+    };
+  }
+  return {
+    ...state,
+    layerAttributesList: {
+      ...state.layerAttributesList,
+      attributeList: state.layerAttributesList.attributeList.map(item => ({
+        ...item,
+        checked: id === item.attrId,
+      })),
+    },
+  };
+};
 
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,

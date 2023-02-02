@@ -36,6 +36,10 @@ export const { Types, Creators } = createActions(
     getAnalysisDataRequest: ['params'],
     getAnalysisDataSuccess: ['payload'],
     getAnalysisDataFailure: null,
+
+    getSelectedLayerFeatureRequest: ['payload'],
+    getSelectedLayerFeatureSuccess: ['payload'],
+    getSelectedLayerFeatureFailure: ['payload'],
   },
   { prefix: 'bufferAnalysis/' },
 );

@@ -5,14 +5,13 @@ import { useParams } from 'react-router';
 import { analysisHeaderHeight } from '@src/constants';
 import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
-import Searchbar from '@Components/common/Searchbar/index';
-import Select from '@Components/common/Select/index';
 import { Creators, Types } from '@Actions/bufferAnalysis';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Chip from '@Components/common/Chip';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 import MapContent from './OriginPointContents/MapContent';
 import SearchContent from './OriginPointContents/SearchContent';
+import LayerContent from './OriginPointContents/LayerContent';
 
 const {
   setDataInputState,
@@ -134,7 +133,6 @@ export default function DataInput() {
                   dispatch(
                     setDataInputState({
                       originPointType: value,
-                      originGeojson: null,
                     }),
                   );
                 }}
@@ -142,66 +140,7 @@ export default function DataInput() {
             ))}
           </div>
 
-          <Container>
-            {/* {originPointType === 'search' && <Searchbar placeholder="Search" />}
-            {originPointType === 'map' && (
-              <div>
-                <Chip
-                  className="!naxatw-w-fit "
-                  label={
-                    originGeojson && originGeojson.length > 0
-                      ? 'Add new point'
-                      : 'Starting Point'
-                  }
-                  iconLeft="location_on"
-                  active={drawPoint}
-                  onClick={() => {
-                    dispatch(
-                      setDataInputState({
-                        drawPoint: !drawPoint,
-                      }),
-                    );
-                  }}
-                />
-                <div
-                  className={`naxatw-mt-2 ${
-                    originGeojson ? 'naxatw-bg-[#ffffff73]' : ''
-                  } naxatw-p-2 naxatw-rounded-[20px] naxatw-py-1 naxatw-max-h-[100px] naxatw-w-[333px] naxatw-flex naxatw-flex-wrap naxatw-overflow-y-scroll scrollbar`}
-                >
-                  {originGeojson &&
-                    originGeojson.map(origin => (
-                      <Chip
-                        className="!naxatw-bg-white "
-                        key={origin.id}
-                        label={origin.name}
-                        iconClassName="material-symbols-outlined"
-                        iconLeft="location_on"
-                        onClick={() => {
-                          const newData = originGeojson.filter(
-                            origins => origins.id !== origin.id,
-                          );
-                          dispatch(
-                            setDataInputState({
-                              originGeojson: newData,
-                            }),
-                          );
-                        }}
-                      />
-                    ))}
-                </div>
-              </div>
-            )}
-            {originPointType === 'layer' && (
-              <Container>
-                <Select
-                  placeholder="Choose Origin Layer"
-                  className="naxatw-bg-white naxatw-h-[48px] naxatw-px-3"
-                />
-                <Searchbar placeholder="Search Feature" />
-              </Container>
-            )} */}
-            {getOriginPointsContent(originPointType)}
-          </Container>
+          <Container>{getOriginPointsContent(originPointType)}</Container>
         </Container>
 
         <Container>

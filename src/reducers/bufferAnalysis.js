@@ -7,6 +7,7 @@ import {
   bufferPointStyles,
   bufferColors,
 } from '@src/constants/analysis';
+import { parse } from 'wkt';
 import * as chroma from 'chroma-js';
 import { Types } from '@Actions/bufferAnalysis';
 
@@ -181,6 +182,30 @@ const getAnalysisDataSuccess = (state, action) =>
     draft.results.individualAnalysisData = action.payload;
   });
 
+function getAttributeName(attributes) {
+  return attributes?.name || attributes?.Name;
+}
+
+const getSelectedLayerFeatureSuccess = (state, action) =>
+  produce(state, draft => {
+    const data = action.payload;
+    const newData = data.map(item => {
+      const { geometry, attributes, id } = item;
+      const geojson = parse(geometry);
+
+      return {
+        id: '',
+        name: getAttributeName(attributes) || id,
+        geojson: { ...geojson, geometry: { coordinates: geojson.coordinates } },
+      };
+    });
+    const { originGeojson } = draft.dataInput;
+
+    draft.dataInput.originGeojson = originGeojson
+      ? [...originGeojson, ...newData]
+      : newData;
+  });
+
 const bufferAnalysisReducer = createReducer(initialState, {
   [Types.SET_BUFFER_ANALYSIS_STATE]: setBufferAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
@@ -194,6 +219,7 @@ const bufferAnalysisReducer = createReducer(initialState, {
   [Types.GET_DETAILS_CATEGORY_SUCCESS]: getDetailsCategorySuccess,
   [Types.GET_DETAILS_CHART_SUCCESS]: getDetailsChartSuccess,
   [Types.GET_ANALYSIS_DATA_SUCCESS]: getAnalysisDataSuccess,
+  [Types.GET_SELECTED_LAYER_FEATURE_SUCCESS]: getSelectedLayerFeatureSuccess,
 });
 
 export default bufferAnalysisReducer;

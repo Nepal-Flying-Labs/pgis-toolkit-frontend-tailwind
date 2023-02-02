@@ -11,6 +11,11 @@ import {
   Creators as RouteAnalysisCreators,
   Types as RouteAnalysisTypes,
 } from '@Actions/routeAnalysis';
+
+import {
+  Creators as BufferAnalysisCreators,
+  Types as BufferAnalysisTypes,
+} from '@Actions/bufferAnalysis';
 import Table, { TableHeader } from '@Components/common/CustomTable';
 import SortingContainer from '@Components/common/SortingContainer';
 import { checkIfLoading } from '@Utils/loaderSelector';
@@ -37,10 +42,13 @@ const {
 } = AnalysisCreators;
 
 const { getSelectedLayerFeatureRequest } = RouteAnalysisCreators;
+const { getSelectedLayerFeatureRequest: getBufferSelectedLayerFeatureRequest } =
+  BufferAnalysisCreators;
 
 export default function SelectLayerFeature() {
   const dispatch = useDispatch();
   const selectedLayer = useSelector(state => state.analysis.selectedLayer);
+  const analysisType = useSelector(state => state.analysis.analysisType);
   const showModal = useSelector(state => state.common.showModal);
   const modalContent = useSelector(state => state.common.modalContent);
   const attributeList = useSelector(
@@ -91,6 +99,7 @@ export default function SelectLayerFeature() {
   const isPosting = useSelector(state =>
     checkIfLoading(state, [
       RouteAnalysisTypes.GET_SELECTED_LAYER_FEATURE_REQUEST,
+      BufferAnalysisTypes.GET_SELECTED_LAYER_FEATURE_REQUEST,
     ]),
   );
 
@@ -127,7 +136,11 @@ export default function SelectLayerFeature() {
   );
 
   const handleSave = () => {
-    dispatch(getSelectedLayerFeatureRequest());
+    if (analysisType === 'bufferAnalysis') {
+      dispatch(getBufferSelectedLayerFeatureRequest());
+    } else {
+      dispatch(getSelectedLayerFeatureRequest());
+    }
   };
 
   return (
@@ -148,7 +161,7 @@ export default function SelectLayerFeature() {
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
             headerWidths={['50px', ...headerKeys.map(() => '150px'), '10px']}
             onRowClick={row => {
-              dispatch(handleTableCheckbox(row.attrId));
+              dispatch(handleTableCheckbox({ id: row.attrId, analysisType }));
             }}
           >
             <TableHeader
@@ -161,7 +174,11 @@ export default function SelectLayerFeature() {
                   type="checkbox"
                   className="naxatw-w-5 naxatw-h-5 naxatw-accent-grey-800 naxatw-m-2"
                   checked={row.checked}
-                  onChange={() => dispatch(handleTableCheckbox(row.attrId))}
+                  onChange={() =>
+                    dispatch(
+                      handleTableCheckbox({ id: row.attrId, analysisType }),
+                    )
+                  }
                 />
               )}
             />

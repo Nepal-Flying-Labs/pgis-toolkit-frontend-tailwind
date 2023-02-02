@@ -93,6 +93,7 @@
 - [ ] icon grey
 - [ ] required field validation while geom edit for feature
 - [ ] save data query modal mt remove
+
 - [ ] format date/time in all sections (table etc)
 - [ ] boundary zindex least
 - [ ] hand icon while edit hover
@@ -195,3 +196,9 @@
 - [x] show legend on poi
 
 
+- [ ] show vectortile layer from feature_mirror_ids
+- [ ] show origin of all with dissolve feature
+
+### MANUAL FIX
+
+- [ ] remove feature from all section while deleting

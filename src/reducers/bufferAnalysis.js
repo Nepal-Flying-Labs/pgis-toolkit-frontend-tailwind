@@ -292,6 +292,8 @@ const initialState = {
     zoomToBuffer: null,
     showResultsPopup: false,
     selectedResultId: null,
+    selectedAnalysis: null,
+    individualAnalysisData: null,
   },
   analysisTaskId: null,
   poiLayers: [],
@@ -440,6 +442,11 @@ const getDetailsChartSuccess = (state, action) => {
   }
 };
 
+const getAnalysisDataSuccess = (state, action) =>
+  produce(state, draft => {
+    draft.results.individualAnalysisData = action.payload;
+  });
+
 const bufferAnalysisReducer = createReducer(initialState, {
   [Types.SET_BUFFER_ANALYSIS_STATE]: setBufferAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
@@ -452,6 +459,7 @@ const bufferAnalysisReducer = createReducer(initialState, {
   [Types.SET_POPUP_ACTIVE_TAB]: setPopupActiveTab,
   [Types.GET_DETAILS_CATEGORY_SUCCESS]: getDetailsCategorySuccess,
   [Types.GET_DETAILS_CHART_SUCCESS]: getDetailsChartSuccess,
+  [Types.GET_ANALYSIS_DATA_SUCCESS]: getAnalysisDataSuccess,
 });
 
 export default bufferAnalysisReducer;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
@@ -6,8 +6,7 @@ import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import { isEmpty } from '@Utils/commonUtils';
 import MapSidebar from './MapSidebar';
 import MapSection from './MapSection';
-import MapExportSidebar from './MapExportSection/MapExportSidebar';
-import MapExport from './MapExportSection/MapExport';
+import MapExportSection from './MapExportSection';
 
 // const { setModalContent, toggleModal } = CommonCreators;
 
@@ -31,6 +30,7 @@ export default function Map() {
     state => state.projectMap.toggleMapExport,
   );
   const dispatch = useDispatch();
+  const [exportMap, setExportMap] = useState(null);
 
   // const showModal = useSelector(state => state.common.showModal);
 
@@ -66,14 +66,11 @@ export default function Map() {
       style={{ height: `calc(100vh - ${projectHeaderHeight}px)` }}
     >
       {toggleMapExport ? (
-        <>
-          <MapExportSidebar />
-          <MapExport />
-        </>
+        <MapExportSection exportMap={exportMap} />
       ) : (
         <>
           <MapSidebar />
-          <MapSection />
+          <MapSection setExportMap={setExportMap} />
         </>
       )}
     </div>

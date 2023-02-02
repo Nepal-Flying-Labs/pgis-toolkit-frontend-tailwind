@@ -1,15 +1,16 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as BufferAnalysisCreators } from '@Actions/bufferAnalysis';
-// import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as CommonCreators } from '@Actions/common';
 import { analysisHeaderHeight } from '@src/constants';
 import Accordion from '@Components/common/Accordion';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 
-const { handleRouteCheckbox, setResultsState } = BufferAnalysisCreators;
-// const { toggleModal } = CommonCreators;
+const { handleRouteCheckbox, setResultsState, setBufferAnalysisState } =
+  BufferAnalysisCreators;
+const { toggleModal } = CommonCreators;
 
 export default function Results() {
   const analysisResults = useSelector(
@@ -40,7 +41,14 @@ export default function Results() {
           <p className="naxatw-text-body-lg">Attribute Table</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: data => {
+        dispatch(
+          setResultsState({
+            selectedAnalysis: data,
+          }),
+        );
+        dispatch(toggleModal('view-buffer-attribute'));
+      },
     },
     {
       id: 'visualize',
@@ -55,6 +63,14 @@ export default function Results() {
           setResultsState({
             showResultsPopup: true,
             selectedResultId: data.id,
+          }),
+        );
+        dispatch(
+          setBufferAnalysisState({
+            popupActiveTab: 'Summary',
+            detailsCategory: [],
+            detailsChartData: {},
+            detailsListData: [],
           }),
         );
       },

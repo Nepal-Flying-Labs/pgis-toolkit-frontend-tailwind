@@ -32,6 +32,10 @@ export const { Types, Creators } = createActions(
     getDetailsChartRequest: ['params'],
     getDetailsChartSuccess: ['payload'],
     getDetailsChartFailure: ['payload'],
+
+    getAnalysisDataRequest: ['params'],
+    getAnalysisDataSuccess: ['payload'],
+    getAnalysisDataFailure: null,
   },
   { prefix: 'bufferAnalysis/' },
 );

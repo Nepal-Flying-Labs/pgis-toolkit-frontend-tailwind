@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 const calTotalCount = (data, dataKey) => {
   const values = data.map(d => +d?.[dataKey]);
-  console.log(values);
   return values.reduce((item, value) => item + value, 0);
 };
 
@@ -54,7 +53,7 @@ function VerticalBlockChart({ data, dataKey }) {
           })}
         </div>
 
-        <div className="blockChart-card">
+        <div className="blockChart-card naxatw-px-2">
           {data.map((d, index) => (
             <div className="naxatw-w-full naxatw-flex naxatw-mb-2 naxatw-items-center">
               <div

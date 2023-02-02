@@ -1,15 +1,16 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as BufferAnalysisCreators } from '@Actions/bufferAnalysis';
-// import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as CommonCreators } from '@Actions/common';
 import { analysisHeaderHeight } from '@src/constants';
 import Accordion from '@Components/common/Accordion';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 
-const { handleRouteCheckbox } = BufferAnalysisCreators;
-// const { toggleModal } = CommonCreators;
+const { handleRouteCheckbox, setResultsState, setBufferAnalysisState } =
+  BufferAnalysisCreators;
+const { toggleModal } = CommonCreators;
 
 export default function Results() {
   const analysisResults = useSelector(
@@ -26,7 +27,11 @@ export default function Results() {
           <p className="naxatw-text-body-lg">Zoom To Layer</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: data => {
+        dispatch(
+          setResultsState({ zoomToBuffer: { id: data.id, bbox: data.bbox } }),
+        );
+      },
     },
     {
       id: 'attribute-table',
@@ -36,7 +41,39 @@ export default function Results() {
           <p className="naxatw-text-body-lg">Attribute Table</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: data => {
+        dispatch(
+          setResultsState({
+            selectedAnalysis: data,
+          }),
+        );
+        dispatch(toggleModal('view-buffer-attribute'));
+      },
+    },
+    {
+      id: 'visualize',
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-symbols-outlined naxatw-mr-2">monitoring</i>
+          <p className="naxatw-text-body-lg">Visualize</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(
+          setResultsState({
+            showResultsPopup: true,
+            selectedResultId: data.id,
+          }),
+        );
+        dispatch(
+          setBufferAnalysisState({
+            popupActiveTab: 'Summary',
+            detailsCategory: [],
+            detailsChartData: {},
+            detailsListData: [],
+          }),
+        );
+      },
     },
     // {
     //   id: 'delete-layer',
@@ -68,7 +105,7 @@ export default function Results() {
             header={
               <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
                 <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
-                  <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
+                  <div className="naxatw-flex naxatw-items-center ">
                     <input
                       id={result.id}
                       type="checkbox"
@@ -85,7 +122,10 @@ export default function Results() {
                         );
                       }}
                     />
-                    <LegendItem styles={result.style} className="naxatw-mr-2" />
+                    <LegendItem
+                      styles={{ ...result.style, geometryType: 'Point' }}
+                      className="naxatw-mr-2"
+                    />
                     <label
                       htmlFor={result.id}
                       className="naxatw-text-grey-800 naxatw-text-body-lg"
@@ -121,7 +161,10 @@ export default function Results() {
                           }}
                         />
                         <LegendItem
-                          styles={area.originStyle}
+                          styles={{
+                            ...area.originStyle,
+                            geometryType: 'Point',
+                          }}
                           className="naxatw-mr-2 !naxatw-rounded-full"
                           size="20px"
                         />
@@ -136,6 +179,13 @@ export default function Results() {
                       <MaterialIcon
                         name="zoom_in"
                         className="naxatw-cursor-pointer"
+                        onIconClick={() =>
+                          dispatch(
+                            setResultsState({
+                              zoomToBuffer: { id: area.id, bbox: area.bbox },
+                            }),
+                          )
+                        }
                       />
                     </div>
                   </div>

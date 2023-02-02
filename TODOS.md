@@ -94,6 +94,12 @@
 - [ ] required field validation while geom edit for feature
 - [ ] save data query modal mt remove
 - [ ] format date/time in all sections (table etc)
+- [ ] boundary zindex least
+- [ ] hand icon while edit hover
+- [ ] zoom to feature on attr table
+- [ ] data query value search 
+- [ ] meter/km feet unit change 
+- [ ] label in map 
 
 ### Backend
 
@@ -177,10 +183,15 @@
 
 ### BUFFER ANALYSIS
 
-- [x] copy feature before buffer analysis (saga api call before apply click saga/datacleaning)
-- [ ] show features inside buffer
-- [x] BufferPopup UI
-- [ ] zoom to individual buffer
+- [ ] proceesing analysis in first render
+- [x] buffer analysis popup hiding on first render
+- [x] change button on add another point
+- [x] summary chart design .
+- [x] buffer area color style
+-
+- [x] lengend style rounded
+- [x] add zoom to buffer area
+- [x] show poi on select
+- [x] show legend on poi
 
-- [ ] show vectortile layer from feature_mirror_ids
-- [ ] show origin of all with dissolve feature
+

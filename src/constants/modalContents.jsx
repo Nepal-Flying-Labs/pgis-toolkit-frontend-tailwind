@@ -41,6 +41,7 @@ import DeleteProject from '@Components/OrganizationDashboard/ModalContent/Delete
 import DeleteTemplateAttribute from '@Components/ProjectDashboard/ModalContent/DeleteTemplateAttribute';
 import DeleteError from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteError';
 import ViewRouteAttribute from '@Components/ProjectDashboard/Analysis/ModalContent/ViewRouteAttribute';
+import ViewBufferAttribute from '@Components/ProjectDashboard/Analysis/ModalContent/ViewBufferAttribute';
 import DeleteAnOrganization from '@Components/Organizations/ModalContent/DeleteAnOrganization';
 import SaveRouteLayer from '@Components/ProjectDashboard/Analysis/ModalContent/SaveRouteLayer';
 import SelectLayerFeature from '@Components/ProjectDashboard/Analysis/ModalContent/SelectLayerFeature';
@@ -214,13 +215,21 @@ export function getModalContent(content) {
       return {
         title: 'Route Attribute',
         content: <ViewRouteAttribute />,
-        className: '!naxatw-w-[calc(100vw-15rem)]',
+        className: '!naxatw-w-[50rem]',
       };
     case 'select-layer-feature':
       return {
         title: 'Select Layer Feature',
         content: <SelectLayerFeature />,
         className: '!naxatw-w-[calc(100vw-15rem)]',
+      };
+
+    // buffer analysis
+    case 'view-buffer-attribute':
+      return {
+        title: 'Buffer Attribute',
+        content: <ViewBufferAttribute />,
+        className: '!naxatw-w-[50rem]',
       };
     default:
       return {
@@ -349,8 +358,6 @@ export function getModalTwoContent(content) {
       return {
         title: 'Edit Attribute',
         content: <EditLayerAttribute />,
-        className:
-          '!naxatw-w-[calc(100vw-60rem)] !naxatw-min-w-[calc(100vw-60rem)]',
       };
     default:
       return {

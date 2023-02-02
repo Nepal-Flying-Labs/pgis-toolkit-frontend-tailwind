@@ -6,6 +6,7 @@ import prepareFormData from '@Utils/prepareFormData';
 import {
   applyBufferAnalysis,
   getBufferAnalysisData,
+  getBufferAreaCollection,
 } from '@Services/bufferAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { copyFeatures } from '@Services/dataCleaning';
@@ -71,6 +72,16 @@ export function* getDetailsChartRequest({ params }) {
   }
 }
 
+export function* getAnalysisDataRequest({ params }) {
+  try {
+    const response = yield call(getBufferAreaCollection, params);
+    yield put(bufferAnalysisActions.getAnalysisDataSuccess(response.data));
+  } catch (error) {
+    yield put(bufferAnalysisActions.getAnalysisDataFailure());
+    throw error;
+  }
+}
+
 function* bufferAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_BUFFER_ANALYSIS_REQUEST,
@@ -87,6 +98,10 @@ function* bufferAnalysisWatcher() {
   yield takeEvery(
     Types.GET_DETAILS_CHART_REQUEST,
     withLoader(withErrorHandler(getDetailsChartRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ANALYSIS_DATA_REQUEST,
+    withLoader(withErrorHandler(getAnalysisDataRequest)),
   );
 }
 

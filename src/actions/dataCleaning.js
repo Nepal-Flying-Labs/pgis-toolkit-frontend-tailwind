@@ -50,6 +50,10 @@ export const { Types, Creators } = createActions(
     startAnalysisFailure: null,
 
     resetDataCleaningState: null,
+
+    getMultipartFeatureRequest: ['payload'],
+    getMultipartFeatureSuccess: ['payload'],
+    getMultipartFeatureFailure: null,
   },
   { prefix: 'dataCleaning/' },
 );

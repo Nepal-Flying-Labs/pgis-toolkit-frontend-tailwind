@@ -1,12 +1,38 @@
+/* eslint-disable no-param-reassign */
 import { createReducer } from 'reduxsauce';
+import produce from 'immer';
 import { Types } from '@Actions/dataCleaning';
+import { parse } from 'wkt';
+import explode from '@turf/explode';
 import { checkErrorData, pointCheckExceptions } from '@src/constants/analysis';
 import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
+// const initialState = {
+//   stepIndex: 1,
+//   manualFix: {
+//     sidebarContent: 'error-list', // 'error-list', 'add-feature', 'edit-feature'
+//     drawFeatureId: null,
+//     drawnFeatureWkt: null,
+//     layerAttributes: null,
+//     individualAttributeData: [],
+//     refreshLayerId: null,
+//     selectedError: null,
+//     selectedFeaturesForSnap: [],
+//     geojsonFeatures: null,
+//   },
+//   selectedLayer: null, // selected layer for manual fix
+//   errorFeaturesData: null,
+//   optimalRoute: {
+//     selectedRoadLayer: {},
+//     selectedObstacleLayers: [], // []
+//   },
+//   errorStates: {},
+// };
+
 const initialState = {
-  stepIndex: 1,
+  stepIndex: 2,
   manualFix: {
-    sidebarContent: 'error-list', // 'error-list', 'add-feature', 'edit-feature'
+    sidebarContent: 'error-list',
     drawFeatureId: null,
     drawnFeatureWkt: null,
     layerAttributes: null,
@@ -16,13 +42,342 @@ const initialState = {
     selectedFeaturesForSnap: [],
     geojsonFeatures: null,
   },
-  selectedLayer: null, // selected layer for manual fix
-  errorFeaturesData: null,
-  optimalRoute: {
-    selectedRoadLayer: {},
-    selectedObstacleLayers: [], // []
+  selectedLayer: {
+    id: 630,
+    name: 'Sample Error Network',
+    layer_type: 'Vector',
+    upload_status: 'successful',
+    is_clean: false,
+    icon: null,
+    std_icon: null,
+    style: {
+      lineColor: '#2C675A',
+      lineOpacity: 100,
+      fillColor: '#884fe9',
+      fillOpacity: 0,
+      lineThickness: 2,
+      circleRadius: 5,
+      dashline: 0,
+      showLabel: false,
+      labelField: '',
+      labelFont: 'Calibri',
+      labelFontSize: 14,
+      labelColor: '#000000',
+      labelOpacity: 100,
+      labelOutlineWidth: 3,
+      labelOutlineColor: '#ffffff',
+      labelOffsetX: 0,
+      labelOffsetY: 0,
+      labelText: 'normal',
+      labelMaxResolution: 1200,
+      labelAlign: 'center',
+      labelBaseline: 'middle',
+      labelRotationDegree: 0,
+      labelFontWeight: 'normal',
+      labelPlacement: 'point',
+      labelMaxAngleDegree: 0.7853981633974483,
+      labelOverflow: false,
+      labelLineHeight: 1,
+      icon: {},
+      showSublayer: false,
+      sublayerColumnName: '',
+      sublayer: {},
+      geometryType: 'MultiLineString',
+    },
+    bbox: [
+      85.41448129925729, 27.68873499036167, 85.41893721463556,
+      27.695401775725283,
+    ],
+    geom_type: 'MultiLineString',
+    sub_layer: [],
+    theme: 479,
+    checked: false,
   },
-  errorStates: {},
+  errorFeaturesData: {
+    multipart: [
+      {
+        id: 17272,
+        checked: false,
+      },
+      {
+        id: 17273,
+        checked: false,
+      },
+      {
+        id: 17274,
+        checked: false,
+      },
+      {
+        id: 17275,
+        checked: false,
+      },
+      {
+        id: 17276,
+        checked: false,
+      },
+      {
+        id: 17277,
+        checked: false,
+      },
+      {
+        id: 17278,
+        checked: false,
+      },
+      {
+        id: 17279,
+        checked: false,
+      },
+      {
+        id: 17280,
+        checked: false,
+      },
+      {
+        id: 17281,
+        checked: false,
+      },
+      {
+        id: 17282,
+        checked: false,
+      },
+      {
+        id: 17283,
+        checked: false,
+      },
+      {
+        id: 17284,
+        checked: false,
+      },
+      {
+        id: 17268,
+        checked: false,
+      },
+      {
+        id: 17269,
+        checked: false,
+      },
+      {
+        id: 17270,
+        checked: false,
+      },
+      {
+        id: 17271,
+        checked: false,
+      },
+    ],
+    self_instersect: [
+      {
+        id: 17270,
+        checked: false,
+      },
+      {
+        id: 17271,
+        checked: false,
+      },
+    ],
+    snapping: [
+      {
+        id: 17270,
+        checked: false,
+      },
+      {
+        id: 17273,
+        checked: false,
+      },
+      {
+        id: 17274,
+        checked: false,
+      },
+      {
+        id: 17280,
+        checked: false,
+      },
+      {
+        id: 17281,
+        checked: false,
+      },
+      {
+        id: 17282,
+        checked: false,
+      },
+      {
+        id: 17283,
+        checked: false,
+      },
+      {
+        id: 17284,
+        checked: false,
+      },
+    ],
+  },
+  optimalRoute: {
+    selectedRoadLayer: {
+      id: 630,
+      name: 'Sample Error Network',
+      layer_type: 'Vector',
+      upload_status: 'successful',
+      is_clean: false,
+      icon: null,
+      std_icon: null,
+      style: {
+        lineColor: '#2C675A',
+        lineOpacity: 100,
+        fillColor: '#884fe9',
+        fillOpacity: 0,
+        lineThickness: 2,
+        circleRadius: 5,
+        dashline: 0,
+        showLabel: false,
+        labelField: '',
+        labelFont: 'Calibri',
+        labelFontSize: 14,
+        labelColor: '#000000',
+        labelOpacity: 100,
+        labelOutlineWidth: 3,
+        labelOutlineColor: '#ffffff',
+        labelOffsetX: 0,
+        labelOffsetY: 0,
+        labelText: 'normal',
+        labelMaxResolution: 1200,
+        labelAlign: 'center',
+        labelBaseline: 'middle',
+        labelRotationDegree: 0,
+        labelFontWeight: 'normal',
+        labelPlacement: 'point',
+        labelMaxAngleDegree: 0.7853981633974483,
+        labelOverflow: false,
+        labelLineHeight: 1,
+        icon: {},
+        showSublayer: false,
+        sublayerColumnName: '',
+        sublayer: {},
+        geometryType: 'MultiLineString',
+      },
+      bbox: [
+        85.41448129925729, 27.68873499036167, 85.41893721463556,
+        27.695401775725283,
+      ],
+      geom_type: 'MultiLineString',
+      sub_layer: [],
+      theme: 479,
+      checked: false,
+    },
+    selectedObstacleLayers: [
+      {
+        id: 546,
+        name: 'Sample Obstacle 3',
+        layer_type: 'Vector',
+        upload_status: 'successful',
+        is_clean: false,
+        icon: null,
+        std_icon: null,
+        style: {
+          lineColor: '#2C675A',
+          lineOpacity: 100,
+          fillColor: '#7126e4',
+          fillOpacity: 100,
+          lineThickness: 2,
+          circleRadius: 5,
+          dashline: 0,
+          showLabel: false,
+          labelField: '',
+          labelFont: 'Calibri',
+          labelFontSize: 14,
+          labelColor: '#000000',
+          labelOpacity: 100,
+          labelOutlineWidth: 3,
+          labelOutlineColor: '#ffffff',
+          labelOffsetX: 0,
+          labelOffsetY: 0,
+          labelText: 'normal',
+          labelMaxResolution: 1200,
+          labelAlign: 'center',
+          labelBaseline: 'middle',
+          labelRotationDegree: 0,
+          labelFontWeight: 'normal',
+          labelPlacement: 'point',
+          labelMaxAngleDegree: 0.7853981633974483,
+          labelOverflow: false,
+          labelLineHeight: 1,
+          icon: {},
+          showSublayer: false,
+          sublayerColumnName: '',
+          sublayer: {},
+          geometryType: 'Point',
+        },
+        bbox: [
+          85.33776889999996, 27.65237, 85.35316820000006, 27.662021100000022,
+        ],
+        geom_type: 'Point',
+        sub_layer: [],
+        theme: 480,
+        checked: false,
+      },
+    ],
+  },
+  errorStates: {
+    630: [
+      {
+        id: 'null',
+        label: 'Null Geometry',
+        checkAPI: 'check_null_geometry',
+        fixAPI: 'fix_null_geometry',
+        status: 'success',
+        errorData: 0,
+        totalData: 17,
+        checked: false,
+      },
+      {
+        id: 'multipart',
+        label: 'Multipart Geometry',
+        checkAPI: 'check_multipart_geometry',
+        fixAPI: 'fix_multipart_geometry',
+        status: 'error',
+        errorData: 17,
+        totalData: 17,
+        checked: false,
+      },
+      {
+        id: 'duplicate',
+        label: 'Duplicate Geometry',
+        checkAPI: 'check_duplicate_geometry',
+        fixAPI: 'fix_duplicate_geometry',
+        status: 'success',
+        errorData: 0,
+        totalData: 17,
+        checked: false,
+      },
+      {
+        id: 'overlapping',
+        label: 'Overlapping Geometry',
+        checkAPI: 'check_overlapping_geometry',
+        fixAPI: 'fix_overlapping_geometry',
+        status: 'success',
+        errorData: 0,
+        totalData: 17,
+        checked: false,
+      },
+      {
+        id: 'self_instersect',
+        label: 'Self-Intersecting Geometry',
+        checkAPI: 'check_self_intersecting_geometry',
+        fixAPI: 'fix_self_intersecting_geometry',
+        status: 'error',
+        errorData: 2,
+        totalData: 17,
+        checked: false,
+      },
+      {
+        id: 'isolated',
+        label: 'Isolated Geometry',
+        checkAPI: 'check_isolated_geometry',
+        fixAPI: 'fix_isolated_geometry',
+        status: 'error',
+        errorData: 8,
+        totalData: 17,
+        checked: false,
+      },
+    ],
+  },
 };
 
 const setDataCleaningState = (state, action) => ({
@@ -273,6 +628,19 @@ const getFeatureGeojsonSuccess = (state, action) => {
 
 const resetDataCleaningState = () => ({ ...initialState });
 
+const getMultipartFeatureSuccess = (state, action) =>
+  produce(state, draft => {
+    const { id, attributes, geometry } = action.payload;
+    const geojson = parse(geometry);
+    const explodedFeature = explode(geojson);
+    explodedFeature.features.forEach((feature, index) => {
+      draft.errorFeaturesData.multipart = [
+        { id: `${id}-${index}`, attributes, geojson: feature, fixed: true },
+        ...draft.errorFeaturesData.multipart,
+      ];
+    });
+  });
+
 const dataCleaningReducer = createReducer(initialState, {
   [Types.SET_DATA_CLEANING_STATE]: setDataCleaningState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -290,6 +658,7 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.DELETE_SELECTED_FEATURES_SUCCESS]: deleteSelectedFeaturesSuccess,
   [Types.GET_FEATURE_GEOJSON_SUCCESS]: getFeatureGeojsonSuccess,
   [Types.RESET_DATA_CLEANING_STATE]: resetDataCleaningState,
+  [Types.GET_MULTIPART_FEATURE_SUCCESS]: getMultipartFeatureSuccess,
 });
 
 export default dataCleaningReducer;

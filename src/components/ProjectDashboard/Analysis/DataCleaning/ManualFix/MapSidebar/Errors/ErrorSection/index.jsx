@@ -10,11 +10,13 @@ import Accordion from '@Components/common/Accordion';
 import IconButton from '@Components/common/IconButton';
 import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import DropdownOptions from '@Components/common/DropdownOptions';
 
 const {
   setManualFixState,
   handleErrorCheckbox,
   deleteSelectedFeaturesRequest,
+  getMultipartFeatureRequest,
 } = DataCleaningCreators;
 const { togglePromptDialog } = CommonCreators;
 
@@ -36,6 +38,23 @@ export default function ErrorSection() {
       );
     }
   };
+
+  const dropdownOptions = [
+    {
+      id: 'zoom-to-layer',
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">zoom_in</i>
+          <p className="naxatw-text-body-lg">Zoom To Layer</p>
+        </span>
+      ),
+      onClick: data => {
+        // dispatch(
+        // setResultsState({ zoomToBuffer: { id: data.id, bbox: data.bbox } }),
+        // );
+      },
+    },
+  ];
 
   return (
     <>
@@ -107,18 +126,35 @@ export default function ErrorSection() {
                         }}
                       />
                     </span>
-                    <IconButton
-                      className="material-icons-outlined naxatw-text-delete_btn"
-                      name="delete"
-                      onClick={() => {
-                        dispatch(
-                          setManualFixState({
-                            selectedError: { ...feature, type },
-                          }),
-                        );
-                        dispatch(togglePromptDialog('delete-error'));
-                      }}
-                    />
+                    {type === 'multipart' && (
+                      <IconButton
+                        title={`${feature.fixed ? 'Save' : 'Explode'} `}
+                        className="material-icons-outlined"
+                        name={`${feature.fixed ? 'save' : 'ssid_chart'} `}
+                        onClick={() => {
+                          if (feature.fixed) {
+                            return;
+                          }
+                          dispatch(getMultipartFeatureRequest(feature.id));
+                        }}
+                      />
+                    )}
+                    {type === 'null' && (
+                      <IconButton
+                        className="material-icons-outlined naxatw-text-delete_btn"
+                        name="delete"
+                        onClick={() => {
+                          dispatch(
+                            setManualFixState({
+                              selectedError: { ...feature, type },
+                            }),
+                          );
+                          dispatch(togglePromptDialog('delete-error'));
+                        }}
+                      />
+                    )}
+
+                    <DropdownOptions options={dropdownOptions} data={feature} />
                   </div>
                 </div>
               ))}

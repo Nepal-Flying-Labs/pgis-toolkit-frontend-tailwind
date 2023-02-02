@@ -13,6 +13,7 @@ import {
   checkError,
   copyFeatures,
   getErrorFeatures,
+  getFeatureCollectionMirror,
   getFeatureMirrorGeojson,
   updateFeatureCollection,
 } from '@Services/dataCleaning';
@@ -209,6 +210,16 @@ export function* startAnalysisRequest({ params }) {
   }
 }
 
+export function* getMultipartFeatureRequest({ payload }) {
+  try {
+    const response = yield call(getFeatureCollectionMirror, payload);
+    yield put(dataCleaningActions.getMultipartFeatureSuccess(response.data));
+  } catch (error) {
+    yield put(dataCleaningActions.getMultipartFeatureFailure());
+    throw error;
+  }
+}
+
 function* dataCleaningWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
@@ -245,6 +256,10 @@ function* dataCleaningWatcher() {
   yield takeLatest(
     Types.START_ANALYSIS_REQUEST,
     withLoader(withErrorHandler(startAnalysisRequest)),
+  );
+  yield takeLatest(
+    Types.GET_MULTIPART_FEATURE_REQUEST,
+    withLoader(withErrorHandler(getMultipartFeatureRequest)),
   );
 }
 

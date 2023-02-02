@@ -100,9 +100,19 @@ export function* checkProcessingStatusRequest({ payload }) {
         analysis_id: responseData.analysis_id,
       };
       const analysisResponse = yield call(getAnalysisLayer, params);
+      yield put(
+        analysisActions.setAnalysisState({
+          analysisTaskId: null,
+        }),
+      );
       yield put(action.checkProcessingStatusSuccess(analysisResponse.data));
     }
   } catch (error) {
+    yield put(
+      analysisActions.setAnalysisState({
+        analysisTaskId: null,
+      }),
+    );
     yield put(action.checkProcessingStatusFailure());
     throw error;
   }

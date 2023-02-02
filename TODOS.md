@@ -94,6 +94,12 @@
 - [ ] required field validation while geom edit for feature
 - [ ] save data query modal mt remove
 - [ ] format date/time in all sections (table etc)
+- [ ] boundary zindex least
+- [ ] hand icon while edit hover
+- [ ] zoom to feature on attr table
+- [ ] data query value search 
+- [ ] meter/km feet unit change 
+- [ ] label in map 
 
 ### Backend
 
@@ -187,3 +193,5 @@
 - [x] add zoom to buffer area
 - [x] show poi on select
 - [x] show legend on poi
+
+

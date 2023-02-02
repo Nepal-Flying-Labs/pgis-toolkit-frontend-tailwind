@@ -3,7 +3,6 @@ import React from 'react';
 import { point } from '@turf/helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators } from '@Actions/bufferAnalysis';
-// import IconButton from '@Components/common/IconButton';
 import SearchOSM from '@Components/common/SearchOSM';
 import Chip from '@Components/common/Chip';
 
@@ -17,12 +16,7 @@ export default function SearchContent() {
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
-  // const selectedOriginPointType = useSelector(
-  //   state => state.bufferAnalysis.dataInput.selectedOriginPointType,
-  // );
   const dispatch = useDispatch();
-
-  // const isSearchContentSelected = selectedOriginPointType === 'search';
 
   return (
     <div className="naxatw-select-none">
@@ -33,7 +27,6 @@ export default function SearchContent() {
           viewBox={projectDetail?.bbox}
           value={null}
           onSelect={selectedItem => {
-            console.log(selectedItem, 'selectedData');
             const geojson = point(selectedItem.value);
             dispatch(
               setDataInputState({

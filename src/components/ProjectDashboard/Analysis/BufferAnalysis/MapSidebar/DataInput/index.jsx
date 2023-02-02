@@ -1,10 +1,11 @@
 /* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { analysisHeaderHeight } from '@src/constants';
 import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
+import Select from '@Components/common/Select/index';
 import { Creators, Types } from '@Actions/bufferAnalysis';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Chip from '@Components/common/Chip';
@@ -19,6 +20,11 @@ const {
   handleCheckbox,
   copyFeaturesRequest,
 } = Creators;
+
+const radiusOptions = [
+  { id: 1, label: 'Meter', value: 'meter' },
+  { id: 2, label: 'Kilometer', value: 'kilometer' },
+];
 
 const originPointData = [
   { label: 'Search', value: 'search', icon: 'search' },
@@ -45,16 +51,13 @@ function Container({ children }) {
 }
 
 export default function DataInput() {
+  const [radiusUnit, setRadiusUnit] = useState('meter');
   const dispatch = useDispatch();
   const { projectId } = useParams();
 
   const originPointType = useSelector(
     state => state.bufferAnalysis.dataInput?.originPointType,
   );
-  // const drawPoint = useSelector(
-  //   state => state.bufferAnalysis.dataInput.drawPoint,
-  // );
-
   const originGeojson = useSelector(
     state => state.bufferAnalysis.dataInput.originGeojson,
   );
@@ -98,7 +101,7 @@ export default function DataInput() {
     const payloadData = {
       origins: originData,
       dissolve_output: dissolveOutput,
-      radius: bufferRadius,
+      radius: radiusUnit === 'kilometer' ? bufferRadius * 1000 : bufferRadius,
       name: outputName,
       project: projectId,
       pois: selectedPOI,
@@ -150,7 +153,7 @@ export default function DataInput() {
               <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2 ">
                 <input
                   type="number"
-                  className="naxatw-input"
+                  className="naxatw-input naxatw-basis-2/4"
                   min="1.0"
                   max="5000.0"
                   step={0.1}
@@ -166,7 +169,18 @@ export default function DataInput() {
                   }}
                   placeholder="Buffer Radius"
                 />
-                <p>Meter</p>
+                <div className="naxatw-basis-2/4">
+                  <Select
+                    className="naxatw-bg-white naxatw-h-[48px] naxatw-px-2"
+                    options={radiusOptions}
+                    dataKey="label"
+                    selected={
+                      radiusOptions.filter(opt => opt.value === radiusUnit)[0]
+                        .label
+                    }
+                    onChange={item => setRadiusUnit(item.value)}
+                  />
+                </div>
               </div>
             </div>
             <div className="naxatw-flex naxatw-items-center naxatw-gap-x-4 naxatw-mt-5 naxatw-p-2">

@@ -188,18 +188,19 @@ function getAttributeName(attributes) {
 
 const getSelectedLayerFeatureSuccess = (state, action) =>
   produce(state, draft => {
+    const { originGeojson } = draft.dataInput;
     const data = action.payload;
-    const newData = data.map(item => {
+    const newData = data.map((item, index) => {
       const { geometry, attributes, id } = item;
       const geojson = parse(geometry);
+      const originLength = originGeojson?.length || 0;
 
       return {
-        id: '',
+        id: originLength + (index + 1),
         name: getAttributeName(attributes) || id,
         geojson: { ...geojson, geometry: { coordinates: geojson.coordinates } },
       };
     });
-    const { originGeojson } = draft.dataInput;
 
     draft.dataInput.originGeojson = originGeojson
       ? [...originGeojson, ...newData]

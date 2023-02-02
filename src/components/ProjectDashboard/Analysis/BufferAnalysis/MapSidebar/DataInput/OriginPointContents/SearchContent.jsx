@@ -33,12 +33,16 @@ export default function SearchContent() {
           viewBox={projectDetail?.bbox}
           value={null}
           onSelect={selectedItem => {
+            console.log(selectedItem, 'selectedData');
             const geojson = point(selectedItem.value);
             dispatch(
               setDataInputState({
                 originGeojson: originGeojson
-                  ? [...originGeojson, { ...selectedItem, name: '', geojson }]
-                  : [{ ...selectedItem, name: '', geojson }],
+                  ? [
+                      ...originGeojson,
+                      { ...selectedItem, name: selectedItem.label, geojson },
+                    ]
+                  : [{ ...selectedItem, name: selectedItem.label, geojson }],
                 selectedOriginPointType: 'search',
               }),
             );
@@ -57,9 +61,9 @@ export default function SearchContent() {
                 label={
                   <p
                     className="naxatw-truncate naxatw-w-[200px]"
-                    title={origin.label}
+                    title={origin.name}
                   >
-                    {origin.label}
+                    {origin.name}
                   </p>
                 }
                 iconClassName="material-symbols-outlined"

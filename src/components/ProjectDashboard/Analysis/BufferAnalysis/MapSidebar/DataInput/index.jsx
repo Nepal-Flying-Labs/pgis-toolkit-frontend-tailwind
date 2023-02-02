@@ -11,6 +11,8 @@ import { Creators, Types } from '@Actions/bufferAnalysis';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Chip from '@Components/common/Chip';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
+import MapContent from './OriginPointContents/MapContent';
+import SearchContent from './OriginPointContents/SearchContent';
 
 const {
   setDataInputState,
@@ -25,6 +27,19 @@ const originPointData = [
   { label: 'Layer', value: 'layer', icon: 'format_list_bulleted' },
 ];
 
+function getOriginPointsContent(content) {
+  switch (content) {
+    case 'search':
+      return <SearchContent />;
+    case 'map':
+      return <MapContent />;
+    case 'layer':
+      return <LayerContent />;
+    default:
+      return '';
+  }
+}
+
 // eslint-disable-next-line
 function Container({ children }) {
   return <div className="naxatw-space-y-2">{children}</div>;
@@ -37,9 +52,9 @@ export default function DataInput() {
   const originPointType = useSelector(
     state => state.bufferAnalysis.dataInput?.originPointType,
   );
-  const drawPoint = useSelector(
-    state => state.bufferAnalysis.dataInput.drawPoint,
-  );
+  // const drawPoint = useSelector(
+  //   state => state.bufferAnalysis.dataInput.drawPoint,
+  // );
 
   const originGeojson = useSelector(
     state => state.bufferAnalysis.dataInput.originGeojson,
@@ -119,6 +134,7 @@ export default function DataInput() {
                   dispatch(
                     setDataInputState({
                       originPointType: value,
+                      originGeojson: null,
                     }),
                   );
                 }}
@@ -127,7 +143,7 @@ export default function DataInput() {
           </div>
 
           <Container>
-            {originPointType === 'search' && <Searchbar placeholder="Search" />}
+            {/* {originPointType === 'search' && <Searchbar placeholder="Search" />}
             {originPointType === 'map' && (
               <div>
                 <Chip
@@ -183,7 +199,8 @@ export default function DataInput() {
                 />
                 <Searchbar placeholder="Search Feature" />
               </Container>
-            )}
+            )} */}
+            {getOriginPointsContent(originPointType)}
           </Container>
         </Container>
 

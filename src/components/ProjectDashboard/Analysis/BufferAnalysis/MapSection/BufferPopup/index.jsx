@@ -23,6 +23,11 @@ import {
 } from 'recharts';
 import meterToKM from '@Utils/meterToKM';
 
+const calTotalCount = (data, dataKey) => {
+  const values = data.map(d => +d?.[dataKey]);
+  return values.reduce((item, value) => item + value, 0);
+};
+
 const {
   getDetailsCategoryRequest,
   getDetailsChartRequest,
@@ -70,7 +75,7 @@ export default function BufferPopup() {
     0,
   );
 
-  const poiCount = selectedResultData?.poiChartData?.length;
+  const poiCount = calTotalCount(selectedResultData?.poiChartData, 'count');
 
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_ROUTE_POPUP_DATA_REQUEST]),

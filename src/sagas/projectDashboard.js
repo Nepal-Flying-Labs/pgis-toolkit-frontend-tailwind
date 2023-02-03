@@ -345,7 +345,7 @@ export function* getLayerTemplateRequest({ id }) {
       response.data.length < 1
         ? projectDashboardActions.postImportTemplateRequest({
             project: id,
-            templates: 'all',
+            // templates: 'all',
           })
         : projectDashboardActions.getLayerTemplateSuccess(response.data),
     );

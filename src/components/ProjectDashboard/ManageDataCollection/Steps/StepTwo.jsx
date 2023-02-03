@@ -13,10 +13,16 @@ import { Creators as CommonCreators } from '@Actions/common';
 import SortingContainer from '@Components/common/SortingContainer/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import TableSkeleton from '@Components/common/TableSkeleton';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
+import Tooltip from '@Components/common/Tooltip/index';
 
 const { toggleModal } = CommonCreators;
-const { getLayerTemplateRequest, patchLayerTemplateRequest, setSelectedLayer } =
-  Creators;
+const {
+  getLayerTemplateRequest,
+  patchLayerTemplateRequest,
+  setSelectedLayer,
+  postImportTemplateRequest,
+} = Creators;
 
 const StepTwo = () => {
   const { projectId } = useParams();
@@ -55,7 +61,18 @@ const StepTwo = () => {
       </p>
       <div className="naxatw-mt-5 naxatw-flex naxatw-justify-between naxatw-items-center ">
         <p>List of data templates for field data collection</p>
-        <div className="naxatw-py-[10px] naxatw-pr-3">
+        <div className="naxatw-py-[10px] naxatw-pr-3 naxatw-flex naxatw-gap-x-3">
+          <Tooltip content="Refresh Template" direction="right">
+            <MaterialIcon
+              className="naxatw-text-icon-md"
+              wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer"
+              name="sync"
+              onIconClick={() => {
+                dispatch(postImportTemplateRequest({ project: projectId }));
+              }}
+            />
+          </Tooltip>
+
           <Searchbar />
         </div>
       </div>
@@ -116,7 +133,7 @@ const StepTwo = () => {
                   Import From OSM
                 </Button> */}
                   <Button
-                    className="naxatw-btn-secondary naxatw-btn-noborder naxatw-min-w-fit"
+                    className="naxatw-btn-secondary naxatw-btn-noborder naxatw-min-w-fit naxatw-btn-sm"
                     onClick={e => {
                       e.stopPropagation();
                       dispatch(setSelectedLayer(row));

@@ -65,13 +65,14 @@ const ManageDataCollection = () => {
   return (
     <div>
       <div className="naxatw-flex naxatw-justify-between naxatw-px-10 naxatw-py-5 naxatw-border naxatw-border-b">
-        <div className="naxatw-w-[712px]">
+        <div className="">
           <h3>Manage Data Collection</h3>
           <span className="naxatw-text-body-lg ">
-            Data Management is an integral component of USAFIRI. This allows
-            users to import and export standard data templates from multiple
-            sources before data collection procedure as per the user&apos;s
-            requirement.
+            Before you proceed further, USAFIRI allows use to manage your
+            datasets. The data management module is an integral component of
+            USAFIRI. This allows users to import and export standard data
+            templates from multiple sources before data collection procedure as
+            per the user&apos;s requirement.
           </span>
         </div>
 

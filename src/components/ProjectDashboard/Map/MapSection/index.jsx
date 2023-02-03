@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useCallback, useEffect } from 'react';
 import { stringify } from 'wkt';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,6 +33,7 @@ import EditableLayer from '@Components/common/OpenLayersComponent/CustomLayer/Ed
 // import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import { apiURL } from '@Services';
+import { FullScreen, defaults as defaultControls } from 'ol/control';
 import SidebarToggle from '../SidebarToggle';
 import Toolbox from '../Toolbox';
 import QueryResultPopup from '../QueryResultPopup';
@@ -43,8 +45,9 @@ const {
   getFeatureCollectionRequest,
 } = Creators;
 
-export default function MapSection() {
+export default function MapSection({ setExportMap }) {
   const { mapRef, map, isMapLoading } = useOLMap({
+    controls: defaultControls().extend([new FullScreen()]),
     center: fromLonLat([85.3, 27.7]),
     zoom: 2,
     maxZoom: 25,
@@ -179,6 +182,13 @@ export default function MapSection() {
     [editFeatureId],
   );
 
+  // Set Export map
+  useEffect(() => {
+    if (map) {
+      setExportMap(map);
+    }
+  }, [map]);
+
   return (
     <div className="naxatw-w-full naxatw-relative">
       {isMapDataLoading && (
@@ -199,7 +209,7 @@ export default function MapSection() {
       >
         <SidebarToggle />
 
-        <Toolbox />
+        <Toolbox map={map} />
 
         <QueryResultPopup />
 

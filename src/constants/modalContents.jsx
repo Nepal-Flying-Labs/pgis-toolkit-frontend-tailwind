@@ -27,6 +27,8 @@ import SaveDataQuery from '@Components/ProjectDashboard/ModalContent/SaveDataQue
 import DeleteDataQuery from '@Components/ProjectDashboard/ModalContent/DeleteDataQuery';
 import AccountSettings from '@Components/Authentication/ModalContent/AccountSettings';
 import ViewLayerAttribute from '@Components/ProjectDashboard/ModalContent/ViewLayerAttribute';
+import EditLayerAttribute from '@Components/ProjectDashboard/ModalContent/EditLayerAttribute';
+import DeleteLayerAttribute from '@Components/ProjectDashboard/ModalContent/DeleteLayerAttribute';
 import DeleteDocument from '@Components/ProjectDashboard/ModalContent/DeleteDocument/index';
 import DataQueryHelp from '@Components/ProjectDashboard/ModalContent/HelpContents/DataQueryHelp';
 import DeleteGallery from '@Components/ProjectDashboard/ModalContent/DeleteGallery/index';
@@ -39,6 +41,10 @@ import DeleteProject from '@Components/OrganizationDashboard/ModalContent/Delete
 import DeleteTemplateAttribute from '@Components/ProjectDashboard/ModalContent/DeleteTemplateAttribute';
 import DeleteError from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteError';
 import ViewRouteAttribute from '@Components/ProjectDashboard/Analysis/ModalContent/ViewRouteAttribute';
+import ViewBufferAttribute from '@Components/ProjectDashboard/Analysis/ModalContent/ViewBufferAttribute';
+import DeleteAnOrganization from '@Components/Organizations/ModalContent/DeleteAnOrganization';
+import SaveRouteLayer from '@Components/ProjectDashboard/Analysis/ModalContent/SaveRouteLayer';
+import SelectLayerFeature from '@Components/ProjectDashboard/Analysis/ModalContent/SelectLayerFeature';
 
 export function getModalContent(content) {
   switch (content) {
@@ -209,7 +215,21 @@ export function getModalContent(content) {
       return {
         title: 'Route Attribute',
         content: <ViewRouteAttribute />,
+        className: '!naxatw-w-[50rem]',
+      };
+    case 'select-layer-feature':
+      return {
+        title: 'Select Layer Feature',
+        content: <SelectLayerFeature />,
         className: '!naxatw-w-[calc(100vw-15rem)]',
+      };
+
+    // buffer analysis
+    case 'view-buffer-attribute':
+      return {
+        title: 'Buffer Attribute',
+        content: <ViewBufferAttribute />,
+        className: '!naxatw-w-[50rem]',
       };
     default:
       return {
@@ -308,8 +328,41 @@ export function getPromptDialogContent(content) {
         title: 'Delete Project',
         content: <DeleteProject />,
       };
+    case 'delete-an-organization':
+      return {
+        title: 'Delete an organization',
+        content: <DeleteAnOrganization />,
+      };
+    // route analysis
+    case 'save-route-layer':
+      return {
+        title: 'Save Layer',
+        content: <SaveRouteLayer />,
+      };
+
+    case 'delete-layer-attribute':
+      return {
+        title: 'Delete attribute',
+        content: <DeleteLayerAttribute />,
+      };
 
     default:
       return '';
+  }
+}
+
+export function getModalTwoContent(content) {
+  switch (content) {
+    // authentication
+    case 'edit-layer-attribute':
+      return {
+        title: 'Edit Attribute',
+        content: <EditLayerAttribute />,
+      };
+    default:
+      return {
+        title: '',
+        content: '',
+      };
   }
 }

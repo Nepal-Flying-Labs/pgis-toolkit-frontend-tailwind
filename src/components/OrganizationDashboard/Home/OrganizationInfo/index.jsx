@@ -56,7 +56,15 @@ const OrganizationInfo = () => {
                   className="naxatw-text-icon-md naxatw-text-primary-400"
                 />
                 <span className="naxatw-text-body-lg">
-                  {organizationDetails?.link || 'N/A'}
+                  <a
+                    className="naxatw-text-body-lg"
+                    href={organizationDetails?.link || null}
+                    target="_blank"
+                    rel="noreferrer"
+                    // onClick={organizationDetails?.link ? () => {} : () => false}
+                  >
+                    {organizationDetails?.link || 'N/A'}
+                  </a>
                 </span>
               </div>
             </div>
@@ -126,7 +134,7 @@ const OrganizationInfo = () => {
                 Organization Size
               </span>
               <span className="naxatw-text-body-lg naxatw-font-bold">
-                {organizationDetails?.size}
+                {organizationDetails?.size || 'N/A'}
               </span>
             </div>
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
@@ -134,21 +142,23 @@ const OrganizationInfo = () => {
                 Thematic focus areas
               </span>
               <span className="naxatw-text-body-lg naxatw-font-bold">
-                {organizationDetails?.thematic_areas?.toString() || 'N/A'}
+                {organizationDetails?.thematic_areas?.join(', ') || 'N/A'}
               </span>
             </div>
           </div>
           <div className="naxatw-mt-7">
-            <h4>About</h4>
+            <h4 className="naxatw-font-semibold">About</h4>
             <p className="naxatw-text-body-lg naxatw-mt-2">
               {organizationDetails?.description || 'N/A'}
             </p>
           </div>
           <div className="naxatw-mt-7">
-            <h4 className="naxatw-mb-3">Focal Contact Person</h4>
+            <h4 className="naxatw-mb-3 naxatw-font-semibold">
+              Focal Contact Person
+            </h4>
             {organizationDetails?.contact_person?.length > 0 ? (
               organizationDetails?.contact_person?.map(person => (
-                <div>
+                <div className="naxatw-mt-2">
                   <p className="naxatw-text-body-btn naxatw-mb-1">
                     {person.name}
                   </p>

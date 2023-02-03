@@ -115,7 +115,7 @@ const SaveAsDraft = () => {
     const diffContact = diffObject(contactDetails, contactPerson);
     if (Object.keys(diffContact).length > 0) {
       if (finalObj.contactId) {
-        validateContactPerson(diffContact)
+        validateContactPerson(contactDetails)
           ? dispatch(
               patchContactPersonRequest(finalObj.contactId, {
                 ...diffContact,
@@ -157,7 +157,7 @@ const SaveAsDraft = () => {
 
   return (
     <div className="">
-      <div className="naxatw-flex naxatw-items-center naxatw-gap-x-5 naxatw-mb-7 ">
+      <div className="naxatw-flex naxatw-items-center naxatw-gap-x-5 naxatw-mb-5 ">
         <span className="naxatw-w-[48px] naxatw-flex naxatw-items-center naxatw-justify-center naxatw-h-[48px] naxatw-rounded-full naxatw-bg-[#DFF2F1] naxatw-text-center ">
           {' '}
           <MaterialIcon
@@ -170,7 +170,7 @@ const SaveAsDraft = () => {
       <span className=" naxatw-text-body-lg naxatw-text-[#484848]">
         Drafts let you save your edits, so you can come back later.
       </span>
-      <div className="naxatw-mt-5 naxatw-p-7 naxatw-flex naxatw-justify-center">
+      <div className="naxatw-mt-8 naxatw-flex naxatw-justify-center">
         <div className="naxatw-flex naxatw-gap-x-2">
           <Button
             onClick={() => dispatch(togglePromptDialog(''))}

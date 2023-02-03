@@ -12,7 +12,7 @@ export default function AddFeature({
   addInteraction,
   removeInteraction,
   onDrawEnd,
-  map,
+  // map,
 }) {
   const drawInstance = useMemo(
     () =>

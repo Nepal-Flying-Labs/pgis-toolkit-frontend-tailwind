@@ -6,7 +6,9 @@ import projectDashboardWatcher from './projectDashboard';
 import projectMapWatcher from './projectMap';
 import usersWatcher from './users';
 import dataCleaningWatcher from './dataCleaning';
+import analysisWatcher from './analysis';
 import routeAnalysisWatcher from './routeAnalysis';
+import bufferAnalysisWatcher from './bufferAnalysis';
 
 function* rootSaga() {
   yield all([
@@ -17,7 +19,9 @@ function* rootSaga() {
     projectMapWatcher(),
     usersWatcher(),
     dataCleaningWatcher(),
+    analysisWatcher(),
     routeAnalysisWatcher(),
+    bufferAnalysisWatcher(),
   ]);
 }
 

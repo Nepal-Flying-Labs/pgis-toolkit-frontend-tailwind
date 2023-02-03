@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button';
@@ -35,6 +35,7 @@ const validateConfirmPassword = (pass1, pass2) => {
 export default function PasswordSettings() {
   // const [token, setToken] = useState(null);
   const dispatch = useDispatch();
+  const [visibilityToggle, setVisibilityToggle] = useState(false);
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.CHANGE_PASSWORD_REQUEST]),
   );
@@ -47,7 +48,7 @@ export default function PasswordSettings() {
     initialValues: initialState,
     required: ['old_password', 'new_password1', 'new_password2'],
     validationSchema: {
-      old_password: validatePassword,
+      // old_password: validatePassword,
       new_password1: validatePassword,
       new_password2: value =>
         validateConfirmPassword(values.new_password1, value),
@@ -77,10 +78,10 @@ export default function PasswordSettings() {
           <div className="mb-6 naxatw-space-y-[1.25rem]">
             <Input
               label="Old Password"
-              type="password"
+              type={`${visibilityToggle ? 'text' : 'password'}`}
               className="naxatw-input"
               name="old_password"
-              placeholder="8+ characters"
+              placeholder="********"
               value={values.old_password}
               onChange={handleChange}
               {...inputProps}
@@ -90,10 +91,10 @@ export default function PasswordSettings() {
             )}
             <Input
               label="New Password"
-              type="password"
+              type={`${visibilityToggle ? 'text' : 'password'}`}
               className="naxatw-input"
               name="new_password1"
-              placeholder="8+ characters"
+              placeholder="********"
               value={values.new_password1}
               onChange={handleChange}
               {...inputProps}
@@ -104,9 +105,10 @@ export default function PasswordSettings() {
 
             <Input
               label="Confirm Password"
-              type="password"
+              type={`${visibilityToggle ? 'text' : 'password'}`}
               className="naxatw-input"
               name="new_password2"
+              placeholder="********"
               value={values.new_password2}
               onChange={handleChange}
               {...inputProps}
@@ -114,10 +116,22 @@ export default function PasswordSettings() {
             {meta.new_password2.error && meta.new_password2.touched && (
               <FormErrorMessage message={meta.new_password2.message} />
             )}
+
+            <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
+              <input
+                id="view-password"
+                type="checkbox"
+                className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-accent-grey-800"
+                onClick={() => setVisibilityToggle(prev => !prev)}
+              />
+              <label className="naxatw-text-body-lg" htmlFor="view-password">
+                View Password
+              </label>
+            </div>
           </div>
           <div className="naxatw-flex naxatw-justify-center ">
             <Button
-              className="naxatw-btn-primary naxatw-mt-7 naxatw-w-fit !naxatw-bg-grey-400"
+              className="naxatw-btn-primary naxatw-mt-7 naxatw-w-fit "
               isLoading={loading}
               loaderClassName="naxatw-fill-secondary-400"
               onClick={e => {

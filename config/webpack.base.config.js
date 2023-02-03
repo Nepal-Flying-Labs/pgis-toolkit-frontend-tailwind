@@ -148,7 +148,7 @@ module.exports = (env = {}) => {
           template: 'public/index.html',
           filename: 'index.html',
           inject: true,
-          // favicon: `src/assets/image/${PROJECT}/favicon.png`,
+          favicon: 'src/assets/images/logo1.png',
           minify: {
             collapseWhitespace: true,
             collapseInlineTagWhitespace: true,

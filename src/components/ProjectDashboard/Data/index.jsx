@@ -115,9 +115,11 @@ export default function Data() {
       </div>
 
       <div className="naxatw-space-y-2">
-        <h4 className="naxatw-text-grey-800">
-          USAFIRI allows you to upload datasets from multiple sources
-        </h4>
+        <p className="naxatw-text-grey-800 naxatw-text-body-lg">
+          USAFIRI supports data upload from multiple external sources. You may
+          add data collected from field, extract data from OSM and simply add
+          WMS layer in the data catalog.
+        </p>
         {/* <p className="naxatw-text-body-lg">
           Download Datasets for Field Data Collection
         </p> */}
@@ -126,33 +128,33 @@ export default function Data() {
       <div className="naxatw-py-6 naxatw-flex naxatw-gap-3">
         {uploadMethods.map(({ id, icon, title, description, onClick }) =>
           id === 2 ? (
-            <Tooltip content="The feature is coming soon">
-              <div
-                key={id}
-                className={`${
-                  id === 2 ? 'naxatw-bg-grey-100 naxatw-cursor-not-allowed' : ''
-                } naxatw-w-fit naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-p-5 naxatw-cursor-pointer hover:naxatw-bg-grey-100 `}
-                onClick={onClick}
-              >
+            <div
+              key={id}
+              className={`${
+                id === 2 ? 'naxatw-bg-grey-100 naxatw-cursor-not-allowed' : ''
+              } naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-p-5 naxatw-cursor-pointer naxatw-basis-1/3`}
+              onClick={onClick}
+            >
+              <Tooltip content="This feature is coming soon">
                 <div className="naxatw-flex naxatw-gap-5 naxatw-items-center ">
                   <figure>
                     <img height={80} width={80} src={icon} alt="uploadx" />
                   </figure>
                   <div>
-                    <h5 className="naxatw-text-grey-800 naxatw-mb-2">
+                    <h5 className="naxatw-text-grey-400 naxatw-mb-2">
                       {title}
                     </h5>
-                    <p className="naxatw-text-body-md">{description}</p>
+                    <p className="naxatw-text-body-md naxatw-text-grey-400">
+                      {description}
+                    </p>
                   </div>
                 </div>
-              </div>
-            </Tooltip>
+              </Tooltip>
+            </div>
           ) : (
             <div
               key={id}
-              className={`${
-                id === 2 ? 'naxatw-bg-grey-100 naxatw-cursor-not-allowed' : ''
-              } naxatw-w-fit naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-p-5 naxatw-cursor-pointer hover:naxatw-bg-grey-100 `}
+              className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-p-5 naxatw-cursor-pointer hover:naxatw-bg-grey-100 naxatw-basis-1/3 "
               onClick={onClick}
             >
               <div className="naxatw-flex naxatw-gap-5 naxatw-items-center ">

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Creators } from '@Actions/routeAnalysis';
+import { Creators as RouteAnalysisCreators } from '@Actions/routeAnalysis';
 import MapSidebar from './MapSidebar';
 import MapSection from './MapSection';
 
-const { resetRouteAnalysisState } = Creators;
+const { resetRouteAnalysisState } = RouteAnalysisCreators;
 
 export default function OptimalRoute() {
   const dispatch = useDispatch();

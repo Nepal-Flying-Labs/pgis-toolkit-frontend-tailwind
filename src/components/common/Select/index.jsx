@@ -8,7 +8,7 @@ import useOutsideClick from '@Hooks/useOutsideClick';
 // import isEmpty from '@Utils/commonUtils';
 import PropTypes from 'prop-types';
 import './styles.css';
-import MaterialIcon from '../MaterialIcon/index';
+import MaterialIcon from '../MaterialIcon';
 
 function Select({
   options,
@@ -42,38 +42,51 @@ function Select({
   return (
     // eslint-disable-next-line react/jsx-curly-brace-presence
     <div
-      className={`naxatw-inline-flex  naxatw-rounded-md naxatw-w-full `}
+      className={`naxatw-inline-flex  naxatw-rounded-md naxatw-w-full ${
+        disabled ? 'naxatw-bg-grey-100' : ''
+      } `}
       ref={divRef}
     >
       <div className="naxatw-relative naxatw-group naxatw-w-full">
         <button
           type="button"
           onClick={disabled ? () => {} : () => handleToggle()}
-          className={`naxatw-select  ${className}  ${
+          className={`${
+            disabled ? 'naxatw-select-disabled' : 'naxatw-select'
+          }  ${className}  ${
             toggle ? 'naxatw-bg-[#F5F5F5] naxatw-border-[#484848]' : ''
           }`}
           style={style}
           {...rest}
         >
-          <span className="naxatw-text-body-lg">{getSelectedValue()}</span>
+          <span
+            className={`naxatw-text-body-lg ${
+              disabled ? 'naxatw-text-grey-400' : ''
+            }`}
+          >
+            {getSelectedValue()}
+          </span>
           <MaterialIcon
             name={`${!toggle ? 'arrow_drop_down' : 'arrow_drop_up'}`}
-            className="naxatw-text-icon-md"
+            className={`naxatw-text-icon-md ${
+              disabled ? 'naxatw-text-grey-400' : ''
+            }`}
           />
         </button>
         {toggle && (
           <div
-            className="naxatw-dropdown naxatw-min-w-fit naxatw-py-2"
+            className="naxatw-dropdown naxatw-min-w-fit naxatw-py-2 naxatw-max-h-[14rem]
+              naxatw-overflow-y-auto scrollbar"
             // style={{
             //   display: toggle ? 'block' : 'none',
             // }}
           >
             <ul>
-              {options ? (
+              {options.length > 0 ? (
                 options.map(item => {
                   return (
                     <li
-                      key={item.id}
+                      key={item[valueKey]}
                       role="menuitem"
                       className={`naxatw-dropdown-items  ${
                         selected === item[dataKey] || item[valueKey] ? '' : ''
@@ -92,7 +105,9 @@ function Select({
                   );
                 })
               ) : (
-                <li>{noDataMessage}</li>
+                <li className="naxatw-dropdown-items naxatw-text-body-lg">
+                  {noDataMessage}
+                </li>
               )}
             </ul>
           </div>
@@ -112,7 +127,7 @@ Select.defaultProps = {
   disabled: false,
   onChange: () => {},
   selected: '',
-  noDataMessage: '',
+  noDataMessage: 'No data available',
   errorValue: false,
   errorClassName: false,
   dataKey: 'name',

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
 import {
@@ -16,7 +16,9 @@ import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSw
 import CustomLayerSwitcher from '@Components/common/OpenLayersComponent/CustomLayerSwitcher';
 import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
+import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileLayer';
 import CircleMarker from '@Components/common/OpenLayersComponent/CustomLayer/CircleMarker';
+import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import Spinner from '@Components/common/Spinner';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import 'ol/ol.css';
@@ -27,8 +29,12 @@ import { obstacleLayersSelector } from '@Selectors/routeAnalysis';
 import {
   startPointStyles,
   destinationPointStyles,
-  obstaclePointColor,
 } from '@src/constants/analysis';
+import { mapStateSelector } from '@Selectors/analysis';
+import {
+  defaultStyles,
+  getStyles,
+} from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { analysisHeaderHeight } from '@src/constants';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import { apiURL } from '@Services';
@@ -50,11 +56,11 @@ export default function MapSection() {
   const drawPointType = useSelector(
     state => state.routeAnalysis.dataInput.drawPointType,
   );
-  const startGeojson = useSelector(
-    state => state.routeAnalysis.dataInput.startGeojson,
+  const startingPoint = useSelector(
+    state => state.routeAnalysis.dataInput.startingPoint,
   );
-  const destinationGeojson = useSelector(
-    state => state.routeAnalysis.dataInput.destinationGeojson,
+  const destinationPoint = useSelector(
+    state => state.routeAnalysis.dataInput.destinationPoint,
   );
   const analysisResults = useSelector(
     state => state.routeAnalysis.results.analysisResults,
@@ -62,6 +68,13 @@ export default function MapSection() {
   const zoomToRouteId = useSelector(
     state => state.routeAnalysis.results.zoomToRouteId,
   );
+  const selectedObstacles = useSelector(
+    state => state.routeAnalysis.obstacleLayers,
+  );
+  const projectGeojson = useSelector(state => state.analysis.projectGeojson);
+  const zoomToLayerId = useSelector(state => state.analysis.zoomToLayerId);
+  const mapState = useSelector(mapStateSelector);
+  const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const obstacleLayers = useSelector(obstacleLayersSelector);
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [Types.GET_PROJECT_GEOJSON_REQUEST]),
@@ -103,6 +116,26 @@ export default function MapSection() {
     }
   }, [map, zoomToRouteId, analysisResults, dispatch]);
 
+  // zoom to road network layer
+  useEffect(() => {
+    if (!map || !zoomToLayerId) return;
+    const bbox = mapState.find(item => item.id === zoomToLayerId)?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 2000,
+        constrainResolution: true,
+      });
+      dispatch(
+        setResultsState({
+          zoomToLayerId: null,
+        }),
+      );
+    }
+  }, [map, zoomToLayerId, mapState, dispatch]);
+
   // click handler for route layer
   useEffect(() => {
     if (!map) return;
@@ -120,6 +153,27 @@ export default function MapSection() {
       );
     });
   }, [map, dispatch]);
+
+  const setLayerStyle = useCallback((style, feature, resolution) => {
+    const stylex = { ...style };
+    // const properties = feature.getProperties();
+    // const { id: featureId } = properties;
+    // if (editFeatureId === featureId) {
+    //   stylex.fillOpacity = 0;
+    //   stylex.lineOpacity = 0;
+    //   stylex.icon = {};
+    // }
+    return getStyles({
+      style: stylex,
+      feature,
+      resolution,
+    });
+  }, []);
+
+  const getLayerStyles = layerId => {
+    const style = mapState.find(item => item.id === layerId)?.style;
+    return style || { ...defaultStyles };
+  };
 
   return (
     <div className="naxatw-w-full naxatw-relative">
@@ -145,16 +199,52 @@ export default function MapSection() {
 
         <HelpBox />
 
-        {roadNetworkLayer && (
-          <VectorTileLayer
-            url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${roadNetworkLayer.id}`}
-            authToken={localStorage.getItem('userToken')}
-            visibleOnMap
-            style={roadNetworkLayer.style}
-            zIndex={1}
-            // properties={{ layerId: selectedLayer.id }}
-          />
+        {mapState.map((item, index) =>
+          item.layer_type === 'Vector' ? (
+            <VectorTileLayer
+              key={item.id}
+              url={`${apiURL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+              authToken={localStorage.getItem('userToken')}
+              visibleOnMap={item.checked}
+              setStyle={(feature, resolution) =>
+                setLayerStyle(
+                  item.id === selectedLayer?.id
+                    ? selectedLayer.style
+                    : item?.style || { ...defaultStyles },
+                  feature,
+                  resolution,
+                )
+              }
+              // style={
+              //   item.id === selectedLayer?.id
+              //     ? selectedLayer.style
+              //     : item?.style || { ...defaultStyles }
+              // }
+              zIndex={mapState.length + 10 - index}
+              properties={{ layerId: item.id }}
+            />
+          ) : item.layer_type === 'WMS' ? (
+            <WMSTileLayer
+              key={item.id}
+              url={item.url}
+              visibleOnMap={item.checked}
+            />
+          ) : (
+            ''
+          ),
         )}
+
+        {selectedObstacles.map(item => (
+          <VectorTileLayer
+            key={item.id}
+            url={`${apiURL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+            authToken={localStorage.getItem('userToken')}
+            visibleOnMap={item.checked}
+            style={item.style}
+            zIndex={4}
+            properties={{ layerId: item.id }}
+          />
+        ))}
 
         {analysisResults.map(result =>
           result.routes.map(route =>
@@ -172,19 +262,17 @@ export default function MapSection() {
           ),
         )}
 
-        {obstacleLayers.map(item => (
+        {obstacleLayers.map((item, idx) => (
           <VectorTileLayer
-            key={`${item.layer_id}-${item.feature_mirror_ids.join('-')}`}
+            key={`${item.layer_id}-${item.feature_mirror_ids.join(
+              '-',
+            )} - ${idx}`}
             url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${
               item.layer_id
             }&ids=${item.feature_mirror_ids.join(',')}`}
             authToken={localStorage.getItem('userToken')}
             visibleOnMap
-            style={{
-              ...startPointStyles,
-              fillColor: obstaclePointColor,
-              circleRadius: 6,
-            }}
+            style={getLayerStyles(item.layer_id)}
             zIndex={4}
             // properties={{ layerId: selectedLayer.id }}
           />
@@ -224,8 +312,8 @@ export default function MapSection() {
             dispatch(
               setDataInputState({
                 [drawPointType === 'start'
-                  ? 'startGeojson'
-                  : 'destinationGeojson']: geojson,
+                  ? 'startingPoint'
+                  : 'destinationPoint']: { id: 1, name: '', geojson },
                 drawPointType: null,
               }),
             );
@@ -242,17 +330,17 @@ export default function MapSection() {
           }}
         />
 
-        {startGeojson && (
+        {startingPoint?.geojson && (
           <VectorLayer
-            geojson={startGeojson}
+            geojson={startingPoint.geojson}
             visibleOnMap
             zIndex={10}
             style={{ ...startPointStyles }}
           />
         )}
-        {destinationGeojson && (
+        {destinationPoint?.geojson && (
           <VectorLayer
-            geojson={destinationGeojson}
+            geojson={destinationPoint.geojson}
             visibleOnMap
             zIndex={10}
             style={{ ...destinationPointStyles }}
@@ -260,6 +348,8 @@ export default function MapSection() {
         )}
 
         <RoutePopup />
+
+        <MaskedLayer geojson={projectGeojson} />
 
         <MapFooter loading={isMapLoading} />
       </MapComponent>

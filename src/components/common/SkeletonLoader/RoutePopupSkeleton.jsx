@@ -4,12 +4,12 @@ import React from 'react';
 export default function RoutePopupSkeleton() {
   return (
     <div className="naxatw-grid naxatw-grid-cols-2 naxatw-gap-4">
-      {Array.from({ length: 5 }).map((_, idx) => (
+      {Array.from({ length: 8 }).map((_, idx) => (
         <React.Fragment key={idx}>
           <div
             role="status"
             className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-w-28
-        naxatw-h-3 naxatw-bg-grey-300 naxatw-rounded-lg naxatw-animate-pulse"
+              naxatw-h-3 naxatw-bg-grey-300 naxatw-rounded-lg naxatw-animate-pulse"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -21,7 +21,7 @@ export default function RoutePopupSkeleton() {
           <div
             role="status"
             className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-w-28
-        naxatw-h-3 naxatw-bg-grey-300 naxatw-rounded-lg naxatw-animate-pulse"
+              naxatw-h-3 naxatw-bg-grey-300 naxatw-rounded-lg naxatw-animate-pulse"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

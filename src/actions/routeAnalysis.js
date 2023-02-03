@@ -14,7 +14,6 @@ export const { Types, Creators } = createActions(
     applyRouteAnalysisSuccess: ['payload'],
     applyRouteAnalysisFailure: null,
 
-    checkProcessingStatusRequest: ['payload'],
     checkProcessingStatusSuccess: ['payload'],
     checkProcessingStatusFailure: null,
 
@@ -25,6 +24,14 @@ export const { Types, Creators } = createActions(
     getAnalysisDataRequest: ['params'],
     getAnalysisDataSuccess: ['payload'],
     getAnalysisDataFailure: null,
+
+    saveRouteLayerRequest: ['payload'],
+    saveRouteLayerSuccess: ['payload'],
+    saveRouteLayerFailure: null,
+
+    getSelectedLayerFeatureRequest: ['payload'],
+    getSelectedLayerFeatureSuccess: ['payload'],
+    getSelectedLayerFeatureFailure: ['payload'],
   },
   { prefix: 'routeAnalysis/' },
 );

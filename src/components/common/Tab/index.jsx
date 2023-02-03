@@ -51,10 +51,12 @@ export default function Tab({ data, activeId, contentClassName, onChange }) {
 Tab.defaultProps = {
   activeId: null,
   contentClassName: '',
+  onChange: () => {},
 };
 
 Tab.propTypes = {
   data: PropTypes.array.isRequired,
   activeId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   contentClassName: PropTypes.string,
+  onChange: PropTypes.func,
 };

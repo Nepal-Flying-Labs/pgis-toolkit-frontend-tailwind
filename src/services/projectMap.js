@@ -47,3 +47,6 @@ export const getLayerAttribute = params =>
 
 export const getQueryAttribute = params =>
   authenticated(api).get(`/maps/query_feature_collection/`, { params });
+
+export const getFeatureGeojson = id =>
+  authenticated(api).get(`/maps/feature_geojson/${id}/`);

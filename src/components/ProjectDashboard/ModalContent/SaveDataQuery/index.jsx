@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/projectMap';
 import useForm from '@Hooks/useForm';
@@ -37,7 +37,7 @@ export default function SaveDataQuery() {
 
   return (
     <div>
-      <div className="naxatw-my-5 naxatw-space-y-5">
+      <div className="naxatw-space-y-5">
         <div className="naxatw-space-y-2">
           <label className="naxatw-label">Name</label>
           <span className="naxatw-flex">
@@ -77,7 +77,7 @@ export default function SaveDataQuery() {
         </div>
       </div>
 
-      <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-mt-14 naxatw-gap-2">
+      <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-mt-10 naxatw-gap-2">
         <Button
           className="naxatw-btn-primary"
           isLoading={isSaving}

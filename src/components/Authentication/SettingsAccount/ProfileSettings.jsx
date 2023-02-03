@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable import/no-named-as-default */
 import React, { useEffect } from 'react';
 import Input from '@Components/common/Input/index';
@@ -20,6 +22,28 @@ import { v4 as uuidv4 } from 'uuid';
 //   phone: '',
 //   email: '',
 // };
+
+const validateContact = contact => {
+  const pattern = /^[0-9\b]+$/;
+  const result = pattern.test(contact);
+  let error;
+  if (!result) {
+    error = true;
+  } else {
+    contact.toString().length < 8 || contact.toString().length > 15
+      ? (error = true)
+      : (error = false);
+  }
+  const message = !error
+    ? ''
+    : !contact
+    ? 'Contact number is required'
+    : 'Enter a valid contact number';
+  return {
+    error,
+    message,
+  };
+};
 
 const ProfileSettings = () => {
   const profile = useSelector(state => state.authentication.settings.profile);
@@ -47,6 +71,9 @@ const ProfileSettings = () => {
   } = useForm({
     initialValues: profile,
     required: ['full_name', 'contact', 'username'],
+    validationSchema: {
+      contact: validateContact,
+    },
     onSubmit: data => {
       const finalObj = data;
       const diffObj = diffObject(profile, finalObj);
@@ -128,16 +155,18 @@ const ProfileSettings = () => {
           onChange={handleChange}
           value={values?.roles?.join()}
         /> */}
-        <Input
-          label="Phone*"
-          placeholder="User's Phone Number*"
-          name="contact"
-          onChange={handleChange}
-          value={values.contact}
-        />
-        {meta.contact.error && meta.contact.touched && (
-          <FormErrorMessage message="Contact no is required" />
-        )}
+        <div>
+          <Input
+            label="Phone*"
+            placeholder="User's Phone Number*"
+            name="contact"
+            onChange={handleChange}
+            value={values.contact}
+          />
+          {meta.contact.error && meta.contact.touched && (
+            <FormErrorMessage message={meta.contact.message} />
+          )}
+        </div>
 
         <Input
           label="Email"

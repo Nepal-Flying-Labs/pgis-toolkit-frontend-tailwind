@@ -6,6 +6,7 @@ import { Switch, Route } from 'react-router-dom';
 import PrivateRoute from '@Components/common/PrivateRoute';
 import Toast from '@Components/common/Toast';
 import Modal from '@Components/common/Modal';
+import ModalTwo from '@Components/common/ModalTwo';
 import { useSelector, useDispatch } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import PromptDialog from '@Components/common/PromptDialog';
@@ -17,13 +18,16 @@ import indexRoutes from './routes';
 import {
   getModalContent,
   getPromptDialogContent,
+  getModalTwoContent,
 } from './constants/modalContents';
 import './assets/css/tailwind.css';
 
 const {
   toggleModal,
+  toggleModalTwo,
   togglePromptDialog,
   setModalContent,
+  setModalTwoContent,
   setPromptDialogContent,
 } = CommonCreators;
 
@@ -47,6 +51,9 @@ const ModalWrapper = ({ component }) => {
   const showModal = useSelector(state => state.common.showModal);
   const showPromptDialog = useSelector(state => state.common.showPromptDialog);
   const modalContent = useSelector(state => state.common.modalContent);
+  const showModalTwo = useSelector(state => state.common.showModalTwo);
+  const modalTwoContent = useSelector(state => state.common.modalTwoContent);
+
   const promptDialogContent = useSelector(
     state => state.common.promptDialogContent,
   );
@@ -63,6 +70,13 @@ const ModalWrapper = ({ component }) => {
     dispatch(toggleModal());
     setTimeout(() => {
       dispatch(setModalContent(''));
+    }, 150);
+  };
+
+  const handleModalTwoClose = () => {
+    dispatch(toggleModalTwo());
+    setTimeout(() => {
+      dispatch(setModalTwoContent(''));
     }, 150);
   };
 
@@ -87,6 +101,16 @@ const ModalWrapper = ({ component }) => {
       >
         {getModalContent(modalContent)?.content}
       </Modal>
+
+      <ModalTwo
+        show={showModalTwo}
+        className={getModalTwoContent(modalTwoContent)?.className || ''}
+        title={getModalTwoContent(modalTwoContent)?.title}
+        onClose={handleModalTwoClose}
+      >
+        {getModalTwoContent(modalTwoContent)?.content}
+      </ModalTwo>
+
       {component()}
     </>
   );

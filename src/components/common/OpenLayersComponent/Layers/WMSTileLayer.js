@@ -70,7 +70,6 @@ const WMSTileLayer = ({ map, url, layer, zIndex = 1, visibleOnMap = true }) => {
   //      fetch(geoserverUrl)
   //        .then(response => response.json())
   //        .then(json => {
-  //          console.log(json, 'jsonx');
   //          const jsonData = json.features[0].properties;
   //          console.log(jsonData, 'jsonDatax');
   //        });

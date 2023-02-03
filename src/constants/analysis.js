@@ -39,6 +39,12 @@ export const checkErrorData = [
   },
 ];
 
+export const pointCheckExceptions = [
+  'overlapping',
+  'self_instersect',
+  'isolated',
+];
+
 export const startingPointColor = '#00A699';
 export const destinationPointColor = '#FF5A5F';
 export const obstaclePointColor = '#808080';
@@ -69,4 +75,20 @@ export const routeColors = {
   4: '#5c6bc0',
   5: '#ffb300',
   6: '#7cb342',
+};
+
+export const bufferColors = {
+  1: '#FF5A5F',
+  2: '#DFF2F1',
+};
+
+export const bufferPointStyles = {
+  ...drawPointStyles,
+  fillColor: destinationPointColor,
+};
+
+export const bufferPolygonStyles = {
+  ...drawPointStyles,
+  fillColor: '#FF5A5F',
+  fillOpacity: 33,
 };

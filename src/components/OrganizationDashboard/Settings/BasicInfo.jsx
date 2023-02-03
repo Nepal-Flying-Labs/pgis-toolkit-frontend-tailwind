@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable arrow-body-style */
 /* eslint-disable react/prop-types */
@@ -31,6 +32,18 @@ const {
   patchContactPersonRequest,
 } = Creators;
 // const { togglePromptDialog } = CommonCreators;
+
+const validateContactPerson = contact => {
+  if (
+    !contact.name &&
+    !contact.position &&
+    !contact.email &&
+    !contact.contact
+  ) {
+    return false;
+  }
+  return true;
+};
 
 const thematicFocusArea = [
   {
@@ -74,7 +87,7 @@ function diffObject(a, b) {
 const BasicInfo = () => {
   const { organizationId } = useParams();
   const [inputRef, onFileUpload] = useCustomUpload();
-  const [errorFields, setErrorFields] = useState([]);
+  const [errorFields, setErrorFields] = useState({});
 
   const dispatch = useDispatch();
   const project = useSelector(
@@ -102,24 +115,20 @@ const BasicInfo = () => {
     state => state.organizationDashboard.individualOrganization.contactPerson,
   );
 
-  // console.log('form values', values);
-  // console.log('contact', contactPerson);
-
   useEffect(() => {
     if (!isEmpty(settingInfo) && !isEmpty(contactPerson))
       setValues({ ...settingInfo, contact_person: contactPerson });
   }, [setValues, settingInfo, contactPerson]);
 
   const validation = formValues => {
-    // console.log('Form values ', formValues);
     const errors = {};
     if (!formValues.name) errors.name = 'This field is required';
 
     if (formValues.thematic_areas.length < 1)
       errors.thematic_areas = 'This field is required';
 
-    if (formValues.description && formValues.description?.length > 252)
-      errors.description = 'Ensure this field has no more than 252 characters';
+    // if (formValues.description && formValues.description?.length > 252)
+    //   errors.description = 'Ensure this field has no more than 252 characters';
 
     if (formValues.link) {
       // eslint-disable-next-line prefer-regex-literals
@@ -142,27 +151,35 @@ const BasicInfo = () => {
       const result = pattern.test(formValues.contact);
       if (!result) errors.contact = 'Enter a valid Contact number';
     }
-
-    if (!formValues.contact_person.name)
-      errors.contactName = 'This field is required';
-
-    if (!formValues.contact_person.position)
-      errors.contactPosition = 'This field is required';
-
-    if (formValues.contact_person.email) {
+    if (formValues.contact_person.name && formValues.contact_person.email) {
       const pattern =
         /[a-zA-Z0-9]+[.]?([a-zA-Z0-9]+)?[@][a-z]{3,9}[.][a-z]{2,5}/g;
       const result = pattern.test(formValues.contact_person.email);
       if (!result) errors.contactEmail = 'Enter a valid Email';
     }
 
-    if (formValues.contact_person.contact) {
+    if (formValues.contact_person.name && formValues.contact_person.contact) {
       const pattern = /^[0-9\b]+$/;
       const result = pattern.test(formValues.contact_person.contact);
-      if (!result) errors.contactContact = 'Enter a valid Contact number';
+      if (!result) {
+        errors.contactContact = 'Enter a valid contact number';
+      } else {
+        formValues.contact_person.contact.length < 7 ||
+        formValues.contact_person.contact.length > 15
+          ? (errors.contactContact = 'Enter a valid contact number')
+          : '';
+      }
     }
 
-    // console.log('error ', errors);
+    if (
+      (formValues.contact_person.email ||
+        formValues.contact_person.contact ||
+        formValues.contact_person.position) &&
+      !formValues.contact_person.name
+    ) {
+      errors.contactName = 'Name field is required';
+    }
+
     return errors;
   };
 
@@ -170,29 +187,38 @@ const BasicInfo = () => {
     if (loading) return;
     const error = validation(values);
     if (Object.keys(error).length < 1) {
+      setErrorFields({});
       const diffObj = diffObject(settingInfo, values);
       const orgInfo = removeObjectKeys(diffObj, ['contact_person']);
-      // console.log('org details ', orgInfo);
+
       dispatch(updateOrganizationRequest(organizationId, orgInfo));
 
       const contactInfo = diffObject(contactPerson, values.contact_person);
-      // console.log('contact info', contactInfo);
-      if (!isEmpty(contactInfo)) {
-        const cId = values.contact_person.contactId;
-        if (cId === null) {
-          dispatch(
-            postContactPersonRequest(
-              { ...contactInfo, organization: organizationId },
-              { organization: organizationId, type: 'organization' },
-            ),
-          );
+
+      if (Object.keys(contactInfo).length > 0) {
+        if (values.contact_person.contactId) {
+          validateContactPerson(values.contact_person)
+            ? dispatch(
+                patchContactPersonRequest(values.contact_person.contactId, {
+                  ...contactInfo,
+                }),
+              )
+            : dispatch(
+                patchContactPersonRequest(values.contact_person.contactId, {
+                  is_deleted: true,
+                }),
+              );
         } else {
           dispatch(
-            patchContactPersonRequest(cId, {
-              ...contactInfo,
-              organization: organizationId,
-              type: 'organization',
-            }),
+            postContactPersonRequest(
+              {
+                ...values.contact_person,
+                organization: organizationId,
+              },
+              {
+                organization: organizationId,
+              },
+            ),
           );
         }
       }
@@ -200,7 +226,7 @@ const BasicInfo = () => {
       setErrorFields(error);
       dispatch(
         toastActions.error({
-          message: 'Please fill out all the required fields.',
+          message: 'An error has occurred while filling the form.',
         }),
       );
     }
@@ -215,14 +241,11 @@ const BasicInfo = () => {
 
   const handleContactPersonValues = e => {
     const { name, value } = e.target;
-    // console.log(name, value);
     setValues({
       ...values,
       contact_person: { ...values.contact_person, [name]: value },
     });
   };
-
-  // console.log('new values ', values);
 
   return (
     <>
@@ -309,7 +332,7 @@ const BasicInfo = () => {
             name="address"
             value={values?.address}
             onChange={handleChange}
-            placeholder="address"
+            placeholder="Address"
           />
         </div>
         <div className="naxatw-w-1/2 naxatw-space-y-2">
@@ -319,7 +342,7 @@ const BasicInfo = () => {
             name="email"
             value={values?.email}
             onChange={handleChange}
-            placeholder="example@example.com"
+            placeholder="example@gmail.com"
           />
           {errorFields?.email && (
             <FormErrorMessage message={errorFields.email} />
@@ -330,11 +353,11 @@ const BasicInfo = () => {
         <div className="naxatw-w-1/2 naxatw-space-y-2">
           <Input
             type="text"
-            label="Contact"
+            label="Contact number"
             name="contact"
             value={values?.contact}
             onChange={handleChange}
-            placeholder="phone"
+            placeholder="Contact number"
           />
           {errorFields?.contact && (
             <FormErrorMessage message={errorFields.contact} />
@@ -347,7 +370,7 @@ const BasicInfo = () => {
             name="link"
             value={values?.link}
             onChange={handleChange}
-            placeholder="example.com"
+            placeholder="example@gmail.com"
           />
           {errorFields?.link && <FormErrorMessage message={errorFields.link} />}
         </div>
@@ -397,7 +420,7 @@ const BasicInfo = () => {
         <div className="naxatw-space-y-2">
           <Input
             type="text"
-            label="Name of contact Person"
+            label="Name of contact person"
             name="name"
             value={values?.contact_person?.name || ''}
             onChange={handleContactPersonValues}
@@ -417,9 +440,9 @@ const BasicInfo = () => {
             onChange={handleContactPersonValues}
             placeholder="Position"
           />
-          {errorFields?.contactPosition && (
+          {/* {errorFields?.contactPosition && (
             <FormErrorMessage message={errorFields.contactPosition} />
-          )}
+          )} */}
         </div>
 
         <div className="naxatw-space-y-2">
@@ -429,7 +452,7 @@ const BasicInfo = () => {
             name="email"
             value={values?.contact_person?.email || ''}
             onChange={handleContactPersonValues}
-            placeholder="example.com"
+            placeholder="example@gmail.com"
           />
           {errorFields?.contactEmail && (
             <FormErrorMessage message={errorFields.contactEmail} />
@@ -438,12 +461,12 @@ const BasicInfo = () => {
 
         <div className="naxatw-space-y-2">
           <Input
-            label="Phone"
+            label="Contact number"
             type="text"
             name="contact"
             value={values?.contact_person?.contact || ''}
             onChange={handleContactPersonValues}
-            placeholder="Phone Number"
+            placeholder="Contact number"
           />
           {errorFields?.contactContact && (
             <FormErrorMessage message={errorFields.contactContact} />

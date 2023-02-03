@@ -6,6 +6,7 @@ import {
   takeEvery,
   all,
   delay,
+  select,
 } from 'redux-saga/effects';
 
 import projectDashboardActions, { Types } from '@Actions/projectDashboard';
@@ -138,7 +139,6 @@ export function* downloadProjectLayerRequest({ params }) {
   const { output_format } = params;
   try {
     const response = yield call(downloadProjectLayer, params);
-    console.log(response, 'response');
     const blob = new Blob([response.data], {
       type: 'application/octet-stream',
     });
@@ -148,7 +148,6 @@ export function* downloadProjectLayerRequest({ params }) {
     link.click();
     yield put(toastActions.success({ message: 'Layer Download Completed.' }));
   } catch (error) {
-    console.log(error, 'saga error');
     yield put(projectDashboardActions.downloadProjectLayerFailure());
     throw error;
   }
@@ -175,7 +174,13 @@ export function* checkUploadStatusRequest({ id }) {
       const response = yield call(getLayerById, id);
       responseData = response.data;
     }
-    yield put(projectDashboardActions.checkUploadStatusSuccess(responseData));
+    const { themes } = yield select(state => state.projectMap);
+    yield put(
+      projectDashboardActions.checkUploadStatusSuccess({
+        ...responseData,
+        theme: themes.find(theme => theme.id === responseData.theme)?.name,
+      }),
+    );
     if (responseData.upload_status === 'successful') {
       yield put(
         toastActions.success({

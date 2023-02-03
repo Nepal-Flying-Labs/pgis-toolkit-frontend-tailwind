@@ -5,7 +5,12 @@ const headerData = {
   'optimal-route': {
     title: 'Optimal route analysis',
     description:
-      'This method is used to find the most efficient path between multiple locations based on factors such as distance, time, and road conditions..',
+      'This method is used to find the most efficient path between multiple locations based on factors such as distance, time, and road conditions.',
+  },
+  'buffer-analysis': {
+    title: 'Buffer Analysis',
+    description:
+      'Creates a zone around a selected feature, distance or time-based, known as a buffer, to find features that are within a certain distance of another feature.',
   },
 };
 

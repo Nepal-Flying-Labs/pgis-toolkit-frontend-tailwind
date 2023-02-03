@@ -51,7 +51,7 @@ const AccessToFunctionalities = () => {
   const dispatch = useDispatch();
   return (
     <div>
-      {!loading ? (
+      {!loading && Object.keys(userProfile).length > 0 ? (
         <div>
           <div className="naxatw-flex naxatw-items-center naxatw-gap-x-3">
             <span className="material-icons naxatw-h-12 naxatw-w-12 naxatw-text-5xl naxatw-text-secondary-400 naxatw-leading-10">

@@ -54,6 +54,8 @@ export default function SearchOSM({
   const handleSelect = item => {
     onSelect(item);
     setShowDropdown(false);
+    // for search text reset in buffer analysis
+    setSearchText('');
   };
 
   return (

@@ -92,10 +92,10 @@ function CustomSelect({
             <ul>
               {options ? (
                 options
-                  .filter(opt =>
-                    opt[dataKey]
-                      .toLowerCase()
-                      .includes(searchText.toLowerCase()),
+                  .filter(
+                    opt =>
+                      opt[dataKey].toLowerCase().slice(0, searchText.length) ===
+                      searchText,
                   )
                   .map(item => {
                     return (

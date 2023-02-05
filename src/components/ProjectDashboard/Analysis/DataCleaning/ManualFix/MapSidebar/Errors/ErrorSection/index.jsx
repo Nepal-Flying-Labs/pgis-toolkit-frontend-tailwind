@@ -18,11 +18,15 @@ const {
   deleteSelectedFeaturesRequest,
   getMultipartFeatureRequest,
 } = DataCleaningCreators;
+
 const { togglePromptDialog } = CommonCreators;
 
 export default function ErrorSection() {
   const errorFeaturesMapState = useSelector(errorFeaturesMapStateSelector);
   const totalErrors = useSelector(totalErrorsSelector);
+  const layerAttributesFields = useSelector(
+    state => state.dataCleaning.manualFix.layerAttributesFields,
+  );
   const isDeleting = useSelector(state =>
     checkIfLoading(state, [Types.DELETE_SELECTED_FEATURES_REQUEST]),
   );
@@ -32,11 +36,27 @@ export default function ErrorSection() {
     if (type === 'null') {
       dispatch(
         setManualFixState({
-          drawFeatureId: feature,
+          drawFeatureId: feature.id,
           sidebarContent: 'add-feature',
         }),
       );
     }
+    if (type === 'multipart') {
+      dispatch(
+        setManualFixState({
+          sidebarContent: 'edit-feature',
+          selectedFeatureGeojson: feature.geojson,
+          individualAttributeData: layerAttributesFields.map(item => ({
+            ...item,
+            value: feature.attributes[item.name],
+          })),
+        }),
+      );
+    }
+  };
+
+  const handleExplodeClick = feature => {
+    dispatch(getMultipartFeatureRequest(feature.id));
   };
 
   const dropdownOptions = [
@@ -110,32 +130,25 @@ export default function ErrorSection() {
                   <div className="naxatw-flex">
                     <span
                       className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
-                      onClick={() => handleEditClick(type, feature.id)}
+                      onClick={() => handleEditClick(type, feature)}
                     >
                       <IconButton
                         name="edit"
                         className="material-icons-outlined"
-                        onClick={() => {
-                          dispatch(
-                            setManualFixState({
-                              drawFeatureId: feature.id,
-                              sidebarContent: 'add-feature',
-                              selectedError: { ...feature, type },
-                            }),
-                          );
-                        }}
                       />
                     </span>
                     {type === 'multipart' && (
                       <IconButton
                         title={`${feature.fixed ? 'Save' : 'Explode'} `}
-                        className="material-icons-outlined"
+                        className={`material-icons-outlined ${
+                          feature.fixed ? 'naxatw-text-secondary-500' : ''
+                        }`}
                         name={`${feature.fixed ? 'save' : 'ssid_chart'} `}
                         onClick={() => {
                           if (feature.fixed) {
                             return;
                           }
-                          dispatch(getMultipartFeatureRequest(feature.id));
+                          handleExplodeClick(feature);
                         }}
                       />
                     )}

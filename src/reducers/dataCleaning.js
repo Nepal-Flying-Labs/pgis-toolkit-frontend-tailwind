@@ -14,11 +14,14 @@ import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/style
 //     drawFeatureId: null,
 //     drawnFeatureWkt: null,
 //     layerAttributes: null,
+//     layerAttributesFields: null,
 //     individualAttributeData: [],
 //     refreshLayerId: null,
 //     selectedError: null,
 //     selectedFeaturesForSnap: [],
 //     geojsonFeatures: null,
+//     selectedFeatureGeojson: null,
+// selectedFeatureAttributes: null,
 //   },
 //   selectedLayer: null, // selected layer for manual fix
 //   errorFeaturesData: null,
@@ -35,16 +38,18 @@ const initialState = {
     sidebarContent: 'error-list',
     drawFeatureId: null,
     drawnFeatureWkt: null,
-    layerAttributes: null,
+    layerAttributesFields: null,
     individualAttributeData: [],
     refreshLayerId: null,
     selectedError: null,
     selectedFeaturesForSnap: [],
     geojsonFeatures: null,
+    selectedFeatureGeojson: null,
+    selectedFeatureAttributes: null,
   },
   selectedLayer: {
-    id: 630,
-    name: 'Sample Error Network',
+    id: 647,
+    name: 'Test Error Network',
     layer_type: 'Vector',
     upload_status: 'successful',
     is_clean: false,
@@ -53,7 +58,7 @@ const initialState = {
     style: {
       lineColor: '#2C675A',
       lineOpacity: 100,
-      fillColor: '#884fe9',
+      fillColor: '#e011b7',
       fillOpacity: 0,
       lineThickness: 2,
       circleRadius: 5,
@@ -85,134 +90,128 @@ const initialState = {
       geometryType: 'MultiLineString',
     },
     bbox: [
-      85.41448129925729, 27.68873499036167, 85.41893721463556,
+      85.41455437052994, 27.68873499036167, 85.41893721463556,
       27.695401775725283,
     ],
     geom_type: 'MultiLineString',
     sub_layer: [],
     theme: 479,
-    checked: false,
+    checked: true,
   },
   errorFeaturesData: {
+    null: [
+      {
+        id: 18321,
+        checked: false,
+      },
+      {
+        id: 18326,
+        checked: false,
+      },
+      {
+        id: 18336,
+        checked: false,
+      },
+    ],
     multipart: [
       {
-        id: 17272,
+        id: 18322,
         checked: false,
       },
       {
-        id: 17273,
+        id: 18323,
         checked: false,
       },
       {
-        id: 17274,
+        id: 18324,
         checked: false,
       },
       {
-        id: 17275,
+        id: 18325,
         checked: false,
       },
       {
-        id: 17276,
+        id: 18334,
         checked: false,
       },
       {
-        id: 17277,
+        id: 18335,
         checked: false,
       },
       {
-        id: 17278,
+        id: 18337,
         checked: false,
       },
       {
-        id: 17279,
+        id: 18327,
         checked: false,
       },
       {
-        id: 17280,
+        id: 18328,
         checked: false,
       },
       {
-        id: 17281,
+        id: 18329,
         checked: false,
       },
       {
-        id: 17282,
+        id: 18330,
         checked: false,
       },
       {
-        id: 17283,
+        id: 18331,
         checked: false,
       },
       {
-        id: 17284,
+        id: 18332,
         checked: false,
       },
       {
-        id: 17268,
-        checked: false,
-      },
-      {
-        id: 17269,
-        checked: false,
-      },
-      {
-        id: 17270,
-        checked: false,
-      },
-      {
-        id: 17271,
+        id: 18333,
         checked: false,
       },
     ],
     self_instersect: [
       {
-        id: 17270,
+        id: 18323,
         checked: false,
       },
       {
-        id: 17271,
+        id: 18324,
         checked: false,
       },
     ],
     snapping: [
       {
-        id: 17270,
+        id: 18323,
         checked: false,
       },
       {
-        id: 17273,
+        id: 18327,
         checked: false,
       },
       {
-        id: 17274,
+        id: 18333,
         checked: false,
       },
       {
-        id: 17280,
+        id: 18334,
         checked: false,
       },
       {
-        id: 17281,
+        id: 18335,
         checked: false,
       },
       {
-        id: 17282,
-        checked: false,
-      },
-      {
-        id: 17283,
-        checked: false,
-      },
-      {
-        id: 17284,
+        id: 18337,
         checked: false,
       },
     ],
   },
   optimalRoute: {
     selectedRoadLayer: {
-      id: 630,
-      name: 'Sample Error Network',
+      id: 647,
+      name: 'Test Error Network',
       layer_type: 'Vector',
       upload_status: 'successful',
       is_clean: false,
@@ -221,7 +220,7 @@ const initialState = {
       style: {
         lineColor: '#2C675A',
         lineOpacity: 100,
-        fillColor: '#884fe9',
+        fillColor: '#e011b7',
         fillOpacity: 0,
         lineThickness: 2,
         circleRadius: 5,
@@ -253,18 +252,18 @@ const initialState = {
         geometryType: 'MultiLineString',
       },
       bbox: [
-        85.41448129925729, 27.68873499036167, 85.41893721463556,
+        85.41455437052994, 27.68873499036167, 85.41893721463556,
         27.695401775725283,
       ],
       geom_type: 'MultiLineString',
       sub_layer: [],
       theme: 479,
-      checked: false,
+      checked: true,
     },
     selectedObstacleLayers: [
       {
-        id: 546,
-        name: 'Sample Obstacle 3',
+        id: 545,
+        name: 'Sample Obstacle 2',
         layer_type: 'Vector',
         upload_status: 'successful',
         is_clean: false,
@@ -273,7 +272,7 @@ const initialState = {
         style: {
           lineColor: '#2C675A',
           lineOpacity: 100,
-          fillColor: '#7126e4',
+          fillColor: '#9f8999',
           fillOpacity: 100,
           lineThickness: 2,
           circleRadius: 5,
@@ -305,7 +304,8 @@ const initialState = {
           geometryType: 'Point',
         },
         bbox: [
-          85.33776889999996, 27.65237, 85.35316820000006, 27.662021100000022,
+          85.33781939802816, 27.652739899999965, 85.35413949999989,
+          27.664180636852794,
         ],
         geom_type: 'Point',
         sub_layer: [],
@@ -315,14 +315,14 @@ const initialState = {
     ],
   },
   errorStates: {
-    630: [
+    647: [
       {
         id: 'null',
         label: 'Null Geometry',
         checkAPI: 'check_null_geometry',
         fixAPI: 'fix_null_geometry',
-        status: 'success',
-        errorData: 0,
+        status: 'error',
+        errorData: 3,
         totalData: 17,
         checked: false,
       },
@@ -332,7 +332,7 @@ const initialState = {
         checkAPI: 'check_multipart_geometry',
         fixAPI: 'fix_multipart_geometry',
         status: 'error',
-        errorData: 17,
+        errorData: 14,
         totalData: 17,
         checked: false,
       },
@@ -372,7 +372,7 @@ const initialState = {
         checkAPI: 'check_isolated_geometry',
         fixAPI: 'fix_isolated_geometry',
         status: 'error',
-        errorData: 8,
+        errorData: 6,
         totalData: 17,
         checked: false,
       },
@@ -525,11 +525,13 @@ const getLayerAttributeFieldsSuccess = (state, action) => {
     ...item,
     value: layerAttributes?.[`${item.name}`] || '',
   }));
+  const layerAttributesFields = action.payload;
   return {
     ...state,
     manualFix: {
       ...state.manualFix,
       individualAttributeData,
+      layerAttributesFields,
     },
   };
 };
@@ -635,10 +637,17 @@ const getMultipartFeatureSuccess = (state, action) =>
     const explodedFeature = explode(geojson);
     explodedFeature.features.forEach((feature, index) => {
       draft.errorFeaturesData.multipart = [
-        { id: `${id}-${index}`, attributes, geojson: feature, fixed: true },
+        {
+          id: `${id}-${explodedFeature.features.length - index}`,
+          attributes,
+          geojson: feature,
+          fixed: true,
+        },
         ...draft.errorFeaturesData.multipart,
       ];
     });
+    draft.errorFeaturesData.multipart =
+      draft.errorFeaturesData.multipart.filter(item => item.id !== id);
   });
 
 const dataCleaningReducer = createReducer(initialState, {

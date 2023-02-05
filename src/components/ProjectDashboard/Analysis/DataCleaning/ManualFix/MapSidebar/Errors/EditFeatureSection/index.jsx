@@ -27,8 +27,12 @@ export default function EditFeatureSection() {
   const drawnFeatureWkt = useSelector(
     state => state.dataCleaning.manualFix.drawnFeatureWkt,
   );
-  const featureGeojson = useSelector(state => state.projectMap.featureGeojson);
-  const editFeatureId = useSelector(state => state.projectMap.editFeatureId);
+  const selectedFeatureGeojson = useSelector(
+    state => state.dataCleaning.manualFix.selectedFeatureGeojson,
+  );
+  const selectedFeatureAttributes = useSelector(
+    state => state.dataCleaning.manualFix.selectedFeatureAttributes,
+  );
   const isFeatureModified = useSelector(
     state => state.projectMap.isFeatureModified,
   );
@@ -110,15 +114,15 @@ export default function EditFeatureSection() {
     },
   });
 
-  useEffect(() => {
-    if (!selectedLayer) return;
-    dispatch(
-      getLayerAttributeFieldsRequest({
-        layer: selectedLayer.id,
-        check_mandatory: 'True',
-      }),
-    );
-  }, [dispatch, selectedLayer]);
+  // useEffect(() => {
+  //   if (!selectedLayer) return;
+  //   dispatch(
+  //     getLayerAttributeFieldsRequest({
+  //       layer: selectedLayer.id,
+  //       check_mandatory: 'True',
+  //     }),
+  //   );
+  // }, [dispatch, selectedLayer]);
 
   useEffect(() => {
     if (!individualAttributeData) return;
@@ -133,7 +137,7 @@ export default function EditFeatureSection() {
       .filter(item => item.mandatory)
       .map(item => item.name);
     setValues(formState);
-    // setRequiredFields(mandatoryFields);
+    setRequiredFields(mandatoryFields);
   }, [individualAttributeData, setValues, setRequiredFields]);
 
   return (

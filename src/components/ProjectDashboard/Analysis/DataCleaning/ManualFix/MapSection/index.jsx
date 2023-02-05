@@ -64,6 +64,9 @@ export default function MapSection() {
   );
   const mapState = useSelector(mapStateSelector);
   const zoomToLayerId = useSelector(state => state.analysis.zoomToLayerId);
+  const selectedFeatureGeojson = useSelector(
+    state => state.projectMap.selectedFeatureGeojson,
+  );
   const dispatch = useDispatch();
 
   // zoom to selected layer on initial map load
@@ -232,7 +235,7 @@ export default function MapSection() {
 
         <DrawTool
           enable={!!drawFeatureId && geojsonFeatures}
-          // geojson={featureGeojson}
+          geojson={selectedFeatureGeojson}
           geometryType={selectedLayer.geom_type}
           zIndex={100}
           style={selectedLayer?.style || { ...defaultStyles }}

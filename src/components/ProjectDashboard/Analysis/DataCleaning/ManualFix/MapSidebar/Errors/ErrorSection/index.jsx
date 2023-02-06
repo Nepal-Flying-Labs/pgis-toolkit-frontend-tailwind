@@ -38,6 +38,7 @@ export default function ErrorSection() {
         setManualFixState({
           drawFeatureId: feature.id,
           sidebarContent: 'add-feature',
+          selectedErrorType: type,
         }),
       );
     }
@@ -46,6 +47,8 @@ export default function ErrorSection() {
         setManualFixState({
           sidebarContent: 'edit-feature',
           selectedFeatureGeojson: feature.geojson,
+          selectedErrorType: type,
+          selectedError: feature,
           individualAttributeData: layerAttributesFields.map(item => ({
             ...item,
             value: feature.attributes[item.name],

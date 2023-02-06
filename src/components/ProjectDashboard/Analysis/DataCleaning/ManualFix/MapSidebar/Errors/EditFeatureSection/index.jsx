@@ -1,20 +1,15 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { stringify } from 'wkt';
 import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
 import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
-import { isEmpty } from '@Utils/commonUtils';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 
-const {
-  setManualFixState,
-  getLayerAttributeFieldsRequest,
-  updateFeatureCollectionRequest,
-} = DataCleaningCreators;
+const { setManualFixState, updateFeatureCollectionRequest, saveAttributeEdit } =
+  DataCleaningCreators;
 
 export default function EditFeatureSection() {
   const sidebarContent = useSelector(
@@ -42,6 +37,10 @@ export default function EditFeatureSection() {
   const individualAttributeData = useSelector(
     state => state.dataCleaning.manualFix.individualAttributeData,
   );
+  const selectedErrorType = useSelector(
+    state => state.dataCleaning.manualFix.selectedErrorType,
+  );
+
   const isPosting = useSelector(state =>
     checkIfLoading(state, [
       Types.POST_NEW_LAYER_FEATURE_REQUEST,
@@ -95,21 +94,8 @@ export default function EditFeatureSection() {
         dispatch(updateFeatureCollectionRequest(selectedLayer.id, payloadData));
         return;
       }
-      if (!modifiedFeatureGeojson) {
-        dispatch(toastActions.error({ message: 'Please draw a geometry' }));
-        return;
-      }
-      if (isFeatureModified) {
-        const modifiedFeatureWkt = stringify(modifiedFeatureGeojson);
-        payloadData.geometry = modifiedFeatureWkt;
-      }
-      if (isFieldsChanged) {
-        payloadData.attributes = data;
-      }
-      if (!isEmpty(payloadData)) {
-        // dispatch(updateFeatureCollectionRequest(editFeatureId, payloadData));
-      } else {
-        handleCancel();
+      if (selectedErrorType === 'multipart') {
+        dispatch(saveAttributeEdit(data));
       }
     },
   });

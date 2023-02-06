@@ -18,10 +18,11 @@ import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/style
 //     individualAttributeData: [],
 //     refreshLayerId: null,
 //     selectedError: null,
+//     selectedErrorType: null,
 //     selectedFeaturesForSnap: [],
 //     geojsonFeatures: null,
 //     selectedFeatureGeojson: null,
-// selectedFeatureAttributes: null,
+//     selectedFeatureAttributes: null,
 //   },
 //   selectedLayer: null, // selected layer for manual fix
 //   errorFeaturesData: null,
@@ -42,6 +43,7 @@ const initialState = {
     individualAttributeData: [],
     refreshLayerId: null,
     selectedError: null,
+    selectedErrorType: null,
     selectedFeaturesForSnap: [],
     geojsonFeatures: null,
     selectedFeatureGeojson: null,
@@ -650,6 +652,32 @@ const getMultipartFeatureSuccess = (state, action) =>
       draft.errorFeaturesData.multipart.filter(item => item.id !== id);
   });
 
+const saveAttributeEdit = (state, action) =>
+  produce(state, draft => {
+    const data = action.payload;
+    if (state.manualFix.selectedErrorType === 'multipart') {
+      const selectedFeatureAttribute = draft.errorFeaturesData.multipart.find(
+        item => item.id === draft.manualFix.selectedError.id,
+      );
+      selectedFeatureAttribute.attributes = data;
+    }
+    const {
+      sidebarContent,
+      selectedFeatureGeojson,
+      selectedErrorType,
+      individualAttributeData,
+      selectedError,
+    } = initialState.manualFix;
+    draft.manualFix = {
+      ...draft.manualFix,
+      sidebarContent,
+      selectedFeatureGeojson,
+      selectedErrorType,
+      individualAttributeData,
+      selectedError,
+    };
+  });
+
 const dataCleaningReducer = createReducer(initialState, {
   [Types.SET_DATA_CLEANING_STATE]: setDataCleaningState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -668,6 +696,7 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.GET_FEATURE_GEOJSON_SUCCESS]: getFeatureGeojsonSuccess,
   [Types.RESET_DATA_CLEANING_STATE]: resetDataCleaningState,
   [Types.GET_MULTIPART_FEATURE_SUCCESS]: getMultipartFeatureSuccess,
+  [Types.SAVE_ATTRIBUTE_EDIT]: saveAttributeEdit,
 });
 
 export default dataCleaningReducer;

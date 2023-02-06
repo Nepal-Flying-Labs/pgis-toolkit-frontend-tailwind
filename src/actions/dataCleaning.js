@@ -54,6 +54,8 @@ export const { Types, Creators } = createActions(
     getMultipartFeatureRequest: ['payload'],
     getMultipartFeatureSuccess: ['payload'],
     getMultipartFeatureFailure: null,
+
+    saveAttributeEdit: ['payload'],
   },
   { prefix: 'dataCleaning/' },
 );

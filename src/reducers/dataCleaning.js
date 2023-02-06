@@ -637,19 +637,17 @@ const getMultipartFeatureSuccess = (state, action) =>
     const { id, attributes, geometry } = action.payload;
     const geojson = parse(geometry);
     const explodedFeature = explode(geojson);
-    explodedFeature.features.forEach((feature, index) => {
-      draft.errorFeaturesData.multipart = [
-        {
-          id: `${id}-${explodedFeature.features.length - index}`,
-          attributes,
-          geojson: feature,
-          fixed: true,
-        },
-        ...draft.errorFeaturesData.multipart,
-      ];
-    });
-    draft.errorFeaturesData.multipart =
-      draft.errorFeaturesData.multipart.filter(item => item.id !== id);
+    const explodedFeatureError = draft.errorFeaturesData.multipart.find(
+      item => item.id === id,
+    );
+    explodedFeatureError.explodedFeatures = explodedFeature.features.map(
+      (feature, index) => ({
+        id: `${id}-${index + 1}`,
+        attributes,
+        geojson: feature,
+      }),
+    );
+    explodedFeatureError.fixed = true;
   });
 
 const saveAttributeEdit = (state, action) =>
@@ -657,9 +655,13 @@ const saveAttributeEdit = (state, action) =>
     const data = action.payload;
     if (state.manualFix.selectedErrorType === 'multipart') {
       const selectedFeatureAttribute = draft.errorFeaturesData.multipart.find(
-        item => item.id === draft.manualFix.selectedError.id,
+        item => item.id === +draft.manualFix.selectedError.id.split('-')[0],
       );
-      selectedFeatureAttribute.attributes = data;
+      const selectedExplodedFeature =
+        selectedFeatureAttribute.explodedFeatures.find(
+          item => item.id === draft.manualFix.selectedError.id,
+        );
+      selectedExplodedFeature.attributes = data;
     }
     const {
       sidebarContent,

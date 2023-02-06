@@ -49,10 +49,6 @@ export default function ErrorSection() {
           selectedFeatureGeojson: feature.geojson,
           selectedErrorType: type,
           selectedError: feature,
-          individualAttributeData: layerAttributesFields.map(item => ({
-            ...item,
-            value: feature.attributes[item.name],
-          })),
         }),
       );
     }
@@ -101,77 +97,145 @@ export default function ErrorSection() {
           body={
             <div>
               {features.map(feature => (
-                <div
-                  key={feature.id}
-                  className="naxatw-flex naxatw-justify-between naxatw-items-center"
-                >
+                <div key={feature.id}>
                   <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-                    <input
-                      id={feature.id}
-                      type="checkbox"
-                      className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                      checked={feature.checked}
-                      onChange={e =>
-                        dispatch(
-                          handleErrorCheckbox({
-                            id: feature.id,
-                            name: type,
-                            checked: e.target.checked,
-                          }),
-                        )
-                      }
-                    />
-
-                    <label
-                      className="naxatw-text-body-lg naxatw-text-grey-800"
-                      htmlFor={feature.id}
-                    >
-                      {feature.id}
-                    </label>
-                  </div>
-
-                  <div className="naxatw-flex">
-                    <span
-                      className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
-                      onClick={() => handleEditClick(type, feature)}
-                    >
-                      <IconButton
-                        name="edit"
-                        className="material-icons-outlined"
-                      />
-                    </span>
-                    {type === 'multipart' && (
-                      <IconButton
-                        title={`${feature.fixed ? 'Save' : 'Explode'} `}
-                        className={`material-icons-outlined ${
-                          feature.fixed ? 'naxatw-text-secondary-500' : ''
-                        }`}
-                        name={`${feature.fixed ? 'save' : 'ssid_chart'} `}
-                        onClick={() => {
-                          if (feature.fixed) {
-                            return;
-                          }
-                          handleExplodeClick(feature);
-                        }}
-                      />
-                    )}
-                    {type === 'null' && (
-                      <IconButton
-                        className="material-icons-outlined naxatw-text-delete_btn"
-                        name="delete"
-                        onClick={() => {
+                    <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+                      <input
+                        id={feature.id}
+                        type="checkbox"
+                        className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
+                        checked={feature.checked}
+                        onChange={e =>
                           dispatch(
-                            setManualFixState({
-                              selectedError: { ...feature, type },
+                            handleErrorCheckbox({
+                              id: feature.id,
+                              name: type,
+                              checked: e.target.checked,
                             }),
-                          );
-                          dispatch(togglePromptDialog('delete-error'));
-                        }}
+                          )
+                        }
                       />
-                    )}
 
-                    <DropdownOptions options={dropdownOptions} data={feature} />
+                      <label
+                        className="naxatw-text-body-lg naxatw-text-grey-800"
+                        htmlFor={feature.id}
+                      >
+                        {feature.id}
+                      </label>
+                    </div>
+
+                    <div className="naxatw-flex">
+                      {type !== 'multipart' && (
+                        <span
+                          className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
+                          onClick={() => handleEditClick(type, feature)}
+                        >
+                          <IconButton
+                            name="edit"
+                            className="material-icons-outlined"
+                          />
+                        </span>
+                      )}
+                      {type === 'multipart' && (
+                        <IconButton
+                          title={`${feature.fixed ? 'Save' : 'Explode'} `}
+                          className={`material-icons-outlined ${
+                            feature.fixed ? 'naxatw-text-secondary-500' : ''
+                          }`}
+                          name={`${feature.fixed ? 'save' : 'ssid_chart'} `}
+                          onClick={() => {
+                            if (feature.fixed) {
+                              return;
+                            }
+                            handleExplodeClick(feature);
+                          }}
+                        />
+                      )}
+                      {type === 'null' && (
+                        <IconButton
+                          className="material-icons-outlined naxatw-text-delete_btn"
+                          name="delete"
+                          onClick={() => {
+                            dispatch(
+                              setManualFixState({
+                                selectedError: { ...feature, type },
+                              }),
+                            );
+                            dispatch(togglePromptDialog('delete-error'));
+                          }}
+                        />
+                      )}
+
+                      <DropdownOptions
+                        options={dropdownOptions}
+                        data={feature}
+                      />
+                    </div>
                   </div>
+
+                  {type === 'multipart' &&
+                    feature?.explodedFeatures?.map(explodedFeat => (
+                      <div
+                        key={explodedFeat.id}
+                        className="naxatw-pl-3 naxatw-flex naxatw-justify-between naxatw-items-center"
+                      >
+                        <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+                          <input
+                            id={explodedFeat.id}
+                            type="checkbox"
+                            className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
+                            checked={explodedFeat.checked}
+                            onChange={e =>
+                              dispatch(
+                                handleErrorCheckbox({
+                                  id: explodedFeat.id,
+                                  name: type,
+                                  checked: e.target.checked,
+                                }),
+                              )
+                            }
+                          />
+
+                          <label
+                            className="naxatw-text-body-lg naxatw-text-grey-800"
+                            htmlFor={explodedFeat.id}
+                          >
+                            {explodedFeat.id}
+                          </label>
+                        </div>
+
+                        <div className="naxatw-flex">
+                          <span
+                            className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
+                            onClick={() => handleEditClick(type, explodedFeat)}
+                          >
+                            <IconButton
+                              name="edit"
+                              className="material-icons-outlined"
+                            />
+                          </span>
+                          {type === 'null' && (
+                            <IconButton
+                              className="material-icons-outlined naxatw-text-delete_btn"
+                              name="delete"
+                              onClick={() => {
+                                dispatch(
+                                  setManualFixState({
+                                    selectedError: { ...explodedFeat, type },
+                                  }),
+                                );
+                                dispatch(togglePromptDialog('delete-error'));
+                              }}
+                            />
+                          )}
+
+                          <DropdownOptions
+                            options={dropdownOptions}
+                            data={explodedFeat}
+                          />
+                        </div>
+                      </div>
+                    ))}
                 </div>
               ))}
               {type === 'null' && (

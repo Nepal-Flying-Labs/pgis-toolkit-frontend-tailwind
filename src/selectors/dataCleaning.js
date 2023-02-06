@@ -1,8 +1,11 @@
 import removeObjectKeys from '@Utils/removeObjectKeys';
 import { createSelector } from 'reselect';
 
-export const errorFeaturesDataSelector = state =>
-  state.dataCleaning.errorFeaturesData;
+const errorFeaturesDataSelector = state => state.dataCleaning.errorFeaturesData;
+const layerAttributesFieldsSelector = state =>
+  state.dataCleaning.manualFix.layerAttributesFields;
+const selectedErrorSelector = state =>
+  state.dataCleaning.manualFix.selectedError;
 
 export const errorFeaturesMapStateSelector = createSelector(
   [errorFeaturesDataSelector],
@@ -20,10 +23,15 @@ export const errorFeaturesMapStateSelector = createSelector(
 
 export const totalErrorsSelector = createSelector(
   errorFeaturesMapStateSelector,
-  errorFeaturesMapState => {
-    return errorFeaturesMapState.reduce(
-      (sum, item) => (sum += item.features.length),
-      0,
-    );
-  },
+  errorFeaturesMapState =>
+    errorFeaturesMapState.reduce((sum, item) => sum + item.features.length, 0),
+);
+
+export const individualAttributeDataSelector = createSelector(
+  [selectedErrorSelector, layerAttributesFieldsSelector],
+  (selectedError, layerAttributesFields) =>
+    layerAttributesFields.map(item => ({
+      ...item,
+      value: selectedError.attributes[item.name],
+    })),
 );

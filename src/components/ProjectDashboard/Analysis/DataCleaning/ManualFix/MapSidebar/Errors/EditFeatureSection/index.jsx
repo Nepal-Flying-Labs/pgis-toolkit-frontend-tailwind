@@ -7,6 +7,7 @@ import useForm from '@Hooks/useForm';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
+import { individualAttributeDataSelector } from '@Selectors/dataCleaning';
 
 const { setManualFixState, updateFeatureCollectionRequest, saveAttributeEdit } =
   DataCleaningCreators;
@@ -34,9 +35,7 @@ export default function EditFeatureSection() {
   const modifiedFeatureGeojson = useSelector(
     state => state.projectMap.modifiedFeatureGeojson,
   );
-  const individualAttributeData = useSelector(
-    state => state.dataCleaning.manualFix.individualAttributeData,
-  );
+  const individualAttributeData = useSelector(individualAttributeDataSelector);
   const selectedErrorType = useSelector(
     state => state.dataCleaning.manualFix.selectedErrorType,
   );

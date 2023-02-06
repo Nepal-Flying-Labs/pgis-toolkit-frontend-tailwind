@@ -335,6 +335,7 @@ const BasicInfo = ({ setPage }) => {
         <label className="naxatw-label">Partners</label>
         <input
           className="naxatw-input"
+          placeholder="Title of Partner"
           value={partner}
           onChange={e => handlePartner(e)}
           onKeyDown={e => handleKeyChange(e)}

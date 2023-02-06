@@ -41,7 +41,7 @@ export default function DeleteLayerAttribute() {
             dispatch(togglePromptDialog());
           }}
         >
-          Discard
+          Cancel
         </Button>
         <Button
           className="naxatw-bg-[#FF0F0F] naxatw-text-white"

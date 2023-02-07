@@ -23,8 +23,8 @@ export default function EditFeatureSection() {
   const drawnFeatureWkt = useSelector(
     state => state.dataCleaning.manualFix.drawnFeatureWkt,
   );
-  const selectedFeatureGeojson = useSelector(
-    state => state.dataCleaning.manualFix.selectedFeatureGeojson,
+  const selectedError = useSelector(
+    state => state.dataCleaning.manualFix.selectedError,
   );
   const selectedFeatureAttributes = useSelector(
     state => state.dataCleaning.manualFix.selectedFeatureAttributes,
@@ -80,7 +80,7 @@ export default function EditFeatureSection() {
         }),
       );
     },
-    onSubmit: (data, isFieldsChanged) => {
+    onSubmit: data => {
       const payloadData = {};
       if (sidebarContent === 'add-feature') {
         if (!drawnFeatureWkt) {
@@ -90,7 +90,7 @@ export default function EditFeatureSection() {
         payloadData.layer = selectedLayer.id;
         payloadData.geometry = drawnFeatureWkt;
         payloadData.attributes = data;
-        dispatch(updateFeatureCollectionRequest(selectedLayer.id, payloadData));
+        dispatch(updateFeatureCollectionRequest(selectedError.id, payloadData));
         return;
       }
       if (selectedErrorType === 'multipart') {

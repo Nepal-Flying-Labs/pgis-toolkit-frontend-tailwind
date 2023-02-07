@@ -39,6 +39,7 @@ export default function ErrorSection() {
           drawFeatureId: feature.id,
           sidebarContent: 'add-feature',
           selectedErrorType: type,
+          selectedError: feature,
         }),
       );
     }

@@ -32,6 +32,6 @@ export const individualAttributeDataSelector = createSelector(
   (selectedError, layerAttributesFields) =>
     layerAttributesFields.map(item => ({
       ...item,
-      value: selectedError.attributes[item.name],
+      value: selectedError?.attributes?.[item.name] || '',
     })),
 );

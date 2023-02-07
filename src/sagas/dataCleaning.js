@@ -239,9 +239,8 @@ export function* saveExplodedFeaturesRequest() {
         }),
       ),
     );
-    console.log(selectedError, 'selectedErrorx');
     // delete old layer
-    // yield call(updateFeatureCollection, selectedLayer.id, { is_deleted: true });
+    yield call(updateFeatureCollection, selectedError.id, { is_deleted: true });
     yield put(dataCleaningActions.saveExplodedFeaturesSuccess());
     yield put(commonActions.togglePromptDialog());
   } catch (error) {

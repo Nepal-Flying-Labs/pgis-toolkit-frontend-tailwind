@@ -39,8 +39,56 @@ const initialState = {
     sidebarContent: 'error-list',
     drawFeatureId: null,
     drawnFeatureWkt: null,
-    layerAttributesFields: null,
-    individualAttributeData: [],
+    layerAttributes: null,
+    layerAttributesFields: [
+      {
+        id: 7154,
+        name: 'id',
+        alias: null,
+        data_type: 'int',
+        mandatory: true,
+      },
+      {
+        id: 7155,
+        name: 'Id_1',
+        alias: null,
+        data_type: 'int',
+        mandatory: true,
+      },
+      {
+        id: 7156,
+        name: 'Name',
+        alias: null,
+        data_type: 'str',
+        mandatory: true,
+      },
+    ],
+    individualAttributeData: [
+      {
+        id: 7154,
+        name: 'id',
+        alias: null,
+        data_type: 'int',
+        mandatory: true,
+        value: '',
+      },
+      {
+        id: 7155,
+        name: 'Id_1',
+        alias: null,
+        data_type: 'int',
+        mandatory: true,
+        value: '',
+      },
+      {
+        id: 7156,
+        name: 'Name',
+        alias: null,
+        data_type: 'str',
+        mandatory: true,
+        value: '',
+      },
+    ],
     refreshLayerId: null,
     selectedError: null,
     selectedErrorType: null,
@@ -62,7 +110,7 @@ const initialState = {
       lineOpacity: 100,
       fillColor: '#e011b7',
       fillOpacity: 0,
-      lineThickness: 2,
+      lineThickness: '5',
       circleRadius: 5,
       dashline: 0,
       showLabel: false,
@@ -103,109 +151,109 @@ const initialState = {
   errorFeaturesData: {
     null: [
       {
-        id: 18321,
+        id: 20138,
         checked: false,
       },
       {
-        id: 18326,
+        id: 20143,
         checked: false,
       },
       {
-        id: 18336,
+        id: 20153,
         checked: false,
       },
     ],
     multipart: [
       {
-        id: 18322,
+        id: 20139,
         checked: false,
       },
       {
-        id: 18323,
+        id: 20140,
         checked: false,
       },
       {
-        id: 18324,
+        id: 20141,
         checked: false,
       },
       {
-        id: 18325,
+        id: 20142,
         checked: false,
       },
       {
-        id: 18334,
+        id: 20149,
         checked: false,
       },
       {
-        id: 18335,
+        id: 20154,
         checked: false,
       },
       {
-        id: 18337,
+        id: 20144,
         checked: false,
       },
       {
-        id: 18327,
+        id: 20145,
         checked: false,
       },
       {
-        id: 18328,
+        id: 20146,
         checked: false,
       },
       {
-        id: 18329,
+        id: 20147,
         checked: false,
       },
       {
-        id: 18330,
+        id: 20148,
         checked: false,
       },
       {
-        id: 18331,
+        id: 20150,
         checked: false,
       },
       {
-        id: 18332,
+        id: 20151,
         checked: false,
       },
       {
-        id: 18333,
+        id: 20152,
         checked: false,
       },
     ],
     self_instersect: [
       {
-        id: 18323,
+        id: 20140,
         checked: false,
       },
       {
-        id: 18324,
+        id: 20141,
         checked: false,
       },
     ],
     snapping: [
       {
-        id: 18323,
+        id: 20140,
         checked: false,
       },
       {
-        id: 18327,
+        id: 20144,
         checked: false,
       },
       {
-        id: 18333,
+        id: 20150,
         checked: false,
       },
       {
-        id: 18334,
+        id: 20151,
         checked: false,
       },
       {
-        id: 18335,
+        id: 20152,
         checked: false,
       },
       {
-        id: 18337,
+        id: 20154,
         checked: false,
       },
     ],
@@ -224,7 +272,7 @@ const initialState = {
         lineOpacity: 100,
         fillColor: '#e011b7',
         fillOpacity: 0,
-        lineThickness: 2,
+        lineThickness: '5',
         circleRadius: 5,
         dashline: 0,
         showLabel: false,

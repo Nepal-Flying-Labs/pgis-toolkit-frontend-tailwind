@@ -9,6 +9,7 @@ import {
   Creators as ProjectDashboardCreators,
   Types,
 } from '@Actions/projectDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
 import Dropzone from '@Components/common/Dropzone';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import FileIcon from '@Assets/images/icons/file-icon.svg';
@@ -24,6 +25,7 @@ import FormErrorMessage from '@Components/common/FormErrorMessage';
 
 const { getProjectThemesRequest } = ProjectMapCreators;
 const { uploadDatasetsRequest } = ProjectDashboardCreators;
+const { toggleModalTwo } = CommonCreators;
 
 const currentDate = new Date();
 
@@ -260,17 +262,28 @@ export default function UploadDataset() {
                   <div className="naxatw-space-y-2">
                     <div className="naxatw-space-y-2">
                       <label className="naxatw-label">Category</label>
-                      <Select
-                        options={themes || []}
-                        labelKey="name"
-                        valueKey="id"
-                        placeholder="Category"
-                        onChange={selectedItem =>
-                          handleCategorySelect(id, selectedItem)
-                        }
-                        selectedValue={category}
-                        style={{ minWidth: '10rem' }}
-                      />
+                      <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                        <Select
+                          options={themes || []}
+                          labelKey="name"
+                          valueKey="id"
+                          placeholder="Category"
+                          onChange={selectedItem =>
+                            handleCategorySelect(id, selectedItem)
+                          }
+                          selectedValue={category}
+                          style={{ minWidth: '10rem' }}
+                        />
+
+                        <MaterialIcon
+                          name="add"
+                          className="naxatw-text-secondary-300 naxatw-cursor-pointer"
+                          wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
+                          onIconClick={() =>
+                            dispatch(toggleModalTwo('add-dataset-category'))
+                          }
+                        />
+                      </div>
                       {errorFields?.[id]?.includes('category') && (
                         <FormErrorMessage message="Required" />
                       )}

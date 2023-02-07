@@ -201,6 +201,10 @@ export const { Types, Creators } = createActions(
     deleteInvitedUserRequest: ['id', 'payload'],
     deleteInvitedUserSuccess: ['payload'],
     deleteInvitedUserFailure: null,
+
+    postDatasetThemeRequest: ['payload'],
+    postDatasetThemeSuccess: ['payload'],
+    postDatasetThemeFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

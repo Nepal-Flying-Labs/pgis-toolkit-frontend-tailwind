@@ -44,4 +44,4 @@
 
 ### MANUAL FIX
 
-- [ ] remove feature from all section while deleting
+- [ ] 

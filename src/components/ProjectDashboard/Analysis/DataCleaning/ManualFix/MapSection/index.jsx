@@ -119,14 +119,23 @@ export default function MapSection() {
     });
   }, [dispatch, map, refreshLayerId]);
 
-  const setLayerStyle = useCallback((style, feature, resolution) => {
-    const stylex = { ...style };
-    return getStyles({
-      style: stylex,
-      feature,
-      resolution,
-    });
-  }, []);
+  const setLayerStyle = useCallback(
+    (style, feature, resolution) => {
+      const stylex = { ...style };
+      const featureId = feature.getId();
+      if (selectedError?.id && selectedError.id === featureId) {
+        stylex.fillOpacity = 0;
+        stylex.lineOpacity = 0;
+        stylex.icon = {};
+      }
+      return getStyles({
+        style: stylex,
+        feature,
+        resolution,
+      });
+    },
+    [selectedError],
+  );
 
   return (
     <div className="naxatw-w-full naxatw-relative">
@@ -238,7 +247,8 @@ export default function MapSection() {
           geojson={selectedError?.geojson}
           geometryType={selectedLayer.geom_type}
           zIndex={100}
-          style={selectedLayer?.style || { ...defaultStyles }}
+          // style={selectedLayer?.style || { ...defaultStyles }}
+          style={{ ...defaultStyles, lineColor: '#ffff00' }}
           onChange={geojson => {
             const wktString = stringify(geojson);
             dispatch(

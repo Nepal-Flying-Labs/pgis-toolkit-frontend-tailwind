@@ -58,6 +58,7 @@ export default function EditFeatureSection() {
         // modifiedFeatureGeojson: null,
         individualAttributeData: [],
         layerAttributes: null,
+        selectedError: null,
         // editFeatureId: null,
       }),
     );

@@ -7,6 +7,7 @@ import {
   takeEvery,
 } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
+import { stringify } from 'wkt';
 import {
   autoFixError,
   bulkDeleteNullGeometry,
@@ -15,6 +16,7 @@ import {
   getErrorFeatures,
   getFeatureCollectionMirror,
   getFeatureMirrorGeojson,
+  postFeatureCollection,
   updateFeatureCollection,
 } from '@Services/dataCleaning';
 import dataCleaningActions, { Types } from '@Actions/dataCleaning';
@@ -220,6 +222,34 @@ export function* getMultipartFeatureRequest({ payload }) {
   }
 }
 
+export function* saveExplodedFeaturesRequest() {
+  try {
+    const { selectedLayer } = yield select(state => state.dataCleaning);
+    const { selectedError } = yield select(
+      state => state.dataCleaning.manualFix,
+    );
+    const { explodedFeatures } = selectedError;
+    // post new exploded layers
+    yield all(
+      explodedFeatures.map(item =>
+        call(postFeatureCollection, {
+          attributes: item.attributes,
+          geometry: stringify(item.geojson),
+          layer: selectedLayer.id,
+        }),
+      ),
+    );
+    console.log(selectedError, 'selectedErrorx');
+    // delete old layer
+    // yield call(updateFeatureCollection, selectedLayer.id, { is_deleted: true });
+    yield put(dataCleaningActions.saveExplodedFeaturesSuccess());
+    yield put(commonActions.togglePromptDialog());
+  } catch (error) {
+    yield put(dataCleaningActions.saveExplodedFeaturesFailure());
+    throw error;
+  }
+}
+
 function* dataCleaningWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
@@ -260,6 +290,10 @@ function* dataCleaningWatcher() {
   yield takeLatest(
     Types.GET_MULTIPART_FEATURE_REQUEST,
     withLoader(withErrorHandler(getMultipartFeatureRequest)),
+  );
+  yield takeLatest(
+    Types.SAVE_EXPLODED_FEATURES_REQUEST,
+    withLoader(withErrorHandler(saveExplodedFeaturesRequest)),
   );
 }
 

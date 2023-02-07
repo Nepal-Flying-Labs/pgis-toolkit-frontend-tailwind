@@ -56,6 +56,10 @@ export const { Types, Creators } = createActions(
     getMultipartFeatureFailure: null,
 
     saveAttributeEdit: ['payload'],
+
+    saveExplodedFeaturesRequest: ['payload'],
+    saveExplodedFeaturesSuccess: ['payload'],
+    saveExplodedFeaturesFailure: null,
   },
   { prefix: 'dataCleaning/' },
 );

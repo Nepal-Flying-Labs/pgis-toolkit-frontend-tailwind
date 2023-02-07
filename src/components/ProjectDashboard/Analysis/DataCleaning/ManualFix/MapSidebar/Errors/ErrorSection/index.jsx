@@ -145,6 +145,14 @@ export default function ErrorSection() {
                           name={`${feature.fixed ? 'save' : 'ssid_chart'} `}
                           onClick={() => {
                             if (feature.fixed) {
+                              dispatch(
+                                setManualFixState({
+                                  selectedError: { ...feature, type },
+                                }),
+                              );
+                              dispatch(
+                                togglePromptDialog('save-multipart-error'),
+                              );
                               return;
                             }
                             handleExplodeClick(feature);

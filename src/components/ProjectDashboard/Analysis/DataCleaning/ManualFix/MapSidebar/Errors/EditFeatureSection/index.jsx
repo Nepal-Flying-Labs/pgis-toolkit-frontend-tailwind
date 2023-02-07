@@ -99,16 +99,6 @@ export default function EditFeatureSection() {
     },
   });
 
-  // useEffect(() => {
-  //   if (!selectedLayer) return;
-  //   dispatch(
-  //     getLayerAttributeFieldsRequest({
-  //       layer: selectedLayer.id,
-  //       check_mandatory: 'True',
-  //     }),
-  //   );
-  // }, [dispatch, selectedLayer]);
-
   useEffect(() => {
     if (!individualAttributeData) return;
     const formState = individualAttributeData.reduce(

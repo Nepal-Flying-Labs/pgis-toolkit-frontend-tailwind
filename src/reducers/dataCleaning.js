@@ -3,7 +3,7 @@ import { createReducer } from 'reduxsauce';
 import produce from 'immer';
 import { Types } from '@Actions/dataCleaning';
 import { parse } from 'wkt';
-import explode from '@turf/explode';
+import flatten from '@turf/flatten';
 import { checkErrorData, pointCheckExceptions } from '@src/constants/analysis';
 import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
@@ -636,7 +636,7 @@ const getMultipartFeatureSuccess = (state, action) =>
   produce(state, draft => {
     const { id, attributes, geometry } = action.payload;
     const geojson = parse(geometry);
-    const explodedFeature = explode(geojson);
+    const explodedFeature = flatten(geojson);
     const explodedFeatureError = draft.errorFeaturesData.multipart.find(
       item => item.id === id,
     );
@@ -680,6 +680,14 @@ const saveAttributeEdit = (state, action) =>
     };
   });
 
+const saveExplodedFeaturesSuccess = state =>
+  produce(state, draft => {
+    const { multipart } = draft.errorFeaturesData;
+    draft.errorFeaturesData.multipart = multipart.filter(
+      item => item.id !== draft.manualFix.selectedError.id,
+    );
+  });
+
 const dataCleaningReducer = createReducer(initialState, {
   [Types.SET_DATA_CLEANING_STATE]: setDataCleaningState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -699,6 +707,7 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.RESET_DATA_CLEANING_STATE]: resetDataCleaningState,
   [Types.GET_MULTIPART_FEATURE_SUCCESS]: getMultipartFeatureSuccess,
   [Types.SAVE_ATTRIBUTE_EDIT]: saveAttributeEdit,
+  [Types.SAVE_EXPLODED_FEATURES_SUCCESS]: saveExplodedFeaturesSuccess,
 });
 
 export default dataCleaningReducer;

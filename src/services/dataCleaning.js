@@ -18,6 +18,9 @@ export const getFeatureCollectionMirror = id =>
 export const updateFeatureCollection = (id, data) =>
   authenticated(api).patch(`/maps/feature_collection_mirror/${id}/`, data);
 
+export const postFeatureCollection = data =>
+  authenticated(api).post(`/maps/feature_collection_mirror/`, data);
+
 export const bulkDeleteNullGeometry = data =>
   authenticated(api).post(`/maps/bulk_del_null_geom/`, data);
 

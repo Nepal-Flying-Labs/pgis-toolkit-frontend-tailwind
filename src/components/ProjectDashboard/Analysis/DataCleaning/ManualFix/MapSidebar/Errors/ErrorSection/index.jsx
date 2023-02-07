@@ -37,7 +37,7 @@ export default function ErrorSection() {
       dispatch(
         setManualFixState({
           drawFeatureId: feature.id,
-          sidebarContent: 'add-feature',
+          sidebarContent: feature.fixed ? 'edit-feature' : 'add-feature',
           selectedErrorType: type,
           selectedError: { ...feature, type },
         }),

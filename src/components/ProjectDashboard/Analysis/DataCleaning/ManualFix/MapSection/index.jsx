@@ -64,8 +64,8 @@ export default function MapSection() {
   );
   const mapState = useSelector(mapStateSelector);
   const zoomToLayerId = useSelector(state => state.analysis.zoomToLayerId);
-  const selectedFeatureGeojson = useSelector(
-    state => state.projectMap.selectedFeatureGeojson,
+  const selectedError = useSelector(
+    state => state.dataCleaning.manualFix.selectedError,
   );
   const dispatch = useDispatch();
 
@@ -235,7 +235,7 @@ export default function MapSection() {
 
         <DrawTool
           enable={!!drawFeatureId && geojsonFeatures}
-          geojson={selectedFeatureGeojson}
+          geojson={selectedError?.geojson}
           geometryType={selectedLayer.geom_type}
           zIndex={100}
           style={selectedLayer?.style || { ...defaultStyles }}

@@ -82,7 +82,7 @@ export default function EditFeatureSection() {
     },
     onSubmit: data => {
       const payloadData = {};
-      if (sidebarContent === 'add-feature') {
+      if (selectedErrorType === 'null') {
         if (!drawnFeatureWkt) {
           dispatch(toastActions.error({ message: 'Please draw a geometry' }));
           return;

@@ -586,34 +586,28 @@ const getLayerAttributeFieldsSuccess = (state, action) => {
   };
 };
 
-const updateFeatureCollectionSuccess = (state, action) => {
-  const refreshLayerId = action.payload.layer;
-  let errorFeaturesData = {};
-  if (state.manualFix.selectedError.type === 'null') {
-    errorFeaturesData = {
-      ...state.errorFeaturesData,
-      null: state.errorFeaturesData.null.filter(
-        item => item.id !== state.manualFix.selectedError.id,
-      ),
-    };
-  } else {
-    errorFeaturesData = state.errorFeaturesData;
-  }
-  const {
-    sidebarContent,
-    drawFeatureId,
-    drawnFeatureWkt,
-    layerAttributes,
-    individualAttributeData,
-    selectedError,
-    selectedFeaturesForSnap,
-    geojsonFeatures,
-  } = initialState.manualFix;
-  return {
-    ...state,
-    errorFeaturesData,
-    manualFix: {
-      ...state.manualFix,
+const updateFeatureCollectionSuccess = (state, action) =>
+  produce(state, draft => {
+    const refreshLayerId = action.payload.layer;
+    const { id } = action.payload;
+    if (draft.manualFix.selectedError.type === 'null') {
+      const changedFeature = draft.errorFeaturesData.null.find(
+        item => item.id === id,
+      );
+      changedFeature.fixed = true;
+    }
+    const {
+      sidebarContent,
+      drawFeatureId,
+      drawnFeatureWkt,
+      layerAttributes,
+      individualAttributeData,
+      selectedError,
+      selectedFeaturesForSnap,
+      geojsonFeatures,
+    } = initialState.manualFix;
+    draft.manualFix = {
+      ...draft.manualFix,
       refreshLayerId,
       sidebarContent,
       drawFeatureId,
@@ -623,9 +617,8 @@ const updateFeatureCollectionSuccess = (state, action) => {
       selectedError,
       selectedFeaturesForSnap,
       geojsonFeatures,
-    },
-  };
-};
+    };
+  });
 
 const handleErrorCheckbox = (state, action) => {
   const { id, name, checked } = action.payload;

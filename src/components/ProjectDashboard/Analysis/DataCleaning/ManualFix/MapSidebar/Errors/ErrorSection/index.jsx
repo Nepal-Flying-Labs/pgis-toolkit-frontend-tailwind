@@ -39,7 +39,7 @@ export default function ErrorSection() {
           drawFeatureId: feature.id,
           sidebarContent: 'add-feature',
           selectedErrorType: type,
-          selectedError: feature,
+          selectedError: { ...feature, type },
         }),
       );
     }
@@ -49,7 +49,7 @@ export default function ErrorSection() {
           sidebarContent: 'edit-feature',
           selectedFeatureGeojson: feature.geojson,
           selectedErrorType: type,
-          selectedError: feature,
+          selectedError: { ...feature, type },
         }),
       );
     }
@@ -117,6 +117,19 @@ export default function ErrorSection() {
                         }
                       />
 
+                      {feature.fixed && (
+                        <span
+                          className="naxatw-flex naxatw-items-center naxatw-mr-2"
+                          style={{ color: '#40B449' }}
+                        >
+                          <i
+                            className="material-icons-outlined"
+                            style={{ fontSize: '22px' }}
+                          >
+                            check
+                          </i>
+                        </span>
+                      )}
                       <label
                         className="naxatw-text-body-lg naxatw-text-grey-800"
                         htmlFor={feature.id}

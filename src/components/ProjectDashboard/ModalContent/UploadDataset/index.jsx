@@ -66,6 +66,7 @@ export default function UploadDataset() {
         latField: '',
         lonField: '',
         latlngOptions: [],
+        source: '',
       };
       if (extension === 'csv') {
         getCSVHeaders(file).then(headers => {
@@ -126,6 +127,7 @@ export default function UploadDataset() {
       const fields = [];
       if (!item.name) fields.push('name');
       if (!item.category) fields.push('category');
+      if (!item.source) fields.push('source');
       if (item.extension === 'csv') {
         if (!item.latField) fields.push('latField');
         if (!item.lonField) fields.push('lonField');
@@ -145,7 +147,7 @@ export default function UploadDataset() {
           display_on_map: item.addToMap,
           file: item.file,
           layer_type: 'Vector',
-          source: 'computer',
+          source: item.source,
           lat_field: item.latField.name,
           lon_field: item.lonField.name,
         };
@@ -190,6 +192,7 @@ export default function UploadDataset() {
             latField,
             lonField,
             latlngOptions,
+            source,
           }) => (
             <div key={id} className="naxatw-flex naxatw-flex-col naxatw-gap-2">
               <div
@@ -221,46 +224,67 @@ export default function UploadDataset() {
 
                 <div className="naxatw-flex naxatw-gap-3">
                   <div className="naxatw-space-y-2 naxatw-grow">
-                    <label className="naxatw-label">Data name*</label>
-                    <input
-                      type="text"
-                      className="naxatw-input"
-                      id={id}
-                      name="name"
-                      value={name}
-                      placeholder="Enter Data Name"
-                      onChange={handleChange}
-                    />
-                    {errorFields?.[id]?.includes('name') && (
-                      <FormErrorMessage message="Required" />
-                    )}
+                    <div className="naxatw-space-y-2">
+                      <label className="naxatw-label">Data name*</label>
+                      <input
+                        type="text"
+                        className="naxatw-input"
+                        id={id}
+                        name="name"
+                        value={name}
+                        placeholder="Enter Data Name"
+                        onChange={handleChange}
+                      />
+                      {errorFields?.[id]?.includes('name') && (
+                        <FormErrorMessage message="Required" />
+                      )}
+                    </div>
+
+                    <div className="naxatw-space-y-2 naxatw-grow">
+                      <label className="naxatw-label">Data Source*</label>
+                      <input
+                        type="text"
+                        className="naxatw-input"
+                        id={id}
+                        name="source"
+                        value={source}
+                        placeholder="Enter Data Source"
+                        onChange={handleChange}
+                      />
+                      {errorFields?.[id]?.includes('source') && (
+                        <FormErrorMessage message="Required" />
+                      )}
+                    </div>
                   </div>
 
                   <div className="naxatw-space-y-2">
-                    <label className="naxatw-label">Category</label>
-                    <Select
-                      options={themes || []}
-                      labelKey="name"
-                      valueKey="id"
-                      placeholder="Category"
-                      onChange={selectedItem =>
-                        handleCategorySelect(id, selectedItem)
-                      }
-                      selectedValue={category}
-                      style={{ minWidth: '10rem' }}
-                    />
-                    {errorFields?.[id]?.includes('category') && (
-                      <FormErrorMessage message="Required" />
-                    )}
-                  </div>
-                  <div className="naxatw-space-y-2">
-                    <label className="naxatw-label">Add To Map</label>
-                    <div className="naxatw-pt-3">
-                      <Toggle
-                        id={id}
-                        checked={addToMap}
-                        onChange={handleAddToMap}
+                    <div className="naxatw-space-y-2">
+                      <label className="naxatw-label">Category</label>
+                      <Select
+                        options={themes || []}
+                        labelKey="name"
+                        valueKey="id"
+                        placeholder="Category"
+                        onChange={selectedItem =>
+                          handleCategorySelect(id, selectedItem)
+                        }
+                        selectedValue={category}
+                        style={{ minWidth: '10rem' }}
                       />
+                      {errorFields?.[id]?.includes('category') && (
+                        <FormErrorMessage message="Required" />
+                      )}
+                    </div>
+
+                    <div className="naxatw-space-y-2">
+                      <label className="naxatw-label">Add To Map</label>
+                      <div className="naxatw-pt-3">
+                        <Toggle
+                          id={id}
+                          checked={addToMap}
+                          onChange={handleAddToMap}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

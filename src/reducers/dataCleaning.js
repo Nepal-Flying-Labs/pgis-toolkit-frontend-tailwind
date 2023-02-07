@@ -589,12 +589,14 @@ const getLayerAttributeFieldsSuccess = (state, action) => {
 const updateFeatureCollectionSuccess = (state, action) =>
   produce(state, draft => {
     const refreshLayerId = action.payload.layer;
-    const { id } = action.payload;
+    const { id, attributes, geometry } = action.payload;
     if (draft.manualFix.selectedError.type === 'null') {
       const changedFeature = draft.errorFeaturesData.null.find(
         item => item.id === id,
       );
       changedFeature.fixed = true;
+      changedFeature.attributes = attributes;
+      changedFeature.geojson = parse(geometry);
     }
     const {
       sidebarContent,

@@ -7,7 +7,8 @@ import {
   takeEvery,
 } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
-import { stringify } from 'wkt';
+import { stringify, parse } from 'wkt';
+import flatten from '@turf/flatten';
 import {
   autoFixError,
   bulkDeleteNullGeometry,
@@ -212,39 +213,33 @@ export function* startAnalysisRequest({ params }) {
   }
 }
 
-export function* getMultipartFeatureRequest({ payload }) {
+export function* explodeFeatureRequest({ payload }) {
   try {
-    const response = yield call(getFeatureCollectionMirror, payload);
-    yield put(dataCleaningActions.getMultipartFeatureSuccess(response.data));
-  } catch (error) {
-    yield put(dataCleaningActions.getMultipartFeatureFailure());
-    throw error;
-  }
-}
-
-export function* saveExplodedFeaturesRequest() {
-  try {
+    const layerResponse = yield call(getFeatureCollectionMirror, payload);
+    const { id, attributes, geometry } = layerResponse.data;
     const { selectedLayer } = yield select(state => state.dataCleaning);
-    const { selectedError } = yield select(
-      state => state.dataCleaning.manualFix,
-    );
-    const { explodedFeatures } = selectedError;
+    const geojson = parse(geometry);
+    const explodedFeature = flatten(geojson);
     // post new exploded layers
-    yield all(
-      explodedFeatures.map(item =>
+    const explodeResponse = yield all(
+      explodedFeature.features.map(feature =>
         call(postFeatureCollection, {
-          attributes: item.attributes,
-          geometry: stringify(item.geojson),
+          attributes,
+          geometry: stringify(feature),
           layer: selectedLayer.id,
         }),
       ),
     );
     // delete old layer
-    yield call(updateFeatureCollection, selectedError.id, { is_deleted: true });
-    yield put(dataCleaningActions.saveExplodedFeaturesSuccess());
-    yield put(commonActions.togglePromptDialog());
+    yield call(updateFeatureCollection, id, { is_deleted: true });
+    yield put(
+      dataCleaningActions.explodeFeatureSuccess({
+        layerData: layerResponse.data,
+        explodeData: explodeResponse.map(item => item.data),
+      }),
+    );
   } catch (error) {
-    yield put(dataCleaningActions.saveExplodedFeaturesFailure());
+    yield put(dataCleaningActions.explodeFeatureFailure());
     throw error;
   }
 }
@@ -287,12 +282,8 @@ function* dataCleaningWatcher() {
     withLoader(withErrorHandler(startAnalysisRequest)),
   );
   yield takeLatest(
-    Types.GET_MULTIPART_FEATURE_REQUEST,
-    withLoader(withErrorHandler(getMultipartFeatureRequest)),
-  );
-  yield takeLatest(
-    Types.SAVE_EXPLODED_FEATURES_REQUEST,
-    withLoader(withErrorHandler(saveExplodedFeaturesRequest)),
+    Types.EXPLODE_FEATURE_REQUEST,
+    withLoader(withErrorHandler(explodeFeatureRequest)),
   );
 }
 

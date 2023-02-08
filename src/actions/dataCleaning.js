@@ -51,15 +51,11 @@ export const { Types, Creators } = createActions(
 
     resetDataCleaningState: null,
 
-    getMultipartFeatureRequest: ['payload'],
-    getMultipartFeatureSuccess: ['payload'],
-    getMultipartFeatureFailure: null,
-
     saveAttributeEdit: ['payload'],
 
-    saveExplodedFeaturesRequest: ['payload'],
-    saveExplodedFeaturesSuccess: ['payload'],
-    saveExplodedFeaturesFailure: null,
+    explodeFeatureRequest: ['payload'],
+    explodeFeatureSuccess: ['payload'],
+    explodeFeatureFailure: null,
   },
   { prefix: 'dataCleaning/' },
 );

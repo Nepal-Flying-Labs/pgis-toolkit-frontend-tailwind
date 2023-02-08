@@ -45,7 +45,6 @@ import ViewBufferAttribute from '@Components/ProjectDashboard/Analysis/ModalCont
 import DeleteAnOrganization from '@Components/Organizations/ModalContent/DeleteAnOrganization';
 import SaveRouteLayer from '@Components/ProjectDashboard/Analysis/ModalContent/SaveRouteLayer';
 import SelectLayerFeature from '@Components/ProjectDashboard/Analysis/ModalContent/SelectLayerFeature';
-import SaveMultipartError from '@Components/ProjectDashboard/Analysis/ModalContent/SaveMultipartError';
 
 export function getModalContent(content) {
   switch (content) {
@@ -322,11 +321,6 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <DeleteError />,
-      };
-    case 'save-multipart-error':
-      return {
-        title: '',
-        content: <SaveMultipartError />,
       };
 
     case 'delete-project':

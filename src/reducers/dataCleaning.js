@@ -3,7 +3,6 @@ import { createReducer } from 'reduxsauce';
 import produce from 'immer';
 import { Types } from '@Actions/dataCleaning';
 import { parse } from 'wkt';
-import flatten from '@turf/flatten';
 import { checkErrorData, pointCheckExceptions } from '@src/constants/analysis';
 import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
@@ -675,24 +674,6 @@ const getFeatureGeojsonSuccess = (state, action) => {
 
 const resetDataCleaningState = () => ({ ...initialState });
 
-const getMultipartFeatureSuccess = (state, action) =>
-  produce(state, draft => {
-    const { id, attributes, geometry } = action.payload;
-    const geojson = parse(geometry);
-    const explodedFeature = flatten(geojson);
-    const explodedFeatureError = draft.errorFeaturesData.multipart.find(
-      item => item.id === id,
-    );
-    explodedFeatureError.explodedFeatures = explodedFeature.features.map(
-      (feature, index) => ({
-        id: `${id}-${index + 1}`,
-        attributes,
-        geojson: feature,
-      }),
-    );
-    explodedFeatureError.fixed = true;
-  });
-
 const saveAttributeEdit = (state, action) =>
   produce(state, draft => {
     const data = action.payload;
@@ -723,12 +704,19 @@ const saveAttributeEdit = (state, action) =>
     };
   });
 
-const saveExplodedFeaturesSuccess = state =>
+const explodeFeatureSuccess = (state, action) =>
   produce(state, draft => {
-    const { multipart } = draft.errorFeaturesData;
-    draft.errorFeaturesData.multipart = multipart.filter(
-      item => item.id !== draft.manualFix.selectedError.id,
+    const { layerData, explodeData } = action.payload;
+    const { id: featureId } = layerData;
+    const explodedFeature = draft.errorFeaturesData.multipart.find(
+      item => item.id === featureId,
     );
+    explodedFeature.explodedFeatures = explodeData.map(item => ({
+      id: item.id,
+      attributes: item.attributes,
+      geojson: parse(item.geometry),
+    }));
+    explodedFeature.fixed = true;
   });
 
 const dataCleaningReducer = createReducer(initialState, {
@@ -748,9 +736,8 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.DELETE_SELECTED_FEATURES_SUCCESS]: deleteSelectedFeaturesSuccess,
   [Types.GET_FEATURE_GEOJSON_SUCCESS]: getFeatureGeojsonSuccess,
   [Types.RESET_DATA_CLEANING_STATE]: resetDataCleaningState,
-  [Types.GET_MULTIPART_FEATURE_SUCCESS]: getMultipartFeatureSuccess,
   [Types.SAVE_ATTRIBUTE_EDIT]: saveAttributeEdit,
-  [Types.SAVE_EXPLODED_FEATURES_SUCCESS]: saveExplodedFeaturesSuccess,
+  [Types.EXPLODE_FEATURE_SUCCESS]: explodeFeatureSuccess,
 });
 
 export default dataCleaningReducer;

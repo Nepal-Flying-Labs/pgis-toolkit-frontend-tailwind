@@ -16,7 +16,7 @@ const {
   setManualFixState,
   handleErrorCheckbox,
   deleteSelectedFeaturesRequest,
-  getMultipartFeatureRequest,
+  explodeFeatureRequest,
 } = DataCleaningCreators;
 
 const { togglePromptDialog } = CommonCreators;
@@ -24,9 +24,6 @@ const { togglePromptDialog } = CommonCreators;
 export default function ErrorSection() {
   const errorFeaturesMapState = useSelector(errorFeaturesMapStateSelector);
   const totalErrors = useSelector(totalErrorsSelector);
-  const layerAttributesFields = useSelector(
-    state => state.dataCleaning.manualFix.layerAttributesFields,
-  );
   const isDeleting = useSelector(state =>
     checkIfLoading(state, [Types.DELETE_SELECTED_FEATURES_REQUEST]),
   );
@@ -56,7 +53,7 @@ export default function ErrorSection() {
   };
 
   const handleExplodeClick = feature => {
-    dispatch(getMultipartFeatureRequest(feature.id));
+    dispatch(explodeFeatureRequest(feature.id));
   };
 
   const dropdownOptions = [
@@ -150,25 +147,12 @@ export default function ErrorSection() {
                           />
                         </span>
                       )}
-                      {type === 'multipart' && (
+                      {type === 'multipart' && !feature.fixed && (
                         <IconButton
-                          title={`${feature.fixed ? 'Save' : 'Explode'} `}
-                          className={`material-icons-outlined ${
-                            feature.fixed ? 'naxatw-text-secondary-500' : ''
-                          }`}
-                          name={`${feature.fixed ? 'save' : 'ssid_chart'} `}
+                          title="Explode"
+                          className="material-icons-outlined"
+                          name="ssid_chart"
                           onClick={() => {
-                            if (feature.fixed) {
-                              dispatch(
-                                setManualFixState({
-                                  selectedError: { ...feature, type },
-                                }),
-                              );
-                              dispatch(
-                                togglePromptDialog('save-multipart-error'),
-                              );
-                              return;
-                            }
                             handleExplodeClick(feature);
                           }}
                         />

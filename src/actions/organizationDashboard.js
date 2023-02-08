@@ -114,6 +114,10 @@ export const { Types, Creators } = createActions(
     getProjectGeojsonSuccess: ['payload'],
     getProjectGeojsonFailure: null,
 
+    getProjectsCentroidGeojsonRequest: ['params'],
+    getProjectsCentroidGeojsonSuccess: ['payload'],
+    getProjectsCentroidGeojsonFailure: null,
+
     setFileUploadGeojson: ['payload'],
 
     setZoomToLayer: ['payload'],

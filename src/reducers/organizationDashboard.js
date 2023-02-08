@@ -39,6 +39,7 @@ const initialState = {
   organizationAssignList: [],
   userTab: 'users',
   hideSidebar: false,
+  centroidGeojson: null,
 };
 
 const getOrganizationDetailSuccess = (state, action) => ({
@@ -472,6 +473,11 @@ const setProjectStatus = (state, action) => ({
   projectStatus: action.payload,
 });
 
+const getProjectsCentroidGeojsonSuccess = (state, action) => ({
+  ...state,
+  centroidGeojson: action.payload,
+});
+
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
@@ -509,6 +515,8 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.SET_FILE_UPLOAD_GEOJSON]: setFileUploadGeojson,
   [Types.SET_ZOOM_TO_LAYER]: setZoomToLayer,
   [Types.SET_PROJECT_STATUS]: setProjectStatus,
+  [Types.GET_PROJECTS_CENTROID_GEOJSON_SUCCESS]:
+    getProjectsCentroidGeojsonSuccess,
 });
 
 export default organizationDashboardReducer;

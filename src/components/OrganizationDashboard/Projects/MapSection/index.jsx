@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
@@ -19,6 +19,7 @@ const { setZoomToLayer } = Creators;
 const { API_URL } = process.env;
 
 export default function MapSection() {
+  const [currentZoom, setCurrentZoom] = useState(1);
   const dispatch = useDispatch();
   const projects = useSelector(state => state.organizationDashboard.projects);
   const organizationDetail = useSelector(
@@ -38,6 +39,7 @@ export default function MapSection() {
   const centroidGeojson = useSelector(
     state => state.organizationDashboard.centroidGeojson,
   );
+  console.log('hello');
 
   const { mapRef, map } = useOLMap({
     center: fromLonLat([85.3, 27.7]),
@@ -68,6 +70,17 @@ export default function MapSection() {
   //     });
   //   }
   // }, [map, organizationDetail]);
+
+  useEffect(() => {
+    if (!map) return;
+    map.getView().on('change:resolution', () => {
+      const resolution = map.getView().getResolution();
+      const zoom = map.getView().getZoomForResolution(resolution);
+      const zoomValue = parseInt(zoom, 10);
+      if (zoomValue === currentZoom) return;
+      setCurrentZoom(zoomValue);
+    });
+  }, [map, currentZoom]);
 
   // zoom to layer id
   useEffect(() => {
@@ -101,8 +114,13 @@ export default function MapSection() {
           map={map}
           source={centroidGeojson}
           zIndex="100"
-          visibleOnMap
-          style={{ ...defaultStyles }}
+          visibleOnMap={currentZoom <= 10}
+          style={{
+            ...defaultStyles,
+            background_color: '#FF5A5F',
+            color: '#FFD1D8',
+            opacity: 90,
+          }}
           // style={{ ...defaultStyles }}
           // fetchPopupData={(popupProps) => {
           //   if (!popupProps) return;
@@ -112,13 +130,14 @@ export default function MapSection() {
           // }}
         />
 
-        {/* {projects?.results?.map(item => (
+        {projects?.results?.map(item => (
           <VectorTileLayer
             key={item.id}
             url={`${API_URL}projects/project_location_vectortile/{z}/{x}/{y}/?project=${item.id}`}
             authToken={localStorage.getItem('userToken')}
+            visibleOnMap={currentZoom > 10}
           />
-        ))} */}
+        ))}
       </MapComponent>
     </div>
   );

@@ -2,7 +2,6 @@ import SVGInjector from 'svg-injector';
 import memoize from 'memoize-one';
 
 const getSvgImageIcon = async (src, fillColor) => {
-  console.log(src, 'src');
   const onImageLoad = memoize(async () => {
     const width = 500;
     const height = 500;

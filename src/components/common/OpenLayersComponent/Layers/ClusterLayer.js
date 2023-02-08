@@ -45,12 +45,12 @@ function setAsyncStyle(style, feature) {
     image: new Circle({
       radius: 13,
       stroke: new Stroke({
-        color: hexToRgba(style.lineColor, 100),
+        color: hexToRgba(style.color, style.opacity || 100),
         // color: 'rgba(200, 13, 18, 0.6)',
         width: 4,
       }),
       fill: new Fill({
-        color: hexToRgba(style.fillColor, 100),
+        color: hexToRgba(style.background_color, style.opacity || 100),
         width: 40,
       }),
     }),

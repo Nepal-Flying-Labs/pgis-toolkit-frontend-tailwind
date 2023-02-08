@@ -45,6 +45,7 @@ import ViewBufferAttribute from '@Components/ProjectDashboard/Analysis/ModalCont
 import DeleteAnOrganization from '@Components/Organizations/ModalContent/DeleteAnOrganization';
 import SaveRouteLayer from '@Components/ProjectDashboard/Analysis/ModalContent/SaveRouteLayer';
 import SelectLayerFeature from '@Components/ProjectDashboard/Analysis/ModalContent/SelectLayerFeature';
+import AddDatasetCategory from '@Components/ProjectDashboard/ModalContent/AddDatasetCategory/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -358,6 +359,11 @@ export function getModalTwoContent(content) {
       return {
         title: 'Edit Attribute',
         content: <EditLayerAttribute />,
+      };
+    case 'add-dataset-category':
+      return {
+        title: 'Add Category',
+        content: <AddDatasetCategory />,
       };
     default:
       return {

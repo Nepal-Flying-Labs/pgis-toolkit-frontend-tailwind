@@ -115,3 +115,6 @@ export const updateUserRole = (id, payload) =>
 
 export const updateInvitedUserStatus = (id, payload) =>
   authenticated(api).patch(`/users/preliminary_user/${id}/`, payload);
+
+export const postDatasetTheme = payload =>
+  authenticated(api).post('/maps/theme/', payload);

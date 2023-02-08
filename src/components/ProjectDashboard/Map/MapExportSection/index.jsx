@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-classes-per-file */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators } from '@Actions/projectMap';
 import MaterialIcon from '@Components/common/MaterialIcon';
@@ -13,10 +14,12 @@ import Button from '@Components/common/Button/index';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
 import JsPDF from 'jspdf';
-import Control from 'ol/control/Control';
 import ScaleLine from 'ol/control/ScaleLine';
 import Graticule from 'ol/layer/Graticule';
 import { Stroke } from 'ol/style';
+import { METERS_PER_UNIT } from 'ol/proj';
+import Spinner from '@src/components/common/Spinner';
+import Logo from '@src/assets/images/logo.png';
 import {
   orientationOptions,
   paperSizeOptions,
@@ -26,97 +29,60 @@ import {
   paperSize,
 } from './constants';
 import NorthArrow from './north-arrow.png';
-
-class TextControl extends Control {
-  constructor(optOptions) {
-    const options = optOptions || {};
-    const element = document.createElement('div');
-    element.id = 'sidebar-export';
-    element.className = 'naxatw-flex naxatw-flex-col';
-    element.style.position = 'absolute';
-    element.style.bottom = 0;
-    element.style.right = 0;
-    const titleElement = document.createElement('div');
-    titleElement.id = 'title';
-    titleElement.className =
-      'naxatw-px-4 naxatw-py-3 naxatw-bg-grey-100 naxatw-font-bold naxatw-text-[18px] naxatw-leading-[22px] naxatw-text-grey-800';
-    titleElement.innerHTML = options?.text || 'Title';
-    element.appendChild(titleElement);
-    const legendElement = document.createElement('div');
-    legendElement.className = 'naxatw-px-4 naxatw-py-3';
-    const legendPragraph = document.createElement('p');
-    legendPragraph.className = 'naxatw-text-body-sm';
-    legendPragraph.innerHTML = 'LEGEND';
-    legendElement.appendChild(legendPragraph);
-    element.appendChild(legendElement);
-    const exportFrom = document.createElement('div');
-    exportFrom.className = 'naxatw-mt-auto naxatw-bg-primary-50';
-    exportFrom.innerHTML = 'Exported from USAFIRI';
-    element.appendChild(exportFrom);
-    super({
-      element,
-      target: options.target,
-    });
-  }
-}
-
-class NorthArrowImage extends Control {
-  constructor(optOptions) {
-    const options = optOptions || {};
-    const element = document.createElement('img');
-    element.src = NorthArrow;
-    element.width = 40;
-    element.height = 40;
-    element.style.position = 'absolute';
-    element.style.top = 0;
-    element.style.right = 0;
-    element.className = 'ol-unselectable';
-    super({
-      element,
-      target: options.target,
-    });
-  }
-}
+import Legend from './legend';
+import { useReactToPrint } from './reactprint';
 
 const { setProjectMapState } = Creators;
 
-export default function MapExportSection({ exportMap }) {
+export default function MapExportSection({ exportMap, legendData, title }) {
   const dispatch = useDispatch();
-  const paperRef = useRef(null);
-  const exportMapRef = useRef(null);
+  const [mapInfo, setMapInfo] = useState({
+    target: null,
+    size: null,
+    extent: null,
+  });
   const [currentOrientation, setCurrentOrientation] = useState('landscape');
   const [currentPaper, setCurrentPaper] = useState('A4');
   const [currentPaperSize, setCurrentPaperSize] = useState([210, 297]);
-  const [currentResolution, setCurrentResolution] = useState(150);
+  const [currentResolution, setCurrentResolution] = useState(96);
   const [currentMargin, setCurrentMargin] = useState(0);
   const [currentFormat, setCurrentFormat] = useState('png');
   const [northArrowChecked, setNorthArrowChecked] = useState(true);
   const [scaleChecked, setScaleChecked] = useState(true);
   const [graticuleChecked, setGraticuleChecked] = useState(false);
+  const [legendChecked, setLegendChecked] = useState(true);
+  const [coordinateChecked, setCoordinateChecked] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
+
+  const paperRef = useRef(null);
+  const exportMapRef = useRef(null);
+
+  const projectHeaderHeight = useSelector(
+    state => state.common.projectHeaderHeight,
+  );
+  const organizationDetail = useSelector(
+    state => state.organizationDashboard.organizationDetail,
+  );
+
+  const coordinatesystem3857 = `
+    <h6>Coordinate System: <strong>WGS 1984 Web Mercator Auxiliary Sphere</strong></h6>
+    <h6>Projection: <strong>Mercator Auxiliary Sphere</strong></h6>
+    <h6>Datum: <strong>WGS 1984</strong></h6>
+    <h6>Units: <strong>Meter</strong></h6>
+  `;
 
   const customControls = {
-    title: new TextControl({
-      id: 'map-title',
-      text: 'Transportation mapping Kenya 2',
-      target: exportMapRef.current,
-    }),
     scale: new ScaleLine({
-      bar: true,
       minWidth: 100,
       units: 'metric',
       target: exportMapRef.current,
     }),
-    northArrow: new NorthArrowImage({
-      target: exportMapRef.current,
-    }),
     graticule: new Graticule({
       strokeStyle: new Stroke({
-        color: 'rgba(255,120,0,0.6)',
-        width: 1,
+        color: 'rgba(255,120,0,0.4)',
+        width: 0.5,
       }),
       showLabels: true,
-      // latLabelPosition: 0,
-      // lonLabelPosition: 1,
       wrapX: false,
     }),
   };
@@ -142,16 +108,71 @@ export default function MapExportSection({ exportMap }) {
       'box-shadow'
     ] = `${px}px ${px}px ${px}px rgba(0,0,0,.6)`;
     exportMapRef.current.style.padding = `${(margin * resolution) / 25.4}px`;
-    exportMap.updateSize([size[0], size[1]]);
+    exportMap.setSize([size[0], size[1]]);
     exportMap.updateSize();
+    if (orientation === 'landscape') {
+      exportMap.getViewport().style.width = '70%';
+      exportMap.getViewport().style.height = '100%';
+      document.getElementById('side-component').style.top = 0;
+      document.getElementById('side-component').style.right = 0;
+      document.getElementById('side-component').style.width = '30%';
+      document.getElementById('side-component').style.height = '100%';
+      document.getElementById('map-legend-data').style.maxHeight = '15rem';
+      document.getElementById('map-coordinate').style.maxWidth = '100%';
+      document.getElementById('map-description').style.marginTop = '10px';
+      document.getElementById('map-description').style.marginLeft = 0;
+      document.getElementById('map-description').style.maxWidth = '100%';
+    } else {
+      exportMap.getViewport().style.width = '100%';
+      exportMap.getViewport().style.height = '60%';
+      document.getElementById('side-component').style.top = '60%';
+      document.getElementById('side-component').style.right = 0;
+      document.getElementById('side-component').style.width = '100%';
+      document.getElementById('side-component').style.height = '40%';
+      document.getElementById('map-legend-data').style.maxHeight = '6rem';
+      document.getElementById('map-coordinate').style.maxWidth = '49%';
+      document.getElementById('map-description').style.marginTop = 0;
+      document.getElementById('map-description').style.marginLeft = '10px';
+      if (coordinateChecked)
+        document.getElementById('map-description').style.maxWidth = '49%';
+    }
+    document
+      .getElementById('export-legend')
+      .appendChild(document.getElementById('map-legend'));
+    document
+      .getElementById('scale-line')
+      .appendChild(document.querySelector('.ol-scale-line'));
+    document.querySelector('.ol-scale-line').style.position = 'relative';
+  };
+
+  const calculateScale = () => {
+    const view = exportMap.getView();
+    const resolution = view.getResolution();
+    const units = view.getProjection().getUnits();
+    const dpi = 96 / 25.4;
+    const mpu = METERS_PER_UNIT[units];
+    const scale = resolution * mpu * 39.37 * dpi;
+    const scaleNumeric = document.getElementById('scale-numeric');
+    if (scaleNumeric != null)
+      scaleNumeric.innerHTML = `Map Scale &nbsp; <strong>1:${scale.toFixed(
+        0,
+      )}</strong>`;
   };
 
   window.onresize = () => {
     handleSize(currentPaperSize, currentOrientation, currentMargin);
   };
 
+  exportMap.on('moveend', () => {
+    calculateScale();
+  });
+
+  const handlePrint = useReactToPrint({
+    content: () => exportMapRef.current,
+  });
+
   const handleExport = () => {
-    document.body.style.cursor = 'progress';
+    setIsExporting(true);
     const style = document.createElement('style');
     document.head.appendChild(style);
     style.sheet?.insertRule(
@@ -160,11 +181,13 @@ export default function MapExportSection({ exportMap }) {
 
     const size = exportMap.getSize();
     const extent = exportMap.getView().calculateExtent(size);
-    const dimWidth = currentPaperSize[1];
-    const dimHeight = currentPaperSize[0];
+    let pSize = [currentPaperSize[0], currentPaperSize[1]];
+    if (currentOrientation === 'landscape') {
+      pSize = [currentPaperSize[1], currentPaperSize[0]];
+    }
     const dpi = currentResolution;
-    const width = Math.round((dimWidth * dpi) / 25.4);
-    const height = Math.round((dimHeight * dpi) / 25.4);
+    const width = Math.round((pSize[0] * dpi) / 25.4);
+    const height = Math.round((pSize[1] * dpi) / 25.4);
     // Set print size
     const printSize = [width, height];
     const scaling = Math.min(width / size[0], height / size[1]);
@@ -211,21 +234,18 @@ export default function MapExportSection({ exportMap }) {
             }
           });
         } else if (currentFormat === 'pdf') {
-          const orientation = currentOrientation;
-          const pageSize = exportMap.getSize();
-          const pdf = new JsPDF(orientation, undefined, currentPaper);
+          const pdf = new JsPDF(currentOrientation, undefined, currentPaper);
           pdf.addImage(
             canvas.toDataURL('image/jpeg'),
             'JPEG',
             0,
             0,
-            pageSize[0],
-            pageSize[1],
+            pSize[0],
+            pSize[1],
           );
           pdf.save('map.pdf');
         } else if (currentFormat === 'print') {
-          // eslint-disable-next-line no-restricted-globals
-          print(exportMapRef.current);
+          handlePrint();
         }
         // Reset original map size
         exportMapRef.current.style.width = size[1];
@@ -234,69 +254,175 @@ export default function MapExportSection({ exportMap }) {
         exportMap.setSize(size);
         exportMap.updateSize();
         exportMap.getView().fit(extent, { size });
-        document.body.style.cursor = 'auto';
+        setIsExporting(false);
       });
     });
     exportMap.renderSync();
   };
 
-  const addText = () => {
-    exportMap.addControl(customControls.title);
-  };
-
   const handleTitleChange = e => {
     document.getElementById('title').innerHTML = e.target.value;
   };
-
-  const handleNorthArrow = e => {
-    if (e.target.checked) {
-      setNorthArrowChecked(true);
-      exportMap.addControl(customControls.northArrow);
+  const handleSubTitleChange = e => {
+    document.getElementById('subtitle').innerHTML = e.target.value;
+  };
+  const handleDescriptionChange = e => {
+    if (e.target.value === '') {
+      document.getElementById('map-description').innerHTML = null;
     } else {
-      setNorthArrowChecked(false);
-      exportMap.removeControl(customControls.northArrow);
+      document.getElementById(
+        'map-description',
+      ).innerHTML = `<h6 class='naxatw-text-primary-400 naxatw-font-bold'>DESCRIPTION</h6>${e.target.value}`;
     }
   };
 
-  const handleScale = e => {
+  const handleNorthArrow = useCallback(e => {
+    if (e.target.checked) {
+      setNorthArrowChecked(true);
+      document.getElementById('north-arrow').style.display = 'block';
+    } else {
+      setNorthArrowChecked(false);
+      document.getElementById('north-arrow').style.display = 'none';
+    }
+  }, []);
+
+  const handleScale = useCallback(e => {
     if (e.target.checked) {
       setScaleChecked(true);
       exportMap.addControl(customControls.scale);
+      document
+        .getElementById('scale-line')
+        .appendChild(document.querySelector('.ol-scale-line'));
+      document.querySelector('.ol-scale-line').style.position = 'relative';
+      document.getElementById('scale-numeric').style.display = 'flex';
     } else {
       setScaleChecked(false);
       exportMap.removeControl(customControls.scale);
+      document.getElementById('scale-numeric').style.display = 'none';
     }
-  };
+  }, []);
 
-  const handleGraticule = e => {
+  const handleGraticule = useCallback(e => {
     if (e.target.checked) {
       setGraticuleChecked(true);
-      exportMap.addControl(customControls.graticule);
+      customControls.graticule.setMap(exportMap);
     } else {
       setGraticuleChecked(false);
-      exportMap.removeControl(customControls.graticule);
+      customControls.graticule.setMap(null);
     }
+  }, []);
+
+  const handleLegend = useCallback(e => {
+    if (e.target.checked) {
+      setLegendChecked(true);
+      document.getElementById('export-legend').style.display = 'block';
+    } else {
+      setLegendChecked(false);
+      document.getElementById('export-legend').style.display = 'none';
+    }
+  }, []);
+
+  const handleCoordinate = useCallback(e => {
+    if (e.target.checked) {
+      setCoordinateChecked(true);
+      document.getElementById('map-coordinate').style.display = 'block';
+    } else {
+      setCoordinateChecked(false);
+      document.getElementById('map-coordinate').style.display = 'none';
+    }
+  }, []);
+
+  const addTitle = () => {
+    const element = document.createElement('div');
+    element.style.position = 'absolute';
+    element.style.top = 0;
+    element.style.right = 0;
+    element.id = 'side-component';
+    element.className = 'naxatw-bg-white naxatw-flex naxatw-flex-col resizable';
+    element.innerHTML = `
+      <div class='naxatw-overflow-hidden'>
+        <div id='logo' class='naxatw-flex naxatw-justify-between naxatw-px-2 naxatw-py-2'>
+          <div id='organization-logo'>
+            <img src=${organizationDetail?.cover_image} class='naxatw-max-h-10 naxatw-max-w-12' />
+          </div>
+          <div id='north-arrow'>
+            <img src=${NorthArrow} width=30 height=40 class='naxatw-max-h-10 naxatw-max-w-8'/>
+          </div>
+        </div>
+        <div id='title' class="naxatw-px-2 naxatw-py-0 naxatw-font-bold naxatw-text-[18px] naxatw-leading-[22px] naxatw-text-grey-800">
+                ${title}
+        </div>
+        <p id='subtitle' class="naxatw-px-2"></p>
+        <div id="export-legend" class="naxatw-px-2 naxatw-py-2"></div>
+        <div id='scale-numeric' class='naxatw-flex naxatw-justify-center'></div>
+        <div id='scale-line' class='naxatw-px-2 naxatw-mt-2 naxatw-flex naxatw-justify-center'></div>
+        <div class="naxatw-px-2 naxatw-py-2 naxatw-flex naxatw-flex-row naxatw-flex-wrap">
+          <div id="map-coordinate">
+            <div class='naxatw-text-primary-400 naxatw-font-bold'>COORDINATE SYSTEM</div>
+              ${coordinatesystem3857}
+          </div>
+          <div id='map-description'></div>
+        </div>
+      </div>
+      <div id="usafiri-logo" class="naxatw-flex naxatw-justify-end naxatw-py-2 naxatw-mt-auto naxatw-bg-primary-50 naxatw-bottom-0">
+        Exported from <img src=${Logo} width=80 height=30 class='naxatw-px-2' />
+      </div>`;
+    exportMapRef.current.appendChild(element);
+  };
+
+  const closeExport = () => {
+    dispatch(setProjectMapState({ toggleMapExport: false }));
+    exportMap.setTarget(mapInfo.target);
+    exportMap.getViewport().style.width = '100%';
+    exportMap.getViewport().style.height = '100%';
+    exportMap.getView().fit(mapInfo.extent, mapInfo.size);
+    exportMap.updateSize();
   };
 
   useEffect(() => {
+    setMapInfo({
+      target: exportMap.getTarget(),
+      size: exportMap.getSize(),
+      extent: exportMap.getView().calculateExtent(),
+    });
     if (exportMap) exportMap.setTarget(exportMapRef.current);
+    exportMap.enableRoation = false;
     exportMap.getViewport().style.backgroundColor = 'white';
-    // exportMap.getViewport().style.width = '75%';
-  }, [exportMap]);
-
-  useEffect(() => {
     exportMap.addControl(customControls.scale);
-    exportMap.addControl(customControls.northArrow);
-    exportMap.addControl(customControls.title);
-  });
+    addTitle();
+    if (organizationDetail?.cover_image === null) {
+      document.getElementById('organization-logo').style.display = 'none';
+      document.getElementById('logo').style.justifyContent = 'flex-end';
+    }
+  }, []);
 
   useEffect(() => {
     handleSize(currentPaperSize, currentOrientation, currentMargin);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPaperSize, currentOrientation, currentMargin]);
 
+  useEffect(() => {
+    if (coordinateChecked === false && currentOrientation === 'portrait') {
+      document.getElementById('map-description').style.maxWidth = '100%';
+    } else if (
+      coordinateChecked === true &&
+      currentOrientation === 'portrait'
+    ) {
+      document.getElementById('map-description').style.maxWidth = '49%';
+    }
+  }, [coordinateChecked]);
+
   return (
-    <div className="naxatw-flex naxatw-w-full naxatw-h-full">
+    <div
+      className="naxatw-absolute naxatw-flex naxatw-w-full naxatw-z-[100]"
+      style={{ height: `calc(100vh - ${projectHeaderHeight}px)` }}
+    >
+      {isExporting && (
+        <div className="naxatw-absolute naxatw-w-full naxatw-h-screen naxatw-bg-slate-400 naxatw-z-[150] naxatw-bg-opacity-75">
+          <div className="naxatw-flex naxatw-h-full naxatw-justify-center naxatw-items-center">
+            <Spinner className="naxatw-fill-primary-400 naxatw-w-24 naxatw-h-24" />
+          </div>
+        </div>
+      )}
       <div
         className="naxatw-bg-grey-100 naxatw-w-1/5 naxatw-px-4 naxatw-py-3.5 naxatw-transition-all naxatw-duration-300 naxatw-overflow-auto scrollbar"
         style={{
@@ -307,9 +433,7 @@ export default function MapExportSection({ exportMap }) {
           <h4>Map Export</h4>
           <a
             className="hover:naxatw-bg-grey-200 naxatw-h-10 naxatw-w-10 naxatw-flex naxatw-justify-center naxatw-items-center naxatw-rounded-lg"
-            onClick={() =>
-              dispatch(setProjectMapState({ toggleMapExport: false }))
-            }
+            onClick={closeExport}
           >
             <MaterialIcon name="close" />
           </a>
@@ -323,7 +447,28 @@ export default function MapExportSection({ exportMap }) {
               className="naxatw-input"
               name="mapTitle"
               placeholder="Enter Map Title"
+              defaultValue={title}
               onChange={handleTitleChange}
+            />
+          </div>
+          <div className="naxatw-space-y-2">
+            <label className="naxatw-label">Map Sub-Title</label>
+            <input
+              type="text"
+              className="naxatw-input"
+              name="mapTitle"
+              placeholder="Enter Map Sub-Title"
+              onChange={handleSubTitleChange}
+            />
+          </div>
+          <div className="naxatw-space-y-2">
+            <label className="naxatw-label">Map Description</label>
+            <input
+              type="text"
+              className="naxatw-input"
+              name="mapTitle"
+              placeholder="Enter Map Description"
+              onChange={handleDescriptionChange}
             />
           </div>
 
@@ -405,7 +550,7 @@ export default function MapExportSection({ exportMap }) {
         <div className="naxatw-mt-[1.875rem] naxatw-space-y-5">
           <div className="naxatw-flex naxatw-justify-between">
             <p className="naxatw-text-body-lg">Legend</p>
-            <Toggle checked />
+            <Toggle checked={legendChecked} onChange={handleLegend} />
           </div>
           <div className="naxatw-flex naxatw-justify-between">
             <p className="naxatw-text-body-lg">North arrow</p>
@@ -419,8 +564,12 @@ export default function MapExportSection({ exportMap }) {
             <p className="naxatw-text-body-lg">Grid</p>
             <Toggle checked={graticuleChecked} onChange={handleGraticule} />
           </div>
+          <div className="naxatw-flex naxatw-justify-between">
+            <p className="naxatw-text-body-lg">Coordinate System</p>
+            <Toggle checked={coordinateChecked} onChange={handleCoordinate} />
+          </div>
         </div>
-        <div className="naxatw-mt-[5rem] naxatw-flex naxatw-justify-center">
+        <div className="naxatw-mt-[3rem] naxatw-flex naxatw-justify-center">
           <Button
             className="naxatw-btn-primary"
             iconLeft="file_download"
@@ -429,6 +578,7 @@ export default function MapExportSection({ exportMap }) {
             Export
           </Button>
         </div>
+        <Legend legendData={legendData} />
       </div>
       <div
         ref={paperRef}
@@ -438,17 +588,6 @@ export default function MapExportSection({ exportMap }) {
           ref={exportMapRef}
           className="naxatw-bg-white naxatw-w-full naxatw-h-full naxatw-mx-auto naxatw-absolute"
         />
-        {/* <div id="sidebar-export" className="naxatw-flex naxatw-flex-col">
-          <div className="naxatw-px-4 naxatw-py-3 naxatw-bg-grey-100 naxatw-font-bold naxatw-text-[18px] naxatw-leading-[22px] naxatw-text-grey-800">
-            Transportation mapping Kenya 2
-          </div>
-          <div className="naxatw-px-4 naxatw-py-3">
-            <p className="naxatw-text-body-sm">LEGEND</p>
-          </div>
-          <div className="naxatw-mt-auto naxatw-bg-primary-50">
-            Exported from USAFIRI
-          </div>
-        </div> */}
       </div>
     </div>
   );

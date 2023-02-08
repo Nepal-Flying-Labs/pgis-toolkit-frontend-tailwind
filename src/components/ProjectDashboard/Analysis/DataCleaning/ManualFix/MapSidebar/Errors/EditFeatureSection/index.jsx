@@ -183,8 +183,8 @@ export default function EditFeatureSection() {
         <div className="naxatw-fixed naxatw-flex naxatw-bottom-0 naxatw-w-full naxatw-py-4 naxatw-bg-grey-100 naxatw-gap-3">
           <Button
             className="naxatw-btn-primary"
-            onClick={handleSubmit}
             isLoading={isPosting}
+            onClick={handleSubmit}
           >
             Save
           </Button>

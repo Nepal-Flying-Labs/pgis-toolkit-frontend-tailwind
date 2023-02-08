@@ -243,7 +243,7 @@ export default function MapSection() {
         ))}
 
         <DrawTool
-          enable={!!drawFeatureId && geojsonFeatures}
+          enable={!!drawFeatureId || selectedError?.geojson}
           geojson={selectedError?.geojson}
           geometryType={selectedLayer.geom_type}
           zIndex={100}

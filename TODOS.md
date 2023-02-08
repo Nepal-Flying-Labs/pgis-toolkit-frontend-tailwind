@@ -44,8 +44,10 @@
 
 ### MANUAL FIX
 
-- [ ] refactor manual fix (remove save button)
+- [x] refactor manual fix (remove save button)
+- [ ] save feature edit for multipart not working
 - [ ] edit multipart geometry
+- [ ] loader while exploding
 - [ ] check error fixes while save button click
 - [ ] overlap, duplicate geometry error talk to Aditya
 - [ ] self intersect

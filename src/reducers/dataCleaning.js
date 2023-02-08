@@ -589,8 +589,19 @@ const updateFeatureCollectionSuccess = (state, action) =>
   produce(state, draft => {
     const refreshLayerId = action.payload.layer;
     const { id, attributes, geometry } = action.payload;
-    if (draft.manualFix.selectedError.type === 'null') {
-      const changedFeature = draft.errorFeaturesData.null.find(
+    const { type, parentId } = draft.manualFix.selectedError;
+    if (type === 'multipart') {
+      const parentFeature = draft.errorFeaturesData[type].find(
+        item => item.id === parentId,
+      );
+      const changedFeature = parentFeature.explodedFeatures.find(
+        item => item.id === id,
+      );
+      changedFeature.fixed = true;
+      changedFeature.attributes = attributes;
+      changedFeature.geojson = parse(geometry);
+    } else {
+      const changedFeature = draft.errorFeaturesData[type].find(
         item => item.id === id,
       );
       changedFeature.fixed = true;
@@ -712,6 +723,7 @@ const explodeFeatureSuccess = (state, action) =>
       item => item.id === featureId,
     );
     explodedFeature.explodedFeatures = explodeData.map(item => ({
+      parentId: featureId,
       id: item.id,
       attributes: item.attributes,
       geojson: parse(item.geometry),

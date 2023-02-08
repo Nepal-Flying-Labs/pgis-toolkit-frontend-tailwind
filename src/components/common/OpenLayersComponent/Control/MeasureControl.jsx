@@ -15,11 +15,14 @@ import { Style, Fill, Stroke } from 'ol/style';
 import { Overlay } from 'ol';
 import { Polygon, LineString } from 'ol/geom';
 import { unByKey } from 'ol/Observable';
+import useOutsideClick from '@Hooks/useOutsideClick';
 
 function MeasureControl({ map, style, buttonText, measureBoth = false }) {
-  const controlRef = useRef(null);
+  const [divRef, toggle, handleToggle] = useOutsideClick();
+
+  // const controlRef = useRef(null);
   const drawRef = useRef();
-  const [options, setOptions] = useState(false);
+  // const [options, setOptions] = useState(false);
 
   let measureVector;
   let measureDraw;
@@ -161,20 +164,20 @@ function MeasureControl({ map, style, buttonText, measureBoth = false }) {
     addInteraction();
   };
 
-  const showOptions = () => {
-    setOptions(prevState => !prevState);
-  };
+  // const showOptions = () => {
+  //   setOptions(prevState => !prevState);
+  // };
 
   return (
     <div
-      ref={controlRef}
+      ref={divRef}
       className="naxatw-pt-1 "
       style={{ ...style, cursor: 'pointer' }}
     >
       <a
         ref={drawRef}
         onClick={
-          measureBoth ? showOptions : () => clickHandler({ type: 'Polygon' })
+          measureBoth ? handleToggle : () => clickHandler({ type: 'Polygon' })
         }
         type="button"
         title="Measure"
@@ -182,32 +185,40 @@ function MeasureControl({ map, style, buttonText, measureBoth = false }) {
       >
         {buttonText}
       </a>
-      <ul
-        className="naxatw-bg-white naxatw-rounded-sm"
-        style={{
-          position: 'absolute',
-          right: '0px',
-          top: '42px',
-          display: options ? '' : 'none',
-        }}
-      >
-        <li className="naxatw-p-2 naxatw-h-10 naxatw-items-center naxatw-justify-center hover:naxatw-bg-grey-100">
-          <a
-            onClick={() => clickHandler({ type: 'LineString' })}
-            title="Add Coordinate"
-          >
-            <i className="material-icons">show_chart</i>
-          </a>
-        </li>
-        <li className="naxatw-p-2 naxatw-h-10 naxatw-items-center naxatw-justify-center hover:naxatw-bg-grey-100">
-          <a
-            onClick={() => clickHandler({ type: 'Polygon' })}
-            title="Measure Length and Area"
-          >
-            <i className="material-icons">crop_square</i>
-          </a>
-        </li>
-      </ul>
+      {toggle && (
+        <ul
+          className="naxatw-bg-white naxatw-rounded-sm naxatw-flex naxatw-shadow-3xl"
+          style={{
+            position: 'absolute',
+            right: '0px',
+            top: '42px',
+            // display: options ? '' : 'none',
+          }}
+        >
+          <li className="naxatw-p-2 naxatw-h-10 naxatw-items-center naxatw-justify-center hover:naxatw-bg-grey-100">
+            <a
+              onClick={() => {
+                clickHandler({ type: 'LineString' });
+                handleToggle();
+              }}
+              title="Add Coordinate"
+            >
+              <i className="material-icons">show_chart</i>
+            </a>
+          </li>
+          <li className="naxatw-p-2 naxatw-h-10 naxatw-items-center naxatw-justify-center hover:naxatw-bg-grey-100">
+            <a
+              onClick={() => {
+                clickHandler({ type: 'Polygon' });
+                handleToggle();
+              }}
+              title="Measure Length and Area"
+            >
+              <i className="material-icons">crop_square</i>
+            </a>
+          </li>
+        </ul>
+      )}
     </div>
   );
 }

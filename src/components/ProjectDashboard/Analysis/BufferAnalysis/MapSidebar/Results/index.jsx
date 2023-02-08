@@ -10,7 +10,7 @@ import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem
 
 const { handleRouteCheckbox, setResultsState, setBufferAnalysisState } =
   BufferAnalysisCreators;
-const { toggleModal } = CommonCreators;
+const { toggleModal, togglePromptDialog } = CommonCreators;
 
 export default function Results() {
   const analysisResults = useSelector(
@@ -73,6 +73,23 @@ export default function Results() {
             detailsListData: [],
           }),
         );
+      },
+    },
+    {
+      id: 'save-layer',
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-symbols-outlined naxatw-mr-2">save</i>
+          <p className="naxatw-text-body-lg">Save Layer</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(
+          setResultsState({
+            selectedAnalysis: data,
+          }),
+        );
+        dispatch(togglePromptDialog('save-buffer-layer'));
       },
     },
     // {

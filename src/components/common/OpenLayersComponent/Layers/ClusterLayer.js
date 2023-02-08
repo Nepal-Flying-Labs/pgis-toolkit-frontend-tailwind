@@ -12,7 +12,7 @@ import { Cluster, OSM as OSMSource } from 'ol/source';
 import { Text, Circle } from 'ol/style';
 import VectorSource from 'ol/source/Vector';
 import { hexToRgba } from '@Utils/commonUtils';
-import getSvgImageIcon from '@Utils/map/getSvgImageIcon';
+import getSvgImageIcon from '@Utils/getSvgImageIcon';
 // import MapContext from '../MapContext';
 import {
   defaultStyles,
@@ -26,15 +26,12 @@ function setAsyncStyle(style, feature) {
   const iconUrl = style?.icon;
   const styleCache = {};
   const size = feature?.get('features')?.length; // const isSVGIcon = checkIfSvgUrl(iconUrl);
-  console.log('first');
   if (size === 1) {
     // eslint-disable-next-line no-inner-declarations
     async function fetchMyAPI() {
-      console.log('first1');
       /* eslint-disable-next-line no-await-in-loop */
       const image = await getSvgImageIcon(iconUrl, style.background_color);
       if (image) {
-        console.log('first1');
         return generateLayerStylePoint({
           style: { ...style, icon: image },
           feature,
@@ -48,12 +45,12 @@ function setAsyncStyle(style, feature) {
     image: new Circle({
       radius: 13,
       stroke: new Stroke({
-        color: hexToRgba(style.color, 100),
+        color: hexToRgba(style.color, style.opacity || 100),
         // color: 'rgba(200, 13, 18, 0.6)',
         width: 4,
       }),
       fill: new Fill({
-        color: hexToRgba(style.background_color, 100),
+        color: hexToRgba(style.background_color, style.opacity || 100),
         width: 40,
       }),
     }),

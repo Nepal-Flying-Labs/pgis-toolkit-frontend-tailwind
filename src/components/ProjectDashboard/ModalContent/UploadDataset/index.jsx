@@ -29,6 +29,24 @@ const { toggleModalTwo } = CommonCreators;
 
 const currentDate = new Date();
 
+const dataSource = [
+  {
+    id: 1,
+    value: 'osm',
+    label: 'OSM',
+  },
+  {
+    id: 2,
+    value: 'survey',
+    label: 'Survey',
+  },
+  {
+    id: 3,
+    value: 'computer',
+    label: 'Computer',
+  },
+];
+
 export default function UploadDataset() {
   const { projectId } = useParams();
   const themes = useSelector(state => state.projectMap.themes);
@@ -97,6 +115,14 @@ export default function UploadDataset() {
     setUploadedFiles(prev =>
       prev.map(item =>
         item.id === +id ? { ...item, category: selectedItem.id } : { ...item },
+      ),
+    );
+  };
+
+  const handleSourceSelect = (id, selectedItem) => {
+    setUploadedFiles(prev =>
+      prev.map(item =>
+        item.id === +id ? { ...item, source: selectedItem.value } : { ...item },
       ),
     );
   };
@@ -244,7 +270,19 @@ export default function UploadDataset() {
 
                     <div className="naxatw-space-y-2 naxatw-grow">
                       <label className="naxatw-label">Data Source*</label>
-                      <input
+                      <Select
+                        options={dataSource || []}
+                        labelKey="label"
+                        valueKey="value"
+                        placeholder="Choose"
+                        onChange={selectedItem =>
+                          handleSourceSelect(id, selectedItem)
+                        }
+                        selectedValue={source}
+                        style={{ minWidth: '10rem' }}
+                      />
+                      {/* <input
+
                         type="text"
                         className="naxatw-input"
                         id={id}
@@ -252,7 +290,7 @@ export default function UploadDataset() {
                         value={source}
                         placeholder="Enter Data Source"
                         onChange={handleChange}
-                      />
+                      /> */}
                       {errorFields?.[id]?.includes('source') && (
                         <FormErrorMessage message="Required" />
                       )}
@@ -274,15 +312,16 @@ export default function UploadDataset() {
                           selectedValue={category}
                           style={{ minWidth: '10rem' }}
                         />
-
-                        <MaterialIcon
-                          name="add"
-                          className="naxatw-text-secondary-300 naxatw-cursor-pointer"
-                          wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
-                          onIconClick={() =>
-                            dispatch(toggleModalTwo('add-dataset-category'))
-                          }
-                        />
+                        <div title="Add Category">
+                          <MaterialIcon
+                            name="add"
+                            className="naxatw-text-secondary-300 naxatw-cursor-pointer"
+                            wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
+                            onIconClick={() =>
+                              dispatch(toggleModalTwo('add-dataset-category'))
+                            }
+                          />
+                        </div>
                       </div>
                       {errorFields?.[id]?.includes('category') && (
                         <FormErrorMessage message="Required" />

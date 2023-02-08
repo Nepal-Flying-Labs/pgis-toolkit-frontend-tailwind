@@ -17,6 +17,7 @@ import {
   applyBufferAnalysis,
   getBufferAnalysisData,
   getBufferAreaCollection,
+  saveBufferLayer,
 } from '@Services/bufferAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { copyFeatures } from '@Services/dataCleaning';
@@ -112,6 +113,37 @@ export function* getSelectedLayerFeatureRequest() {
   }
 }
 
+export function* saveBufferLayerRequest({ payload }) {
+  try {
+    const response = yield call(saveBufferLayer, payload);
+    const responseData = response.data;
+    yield put(
+      bufferAnalysisActions.saveBufferLayerSuccess({
+        ...responseData,
+        analysisId: payload.analysis,
+      }),
+    );
+    yield put(commonActions.togglePromptDialog());
+    const { layers } = yield select(state => state.analysis);
+    const { theme, layer } = responseData;
+    yield put(
+      analysisActions.setAnalysisState({
+        layers: {
+          ...layers,
+          [theme]: [
+            { ...responseData, checked: true, layer_type: 'Vector', id: layer },
+            ...layers[theme],
+          ],
+        },
+        zoomToLayerId: layer,
+      }),
+    );
+  } catch (error) {
+    yield put(bufferAnalysisActions.saveBufferLayerFailure());
+    throw error;
+  }
+}
+
 function* bufferAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_BUFFER_ANALYSIS_REQUEST,
@@ -136,6 +168,10 @@ function* bufferAnalysisWatcher() {
   yield takeLatest(
     Types.GET_SELECTED_LAYER_FEATURE_REQUEST,
     withLoader(withErrorHandler(getSelectedLayerFeatureRequest)),
+  );
+  yield takeLatest(
+    Types.SAVE_BUFFER_LAYER_REQUEST,
+    withLoader(withErrorHandler(saveBufferLayerRequest)),
   );
 }
 

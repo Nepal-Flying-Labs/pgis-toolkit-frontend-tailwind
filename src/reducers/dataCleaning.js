@@ -22,6 +22,7 @@ import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/style
 //     geojsonFeatures: null,
 //     selectedFeatureGeojson: null,
 //     selectedFeatureAttributes: null,
+//     explodingFeatureIds: [], // for showing loader while exploding features
 //   },
 //   selectedLayer: null, // selected layer for manual fix
 //   errorFeaturesData: null,
@@ -95,6 +96,7 @@ const initialState = {
     geojsonFeatures: null,
     selectedFeatureGeojson: null,
     selectedFeatureAttributes: null,
+    explodingFeatureIds: [],
   },
   selectedLayer: {
     id: 647,
@@ -164,6 +166,26 @@ const initialState = {
     ],
     multipart: [
       {
+        id: 20144,
+        checked: false,
+      },
+      {
+        id: 20149,
+        checked: false,
+      },
+      {
+        id: 20145,
+        checked: false,
+      },
+      {
+        id: 20146,
+        checked: false,
+      },
+      {
+        id: 20147,
+        checked: false,
+      },
+      {
         id: 20139,
         checked: false,
       },
@@ -180,27 +202,7 @@ const initialState = {
         checked: false,
       },
       {
-        id: 20149,
-        checked: false,
-      },
-      {
         id: 20154,
-        checked: false,
-      },
-      {
-        id: 20144,
-        checked: false,
-      },
-      {
-        id: 20145,
-        checked: false,
-      },
-      {
-        id: 20146,
-        checked: false,
-      },
-      {
-        id: 20147,
         checked: false,
       },
       {
@@ -222,11 +224,23 @@ const initialState = {
     ],
     self_instersect: [
       {
+        id: 20138,
+        checked: false,
+      },
+      {
         id: 20140,
         checked: false,
       },
       {
         id: 20141,
+        checked: false,
+      },
+      {
+        id: 20143,
+        checked: false,
+      },
+      {
+        id: 20153,
         checked: false,
       },
     ],
@@ -411,7 +425,7 @@ const initialState = {
         checkAPI: 'check_self_intersecting_geometry',
         fixAPI: 'fix_self_intersecting_geometry',
         status: 'error',
-        errorData: 2,
+        errorData: 5,
         totalData: 17,
         checked: false,
       },
@@ -715,6 +729,11 @@ const saveAttributeEdit = (state, action) =>
     };
   });
 
+const explodeFeatureRequest = (state, action) =>
+  produce(state, draft => {
+    draft.manualFix.explodingFeatureIds.push(action.payload);
+  });
+
 const explodeFeatureSuccess = (state, action) =>
   produce(state, draft => {
     const { layerData, explodeData } = action.payload;
@@ -729,6 +748,16 @@ const explodeFeatureSuccess = (state, action) =>
       geojson: parse(item.geometry),
     }));
     explodedFeature.fixed = true;
+    draft.manualFix.explodingFeatureIds =
+      draft.manualFix.explodingFeatureIds.filter(item => item !== featureId);
+  });
+
+const explodeFeatureFailure = (state, action) =>
+  produce(state, draft => {
+    draft.manualFix.explodingFeatureIds =
+      draft.manualFix.explodingFeatureIds.filter(
+        item => item !== action.payload,
+      );
   });
 
 const dataCleaningReducer = createReducer(initialState, {
@@ -749,7 +778,9 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.GET_FEATURE_GEOJSON_SUCCESS]: getFeatureGeojsonSuccess,
   [Types.RESET_DATA_CLEANING_STATE]: resetDataCleaningState,
   [Types.SAVE_ATTRIBUTE_EDIT]: saveAttributeEdit,
+  [Types.EXPLODE_FEATURE_REQUEST]: explodeFeatureRequest,
   [Types.EXPLODE_FEATURE_SUCCESS]: explodeFeatureSuccess,
+  [Types.EXPLODE_FEATURE_FAILURE]: explodeFeatureFailure,
 });
 
 export default dataCleaningReducer;

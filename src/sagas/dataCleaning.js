@@ -239,7 +239,7 @@ export function* explodeFeatureRequest({ payload }) {
       }),
     );
   } catch (error) {
-    yield put(dataCleaningActions.explodeFeatureFailure());
+    yield put(dataCleaningActions.explodeFeatureFailure(payload));
     throw error;
   }
 }
@@ -281,7 +281,7 @@ function* dataCleaningWatcher() {
     Types.START_ANALYSIS_REQUEST,
     withLoader(withErrorHandler(startAnalysisRequest)),
   );
-  yield takeLatest(
+  yield takeEvery(
     Types.EXPLODE_FEATURE_REQUEST,
     withLoader(withErrorHandler(explodeFeatureRequest)),
   );

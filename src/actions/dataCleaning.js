@@ -55,7 +55,7 @@ export const { Types, Creators } = createActions(
 
     explodeFeatureRequest: ['payload'],
     explodeFeatureSuccess: ['payload'],
-    explodeFeatureFailure: null,
+    explodeFeatureFailure: ['payload'],
   },
   { prefix: 'dataCleaning/' },
 );

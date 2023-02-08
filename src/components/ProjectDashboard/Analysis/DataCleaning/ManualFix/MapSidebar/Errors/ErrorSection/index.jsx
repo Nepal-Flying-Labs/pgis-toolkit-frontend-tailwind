@@ -11,6 +11,7 @@ import IconButton from '@Components/common/IconButton';
 import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import DropdownOptions from '@Components/common/DropdownOptions';
+import Spinner from '@Components/common/Spinner/index';
 
 const {
   setManualFixState,
@@ -26,6 +27,9 @@ export default function ErrorSection() {
   const totalErrors = useSelector(totalErrorsSelector);
   const isDeleting = useSelector(state =>
     checkIfLoading(state, [Types.DELETE_SELECTED_FEATURES_REQUEST]),
+  );
+  const explodingFeatureIds = useSelector(
+    state => state.dataCleaning.manualFix.explodingFeatureIds,
   );
   const dispatch = useDispatch();
 
@@ -147,16 +151,20 @@ export default function ErrorSection() {
                           />
                         </span>
                       )}
-                      {type === 'multipart' && !feature.fixed && (
-                        <IconButton
-                          title="Explode"
-                          className="material-icons-outlined"
-                          name="ssid_chart"
-                          onClick={() => {
-                            handleExplodeClick(feature);
-                          }}
-                        />
-                      )}
+                      {type === 'multipart' &&
+                        !feature.fixed &&
+                        (explodingFeatureIds.includes(feature.id) ? (
+                          <Spinner className="naxatw-w-6 naxatw-h-6 naxatw-mr-2 naxatw-fill-secondary-400" />
+                        ) : (
+                          <IconButton
+                            title="Explode"
+                            className="material-icons-outlined"
+                            name="ssid_chart"
+                            onClick={() => {
+                              handleExplodeClick(feature);
+                            }}
+                          />
+                        ))}
                       {type === 'null' && (
                         <IconButton
                           className="material-icons-outlined naxatw-text-delete_btn"

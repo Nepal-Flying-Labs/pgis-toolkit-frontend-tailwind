@@ -83,20 +83,20 @@ export default function EditFeatureSection() {
     },
     onSubmit: data => {
       const payloadData = {};
-      if (selectedErrorType === 'null') {
-        if (!drawnFeatureWkt) {
-          dispatch(toastActions.error({ message: 'Please draw a geometry' }));
-          return;
-        }
-        payloadData.layer = selectedLayer.id;
-        payloadData.geometry = drawnFeatureWkt;
-        payloadData.attributes = data;
-        dispatch(updateFeatureCollectionRequest(selectedError.id, payloadData));
+      if (
+        selectedError.type === 'null' &&
+        !selectedError.fixed &&
+        !drawnFeatureWkt
+      ) {
+        dispatch(toastActions.error({ message: 'Please draw a geometry' }));
         return;
       }
-      if (selectedErrorType === 'multipart') {
-        dispatch(saveAttributeEdit(data));
+      payloadData.layer = selectedLayer.id;
+      if (drawnFeatureWkt) {
+        payloadData.geometry = drawnFeatureWkt;
       }
+      payloadData.attributes = data;
+      dispatch(updateFeatureCollectionRequest(selectedError.id, payloadData));
     },
   });
 

@@ -28,7 +28,10 @@ export default function ViewRouteAttribute() {
 
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-2 naxatw-w-full naxatw-h-full">
-      <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative  naxatw-w-full naxatw-max-h-[calc(100vh-25rem)] naxatw-min-h-[calc(100vh-25rem)]">
+      <div
+        className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative
+          naxatw-w-full naxatw-max-h-[calc(100vh-25rem)] naxatw-min-h-[14rem]"
+      >
         {loading ? (
           <TableSkeleton itemNumber={5} />
         ) : (
@@ -36,14 +39,14 @@ export default function ViewRouteAttribute() {
             data={individualAnalysisData || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            headerWidths={['10px']}
+            headerWidths={['70px', '150px', '100px', '100px', '100px', '100px']}
           >
             <TableHeader
               dataField="SN"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowSpan_2"
               dataFormat={(row, _, index) => (
-                <p className="naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg naxatw-p-3">
+                <p className="naxatw-overflow-ellipsis naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg naxatw-p-3">
                   {index + 1}
                 </p>
               )}
@@ -53,7 +56,7 @@ export default function ViewRouteAttribute() {
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <p className="naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
+                <p className="naxatw-overflow-ellipsis naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
                   {`Route ${row.route_no}` || '-'}
                 </p>
               )}
@@ -63,7 +66,7 @@ export default function ViewRouteAttribute() {
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-2.5"
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <p className="naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
+                <p className="naxatw-overflow-ellipsis naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
                   {row.length || '-'}
                 </p>
               )}
@@ -73,7 +76,7 @@ export default function ViewRouteAttribute() {
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <p className="naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
+                <p className="naxatw-overflow-ellipsis naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
                   {row.travel_time || '-'}
                 </p>
               )}
@@ -83,7 +86,7 @@ export default function ViewRouteAttribute() {
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <p className="naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
+                <p className="naxatw-overflow-ellipsis naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
                   <i
                     className="material-symbols-outlined"
                     style={{ color: row.is_optimum ? '#40B449' : '#FF0F0F' }}
@@ -103,7 +106,7 @@ export default function ViewRouteAttribute() {
                   0,
                 );
                 return (
-                  <p className="naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
+                  <p className="naxatw-overflow-ellipsis naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
                     {totalObstacles}
                   </p>
                 );

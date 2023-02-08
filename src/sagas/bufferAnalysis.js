@@ -1,11 +1,23 @@
-import { call, all, put, takeLatest, takeEvery } from 'redux-saga/effects';
+import {
+  call,
+  all,
+  put,
+  takeLatest,
+  takeEvery,
+  select,
+} from 'redux-saga/effects';
 import bufferAnalysisActions, { Types } from '@Actions/bufferAnalysis';
+import commonActions from '@Actions/common';
+import { getFeatureCollection } from '@Services/projectMap';
+
 import analysisActions from '@Actions/analysis';
 import prepareFormData from '@Utils/prepareFormData';
 // import toastActions from '@Actions/toast';
 import {
   applyBufferAnalysis,
   getBufferAnalysisData,
+  getBufferAreaCollection,
+  saveBufferLayer,
 } from '@Services/bufferAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { copyFeatures } from '@Services/dataCleaning';
@@ -71,6 +83,67 @@ export function* getDetailsChartRequest({ params }) {
   }
 }
 
+export function* getAnalysisDataRequest({ params }) {
+  try {
+    const response = yield call(getBufferAreaCollection, params);
+    yield put(bufferAnalysisActions.getAnalysisDataSuccess(response.data));
+  } catch (error) {
+    yield put(bufferAnalysisActions.getAnalysisDataFailure());
+    throw error;
+  }
+}
+
+export function* getSelectedLayerFeatureRequest() {
+  try {
+    const { attributeList } = yield select(
+      state => state.analysis.layerAttributesList,
+    );
+    const selectedFeature = attributeList.filter(item => item.checked);
+    const response = yield all(
+      selectedFeature.map(feature => call(getFeatureCollection, feature.id)),
+    );
+    const newResponse = response.map(res => res.data);
+    yield put(
+      bufferAnalysisActions.getSelectedLayerFeatureSuccess(newResponse),
+    );
+    yield put(commonActions.toggleModal());
+  } catch (error) {
+    yield put(bufferAnalysisActions.getSelectedLayerFeatureFailure());
+    throw error;
+  }
+}
+
+export function* saveBufferLayerRequest({ payload }) {
+  try {
+    const response = yield call(saveBufferLayer, payload);
+    const responseData = response.data;
+    yield put(
+      bufferAnalysisActions.saveBufferLayerSuccess({
+        ...responseData,
+        analysisId: payload.analysis,
+      }),
+    );
+    yield put(commonActions.togglePromptDialog());
+    const { layers } = yield select(state => state.analysis);
+    const { theme, layer } = responseData;
+    yield put(
+      analysisActions.setAnalysisState({
+        layers: {
+          ...layers,
+          [theme]: [
+            { ...responseData, checked: true, layer_type: 'Vector', id: layer },
+            ...layers[theme],
+          ],
+        },
+        zoomToLayerId: layer,
+      }),
+    );
+  } catch (error) {
+    yield put(bufferAnalysisActions.saveBufferLayerFailure());
+    throw error;
+  }
+}
+
 function* bufferAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_BUFFER_ANALYSIS_REQUEST,
@@ -87,6 +160,18 @@ function* bufferAnalysisWatcher() {
   yield takeEvery(
     Types.GET_DETAILS_CHART_REQUEST,
     withLoader(withErrorHandler(getDetailsChartRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ANALYSIS_DATA_REQUEST,
+    withLoader(withErrorHandler(getAnalysisDataRequest)),
+  );
+  yield takeLatest(
+    Types.GET_SELECTED_LAYER_FEATURE_REQUEST,
+    withLoader(withErrorHandler(getSelectedLayerFeatureRequest)),
+  );
+  yield takeLatest(
+    Types.SAVE_BUFFER_LAYER_REQUEST,
+    withLoader(withErrorHandler(saveBufferLayerRequest)),
   );
 }
 

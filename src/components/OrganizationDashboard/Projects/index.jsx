@@ -1,12 +1,28 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
+import { useSelector, useDispatch } from 'react-redux';
+import { Creators } from '@Actions/organizationDashboard';
 import MapSidebar from './MapSidebar';
 import MapSection from './MapSection';
 
+const { getProjectsCentroidGeojsonRequest } = Creators;
+
 export default function Projects() {
+  const { organizationId } = useParams();
+  const dispatch = useDispatch();
+  const centroidGeojson = useSelector(
+    state => state.organizationDashboard.centroidGeojson,
+  );
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
+
+  useEffect(() => {
+    if (centroidGeojson) return;
+    dispatch(
+      getProjectsCentroidGeojsonRequest({ organization: organizationId }),
+    );
+  }, [organizationId, dispatch, centroidGeojson]);
 
   return (
     <div

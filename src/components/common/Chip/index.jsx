@@ -10,6 +10,7 @@ export default function Chip({
   iconClassName,
   iconStyle,
   className,
+  onIconRightClick,
 }) {
   return (
     <div
@@ -42,6 +43,7 @@ export default function Chip({
           tabIndex="0"
           className={`naxatw-text-[24px] naxatw-text-grey-800 ${iconClassName}`}
           style={iconStyle}
+          onClick={onIconRightClick}
         >
           {iconRight}
         </i>
@@ -58,6 +60,7 @@ Chip.defaultProps = {
   iconClassName: 'material-icons',
   iconStyle: {},
   className: '',
+  onIconRightClick: () => {},
 };
 
 Chip.propTypes = {
@@ -69,4 +72,5 @@ Chip.propTypes = {
   iconClassName: PropTypes.string,
   iconStyle: PropTypes.object,
   className: PropTypes.string,
+  onIconRightClick: PropTypes.func,
 };

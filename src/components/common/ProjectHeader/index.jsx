@@ -12,7 +12,7 @@ import AvatarIcon from '@Assets/images/user-avatar.png';
 import HeaderProfile from '../Header/HeaderProfile';
 
 const organizationHeaderData = [
-  { label: 'Info', route: 'home', disabled: false },
+  { label: 'Organization Info', route: 'home', disabled: false },
   { label: 'Projects', route: 'projects', disabled: false },
   { label: 'User', route: 'user', disabled: false },
   { label: 'Settings', route: 'settings', disabled: false },
@@ -24,7 +24,7 @@ const projectHeaderData = [
   { label: 'Document', route: 'document', disabled: false },
   { label: 'Gallery', route: 'gallery', disabled: false },
   { label: 'Users', route: 'users', disabled: false },
-  { label: 'Info', route: 'info', disabled: false },
+  { label: 'Project Info', route: 'info', disabled: false },
   { label: 'Settings', route: 'settings', disabled: false },
 ];
 

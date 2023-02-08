@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import toastActions from '@Actions/toast';
 import PropTypes from 'prop-types';
+import { checkIfLoading } from '@Utils/loaderSelector';
 import DropdownSelect from './DropdownSelect';
 import MaterialIcon from '../MaterialIcon/index';
 
@@ -23,7 +26,10 @@ export default function Pagination({
   rowSelect,
   handleSelect,
 }) {
+  const dispatch = useDispatch();
   const [jump, setJump] = useState(1);
+
+  const loadingActions = useSelector(state => state.loader.loader.actions);
 
   return (
     <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-mt-3">
@@ -55,7 +61,9 @@ export default function Pagination({
             style={{ outline: 0 }}
             role="button"
             onKeyPress={() => previousPage()}
-            onClick={() => previousPage()}
+            onClick={
+              loadingActions.length > 0 ? () => {} : () => previousPage()
+            }
           >
             <MaterialIcon
               name="chevron_left"
@@ -68,7 +76,7 @@ export default function Pagination({
             tabIndex={0}
             role="button"
             onKeyPress={() => nextPage()}
-            onClick={() => nextPage()}
+            onClick={loadingActions.length > 0 ? () => {} : () => nextPage()}
           >
             <MaterialIcon
               name="chevron_right"
@@ -91,7 +99,16 @@ export default function Pagination({
               }
             }}
             onKeyDown={e => {
-              if (e.key === 'Enter') jumpTo(e.target.value);
+              if (e.key === 'Enter') {
+                const { value } = e.target;
+                if (parseInt(value, 10) > parseInt(maxPage, 10)) {
+                  dispatch(
+                    toastActions.error({ message: 'Page out of range' }),
+                  );
+                } else {
+                  jumpTo(e.target.value);
+                }
+              }
             }}
             min="1"
             max={`${maxPage}`}

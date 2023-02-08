@@ -176,7 +176,7 @@ const SaveAsDraft = () => {
             onClick={() => dispatch(togglePromptDialog(''))}
             className="naxatw-w-[5.25rem] naxatw-text-[#00A699] hover:naxatw-underline hover:naxatw-bg-gray-100"
           >
-            Discard
+            Cancel
           </Button>
           <Button
             onClick={handleSaveDraft}

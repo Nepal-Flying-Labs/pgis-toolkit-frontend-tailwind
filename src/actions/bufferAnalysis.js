@@ -32,6 +32,18 @@ export const { Types, Creators } = createActions(
     getDetailsChartRequest: ['params'],
     getDetailsChartSuccess: ['payload'],
     getDetailsChartFailure: ['payload'],
+
+    getAnalysisDataRequest: ['params'],
+    getAnalysisDataSuccess: ['payload'],
+    getAnalysisDataFailure: null,
+
+    getSelectedLayerFeatureRequest: ['payload'],
+    getSelectedLayerFeatureSuccess: ['payload'],
+    getSelectedLayerFeatureFailure: ['payload'],
+
+    saveBufferLayerRequest: ['payload'],
+    saveBufferLayerSuccess: ['payload'],
+    saveBufferLayerFailure: null,
   },
   { prefix: 'bufferAnalysis/' },
 );

@@ -1,4 +1,5 @@
 ### ISSUES
+
 - [ ] icon grey
 - [ ] required field validation while geom edit for feature
 - [ ] save data query modal mt remove
@@ -7,27 +8,29 @@
 - [ ] boundary zindex least
 - [ ] hand icon while edit hover
 - [ ] zoom to feature on attr table
-- [ ] data query value search 
-- [ ] meter/km feet unit change 
-- [ ] label in map 
+- [ ] data query value search
+- [ ] meter/km feet unit change
+- [ ] label in map
 
 ### Backend
 
 - [ ] patch wms layer not working
 - [ ] delete wms layer not working
 
-
 ### Organization Module
+
 - [ ] Implement User Permission and role
 - [ ] responsive project header (long project name)
 - [ ] token session expire (session expire toast)
 
 ### ProjectDashboard/Data
-- [ ] download layer not working 
+
+- [ ] download layer not working
 - [ ] remove gpx option for Polygon and MultiPolygon
-- [ ] adjust data catalog table width 
+- [ ] adjust data catalog table width
 
 ### ISSUES JAN 18
+
 - [ ] Check error text review
 - [ ] Draw tool issue (multiple feature add when zoom)
 - [ ] After data upload is successful, repeatative toast message is shown

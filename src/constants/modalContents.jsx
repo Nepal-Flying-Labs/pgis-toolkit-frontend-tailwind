@@ -44,7 +44,9 @@ import ViewRouteAttribute from '@Components/ProjectDashboard/Analysis/ModalConte
 import ViewBufferAttribute from '@Components/ProjectDashboard/Analysis/ModalContent/ViewBufferAttribute';
 import DeleteAnOrganization from '@Components/Organizations/ModalContent/DeleteAnOrganization';
 import SaveRouteLayer from '@Components/ProjectDashboard/Analysis/ModalContent/SaveRouteLayer';
+import SaveBufferLayer from '@Components/ProjectDashboard/Analysis/ModalContent/SaveBufferLayer';
 import SelectLayerFeature from '@Components/ProjectDashboard/Analysis/ModalContent/SelectLayerFeature';
+import AddDatasetCategory from '@Components/ProjectDashboard/ModalContent/AddDatasetCategory/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -339,6 +341,14 @@ export function getPromptDialogContent(content) {
         title: 'Save Layer',
         content: <SaveRouteLayer />,
       };
+
+    // buffer analysis
+    case 'save-buffer-layer':
+      return {
+        title: 'Save Layer',
+        content: <SaveBufferLayer />,
+      };
+
     case 'delete-layer-attribute':
       return {
         title: 'Delete attribute',
@@ -357,6 +367,11 @@ export function getModalTwoContent(content) {
       return {
         title: 'Edit Attribute',
         content: <EditLayerAttribute />,
+      };
+    case 'add-dataset-category':
+      return {
+        title: 'Add Category',
+        content: <AddDatasetCategory />,
       };
     default:
       return {

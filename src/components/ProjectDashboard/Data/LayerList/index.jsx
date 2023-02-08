@@ -97,7 +97,7 @@ export default function LayerList() {
           </Button>
         */}
       {/* </div> */}
-      <div className="naxa-table xl:naxatw-h-[calc(100vh-26rem)] naxatw-h-[calc(100vh-20rem)] naxatw-overflow-x-auto  scrollbar naxatw-relative">
+      <div className="naxa-table xl:naxatw-h-[calc(100vh-26rem)] naxatw-h-[calc(100vh-20rem)] naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-shadow-inner">
         {!loading ? (
           <Table
             rowClassName="naxatw-py-1 naxatw-px-3"
@@ -107,15 +107,14 @@ export default function LayerList() {
             headerClassName="naxatw-py-1 naxatw-px-3"
             headerWidths={[
               '1%',
-              '400px',
+              '350px',
               '220px',
               '150px',
               '120px',
               '120px',
               '120px',
-              '120px',
-              '160px',
-              '150px',
+              '100px',
+              '50px',
             ]}
             onBtnClick={row => {
               dispatch(setDataState({ selectedData: row }));
@@ -214,7 +213,7 @@ export default function LayerList() {
                 </span>
               )}
             />
-            <TableHeader
+            {/* <TableHeader
               dataField="add_field_data"
               headerClassName="naxatw-py-1 naxatw-px-3 "
               rowcolSpan="rowSpan_2"
@@ -237,7 +236,7 @@ export default function LayerList() {
                   </Button>
                 </span>
               )}
-            />
+            /> */}
             <TableHeader
               dataField=""
               headerClassName="naxatw-py-1 naxatw-px-3 naxatw-text-right"

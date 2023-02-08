@@ -74,16 +74,14 @@ function VerticalBlockChart({ data, dataKey }) {
           <div className="naxatw-w-full naxatw-flex naxatw-mb-2 naxatw-items-center">
             <div className="material-icons naxatw-text-white naxatw-rounded-full naxatw-h-3 naxatw-w-3 naxatw-px-1 naxatw-text-base naxatw-mr-2" />
             {/* d.name */}
-            <div className="naxatw-flex naxatw-justify-between naxatw-w-full naxatw-pl-3">
+            {/* <div className="naxatw-flex naxatw-justify-between naxatw-w-full naxatw-pl-3">
               <div className="title naxatw-text-body-md naxatw-overflow-hidden naxatw-flex-wrap">
                 Total
-                {/* {translationFunc(`mappage_${d.name.toLowerCase().split(' ').join('_')}`)} */}
               </div>
-              {/* mobile view fix count pushed outside the field */}
               <div className="count naxatw-text-button-1">
                 {calTotalCount(data, dataKey)}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

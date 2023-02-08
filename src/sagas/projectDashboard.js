@@ -8,7 +8,6 @@ import {
   delay,
   select,
 } from 'redux-saga/effects';
-
 import projectDashboardActions, { Types } from '@Actions/projectDashboard';
 import projectMapActions from '@Actions/projectMap';
 import toastActions from '@Actions/toast';
@@ -48,6 +47,7 @@ import {
   updateUserRole,
   updateInvitedUserStatus,
   downloadProjectLayer,
+  postDatasetTheme,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -345,7 +345,7 @@ export function* getLayerTemplateRequest({ id }) {
       response.data.length < 1
         ? projectDashboardActions.postImportTemplateRequest({
             project: id,
-            templates: 'all',
+            // templates: 'all',
           })
         : projectDashboardActions.getLayerTemplateSuccess(response.data),
     );
@@ -665,6 +665,19 @@ export function* resendInvitationRequest({ id, payload }) {
   }
 }
 
+export function* postDatasetThemeRequest({ payload }) {
+  const { project } = payload;
+  const formData = prepareFormData(payload);
+  try {
+    yield call(postDatasetTheme, formData);
+    yield put(projectMapActions.getProjectThemesRequest({ project }));
+    yield put(commonActions.toggleModalTwo());
+  } catch (error) {
+    yield put(projectDashboardActions.postDatasetThemeFailure());
+    throw error;
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -835,6 +848,10 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.RESEND_INVITATION_REQUEST,
     withLoader(withErrorHandler(resendInvitationRequest)),
+  );
+  yield takeLatest(
+    Types.POST_DATASET_THEME_REQUEST,
+    withLoader(withErrorHandler(postDatasetThemeRequest)),
   );
 }
 

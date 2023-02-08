@@ -9,6 +9,7 @@ import {
   Creators as ProjectDashboardCreators,
   Types,
 } from '@Actions/projectDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
 import Dropzone from '@Components/common/Dropzone';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import FileIcon from '@Assets/images/icons/file-icon.svg';
@@ -24,8 +25,27 @@ import FormErrorMessage from '@Components/common/FormErrorMessage';
 
 const { getProjectThemesRequest } = ProjectMapCreators;
 const { uploadDatasetsRequest } = ProjectDashboardCreators;
+const { toggleModalTwo } = CommonCreators;
 
 const currentDate = new Date();
+
+const dataSource = [
+  {
+    id: 1,
+    value: 'osm',
+    label: 'OSM',
+  },
+  {
+    id: 2,
+    value: 'survey',
+    label: 'Survey',
+  },
+  {
+    id: 3,
+    value: 'computer',
+    label: 'Computer',
+  },
+];
 
 export default function UploadDataset() {
   const { projectId } = useParams();
@@ -66,6 +86,7 @@ export default function UploadDataset() {
         latField: '',
         lonField: '',
         latlngOptions: [],
+        source: '',
       };
       if (extension === 'csv') {
         getCSVHeaders(file).then(headers => {
@@ -98,6 +119,14 @@ export default function UploadDataset() {
     );
   };
 
+  const handleSourceSelect = (id, selectedItem) => {
+    setUploadedFiles(prev =>
+      prev.map(item =>
+        item.id === +id ? { ...item, source: selectedItem.value } : { ...item },
+      ),
+    );
+  };
+
   const handleAddToMap = e => {
     const { id, checked } = e.target;
     setUploadedFiles(prev =>
@@ -126,6 +155,7 @@ export default function UploadDataset() {
       const fields = [];
       if (!item.name) fields.push('name');
       if (!item.category) fields.push('category');
+      if (!item.source) fields.push('source');
       if (item.extension === 'csv') {
         if (!item.latField) fields.push('latField');
         if (!item.lonField) fields.push('lonField');
@@ -145,7 +175,7 @@ export default function UploadDataset() {
           display_on_map: item.addToMap,
           file: item.file,
           layer_type: 'Vector',
-          source: 'computer',
+          source: item.source,
           lat_field: item.latField.name,
           lon_field: item.lonField.name,
         };
@@ -190,6 +220,7 @@ export default function UploadDataset() {
             latField,
             lonField,
             latlngOptions,
+            source,
           }) => (
             <div key={id} className="naxatw-flex naxatw-flex-col naxatw-gap-2">
               <div
@@ -221,46 +252,91 @@ export default function UploadDataset() {
 
                 <div className="naxatw-flex naxatw-gap-3">
                   <div className="naxatw-space-y-2 naxatw-grow">
-                    <label className="naxatw-label">Data name*</label>
-                    <input
-                      type="text"
-                      className="naxatw-input"
-                      id={id}
-                      name="name"
-                      value={name}
-                      placeholder="Enter Data Name"
-                      onChange={handleChange}
-                    />
-                    {errorFields?.[id]?.includes('name') && (
-                      <FormErrorMessage message="Required" />
-                    )}
+                    <div className="naxatw-space-y-2">
+                      <label className="naxatw-label">Data name*</label>
+                      <input
+                        type="text"
+                        className="naxatw-input"
+                        id={id}
+                        name="name"
+                        value={name}
+                        placeholder="Enter Data Name"
+                        onChange={handleChange}
+                      />
+                      {errorFields?.[id]?.includes('name') && (
+                        <FormErrorMessage message="Required" />
+                      )}
+                    </div>
+
+                    <div className="naxatw-space-y-2 naxatw-grow">
+                      <label className="naxatw-label">Data Source*</label>
+                      <Select
+                        options={dataSource || []}
+                        labelKey="label"
+                        valueKey="value"
+                        placeholder="Choose"
+                        onChange={selectedItem =>
+                          handleSourceSelect(id, selectedItem)
+                        }
+                        selectedValue={source}
+                        style={{ minWidth: '10rem' }}
+                      />
+                      {/* <input
+
+                        type="text"
+                        className="naxatw-input"
+                        id={id}
+                        name="source"
+                        value={source}
+                        placeholder="Enter Data Source"
+                        onChange={handleChange}
+                      /> */}
+                      {errorFields?.[id]?.includes('source') && (
+                        <FormErrorMessage message="Required" />
+                      )}
+                    </div>
                   </div>
 
                   <div className="naxatw-space-y-2">
-                    <label className="naxatw-label">Category</label>
-                    <Select
-                      options={themes || []}
-                      labelKey="name"
-                      valueKey="id"
-                      placeholder="Category"
-                      onChange={selectedItem =>
-                        handleCategorySelect(id, selectedItem)
-                      }
-                      selectedValue={category}
-                      style={{ minWidth: '10rem' }}
-                    />
-                    {errorFields?.[id]?.includes('category') && (
-                      <FormErrorMessage message="Required" />
-                    )}
-                  </div>
-                  <div className="naxatw-space-y-2">
-                    <label className="naxatw-label">Add To Map</label>
-                    <div className="naxatw-pt-3">
-                      <Toggle
-                        id={id}
-                        checked={addToMap}
-                        onChange={handleAddToMap}
-                      />
+                    <div className="naxatw-space-y-2">
+                      <label className="naxatw-label">Category</label>
+                      <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                        <Select
+                          options={themes || []}
+                          labelKey="name"
+                          valueKey="id"
+                          placeholder="Category"
+                          onChange={selectedItem =>
+                            handleCategorySelect(id, selectedItem)
+                          }
+                          selectedValue={category}
+                          style={{ minWidth: '10rem' }}
+                        />
+                        <div title="Add Category">
+                          <MaterialIcon
+                            name="add"
+                            className="naxatw-text-secondary-300 naxatw-cursor-pointer"
+                            wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
+                            onIconClick={() =>
+                              dispatch(toggleModalTwo('add-dataset-category'))
+                            }
+                          />
+                        </div>
+                      </div>
+                      {errorFields?.[id]?.includes('category') && (
+                        <FormErrorMessage message="Required" />
+                      )}
+                    </div>
+
+                    <div className="naxatw-space-y-2">
+                      <label className="naxatw-label">Add To Map</label>
+                      <div className="naxatw-pt-3">
+                        <Toggle
+                          id={id}
+                          checked={addToMap}
+                          onChange={handleAddToMap}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

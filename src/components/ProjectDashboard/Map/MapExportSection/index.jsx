@@ -59,13 +59,6 @@ export default function MapExportSection({
   const paperRef = useRef(null);
   const exportMapRef = useRef(null);
 
-  // const projectHeaderHeight = useSelector(
-  //   state => state.common.projectHeaderHeight,
-  // );
-  // const organizationDetail = useSelector(
-  //   state => state.organizationDashboard.organizationDetail,
-  // );
-
   const coordinatesystem3857 = `
     <h6>Coordinate System: <strong>WGS 1984 Web Mercator Auxiliary Sphere</strong></h6>
     <h6>Projection: <strong>Mercator Auxiliary Sphere</strong></h6>
@@ -334,7 +327,7 @@ export default function MapExportSection({
     }
   }, []);
 
-  const addTitle = () => {
+  const addSideComponent = () => {
     const element = document.createElement('div');
     element.style.position = 'absolute';
     element.style.top = 0;
@@ -391,7 +384,7 @@ export default function MapExportSection({
     exportMap.enableRoation = false;
     exportMap.getViewport().style.backgroundColor = 'white';
     exportMap.addControl(customControls.scale);
-    addTitle();
+    addSideComponent();
     if (organizationLogo === null) {
       document.getElementById('organization-logo').style.display = 'none';
       document.getElementById('logo').style.justifyContent = 'flex-end';

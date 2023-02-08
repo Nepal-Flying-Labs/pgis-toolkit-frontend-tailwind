@@ -67,6 +67,9 @@ export default function MapSection() {
   const toggleMapExport = useSelector(
     state => state.projectMap.toggleMapExport,
   );
+  const organizationDetail = useSelector(
+    state => state.organizationDashboard.organizationDetail,
+  );
   const projectAreaLayerId = useSelector(
     state => state.projectMap.projectAreaLayerId,
   );
@@ -197,6 +200,11 @@ export default function MapSection() {
           exportMap={map}
           legendData={mapState.filter(item => item.checked === true)}
           title={projectDetail?.name}
+          topMargin={projectHeaderHeight}
+          organizationLogo={organizationDetail?.cover_image}
+          closeFunction={() =>
+            dispatch(setProjectMapState({ toggleMapExport: false }))
+          }
         />
       )}
       <MapSidebar />

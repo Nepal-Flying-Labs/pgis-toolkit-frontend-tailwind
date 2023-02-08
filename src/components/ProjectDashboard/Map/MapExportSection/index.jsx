@@ -5,21 +5,19 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Creators } from '@Actions/projectMap';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import Select from '@Components/common/Select';
 import Toggle from '@Components/common/Toggle';
 import Button from '@Components/common/Button/index';
-import html2canvas from 'html2canvas';
-import { saveAs } from 'file-saver';
-import JsPDF from 'jspdf';
+import Spinner from '@src/components/common/Spinner';
+import Logo from '@src/assets/images/logo.png';
 import ScaleLine from 'ol/control/ScaleLine';
 import Graticule from 'ol/layer/Graticule';
 import { Stroke } from 'ol/style';
 import { METERS_PER_UNIT } from 'ol/proj';
-import Spinner from '@src/components/common/Spinner';
-import Logo from '@src/assets/images/logo.png';
+import html2canvas from 'html2canvas';
+import { saveAs } from 'file-saver';
+import JsPDF from 'jspdf';
 import {
   orientationOptions,
   paperSizeOptions,
@@ -32,10 +30,14 @@ import NorthArrow from './north-arrow.png';
 import Legend from './legend';
 import { useReactToPrint } from './reactprint';
 
-const { setProjectMapState } = Creators;
-
-export default function MapExportSection({ exportMap, legendData, title }) {
-  const dispatch = useDispatch();
+export default function MapExportSection({
+  exportMap,
+  legendData,
+  title,
+  topMargin,
+  organizationLogo,
+  closeFunction,
+}) {
   const [mapInfo, setMapInfo] = useState({
     target: null,
     size: null,
@@ -57,12 +59,12 @@ export default function MapExportSection({ exportMap, legendData, title }) {
   const paperRef = useRef(null);
   const exportMapRef = useRef(null);
 
-  const projectHeaderHeight = useSelector(
-    state => state.common.projectHeaderHeight,
-  );
-  const organizationDetail = useSelector(
-    state => state.organizationDashboard.organizationDetail,
-  );
+  // const projectHeaderHeight = useSelector(
+  //   state => state.common.projectHeaderHeight,
+  // );
+  // const organizationDetail = useSelector(
+  //   state => state.organizationDashboard.organizationDetail,
+  // );
 
   const coordinatesystem3857 = `
     <h6>Coordinate System: <strong>WGS 1984 Web Mercator Auxiliary Sphere</strong></h6>
@@ -343,7 +345,7 @@ export default function MapExportSection({ exportMap, legendData, title }) {
       <div class='naxatw-overflow-hidden'>
         <div id='logo' class='naxatw-flex naxatw-justify-between naxatw-px-2 naxatw-py-2'>
           <div id='organization-logo'>
-            <img src=${organizationDetail?.cover_image} class='naxatw-max-h-10 naxatw-max-w-12' />
+            <img src=${organizationLogo} class='naxatw-max-h-10 naxatw-max-w-12' />
           </div>
           <div id='north-arrow'>
             <img src=${NorthArrow} width=30 height=40 class='naxatw-max-h-10 naxatw-max-w-8'/>
@@ -371,7 +373,7 @@ export default function MapExportSection({ exportMap, legendData, title }) {
   };
 
   const closeExport = () => {
-    dispatch(setProjectMapState({ toggleMapExport: false }));
+    closeFunction();
     exportMap.setTarget(mapInfo.target);
     exportMap.getViewport().style.width = '100%';
     exportMap.getViewport().style.height = '100%';
@@ -390,7 +392,7 @@ export default function MapExportSection({ exportMap, legendData, title }) {
     exportMap.getViewport().style.backgroundColor = 'white';
     exportMap.addControl(customControls.scale);
     addTitle();
-    if (organizationDetail?.cover_image === null) {
+    if (organizationLogo === null) {
       document.getElementById('organization-logo').style.display = 'none';
       document.getElementById('logo').style.justifyContent = 'flex-end';
     }
@@ -414,7 +416,7 @@ export default function MapExportSection({ exportMap, legendData, title }) {
   return (
     <div
       className="naxatw-absolute naxatw-flex naxatw-w-full naxatw-z-[100]"
-      style={{ height: `calc(100vh - ${projectHeaderHeight}px)` }}
+      style={{ height: `calc(100vh - ${topMargin}px)` }}
     >
       {isExporting && (
         <div className="naxatw-absolute naxatw-w-full naxatw-h-screen naxatw-bg-slate-400 naxatw-z-[150] naxatw-bg-opacity-75">

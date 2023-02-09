@@ -7,8 +7,8 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 const { getFeatureGeojsonRequest } = Creators;
 
 export default function HelpBox() {
-  const drawFeatureId = useSelector(
-    state => state.dataCleaning.manualFix.drawFeatureId,
+  const selectedError = useSelector(
+    state => state.dataCleaning.manualFix.selectedError,
   );
   const selectedFeaturesForSnap = useSelector(
     state => state.dataCleaning.manualFix.selectedFeaturesForSnap,
@@ -21,7 +21,7 @@ export default function HelpBox() {
   );
   const dispatch = useDispatch();
 
-  if (!drawFeatureId || geojsonFeatures) return '';
+  if (!selectedError?.id || geojsonFeatures) return '';
 
   return (
     <div className="naxatw-absolute naxatw-w-full naxatw-top-4 naxatw-z-10 naxatw-flex naxatw-justify-center">

@@ -34,26 +34,13 @@ export default function ErrorSection() {
   const dispatch = useDispatch();
 
   const handleEditClick = (type, feature) => {
-    if (type === 'null') {
-      dispatch(
-        setManualFixState({
-          drawFeatureId: feature.id,
-          sidebarContent: feature.fixed ? 'edit-feature' : 'add-feature',
-          selectedErrorType: type,
-          selectedError: { ...feature, type },
-        }),
-      );
-    }
-    if (type === 'multipart') {
-      dispatch(
-        setManualFixState({
-          sidebarContent: 'edit-feature',
-          selectedFeatureGeojson: feature.geojson,
-          selectedErrorType: type,
-          selectedError: { ...feature, type },
-        }),
-      );
-    }
+    dispatch(
+      setManualFixState({
+        sidebarContent:
+          type === 'null' && !feature.fixed ? 'add-feature' : 'add-feature',
+        selectedError: { ...feature, type },
+      }),
+    );
   };
 
   const handleExplodeClick = feature => {

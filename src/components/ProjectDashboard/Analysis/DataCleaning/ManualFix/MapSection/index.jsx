@@ -53,9 +53,6 @@ export default function MapSection() {
   );
   const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
   const errorFeaturesMapState = useSelector(errorFeaturesMapStateSelector);
-  const drawFeatureId = useSelector(
-    state => state.dataCleaning.manualFix.drawFeatureId,
-  );
   const refreshLayerId = useSelector(
     state => state.dataCleaning.manualFix.refreshLayerId,
   );
@@ -66,6 +63,9 @@ export default function MapSection() {
   const zoomToLayerId = useSelector(state => state.analysis.zoomToLayerId);
   const selectedError = useSelector(
     state => state.dataCleaning.manualFix.selectedError,
+  );
+  const startEditing = useSelector(
+    state => state.dataCleaning.manualFix.startEditing,
   );
   const dispatch = useDispatch();
 
@@ -207,7 +207,7 @@ export default function MapSection() {
           zIndex={10}
           properties={{ layerId: selectedLayer.id }}
           // renderMode="vector"
-          hoverEffect={!!drawFeatureId && !geojsonFeatures}
+          hoverEffect={!!selectedError?.id && !geojsonFeatures}
           onFeatureSelect={features => {
             dispatch(
               setManualFixState({
@@ -222,7 +222,7 @@ export default function MapSection() {
             key={type}
             url={`${apiURL}maps/error_features_vectortile/{z}/{x}/{y}/?layer=${selectedLayer.id}&type=${type}`}
             authToken={localStorage.getItem('userToken')}
-            visibleOnMap={!drawFeatureId}
+            visibleOnMap={!selectedError?.id}
             setStyle={(feature, resolution) =>
               setLayerStyle(
                 {
@@ -243,7 +243,7 @@ export default function MapSection() {
         ))}
 
         <DrawTool
-          enable={!!drawFeatureId || selectedError?.geojson}
+          enable={startEditing}
           geojson={selectedError?.geojson}
           geometryType={selectedLayer.geom_type}
           zIndex={100}

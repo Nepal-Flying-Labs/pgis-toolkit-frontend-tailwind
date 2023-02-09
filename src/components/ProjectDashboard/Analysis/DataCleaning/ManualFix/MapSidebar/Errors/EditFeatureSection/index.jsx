@@ -9,7 +9,7 @@ import CustomCalendar from '@Components/common/CustomCalendar/index';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import { individualAttributeDataSelector } from '@Selectors/dataCleaning';
 
-const { setManualFixState, updateFeatureCollectionRequest, saveAttributeEdit } =
+const { setManualFixState, updateFeatureCollectionRequest } =
   DataCleaningCreators;
 
 export default function EditFeatureSection() {
@@ -26,19 +26,7 @@ export default function EditFeatureSection() {
   const selectedError = useSelector(
     state => state.dataCleaning.manualFix.selectedError,
   );
-  const selectedFeatureAttributes = useSelector(
-    state => state.dataCleaning.manualFix.selectedFeatureAttributes,
-  );
-  const isFeatureModified = useSelector(
-    state => state.projectMap.isFeatureModified,
-  );
-  const modifiedFeatureGeojson = useSelector(
-    state => state.projectMap.modifiedFeatureGeojson,
-  );
   const individualAttributeData = useSelector(individualAttributeDataSelector);
-  const selectedErrorType = useSelector(
-    state => state.dataCleaning.manualFix.selectedErrorType,
-  );
 
   const isPosting = useSelector(state =>
     checkIfLoading(state, [
@@ -52,14 +40,13 @@ export default function EditFeatureSection() {
     dispatch(
       setManualFixState({
         sidebarContent: 'error-list',
-        drawFeatureId: null,
         drawnFeatureWkt: null,
         // featureGeojson: null,
         // modifiedFeatureGeojson: null,
         individualAttributeData: [],
         layerAttributes: null,
         selectedError: null,
-        // editFeatureId: null,
+        startEditing: false,
       }),
     );
   };

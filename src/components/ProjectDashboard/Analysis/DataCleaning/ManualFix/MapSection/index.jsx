@@ -235,12 +235,11 @@ export default function MapSection() {
             setStyle={(feature, resolution) =>
               setLayerStyle(
                 {
-                  ...defaultStyles,
+                  ...selectedLayer.style,
                   fillColor: errorFeatureColor,
                   lineColor: errorFeatureColor,
                   fillOpacity: 100,
                   lineOpacity: 100,
-                  lineThickness: 1,
                 },
                 feature,
                 resolution,
@@ -257,7 +256,7 @@ export default function MapSection() {
           geometryType={selectedLayer.geom_type}
           zIndex={100}
           // style={selectedLayer?.style || { ...defaultStyles }}
-          style={{ ...defaultStyles, lineColor: '#ffff00' }}
+          style={{ ...selectedLayer.style, lineColor: '#ffff00' }}
           onChange={geojson => {
             const wktString = stringify(geojson);
             dispatch(

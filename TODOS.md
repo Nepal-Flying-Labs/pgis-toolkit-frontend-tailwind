@@ -51,9 +51,13 @@
 - [x] save feature edit for multipart not working
 - [x] edit multipart geometry
 - [x] loader while exploding
-- [ ] highlight feature on select
-- [ ] check error fixes while save button click
-- [ ] overlap, duplicate geometry error talk to Aditya
-- [ ] self intersect
-- [ ] snapping
+- [x] highlight feature on select
+- [x] check error fixes while save button click
+- [x] overlap, duplicate geometry error talk to Aditya
+- [x] self intersect
+- [x] snapping
+- [x] error name to label
 - [ ] zoom to layer feature
+- [ ] remove save button from draw tool 
+- [ ] dynamic sidebar title
+- [ ] fix all and save modal

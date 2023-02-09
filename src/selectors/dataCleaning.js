@@ -1,5 +1,6 @@
-import removeObjectKeys from '@Utils/removeObjectKeys';
 import { createSelector } from 'reselect';
+import { checkErrorData } from '@src/constants/analysis';
+import removeObjectKeys from '@Utils/removeObjectKeys';
 
 const errorFeaturesDataSelector = state => state.dataCleaning.errorFeaturesData;
 const layerAttributesFieldsSelector = state =>
@@ -16,6 +17,10 @@ export const errorFeaturesMapStateSelector = createSelector(
     ]);
     return Object.entries(errorFeatures).map(([key, value]) => ({
       type: key,
+      label:
+        checkErrorData.find(
+          item => item.id === key || item.alternativeId === key,
+        )?.label || key,
       features: value,
     }));
   },

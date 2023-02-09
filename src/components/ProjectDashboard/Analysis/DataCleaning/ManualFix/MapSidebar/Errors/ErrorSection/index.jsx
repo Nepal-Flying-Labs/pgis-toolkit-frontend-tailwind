@@ -66,14 +66,14 @@ export default function ErrorSection() {
 
   return (
     <>
-      {errorFeaturesMapState.map(({ type, features }) => (
+      {errorFeaturesMapState.map(({ type, label, features }) => (
         <Accordion
           key={type}
           header={
             <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
               <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
                 <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
-                  <h5 className="naxatw-text-grey-800">{type}</h5>
+                  <h5 className="naxatw-text-grey-800">{label}</h5>
                 </div>
               </div>
               <div>

@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 // import { Creators as CommonCreators } from '@Actions/common';
 import { isEmpty } from '@Utils/commonUtils';
-import MapSidebar from './MapSidebar';
+// import MapSidebar from './MapSidebar';
 import MapSection from './MapSection';
-import MapExportSection from './MapExportSection';
 
 // const { setModalContent, toggleModal } = CommonCreators;
 
@@ -23,14 +22,13 @@ export default function Map() {
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
-  const projectHeaderHeight = useSelector(
-    state => state.common.projectHeaderHeight,
-  );
-  const toggleMapExport = useSelector(
-    state => state.projectMap.toggleMapExport,
-  );
+  // const projectHeaderHeight = useSelector(
+  //   state => state.common.projectHeaderHeight,
+  // );
+  // const toggleMapExport = useSelector(
+  //   state => state.projectMap.toggleMapExport,
+  // );
   const dispatch = useDispatch();
-  const [exportMap, setExportMap] = useState(null);
 
   // const showModal = useSelector(state => state.common.showModal);
 
@@ -60,19 +58,14 @@ export default function Map() {
     [dispatch],
   );
 
-  return (
-    <div
-      className="naxatw-flex"
-      style={{ height: `calc(100vh - ${projectHeaderHeight}px)` }}
-    >
-      {toggleMapExport ? (
-        <MapExportSection exportMap={exportMap} />
-      ) : (
-        <>
-          <MapSidebar />
-          <MapSection setExportMap={setExportMap} />
-        </>
-      )}
-    </div>
-  );
+  return <MapSection />;
+  // return (
+  //   <div
+  //     className="naxatw-flex"
+  //     style={{ height: `calc(100vh - ${projectHeaderHeight}px)` }}
+  //   >
+  //     <MapSidebar />
+  //     <MapSection />
+  //   </div>
+  // );
 }

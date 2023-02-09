@@ -33,6 +33,7 @@ export const checkErrorData = [
   },
   {
     id: 'isolated',
+    alternativeId: 'snapping',
     label: 'Isolated Geometry',
     checkAPI: 'check_isolated_geometry',
     fixAPI: 'fix_isolated_geometry',

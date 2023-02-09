@@ -5,6 +5,7 @@ import {
   select,
   takeLatest,
   takeEvery,
+  delay,
 } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import { stringify, parse } from 'wkt';
@@ -28,6 +29,7 @@ import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { getLayerAttributeFields } from '@Services/projectMap';
 import { isEmpty } from '@Utils/commonUtils';
 import { roadLayersThemeIdSelector } from '@Selectors/projectMap';
+import { checkErrorData } from '@src/constants/analysis';
 
 export function* checkErrorRequest({ payload }) {
   try {
@@ -244,6 +246,28 @@ export function* explodeFeatureRequest({ payload }) {
   }
 }
 
+export function* validateErrorFixRequest({ payload }) {
+  try {
+    yield delay(2000);
+    const { layerId } = payload;
+    const { errorFeaturesData } = yield select(state => state.dataCleaning);
+    const data = Object.keys(errorFeaturesData);
+    yield all(
+      data.map(item => {
+        const checkAPI = checkErrorData.find(
+          i => i.id === item || i.alternativeId === item,
+        )?.checkAPI;
+        const params = { layer: layerId };
+        return call(checkError, checkAPI, params);
+      }),
+    );
+    yield put(dataCleaningActions.getErrorFeaturesRequest({ layer: layerId }));
+  } catch (error) {
+    yield put(dataCleaningActions.validateErrorFixFailure());
+    throw error;
+  }
+}
+
 function* dataCleaningWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
@@ -284,6 +308,10 @@ function* dataCleaningWatcher() {
   yield takeEvery(
     Types.EXPLODE_FEATURE_REQUEST,
     withLoader(withErrorHandler(explodeFeatureRequest)),
+  );
+  yield takeEvery(
+    Types.VALIDATE_ERROR_FIX_REQUEST,
+    withLoader(withErrorHandler(validateErrorFixRequest)),
   );
 }
 

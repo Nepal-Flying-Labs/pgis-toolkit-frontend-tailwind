@@ -54,6 +54,7 @@ export default function useDrawUtils({
   useEffect(() => {
     translate.on('translateend', e => {
       const features = e.features.getArray();
+      console.log(features, 'featuresx');
       onDragEnd(features);
     });
   }, [translate, onDragEnd]);

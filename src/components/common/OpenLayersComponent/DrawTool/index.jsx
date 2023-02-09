@@ -71,6 +71,9 @@ export default function DrawTool({
     const features = new GeoJSON().readFeatures(geojson, {
       featureProjection: get('EPSG:3857'),
     });
+    features.forEach(feature => {
+      feature.setId('drawFeatureId');
+    });
     source.addFeatures(features);
     const vectorLyr = new VectorLayer({
       source,

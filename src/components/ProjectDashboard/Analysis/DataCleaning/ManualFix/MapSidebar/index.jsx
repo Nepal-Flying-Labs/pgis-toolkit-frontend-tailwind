@@ -9,7 +9,7 @@ import Errors from './Errors';
 import Layers from './Layers';
 
 const { toggleModal } = CommonCreators;
-const { validateErrorFixRequest } = DataCleaningCreators;
+const { validateErrorFixRequest, setDataCleaningState } = DataCleaningCreators;
 
 const tabData = [
   { id: 1, title: 'Errors', content: <Errors /> },
@@ -38,7 +38,16 @@ export default function MapSidebar() {
       <div className="naxatw-flex naxatw-flex-col naxatw-gap-2">
         <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
           <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
-            <IconButton name="arrow_back" />
+            <IconButton
+              name="arrow_back"
+              onClick={() => {
+                dispatch(
+                  setDataCleaningState({
+                    selectedLayer: null,
+                  }),
+                );
+              }}
+            />
             <h4>Road</h4>
           </div>
           <Button className="naxatw-btn-primary" onClick={handleSave}>

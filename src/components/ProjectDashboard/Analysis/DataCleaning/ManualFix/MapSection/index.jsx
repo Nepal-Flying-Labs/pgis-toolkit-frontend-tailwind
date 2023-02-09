@@ -29,10 +29,14 @@ import {
   getStyles,
   selectEffectColor,
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
-import { errorFeaturesMapStateSelector } from '@Selectors/dataCleaning';
+import {
+  checkedFeatureIdsSelector,
+  errorFeaturesMapStateSelector,
+} from '@Selectors/dataCleaning';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
 import { isEmpty } from '@Utils/commonUtils';
 import { mapStateSelector } from '@Selectors/analysis';
+import { featureSelectColor, errorFeatureColor } from '@src/constants/analysis';
 import HelpBox from './HelpBox';
 
 const { setManualFixState } = DataCleaningCreators;
@@ -67,6 +71,7 @@ export default function MapSection() {
   const startEditing = useSelector(
     state => state.dataCleaning.manualFix.startEditing,
   );
+  const checkedFeatureIds = useSelector(checkedFeatureIdsSelector);
   const dispatch = useDispatch();
 
   // zoom to selected layer on initial map load
@@ -127,6 +132,10 @@ export default function MapSection() {
         stylex.fillOpacity = 0;
         stylex.lineOpacity = 0;
         stylex.icon = {};
+      } else if (checkedFeatureIds.includes(feature.getProperties()?.id)) {
+        stylex.fillColor = featureSelectColor;
+        stylex.lineColor = featureSelectColor;
+        stylex.icon = {};
       }
       return getStyles({
         style: stylex,
@@ -134,7 +143,7 @@ export default function MapSection() {
         resolution,
       });
     },
-    [selectedError, startEditing],
+    [selectedError, startEditing, checkedFeatureIds],
   );
 
   return (
@@ -227,8 +236,8 @@ export default function MapSection() {
               setLayerStyle(
                 {
                   ...defaultStyles,
-                  fillColor: '#FF0F0F',
-                  lineColor: '#FF0F0F',
+                  fillColor: errorFeatureColor,
+                  lineColor: errorFeatureColor,
                   fillOpacity: 100,
                   lineOpacity: 100,
                   lineThickness: 1,

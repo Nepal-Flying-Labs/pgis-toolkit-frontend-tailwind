@@ -67,13 +67,14 @@ export default function DrawTool({
 
   // add geojson for edit feature
   useEffect(() => {
-    if (!map || !geojson) return;
+    if (!map || !enable || !geojson) return;
     const features = new GeoJSON().readFeatures(geojson, {
       featureProjection: get('EPSG:3857'),
     });
     features.forEach(feature => {
       feature.setId('drawFeatureId');
     });
+    if (source.getFeatures().length) return;
     source.addFeatures(features);
     const vectorLyr = new VectorLayer({
       source,
@@ -86,7 +87,7 @@ export default function DrawTool({
     select.getFeatures().push(features[0]);
     setModifiedStates([geojson]);
     setModifiedFeature(features[0]);
-  }, [map, geojson, zIndex, select, style]);
+  }, [map, enable, geojson, zIndex, select, style]);
 
   // reset state and remove layer
   const resetState = useCallback(() => {

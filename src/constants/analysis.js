@@ -93,3 +93,6 @@ export const bufferPolygonStyles = {
   fillColor: '#FF5A5F',
   fillOpacity: 33,
 };
+
+export const featureSelectColor = '#ffdf65';
+export const errorFeatureColor = '#FF0F0F';

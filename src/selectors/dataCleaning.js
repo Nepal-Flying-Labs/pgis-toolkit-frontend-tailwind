@@ -35,3 +35,17 @@ export const individualAttributeDataSelector = createSelector(
       value: selectedError?.attributes?.[item.name] || '',
     })),
 );
+
+export const checkedFeatureIdsSelector = createSelector(
+  errorFeaturesMapStateSelector,
+  errorFeaturesMapState =>
+    errorFeaturesMapState.reduce(
+      (arr, item) => [
+        ...new Set([
+          ...arr,
+          ...item.features.filter(i => i.checked).map(i => i.id),
+        ]),
+      ],
+      [],
+    ),
+);

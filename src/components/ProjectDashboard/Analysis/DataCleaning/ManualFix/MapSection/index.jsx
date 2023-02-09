@@ -123,7 +123,7 @@ export default function MapSection() {
     (style, feature, resolution) => {
       const stylex = { ...style };
       const featureId = feature.getId();
-      if (selectedError?.id && selectedError.id === featureId) {
+      if (startEditing && selectedError?.id && selectedError.id === featureId) {
         stylex.fillOpacity = 0;
         stylex.lineOpacity = 0;
         stylex.icon = {};
@@ -134,7 +134,7 @@ export default function MapSection() {
         resolution,
       });
     },
-    [selectedError],
+    [selectedError, startEditing],
   );
 
   return (

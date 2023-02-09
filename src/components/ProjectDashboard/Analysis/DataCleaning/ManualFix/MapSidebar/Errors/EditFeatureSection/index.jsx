@@ -9,8 +9,11 @@ import CustomCalendar from '@Components/common/CustomCalendar/index';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import { individualAttributeDataSelector } from '@Selectors/dataCleaning';
 
-const { setManualFixState, updateFeatureCollectionRequest } =
-  DataCleaningCreators;
+const {
+  setManualFixState,
+  updateFeatureCollectionRequest,
+  getSelectedFeatureAttributesRequest,
+} = DataCleaningCreators;
 
 export default function EditFeatureSection() {
   const sidebarContent = useSelector(
@@ -35,6 +38,16 @@ export default function EditFeatureSection() {
     ]),
   );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!selectedError) return;
+    const { id, type, attributes } = selectedError;
+    const exceptions = ['null', 'multipart'];
+    if (exceptions.includes(type)) return;
+    if (!attributes) {
+      dispatch(getSelectedFeatureAttributesRequest(id));
+    }
+  }, [dispatch, selectedError]);
 
   const handleCancel = () => {
     dispatch(

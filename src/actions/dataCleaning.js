@@ -60,6 +60,10 @@ export const { Types, Creators } = createActions(
     validateErrorFixRequest: ['payload'],
     validateErrorFixSuccess: ['payload'],
     validateErrorFixFailure: null,
+
+    getSelectedFeatureAttributesRequest: ['payload'],
+    getSelectedFeatureAttributesSuccess: ['payload'],
+    getSelectedFeatureAttributesFailure: null,
   },
   { prefix: 'dataCleaning/' },
 );

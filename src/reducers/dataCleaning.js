@@ -750,6 +750,15 @@ const explodeFeatureFailure = (state, action) =>
       );
   });
 
+const getSelectedFeatureAttributesSuccess = (state, action) =>
+  produce(state, draft => {
+    const { attributes, geometry } = action.payload;
+    const geojson = parse(geometry);
+    const { selectedError } = draft.manualFix;
+    selectedError.attributes = attributes;
+    selectedError.geojson = geojson;
+  });
+
 const dataCleaningReducer = createReducer(initialState, {
   [Types.SET_DATA_CLEANING_STATE]: setDataCleaningState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -771,6 +780,8 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.EXPLODE_FEATURE_REQUEST]: explodeFeatureRequest,
   [Types.EXPLODE_FEATURE_SUCCESS]: explodeFeatureSuccess,
   [Types.EXPLODE_FEATURE_FAILURE]: explodeFeatureFailure,
+  [Types.GET_SELECTED_FEATURE_ATTRIBUTES_SUCCESS]:
+    getSelectedFeatureAttributesSuccess,
 });
 
 export default dataCleaningReducer;

@@ -13,15 +13,12 @@ export default function HelpBox() {
   const selectedFeaturesForSnap = useSelector(
     state => state.dataCleaning.manualFix.selectedFeaturesForSnap,
   );
-  const geojsonFeatures = useSelector(
-    state => state.dataCleaning.manualFix.geojsonFeatures,
-  );
   const isDataFetching = useSelector(state =>
     checkIfLoading(state, [Types.GET_FEATURE_GEOJSON_REQUEST]),
   );
   const dispatch = useDispatch();
 
-  if (!selectedError?.id || geojsonFeatures) return '';
+  if (!selectedError?.id) return '';
 
   return (
     <div className="naxatw-absolute naxatw-w-full naxatw-top-4 naxatw-z-10 naxatw-flex naxatw-justify-center">

@@ -268,6 +268,18 @@ export function* validateErrorFixRequest({ payload }) {
   }
 }
 
+export function* getSelectedFeatureAttributesRequest({ payload }) {
+  try {
+    const response = yield call(getFeatureCollectionMirror, payload);
+    yield put(
+      dataCleaningActions.getSelectedFeatureAttributesSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(dataCleaningActions.getSelectedFeatureAttributesFailure());
+    throw error;
+  }
+}
+
 function* dataCleaningWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
@@ -312,6 +324,10 @@ function* dataCleaningWatcher() {
   yield takeEvery(
     Types.VALIDATE_ERROR_FIX_REQUEST,
     withLoader(withErrorHandler(validateErrorFixRequest)),
+  );
+  yield takeEvery(
+    Types.GET_SELECTED_FEATURE_ATTRIBUTES_REQUEST,
+    withLoader(withErrorHandler(getSelectedFeatureAttributesRequest)),
   );
 }
 

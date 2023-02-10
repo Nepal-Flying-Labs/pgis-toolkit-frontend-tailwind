@@ -22,6 +22,16 @@ import {
 
 const source = new VectorSource();
 
+const drawToolOptions = [
+  'add',
+  'drag',
+  'edit',
+  'delete',
+  'undo',
+  'save',
+  'cancel',
+];
+
 export default function DrawTool({
   map,
   geojson,
@@ -34,6 +44,7 @@ export default function DrawTool({
   onError,
   enable,
   selectedDrawType,
+  toolboxContents = [...drawToolOptions],
 }) {
   const [vectorLayer, setVectorLayer] = useState(null);
   const [drawType, setDrawType] = useState(null);
@@ -220,28 +231,32 @@ export default function DrawTool({
         naxatw-border naxatw-border-grey-300"
       style={{ display: !enable ? 'none' : '' }}
     >
-      <Tooltip content="Add Feature" direction="right">
-        <AddFeature
-          type={geometryType}
-          enable={drawType === 'add-feature'}
-          onClick={() => {
-            if (vectorLayer) return;
-            setDrawType('add-feature');
-          }}
-          onDrawEnd={handleDrawEnd}
-          {...props}
-        />
-      </Tooltip>
+      {toolboxContents.includes('add') && (
+        <Tooltip content="Add Feature" direction="right">
+          <AddFeature
+            type={geometryType}
+            enable={drawType === 'add-feature'}
+            onClick={() => {
+              if (vectorLayer) return;
+              setDrawType('add-feature');
+            }}
+            onDrawEnd={handleDrawEnd}
+            {...props}
+          />
+        </Tooltip>
+      )}
 
-      <Tooltip content="Drag" direction="right">
-        <DragFeature
-          enable={drawType === 'drag-feature'}
-          onClick={() => setDrawType('drag-feature')}
-          {...props}
-        />
-      </Tooltip>
+      {toolboxContents.includes('drag') && (
+        <Tooltip content="Drag" direction="right">
+          <DragFeature
+            enable={drawType === 'drag-feature'}
+            onClick={() => setDrawType('drag-feature')}
+            {...props}
+          />
+        </Tooltip>
+      )}
 
-      {!pointTypes.includes(geometryType) && (
+      {toolboxContents.includes('edit') && !pointTypes.includes(geometryType) && (
         <Tooltip content="Edit" direction="right">
           <EditFeature
             enable={drawType === 'edit-feature'}
@@ -261,46 +276,54 @@ export default function DrawTool({
         </Tooltip>
       )} */}
 
-      <Tooltip content="Delete" direction="right">
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          title="Delete"
-          onClick={handleDelete}
-        >
-          <i className="material-icons">delete_outline</i>
-        </button>
-      </Tooltip>
+      {toolboxContents.includes('delete') && (
+        <Tooltip content="Delete" direction="right">
+          <button
+            className="naxatw-icon-btn naxatw-icon-btn-sm"
+            type="button"
+            title="Delete"
+            onClick={handleDelete}
+          >
+            <i className="material-icons">delete_outline</i>
+          </button>
+        </Tooltip>
+      )}
 
-      <Tooltip content="Undo" direction="right">
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          onClick={handleUndo}
-        >
-          <i className="material-icons">undo</i>
-        </button>
-      </Tooltip>
+      {toolboxContents.includes('undo') && (
+        <Tooltip content="Undo" direction="right">
+          <button
+            className="naxatw-icon-btn naxatw-icon-btn-sm"
+            type="button"
+            onClick={handleUndo}
+          >
+            <i className="material-icons">undo</i>
+          </button>
+        </Tooltip>
+      )}
 
-      <Tooltip content="Save" direction="right">
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          onClick={handleSave}
-        >
-          <i className="material-symbols-outlined">save</i>
-        </button>
-      </Tooltip>
+      {toolboxContents.includes('save') && (
+        <Tooltip content="Save" direction="right">
+          <button
+            className="naxatw-icon-btn naxatw-icon-btn-sm"
+            type="button"
+            onClick={handleSave}
+          >
+            <i className="material-symbols-outlined">save</i>
+          </button>
+        </Tooltip>
+      )}
 
-      <Tooltip content="Cancel" direction="right">
-        <button
-          className="naxatw-icon-btn naxatw-icon-btn-sm"
-          type="button"
-          onClick={handleCancel}
-        >
-          <i className="material-symbols-outlined">close</i>
-        </button>
-      </Tooltip>
+      {toolboxContents.includes('cancel') && (
+        <Tooltip content="Cancel" direction="right">
+          <button
+            className="naxatw-icon-btn naxatw-icon-btn-sm"
+            type="button"
+            onClick={handleCancel}
+          >
+            <i className="material-symbols-outlined">close</i>
+          </button>
+        </Tooltip>
+      )}
     </div>
   );
 }

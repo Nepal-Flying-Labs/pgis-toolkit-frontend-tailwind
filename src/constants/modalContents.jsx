@@ -47,6 +47,7 @@ import SaveRouteLayer from '@Components/ProjectDashboard/Analysis/ModalContent/S
 import SaveBufferLayer from '@Components/ProjectDashboard/Analysis/ModalContent/SaveBufferLayer';
 import SelectLayerFeature from '@Components/ProjectDashboard/Analysis/ModalContent/SelectLayerFeature';
 import AddDatasetCategory from '@Components/ProjectDashboard/ModalContent/AddDatasetCategory/index';
+import SaveManualFix from '@Components/ProjectDashboard/Analysis/ModalContent/SaveManualFix';
 
 export function getModalContent(content) {
   switch (content) {
@@ -212,6 +213,15 @@ export function getModalContent(content) {
         content: <AddAttributes />,
         className: '!naxatw-w-[56.25rem]',
       };
+
+    // data cleaning
+    case 'save-manual-fix':
+      return {
+        title: '',
+        content: <SaveManualFix />,
+        hideCloseButton: true,
+      };
+
     // route analysis
     case 'view-route-attribute':
       return {

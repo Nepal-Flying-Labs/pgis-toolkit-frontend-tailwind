@@ -1,4 +1,7 @@
+/* eslint-disable no-param-reassign */
 import { createReducer } from 'reduxsauce';
+import produce from 'immer';
+import { parse } from 'wkt';
 import { Types } from '@Actions/dataCleaning';
 import { checkErrorData, pointCheckExceptions } from '@src/constants/analysis';
 import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
@@ -7,14 +10,17 @@ const initialState = {
   stepIndex: 1,
   manualFix: {
     sidebarContent: 'error-list', // 'error-list', 'add-feature', 'edit-feature'
-    drawFeatureId: null,
     drawnFeatureWkt: null,
     layerAttributes: null,
+    layerAttributesFields: null,
     individualAttributeData: [],
     refreshLayerId: null,
     selectedError: null,
     selectedFeaturesForSnap: [],
     geojsonFeatures: null,
+    selectedFeatureAttributes: null,
+    explodingFeatureIds: [], // for showing loader while exploding features
+    startEditing: false, // toggle DrawTool only when startEditing true
   },
   selectedLayer: null, // selected layer for manual fix
   errorFeaturesData: null,
@@ -25,7 +31,7 @@ const initialState = {
   errorStates: {},
 };
 
-const setAnalysisState = (state, action) => ({
+const setDataCleaningState = (state, action) => ({
   ...state,
   ...action.payload,
 });
@@ -170,55 +176,63 @@ const getLayerAttributeFieldsSuccess = (state, action) => {
     ...item,
     value: layerAttributes?.[`${item.name}`] || '',
   }));
+  const layerAttributesFields = action.payload;
   return {
     ...state,
     manualFix: {
       ...state.manualFix,
       individualAttributeData,
+      layerAttributesFields,
     },
   };
 };
 
-const updateFeatureCollectionSuccess = (state, action) => {
-  const refreshLayerId = action.payload.layer;
-  let errorFeaturesData = {};
-  if (state.manualFix.selectedError.type === 'null') {
-    errorFeaturesData = {
-      ...state.errorFeaturesData,
-      null: state.errorFeaturesData.null.filter(
-        item => item.id !== state.manualFix.selectedError.id,
-      ),
-    };
-  } else {
-    errorFeaturesData = state.errorFeaturesData;
-  }
-  const {
-    sidebarContent,
-    drawFeatureId,
-    drawnFeatureWkt,
-    layerAttributes,
-    individualAttributeData,
-    selectedError,
-    selectedFeaturesForSnap,
-    geojsonFeatures,
-  } = initialState.manualFix;
-  return {
-    ...state,
-    errorFeaturesData,
-    manualFix: {
-      ...state.manualFix,
-      refreshLayerId,
+const updateFeatureCollectionSuccess = (state, action) =>
+  produce(state, draft => {
+    const refreshLayerId = action.payload.layer;
+    const { id, attributes, geometry } = action.payload;
+    const { type, parentId } = draft.manualFix.selectedError;
+    if (type === 'multipart') {
+      const parentFeature = draft.errorFeaturesData[type].find(
+        item => item.id === parentId,
+      );
+      const changedFeature = parentFeature.explodedFeatures.find(
+        item => item.id === id,
+      );
+      changedFeature.fixed = true;
+      changedFeature.attributes = attributes;
+      changedFeature.geojson = parse(geometry);
+    } else {
+      const changedFeature = draft.errorFeaturesData[type].find(
+        item => item.id === id,
+      );
+      changedFeature.fixed = true;
+      changedFeature.attributes = attributes;
+      changedFeature.geojson = parse(geometry);
+    }
+    const {
       sidebarContent,
-      drawFeatureId,
       drawnFeatureWkt,
       layerAttributes,
       individualAttributeData,
       selectedError,
       selectedFeaturesForSnap,
       geojsonFeatures,
-    },
-  };
-};
+      startEditing,
+    } = initialState.manualFix;
+    draft.manualFix = {
+      ...draft.manualFix,
+      refreshLayerId,
+      sidebarContent,
+      drawnFeatureWkt,
+      layerAttributes,
+      individualAttributeData,
+      selectedError,
+      selectedFeaturesForSnap,
+      geojsonFeatures,
+      startEditing,
+    };
+  });
 
 const handleErrorCheckbox = (state, action) => {
   const { id, name, checked } = action.payload;
@@ -267,14 +281,84 @@ const getFeatureGeojsonSuccess = (state, action) => {
     manualFix: {
       ...state.manualFix,
       geojsonFeatures,
+      startEditing: true,
     },
   };
 };
 
 const resetDataCleaningState = () => ({ ...initialState });
 
+const saveAttributeEdit = (state, action) =>
+  produce(state, draft => {
+    const data = action.payload;
+    if (state.manualFix.selectedError.type === 'multipart') {
+      const selectedFeatureAttribute = draft.errorFeaturesData.multipart.find(
+        item => item.id === +draft.manualFix.selectedError.id.split('-')[0],
+      );
+      const selectedExplodedFeature =
+        selectedFeatureAttribute.explodedFeatures.find(
+          item => item.id === draft.manualFix.selectedError.id,
+        );
+      selectedExplodedFeature.attributes = data;
+    }
+    const { sidebarContent, individualAttributeData, selectedError } =
+      initialState.manualFix;
+    draft.manualFix = {
+      ...draft.manualFix,
+      sidebarContent,
+      individualAttributeData,
+      selectedError,
+    };
+  });
+
+const explodeFeatureRequest = (state, action) =>
+  produce(state, draft => {
+    draft.manualFix.explodingFeatureIds.push(action.payload);
+  });
+
+const explodeFeatureSuccess = (state, action) =>
+  produce(state, draft => {
+    const { layerData, explodeData } = action.payload;
+    const { id: featureId } = layerData;
+    const explodedFeature = draft.errorFeaturesData.multipart.find(
+      item => item.id === featureId,
+    );
+    explodedFeature.explodedFeatures = explodeData.map(item => ({
+      parentId: featureId,
+      id: item.id,
+      attributes: item.attributes,
+      geojson: parse(item.geometry),
+    }));
+    explodedFeature.fixed = true;
+    draft.manualFix.explodingFeatureIds =
+      draft.manualFix.explodingFeatureIds.filter(item => item !== featureId);
+  });
+
+const explodeFeatureFailure = (state, action) =>
+  produce(state, draft => {
+    draft.manualFix.explodingFeatureIds =
+      draft.manualFix.explodingFeatureIds.filter(
+        item => item !== action.payload,
+      );
+  });
+
+const getSelectedFeatureAttributesSuccess = (state, action) =>
+  produce(state, draft => {
+    const { attributes, geometry } = action.payload;
+    const geojson = parse(geometry);
+    const { selectedError } = draft.manualFix;
+    selectedError.attributes = attributes;
+    selectedError.geojson = geojson;
+  });
+
+const resetManualFixState = state =>
+  produce(state, draft => {
+    draft.manualFix = initialState.manualFix;
+    draft.selectedLayer = initialState.selectedLayer;
+  });
+
 const dataCleaningReducer = createReducer(initialState, {
-  [Types.SET_ANALYSIS_STATE]: setAnalysisState,
+  [Types.SET_DATA_CLEANING_STATE]: setDataCleaningState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
   [Types.SET_ERROR_STATES]: setErrorStates,
   [Types.CHECK_ERROR_SUCCESS]: checkErrorSuccess,
@@ -290,6 +374,13 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.DELETE_SELECTED_FEATURES_SUCCESS]: deleteSelectedFeaturesSuccess,
   [Types.GET_FEATURE_GEOJSON_SUCCESS]: getFeatureGeojsonSuccess,
   [Types.RESET_DATA_CLEANING_STATE]: resetDataCleaningState,
+  [Types.SAVE_ATTRIBUTE_EDIT]: saveAttributeEdit,
+  [Types.EXPLODE_FEATURE_REQUEST]: explodeFeatureRequest,
+  [Types.EXPLODE_FEATURE_SUCCESS]: explodeFeatureSuccess,
+  [Types.EXPLODE_FEATURE_FAILURE]: explodeFeatureFailure,
+  [Types.GET_SELECTED_FEATURE_ATTRIBUTES_SUCCESS]:
+    getSelectedFeatureAttributesSuccess,
+  [Types.RESET_MANUAL_FIX_STATE]: resetManualFixState,
 });
 
 export default dataCleaningReducer;

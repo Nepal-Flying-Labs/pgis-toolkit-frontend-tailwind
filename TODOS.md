@@ -3,6 +3,7 @@
 - [ ] icon grey
 - [ ] required field validation while geom edit for feature
 - [ ] save data query modal mt remove
+
 - [ ] format date/time in all sections (table etc)
 - [ ] boundary zindex least
 - [ ] hand icon while edit hover
@@ -43,3 +44,25 @@
 - [ ] geometry type polygon after route layer save
 - [ ] zoom to feature after select in osm search
 - [ ] add loader to map
+
+### MANUAL FIX
+- [x] refactor manual fix (remove save button)
+- [x] save feature edit for multipart not working
+- [x] edit multipart geometry
+- [x] loader while exploding
+- [x] highlight feature on select
+- [x] check error fixes while save button click
+- [x] overlap, duplicate geometry error talk to Aditya
+- [x] self intersect
+- [x] snapping
+- [x] error name to label
+- [x] dynamic sidebar title
+- [x] remove save button from draw tool 
+- [x] fix all and save modal
+- [ ] zoom to layer feature
+- [ ] two times select for snapping not working
+- [ ] add loaders for manual fix page
+- [ ] change cursor while hovering
+
+### ISSUES
+- [ ] map page to data to map reset checkbox state in project map

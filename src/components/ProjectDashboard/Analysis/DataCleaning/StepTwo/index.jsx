@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
 import Button from '@Components/common/Button';
 import Accordion from '@Components/common/Accordion';
-// import IconButton from '@Components/common/IconButton';
 
 const {
   checkErrorRequest,
   handleAutofixCheckbox,
   autoFixErrorRequest,
   startAnalysisRequest,
+  setDataCleaningState,
 } = DataCleaningCreators;
 
 function getStatusIcon(status) {
@@ -58,9 +58,10 @@ export default function StepTwo() {
 
       <div className="naxatw-mt-5 naxatw-space-y-5">
         {data.map(layer => {
+          const errorState = errorStates[layer.id];
           const isLayerCheckingError =
-            errorStates[layer.id] &&
-            errorStates[layer.id].some(item => item.status === 'waiting');
+            errorState && errorState.some(item => item.status === 'waiting');
+          const hasError = errorState?.some(item => item.errorData);
           return (
             <Accordion
               key={layer.id}
@@ -99,7 +100,7 @@ export default function StepTwo() {
                         className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
                         disabled={isLayerCheckingError}
                         onClick={() => {
-                          if (!errorStates[layer.id])
+                          if (!errorState)
                             dispatch(
                               checkErrorRequest({
                                 layerId: layer.id,
@@ -121,7 +122,7 @@ export default function StepTwo() {
               body={
                 <div>
                   <div className="naxatw-p-2 naxatw-space-y-4">
-                    {errorStates[layer.id]?.map(
+                    {errorState?.map(
                       ({ label, status, errorData, totalData, id }) => (
                         <div
                           key={id}
@@ -142,7 +143,7 @@ export default function StepTwo() {
                                 type="checkbox"
                                 className="naxatw-min-w-[1rem] naxatw-min-h-[1rem]
                                   naxatw-accent-grey-800 naxatw-cursor-pointer"
-                                checked={errorStates[layer.id].checked}
+                                checked={errorState.checked}
                                 onChange={e => {
                                   const { checked } = e.target;
                                   dispatch(
@@ -203,7 +204,7 @@ export default function StepTwo() {
                       ),
                     )}
                   </div>
-                  {errorStates[layer.id] && !isLayerCheckingError && (
+                  {errorState && !isLayerCheckingError && hasError && (
                     <div className="naxatw-mt-4 naxatw-flex naxatw-justify-end naxatw-gap-2">
                       <Button
                         className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
@@ -218,14 +219,19 @@ export default function StepTwo() {
                       >
                         Automatic Fix
                       </Button>
-                      {/*
-                        <Button
-                          className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
-                          disabled={isLayerCheckingError}
-                        >
-                          Manual Fix
-                        </Button>
-                      */}
+                      <Button
+                        className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
+                        disabled={isLayerCheckingError}
+                        onClick={() => {
+                          dispatch(
+                            setDataCleaningState({
+                              selectedLayer: layer,
+                            }),
+                          );
+                        }}
+                      >
+                        Manual Fix
+                      </Button>
                     </div>
                   )}
                 </div>

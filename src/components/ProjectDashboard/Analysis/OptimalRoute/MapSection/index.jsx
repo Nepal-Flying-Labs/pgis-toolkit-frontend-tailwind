@@ -7,6 +7,7 @@ import {
   Creators as RouteAnalysisCreators,
   Types,
 } from '@Actions/routeAnalysis';
+import { Creators as AnalysisCreators } from '@Actions/analysis';
 import toastActions from '@Actions/toast';
 import {
   useOLMap,
@@ -43,6 +44,7 @@ import RoutePopup from './RoutePopup';
 
 const { setDataInputState, setResultsState, setRouteAnalysisState } =
   RouteAnalysisCreators;
+const { setAnalysisState } = AnalysisCreators;
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -116,7 +118,7 @@ export default function MapSection() {
     }
   }, [map, zoomToRouteId, analysisResults, dispatch]);
 
-  // zoom to road network layer
+  // zoom to layer
   useEffect(() => {
     if (!map || !zoomToLayerId) return;
     const bbox = mapState.find(item => item.id === zoomToLayerId)?.bbox;
@@ -129,7 +131,7 @@ export default function MapSection() {
         constrainResolution: true,
       });
       dispatch(
-        setResultsState({
+        setAnalysisState({
           zoomToLayerId: null,
         }),
       );

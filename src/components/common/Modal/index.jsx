@@ -12,6 +12,7 @@ export default function Modal({
   headerContent,
   helpContent,
   zIndex,
+  hideCloseButton,
 }) {
   const nodeRef = useRef();
 
@@ -76,16 +77,18 @@ export default function Modal({
                     </div>
                   )}
 
-                  <button
-                    type="button"
-                    className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 
+                  {!hideCloseButton && (
+                    <button
+                      type="button"
+                      className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 
                       hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5
                       naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
-                    onClick={onClose}
-                  >
-                    <i className="material-icons">close</i>
-                    <span className="naxatw-sr-only">Close modal</span>
-                  </button>
+                      onClick={onClose}
+                    >
+                      <i className="material-icons">close</i>
+                      <span className="naxatw-sr-only">Close modal</span>
+                    </button>
+                  )}
                 </div>
                 <div className="naxatw-flex">
                   <div
@@ -123,6 +126,7 @@ Modal.defaultProps = {
   headerContent: null,
   helpContent: null,
   zIndex: '11111',
+  hideCloseButton: false,
 };
 
 Modal.propTypes = {
@@ -135,4 +139,5 @@ Modal.propTypes = {
   headerContent: PropTypes.node,
   helpContent: PropTypes.node,
   zIndex: PropTypes.string,
+  hideCloseButton: PropTypes.bool,
 };

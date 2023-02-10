@@ -56,9 +56,9 @@
 - [x] self intersect
 - [x] snapping
 - [x] error name to label
+- [x] dynamic sidebar title
 - [ ] zoom to layer feature
 - [ ] remove save button from draw tool 
-- [ ] dynamic sidebar title
 - [ ] fix all and save modal
 - [ ] two times select for snapping not working
 - [ ] add loaders for manual fix page

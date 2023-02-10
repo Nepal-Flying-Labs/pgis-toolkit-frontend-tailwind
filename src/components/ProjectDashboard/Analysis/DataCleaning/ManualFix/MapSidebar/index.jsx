@@ -44,7 +44,7 @@ export default function MapSidebar() {
                 dispatch(resetManualFixState());
               }}
             />
-            <h4>Road</h4>
+            <h4>{selectedLayer?.name}</h4>
           </div>
           <Button className="naxatw-btn-primary" onClick={handleSave}>
             Save

@@ -11,4 +11,4 @@ export const getBufferAreaCollection = params =>
   authenticated(api).get(`/maps/buffer_area_collection/`, { params });
 
 export const saveBufferLayer = data =>
-  authenticated(api).post(`/maps/layer_from_optimum_path/`, data);
+  authenticated(api).post(`/maps/layer_from_buffer/`, data);

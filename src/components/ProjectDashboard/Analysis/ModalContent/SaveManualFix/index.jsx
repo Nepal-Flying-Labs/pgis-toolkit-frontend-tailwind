@@ -1,12 +1,13 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Types } from '@Actions/dataCleaning';
+import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
 import { Creators as CommonCreators } from '@Actions/common';
 import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { toggleModal } = CommonCreators;
+const { resetManualFixState } = DataCleaningCreators;
 
 export default function SaveManualFix() {
   const errorFeaturesData = useSelector(
@@ -48,7 +49,11 @@ export default function SaveManualFix() {
             className="naxatw-btn-primary"
             loaderClassName="naxatw-fill-secondary-400"
             onClick={() => {
-              dispatch(toggleModal());
+              if (hasError) {
+                dispatch(toggleModal());
+              } else {
+                dispatch(resetManualFixState());
+              }
             }}
           >
             {hasError ? 'Continue Fixing' : 'Done'}

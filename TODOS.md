@@ -57,12 +57,11 @@
 - [x] snapping
 - [x] error name to label
 - [x] dynamic sidebar title
+- [x] remove save button from draw tool 
+- [x] fix all and save modal
 - [ ] zoom to layer feature
-- [ ] remove save button from draw tool 
-- [ ] fix all and save modal
 - [ ] two times select for snapping not working
 - [ ] add loaders for manual fix page
-
 - [ ] change cursor while hovering
 
 ### ISSUES

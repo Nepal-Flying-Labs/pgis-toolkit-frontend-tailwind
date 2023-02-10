@@ -30,7 +30,7 @@ export default function SaveManualFix() {
             ? 'Please wait while validating..'
             : hasError
             ? 'Seems like there are still errors left that needs to be fixed.'
-            : 'Continue'}
+            : 'There are no errors left.'}
         </h4>
       </div>
 

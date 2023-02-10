@@ -9,7 +9,7 @@ import Errors from './Errors';
 import Layers from './Layers';
 
 const { toggleModal } = CommonCreators;
-const { validateErrorFixRequest, setDataCleaningState } = DataCleaningCreators;
+const { validateErrorFixRequest, resetManualFixState } = DataCleaningCreators;
 
 const tabData = [
   { id: 1, title: 'Errors', content: <Errors /> },
@@ -41,11 +41,7 @@ export default function MapSidebar() {
             <IconButton
               name="arrow_back"
               onClick={() => {
-                dispatch(
-                  setDataCleaningState({
-                    selectedLayer: null,
-                  }),
-                );
+                dispatch(resetManualFixState());
               }}
             />
             <h4>Road</h4>

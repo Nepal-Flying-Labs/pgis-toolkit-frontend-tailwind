@@ -1,442 +1,34 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from 'reduxsauce';
 import produce from 'immer';
-import { Types } from '@Actions/dataCleaning';
 import { parse } from 'wkt';
+import { Types } from '@Actions/dataCleaning';
 import { checkErrorData, pointCheckExceptions } from '@src/constants/analysis';
 import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
-// const initialState = {
-//   stepIndex: 1,
-//   manualFix: {
-//     sidebarContent: 'error-list', // 'error-list', 'add-feature', 'edit-feature'
-//     drawnFeatureWkt: null,
-//     layerAttributes: null,
-//     layerAttributesFields: null,
-//     individualAttributeData: [],
-//     refreshLayerId: null,
-//     selectedError: null,
-//     selectedFeaturesForSnap: [],
-//     geojsonFeatures: null,
-//     selectedFeatureAttributes: null,
-//     explodingFeatureIds: [], // for showing loader while exploding features
-//     startEditing: false, // toggle DrawTool only when startEditing true
-//   },
-//   selectedLayer: null, // selected layer for manual fix
-//   errorFeaturesData: null,
-//   optimalRoute: {
-//     selectedRoadLayer: {},
-//     selectedObstacleLayers: [], // []
-//   },
-//   errorStates: {},
-// };
-
 const initialState = {
-  stepIndex: 2,
+  stepIndex: 1,
   manualFix: {
-    sidebarContent: 'error-list',
+    sidebarContent: 'error-list', // 'error-list', 'add-feature', 'edit-feature'
     drawnFeatureWkt: null,
     layerAttributes: null,
-    layerAttributesFields: [
-      {
-        id: 7154,
-        name: 'id',
-        alias: null,
-        data_type: 'int',
-        mandatory: true,
-      },
-      {
-        id: 7155,
-        name: 'Id_1',
-        alias: null,
-        data_type: 'int',
-        mandatory: true,
-      },
-      {
-        id: 7156,
-        name: 'Name',
-        alias: null,
-        data_type: 'str',
-        mandatory: true,
-      },
-    ],
-    individualAttributeData: [
-      {
-        id: 7154,
-        name: 'id',
-        alias: null,
-        data_type: 'int',
-        mandatory: true,
-        value: '',
-      },
-      {
-        id: 7155,
-        name: 'Id_1',
-        alias: null,
-        data_type: 'int',
-        mandatory: true,
-        value: '',
-      },
-      {
-        id: 7156,
-        name: 'Name',
-        alias: null,
-        data_type: 'str',
-        mandatory: true,
-        value: '',
-      },
-    ],
+    layerAttributesFields: null,
+    individualAttributeData: [],
     refreshLayerId: null,
     selectedError: null,
     selectedFeaturesForSnap: [],
     geojsonFeatures: null,
     selectedFeatureAttributes: null,
-    explodingFeatureIds: [],
+    explodingFeatureIds: [], // for showing loader while exploding features
+    startEditing: false, // toggle DrawTool only when startEditing true
   },
-  selectedLayer: {
-    id: 647,
-    name: 'Test Error Network',
-    layer_type: 'Vector',
-    upload_status: 'successful',
-    is_clean: false,
-    icon: null,
-    std_icon: null,
-    style: {
-      lineColor: '#2C675A',
-      lineOpacity: 100,
-      fillColor: '#e011b7',
-      fillOpacity: 0,
-      lineThickness: '5',
-      circleRadius: 5,
-      dashline: 0,
-      showLabel: false,
-      labelField: '',
-      labelFont: 'Calibri',
-      labelFontSize: 14,
-      labelColor: '#000000',
-      labelOpacity: 100,
-      labelOutlineWidth: 3,
-      labelOutlineColor: '#ffffff',
-      labelOffsetX: 0,
-      labelOffsetY: 0,
-      labelText: 'normal',
-      labelMaxResolution: 1200,
-      labelAlign: 'center',
-      labelBaseline: 'middle',
-      labelRotationDegree: 0,
-      labelFontWeight: 'normal',
-      labelPlacement: 'point',
-      labelMaxAngleDegree: 0.7853981633974483,
-      labelOverflow: false,
-      labelLineHeight: 1,
-      icon: {},
-      showSublayer: false,
-      sublayerColumnName: '',
-      sublayer: {},
-      geometryType: 'MultiLineString',
-    },
-    bbox: [
-      85.41455437052994, 27.68873499036167, 85.41893721463556,
-      27.695401775725283,
-    ],
-    geom_type: 'MultiLineString',
-    sub_layer: [],
-    theme: 479,
-    checked: true,
-  },
-  errorFeaturesData: {
-    null: [
-      {
-        id: 20138,
-        checked: false,
-      },
-      {
-        id: 20143,
-        checked: false,
-      },
-      {
-        id: 20153,
-        checked: false,
-      },
-    ],
-    multipart: [
-      {
-        id: 20144,
-        checked: false,
-      },
-      {
-        id: 20149,
-        checked: false,
-      },
-      {
-        id: 20145,
-        checked: false,
-      },
-      {
-        id: 20146,
-        checked: false,
-      },
-      {
-        id: 20147,
-        checked: false,
-      },
-      {
-        id: 20139,
-        checked: false,
-      },
-      {
-        id: 20140,
-        checked: false,
-      },
-      {
-        id: 20141,
-        checked: false,
-      },
-      {
-        id: 20142,
-        checked: false,
-      },
-      {
-        id: 20154,
-        checked: false,
-      },
-      {
-        id: 20148,
-        checked: false,
-      },
-      {
-        id: 20150,
-        checked: false,
-      },
-      {
-        id: 20151,
-        checked: false,
-      },
-      {
-        id: 20152,
-        checked: false,
-      },
-    ],
-    self_instersect: [
-      {
-        id: 20140,
-        checked: false,
-      },
-      {
-        id: 20141,
-        checked: false,
-      },
-      {
-        id: 20138,
-        checked: false,
-      },
-      {
-        id: 20143,
-        checked: false,
-      },
-      {
-        id: 20153,
-        checked: false,
-      },
-    ],
-    snapping: [
-      {
-        id: 20140,
-        checked: false,
-      },
-      {
-        id: 20144,
-        checked: false,
-      },
-      {
-        id: 20150,
-        checked: false,
-      },
-      {
-        id: 20151,
-        checked: false,
-      },
-      {
-        id: 20152,
-        checked: false,
-      },
-      {
-        id: 20154,
-        checked: false,
-      },
-    ],
-  },
+  selectedLayer: null, // selected layer for manual fix
+  errorFeaturesData: null,
   optimalRoute: {
-    selectedRoadLayer: {
-      id: 647,
-      name: 'Test Error Network',
-      layer_type: 'Vector',
-      upload_status: 'successful',
-      is_clean: false,
-      icon: null,
-      std_icon: null,
-      style: {
-        lineColor: '#2C675A',
-        lineOpacity: 100,
-        fillColor: '#e011b7',
-        fillOpacity: 0,
-        lineThickness: '5',
-        circleRadius: 5,
-        dashline: 0,
-        showLabel: false,
-        labelField: '',
-        labelFont: 'Calibri',
-        labelFontSize: 14,
-        labelColor: '#000000',
-        labelOpacity: 100,
-        labelOutlineWidth: 3,
-        labelOutlineColor: '#ffffff',
-        labelOffsetX: 0,
-        labelOffsetY: 0,
-        labelText: 'normal',
-        labelMaxResolution: 1200,
-        labelAlign: 'center',
-        labelBaseline: 'middle',
-        labelRotationDegree: 0,
-        labelFontWeight: 'normal',
-        labelPlacement: 'point',
-        labelMaxAngleDegree: 0.7853981633974483,
-        labelOverflow: false,
-        labelLineHeight: 1,
-        icon: {},
-        showSublayer: false,
-        sublayerColumnName: '',
-        sublayer: {},
-        geometryType: 'MultiLineString',
-      },
-      bbox: [
-        85.41455437052994, 27.68873499036167, 85.41893721463556,
-        27.695401775725283,
-      ],
-      geom_type: 'MultiLineString',
-      sub_layer: [],
-      theme: 479,
-      checked: true,
-    },
-    selectedObstacleLayers: [
-      {
-        id: 545,
-        name: 'Sample Obstacle 2',
-        layer_type: 'Vector',
-        upload_status: 'successful',
-        is_clean: false,
-        icon: null,
-        std_icon: null,
-        style: {
-          lineColor: '#2C675A',
-          lineOpacity: 100,
-          fillColor: '#9f8999',
-          fillOpacity: 100,
-          lineThickness: 2,
-          circleRadius: 5,
-          dashline: 0,
-          showLabel: false,
-          labelField: '',
-          labelFont: 'Calibri',
-          labelFontSize: 14,
-          labelColor: '#000000',
-          labelOpacity: 100,
-          labelOutlineWidth: 3,
-          labelOutlineColor: '#ffffff',
-          labelOffsetX: 0,
-          labelOffsetY: 0,
-          labelText: 'normal',
-          labelMaxResolution: 1200,
-          labelAlign: 'center',
-          labelBaseline: 'middle',
-          labelRotationDegree: 0,
-          labelFontWeight: 'normal',
-          labelPlacement: 'point',
-          labelMaxAngleDegree: 0.7853981633974483,
-          labelOverflow: false,
-          labelLineHeight: 1,
-          icon: {},
-          showSublayer: false,
-          sublayerColumnName: '',
-          sublayer: {},
-          geometryType: 'Point',
-        },
-        bbox: [
-          85.33781939802816, 27.652739899999965, 85.35413949999989,
-          27.664180636852794,
-        ],
-        geom_type: 'Point',
-        sub_layer: [],
-        theme: 480,
-        checked: false,
-      },
-    ],
+    selectedRoadLayer: {},
+    selectedObstacleLayers: [], // []
   },
-  errorStates: {
-    647: [
-      {
-        id: 'null',
-        label: 'Null Geometry',
-        checkAPI: 'check_null_geometry',
-        fixAPI: 'fix_null_geometry',
-        status: 'error',
-        errorData: 3,
-        totalData: 17,
-        checked: false,
-      },
-      {
-        id: 'multipart',
-        label: 'Multipart Geometry',
-        checkAPI: 'check_multipart_geometry',
-        fixAPI: 'fix_multipart_geometry',
-        status: 'error',
-        errorData: 14,
-        totalData: 17,
-        checked: false,
-      },
-      {
-        id: 'duplicate',
-        label: 'Duplicate Geometry',
-        checkAPI: 'check_duplicate_geometry',
-        fixAPI: 'fix_duplicate_geometry',
-        status: 'success',
-        errorData: 0,
-        totalData: 17,
-        checked: false,
-      },
-      {
-        id: 'overlapping',
-        label: 'Overlapping Geometry',
-        checkAPI: 'check_overlapping_geometry',
-        fixAPI: 'fix_overlapping_geometry',
-        status: 'success',
-        errorData: 0,
-        totalData: 17,
-        checked: false,
-      },
-      {
-        id: 'self_instersect',
-        label: 'Self-Intersecting Geometry',
-        checkAPI: 'check_self_intersecting_geometry',
-        fixAPI: 'fix_self_intersecting_geometry',
-        status: 'error',
-        errorData: 5,
-        totalData: 17,
-        checked: false,
-      },
-      {
-        id: 'isolated',
-        alternativeId: 'snapping',
-        label: 'Isolated Geometry',
-        checkAPI: 'check_isolated_geometry',
-        fixAPI: 'fix_isolated_geometry',
-        status: 'error',
-        errorData: 6,
-        totalData: 17,
-        checked: false,
-      },
-    ],
-  },
+  errorStates: {},
 };
 
 const setDataCleaningState = (state, action) => ({
@@ -759,6 +351,12 @@ const getSelectedFeatureAttributesSuccess = (state, action) =>
     selectedError.geojson = geojson;
   });
 
+const resetManualFixState = state =>
+  produce(state, draft => {
+    draft.manualFix = initialState.manualFix;
+    draft.selectedLayer = initialState.selectedLayer;
+  });
+
 const dataCleaningReducer = createReducer(initialState, {
   [Types.SET_DATA_CLEANING_STATE]: setDataCleaningState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -782,6 +380,7 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.EXPLODE_FEATURE_FAILURE]: explodeFeatureFailure,
   [Types.GET_SELECTED_FEATURE_ATTRIBUTES_SUCCESS]:
     getSelectedFeatureAttributesSuccess,
+  [Types.RESET_MANUAL_FIX_STATE]: resetManualFixState,
 });
 
 export default dataCleaningReducer;

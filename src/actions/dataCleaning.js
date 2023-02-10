@@ -64,6 +64,8 @@ export const { Types, Creators } = createActions(
     getSelectedFeatureAttributesRequest: ['payload'],
     getSelectedFeatureAttributesSuccess: ['payload'],
     getSelectedFeatureAttributesFailure: null,
+
+    resetManualFixState: null,
   },
   { prefix: 'dataCleaning/' },
 );

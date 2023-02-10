@@ -46,7 +46,6 @@
 - [ ] add loader to map
 
 ### MANUAL FIX
-
 - [x] refactor manual fix (remove save button)
 - [x] save feature edit for multipart not working
 - [x] edit multipart geometry
@@ -61,3 +60,10 @@
 - [ ] remove save button from draw tool 
 - [ ] dynamic sidebar title
 - [ ] fix all and save modal
+- [ ] two times select for snapping not working
+- [ ] add loaders for manual fix page
+
+- [ ] change cursor while hovering
+
+### ISSUES
+- [ ] map page to data to map reset checkbox state in project map

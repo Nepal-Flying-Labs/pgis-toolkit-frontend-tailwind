@@ -39,7 +39,6 @@ export default function MapSection() {
   const centroidGeojson = useSelector(
     state => state.organizationDashboard.centroidGeojson,
   );
-  console.log('hello');
 
   const { mapRef, map } = useOLMap({
     center: fromLonLat([85.3, 27.7]),

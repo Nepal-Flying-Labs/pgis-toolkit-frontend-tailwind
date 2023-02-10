@@ -47,6 +47,7 @@ import SaveRouteLayer from '@Components/ProjectDashboard/Analysis/ModalContent/S
 import SaveBufferLayer from '@Components/ProjectDashboard/Analysis/ModalContent/SaveBufferLayer';
 import SelectLayerFeature from '@Components/ProjectDashboard/Analysis/ModalContent/SelectLayerFeature';
 import AddDatasetCategory from '@Components/ProjectDashboard/ModalContent/AddDatasetCategory/index';
+import DeleteBufferResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteBufferResult/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -353,6 +354,12 @@ export function getPromptDialogContent(content) {
       return {
         title: 'Delete attribute',
         content: <DeleteLayerAttribute />,
+      };
+
+    case 'delete-buffer-result':
+      return {
+        title: '',
+        content: <DeleteBufferResult />,
       };
 
     default:

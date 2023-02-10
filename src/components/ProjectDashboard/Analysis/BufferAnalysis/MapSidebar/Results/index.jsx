@@ -92,19 +92,23 @@ export default function Results() {
         dispatch(togglePromptDialog('save-buffer-layer'));
       },
     },
-    // {
-    //   id: 'delete-layer',
-    //   label: (
-    //     <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
-    //       <i className="material-icons naxatw-mr-2">delete_outline</i>
-    //       <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
-    //     </span>
-    //   ),
-    //   onClick: data => {
-    //     // dispatch(setDeleteLayer(data));
-    //     // dispatch(togglePromptDialog('delete-layer'));
-    //   },
-    // },
+    {
+      id: 'discard',
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Discard</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(
+          setResultsState({
+            selectedAnalysis: data,
+          }),
+        );
+        dispatch(togglePromptDialog('delete-buffer-result'));
+      },
+    },
   ];
 
   return (

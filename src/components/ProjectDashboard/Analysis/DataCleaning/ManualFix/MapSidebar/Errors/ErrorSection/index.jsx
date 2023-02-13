@@ -94,7 +94,7 @@ export default function ErrorSection() {
                   <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                     <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                       <input
-                        id={feature.id}
+                        id={`${type}-${feature.id}`}
                         type="checkbox"
                         className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
                         checked={feature.checked}
@@ -124,7 +124,7 @@ export default function ErrorSection() {
                       )}
                       <label
                         className="naxatw-text-body-lg naxatw-text-grey-800"
-                        htmlFor={feature.id}
+                        htmlFor={`${type}-${feature.id}`}
                       >
                         {feature.id}
                       </label>

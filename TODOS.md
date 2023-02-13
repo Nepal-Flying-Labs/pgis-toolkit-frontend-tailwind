@@ -62,7 +62,7 @@
 - [x] two times select for snapping not working
 - [x] add loaders for manual fix page
 - [x] zoom to layer feature
-- [ ] unique id for null, multipart
+- [x] unique id for null, multipart
 - [ ] change cursor while hovering
 
 ### ISSUES

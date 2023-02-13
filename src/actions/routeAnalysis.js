@@ -32,6 +32,8 @@ export const { Types, Creators } = createActions(
     getSelectedLayerFeatureRequest: ['payload'],
     getSelectedLayerFeatureSuccess: ['payload'],
     getSelectedLayerFeatureFailure: ['payload'],
+
+    deleteRouteResult: ['payload'],
   },
   { prefix: 'routeAnalysis/' },
 );

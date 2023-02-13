@@ -18,6 +18,7 @@ const {
   handleErrorCheckbox,
   deleteSelectedFeaturesRequest,
   explodeFeatureRequest,
+  getFeatureGeojsonRequest,
 } = DataCleaningCreators;
 
 const { togglePromptDialog } = CommonCreators;
@@ -57,9 +58,12 @@ export default function ErrorSection() {
         </span>
       ),
       onClick: data => {
-        // dispatch(
-        // setResultsState({ zoomToBuffer: { id: data.id, bbox: data.bbox } }),
-        // );
+        dispatch(
+          getFeatureGeojsonRequest({
+            mirrorId: data.id,
+            type: data.type,
+          }),
+        );
       },
     },
   ];
@@ -167,10 +171,12 @@ export default function ErrorSection() {
                         />
                       )}
 
-                      <DropdownOptions
-                        options={dropdownOptions}
-                        data={feature}
-                      />
+                      {type !== 'null' && (
+                        <DropdownOptions
+                          options={dropdownOptions}
+                          data={{ ...feature, type }}
+                        />
+                      )}
                     </div>
                   </div>
 

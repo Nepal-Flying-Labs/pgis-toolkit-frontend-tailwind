@@ -159,15 +159,15 @@ export function* deleteSelectedFeaturesRequest() {
   }
 }
 
-export function* getFeatureGeojsonRequest({ payload }) {
+export function* getFeaturesGeojsonRequest({ payload }) {
   try {
     const responses = yield all(
       payload.map(id => call(getFeatureMirrorGeojson, { mirror_id: id })),
     );
     const responseData = responses.map(res => res.data);
-    yield put(dataCleaningActions.getFeatureGeojsonSuccess(responseData));
+    yield put(dataCleaningActions.getFeaturesGeojsonSuccess(responseData));
   } catch (error) {
-    yield put(dataCleaningActions.getFeatureGeojsonFailure());
+    yield put(dataCleaningActions.getFeaturesGeojsonFailure());
     throw error;
   }
 }
@@ -280,6 +280,25 @@ export function* getSelectedFeatureAttributesRequest({ payload }) {
   }
 }
 
+export function* getFeatureGeojsonRequest({ payload }) {
+  try {
+    const { mirrorId, type } = payload;
+    const response = yield call(getFeatureMirrorGeojson, {
+      mirror_id: mirrorId,
+    });
+    yield put(
+      dataCleaningActions.getFeatureGeojsonSuccess({
+        geojson: response.data,
+        featureId: mirrorId,
+        type,
+      }),
+    );
+  } catch (error) {
+    yield put(dataCleaningActions.getFeatureGeojsonFailure());
+    throw error;
+  }
+}
+
 function* dataCleaningWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
@@ -310,8 +329,8 @@ function* dataCleaningWatcher() {
     withLoader(withErrorHandler(deleteSelectedFeaturesRequest)),
   );
   yield takeLatest(
-    Types.GET_FEATURE_GEOJSON_REQUEST,
-    withLoader(withErrorHandler(getFeatureGeojsonRequest)),
+    Types.GET_FEATURES_GEOJSON_REQUEST,
+    withLoader(withErrorHandler(getFeaturesGeojsonRequest)),
   );
   yield takeLatest(
     Types.START_ANALYSIS_REQUEST,
@@ -328,6 +347,10 @@ function* dataCleaningWatcher() {
   yield takeEvery(
     Types.GET_SELECTED_FEATURE_ATTRIBUTES_REQUEST,
     withLoader(withErrorHandler(getSelectedFeatureAttributesRequest)),
+  );
+  yield takeLatest(
+    Types.GET_FEATURE_GEOJSON_REQUEST,
+    withLoader(withErrorHandler(getFeatureGeojsonRequest)),
   );
 }
 

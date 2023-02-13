@@ -65,7 +65,7 @@ export default function CustomVTLayer({
       url,
       transition: 0,
       tileLoadFunction: (tile, vtUrl) => {
-        tile.setLoader((extent, resolution, projection) => {
+        tile.setLoader((extent, _, projection) => {
           fetch(vtUrl, {
             headers: requestHeader,
           }).then(response => {

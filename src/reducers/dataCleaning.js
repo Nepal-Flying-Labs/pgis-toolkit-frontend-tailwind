@@ -2,6 +2,7 @@
 import { createReducer } from 'reduxsauce';
 import produce from 'immer';
 import { parse } from 'wkt';
+import bbox from '@turf/bbox';
 import { Types } from '@Actions/dataCleaning';
 import { checkErrorData, pointCheckExceptions } from '@src/constants/analysis';
 import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
@@ -21,6 +22,7 @@ const initialState = {
     selectedFeatureAttributes: null,
     explodingFeatureIds: [], // for showing loader while exploding features
     startEditing: false, // toggle DrawTool only when startEditing true
+    featureBbox: null, // bbox for zoom to layer
   },
   selectedLayer: null, // selected layer for manual fix
   errorFeaturesData: null,
@@ -274,7 +276,7 @@ const deleteSelectedFeaturesSuccess = (state, action) => {
   };
 };
 
-const getFeatureGeojsonSuccess = (state, action) => {
+const getFeaturesGeojsonSuccess = (state, action) => {
   const geojsonFeatures = action.payload;
   const { selectedFeaturesForSnap } = initialState.manualFix;
   return {
@@ -359,6 +361,17 @@ const resetManualFixState = state =>
     draft.selectedLayer = initialState.selectedLayer;
   });
 
+const getFeatureGeojsonSuccess = (state, action) =>
+  produce(state, draft => {
+    const { geojson, featureId, type } = action.payload;
+    const featureBbox = bbox(geojson);
+    draft.featureBbox = featureBbox;
+    const featureData = draft.errorFeaturesData[type].find(
+      item => item.id === featureId,
+    );
+    featureData.checked = true;
+  });
+
 const dataCleaningReducer = createReducer(initialState, {
   [Types.SET_DATA_CLEANING_STATE]: setDataCleaningState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -374,7 +387,7 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.HANDLE_ERROR_CHECKBOX]: handleErrorCheckbox,
   [Types.DELETE_FEATURE_SUCCESS]: deleteFeatureSuccess,
   [Types.DELETE_SELECTED_FEATURES_SUCCESS]: deleteSelectedFeaturesSuccess,
-  [Types.GET_FEATURE_GEOJSON_SUCCESS]: getFeatureGeojsonSuccess,
+  [Types.GET_FEATURES_GEOJSON_SUCCESS]: getFeaturesGeojsonSuccess,
   [Types.RESET_DATA_CLEANING_STATE]: resetDataCleaningState,
   [Types.SAVE_ATTRIBUTE_EDIT]: saveAttributeEdit,
   [Types.EXPLODE_FEATURE_REQUEST]: explodeFeatureRequest,
@@ -383,6 +396,7 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.GET_SELECTED_FEATURE_ATTRIBUTES_SUCCESS]:
     getSelectedFeatureAttributesSuccess,
   [Types.RESET_MANUAL_FIX_STATE]: resetManualFixState,
+  [Types.GET_FEATURE_GEOJSON_SUCCESS]: getFeatureGeojsonSuccess,
 });
 
 export default dataCleaningReducer;

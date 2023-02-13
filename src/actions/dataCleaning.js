@@ -41,9 +41,9 @@ export const { Types, Creators } = createActions(
 
     handleErrorCheckbox: ['payload'],
 
-    getFeatureGeojsonRequest: ['payload'],
-    getFeatureGeojsonSuccess: ['payload'],
-    getFeatureGeojsonFailure: null,
+    getFeaturesGeojsonRequest: ['payload'],
+    getFeaturesGeojsonSuccess: ['payload'],
+    getFeaturesGeojsonFailure: null,
 
     startAnalysisRequest: ['params'],
     startAnalysisSuccess: ['payload'],
@@ -66,6 +66,10 @@ export const { Types, Creators } = createActions(
     getSelectedFeatureAttributesFailure: null,
 
     resetManualFixState: null,
+
+    getFeatureGeojsonRequest: ['payload'],
+    getFeatureGeojsonSuccess: ['payload'],
+    getFeatureGeojsonFailure: null,
   },
   { prefix: 'dataCleaning/' },
 );

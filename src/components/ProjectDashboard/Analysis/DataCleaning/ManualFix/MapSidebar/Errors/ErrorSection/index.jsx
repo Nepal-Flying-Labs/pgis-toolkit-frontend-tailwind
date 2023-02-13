@@ -18,6 +18,7 @@ const {
   handleErrorCheckbox,
   deleteSelectedFeaturesRequest,
   explodeFeatureRequest,
+  getFeatureGeojsonRequest,
 } = DataCleaningCreators;
 
 const { togglePromptDialog } = CommonCreators;
@@ -57,9 +58,12 @@ export default function ErrorSection() {
         </span>
       ),
       onClick: data => {
-        // dispatch(
-        // setResultsState({ zoomToBuffer: { id: data.id, bbox: data.bbox } }),
-        // );
+        dispatch(
+          getFeatureGeojsonRequest({
+            mirrorId: data.id,
+            type: data.type,
+          }),
+        );
       },
     },
   ];
@@ -90,7 +94,7 @@ export default function ErrorSection() {
                   <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                     <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                       <input
-                        id={feature.id}
+                        id={`${type}-${feature.id}`}
                         type="checkbox"
                         className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
                         checked={feature.checked}
@@ -120,7 +124,7 @@ export default function ErrorSection() {
                       )}
                       <label
                         className="naxatw-text-body-lg naxatw-text-grey-800"
-                        htmlFor={feature.id}
+                        htmlFor={`${type}-${feature.id}`}
                       >
                         {feature.id}
                       </label>
@@ -167,10 +171,12 @@ export default function ErrorSection() {
                         />
                       )}
 
-                      <DropdownOptions
-                        options={dropdownOptions}
-                        data={feature}
-                      />
+                      {type !== 'null' && (
+                        <DropdownOptions
+                          options={dropdownOptions}
+                          data={{ ...feature, type }}
+                        />
+                      )}
                     </div>
                   </div>
 

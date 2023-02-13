@@ -59,10 +59,11 @@
 - [x] dynamic sidebar title
 - [x] remove save button from draw tool 
 - [x] fix all and save modal
-- [ ] zoom to layer feature
-- [ ] two times select for snapping not working
-- [ ] add loaders for manual fix page
-- [ ] change cursor while hovering
+- [x] two times select for snapping not working
+- [x] add loaders for manual fix page
+- [x] zoom to layer feature
+- [x] unique id for null, multipart
+- [x] change cursor while hovering
 
 ### ISSUES
 - [ ] map page to data to map reset checkbox state in project map

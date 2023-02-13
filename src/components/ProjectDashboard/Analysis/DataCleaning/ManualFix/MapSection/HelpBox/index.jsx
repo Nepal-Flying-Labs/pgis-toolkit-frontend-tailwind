@@ -4,7 +4,7 @@ import { Creators, Types } from '@Actions/dataCleaning';
 import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
-const { getFeatureGeojsonRequest } = Creators;
+const { getFeaturesGeojsonRequest } = Creators;
 
 export default function HelpBox() {
   const selectedError = useSelector(
@@ -17,7 +17,7 @@ export default function HelpBox() {
     state => state.dataCleaning.manualFix.startEditing,
   );
   const isDataFetching = useSelector(state =>
-    checkIfLoading(state, [Types.GET_FEATURE_GEOJSON_REQUEST]),
+    checkIfLoading(state, [Types.GET_FEATURES_GEOJSON_REQUEST]),
   );
   const dispatch = useDispatch();
 
@@ -31,7 +31,7 @@ export default function HelpBox() {
           className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
           isLoading={isDataFetching}
           onClick={() =>
-            dispatch(getFeatureGeojsonRequest(selectedFeaturesForSnap))
+            dispatch(getFeaturesGeojsonRequest(selectedFeaturesForSnap))
           }
         >
           Start Editing

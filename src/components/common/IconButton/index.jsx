@@ -7,12 +7,14 @@ export default function IconButton({
   style,
   wrapperClassName,
   onClick,
+  ...rest
 }) {
   return (
     <span
       type="button"
       onClick={onClick}
       className={`naxatw-flex naxatw-items-center naxatw-cursor-pointer naxatw-select-none naxatw-p-2 ${wrapperClassName}`}
+      {...rest}
     >
       <i className={className} style={style}>
         {name}

@@ -12,8 +12,14 @@ export const copyFeatures = data =>
 export const getErrorFeatures = params =>
   authenticated(api).get(`/maps/cleaning_error_features/`, { params });
 
+export const getFeatureCollectionMirror = id =>
+  authenticated(api).get(`/maps/feature_collection_mirror/${id}/`);
+
 export const updateFeatureCollection = (id, data) =>
   authenticated(api).patch(`/maps/feature_collection_mirror/${id}/`, data);
+
+export const postFeatureCollection = data =>
+  authenticated(api).post(`/maps/feature_collection_mirror/`, data);
 
 export const bulkDeleteNullGeometry = data =>
   authenticated(api).post(`/maps/bulk_del_null_geom/`, data);

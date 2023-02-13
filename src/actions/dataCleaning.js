@@ -2,7 +2,7 @@ import { createActions } from 'reduxsauce';
 
 export const { Types, Creators } = createActions(
   {
-    setAnalysisState: ['payload'],
+    setDataCleaningState: ['payload'],
     setOptimalRouteState: ['payload'],
     setErrorStates: ['payload'],
 
@@ -50,6 +50,22 @@ export const { Types, Creators } = createActions(
     startAnalysisFailure: null,
 
     resetDataCleaningState: null,
+
+    saveAttributeEdit: ['payload'],
+
+    explodeFeatureRequest: ['payload'],
+    explodeFeatureSuccess: ['payload'],
+    explodeFeatureFailure: ['payload'],
+
+    validateErrorFixRequest: ['payload'],
+    validateErrorFixSuccess: ['payload'],
+    validateErrorFixFailure: null,
+
+    getSelectedFeatureAttributesRequest: ['payload'],
+    getSelectedFeatureAttributesSuccess: ['payload'],
+    getSelectedFeatureAttributesFailure: null,
+
+    resetManualFixState: null,
   },
   { prefix: 'dataCleaning/' },
 );

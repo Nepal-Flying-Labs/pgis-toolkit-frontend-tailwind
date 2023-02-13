@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 export default function Spinner({ className }) {
   return (
-    <div role="status">
+    <div role="status" className="naxatw-flex naxatw-items-center">
       <svg
         key={className}
         aria-hidden="true"

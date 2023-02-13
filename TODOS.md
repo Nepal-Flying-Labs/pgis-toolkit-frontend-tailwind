@@ -63,7 +63,7 @@
 - [x] add loaders for manual fix page
 - [x] zoom to layer feature
 - [x] unique id for null, multipart
-- [ ] change cursor while hovering
+- [x] change cursor while hovering
 
 ### ISSUES
 - [ ] map page to data to map reset checkbox state in project map

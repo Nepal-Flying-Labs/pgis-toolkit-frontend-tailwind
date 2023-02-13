@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
 import { useEffect, useMemo, useRef } from 'react';
 // import * as olExtent from 'ol/extent';
@@ -157,6 +158,9 @@ export default function CustomVTLayer({
   useEffect(() => {
     function hoverInteraction(event) {
       vectorTileLayer.getFeatures(event.pixel).then(features => {
+        // hover effect
+        const hit = map.hasFeatureAtPixel(event.pixel);
+        map.getViewport().style.cursor = hit ? 'pointer' : '';
         if (!features.length) {
           hoveredFeatures.current = {};
           hoverLayer.current.changed();

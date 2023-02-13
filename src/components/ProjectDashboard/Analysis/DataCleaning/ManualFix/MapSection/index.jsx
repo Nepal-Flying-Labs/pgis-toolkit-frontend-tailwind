@@ -50,9 +50,10 @@ export default function MapSection() {
   });
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
-      Types.GET_PROJECT_THEMES_REQUEST,
-      Types.GET_PROJECT_THEME_LAYERS_REQUEST,
-      Types.GET_PROJECT_GEOJSON_REQUEST,
+      Types.GET_ERROR_FEATURES_REQUEST,
+      Types.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+      Types.GET_SELECTED_FEATURE_ATTRIBUTES_REQUEST,
+      Types.GET_FEATURE_GEOJSON_REQUEST,
     ]),
   );
   const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
@@ -65,6 +66,7 @@ export default function MapSection() {
   );
   const mapState = useSelector(mapStateSelector);
   const zoomToLayerId = useSelector(state => state.analysis.zoomToLayerId);
+  const featureBbox = useSelector(state => state.dataCleaning.featureBbox);
   const selectedError = useSelector(
     state => state.dataCleaning.manualFix.selectedError,
   );
@@ -108,6 +110,24 @@ export default function MapSection() {
       );
     }
   }, [map, zoomToLayerId, mapState, dispatch]);
+
+  // zoom to layer
+  useEffect(() => {
+    if (!map || !featureBbox) return;
+    const zoomExtent = transformExtent(featureBbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 2000,
+        constrainResolution: true,
+      });
+      dispatch(
+        setManualFixState({
+          featureBbox: null,
+        }),
+      );
+    }
+  }, [map, featureBbox, dispatch]);
 
   // refresh vectortile after layer edit
   useEffect(() => {

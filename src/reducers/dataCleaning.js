@@ -276,12 +276,14 @@ const deleteSelectedFeaturesSuccess = (state, action) => {
 
 const getFeatureGeojsonSuccess = (state, action) => {
   const geojsonFeatures = action.payload;
+  const { selectedFeaturesForSnap } = initialState.manualFix;
   return {
     ...state,
     manualFix: {
       ...state.manualFix,
       geojsonFeatures,
       startEditing: true,
+      selectedFeaturesForSnap,
     },
   };
 };

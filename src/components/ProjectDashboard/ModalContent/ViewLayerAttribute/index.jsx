@@ -220,7 +220,13 @@ export default function ViewLayerAttribute() {
                         : 'naxatw-text-body-lg'
                     } `}
                   >
-                    {row[key] || '-'}
+                    {!Array.isArray(row[key]) &&
+                    typeof row[key] === 'object' &&
+                    row[key]
+                      ? Object.keys(row[key]).map(item => (
+                          <p>{`${row[key][item]},`}</p>
+                        ))
+                      : row[key] || '-'}
                   </p>
                 )}
               />

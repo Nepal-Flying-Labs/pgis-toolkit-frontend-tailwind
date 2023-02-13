@@ -202,6 +202,9 @@ export default function CustomVTLayer({
       },
     });
     map.on('pointermove', hoverInteraction);
+    return () => {
+      map?.un('singleclick', hoverInteraction);
+    };
   }, [map, vectorTileLayer, hoverEffect, style]);
 
   // add select effect
@@ -258,6 +261,9 @@ export default function CustomVTLayer({
       },
     });
     map.on('singleclick', selectInteraction);
+    return () => {
+      map?.un('singleclick', selectInteraction);
+    };
   }, [map, vectorTileLayer, hoverEffect, style]); // eslint-disable-line
 
   // cleanup

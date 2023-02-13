@@ -60,6 +60,7 @@ export default function EditFeatureSection() {
         layerAttributes: null,
         selectedError: null,
         startEditing: false,
+        geojsonFeatures: null,
       }),
     );
   };

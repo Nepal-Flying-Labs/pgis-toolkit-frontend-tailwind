@@ -13,6 +13,7 @@ import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem
 import MapContent from './OriginPointContents/MapContent';
 import SearchContent from './OriginPointContents/SearchContent';
 import LayerContent from './OriginPointContents/LayerContent';
+import IconButton from '@Components/common/IconButton/index';
 
 const {
   setDataInputState,
@@ -123,7 +124,15 @@ export default function DataInput() {
         }}
       >
         <Container>
-          <label className="naxatw-label">Origin</label>
+          <label className="naxatw-label naxatw-flex naxatw-items-center">
+            Origin
+            <IconButton
+              className="material-symbols-outlined naxatw-text-[1.2rem]"
+              name="info"
+              title="Info"
+              // onClick={() => setCollapsed(!collapsed)}
+            />
+          </label>
           <div className="naxatw-flex naxatw-space-x-2">
             {originPointData.map(({ label, value, icon }) => (
               <Chip

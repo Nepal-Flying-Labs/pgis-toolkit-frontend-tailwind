@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import IconButton from '@Components/common/IconButton';
 import analysisInfoContents from '@src/constants/analysisInfoContents';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
 // import { Creators as CommonCreators } from '@Actions/common';
 
 // const { togglePromptDialog, toggleModal } = CommonCreators;
@@ -23,29 +24,38 @@ export default function InfoContent() {
         naxatw-shadow-3xl naxatw-w-[21.2rem]"
     >
       <div
-        className={`naxatw-px-5 naxatw-py-3.5 naxatw-flex naxatw-items-center naxatw-justify-between naxatw-rounded-t-[20px] ${
+        onClick={() => setCollapsed(!collapsed)}
+        className={`naxatw-px-4 naxatw-py-2 naxatw-flex naxatw-items-center naxatw-justify-between naxatw-rounded-t-[20px] naxatw-cursor-pointer ${
           collapsed ? 'naxatw-rounded-b-[20px]' : ''
         }`}
       >
-        <h4>Info</h4>
+        <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
+          <MaterialIcon
+            name="info_outline"
+            className="naxatw-text-body-icon-md"
+          />
+          <h4>Info</h4>
+        </div>
         <div className="naxatw-flex naxatw-items-center">
           <IconButton
             name={collapsed ? 'expand_more' : 'expand_less'}
-            onClick={() => setCollapsed(!collapsed)}
+            // onClick={() => setCollapsed(!collapsed)}
+            className="material-icons naxatw-text-icon-md"
+            wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
           />
         </div>
       </div>
 
       {!collapsed && (
         <ul
-          className="naxatw-px-5 naxatw-py-3.5 naxatw-space-y-3 naxatw-border-b
+          className="naxatw-px-4 naxatw-py-3 naxatw-pt-0 naxatw-space-y-3 naxatw-border-b
             naxatw-border-b-grey-300 last:naxatw-border-b-0 naxatw-overflow-y-auto scrollbar"
           style={{
             maxHeight: `calc(100vh - ${projectHeaderHeight}px - 14rem)`,
           }}
         >
           <div
-            className="naxatw-text-body-md naxatw-mb-3"
+            className="naxatw-text-body-md naxatw-flex naxatw-flex-col naxatw-space-y-1.5"
             dangerouslySetInnerHTML={{
               __html: selectedInfo
                 ? analysisInfoContents?.[analysisType]?.[selectedInfo]

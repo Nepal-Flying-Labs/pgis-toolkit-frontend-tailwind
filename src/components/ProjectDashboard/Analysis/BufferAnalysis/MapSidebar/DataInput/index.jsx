@@ -129,12 +129,19 @@ export default function DataInput() {
         <Container>
           <label className="naxatw-label naxatw-flex naxatw-items-center">
             Origin
-            <IconButton
-              className="material-symbols-outlined naxatw-text-[1.2rem]"
-              name="info"
-              title="Info"
-              onClick={() => dispatch(setSelectedInfo('origin'))}
-            />
+            <div
+              onMouseOver={() => dispatch(setSelectedInfo('origin'))}
+              // onMouseOut={() => dispatch(setSelectedInfo(null))}
+              onBlur={() => {}}
+              onFocus={() => {}}
+            >
+              <IconButton
+                className="material-symbols-outlined naxatw-text-[1.2rem]"
+                name="info"
+                title="Info"
+                // onClick={() => dispatch(setSelectedInfo('result'))}
+              />
+            </div>
           </label>
           <div className="naxatw-flex naxatw-space-x-2">
             {originPointData.map(({ label, value, icon }) => (
@@ -161,7 +168,22 @@ export default function DataInput() {
         <Container>
           <div>
             <div className="naxatw-space-y-2 ">
-              <label className="naxatw-label">Buffer Radius</label>
+              <label className="naxatw-label naxatw-flex naxatw-items-center">
+                Buffer Radius{' '}
+                <div
+                  onMouseOver={() => dispatch(setSelectedInfo('bufferRadius'))}
+                  // onMouseOut={() => dispatch(setSelectedInfo(null))}
+                  onBlur={() => {}}
+                  onFocus={() => {}}
+                >
+                  <IconButton
+                    className="material-symbols-outlined naxatw-text-[1.2rem]"
+                    name="info"
+                    title="Info"
+                    // onClick={() => dispatch(setSelectedInfo('result'))}
+                  />
+                </div>
+              </label>
               <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2 ">
                 <input
                   type="number"
@@ -212,16 +234,44 @@ export default function DataInput() {
 
               <label
                 htmlFor="dissolve-output"
-                className="naxatw-text-body-lg naxatw-text-grey-800"
+                className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-flex naxatw-items-center"
               >
                 Dissolve Output (optional)
               </label>
+              <div
+                onMouseOver={() => dispatch(setSelectedInfo('dissolveOutput'))}
+                // onMouseOut={() => dispatch(setSelectedInfo(null))}
+                onBlur={() => {}}
+                onFocus={() => {}}
+              >
+                <IconButton
+                  className="material-symbols-outlined naxatw-text-[1.2rem]"
+                  name="info"
+                  title="Info"
+                  // onClick={() => dispatch(setSelectedInfo('result'))}
+                />
+              </div>
             </div>
           </div>
         </Container>
 
         <Container>
-          <label className="naxatw-label">POI</label>
+          <label className="naxatw-label naxatw-flex naxatw-items-center">
+            POI{' '}
+            <div
+              onMouseOver={() => dispatch(setSelectedInfo('poi'))}
+              // onMouseOut={() => dispatch(setSelectedInfo(null))}
+              onBlur={() => {}}
+              onFocus={() => {}}
+            >
+              <IconButton
+                className="material-symbols-outlined naxatw-text-[1.2rem]"
+                name="info"
+                title="Info"
+                // onClick={() => dispatch(setSelectedInfo('result'))}
+              />
+            </div>
+          </label>
           <div
             className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg
               naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem] naxatw-bg-white"
@@ -267,7 +317,22 @@ export default function DataInput() {
         </Container>
 
         <Container>
-          <label className="naxatw-label">Output Name</label>
+          <label className="naxatw-label naxatw-flex naxatw-items-center">
+            Output Name{' '}
+            <div
+              onMouseOver={() => dispatch(setSelectedInfo('result'))}
+              // onMouseOut={() => dispatch(setSelectedInfo(null))}
+              onBlur={() => {}}
+              onFocus={() => {}}
+            >
+              <IconButton
+                className="material-symbols-outlined naxatw-text-[1.2rem]"
+                name="info"
+                title="Info"
+                // onClick={() => dispatch(setSelectedInfo('result'))}
+              />
+            </div>
+          </label>
           <input
             type="text"
             className="naxatw-input"

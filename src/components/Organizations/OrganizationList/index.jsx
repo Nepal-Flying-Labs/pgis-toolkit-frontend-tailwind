@@ -179,7 +179,9 @@ export default function OrganizationList() {
               rowcolSpan="rowSpan_2"
               // dataHeader={<SortingContainer name="S.N" />}
               dataFormat={row => (
-                <span className="naxatw-text-body-lg">{row.email}</span>
+                <span className="naxatw-text-body-lg">
+                  {row.email || <p className="naxatw-pl-11">-</p>}
+                </span>
               )}
             />
             <TableHeader

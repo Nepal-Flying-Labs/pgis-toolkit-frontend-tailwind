@@ -7,30 +7,1136 @@ import { Types } from '@Actions/dataCleaning';
 import { checkErrorData, pointCheckExceptions } from '@src/constants/analysis';
 import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
+// const initialState = {
+//   stepIndex: 1,
+//   manualFix: {
+//     sidebarContent: 'error-list', // 'error-list', 'add-feature', 'edit-feature'
+//     drawnFeatureWkt: null,
+//     layerAttributes: null,
+//     layerAttributesFields: null,
+//     individualAttributeData: [],
+//     refreshLayerId: null,
+//     selectedError: null,
+//     selectedFeaturesForSnap: [],
+//     geojsonFeatures: null,
+//     selectedFeatureAttributes: null,
+//     explodingFeatureIds: [], // for showing loader while exploding features
+//     startEditing: false, // toggle DrawTool only when startEditing true
+//     featureBbox: null, // bbox for zoom to layer
+//   },
+//   selectedLayer: null, // selected layer for manual fix
+//   errorFeaturesData: null,
+//   optimalRoute: {
+//     selectedRoadLayer: {},
+//     selectedObstacleLayers: [], // []
+//   },
+//   errorStates: {},
+// };
+
 const initialState = {
-  stepIndex: 1,
+  stepIndex: 2,
   manualFix: {
-    sidebarContent: 'error-list', // 'error-list', 'add-feature', 'edit-feature'
+    sidebarContent: 'error-list',
     drawnFeatureWkt: null,
     layerAttributes: null,
-    layerAttributesFields: null,
-    individualAttributeData: [],
+    layerAttributesFields: [
+      {
+        id: 7154,
+        name: 'id',
+        alias: null,
+        data_type: 'int',
+        mandatory: true,
+      },
+      {
+        id: 7155,
+        name: 'Id_1',
+        alias: null,
+        data_type: 'int',
+        mandatory: true,
+      },
+      {
+        id: 7156,
+        name: 'Name',
+        alias: null,
+        data_type: 'str',
+        mandatory: true,
+      },
+    ],
+    individualAttributeData: [
+      {
+        id: 7154,
+        name: 'id',
+        alias: null,
+        data_type: 'int',
+        mandatory: true,
+        value: '',
+      },
+      {
+        id: 7155,
+        name: 'Id_1',
+        alias: null,
+        data_type: 'int',
+        mandatory: true,
+        value: '',
+      },
+      {
+        id: 7156,
+        name: 'Name',
+        alias: null,
+        data_type: 'str',
+        mandatory: true,
+        value: '',
+      },
+    ],
     refreshLayerId: null,
     selectedError: null,
     selectedFeaturesForSnap: [],
     geojsonFeatures: null,
     selectedFeatureAttributes: null,
-    explodingFeatureIds: [], // for showing loader while exploding features
-    startEditing: false, // toggle DrawTool only when startEditing true
-    featureBbox: null, // bbox for zoom to layer
+    explodingFeatureIds: [],
+    startEditing: false,
+    featureBbox: null,
   },
-  selectedLayer: null, // selected layer for manual fix
-  errorFeaturesData: null,
+  selectedLayer: {
+    id: 647,
+    name: 'Test Error Network',
+    layer_type: 'Vector',
+    upload_status: 'successful',
+    is_clean: false,
+    icon: null,
+    std_icon: null,
+    style: {
+      lineColor: '#2C675A',
+      lineOpacity: 100,
+      fillColor: '#e011b7',
+      fillOpacity: 0,
+      lineThickness: '5',
+      circleRadius: 5,
+      dashline: 0,
+      showLabel: false,
+      labelField: '',
+      labelFont: 'Calibri',
+      labelFontSize: 14,
+      labelColor: '#000000',
+      labelOpacity: 100,
+      labelOutlineWidth: 3,
+      labelOutlineColor: '#ffffff',
+      labelOffsetX: 0,
+      labelOffsetY: 0,
+      labelText: 'normal',
+      labelMaxResolution: 1200,
+      labelAlign: 'center',
+      labelBaseline: 'middle',
+      labelRotationDegree: 0,
+      labelFontWeight: 'normal',
+      labelPlacement: 'point',
+      labelMaxAngleDegree: 0.7853981633974483,
+      labelOverflow: false,
+      labelLineHeight: 1,
+      icon: {},
+      showSublayer: false,
+      sublayerColumnName: '',
+      sublayer: {},
+      geometryType: 'MultiLineString',
+    },
+    bbox: [
+      85.41455437052994, 27.68873499036167, 85.41893721463556,
+      27.695401775725283,
+    ],
+    geom_type: 'MultiLineString',
+    sub_layer: [],
+    theme: 479,
+    checked: false,
+  },
+  errorFeaturesData: {
+    null: [
+      {
+        id: 20143,
+        checked: false,
+      },
+      {
+        id: 20138,
+        checked: false,
+      },
+      {
+        id: 20153,
+        checked: false,
+      },
+    ],
+    multipart: [
+      {
+        id: 20144,
+        checked: false,
+      },
+      {
+        id: 20145,
+        checked: false,
+      },
+      {
+        id: 20146,
+        checked: false,
+      },
+      {
+        id: 20147,
+        checked: false,
+      },
+      {
+        id: 20149,
+        checked: false,
+      },
+      {
+        id: 52645,
+        checked: false,
+      },
+      {
+        id: 52647,
+        checked: false,
+      },
+      {
+        id: 20142,
+        checked: false,
+      },
+      {
+        id: 20141,
+        checked: false,
+      },
+      {
+        id: 20139,
+        checked: false,
+      },
+      {
+        id: 20140,
+        checked: false,
+      },
+      {
+        id: 20154,
+        checked: false,
+      },
+      {
+        id: 20148,
+        checked: false,
+      },
+      {
+        id: 20152,
+        checked: false,
+      },
+      {
+        id: 20150,
+        checked: false,
+      },
+      {
+        id: 20151,
+        checked: false,
+      },
+      {
+        id: 52653,
+        checked: false,
+      },
+      {
+        id: 52655,
+        checked: false,
+      },
+      {
+        id: 52652,
+        checked: false,
+      },
+      {
+        id: 52654,
+        checked: false,
+      },
+      {
+        id: 52651,
+        checked: false,
+      },
+      {
+        id: 52648,
+        checked: false,
+      },
+      {
+        id: 52649,
+        checked: false,
+      },
+      {
+        id: 52562,
+        checked: false,
+      },
+      {
+        id: 52650,
+        checked: false,
+      },
+      {
+        id: 52566,
+        checked: false,
+      },
+      {
+        id: 52567,
+        checked: false,
+      },
+      {
+        id: 52656,
+        checked: false,
+      },
+      {
+        id: 52563,
+        checked: false,
+      },
+      {
+        id: 52564,
+        checked: false,
+      },
+      {
+        id: 52565,
+        checked: false,
+      },
+      {
+        id: 52637,
+        checked: false,
+      },
+      {
+        id: 52638,
+        checked: false,
+      },
+      {
+        id: 52639,
+        checked: false,
+      },
+      {
+        id: 52640,
+        checked: false,
+      },
+      {
+        id: 52641,
+        checked: false,
+      },
+      {
+        id: 52642,
+        checked: false,
+      },
+      {
+        id: 52742,
+        checked: false,
+      },
+      {
+        id: 52734,
+        checked: false,
+      },
+      {
+        id: 52735,
+        checked: false,
+      },
+      {
+        id: 52736,
+        checked: false,
+      },
+      {
+        id: 52737,
+        checked: false,
+      },
+      {
+        id: 52738,
+        checked: false,
+      },
+      {
+        id: 52739,
+        checked: false,
+      },
+      {
+        id: 52740,
+        checked: false,
+      },
+      {
+        id: 52741,
+        checked: false,
+      },
+      {
+        id: 52743,
+        checked: false,
+      },
+      {
+        id: 52744,
+        checked: false,
+      },
+      {
+        id: 52745,
+        checked: false,
+      },
+      {
+        id: 52746,
+        checked: false,
+      },
+      {
+        id: 52747,
+        checked: false,
+      },
+      {
+        id: 52748,
+        checked: false,
+      },
+      {
+        id: 52749,
+        checked: false,
+      },
+      {
+        id: 52750,
+        checked: false,
+      },
+      {
+        id: 52751,
+        checked: false,
+      },
+      {
+        id: 52752,
+        checked: false,
+      },
+      {
+        id: 52753,
+        checked: false,
+      },
+      {
+        id: 52754,
+        checked: false,
+      },
+      {
+        id: 52707,
+        checked: false,
+      },
+      {
+        id: 52708,
+        checked: false,
+      },
+      {
+        id: 52643,
+        checked: false,
+      },
+      {
+        id: 52644,
+        checked: false,
+      },
+      {
+        id: 52701,
+        checked: false,
+      },
+      {
+        id: 52702,
+        checked: false,
+      },
+      {
+        id: 52703,
+        checked: false,
+      },
+      {
+        id: 52704,
+        checked: false,
+      },
+      {
+        id: 52705,
+        checked: false,
+      },
+      {
+        id: 52706,
+        checked: false,
+      },
+      {
+        id: 52709,
+        checked: false,
+      },
+      {
+        id: 52710,
+        checked: false,
+      },
+      {
+        id: 52711,
+        checked: false,
+      },
+      {
+        id: 52712,
+        checked: false,
+      },
+      {
+        id: 52713,
+        checked: false,
+      },
+      {
+        id: 52714,
+        checked: false,
+      },
+      {
+        id: 52715,
+        checked: false,
+      },
+      {
+        id: 52716,
+        checked: false,
+      },
+      {
+        id: 52717,
+        checked: false,
+      },
+      {
+        id: 52718,
+        checked: false,
+      },
+      {
+        id: 52719,
+        checked: false,
+      },
+      {
+        id: 52720,
+        checked: false,
+      },
+      {
+        id: 52721,
+        checked: false,
+      },
+      {
+        id: 52722,
+        checked: false,
+      },
+      {
+        id: 52723,
+        checked: false,
+      },
+      {
+        id: 52724,
+        checked: false,
+      },
+      {
+        id: 52725,
+        checked: false,
+      },
+      {
+        id: 52726,
+        checked: false,
+      },
+      {
+        id: 52727,
+        checked: false,
+      },
+      {
+        id: 52728,
+        checked: false,
+      },
+      {
+        id: 52729,
+        checked: false,
+      },
+      {
+        id: 52730,
+        checked: false,
+      },
+      {
+        id: 52731,
+        checked: false,
+      },
+      {
+        id: 52732,
+        checked: false,
+      },
+      {
+        id: 52733,
+        checked: false,
+      },
+      {
+        id: 52646,
+        checked: false,
+      },
+    ],
+    self_instersect: [
+      {
+        id: 52645,
+        checked: false,
+      },
+      {
+        id: 52647,
+        checked: false,
+      },
+      {
+        id: 20143,
+        checked: false,
+      },
+      {
+        id: 20141,
+        checked: false,
+      },
+      {
+        id: 20138,
+        checked: false,
+      },
+      {
+        id: 20140,
+        checked: false,
+      },
+      {
+        id: 20153,
+        checked: false,
+      },
+      {
+        id: 52653,
+        checked: false,
+      },
+      {
+        id: 52655,
+        checked: false,
+      },
+      {
+        id: 52652,
+        checked: false,
+      },
+      {
+        id: 52654,
+        checked: false,
+      },
+      {
+        id: 52651,
+        checked: false,
+      },
+      {
+        id: 52648,
+        checked: false,
+      },
+      {
+        id: 52649,
+        checked: false,
+      },
+      {
+        id: 52566,
+        checked: false,
+      },
+      {
+        id: 52567,
+        checked: false,
+      },
+      {
+        id: 52656,
+        checked: false,
+      },
+      {
+        id: 52563,
+        checked: false,
+      },
+      {
+        id: 52564,
+        checked: false,
+      },
+      {
+        id: 52565,
+        checked: false,
+      },
+      {
+        id: 52637,
+        checked: false,
+      },
+      {
+        id: 52638,
+        checked: false,
+      },
+      {
+        id: 52639,
+        checked: false,
+      },
+      {
+        id: 52640,
+        checked: false,
+      },
+      {
+        id: 52641,
+        checked: false,
+      },
+      {
+        id: 52642,
+        checked: false,
+      },
+      {
+        id: 52734,
+        checked: false,
+      },
+      {
+        id: 52735,
+        checked: false,
+      },
+      {
+        id: 52736,
+        checked: false,
+      },
+      {
+        id: 52737,
+        checked: false,
+      },
+      {
+        id: 52738,
+        checked: false,
+      },
+      {
+        id: 52739,
+        checked: false,
+      },
+      {
+        id: 52740,
+        checked: false,
+      },
+      {
+        id: 52741,
+        checked: false,
+      },
+      {
+        id: 52743,
+        checked: false,
+      },
+      {
+        id: 52744,
+        checked: false,
+      },
+      {
+        id: 52745,
+        checked: false,
+      },
+      {
+        id: 52746,
+        checked: false,
+      },
+      {
+        id: 52747,
+        checked: false,
+      },
+      {
+        id: 52748,
+        checked: false,
+      },
+      {
+        id: 52749,
+        checked: false,
+      },
+      {
+        id: 52750,
+        checked: false,
+      },
+      {
+        id: 52751,
+        checked: false,
+      },
+      {
+        id: 52752,
+        checked: false,
+      },
+      {
+        id: 52753,
+        checked: false,
+      },
+      {
+        id: 52754,
+        checked: false,
+      },
+      {
+        id: 52643,
+        checked: false,
+      },
+      {
+        id: 52644,
+        checked: false,
+      },
+      {
+        id: 52701,
+        checked: false,
+      },
+      {
+        id: 52702,
+        checked: false,
+      },
+      {
+        id: 52703,
+        checked: false,
+      },
+      {
+        id: 52704,
+        checked: false,
+      },
+      {
+        id: 52705,
+        checked: false,
+      },
+      {
+        id: 52706,
+        checked: false,
+      },
+      {
+        id: 52709,
+        checked: false,
+      },
+      {
+        id: 52710,
+        checked: false,
+      },
+      {
+        id: 52711,
+        checked: false,
+      },
+      {
+        id: 52712,
+        checked: false,
+      },
+      {
+        id: 52713,
+        checked: false,
+      },
+      {
+        id: 52714,
+        checked: false,
+      },
+      {
+        id: 52715,
+        checked: false,
+      },
+      {
+        id: 52716,
+        checked: false,
+      },
+      {
+        id: 52717,
+        checked: false,
+      },
+      {
+        id: 52718,
+        checked: false,
+      },
+      {
+        id: 52719,
+        checked: false,
+      },
+      {
+        id: 52720,
+        checked: false,
+      },
+      {
+        id: 52721,
+        checked: false,
+      },
+      {
+        id: 52722,
+        checked: false,
+      },
+      {
+        id: 52723,
+        checked: false,
+      },
+      {
+        id: 52724,
+        checked: false,
+      },
+      {
+        id: 52725,
+        checked: false,
+      },
+      {
+        id: 52726,
+        checked: false,
+      },
+      {
+        id: 52727,
+        checked: false,
+      },
+      {
+        id: 52728,
+        checked: false,
+      },
+      {
+        id: 52729,
+        checked: false,
+      },
+      {
+        id: 52730,
+        checked: false,
+      },
+      {
+        id: 52731,
+        checked: false,
+      },
+      {
+        id: 52732,
+        checked: false,
+      },
+      {
+        id: 52733,
+        checked: false,
+      },
+    ],
+    snapping: [
+      {
+        id: 20140,
+        checked: false,
+      },
+      {
+        id: 20144,
+        checked: false,
+      },
+      {
+        id: 20150,
+        checked: false,
+      },
+      {
+        id: 20151,
+        checked: false,
+      },
+      {
+        id: 20152,
+        checked: false,
+      },
+      {
+        id: 20154,
+        checked: false,
+      },
+      {
+        id: 52566,
+        checked: false,
+      },
+      {
+        id: 52567,
+        checked: false,
+      },
+      {
+        id: 52651,
+        checked: false,
+      },
+      {
+        id: 52652,
+        checked: false,
+      },
+      {
+        id: 52653,
+        checked: false,
+      },
+      {
+        id: 52654,
+        checked: false,
+      },
+      {
+        id: 52655,
+        checked: false,
+      },
+      {
+        id: 52656,
+        checked: false,
+      },
+      {
+        id: 52743,
+        checked: false,
+      },
+      {
+        id: 52744,
+        checked: false,
+      },
+      {
+        id: 52745,
+        checked: false,
+      },
+      {
+        id: 52746,
+        checked: false,
+      },
+      {
+        id: 52747,
+        checked: false,
+      },
+      {
+        id: 52748,
+        checked: false,
+      },
+      {
+        id: 52749,
+        checked: false,
+      },
+      {
+        id: 52750,
+        checked: false,
+      },
+      {
+        id: 52751,
+        checked: false,
+      },
+      {
+        id: 52752,
+        checked: false,
+      },
+      {
+        id: 52753,
+        checked: false,
+      },
+      {
+        id: 52754,
+        checked: false,
+      },
+    ],
+  },
   optimalRoute: {
-    selectedRoadLayer: {},
-    selectedObstacleLayers: [], // []
+    selectedRoadLayer: {
+      id: 647,
+      name: 'Test Error Network',
+      layer_type: 'Vector',
+      upload_status: 'successful',
+      is_clean: false,
+      icon: null,
+      std_icon: null,
+      style: {
+        lineColor: '#2C675A',
+        lineOpacity: 100,
+        fillColor: '#e011b7',
+        fillOpacity: 0,
+        lineThickness: '5',
+        circleRadius: 5,
+        dashline: 0,
+        showLabel: false,
+        labelField: '',
+        labelFont: 'Calibri',
+        labelFontSize: 14,
+        labelColor: '#000000',
+        labelOpacity: 100,
+        labelOutlineWidth: 3,
+        labelOutlineColor: '#ffffff',
+        labelOffsetX: 0,
+        labelOffsetY: 0,
+        labelText: 'normal',
+        labelMaxResolution: 1200,
+        labelAlign: 'center',
+        labelBaseline: 'middle',
+        labelRotationDegree: 0,
+        labelFontWeight: 'normal',
+        labelPlacement: 'point',
+        labelMaxAngleDegree: 0.7853981633974483,
+        labelOverflow: false,
+        labelLineHeight: 1,
+        icon: {},
+        showSublayer: false,
+        sublayerColumnName: '',
+        sublayer: {},
+        geometryType: 'MultiLineString',
+      },
+      bbox: [
+        85.41455437052994, 27.68873499036167, 85.41893721463556,
+        27.695401775725283,
+      ],
+      geom_type: 'MultiLineString',
+      sub_layer: [],
+      theme: 479,
+      checked: false,
+    },
+    selectedObstacleLayers: [
+      {
+        id: 545,
+        name: 'Sample Obstacle 2',
+        layer_type: 'Vector',
+        upload_status: 'successful',
+        is_clean: false,
+        icon: null,
+        std_icon: null,
+        style: {
+          lineColor: '#2C675A',
+          lineOpacity: 100,
+          fillColor: '#9f8999',
+          fillOpacity: 100,
+          lineThickness: 2,
+          circleRadius: 5,
+          dashline: 0,
+          showLabel: false,
+          labelField: '',
+          labelFont: 'Calibri',
+          labelFontSize: 14,
+          labelColor: '#000000',
+          labelOpacity: 100,
+          labelOutlineWidth: 3,
+          labelOutlineColor: '#ffffff',
+          labelOffsetX: 0,
+          labelOffsetY: 0,
+          labelText: 'normal',
+          labelMaxResolution: 1200,
+          labelAlign: 'center',
+          labelBaseline: 'middle',
+          labelRotationDegree: 0,
+          labelFontWeight: 'normal',
+          labelPlacement: 'point',
+          labelMaxAngleDegree: 0.7853981633974483,
+          labelOverflow: false,
+          labelLineHeight: 1,
+          icon: {},
+          showSublayer: false,
+          sublayerColumnName: '',
+          sublayer: {},
+          geometryType: 'Point',
+        },
+        bbox: [
+          85.33781939802816, 27.652739899999965, 85.35413949999989,
+          27.664180636852794,
+        ],
+        geom_type: 'Point',
+        sub_layer: [],
+        theme: 480,
+        checked: false,
+      },
+    ],
   },
-  errorStates: {},
+  errorStates: {
+    647: [
+      {
+        id: 'null',
+        label: 'Null Geometry',
+        checkAPI: 'check_null_geometry',
+        fixAPI: 'fix_null_geometry',
+        status: 'error',
+        errorData: 3,
+        totalData: 97,
+        checked: false,
+      },
+      {
+        id: 'multipart',
+        label: 'Multipart Geometry',
+        checkAPI: 'check_multipart_geometry',
+        fixAPI: 'fix_multipart_geometry',
+        status: 'error',
+        errorData: 94,
+        totalData: 97,
+        checked: false,
+      },
+      {
+        id: 'duplicate',
+        label: 'Duplicate Geometry',
+        checkAPI: 'check_duplicate_geometry',
+        fixAPI: 'fix_duplicate_geometry',
+        status: 'success',
+        errorData: 0,
+        totalData: 97,
+        checked: false,
+      },
+      {
+        id: 'overlapping',
+        label: 'Overlapping Geometry',
+        checkAPI: 'check_overlapping_geometry',
+        fixAPI: 'fix_overlapping_geometry',
+        status: 'success',
+        errorData: 0,
+        totalData: 97,
+        checked: false,
+      },
+      {
+        id: 'self_instersect',
+        label: 'Self-Intersecting Geometry',
+        checkAPI: 'check_self_intersecting_geometry',
+        fixAPI: 'fix_self_intersecting_geometry',
+        status: 'error',
+        errorData: 79,
+        totalData: 97,
+        checked: false,
+      },
+      {
+        id: 'isolated',
+        alternativeId: 'snapping',
+        label: 'Isolated Geometry',
+        checkAPI: 'check_isolated_geometry',
+        fixAPI: 'fix_isolated_geometry',
+        status: 'error',
+        errorData: 26,
+        totalData: 97,
+        checked: false,
+      },
+    ],
+  },
 };
 
 const setDataCleaningState = (state, action) => ({

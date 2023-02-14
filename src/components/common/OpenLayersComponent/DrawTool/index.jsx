@@ -73,7 +73,8 @@ export default function DrawTool({
 
   // set selected draw type
   useEffect(() => {
-    if (enable) setDrawType(selectedDrawType);
+    if (!enable) return;
+    setDrawType(selectedDrawType);
   }, [enable, selectedDrawType]);
 
   // add geojson for edit feature
@@ -157,19 +158,17 @@ export default function DrawTool({
 
   // handle add-feature click
   useEffect(() => {
-    if (enable && drawType === 'add-feature') {
-      const vectorLyr = new VectorLayer({
-        source,
-        zIndex: zIndex + 1,
-        style: (feature, resolution) =>
-          getStyles({ style, feature, resolution }),
-      });
-      layerUid.current = getUid(vectorLyr);
-      map.addLayer(vectorLyr);
-      setVectorLayer(vectorLyr);
-      setDrawType('add-feature');
-    }
-  }, [enable, drawType, map, zIndex, style]);
+    if (!enable || vectorLayer || drawType !== 'add-feature') return;
+    const vectorLyr = new VectorLayer({
+      source,
+      zIndex: zIndex + 1,
+      style: (feature, resolution) => getStyles({ style, feature, resolution }),
+    });
+    layerUid.current = getUid(vectorLyr);
+    map.addLayer(vectorLyr);
+    setVectorLayer(vectorLyr);
+    setDrawType('add-feature');
+  }, [enable, drawType, map, zIndex, style, vectorLayer]);
 
   const handleDelete = () => {
     source.clear();

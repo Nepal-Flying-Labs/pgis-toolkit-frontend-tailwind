@@ -1,16 +1,20 @@
+/* eslint-disable react/no-danger */
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
+import { useSelector } from 'react-redux';
 import IconButton from '@Components/common/IconButton';
+import analysisInfoContents from '@src/constants/analysisInfoContents';
 // import { Creators as CommonCreators } from '@Actions/common';
 
 // const { togglePromptDialog, toggleModal } = CommonCreators;
 
 export default function InfoContent() {
+  const { analysisType } = useParams();
   const [collapsed, setCollapsed] = useState(false);
+  const selectedInfo = useSelector(state => state.analysis.selectedInfo);
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
-  // const dispatch = useDispatch();
 
   return (
     <div
@@ -40,7 +44,14 @@ export default function InfoContent() {
             maxHeight: `calc(100vh - ${projectHeaderHeight}px - 14rem)`,
           }}
         >
-          Buffer Analysis
+          <div
+            className="naxatw-text-body-md naxatw-mb-3"
+            dangerouslySetInnerHTML={{
+              __html: selectedInfo
+                ? analysisInfoContents?.[analysisType]?.[selectedInfo]
+                : analysisInfoContents?.[analysisType]?.default,
+            }}
+          />
         </ul>
       )}
     </div>

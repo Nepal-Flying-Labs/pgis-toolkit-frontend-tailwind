@@ -8,12 +8,13 @@ import Button from '@Components/common/Button';
 import Select from '@Components/common/Select/index';
 import { Creators, Types } from '@Actions/bufferAnalysis';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import { Creators as AnalysisCreators } from '@Actions/analysis';
 import Chip from '@Components/common/Chip';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
+import IconButton from '@Components/common/IconButton/index';
 import MapContent from './OriginPointContents/MapContent';
 import SearchContent from './OriginPointContents/SearchContent';
 import LayerContent from './OriginPointContents/LayerContent';
-import IconButton from '@Components/common/IconButton/index';
 
 const {
   setDataInputState,
@@ -21,6 +22,8 @@ const {
   handleCheckbox,
   copyFeaturesRequest,
 } = Creators;
+
+const { setSelectedInfo } = AnalysisCreators;
 
 const radiusOptions = [
   { id: 1, label: 'Meter', value: 'meter' },
@@ -130,7 +133,7 @@ export default function DataInput() {
               className="material-symbols-outlined naxatw-text-[1.2rem]"
               name="info"
               title="Info"
-              // onClick={() => setCollapsed(!collapsed)}
+              onClick={() => dispatch(setSelectedInfo('origin'))}
             />
           </label>
           <div className="naxatw-flex naxatw-space-x-2">

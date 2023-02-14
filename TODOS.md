@@ -4,11 +4,11 @@
 - [ ] required field validation while geom edit for feature
 - [ ] save data query modal mt remove
 
+- [ ] zoom to feature on attr table
+- [ ] data query value search
 - [ ] format date/time in all sections (table etc)
 - [ ] boundary zindex least
 - [ ] hand icon while edit hover
-- [ ] zoom to feature on attr table
-- [ ] data query value search
 - [ ] meter/km feet unit change
 - [ ] label in map
 
@@ -40,10 +40,10 @@
 
 ### ROUTE ANALYSIS
 
-- [ ] route to data cleaning on reload
 - [ ] geometry type polygon after route layer save
 - [ ] zoom to feature after select in osm search
 - [ ] add loader to map
+- [ ] route to data cleaning on reload
 
 ### MANUAL FIX
 - [x] refactor manual fix (remove save button)
@@ -65,5 +65,16 @@
 - [x] unique id for null, multipart
 - [x] change cursor while hovering
 
+- [ ] layer sync after data cleaning
+- [ ] select features you want to snap to 
+- [ ] add feature multiple toggle while drawing
+- [ ] remove title save while editing
+- [ ] save text to check 
+- [ ] after delete select feature you want to snap to help box occur
+- [ ] not zooming to feature after multipart explode
+- [ ] zoom to layer not working for explode parent
+- [ ] explode delete => multipart still remain
+- [ ] zoom to layer slow
+
 ### ISSUES
-- [ ] map page to data to map reset checkbox state in project map
+- [x] map page to data to map reset checkbox state in project map

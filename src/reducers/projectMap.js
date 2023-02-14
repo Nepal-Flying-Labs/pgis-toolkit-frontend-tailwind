@@ -686,8 +686,9 @@ const setSelectedLayerAttribute = (state, action) => ({
   },
 });
 
-const resetProjectMapState = () => ({
+const resetProjectMapState = state => ({
   ...initialState,
+  mapSettings: state.mapSettings,
 });
 
 const projectMapReducer = createReducer(initialState, {

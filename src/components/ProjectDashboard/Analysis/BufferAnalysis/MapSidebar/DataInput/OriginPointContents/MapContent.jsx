@@ -36,7 +36,7 @@ const MapContent = () => {
       <div
         className={`naxatw-mt-2 ${
           originGeojson ? 'naxatw-bg-[#ffffff73]' : ''
-        } naxatw-p-2 naxatw-rounded-[20px] naxatw-py-1 naxatw-max-h-[100px] naxatw-w-[333px] naxatw-flex naxatw-flex-wrap naxatw-overflow-y-scroll scrollbar`}
+        } naxatw-p-2 naxatw-rounded-[20px] naxatw-py-1 naxatw-max-h-[100px] naxatw-max-w-[300px] naxatw-flex naxatw-flex-wrap naxatw-overflow-y-scroll scrollbar`}
       >
         {originGeojson &&
           originGeojson.map(origin => (

@@ -1,3 +1,5 @@
+import dissolveOutput from '@Assets/images/dissolve_output.png';
+
 export default {
   'buffer-analysis': {
     default: `<h5 class="naxatw-font-semibold">Buffer Analysis</h5>
@@ -23,6 +25,7 @@ export default {
                   <h5 class="naxatw-font-semibold">Dissolve Output</h5>
                   <span class="naxatw-text-body-md">Specifies the type of dissolve to be performed to remove buffer overlap. The output varies on different inputs as shown in the figure below:
                   </span>
+                  <img src=${dissolveOutput}/>
                   `,
     poi: `    <h5 class="naxatw-font-semibold">POI</h5>
                <p class="naxatw-text-body-md">On selecting the layers under POI, the final output will include the features of the selected layers filtered out by the buffer region. 

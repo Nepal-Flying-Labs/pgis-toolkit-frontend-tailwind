@@ -47,7 +47,7 @@ export default function MapSidebar() {
             <h4>{selectedLayer?.name}</h4>
           </div>
           <Button className="naxatw-btn-primary" onClick={handleSave}>
-            Save
+            Validate
           </Button>
         </div>
 

@@ -65,18 +65,17 @@
 - [x] unique id for null, multipart
 - [x] change cursor while hovering
 
-- [ ] layer sync after data cleaning
-- [ ] select features you want to snap to 
+- [ ] save text to check 
+- [ ] not zooming to feature after multipart explode
+- [ ] highlight select after toolbar icon toggle
+- [ ] zoom to layer not working for explode parent
+- [ ] after delete select feature you want to snap to help box occur
 - [ ] add feature multiple toggle while drawing
 - [ ] remove title save while editing
-- [ ] save text to check 
-- [ ] after delete select feature you want to snap to help box occur
-- [ ] not zooming to feature after multipart explode
-- [ ] zoom to layer not working for explode parent
 - [ ] explode delete => multipart still remain
 - [ ] zoom to layer slow
 - [ ] snap to self while edit
-- [ ] highlight select after toolbar icon toggle
+- [ ] layer sync after data cleaning
 
 ### ISSUES
 - [x] map page to data to map reset checkbox state in project map

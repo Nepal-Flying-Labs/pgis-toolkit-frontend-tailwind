@@ -199,13 +199,14 @@ export default function ErrorSection() {
                             id={explodedFeat.id}
                             type="checkbox"
                             className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                            checked={explodedFeat.checked}
+                            checked={explodedFeat.checked || false}
                             onChange={e =>
                               dispatch(
                                 handleErrorCheckbox({
                                   id: explodedFeat.id,
                                   name: type,
                                   checked: e.target.checked,
+                                  parentId: explodedFeat.parentId,
                                 }),
                               )
                             }

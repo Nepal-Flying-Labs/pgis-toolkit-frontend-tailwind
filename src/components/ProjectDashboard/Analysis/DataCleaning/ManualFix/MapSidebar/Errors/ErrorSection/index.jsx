@@ -91,7 +91,7 @@ export default function ErrorSection() {
             <div>
               {features.map(feature => (
                 <div key={feature.id}>
-                  <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+                  <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-min-h-[40px]">
                     <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                       <input
                         id={`${type}-${feature.id}`}
@@ -171,7 +171,14 @@ export default function ErrorSection() {
                         />
                       )}
 
-                      {type !== 'null' && (
+                      {type !== 'null' && type !== 'multipart' && (
+                        <DropdownOptions
+                          options={dropdownOptions}
+                          data={{ ...feature, type }}
+                        />
+                      )}
+
+                      {type === 'multipart' && !feature.fixed && (
                         <DropdownOptions
                           options={dropdownOptions}
                           data={{ ...feature, type }}

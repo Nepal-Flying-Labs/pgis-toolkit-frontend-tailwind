@@ -165,26 +165,6 @@ const initialState = {
     ],
     multipart: [
       {
-        id: 20139,
-        checked: false,
-      },
-      {
-        id: 52562,
-        checked: false,
-      },
-      {
-        id: 52650,
-        checked: false,
-      },
-      {
-        id: 52742,
-        checked: false,
-      },
-      {
-        id: 52707,
-        checked: false,
-      },
-      {
         id: 52708,
         checked: false,
       },
@@ -250,7 +230,34 @@ const initialState = {
       },
       {
         id: 52750,
-        checked: false,
+        checked: true,
+        explodedFeatures: [
+          {
+            parentId: 52750,
+            id: 87352,
+            attributes: {
+              id: 333764,
+              Id_1: 3,
+              Name: 'Feature 3',
+            },
+            geojson: {
+              type: 'LineString',
+              coordinates: [
+                [85.41294279108398, 27.69083605559629],
+                [85.4145477048791, 27.69116486858647],
+                [85.4136745299341, 27.69218174302235],
+                [85.41386167699714, 27.69036896162535],
+              ],
+              crs: {
+                type: 'name',
+                properties: {
+                  name: 'urn:ogc:def:crs:EPSG::4326',
+                },
+              },
+            },
+          },
+        ],
+        fixed: true,
       },
       {
         id: 52751,
@@ -947,6 +954,29 @@ const initialState = {
       {
         id: 52750,
         checked: false,
+        fixed: true,
+        attributes: {
+          id: 333764,
+          Id_1: 3,
+          Name: 'Feature 3',
+        },
+        geojson: {
+          type: 'MultiLineString',
+          coordinates: [
+            [
+              [85.41294279108398, 27.69083605559629],
+              [85.4145477048791, 27.69116486858647],
+              [85.4136745299341, 27.69218174302235],
+              [85.41386167699714, 27.69036896162535],
+            ],
+          ],
+          crs: {
+            type: 'name',
+            properties: {
+              name: 'urn:ogc:def:crs:EPSG::4326',
+            },
+          },
+        },
       },
       {
         id: 52751,
@@ -1469,13 +1499,23 @@ const resetManualFixState = state =>
 
 const getFeatureGeojsonSuccess = (state, action) =>
   produce(state, draft => {
-    const { geojson, featureId, type } = action.payload;
+    const { geojson, featureId, parentId, type } = action.payload;
     const featureBbox = bbox(geojson);
     draft.featureBbox = featureBbox;
-    const featureData = draft.errorFeaturesData[type].find(
-      item => item.id === featureId,
-    );
-    featureData.checked = true;
+    if (parentId) {
+      const parentData = draft.errorFeaturesData[type].find(
+        item => item.id === parentId,
+      );
+      const featureData = parentData.explodedFeatures.find(
+        item => item.id === featureId,
+      );
+      featureData.checked = true;
+    } else {
+      const featureData = draft.errorFeaturesData[type].find(
+        item => item.id === featureId,
+      );
+      featureData.checked = true;
+    }
   });
 
 const dataCleaningReducer = createReducer(initialState, {

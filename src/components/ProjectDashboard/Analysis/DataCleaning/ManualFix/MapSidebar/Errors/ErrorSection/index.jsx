@@ -61,6 +61,7 @@ export default function ErrorSection() {
         dispatch(
           getFeatureGeojsonRequest({
             mirrorId: data.id,
+            parentId: data.parentId,
             type: data.type,
           }),
         );
@@ -245,7 +246,7 @@ export default function ErrorSection() {
 
                           <DropdownOptions
                             options={dropdownOptions}
-                            data={explodedFeat}
+                            data={{ ...explodedFeat, type }}
                           />
                         </div>
                       </div>

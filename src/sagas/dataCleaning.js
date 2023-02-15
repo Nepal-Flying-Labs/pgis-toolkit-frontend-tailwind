@@ -282,7 +282,7 @@ export function* getSelectedFeatureAttributesRequest({ payload }) {
 
 export function* getFeatureGeojsonRequest({ payload }) {
   try {
-    const { mirrorId, type } = payload;
+    const { mirrorId, parentId, type } = payload;
     const response = yield call(getFeatureMirrorGeojson, {
       mirror_id: mirrorId,
     });
@@ -290,6 +290,7 @@ export function* getFeatureGeojsonRequest({ payload }) {
       dataCleaningActions.getFeatureGeojsonSuccess({
         geojson: response.data,
         featureId: mirrorId,
+        parentId,
         type,
       }),
     );

@@ -75,6 +75,8 @@
 - [ ] zoom to layer not working for explode parent
 - [ ] explode delete => multipart still remain
 - [ ] zoom to layer slow
+- [ ] snap to self while edit
+- [ ] highlight select after toolbar icon toggle
 
 ### ISSUES
 - [x] map page to data to map reset checkbox state in project map

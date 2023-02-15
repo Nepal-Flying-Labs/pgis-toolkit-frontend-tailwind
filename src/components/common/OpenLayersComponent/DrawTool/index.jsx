@@ -174,6 +174,7 @@ export default function DrawTool({
     source.clear();
     // setModifiedStates((prev) => [...prev, null]);
     setModifiedFeature(null);
+    setVectorLayer(null);
     // setDrawType('add-feature');
   };
 

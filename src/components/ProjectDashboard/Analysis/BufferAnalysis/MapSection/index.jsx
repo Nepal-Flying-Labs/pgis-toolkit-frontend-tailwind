@@ -31,6 +31,7 @@ import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileL
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import BufferPopup from './BufferPopup/index';
+import InfoContent from '../../InfoContent/index';
 
 const { setDataInputState, setResultsState } = BufferAnalysisCreators;
 
@@ -144,6 +145,8 @@ export default function MapSection() {
   };
   return (
     <div className="naxatw-w-full naxatw-relative">
+      <InfoContent />
+
       <MapComponent
         ref={mapRef}
         mapInstance={map}

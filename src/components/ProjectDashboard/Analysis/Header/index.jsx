@@ -21,7 +21,7 @@ const headerData = {
 
 export default function Header() {
   const dispatch = useDispatch();
-  const { organizationId, projectId, analysisType } = useParams();
+  const { organizationId, projectId, tabname, analysisType } = useParams();
   const history = useHistory();
 
   return (
@@ -32,19 +32,21 @@ export default function Header() {
       <div>
         <div className="naxatw-flex">
           <h3>{headerData[analysisType]?.title || ''}</h3>
-          <div
-            onMouseOver={() => dispatch(setSelectedInfo(null))}
-            // onMouseOut={() => dispatch(setSelectedInfo(null))}
-            onBlur={() => {}}
-            onFocus={() => {}}
-          >
-            <IconButton
-              className="material-symbols-outlined naxatw-text-[1.2rem]"
-              name="info"
-              title="Info"
-              // onClick={() => dispatch(setSelectedInfo('result'))}
-            />
-          </div>
+          {tabname === 'analysis' && (
+            <div
+              onMouseOver={() => dispatch(setSelectedInfo(null))}
+              // onMouseOut={() => dispatch(setSelectedInfo(null))}
+              onBlur={() => {}}
+              onFocus={() => {}}
+            >
+              <IconButton
+                className="material-symbols-outlined naxatw-text-[1.2rem]"
+                name="info"
+                title="Info"
+                // onClick={() => dispatch(setSelectedInfo('result'))}
+              />
+            </div>
+          )}
         </div>
 
         <span className="naxatw-text-body-lg naxatw-mt-1">

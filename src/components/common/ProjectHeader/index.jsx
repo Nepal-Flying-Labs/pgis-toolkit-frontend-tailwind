@@ -35,6 +35,8 @@ export default function ProjectHeader() {
   const organizationDetail = useSelector(
     state => state.organizationDashboard.organizationDetail,
   );
+  const landingPage = useSelector(state => state.authentication.landingPage);
+
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
@@ -59,39 +61,16 @@ export default function ProjectHeader() {
       className={`naxatw-h-[${projectHeaderHeight}] naxatw-fixed naxatw-w-full naxatw-z-[999] naxatw-top-0 naxatw-border-b naxatw-border-grey-300 naxatw-bg-white`}
     >
       <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-px-8  naxatw-h-full">
-        {/* <div className="naxatw-flex naxatw-items-center naxatw-gap-5 ">
-          <Link
-            className=""
-            to={`${
-              projectId
-                ? `/organizations/${organizationId}/projects`
-                : '/organizations'
-            }`}
-          >
-            <MaterialIcon
-              name="arrow_back"
-              className="naxatw-text-icon-md"
-              wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
-            />
-          </Link>
-          <h4>{headerTitle}</h4>
-        </div> */}
         {projectId ? (
           <div>
             <nav>
               <ul className="naxatw-font-bold  naxatw-text-grey-500 naxatw-text-[0.9375rem]  naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-2 naxatw-h-full">
-                <li className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
-                  {/* <figure className="naxatw-bg-primary-50 naxatw-relative naxatw-border naxatw-border-grey-300 naxatw-rounded-full naxatw-w-10 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-justify-center">
-                    <img
-                      src={
-                        projectDetail?.image
-                          ? getImageSource(projectDetail?.image)
-                          : AvatarIcon
-                      }
-                      alt="avatar-placeholder"
-                      className="naxatw-rounded-full naxatw-w-[40px] naxatw-h-[40px] naxatw-object-cover"
-                    />
-                  </figure> */}
+                <li
+                  className="naxatw-flex naxatw-gap-x-2 naxatw-items-center"
+                  style={{
+                    pointerEvents: landingPage?.project ? 'none' : '',
+                  }}
+                >
                   <Link
                     className="naxatw-py-2.5 hover:naxatw-text-[#484848] naxatw-text-body-btn hover:naxatw-underline"
                     to={`/organizations/${organizationId}/projects`}
@@ -113,7 +92,13 @@ export default function ProjectHeader() {
           </div>
         ) : (
           <div className="naxatw-flex naxatw-items-center naxatw-gap-5 ">
-            <Link className="" to="/organizations">
+            <Link
+              className=""
+              to="/organizations"
+              style={{
+                pointerEvents: landingPage?.organization ? 'none' : '',
+              }}
+            >
               <MaterialIcon
                 name="arrow_back"
                 className="naxatw-text-icon-md"

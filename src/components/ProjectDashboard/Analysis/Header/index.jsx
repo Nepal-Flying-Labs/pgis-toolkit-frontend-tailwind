@@ -1,5 +1,10 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
+import IconButton from '@Components/common/IconButton/index';
+import { Creators } from '@Actions/analysis';
+
+const { setSelectedInfo } = Creators;
 
 const headerData = {
   'optimal-route': {
@@ -15,6 +20,7 @@ const headerData = {
 };
 
 export default function Header() {
+  const dispatch = useDispatch();
   const { organizationId, projectId, analysisType } = useParams();
   const history = useHistory();
 
@@ -24,7 +30,23 @@ export default function Header() {
         naxatw-flex naxatw-justify-between naxatw-border-b naxatw-border-b-grey-300"
     >
       <div>
-        <h3>{headerData[analysisType]?.title || ''}</h3>
+        <div className="naxatw-flex">
+          <h3>{headerData[analysisType]?.title || ''}</h3>
+          <div
+            onMouseOver={() => dispatch(setSelectedInfo(null))}
+            // onMouseOut={() => dispatch(setSelectedInfo(null))}
+            onBlur={() => {}}
+            onFocus={() => {}}
+          >
+            <IconButton
+              className="material-symbols-outlined naxatw-text-[1.2rem]"
+              name="info"
+              title="Info"
+              // onClick={() => dispatch(setSelectedInfo('result'))}
+            />
+          </div>
+        </div>
+
         <span className="naxatw-text-body-lg naxatw-mt-1">
           {headerData[analysisType]?.description || ''}
         </span>

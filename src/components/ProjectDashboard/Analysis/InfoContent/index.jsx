@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import IconButton from '@Components/common/IconButton';
@@ -17,11 +17,15 @@ export default function InfoContent() {
     state => state.common.projectHeaderHeight,
   );
 
+  useEffect(() => {
+    setCollapsed(false);
+  }, [selectedInfo]);
+
   return (
     <div
-      className="naxatw-absolute naxatw-top-5 naxatw-right-4  naxatw-z-10
+      className={`naxatw-absolute naxatw-top-5 naxatw-right-4  naxatw-z-10
         naxatw-bg-white naxatw-text-grey-800 naxatw-rounded-[20px] naxatw-border naxatw-border-grey-300 
-        naxatw-shadow-3xl naxatw-w-[21.2rem]"
+        naxatw-shadow-3xl ${collapsed ? '' : 'naxatw-w-[21.2rem]'}`}
     >
       <div
         onClick={() => setCollapsed(!collapsed)}

@@ -28,6 +28,7 @@ const initialState = {
       previous: null,
     },
   },
+  selectedInfo: null, // selected value for info content
 };
 
 const setAnalysisState = (state, action) => ({
@@ -258,6 +259,11 @@ const handleTableCheckbox = (state, action) => {
   };
 };
 
+const setSelectedInfo = (state, action) => ({
+  ...state,
+  selectedInfo: action.payload,
+});
+
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
@@ -274,6 +280,7 @@ const analysisReducer = createReducer(initialState, {
   [Types.HANDLE_ATTRIBUTE_ORDERING]: handleAttributeOrdering,
   [Types.RESET_LAYER_ATTRIBUTE_LIST_STATE]: resetLayerAttributeListState,
   [Types.HANDLE_TABLE_CHECKBOX]: handleTableCheckbox,
+  [Types.SET_SELECTED_INFO]: setSelectedInfo,
 });
 
 export default analysisReducer;

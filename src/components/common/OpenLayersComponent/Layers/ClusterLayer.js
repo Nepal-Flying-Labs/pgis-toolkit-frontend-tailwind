@@ -112,8 +112,9 @@ const ClusterLayer = ({
     () => () => map && vectorLayer && map.removeLayer(vectorLayer),
     [map, vectorLayer],
   );
+
   useEffect(() => {
-    if (!map || !layerSource) return;
+    if (!map || !layerSource || !layerSource.features) return;
     const sourceOSM = new OSMSource();
     const vectorSource = new VectorSource({
       features: new GeoJSON().readFeatures(layerSource, {

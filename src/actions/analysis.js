@@ -38,6 +38,8 @@ export const { Types, Creators } = createActions(
 
     resetLayerAttributeListState: null,
     handleTableCheckbox: ['payload'],
+
+    setSelectedInfo: ['payload'],
   },
   { prefix: 'analysis/' },
 );

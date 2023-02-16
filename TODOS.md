@@ -67,7 +67,7 @@
 
 - [x] save text to check 
 - [x] not zooming to feature after multipart explode
-- [ ] highlight select after toolbar icon toggle
+- [x] highlight select after toolbar icon toggle
 - [ ] zoom to layer not working for explode parent
 - [ ] after delete select feature you want to snap to help box occur
 - [ ] add feature multiple toggle while drawing

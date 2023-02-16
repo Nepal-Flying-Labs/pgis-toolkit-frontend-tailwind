@@ -46,6 +46,7 @@
 - [ ] route to data cleaning on reload
 
 ### MANUAL FIX
+
 - [x] refactor manual fix (remove save button)
 - [x] save feature edit for multipart not working
 - [x] edit multipart geometry
@@ -57,7 +58,7 @@
 - [x] snapping
 - [x] error name to label
 - [x] dynamic sidebar title
-- [x] remove save button from draw tool 
+- [x] remove save button from draw tool
 - [x] fix all and save modal
 - [x] two times select for snapping not working
 - [x] add loaders for manual fix page
@@ -78,4 +79,12 @@
 - [ ] layer sync after data cleaning
 
 ### ISSUES
+
 - [x] map page to data to map reset checkbox state in project map
+
+- [ ] sign in by user/email (raj)
+- [ ] replace landing page photo
+- [ ] others in thematic focus area
+- [ ] country list change select list
+- [ ] change layer name with underscore while downloading layers
+- [ ] collapse sidebar in analysis page

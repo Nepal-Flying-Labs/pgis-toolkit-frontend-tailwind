@@ -5,6 +5,7 @@ import { Types } from '@Actions/authentication';
 const initialState = {
   user: {},
   userDetail: {},
+  landingPage: null,
   userProfile: {},
   infoDialogContent: null,
   userPermissions: null,
@@ -60,6 +61,11 @@ const resetAuthenticationState = () => ({
   ...initialState,
 });
 
+const getLandingPageSuccess = (state, action) => ({
+  ...state,
+  landingPage: action.payload,
+});
+
 // const updateUserSuccess = (state, action) => ({
 //   ...state,
 //   userProfile: { ...state.userProfile, ...action.payload },
@@ -84,6 +90,7 @@ const authenticationReducer = createReducer(initialState, {
   [Types.GET_USER_GROUP_SUCCESS]: getUserGroupSuccess,
   [Types.GET_USER_PROFILE_SUCCESS]: getUserProfileSuccess,
   [Types.RESET_AUTHENTICATION_STATE]: resetAuthenticationState,
+  [Types.GET_LANDING_PAGE_SUCCESS]: getLandingPageSuccess,
   // [Types.UPDATE_USER_SUCCESS]: updateUserSuccess,
 });
 

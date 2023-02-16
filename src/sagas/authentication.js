@@ -27,6 +27,7 @@ export function* loginRequest({ payload }) {
     localStorage.setItem('userToken', response.data.access);
     yield put(authActions.loginSuccess(response.data));
     const landingResponse = yield call(getLandingPage);
+    yield put(authActions.getLandingPageSuccess(landingResponse.data));
     yield put(authActions.setInfoDialogContent(null));
     yield put(push(`${landingResponse.data.page}`));
     yield put(commonActions.toggleModal('access-to-functionalities'));
@@ -173,12 +174,16 @@ function* getUserGroupRequest() {
   }
 }
 
-function* getLandingPageRequest() {
+function* getLandingPageRequest({ params }) {
+  const { page } = params;
   try {
     yield delay(500);
     const response = yield call(getLandingPage);
     yield put(authActions.getLandingPageSuccess(response.data));
-    yield put(push(`${response.data.page}`));
+
+    if (page && page === 'home') {
+      yield put(push(`${response.data.page}`));
+    }
   } catch (error) {
     yield put(authActions.getLandingPageFailure());
     throw error;

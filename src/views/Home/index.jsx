@@ -9,7 +9,7 @@ const { getLandingPageRequest } = Creators;
 export default function Home() {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getLandingPageRequest());
+    dispatch(getLandingPageRequest({ page: 'home' }));
   }, [dispatch]);
 
   return <AppLoader />;

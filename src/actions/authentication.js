@@ -39,7 +39,7 @@ export const { Types, Creators } = createActions({
   getUserProfileSuccess: ['payload'],
   getUserProfileFailure: null,
 
-  getLandingPageRequest: null,
+  getLandingPageRequest: ['params'],
   getLandingPageSuccess: ['payload'],
   getLandingPageFailure: null,
 

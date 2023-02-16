@@ -68,11 +68,11 @@
 - [x] save text to check 
 - [x] not zooming to feature after multipart explode
 - [x] highlight select after toolbar icon toggle
-- [ ] zoom to layer not working for explode parent
-- [ ] after delete select feature you want to snap to help box occur
+- [x] zoom to layer not working for explode parent
+- [x] after delete select feature you want to snap to help box occur
 - [ ] add feature multiple toggle while drawing
 - [ ] remove title save while editing
-- [ ] explode delete => multipart still remain
+- [ ] explode delete => multipart still remain (raj)
 - [ ] zoom to layer slow
 - [ ] snap to self while edit
 - [ ] layer sync after data cleaning

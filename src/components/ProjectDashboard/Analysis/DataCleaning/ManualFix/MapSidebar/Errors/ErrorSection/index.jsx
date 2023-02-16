@@ -164,7 +164,7 @@ export default function ErrorSection() {
                           onClick={() => {
                             dispatch(
                               setManualFixState({
-                                selectedError: { ...feature, type },
+                                selectedError: feature,
                               }),
                             );
                             dispatch(togglePromptDialog('delete-error'));
@@ -230,20 +230,6 @@ export default function ErrorSection() {
                               className="material-icons-outlined"
                             />
                           </span>
-                          {type === 'null' && (
-                            <IconButton
-                              className="material-icons-outlined naxatw-text-delete_btn"
-                              name="delete"
-                              onClick={() => {
-                                dispatch(
-                                  setManualFixState({
-                                    selectedError: { ...explodedFeat, type },
-                                  }),
-                                );
-                                dispatch(togglePromptDialog('delete-error'));
-                              }}
-                            />
-                          )}
 
                           <DropdownOptions
                             options={dropdownOptions}

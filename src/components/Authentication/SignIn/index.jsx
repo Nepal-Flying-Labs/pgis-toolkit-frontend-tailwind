@@ -75,11 +75,11 @@ export default function SignIn() {
         <form onSubmit={handleSubmit}>
           <div className="mb-6 naxatw-space-y-[1.125rem]">
             <Input
-              label="Username"
+              label="Username or Email"
               type="text"
               className="naxatw-input"
               name="username"
-              placeholder="Username"
+              placeholder="Username or Email"
               value={values.username}
               onChange={handleChange}
               {...inputProps}

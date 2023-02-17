@@ -5,15 +5,20 @@ import {
   select,
   takeLatest,
   takeEvery,
+  delay,
 } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
+import { stringify, parse } from 'wkt';
+import flatten from '@turf/flatten';
 import {
   autoFixError,
   bulkDeleteNullGeometry,
   checkError,
   copyFeatures,
   getErrorFeatures,
+  getFeatureCollectionMirror,
   getFeatureMirrorGeojson,
+  postFeatureCollection,
   updateFeatureCollection,
 } from '@Services/dataCleaning';
 import dataCleaningActions, { Types } from '@Actions/dataCleaning';
@@ -24,12 +29,13 @@ import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { getLayerAttributeFields } from '@Services/projectMap';
 import { isEmpty } from '@Utils/commonUtils';
 import { roadLayersThemeIdSelector } from '@Selectors/projectMap';
+import { checkErrorData } from '@src/constants/analysis';
 
 export function* checkErrorRequest({ payload }) {
   try {
     const { layerId, geometryType } = payload;
     yield put(dataCleaningActions.setErrorStates({ layerId, geometryType }));
-    yield call(copyFeatures, { layer: layerId.toString() });
+    yield call(copyFeatures, { layer: layerId.toString(), reset_data: true });
     const { errorStates } = yield select(state => state.dataCleaning);
     const errorData = errorStates[layerId];
     for (let i = 0; i < errorData.length; i += 1) {
@@ -153,15 +159,15 @@ export function* deleteSelectedFeaturesRequest() {
   }
 }
 
-export function* getFeatureGeojsonRequest({ payload }) {
+export function* getFeaturesGeojsonRequest({ payload }) {
   try {
     const responses = yield all(
       payload.map(id => call(getFeatureMirrorGeojson, { mirror_id: id })),
     );
     const responseData = responses.map(res => res.data);
-    yield put(dataCleaningActions.getFeatureGeojsonSuccess(responseData));
+    yield put(dataCleaningActions.getFeaturesGeojsonSuccess(responseData));
   } catch (error) {
-    yield put(dataCleaningActions.getFeatureGeojsonFailure());
+    yield put(dataCleaningActions.getFeaturesGeojsonFailure());
     throw error;
   }
 }
@@ -209,6 +215,91 @@ export function* startAnalysisRequest({ params }) {
   }
 }
 
+export function* explodeFeatureRequest({ payload }) {
+  try {
+    const layerResponse = yield call(getFeatureCollectionMirror, payload);
+    const { id, attributes, geometry } = layerResponse.data;
+    const { selectedLayer } = yield select(state => state.dataCleaning);
+    const geojson = parse(geometry);
+    const explodedFeature = flatten(geojson);
+    // post new exploded layers
+    const explodeResponse = yield all(
+      explodedFeature.features.map(feature =>
+        call(postFeatureCollection, {
+          attributes,
+          geometry: stringify(feature),
+          layer: selectedLayer.id,
+        }),
+      ),
+    );
+    // delete old layer
+    yield call(updateFeatureCollection, id, { is_deleted: true });
+    yield put(
+      dataCleaningActions.explodeFeatureSuccess({
+        layerData: layerResponse.data,
+        explodeData: explodeResponse.map(item => item.data),
+      }),
+    );
+  } catch (error) {
+    yield put(dataCleaningActions.explodeFeatureFailure(payload));
+    throw error;
+  }
+}
+
+export function* validateErrorFixRequest({ payload }) {
+  try {
+    yield delay(2000);
+    const { layerId } = payload;
+    const { errorFeaturesData } = yield select(state => state.dataCleaning);
+    const data = Object.keys(errorFeaturesData);
+    yield all(
+      data.map(item => {
+        const checkAPI = checkErrorData.find(
+          i => i.id === item || i.alternativeId === item,
+        )?.checkAPI;
+        const params = { layer: layerId };
+        return call(checkError, checkAPI, params);
+      }),
+    );
+    yield put(dataCleaningActions.getErrorFeaturesRequest({ layer: layerId }));
+  } catch (error) {
+    yield put(dataCleaningActions.validateErrorFixFailure());
+    throw error;
+  }
+}
+
+export function* getSelectedFeatureAttributesRequest({ payload }) {
+  try {
+    const response = yield call(getFeatureCollectionMirror, payload);
+    yield put(
+      dataCleaningActions.getSelectedFeatureAttributesSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(dataCleaningActions.getSelectedFeatureAttributesFailure());
+    throw error;
+  }
+}
+
+export function* getFeatureGeojsonRequest({ payload }) {
+  try {
+    const { mirrorId, parentId, type } = payload;
+    const response = yield call(getFeatureMirrorGeojson, {
+      mirror_id: mirrorId,
+    });
+    yield put(
+      dataCleaningActions.getFeatureGeojsonSuccess({
+        geojson: response.data,
+        featureId: mirrorId,
+        parentId,
+        type,
+      }),
+    );
+  } catch (error) {
+    yield put(dataCleaningActions.getFeatureGeojsonFailure());
+    throw error;
+  }
+}
+
 function* dataCleaningWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
@@ -239,12 +330,28 @@ function* dataCleaningWatcher() {
     withLoader(withErrorHandler(deleteSelectedFeaturesRequest)),
   );
   yield takeLatest(
-    Types.GET_FEATURE_GEOJSON_REQUEST,
-    withLoader(withErrorHandler(getFeatureGeojsonRequest)),
+    Types.GET_FEATURES_GEOJSON_REQUEST,
+    withLoader(withErrorHandler(getFeaturesGeojsonRequest)),
   );
   yield takeLatest(
     Types.START_ANALYSIS_REQUEST,
     withLoader(withErrorHandler(startAnalysisRequest)),
+  );
+  yield takeEvery(
+    Types.EXPLODE_FEATURE_REQUEST,
+    withLoader(withErrorHandler(explodeFeatureRequest)),
+  );
+  yield takeEvery(
+    Types.VALIDATE_ERROR_FIX_REQUEST,
+    withLoader(withErrorHandler(validateErrorFixRequest)),
+  );
+  yield takeEvery(
+    Types.GET_SELECTED_FEATURE_ATTRIBUTES_REQUEST,
+    withLoader(withErrorHandler(getSelectedFeatureAttributesRequest)),
+  );
+  yield takeLatest(
+    Types.GET_FEATURE_GEOJSON_REQUEST,
+    withLoader(withErrorHandler(getFeatureGeojsonRequest)),
   );
 }
 

@@ -198,7 +198,7 @@ export default function ViewLayerAttribute() {
               <TableHeader
                 key={key}
                 dataField={key}
-                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                headerClassName="naxatw-py-[0.8125rem] "
                 rowcolSpan="rowSpan_2"
                 rowClassName=""
                 dataHeader={
@@ -220,23 +220,25 @@ export default function ViewLayerAttribute() {
                         : 'naxatw-text-body-lg'
                     } `}
                   >
-                    {row[key] || '-'}
+                    {!Array.isArray(row[key]) &&
+                    typeof row[key] === 'object' &&
+                    row[key]
+                      ? Object.keys(row[key]).map(item => (
+                          <p>{`${row[key][item]},`}</p>
+                        ))
+                      : row[key] || '-'}
                   </p>
                 )}
               />
             ))}
             <TableHeader
               dataField=""
-              headerClassName="sticky-menu"
+              headerClassName=""
               rowClassName="sticky-menu"
               rowcolSpan="rowSpan_3"
               dataFormat={row => (
-                <div className="naxatw-flex naxatw-justify-end naxatw-w-full naxatw-shadow-xl naxatw-relative">
-                  <DropdownOptions
-                    options={dropdownOptions}
-                    data={row}
-                    stopPropagation
-                  />
+                <div className="naxatw-w-fit naxatw-shadow-xl naxatw-relative">
+                  <DropdownOptions options={dropdownOptions} data={row} />
                 </div>
               )}
             />

@@ -12,6 +12,7 @@ const initialState = {
   selectedProject: null,
   countryList: [],
   individualProject: {
+    othersThematicAreas: [],
     projectGeojson: null,
     fileUploadGeojson: null,
     contactPerson: [],
@@ -39,6 +40,7 @@ const initialState = {
   organizationAssignList: [],
   userTab: 'users',
   hideSidebar: false,
+  centroidGeojson: null,
 };
 
 const getOrganizationDetailSuccess = (state, action) => ({
@@ -53,6 +55,17 @@ const getProjectsSuccess = (state, action) => {
     projects: { ...data, hasNoProject },
   };
 };
+
+const setThematicAreas = (state, action) => ({
+  ...state,
+  individualProject: {
+    ...state.individualProject,
+    othersThematicAreas: [
+      ...state.individualProject.othersThematicAreas,
+      action.payload,
+    ],
+  },
+});
 
 const getIndividualProjectSuccess = (state, action) => {
   const {
@@ -85,6 +98,10 @@ const getIndividualProjectSuccess = (state, action) => {
     ...state,
     individualProject: {
       ...state.individualProject,
+      othersThematicAreas: [
+        ...state.individualProject.othersThematicAreas,
+        ...thematic_areas,
+      ],
       project: {
         ...action.payload,
         file: file
@@ -472,9 +489,15 @@ const setProjectStatus = (state, action) => ({
   projectStatus: action.payload,
 });
 
+const getProjectsCentroidGeojsonSuccess = (state, action) => ({
+  ...state,
+  centroidGeojson: action.payload,
+});
+
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
+  [Types.SET_THEMATIC_AREAS]: setThematicAreas,
   [Types.GET_INDIVIDUAL_PROJECT_SUCCESS]: getIndividualProjectSuccess,
   [Types.SET_INDIVIDUAL_PROJECT]: setIndividualProject,
   [Types.GET_CONTACT_PERSON_SUCCESS]: getContactPersonSuccess,
@@ -509,6 +532,8 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.SET_FILE_UPLOAD_GEOJSON]: setFileUploadGeojson,
   [Types.SET_ZOOM_TO_LAYER]: setZoomToLayer,
   [Types.SET_PROJECT_STATUS]: setProjectStatus,
+  [Types.GET_PROJECTS_CENTROID_GEOJSON_SUCCESS]:
+    getProjectsCentroidGeojsonSuccess,
 });
 
 export default organizationDashboardReducer;

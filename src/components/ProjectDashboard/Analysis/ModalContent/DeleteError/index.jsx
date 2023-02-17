@@ -37,7 +37,7 @@ export default function DeleteError() {
             dispatch(togglePromptDialog());
           }}
         >
-          Discard
+          Cancel
         </Button>
         <Button
           className="naxatw-bg-delete_btn naxatw-text-white"

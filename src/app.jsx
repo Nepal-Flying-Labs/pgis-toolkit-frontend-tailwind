@@ -98,6 +98,7 @@ const ModalWrapper = ({ component }) => {
         subtitle={getModalContent(modalContent)?.subtitle}
         onClose={handleModalClose}
         helpContent={getModalContent(modalContent)?.helpContent}
+        hideCloseButton={!!getModalContent(modalContent).hideCloseButton}
       >
         {getModalContent(modalContent)?.content}
       </Modal>

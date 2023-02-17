@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import { Creators as OrganizationDashboardCreators } from '@Actions/organizationDashboard';
 import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
 import ManageDataCollection from '@Components/ProjectDashboard/ManageDataCollection/index';
 import ProjectHeader from '@Components/common/ProjectHeader';
@@ -15,6 +16,7 @@ import Settings from '@Components/ProjectDashboard/Settings';
 import AppLoader from '@Components/common/AppLoader';
 import Analysis from '@Components/ProjectDashboard/Analysis';
 
+const { getOrganizationDetailRequest } = OrganizationDashboardCreators;
 const {
   getProjectLayersRequest,
   getProjectDetailRequest,
@@ -60,9 +62,10 @@ export default function ProjectDashboard() {
   );
 
   useEffect(() => {
+    dispatch(getOrganizationDetailRequest(organizationId));
     dispatch(getProjectDetailRequest({ project: projectId }));
     dispatch(getProjectLayersRequest({ project: projectId }));
-  }, [dispatch, projectId]);
+  }, [dispatch, projectId, organizationId]);
 
   if (!layers) {
     return <AppLoader />;

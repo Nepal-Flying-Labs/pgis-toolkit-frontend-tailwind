@@ -38,6 +38,10 @@ const createOrganizationSuccess = (state, action) => ({
 const setSearchText = (state, action) => ({
   ...state,
   searchText: action.payload,
+  pagination: {
+    ...state.pagination,
+    page: 1,
+  },
 });
 
 // handle pagination in transaction page

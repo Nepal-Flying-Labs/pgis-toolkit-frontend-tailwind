@@ -207,6 +207,33 @@ const getSelectedLayerFeatureSuccess = (state, action) =>
       : newData;
   });
 
+const saveBufferLayerSuccess = (state, action) =>
+  produce(state, draft => {
+    const { analysisId } = action.payload;
+    draft.results.analysisResults = draft.results.analysisResults.filter(
+      item => item.id !== analysisId,
+    );
+    draft.activeTab = 'layers';
+    draft.selectedResultId = null;
+    draft.results.showResultsPopup = false;
+  });
+
+const deleteBufferResult = (state, action) =>
+  produce(state, draft => {
+    const selectedId = draft.results.selectedResultId;
+    if (selectedId === action.payload) {
+      draft.results.showResultsPopup = false;
+      draft.results.selectedResultId = null;
+    }
+    const newData = draft.results.analysisResults.filter(
+      item => item.id !== action.payload,
+    );
+    draft.results.analysisResults = newData;
+    if (newData.length < 1) {
+      draft.activeTab = 'dataInput';
+    }
+  });
+
 const bufferAnalysisReducer = createReducer(initialState, {
   [Types.SET_BUFFER_ANALYSIS_STATE]: setBufferAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
@@ -221,6 +248,8 @@ const bufferAnalysisReducer = createReducer(initialState, {
   [Types.GET_DETAILS_CHART_SUCCESS]: getDetailsChartSuccess,
   [Types.GET_ANALYSIS_DATA_SUCCESS]: getAnalysisDataSuccess,
   [Types.GET_SELECTED_LAYER_FEATURE_SUCCESS]: getSelectedLayerFeatureSuccess,
+  [Types.SAVE_BUFFER_LAYER_SUCCESS]: saveBufferLayerSuccess,
+  [Types.DELETE_BUFFER_RESULT]: deleteBufferResult,
 });
 
 export default bufferAnalysisReducer;

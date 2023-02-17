@@ -46,3 +46,6 @@ export const organizationById = id =>
 
 export const getProjectGeojson = params =>
   authenticated(api).get(`/projects/project_location_geojson/`, { params });
+
+export const getProjectsCentroidGeojson = params =>
+  authenticated(api).get(`/projects/projects_centroid_geojson/`, { params });

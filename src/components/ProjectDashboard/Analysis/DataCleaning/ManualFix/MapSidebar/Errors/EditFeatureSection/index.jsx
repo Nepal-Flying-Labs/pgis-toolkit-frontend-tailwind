@@ -1,19 +1,18 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { stringify } from 'wkt';
 import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
 import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
 import useForm from '@Hooks/useForm';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
-import { isEmpty } from '@Utils/commonUtils';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
+import { individualAttributeDataSelector } from '@Selectors/dataCleaning';
 
 const {
   setManualFixState,
-  getLayerAttributeFieldsRequest,
   updateFeatureCollectionRequest,
+  getSelectedFeatureAttributesRequest,
 } = DataCleaningCreators;
 
 export default function EditFeatureSection() {
@@ -27,17 +26,11 @@ export default function EditFeatureSection() {
   const drawnFeatureWkt = useSelector(
     state => state.dataCleaning.manualFix.drawnFeatureWkt,
   );
-  const featureGeojson = useSelector(state => state.projectMap.featureGeojson);
-  const editFeatureId = useSelector(state => state.projectMap.editFeatureId);
-  const isFeatureModified = useSelector(
-    state => state.projectMap.isFeatureModified,
+  const selectedError = useSelector(
+    state => state.dataCleaning.manualFix.selectedError,
   );
-  const modifiedFeatureGeojson = useSelector(
-    state => state.projectMap.modifiedFeatureGeojson,
-  );
-  const individualAttributeData = useSelector(
-    state => state.dataCleaning.manualFix.individualAttributeData,
-  );
+  const individualAttributeData = useSelector(individualAttributeDataSelector);
+
   const isPosting = useSelector(state =>
     checkIfLoading(state, [
       Types.POST_NEW_LAYER_FEATURE_REQUEST,
@@ -46,17 +39,28 @@ export default function EditFeatureSection() {
   );
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (!selectedError) return;
+    const { id, type, attributes } = selectedError;
+    const exceptions = ['null', 'multipart'];
+    if (exceptions.includes(type)) return;
+    if (!attributes) {
+      dispatch(getSelectedFeatureAttributesRequest(id));
+    }
+  }, [dispatch, selectedError]);
+
   const handleCancel = () => {
     dispatch(
       setManualFixState({
         sidebarContent: 'error-list',
-        drawFeatureId: null,
         drawnFeatureWkt: null,
         // featureGeojson: null,
         // modifiedFeatureGeojson: null,
         individualAttributeData: [],
         layerAttributes: null,
-        // editFeatureId: null,
+        selectedError: null,
+        startEditing: false,
+        geojsonFeatures: null,
       }),
     );
   };
@@ -78,47 +82,24 @@ export default function EditFeatureSection() {
         }),
       );
     },
-    onSubmit: (data, isFieldsChanged) => {
+    onSubmit: data => {
       const payloadData = {};
-      if (sidebarContent === 'add-feature') {
-        if (!drawnFeatureWkt) {
-          dispatch(toastActions.error({ message: 'Please draw a geometry' }));
-          return;
-        }
-        payloadData.layer = selectedLayer.id;
-        payloadData.geometry = drawnFeatureWkt;
-        payloadData.attributes = data;
-        dispatch(updateFeatureCollectionRequest(selectedLayer.id, payloadData));
-        return;
-      }
-      if (!modifiedFeatureGeojson) {
+      if (
+        selectedError.type === 'null' &&
+        !selectedError.fixed &&
+        !drawnFeatureWkt
+      ) {
         dispatch(toastActions.error({ message: 'Please draw a geometry' }));
         return;
       }
-      if (isFeatureModified) {
-        const modifiedFeatureWkt = stringify(modifiedFeatureGeojson);
-        payloadData.geometry = modifiedFeatureWkt;
+      payloadData.layer = selectedLayer.id;
+      if (drawnFeatureWkt) {
+        payloadData.geometry = drawnFeatureWkt;
       }
-      if (isFieldsChanged) {
-        payloadData.attributes = data;
-      }
-      if (!isEmpty(payloadData)) {
-        // dispatch(updateFeatureCollectionRequest(editFeatureId, payloadData));
-      } else {
-        handleCancel();
-      }
+      payloadData.attributes = data;
+      dispatch(updateFeatureCollectionRequest(selectedError.id, payloadData));
     },
   });
-
-  useEffect(() => {
-    if (!selectedLayer) return;
-    dispatch(
-      getLayerAttributeFieldsRequest({
-        layer: selectedLayer.id,
-        check_mandatory: 'True',
-      }),
-    );
-  }, [dispatch, selectedLayer]);
 
   useEffect(() => {
     if (!individualAttributeData) return;
@@ -133,7 +114,7 @@ export default function EditFeatureSection() {
       .filter(item => item.mandatory)
       .map(item => item.name);
     setValues(formState);
-    // setRequiredFields(mandatoryFields);
+    setRequiredFields(mandatoryFields);
   }, [individualAttributeData, setValues, setRequiredFields]);
 
   return (
@@ -203,8 +184,8 @@ export default function EditFeatureSection() {
         <div className="naxatw-fixed naxatw-flex naxatw-bottom-0 naxatw-w-full naxatw-py-4 naxatw-bg-grey-100 naxatw-gap-3">
           <Button
             className="naxatw-btn-primary"
-            onClick={handleSubmit}
             isLoading={isPosting}
+            onClick={handleSubmit}
           >
             Save
           </Button>

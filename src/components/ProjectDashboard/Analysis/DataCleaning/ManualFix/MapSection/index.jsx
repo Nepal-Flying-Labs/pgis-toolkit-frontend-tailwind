@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
 import { stringify } from 'wkt';
 import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
+import { Creators as AnalysisCreators } from '@Actions/analysis';
 import {
   useOLMap,
   MapContainer as MapComponent,
@@ -17,6 +18,7 @@ import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
+import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileLayer';
 import VectorTile from 'ol/layer/VectorTile';
 import CustomVTLayer from '@Components/common/OpenLayersComponent/CustomLayer/CustomVTLayer';
 import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
@@ -27,12 +29,18 @@ import {
   getStyles,
   selectEffectColor,
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
-import { errorFeaturesMapStateSelector } from '@Selectors/dataCleaning';
+import {
+  checkedFeatureIdsSelector,
+  errorFeaturesMapStateSelector,
+} from '@Selectors/dataCleaning';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
 import { isEmpty } from '@Utils/commonUtils';
+import { mapStateSelector } from '@Selectors/analysis';
+import { featureSelectColor, errorFeatureColor } from '@src/constants/analysis';
 import HelpBox from './HelpBox';
 
 const { setManualFixState } = DataCleaningCreators;
+const { setAnalysisState } = AnalysisCreators;
 
 export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -42,22 +50,30 @@ export default function MapSection() {
   });
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
-      Types.GET_PROJECT_THEMES_REQUEST,
-      Types.GET_PROJECT_THEME_LAYERS_REQUEST,
-      Types.GET_PROJECT_GEOJSON_REQUEST,
+      Types.GET_ERROR_FEATURES_REQUEST,
+      Types.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+      Types.GET_SELECTED_FEATURE_ATTRIBUTES_REQUEST,
+      Types.GET_FEATURE_GEOJSON_REQUEST,
     ]),
   );
   const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
   const errorFeaturesMapState = useSelector(errorFeaturesMapStateSelector);
-  const drawFeatureId = useSelector(
-    state => state.dataCleaning.manualFix.drawFeatureId,
-  );
   const refreshLayerId = useSelector(
     state => state.dataCleaning.manualFix.refreshLayerId,
   );
   const geojsonFeatures = useSelector(
     state => state.dataCleaning.manualFix.geojsonFeatures,
   );
+  const mapState = useSelector(mapStateSelector);
+  const zoomToLayerId = useSelector(state => state.analysis.zoomToLayerId);
+  const featureBbox = useSelector(state => state.dataCleaning.featureBbox);
+  const selectedError = useSelector(
+    state => state.dataCleaning.manualFix.selectedError,
+  );
+  const startEditing = useSelector(
+    state => state.dataCleaning.manualFix.startEditing,
+  );
+  const checkedFeatureIds = useSelector(checkedFeatureIdsSelector);
   const dispatch = useDispatch();
 
   // zoom to selected layer on initial map load
@@ -75,6 +91,44 @@ export default function MapSection() {
     }
   }, [map, selectedLayer]);
 
+  // zoom to layer
+  useEffect(() => {
+    if (!map || !zoomToLayerId) return;
+    const bbox = mapState.find(item => item.id === zoomToLayerId)?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 1000,
+        constrainResolution: true,
+      });
+      dispatch(
+        setAnalysisState({
+          zoomToLayerId: null,
+        }),
+      );
+    }
+  }, [map, zoomToLayerId, mapState, dispatch]);
+
+  // zoom to layer
+  useEffect(() => {
+    if (!map || !featureBbox) return;
+    const zoomExtent = transformExtent(featureBbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 1000,
+        constrainResolution: true,
+      });
+      dispatch(
+        setManualFixState({
+          featureBbox: null,
+        }),
+      );
+    }
+  }, [map, featureBbox, dispatch]);
+
   // refresh vectortile after layer edit
   useEffect(() => {
     if (!map || !refreshLayerId) return;
@@ -90,14 +144,27 @@ export default function MapSection() {
     });
   }, [dispatch, map, refreshLayerId]);
 
-  const setLayerStyle = useCallback((style, feature, resolution) => {
-    const stylex = { ...style };
-    return getStyles({
-      style: stylex,
-      feature,
-      resolution,
-    });
-  }, []);
+  const setLayerStyle = useCallback(
+    (style, feature, resolution) => {
+      const stylex = { ...style };
+      const featureId = feature.getId();
+      if (startEditing && selectedError?.id && selectedError.id === featureId) {
+        stylex.fillOpacity = 0;
+        stylex.lineOpacity = 0;
+        stylex.icon = {};
+      } else if (checkedFeatureIds.includes(feature.getProperties()?.id)) {
+        stylex.fillColor = featureSelectColor;
+        stylex.lineColor = featureSelectColor;
+        stylex.icon = {};
+      }
+      return getStyles({
+        style: stylex,
+        feature,
+        resolution,
+      });
+    },
+    [selectedError, startEditing, checkedFeatureIds],
+  );
 
   return (
     <div className="naxatw-w-full naxatw-relative">
@@ -123,6 +190,37 @@ export default function MapSection() {
 
         <HelpBox />
 
+        {mapState.map((item, index) =>
+          item.layer_type === 'Vector' ? (
+            <VectorTileLayer
+              key={item.id}
+              url={`${apiURL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+              authToken={localStorage.getItem('userToken')}
+              visibleOnMap={item.checked}
+              // setStyle={(feature, resolution) =>
+              //   setLayerStyle(
+              //     item.id === selectedLayer?.id
+              //       ? selectedLayer.style
+              //       : item?.style || { ...defaultStyles },
+              //     feature,
+              //     resolution,
+              //   )
+              // }
+              style={item?.style || { ...defaultStyles }}
+              zIndex={mapState.length + 10 - index}
+              properties={{ layerId: item.id }}
+            />
+          ) : item.layer_type === 'WMS' ? (
+            <WMSTileLayer
+              key={item.id}
+              url={item.url}
+              visibleOnMap={item.checked}
+            />
+          ) : (
+            ''
+          ),
+        )}
+
         <CustomVTLayer
           url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${selectedLayer.id}`}
           authToken={localStorage.getItem('userToken')}
@@ -138,7 +236,7 @@ export default function MapSection() {
           zIndex={10}
           properties={{ layerId: selectedLayer.id }}
           // renderMode="vector"
-          hoverEffect={!!drawFeatureId && !geojsonFeatures}
+          hoverEffect={!!selectedError?.id && !geojsonFeatures}
           onFeatureSelect={features => {
             dispatch(
               setManualFixState({
@@ -153,16 +251,15 @@ export default function MapSection() {
             key={type}
             url={`${apiURL}maps/error_features_vectortile/{z}/{x}/{y}/?layer=${selectedLayer.id}&type=${type}`}
             authToken={localStorage.getItem('userToken')}
-            visibleOnMap={!drawFeatureId}
+            visibleOnMap={!selectedError?.id}
             setStyle={(feature, resolution) =>
               setLayerStyle(
                 {
-                  ...defaultStyles,
-                  fillColor: '#FF0F0F',
-                  lineColor: '#FF0F0F',
+                  ...selectedLayer.style,
+                  fillColor: errorFeatureColor,
+                  lineColor: errorFeatureColor,
                   fillOpacity: 100,
                   lineOpacity: 100,
-                  lineThickness: 1,
                 },
                 feature,
                 resolution,
@@ -174,11 +271,12 @@ export default function MapSection() {
         ))}
 
         <DrawTool
-          enable={!!drawFeatureId && geojsonFeatures}
-          // geojson={featureGeojson}
+          enable={startEditing}
+          geojson={selectedError?.geojson}
           geometryType={selectedLayer.geom_type}
           zIndex={100}
-          style={selectedLayer?.style || { ...defaultStyles }}
+          style={{ ...selectedLayer.style, lineColor: '#ffff00' }}
+          toolboxContents={['add', 'drag', 'edit', 'delete', 'undo']}
           onChange={geojson => {
             const wktString = stringify(geojson);
             dispatch(
@@ -204,7 +302,7 @@ export default function MapSection() {
                     fillOpacity: 100,
                     lineColor: selectEffectColor,
                     lineOpacity: 100,
-                    lineThickness: selectedLayer.style.lineThickness + 1,
+                    lineThickness: +selectedLayer.style.lineThickness + 2,
                   }
                 : {
                     ...defaultStyles,
@@ -212,7 +310,7 @@ export default function MapSection() {
                     fillOpacity: 100,
                     lineColor: selectEffectColor,
                     lineOpacity: 100,
-                    lineThickness: defaultStyles.lineThickness + 1,
+                    lineThickness: +defaultStyles.lineThickness + 2,
                   }
             }
           />

@@ -45,6 +45,16 @@ const CreateProject = () => {
     },
   });
 
+  const handleFocus = () => {
+    const addElement = document.getElementById('add-icon');
+    addElement.className =
+      'naxatw-absolute naxatw-right-4 naxatw-top-11 naxatw-animate-bounce';
+  };
+  const handleBlur = () => {
+    const addElement = document.getElementById('add-icon');
+    addElement.className = 'naxatw-absolute naxatw-right-4 naxatw-top-11';
+  };
+
   return (
     <div className="naxatw-space-y-8">
       {/* <h3>Basic Project Setup & Invitation</h3> */}
@@ -82,6 +92,8 @@ const CreateProject = () => {
           name="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           onKeyDown={e => {
             if (e.key === 'Enter') {
               if (email) {
@@ -94,7 +106,6 @@ const CreateProject = () => {
               }
             }
           }}
-          {...inputProps}
         />
         <span className="material-icons naxatw-absolute naxatw-left-[13px] naxatw-top-9">
           mail_outline
@@ -111,10 +122,15 @@ const CreateProject = () => {
             }
           }}
         >
-          <MaterialIcon
-            name="add"
-            className="naxatw-text-[#40B449] naxatw-absolute naxatw-right-4 naxatw-top-11 naxatw-text-icon-md"
-          />
+          <div
+            id="add-icon"
+            className="naxatw-absolute naxatw-right-4 naxatw-top-11"
+          >
+            <MaterialIcon
+              name="add"
+              className="naxatw-text-[#40B449]  naxatw-text-icon-md"
+            />
+          </div>
         </a>
         {emailError && <FormErrorMessage message="Please add Email" />}
         <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-2 naxatw-mt-2  ">

@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
 import { useEffect, useMemo, useRef } from 'react';
 // import * as olExtent from 'ol/extent';
@@ -65,7 +66,7 @@ export default function CustomVTLayer({
       url,
       transition: 0,
       tileLoadFunction: (tile, vtUrl) => {
-        tile.setLoader((extent, resolution, projection) => {
+        tile.setLoader((extent, _, projection) => {
           fetch(vtUrl, {
             headers: requestHeader,
           }).then(response => {
@@ -157,6 +158,9 @@ export default function CustomVTLayer({
   useEffect(() => {
     function hoverInteraction(event) {
       vectorTileLayer.getFeatures(event.pixel).then(features => {
+        // hover effect
+        const hit = map.hasFeatureAtPixel(event.pixel);
+        map.getViewport().style.cursor = hit ? 'pointer' : '';
         if (!features.length) {
           hoveredFeatures.current = {};
           hoverLayer.current.changed();
@@ -193,7 +197,7 @@ export default function CustomVTLayer({
               fillOpacity: 100,
               lineColor: hoverEffectColor,
               lineOpacity: 100,
-              lineThickness: style.lineThickness + 1,
+              lineThickness: +style.lineThickness + 2,
             },
             feature,
             resolution,
@@ -202,6 +206,9 @@ export default function CustomVTLayer({
       },
     });
     map.on('pointermove', hoverInteraction);
+    return () => {
+      map?.un('singleclick', hoverInteraction);
+    };
   }, [map, vectorTileLayer, hoverEffect, style]);
 
   // add select effect
@@ -249,7 +256,7 @@ export default function CustomVTLayer({
               fillOpacity: 100,
               lineColor: selectEffectColor,
               lineOpacity: 100,
-              lineThickness: style.lineThickness + 1,
+              lineThickness: +style.lineThickness + 2,
             },
             feature,
             resolution,
@@ -258,6 +265,9 @@ export default function CustomVTLayer({
       },
     });
     map.on('singleclick', selectInteraction);
+    return () => {
+      map?.un('singleclick', selectInteraction);
+    };
   }, [map, vectorTileLayer, hoverEffect, style]); // eslint-disable-line
 
   // cleanup

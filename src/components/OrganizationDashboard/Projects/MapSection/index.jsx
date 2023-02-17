@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
+import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import {
   useOLMap,
   MapContainer as MapComponent,
@@ -9,6 +10,7 @@ import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSw
 import Scalebar from '@Components/common/OpenLayersComponent/Scalebar/index';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
+import ClusterLayer from '@Components/common/OpenLayersComponent/Layers/ClusterLayer';
 import '@Components/common/OpenLayersComponent/map.css';
 import { Creators } from '@Actions/organizationDashboard';
 
@@ -17,6 +19,7 @@ const { setZoomToLayer } = Creators;
 const { API_URL } = process.env;
 
 export default function MapSection() {
+  const [currentZoom, setCurrentZoom] = useState(1);
   const dispatch = useDispatch();
   const projects = useSelector(state => state.organizationDashboard.projects);
   const organizationDetail = useSelector(
@@ -31,6 +34,10 @@ export default function MapSection() {
 
   const zoomToLayer = useSelector(
     state => state.organizationDashboard.zoomToLayer,
+  );
+
+  const centroidGeojson = useSelector(
+    state => state.organizationDashboard.centroidGeojson,
   );
 
   const { mapRef, map } = useOLMap({
@@ -49,19 +56,30 @@ export default function MapSection() {
   }, [map, hideSidebar]);
 
   // zoom to project location on initial map load
+  // useEffect(() => {
+  //   if (!map || !organizationDetail) return;
+  //   const bbox = organizationDetail?.bbox;
+  //   if (!bbox) return;
+  //   const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+  //   if (isExtentValid(zoomExtent)) {
+  //     map.getView().fit(zoomExtent, {
+  //       padding: [50, 50, 50, 50],
+  //       duration: 3500,
+  //       constrainResolution: true,
+  //     });
+  //   }
+  // }, [map, organizationDetail]);
+
   useEffect(() => {
-    if (!map || !organizationDetail) return;
-    const bbox = organizationDetail?.bbox;
-    if (!bbox) return;
-    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
-    if (isExtentValid(zoomExtent)) {
-      map.getView().fit(zoomExtent, {
-        padding: [50, 50, 50, 50],
-        duration: 3500,
-        constrainResolution: true,
-      });
-    }
-  }, [map, organizationDetail]);
+    if (!map) return;
+    map.getView().on('change:resolution', () => {
+      const resolution = map.getView().getResolution();
+      const zoom = map.getView().getZoomForResolution(resolution);
+      const zoomValue = parseInt(zoom, 10);
+      if (zoomValue === currentZoom) return;
+      setCurrentZoom(zoomValue);
+    });
+  }, [map, currentZoom]);
 
   // zoom to layer id
   useEffect(() => {
@@ -91,12 +109,32 @@ export default function MapSection() {
         <LayerSwitcherControl />
 
         <Scalebar />
+        <ClusterLayer
+          map={map}
+          source={centroidGeojson}
+          zIndex="100"
+          visibleOnMap={currentZoom <= 10}
+          style={{
+            ...defaultStyles,
+            background_color: '#FF5A5F',
+            color: '#FFD1D8',
+            opacity: 90,
+          }}
+          // style={{ ...defaultStyles }}
+          // fetchPopupData={(popupProps) => {
+          //   if (!popupProps) return;
+          //   setProperties(popupProps);
+          //   // const { id, layer_id } = popupProps;
+          //   // dispatch(HomeActions.getMapFeatureRequest(id, layer_id));
+          // }}
+        />
 
         {projects?.results?.map(item => (
           <VectorTileLayer
             key={item.id}
             url={`${API_URL}projects/project_location_vectortile/{z}/{x}/{y}/?project=${item.id}`}
             authToken={localStorage.getItem('userToken')}
+            visibleOnMap={currentZoom > 10}
           />
         ))}
       </MapComponent>

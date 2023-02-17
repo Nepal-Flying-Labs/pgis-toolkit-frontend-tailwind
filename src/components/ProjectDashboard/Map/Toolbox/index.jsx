@@ -94,6 +94,7 @@ export default function Toolbox({ map }) {
 
         <a
           className={btnClassname}
+          title="Export"
           onClick={() =>
             dispatch(setProjectMapState({ toggleMapExport: true }))
           }

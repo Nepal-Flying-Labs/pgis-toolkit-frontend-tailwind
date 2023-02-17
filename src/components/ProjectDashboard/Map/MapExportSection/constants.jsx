@@ -40,5 +40,5 @@ export const outputFormatOptions = [
   { label: 'JPEG', value: 'jpeg' },
   { label: 'Clipboard', value: 'clipboard' },
   { label: 'PDF', value: 'pdf' },
-  // { label: 'Print', value: 'print' },
+  { label: 'Print', value: 'print' },
 ];

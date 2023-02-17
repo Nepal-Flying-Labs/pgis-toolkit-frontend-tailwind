@@ -4,7 +4,7 @@ import { Creators } from '@Actions/dataCleaning';
 import MapSidebar from './MapSidebar';
 import MapSection from './MapSection';
 
-const { getErrorFeaturesRequest } = Creators;
+const { getErrorFeaturesRequest, getLayerAttributeFieldsRequest } = Creators;
 
 export default function ManualFix() {
   const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
@@ -12,6 +12,12 @@ export default function ManualFix() {
 
   useEffect(() => {
     dispatch(getErrorFeaturesRequest({ layer: selectedLayer.id }));
+    dispatch(
+      getLayerAttributeFieldsRequest({
+        layer: selectedLayer.id,
+        check_mandatory: 'True',
+      }),
+    );
   }, [dispatch, selectedLayer]);
 
   return (

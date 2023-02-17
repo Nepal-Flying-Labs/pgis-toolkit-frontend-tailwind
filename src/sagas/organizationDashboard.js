@@ -18,6 +18,7 @@ import {
   organizationById,
   updateOrganization,
   getProjectGeojson,
+  getProjectsCentroidGeojson,
 } from '@Services/organizationDashboard';
 import organizationDashboardActions, {
   Types,
@@ -398,6 +399,19 @@ export function* getProjectGeojsonRequest({ params }) {
   }
 }
 
+export function* getProjectsCentroidGeojsonRequest({ params }) {
+  try {
+    const response = yield call(getProjectsCentroidGeojson, params);
+    yield put(
+      organizationDashboardActions.getProjectsCentroidGeojsonSuccess(
+        response.data,
+      ),
+    );
+  } catch (error) {
+    yield put(organizationDashboardActions.getProjectsCentroidGeojsonFailure());
+  }
+}
+
 function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_ORGANIZATION_DETAIL_REQUEST,
@@ -483,6 +497,10 @@ function* organizationDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_GEOJSON_REQUEST,
     withLoader(getProjectGeojsonRequest),
+  );
+  yield takeLatest(
+    Types.GET_PROJECTS_CENTROID_GEOJSON_REQUEST,
+    withLoader(getProjectsCentroidGeojsonRequest),
   );
 }
 

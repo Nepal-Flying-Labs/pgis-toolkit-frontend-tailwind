@@ -33,6 +33,7 @@ export const checkErrorData = [
   },
   {
     id: 'isolated',
+    alternativeId: 'snapping',
     label: 'Isolated Geometry',
     checkAPI: 'check_isolated_geometry',
     fixAPI: 'fix_isolated_geometry',
@@ -92,3 +93,6 @@ export const bufferPolygonStyles = {
   fillColor: '#FF5A5F',
   fillOpacity: 33,
 };
+
+export const featureSelectColor = '#ffdf65';
+export const errorFeatureColor = '#FF0F0F';

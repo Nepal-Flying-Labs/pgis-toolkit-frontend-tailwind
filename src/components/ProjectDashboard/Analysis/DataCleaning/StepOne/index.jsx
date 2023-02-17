@@ -17,7 +17,7 @@ import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 
 const { getProjectThemesRequest, getProjectThemeLayersRequest } =
   ProjectMapCreators;
-const { setAnalysisState, setOptimalRouteState } = DataCleaningCreators;
+const { setDataCleaningState, setOptimalRouteState } = DataCleaningCreators;
 
 export default function StepOne() {
   const { projectId } = useParams();
@@ -49,7 +49,7 @@ export default function StepOne() {
         }),
       );
       dispatch(
-        setAnalysisState({
+        setDataCleaningState({
           stepIndex: 2,
         }),
       );

@@ -2,7 +2,7 @@ import { createActions } from 'reduxsauce';
 
 export const { Types, Creators } = createActions(
   {
-    setAnalysisState: ['payload'],
+    setDataCleaningState: ['payload'],
     setOptimalRouteState: ['payload'],
     setErrorStates: ['payload'],
 
@@ -41,15 +41,35 @@ export const { Types, Creators } = createActions(
 
     handleErrorCheckbox: ['payload'],
 
-    getFeatureGeojsonRequest: ['payload'],
-    getFeatureGeojsonSuccess: ['payload'],
-    getFeatureGeojsonFailure: null,
+    getFeaturesGeojsonRequest: ['payload'],
+    getFeaturesGeojsonSuccess: ['payload'],
+    getFeaturesGeojsonFailure: null,
 
     startAnalysisRequest: ['params'],
     startAnalysisSuccess: ['payload'],
     startAnalysisFailure: null,
 
     resetDataCleaningState: null,
+
+    saveAttributeEdit: ['payload'],
+
+    explodeFeatureRequest: ['payload'],
+    explodeFeatureSuccess: ['payload'],
+    explodeFeatureFailure: ['payload'],
+
+    validateErrorFixRequest: ['payload'],
+    validateErrorFixSuccess: ['payload'],
+    validateErrorFixFailure: null,
+
+    getSelectedFeatureAttributesRequest: ['payload'],
+    getSelectedFeatureAttributesSuccess: ['payload'],
+    getSelectedFeatureAttributesFailure: null,
+
+    resetManualFixState: null,
+
+    getFeatureGeojsonRequest: ['payload'],
+    getFeatureGeojsonSuccess: ['payload'],
+    getFeatureGeojsonFailure: null,
   },
   { prefix: 'dataCleaning/' },
 );

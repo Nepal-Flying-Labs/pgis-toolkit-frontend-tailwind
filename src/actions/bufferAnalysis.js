@@ -40,6 +40,12 @@ export const { Types, Creators } = createActions(
     getSelectedLayerFeatureRequest: ['payload'],
     getSelectedLayerFeatureSuccess: ['payload'],
     getSelectedLayerFeatureFailure: ['payload'],
+
+    saveBufferLayerRequest: ['payload'],
+    saveBufferLayerSuccess: ['payload'],
+    saveBufferLayerFailure: null,
+
+    deleteBufferResult: ['payload'],
   },
   { prefix: 'bufferAnalysis/' },
 );

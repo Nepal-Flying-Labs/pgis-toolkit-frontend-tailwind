@@ -6,17 +6,24 @@ import useOutsideClick from '@Hooks/useOutsideClick';
 import AvatarIcon from '@Assets/images/user-avatar.png';
 import getImageSource from '@Utils/getImageSource';
 
-const { logoutRequest, getUserProfileRequest } = AuthCreators;
+const { logoutRequest, getUserProfileRequest, getLandingPageRequest } =
+  AuthCreators;
 const { toggleModal } = CommonCreators;
 
 export default function HeaderProfile() {
   const userProfile = useSelector(state => state.authentication.userProfile);
+  const landingPage = useSelector(state => state.authentication.landingPage);
   const [ref, toggle, handleToggle] = useOutsideClick();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUserProfileRequest());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!landingPage)
+      dispatch(getLandingPageRequest({ page: 'headerprofile' }));
+  }, [dispatch, landingPage]);
 
   return (
     <div className="naxatw-relative" ref={ref}>

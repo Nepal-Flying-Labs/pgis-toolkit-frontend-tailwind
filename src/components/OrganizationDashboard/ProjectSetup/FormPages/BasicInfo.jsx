@@ -8,7 +8,7 @@ import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import Input from '@Components/common/Input';
 import TextArea from '@Components/common/TextArea';
-import MultiSelect from '@Components/common/MultiSelect/index';
+// import MultiSelect from '@Components/common/MultiSelect/index';
 import { Creators, Types } from '@Actions/organizationDashboard';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
@@ -21,7 +21,8 @@ import useForm from '@Hooks/useForm';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import toastActions from '@Actions/toast';
 import { format } from 'date-fns';
-import ContactPerson from './ContactPerson';
+// import ContactPerson from './ContactPerson';
+import CustomMultiSelect from '../CustomMultiSelect';
 
 const {
   setIndividualProject,
@@ -286,18 +287,24 @@ const BasicInfo = ({ setPage }) => {
 
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Thematic Focus Area*</label>
-        <MultiSelect
+        <CustomMultiSelect
           options={thematicFocusArea}
           placeholder="Choose"
-          field="displayName"
+          field="name"
           onChange={data => {
-            const area = data.map(i => i.value);
+            const area = data.map(i => i.name);
             handleCustomChange('thematic_areas', area);
           }}
-          selected={thematicFocusArea.filter(item =>
-            values?.thematic_areas?.includes(item.value),
-          )}
+          onOthersChange={data => {
+            handleCustomChange('thematic_areas', [
+              data,
+              ...values.thematic_areas,
+            ]);
+          }}
+          selected={values?.thematic_areas}
+          othersOptions={values?.selectedThematic}
         />
+
         {errors.thematicFocusArea && (
           <FormErrorMessage message={errors.thematicFocusArea} />
         )}
@@ -335,6 +342,7 @@ const BasicInfo = ({ setPage }) => {
         <label className="naxatw-label">Partners</label>
         <input
           className="naxatw-input"
+          placeholder="Title of Partner"
           value={partner}
           onChange={e => handlePartner(e)}
           onKeyDown={e => handleKeyChange(e)}

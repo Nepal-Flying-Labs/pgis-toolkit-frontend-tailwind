@@ -37,6 +37,8 @@ import { FullScreen, defaults as defaultControls } from 'ol/control';
 import SidebarToggle from '../SidebarToggle';
 import Toolbox from '../Toolbox';
 import QueryResultPopup from '../QueryResultPopup';
+import MapSidebar from '../MapSidebar';
+import MapExportSection from '../MapExportSection';
 
 const {
   setZoomToLayerId,
@@ -45,7 +47,7 @@ const {
   getFeatureCollectionRequest,
 } = Creators;
 
-export default function MapSection({ setExportMap }) {
+export default function MapSection() {
   const { mapRef, map, isMapLoading } = useOLMap({
     controls: defaultControls().extend([new FullScreen()]),
     center: fromLonLat([85.3, 27.7]),
@@ -62,6 +64,12 @@ export default function MapSection({ setExportMap }) {
   const featureGeojson = useSelector(state => state.projectMap.featureGeojson);
   const editFeatureId = useSelector(state => state.projectMap.editFeatureId);
   const projectGeojson = useSelector(state => state.projectMap.projectGeojson);
+  const toggleMapExport = useSelector(
+    state => state.projectMap.toggleMapExport,
+  );
+  const organizationDetail = useSelector(
+    state => state.organizationDashboard.organizationDetail,
+  );
   const projectAreaLayerId = useSelector(
     state => state.projectMap.projectAreaLayerId,
   );
@@ -182,118 +190,150 @@ export default function MapSection({ setExportMap }) {
     [editFeatureId],
   );
 
-  // Set Export map
-  useEffect(() => {
-    if (map) {
-      setExportMap(map);
-    }
-  }, [map]);
-
   return (
-    <div className="naxatw-w-full naxatw-relative">
-      {isMapDataLoading && (
-        <div className="naxatw-absolute naxatw-w-full naxatw-top-4 naxatw-z-10 naxatw-flex naxatw-justify-center">
-          <span className="naxatw-bg-white naxatw-p-3 naxatw-flex naxatw-items-center naxatw-gap-3 naxatw-rounded-md naxatw-shadow-3xl">
-            <h5 className="">Loading</h5>
-            <Spinner className="naxatw-w-6 naxatw-h-6 naxatw-fill-primary-400" />
-          </span>
-        </div>
+    <div
+      className="naxatw-flex"
+      style={{ height: `calc(100vh - ${projectHeaderHeight}px)` }}
+    >
+      {toggleMapExport && (
+        <MapExportSection
+          exportMap={map}
+          legendData={mapState.filter(item => item.checked === true)}
+          title={projectDetail?.name}
+          topMargin={projectHeaderHeight}
+          organizationLogo={organizationDetail?.cover_image}
+          closeFunction={() =>
+            dispatch(setProjectMapState({ toggleMapExport: false }))
+          }
+        />
       )}
-
-      <MapComponent
-        ref={mapRef}
-        mapInstance={map}
-        style={{
-          height: `calc(100vh - ${projectHeaderHeight}px)`,
-        }}
-      >
-        <SidebarToggle />
-
-        <Toolbox map={map} />
-
-        <QueryResultPopup />
-
-        <LayerSwitcherControl />
-
-        <CustomLayerSwitcher />
-
-        {mapState.map((item, index) =>
-          item.layer_type === 'Vector' ? (
-            <VectorTileLayer
-              key={item.id}
-              url={`${apiURL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
-              authToken={localStorage.getItem('userToken')}
-              visibleOnMap={item.checked}
-              setStyle={(feature, resolution) =>
-                setLayerStyle(
-                  item.id === selectedLayer?.id
-                    ? selectedLayer.style
-                    : item?.style || { ...defaultStyles },
-                  feature,
-                  resolution,
-                )
-              }
-              // style={
-              //   item.id === selectedLayer?.id
-              //     ? selectedLayer.style
-              //     : item?.style || { ...defaultStyles }
-              // }
-              zIndex={mapState.length + 10 - index}
-              properties={{ layerId: item.id }}
-            />
-          ) : item.layer_type === 'WMS' ? (
-            <WMSTileLayer
-              key={item.id}
-              url={item.url}
-              visibleOnMap={item.checked}
-            />
-          ) : (
-            ''
-          ),
+      <MapSidebar />
+      <div className="naxatw-w-full naxatw-relative">
+        {isMapDataLoading && (
+          <div className="naxatw-absolute naxatw-w-full naxatw-top-4 naxatw-z-10 naxatw-flex naxatw-justify-center">
+            <span className="naxatw-bg-white naxatw-p-3 naxatw-flex naxatw-items-center naxatw-gap-3 naxatw-rounded-md naxatw-shadow-3xl">
+              <h5 className="">Loading</h5>
+              <Spinner className="naxatw-w-6 naxatw-h-6 naxatw-fill-primary-400" />
+            </span>
+          </div>
         )}
 
-        {queryResults.map(item => (
-          <VectorTileLayer
-            key={item.id}
-            url={`${apiURL}maps/advance_filter_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
-            authToken={localStorage.getItem('userToken')}
-            visibleOnMap={item.checked}
-            style={item?.style || { ...defaultStyles }}
-            zIndex={100}
-            zoomToLayer
-            bbox={item.bbox}
-            // properties={{ layerId: item.id }}
+        <MapComponent
+          ref={mapRef}
+          mapInstance={map}
+          style={{
+            height: `calc(100vh - ${projectHeaderHeight}px)`,
+          }}
+        >
+          <SidebarToggle />
+
+          <Toolbox map={map} />
+
+          <QueryResultPopup />
+
+          <LayerSwitcherControl />
+
+          <CustomLayerSwitcher />
+
+          {mapState.map((item, index) =>
+            item.layer_type === 'Vector' ? (
+              <VectorTileLayer
+                key={item.id}
+                url={`${apiURL}maps/layer_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+                authToken={localStorage.getItem('userToken')}
+                visibleOnMap={item.checked}
+                setStyle={(feature, resolution) =>
+                  setLayerStyle(
+                    item.id === selectedLayer?.id
+                      ? selectedLayer.style
+                      : item?.style || { ...defaultStyles },
+                    feature,
+                    resolution,
+                  )
+                }
+                // style={
+                //   item.id === selectedLayer?.id
+                //     ? selectedLayer.style
+                //     : item?.style || { ...defaultStyles }
+                // }
+                zIndex={mapState.length + 10 - index}
+                properties={{ layerId: item.id }}
+              />
+            ) : item.layer_type === 'WMS' ? (
+              <WMSTileLayer
+                key={item.id}
+                url={item.url}
+                visibleOnMap={item.checked}
+              />
+            ) : (
+              ''
+            ),
+          )}
+
+          {queryResults.map(item => (
+            <VectorTileLayer
+              key={item.id}
+              url={`${apiURL}maps/advance_filter_vectortile/{z}/{x}/{y}/?layer=${item.id}`}
+              authToken={localStorage.getItem('userToken')}
+              visibleOnMap={item.checked}
+              style={item?.style || { ...defaultStyles }}
+              zIndex={100}
+              zoomToLayer
+              bbox={item.bbox}
+              // properties={{ layerId: item.id }}
+            />
+          ))}
+
+          <AddFeature
+            enable={drawType === 'add-feature'}
+            geometryType={selectedLayer?.geom_type}
+            style={
+              selectedLayer?.style
+                ? { ...selectedLayer.style }
+                : { ...defaultStyles }
+            }
+            onDrawFinish={geojson => {
+              const wktString = stringify(geojson);
+              dispatch(
+                setProjectMapState({
+                  drawnFeatureWkt: wktString,
+                  drawType: null,
+                }),
+              );
+            }}
+            onCancel={() => {
+              dispatch(
+                setProjectMapState({
+                  selectedLayer: null,
+                }),
+              );
+            }}
           />
-        ))}
 
-        <AddFeature
-          enable={drawType === 'add-feature'}
-          geometryType={selectedLayer?.geom_type}
-          style={
-            selectedLayer?.style
-              ? { ...selectedLayer.style }
-              : { ...defaultStyles }
-          }
-          onDrawFinish={geojson => {
-            const wktString = stringify(geojson);
-            dispatch(
-              setProjectMapState({
-                drawnFeatureWkt: wktString,
-                drawType: null,
-              }),
-            );
-          }}
-          onCancel={() => {
-            dispatch(
-              setProjectMapState({
-                selectedLayer: null,
-              }),
-            );
-          }}
-        />
+          {/*
+            <DrawTool
+              geojson={featureGeojson}
+              geometryType={selectedLayer?.geom_type || 'Polygon'}
+              zIndex={100}
+              style={selectedLayer?.style || { ...defaultStyles }}
+              onChange={modifiedGeojson => {
+                dispatch(
+                  setProjectMapState({
+                    modifiedFeatureGeojson: modifiedGeojson,
+                    isFeatureModified: true,
+                  }),
+                );
+              }}
+              onCancel={() => {
+                // dispatch(cancelSitePolygonEdit());
+              }}
+              onError={message => {
+                // dispatch(toastActions.error({ message }));
+              }}
+            />
+          */}
 
-        {/*
-          <DrawTool
+          <EditableLayer
             geojson={featureGeojson}
             geometryType={selectedLayer?.geom_type || 'Polygon'}
             zIndex={100}
@@ -306,67 +346,46 @@ export default function MapSection({ setExportMap }) {
                 }),
               );
             }}
-            onCancel={() => {
-              // dispatch(cancelSitePolygonEdit());
-            }}
             onError={message => {
               // dispatch(toastActions.error({ message }));
             }}
           />
-        */}
 
-        <EditableLayer
-          geojson={featureGeojson}
-          geometryType={selectedLayer?.geom_type || 'Polygon'}
-          zIndex={100}
-          style={selectedLayer?.style || { ...defaultStyles }}
-          onChange={modifiedGeojson => {
-            dispatch(
-              setProjectMapState({
-                modifiedFeatureGeojson: modifiedGeojson,
-                isFeatureModified: true,
-              }),
-            );
-          }}
-          onError={message => {
-            // dispatch(toastActions.error({ message }));
-          }}
-        />
+          <MaskedLayer geojson={projectGeojson} />
 
-        <MaskedLayer geojson={projectGeojson} />
+          <AsyncPopup
+            fetchPopupData={properties => {
+              const params = {
+                feature_id: properties.id,
+              };
+              dispatch(getMapPopupDataRequest(params));
+            }}
+            popupUI={properties => getPopupUI(properties)}
+            // openPopupFor={searchedId}
+            // zoomedExtent={zoomedExtent}
+            onPopupClose={() => {
+              // console.log('closex');
+            }}
+            buttonText="Edit Feature"
+            onButtonClick={properties => {
+              const selectedFeature = mapState.find(
+                layer => layer.id === properties.layer_id,
+              );
+              dispatch(
+                setProjectMapState({
+                  selectedLayer: selectedFeature,
+                }),
+              );
+              dispatch(getFeatureCollectionRequest(properties.id));
+            }}
+            loading={isPopupDataFetching}
+            closePopup={!!selectedLayer || !!featureGeojson}
+            layerExceptionIds={[projectAreaLayerId]}
+          />
 
-        <AsyncPopup
-          fetchPopupData={properties => {
-            const params = {
-              feature_id: properties.id,
-            };
-            dispatch(getMapPopupDataRequest(params));
-          }}
-          popupUI={properties => getPopupUI(properties)}
-          // openPopupFor={searchedId}
-          // zoomedExtent={zoomedExtent}
-          onPopupClose={() => {
-            // console.log('closex');
-          }}
-          buttonText="Edit Feature"
-          onButtonClick={properties => {
-            const selectedFeature = mapState.find(
-              layer => layer.id === properties.layer_id,
-            );
-            dispatch(
-              setProjectMapState({
-                selectedLayer: selectedFeature,
-              }),
-            );
-            dispatch(getFeatureCollectionRequest(properties.id));
-          }}
-          loading={isPopupDataFetching}
-          closePopup={!!selectedLayer || !!featureGeojson}
-          layerExceptionIds={[projectAreaLayerId]}
-        />
-
-        <MapFooter loading={isMapLoading} />
-      </MapComponent>
+          <MapFooter loading={isMapLoading} />
+        </MapComponent>
+      </div>
     </div>
   );
 }

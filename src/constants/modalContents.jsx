@@ -9,6 +9,7 @@ import CreateProject from '@Components/OrganizationDashboard/ModalContent/Create
 import CreateProjectSuccess from '@Components/OrganizationDashboard/ModalContent/CreateProjectSuccess';
 import CreateNewUser from '@Components/OrganizationDashboard/ModalContent/CreateNewUser';
 import AddLayer from '@Components/ProjectDashboard/ModalContent/AddLayer';
+import EditLayer from '@Components/ProjectDashboard/ModalContent/EditLayer';
 import DeleteLayer from '@Components/ProjectDashboard/ModalContent/DeleteLayer';
 import SaveAsDraft from '@Components/OrganizationDashboard/ModalContent/SaveAsDraft';
 import UploadDataset from '@Components/ProjectDashboard/ModalContent/UploadDataset';
@@ -44,7 +45,12 @@ import ViewRouteAttribute from '@Components/ProjectDashboard/Analysis/ModalConte
 import ViewBufferAttribute from '@Components/ProjectDashboard/Analysis/ModalContent/ViewBufferAttribute';
 import DeleteAnOrganization from '@Components/Organizations/ModalContent/DeleteAnOrganization';
 import SaveRouteLayer from '@Components/ProjectDashboard/Analysis/ModalContent/SaveRouteLayer';
+import SaveBufferLayer from '@Components/ProjectDashboard/Analysis/ModalContent/SaveBufferLayer';
 import SelectLayerFeature from '@Components/ProjectDashboard/Analysis/ModalContent/SelectLayerFeature';
+import AddDatasetCategory from '@Components/ProjectDashboard/ModalContent/AddDatasetCategory/index';
+import DeleteBufferResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteBufferResult/index';
+import DeleteRouteResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteRouteResult/index';
+import SaveManualFix from '@Components/ProjectDashboard/Analysis/ModalContent/SaveManualFix';
 
 export function getModalContent(content) {
   switch (content) {
@@ -99,6 +105,13 @@ export function getModalContent(content) {
       return {
         title: 'Upload layer',
         content: <AddLayer />,
+      };
+
+    case 'edit-layer':
+      return {
+        title: 'Edit Layer',
+        content: <EditLayer />,
+        // className: '!naxatw-h-[calc(100vh-30rem)]',
       };
     case 'upload-dataset':
       return {
@@ -210,6 +223,15 @@ export function getModalContent(content) {
         content: <AddAttributes />,
         className: '!naxatw-w-[56.25rem]',
       };
+
+    // data cleaning
+    case 'save-manual-fix':
+      return {
+        title: '',
+        content: <SaveManualFix />,
+        hideCloseButton: true,
+      };
+
     // route analysis
     case 'view-route-attribute':
       return {
@@ -340,10 +362,29 @@ export function getPromptDialogContent(content) {
         content: <SaveRouteLayer />,
       };
 
+    // buffer analysis
+    case 'save-buffer-layer':
+      return {
+        title: 'Save Layer',
+        content: <SaveBufferLayer />,
+      };
+
     case 'delete-layer-attribute':
       return {
         title: 'Delete attribute',
         content: <DeleteLayerAttribute />,
+      };
+
+    case 'delete-buffer-result':
+      return {
+        title: '',
+        content: <DeleteBufferResult />,
+      };
+
+    case 'delete-route-result':
+      return {
+        title: '',
+        content: <DeleteRouteResult />,
       };
 
     default:
@@ -358,6 +399,11 @@ export function getModalTwoContent(content) {
       return {
         title: 'Edit Attribute',
         content: <EditLayerAttribute />,
+      };
+    case 'add-dataset-category':
+      return {
+        title: 'Add Category',
+        content: <AddDatasetCategory />,
       };
     default:
       return {

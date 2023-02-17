@@ -23,6 +23,11 @@ import {
 } from 'recharts';
 import meterToKM from '@Utils/meterToKM';
 
+const calTotalCount = (data, dataKey) => {
+  const values = data.map(d => +d?.[dataKey]);
+  return values.reduce((item, value) => item + value, 0);
+};
+
 const {
   getDetailsCategoryRequest,
   getDetailsChartRequest,
@@ -46,6 +51,7 @@ export default function BufferPopup() {
   const categoryListData = useSelector(
     state => state.bufferAnalysis.detailsCategory.data,
   );
+
   const popupActiveTab = useSelector(
     state => state.bufferAnalysis.popupActiveTab,
   );
@@ -65,12 +71,16 @@ export default function BufferPopup() {
     result => result.id === selectedResultsId,
   );
 
+  const poiLayersDataOptions = poiLayersData.filter(data =>
+    selectedResultData?.poiChartData.map(itm => itm.name).includes(data.name),
+  );
+
   const originCount = selectedResultData?.buffer_areas?.reduce(
     (total, item) => total + item.origin?.length,
     0,
   );
 
-  const poiCount = selectedResultData?.poiChartData?.length;
+  const poiCount = calTotalCount(selectedResultData?.poiChartData, 'count');
 
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_ROUTE_POPUP_DATA_REQUEST]),
@@ -254,7 +264,7 @@ export default function BufferPopup() {
                     <div className="naxatw-space-y-2">
                       <label className="naxatw-label">Select Layer*</label>
                       <Select
-                        options={poiLayersData}
+                        options={poiLayersDataOptions}
                         onChange={selected => {
                           setSelectedLayer(selected.id);
                           setSelectedCategory(null);
@@ -289,11 +299,16 @@ export default function BufferPopup() {
                     {/* <div>{selectedCategory}</div> */}
                     {detailsListData?.data?.map(itm => (
                       <div className="naxatw-py-2 naxatw-border-b-2">
-                        <div className="naxatw-flex naxatw-justify-between">
-                          <p className="naxatw-text-body-btn">
+                        <div className="naxatw-flex naxatw-gap-x-3 naxatw-items-center">
+                          <p className="naxatw-text-body-btn naxatw-basis-1/2">
                             {itm?.name || itm?.id}
                           </p>
-                          <span>{itm[selectedCategory]}</span>
+                          <span
+                            className="naxatw-font-bold naxatw-basis-1/2 naxatw-truncate"
+                            title={itm[selectedCategory]}
+                          >
+                            {itm[selectedCategory]}
+                          </span>
                         </div>
                         <div className="naxatw-flex naxatw-gap-x-3 naxatw-mt-2">
                           <div className="naxatw-basis-1/2">

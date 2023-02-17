@@ -31,6 +31,7 @@ import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileL
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import BufferPopup from './BufferPopup/index';
+import InfoContent from '../../InfoContent/index';
 
 const { setDataInputState, setResultsState } = BufferAnalysisCreators;
 
@@ -45,23 +46,19 @@ export default function MapSection() {
   const originGeojson = useSelector(
     state => state.bufferAnalysis.dataInput.originGeojson,
   );
-
+  const activeTab = useSelector(state => state.bufferAnalysis.activeTab);
   const zoomToBuffer = useSelector(
     state => state.bufferAnalysis.results.zoomToBuffer,
   );
-
   const analysisResults = useSelector(
     state => state.bufferAnalysis.results.analysisResults,
   );
-
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
-
   const showResultsPopup = useSelector(
     state => state.bufferAnalysis.results.showResultsPopup,
   );
-
   const poiLayers = useSelector(state => state.bufferAnalysis.poiLayers);
 
   const { mapRef, map, isMapLoading } = useOLMap({
@@ -106,21 +103,6 @@ export default function MapSection() {
       );
     }
   }, [map, zoomToBuffer, dispatch]);
-  // const setLayerStyle = useCallback((style, feature, resolution) => {
-  //   const stylex = { ...style };
-  //   // const properties = feature.getProperties();
-  //   // const { id: featureId } = properties;
-  //   // if (editFeatureId === featureId) {
-  //   //   stylex.fillOpacity = 0;
-  //   //   stylex.lineOpacity = 0;
-  //   //   stylex.icon = {};
-  //   // }
-  //   return getStyles({
-  //     style: stylex,
-  //     feature,
-  //     resolution,
-  //   });
-  // }, []);
 
   const setLayerStyle = useCallback((style, feature, resolution) => {
     const stylex = { ...style };
@@ -138,12 +120,16 @@ export default function MapSection() {
       resolution,
     });
   }, []);
+
   const getLayerStyles = layerId => {
     const style = mapState.find(item => item.id === layerId)?.style;
     return style || { ...defaultStyles };
   };
+
   return (
     <div className="naxatw-w-full naxatw-relative">
+      {activeTab === 'dataInput' && <InfoContent />}
+
       <MapComponent
         ref={mapRef}
         mapInstance={map}

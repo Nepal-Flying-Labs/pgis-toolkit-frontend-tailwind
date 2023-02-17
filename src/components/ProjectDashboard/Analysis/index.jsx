@@ -38,6 +38,7 @@ export default function Analysis() {
   const projectDetail = useSelector(
     state => state.projectDashboard.projectDetail,
   );
+  const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
   const isProcessing = useSelector(state =>
     checkIfLoading(state, [Types.CHECK_PROCESSING_STATUS_REQUEST]),
   );
@@ -81,7 +82,7 @@ export default function Analysis() {
           getAnalysisContent(analysisType)
         )}
 
-        {analysisType === 'data-cleaning' && <HelpContent />}
+        {tabname === 'data-cleaning' && !selectedLayer && <HelpContent />}
       </div>
     </div>
   );

@@ -228,6 +228,23 @@ const getSelectedLayerFeatureSuccess = (state, action) =>
     draft.dataInput.selectedOriginPointType = 'layer';
   });
 
+const deleteRouteResult = (state, action) =>
+  produce(state, draft => {
+    const { selectedAnalysis } = draft.results;
+    if (selectedAnalysis.id === action.payload) {
+      draft.routePopupData = null;
+      draft.selectedRouteId = null;
+      draft.results.selectedAnalysis = null;
+    }
+    const newData = draft.results.analysisResults.filter(
+      item => item.id !== action.payload,
+    );
+    draft.results.analysisResults = newData;
+    if (newData.length < 1) {
+      draft.activeTab = 'dataInput';
+    }
+  });
+
 const routeAnalysisReducer = createReducer(initialState, {
   [Types.SET_ROUTE_ANALYSIS_STATE]: setRouteAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
@@ -241,6 +258,7 @@ const routeAnalysisReducer = createReducer(initialState, {
   [Types.GET_ANALYSIS_DATA_SUCCESS]: getAnalysisDataSuccess,
   [Types.SAVE_ROUTE_LAYER_SUCCESS]: saveRouteLayerSuccess,
   [Types.GET_SELECTED_LAYER_FEATURE_SUCCESS]: getSelectedLayerFeatureSuccess,
+  [Types.DELETE_ROUTE_RESULT]: deleteRouteResult,
 });
 
 export default routeAnalysisReducer;

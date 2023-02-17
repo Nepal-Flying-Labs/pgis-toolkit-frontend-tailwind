@@ -515,6 +515,27 @@ const deleteInvitedUserSuccess = (state, action) => {
   };
 };
 
+const updateDataLayerSuccess = (state, action) => {
+  const data = action.payload;
+  const selectedLayer = state.data.layers.filter(
+    layer => layer.id === data.id,
+  )[0];
+
+  const editedSelectedLayer = { ...selectedLayer, ...data };
+
+  const newData = state.data.layers.map(layer =>
+    layer.id !== data.id ? { ...layer } : { ...editedSelectedLayer },
+  );
+
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      layers: newData,
+    },
+  };
+};
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -563,6 +584,7 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.UPDATE_INVITED_USER_STATUS_SUCCESS]: updateInvitedUserStatusSuccess,
   [Types.RESEND_INVITATION_SUCCESS]: resendInvitationSuccess,
   [Types.DELETE_INVITED_USER_SUCCESS]: deleteInvitedUserSuccess,
+  [Types.UPDATE_DATA_LAYER_SUCCESS]: updateDataLayerSuccess,
 });
 
 export default projectDashboardReducer;

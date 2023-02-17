@@ -12,6 +12,7 @@ const initialState = {
   selectedProject: null,
   countryList: [],
   individualProject: {
+    othersThematicAreas: [],
     projectGeojson: null,
     fileUploadGeojson: null,
     contactPerson: [],
@@ -55,6 +56,17 @@ const getProjectsSuccess = (state, action) => {
   };
 };
 
+const setThematicAreas = (state, action) => ({
+  ...state,
+  individualProject: {
+    ...state.individualProject,
+    othersThematicAreas: [
+      ...state.individualProject.othersThematicAreas,
+      action.payload,
+    ],
+  },
+});
+
 const getIndividualProjectSuccess = (state, action) => {
   const {
     id,
@@ -86,6 +98,10 @@ const getIndividualProjectSuccess = (state, action) => {
     ...state,
     individualProject: {
       ...state.individualProject,
+      othersThematicAreas: [
+        ...state.individualProject.othersThematicAreas,
+        ...thematic_areas,
+      ],
       project: {
         ...action.payload,
         file: file
@@ -481,6 +497,7 @@ const getProjectsCentroidGeojsonSuccess = (state, action) => ({
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
+  [Types.SET_THEMATIC_AREAS]: setThematicAreas,
   [Types.GET_INDIVIDUAL_PROJECT_SUCCESS]: getIndividualProjectSuccess,
   [Types.SET_INDIVIDUAL_PROJECT]: setIndividualProject,
   [Types.GET_CONTACT_PERSON_SUCCESS]: getContactPersonSuccess,

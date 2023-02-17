@@ -78,7 +78,7 @@ const ProjectSetup = () => {
 
   return (
     <div>
-      <div className="naxatw-w-full naxatw-h-[6.625rem] naxatw-flex naxatw-justify-center naxatw-sticky naxatw-top-0 naxatw-z-10 naxatw-bg-white naxatw-shadow-md">
+      <div className="naxatw-w-full naxatw-h-[6.625rem] naxatw-flex naxatw-justify-center naxatw-sticky naxatw-top-0 naxatw-z-20 naxatw-bg-white naxatw-shadow-md">
         <div className="naxatw-flex naxatw-justify-between naxatw-w-[41.875rem] naxatw-items-center">
           <div>
             <h3>

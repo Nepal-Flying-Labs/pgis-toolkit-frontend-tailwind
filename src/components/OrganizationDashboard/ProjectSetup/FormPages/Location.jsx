@@ -16,12 +16,13 @@ import Button from '@Components/common/Button/index';
 import { Creators as CommonCreators } from '@Actions/common';
 import Chip from '@Components/common/Chip';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
-import CustomSelect from '@Components/common/CustomSelect';
+// import CustomSelect from '@Components/common/CustomSelect';
 import removeObjectKeys from '@Utils/removeObjectKeys';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import hasKey from '@Utils/hasKey';
 import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetup/UploadPolygonBoundary/index';
 import MapSection from '../MapSection/index';
+import SearchSelect from '../SearchSelect';
 
 const { togglePromptDialog } = CommonCreators;
 const {
@@ -252,11 +253,11 @@ const Location = ({ page, setPage }) => {
       </div>
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Country</label>
-        <CustomSelect
+        <SearchSelect
           options={countryList}
-          placeholder="Choose"
+          placeholder="Select Country"
           onChange={data => {
-            handleCustomChange('country', [data.id]);
+            handleCustomChange('country', data ? [data.id] : []);
           }}
           selected={
             countryList.find(country => country.id === values.country?.[0])

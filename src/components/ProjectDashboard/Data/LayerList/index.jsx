@@ -49,7 +49,10 @@ export default function LayerList() {
           <p className="naxatw-text-body-lg">Edit</p>
         </span>
       ),
-      onClick: () => {},
+      onClick: data => {
+        dispatch(setDataState({ selectedData: data }));
+        dispatch(toggleModal('edit-layer'));
+      },
     },
     {
       id: 2,
@@ -182,7 +185,7 @@ export default function LayerList() {
                 <span className="naxatw-text-body-lg">{row.source}</span>
               )}
             />
-            <TableHeader
+            {/* <TableHeader
               dataField="Status"
               headerClassName="naxatw-py-1 naxatw-px-3 "
               rowcolSpan="rowSpan_2"
@@ -190,7 +193,7 @@ export default function LayerList() {
               dataFormat={row => (
                 <span className="naxatw-text-body-lg">{row.status}</span>
               )}
-            />
+            /> */}
             <TableHeader
               dataField="Add to map"
               headerClassName="naxatw-py-1 naxatw-px-3 "

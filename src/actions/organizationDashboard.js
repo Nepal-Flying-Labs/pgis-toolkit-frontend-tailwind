@@ -123,6 +123,8 @@ export const { Types, Creators } = createActions(
     setZoomToLayer: ['payload'],
 
     setProjectStatus: ['payload'],
+
+    setThematicAreas: ['payload'],
   },
   { prefix: 'organizationDashboard/' },
 );

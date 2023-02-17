@@ -9,6 +9,7 @@ import CreateProject from '@Components/OrganizationDashboard/ModalContent/Create
 import CreateProjectSuccess from '@Components/OrganizationDashboard/ModalContent/CreateProjectSuccess';
 import CreateNewUser from '@Components/OrganizationDashboard/ModalContent/CreateNewUser';
 import AddLayer from '@Components/ProjectDashboard/ModalContent/AddLayer';
+import EditLayer from '@Components/ProjectDashboard/ModalContent/EditLayer';
 import DeleteLayer from '@Components/ProjectDashboard/ModalContent/DeleteLayer';
 import SaveAsDraft from '@Components/OrganizationDashboard/ModalContent/SaveAsDraft';
 import UploadDataset from '@Components/ProjectDashboard/ModalContent/UploadDataset';
@@ -104,6 +105,13 @@ export function getModalContent(content) {
       return {
         title: 'Upload layer',
         content: <AddLayer />,
+      };
+
+    case 'edit-layer':
+      return {
+        title: 'Edit Layer',
+        content: <EditLayer />,
+        // className: '!naxatw-h-[calc(100vh-30rem)]',
       };
     case 'upload-dataset':
       return {

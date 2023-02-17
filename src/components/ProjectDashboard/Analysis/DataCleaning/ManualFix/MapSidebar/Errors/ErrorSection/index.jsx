@@ -61,6 +61,7 @@ export default function ErrorSection() {
         dispatch(
           getFeatureGeojsonRequest({
             mirrorId: data.id,
+            parentId: data.parentId,
             type: data.type,
           }),
         );
@@ -91,7 +92,7 @@ export default function ErrorSection() {
             <div>
               {features.map(feature => (
                 <div key={feature.id}>
-                  <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+                  <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-min-h-[40px]">
                     <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                       <input
                         id={`${type}-${feature.id}`}
@@ -163,7 +164,7 @@ export default function ErrorSection() {
                           onClick={() => {
                             dispatch(
                               setManualFixState({
-                                selectedError: { ...feature, type },
+                                selectedError: feature,
                               }),
                             );
                             dispatch(togglePromptDialog('delete-error'));
@@ -171,7 +172,14 @@ export default function ErrorSection() {
                         />
                       )}
 
-                      {type !== 'null' && (
+                      {type !== 'null' && type !== 'multipart' && (
+                        <DropdownOptions
+                          options={dropdownOptions}
+                          data={{ ...feature, type }}
+                        />
+                      )}
+
+                      {type === 'multipart' && !feature.fixed && (
                         <DropdownOptions
                           options={dropdownOptions}
                           data={{ ...feature, type }}
@@ -191,13 +199,14 @@ export default function ErrorSection() {
                             id={explodedFeat.id}
                             type="checkbox"
                             className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                            checked={explodedFeat.checked}
+                            checked={explodedFeat.checked || false}
                             onChange={e =>
                               dispatch(
                                 handleErrorCheckbox({
                                   id: explodedFeat.id,
                                   name: type,
                                   checked: e.target.checked,
+                                  parentId: explodedFeat.parentId,
                                 }),
                               )
                             }
@@ -221,24 +230,10 @@ export default function ErrorSection() {
                               className="material-icons-outlined"
                             />
                           </span>
-                          {type === 'null' && (
-                            <IconButton
-                              className="material-icons-outlined naxatw-text-delete_btn"
-                              name="delete"
-                              onClick={() => {
-                                dispatch(
-                                  setManualFixState({
-                                    selectedError: { ...explodedFeat, type },
-                                  }),
-                                );
-                                dispatch(togglePromptDialog('delete-error'));
-                              }}
-                            />
-                          )}
 
                           <DropdownOptions
                             options={dropdownOptions}
-                            data={explodedFeat}
+                            data={{ ...explodedFeat, type }}
                           />
                         </div>
                       </div>

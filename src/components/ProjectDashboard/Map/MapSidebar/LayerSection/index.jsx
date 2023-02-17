@@ -64,6 +64,23 @@ export default function LayerSection() {
       },
     },
     {
+      id: 'manage-attribute',
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-symbols-outlined naxatw-mr-2">table_chart</i>
+          <p className="naxatw-text-body-lg">Manage Attribute</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(
+          setProjectMapState({
+            selectedLayer: data,
+          }),
+        );
+        dispatch(toggleModal('manage-attributes'));
+      },
+    },
+    {
       id: 'add-feature',
       label: (
         <span className="naxatw-flex naxatw-items-center">

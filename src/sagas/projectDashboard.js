@@ -678,6 +678,26 @@ export function* postDatasetThemeRequest({ payload }) {
   }
 }
 
+export function* updateDataLayerRequest({ id, payload }) {
+  const { themeName, ...newPayload } = payload;
+  try {
+    const formdata = prepareFormData(newPayload);
+    yield call(updateLayer, id, formdata);
+    yield put(
+      projectDashboardActions.updateDataLayerSuccess({
+        ...payload,
+        id,
+        theme: themeName,
+      }),
+    );
+    yield put(commonActions.toggleModal());
+    yield put(toastActions.success({ message: 'Data edit successful' }));
+  } catch (error) {
+    yield put(projectDashboardActions.updateDataLayerFailure());
+    throw error;
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -852,6 +872,11 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.POST_DATASET_THEME_REQUEST,
     withLoader(withErrorHandler(postDatasetThemeRequest)),
+  );
+
+  yield takeLatest(
+    Types.UPDATE_DATA_LAYER_REQUEST,
+    withLoader(withErrorHandler(updateDataLayerRequest)),
   );
 }
 

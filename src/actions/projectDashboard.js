@@ -205,6 +205,10 @@ export const { Types, Creators } = createActions(
     postDatasetThemeRequest: ['payload'],
     postDatasetThemeSuccess: ['payload'],
     postDatasetThemeFailure: null,
+
+    updateDataLayerRequest: ['id', 'payload'],
+    updateDataLayerSuccess: ['payload'],
+    updateDataLayerFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

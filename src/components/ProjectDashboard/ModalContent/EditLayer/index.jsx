@@ -3,14 +3,33 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Input from '@Components/common/Input/index';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
+import {
+  Creators as ProjectDashboardCreators,
+  Types,
+} from '@Actions/projectDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
 import Select from '@Components/common/Select/index';
 import useForm from '@Hooks/useForm';
 import { useParams } from 'react-router';
 import Button from '@Components/common/Button/index';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import Toggle from '@Components/common/Toggle';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { getProjectThemesRequest } = ProjectMapCreators;
+const { updateDataLayerRequest } = ProjectDashboardCreators;
+const { toggleModal } = CommonCreators;
+
+function diffObject(a, b) {
+  const diffObj = Object.keys(b).reduce((diff, key) => {
+    if (a[key] === b[key]) return diff;
+    return {
+      ...diff,
+      [key]: b[key],
+    };
+  }, {});
+  return diffObj;
+}
 
 const dataSource = [
   {
@@ -37,7 +56,9 @@ const EditLayer = () => {
   const selectedData = useSelector(
     state => state.projectDashboard.data.selectedData,
   );
-  // console.log(selectedData, 'data');
+  const loading = useSelector(state =>
+    checkIfLoading(state, [Types.UPDATE_DATA_LAYER_REQUEST]),
+  );
 
   if (!themes) {
     dispatch(getProjectThemesRequest({ project: projectId }));
@@ -48,11 +69,21 @@ const EditLayer = () => {
       initialValues: selectedData,
       required: ['name'],
       onSubmit: data => {
-        const { theme, name, source, display_on_map } = data;
-        const cateogoryId = themes?.filter(item => item.name === theme)?.[0]
-          ?.id;
-        const newData = { name, source, category: cateogoryId, display_on_map };
-        console.log(newData, 'data');
+        const payload = diffObject(selectedData, data);
+        if (Object.keys(payload).length > 0) {
+          const { theme, name, source, display_on_map } = data;
+          const themeId = themes?.filter(item => item.name === theme)?.[0]?.id;
+          const newData = {
+            name,
+            source,
+            theme: themeId,
+            display_on_map,
+            themeName: theme,
+          };
+          dispatch(updateDataLayerRequest(selectedData.id, newData));
+        } else {
+          dispatch(toggleModal());
+        }
       },
     });
 
@@ -115,7 +146,11 @@ const EditLayer = () => {
         </div>
       </div>
       <div className="naxatw-flex naxatw-items-center naxatw-justify-center naxatw-py-4">
-        <Button className="naxatw-btn-primary" onClick={handleSubmit}>
+        <Button
+          className="naxatw-btn-primary"
+          onClick={handleSubmit}
+          isLoading={loading}
+        >
           Save
         </Button>
       </div>

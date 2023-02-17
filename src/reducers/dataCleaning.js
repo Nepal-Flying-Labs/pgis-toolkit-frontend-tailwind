@@ -236,19 +236,24 @@ const updateFeatureCollectionSuccess = (state, action) =>
     };
   });
 
-const handleErrorCheckbox = (state, action) => {
-  const { id, name, checked } = action.payload;
-  const errorFeaturesData = {
-    ...state.errorFeaturesData,
-    [name]: state.errorFeaturesData[name].map(item =>
-      item.id === +id ? { ...item, checked } : { ...item },
-    ),
-  };
-  return {
-    ...state,
-    errorFeaturesData,
-  };
-};
+const handleErrorCheckbox = (state, action) =>
+  produce(state, draft => {
+    const { id, parentId, name, checked } = action.payload;
+    if (parentId) {
+      const parentData = draft.errorFeaturesData[name].find(
+        item => item.id === parentId,
+      );
+      const featureData = parentData.explodedFeatures.find(
+        item => item.id === id,
+      );
+      featureData.checked = checked;
+    } else {
+      const featureData = draft.errorFeaturesData[name].find(
+        item => item.id === id,
+      );
+      featureData.checked = checked;
+    }
+  });
 
 const deleteFeatureSuccess = state => {
   const { id, type } = state.manualFix.selectedError;
@@ -363,13 +368,23 @@ const resetManualFixState = state =>
 
 const getFeatureGeojsonSuccess = (state, action) =>
   produce(state, draft => {
-    const { geojson, featureId, type } = action.payload;
+    const { geojson, featureId, parentId, type } = action.payload;
     const featureBbox = bbox(geojson);
     draft.featureBbox = featureBbox;
-    const featureData = draft.errorFeaturesData[type].find(
-      item => item.id === featureId,
-    );
-    featureData.checked = true;
+    if (parentId) {
+      const parentData = draft.errorFeaturesData[type].find(
+        item => item.id === parentId,
+      );
+      const featureData = parentData.explodedFeatures.find(
+        item => item.id === featureId,
+      );
+      featureData.checked = true;
+    } else {
+      const featureData = draft.errorFeaturesData[type].find(
+        item => item.id === featureId,
+      );
+      featureData.checked = true;
+    }
   });
 
 const dataCleaningReducer = createReducer(initialState, {

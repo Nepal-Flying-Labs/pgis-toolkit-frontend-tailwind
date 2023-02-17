@@ -66,18 +66,17 @@
 - [x] unique id for null, multipart
 - [x] change cursor while hovering
 
-- [ ] layer sync after data cleaning
-- [ ] select features you want to snap to
-- [ ] add feature multiple toggle while drawing
-- [ ] remove title save while editing
-- [ ] save text to check
-- [ ] after delete select feature you want to snap to help box occur
-- [ ] not zooming to feature after multipart explode
-- [ ] zoom to layer not working for explode parent
-- [ ] explode delete => multipart still remain
-- [ ] zoom to layer slow
+- [x] save text to check 
+- [x] not zooming to feature after multipart explode
+- [x] highlight select after toolbar icon toggle
+- [x] zoom to layer not working for explode parent
+- [x] after delete select feature you want to snap to help box occur
+- [x] zoom to layer slow
+- [x] add feature multiple toggle while drawing
+- [x] remove title save while editing
+- [ ] explode delete => multipart still remain (raj)
 - [ ] snap to self while edit
-- [ ] highlight select after toolbar icon toggle
+- [ ] layer sync after data cleaning
 
 ### ISSUES
 

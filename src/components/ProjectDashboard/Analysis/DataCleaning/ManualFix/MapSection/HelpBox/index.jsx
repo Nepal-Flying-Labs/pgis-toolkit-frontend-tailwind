@@ -21,7 +21,7 @@ export default function HelpBox() {
   );
   const dispatch = useDispatch();
 
-  if (!selectedError?.id || startEditing) return '';
+  if (!selectedError?.type || startEditing) return '';
 
   return (
     <div className="naxatw-absolute naxatw-w-full naxatw-top-4 naxatw-z-10 naxatw-flex naxatw-justify-center">

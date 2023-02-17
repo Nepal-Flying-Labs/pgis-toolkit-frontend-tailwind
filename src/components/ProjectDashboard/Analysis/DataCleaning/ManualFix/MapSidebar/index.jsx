@@ -18,6 +18,9 @@ const tabData = [
 
 export default function MapSidebar() {
   const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
+  const sidebarContent = useSelector(
+    state => state.dataCleaning.manualFix.sidebarContent,
+  );
   const dispatch = useDispatch();
 
   const handleSave = () => {
@@ -46,9 +49,11 @@ export default function MapSidebar() {
             />
             <h4>{selectedLayer?.name}</h4>
           </div>
-          <Button className="naxatw-btn-primary" onClick={handleSave}>
-            Save
-          </Button>
+          {sidebarContent === 'error-list' && (
+            <Button className="naxatw-btn-primary" onClick={handleSave}>
+              Validate
+            </Button>
+          )}
         </div>
 
         <div>

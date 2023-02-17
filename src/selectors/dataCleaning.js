@@ -44,13 +44,18 @@ export const individualAttributeDataSelector = createSelector(
 export const checkedFeatureIdsSelector = createSelector(
   errorFeaturesMapStateSelector,
   errorFeaturesMapState =>
-    errorFeaturesMapState.reduce(
-      (arr, item) => [
-        ...new Set([
-          ...arr,
-          ...item.features.filter(i => i.checked).map(i => i.id),
-        ]),
-      ],
-      [],
-    ),
+    errorFeaturesMapState.reduce((arr, item) => {
+      const arrx = [];
+      item.features.forEach(feat => {
+        if (feat.explodedFeatures) {
+          feat.explodedFeatures.forEach(i => {
+            if (!i.checked) return;
+            arrx.push(i.id);
+          });
+        }
+        if (!feat.checked) return;
+        arrx.push(feat.id);
+      });
+      return [...arr, ...arrx];
+    }, []),
 );

@@ -4,7 +4,7 @@ import { useHistory, useParams } from 'react-router';
 import IconButton from '@Components/common/IconButton/index';
 import { Creators } from '@Actions/analysis';
 
-const { setSelectedInfo } = Creators;
+const { setSelectedInfo, toggleSidebar } = Creators;
 
 const headerData = {
   'optimal-route': {
@@ -60,11 +60,12 @@ export default function Header() {
       </div>
       <button
         type="button"
-        onClick={() =>
+        onClick={() => {
+          dispatch(toggleSidebar(false));
           history.push(
             `/organizations/${organizationId}/projects/${projectId}/map`,
-          )
-        }
+          );
+        }}
         className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 
           hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5
           naxatw-ml-auto naxatw-inline-flex naxatw-items-center naxatw-"

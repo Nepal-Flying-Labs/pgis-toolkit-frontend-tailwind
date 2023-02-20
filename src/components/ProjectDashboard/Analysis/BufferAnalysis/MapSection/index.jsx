@@ -184,7 +184,7 @@ export default function MapSection() {
         />
         <LayerSwitcherControl />
         <Scalebar />
-        {/* {mapState.map((item, index) =>
+        {mapState.map((item, index) =>
           item.layer_type === 'Vector' ? (
             <VectorTileLayer
               key={item.id}
@@ -217,7 +217,7 @@ export default function MapSection() {
           ) : (
             ''
           ),
-        )} */}
+        )}
 
         {poiLayers?.map(item =>
           item.layer_type === 'Vector' ? (

@@ -16,6 +16,7 @@ const {
   getProjectThemesRequest,
   getProjectThemeLayersRequest,
   getProjectGeojsonRequest,
+  toggleSidebar,
 } = AnalysisCreators;
 
 function getAnalysisContent(type) {
@@ -70,6 +71,13 @@ export default function Analysis() {
       dispatch(getProjectThemeLayersRequest({ theme: id }));
     });
   }, [dispatch, themes, layers]);
+
+  useEffect(
+    () => () => {
+      dispatch(toggleSidebar(false));
+    },
+    [dispatch],
+  );
 
   return (
     <div>

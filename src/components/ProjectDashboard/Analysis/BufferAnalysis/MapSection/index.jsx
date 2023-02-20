@@ -31,6 +31,7 @@ import {
 import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileLayer';
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
+import SidebarToggle from '../../SidebarToggle/index';
 import BufferPopup from './BufferPopup/index';
 import InfoContent from '../../InfoContent/index';
 
@@ -62,6 +63,7 @@ export default function MapSection() {
     state => state.bufferAnalysis.results.showResultsPopup,
   );
   const poiLayers = useSelector(state => state.bufferAnalysis.poiLayers);
+  const hideSidebar = useSelector(state => state.analysis.hideSidebar);
 
   const { mapRef, map, isMapLoading } = useOLMap({
     center: fromLonLat([85.3, 27.7]),
@@ -70,6 +72,15 @@ export default function MapSection() {
   });
   global.map = map;
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
+
+  // update map size on sidebar toggle
+  useEffect(() => {
+    if (!map) return () => {};
+    const timer = setTimeout(() => {
+      map.updateSize();
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [map, hideSidebar]);
 
   // zoom to project area
   useEffect(() => {
@@ -182,6 +193,7 @@ export default function MapSection() {
             );
           }}
         />
+        <SidebarToggle />
         <LayerSwitcherControl />
         <Scalebar />
         {mapState.map((item, index) =>

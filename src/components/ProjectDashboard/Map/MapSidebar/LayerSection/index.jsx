@@ -67,7 +67,9 @@ export default function LayerSection() {
       id: 'manage-attribute',
       label: (
         <span className="naxatw-flex naxatw-items-center">
-          <i className="material-symbols-outlined naxatw-mr-2">table_chart</i>
+          <i className="material-symbols-outlined naxatw-mr-2 naxatw-text-[22px]">
+            database
+          </i>
           <p className="naxatw-text-body-lg">Manage Attribute</p>
         </span>
       ),

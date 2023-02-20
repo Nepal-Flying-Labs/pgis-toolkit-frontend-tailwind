@@ -121,6 +121,10 @@ export const { Types, Creators } = createActions(
     updateLayerAttributeRequest: ['id', 'payload'],
     updateLayerAttributeSuccess: ['payload'],
     updateLayerAttributeFailure: null,
+
+    updateLayerAttributeFieldsRequest: ['id', 'payload'],
+    updateLayerAttributeFieldsSuccess: ['payload'],
+    updateLayerAttributeFieldsFailure: null,
   },
   { prefix: 'projectMap/' },
 );

@@ -9,7 +9,10 @@ import SortingContainer from '@Components/common/SortingContainer/index';
 import Button from '@Components/common/Button/index';
 import { Creators, Types } from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
-import { Creators as ProjectMapCreators } from '@Actions/projectMap';
+import {
+  Creators as ProjectMapCreators,
+  Types as ProjectMapTypes,
+} from '@Actions/projectMap';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import TableSkeleton from '@Components/common/TableSkeleton/index';
@@ -57,17 +60,15 @@ const ManageAttributes = () => {
         dispatch(
           getLayerAttributeRequest({ layer_template: selectedData?.id }),
         );
-    } else {
-      dispatch(getLayerAttributeFieldsRequest({ layer: selectedLayer?.id }));
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, selectedData]);
+    if (tabname === 'map')
+      dispatch(getLayerAttributeFieldsRequest({ layer: selectedLayer?.id }));
+  }, [attributeList, dispatch, selectedData, selectedLayer, tabname]);
 
   const loading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_LAYER_ATTRIBUTE_REQUEST,
-      Types.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+      ProjectMapTypes.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
     ]),
   );
 
@@ -117,7 +118,8 @@ const ManageAttributes = () => {
           Attribute
         </Button>
       </div>
-      <div className=" naxatw-overflow-x-hidden naxatw-relative naxatw-mt-[0.625rem]">
+
+      <div className=" naxatw-overflow-x-hidden naxatw-relative naxatw-mt-[0.625rem] naxatw-max-h-[calc(100vh-30rem)] scrollbar">
         {!loading ? (
           <Table
             data={checkedData || []}
@@ -133,13 +135,15 @@ const ManageAttributes = () => {
                 : () => {}
             }
           >
-            <TableHeader
-              dataField=""
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader=""
-              dataFormat={row => <CustomCheckbox status={row.selected} />}
-            />
+            {tabname === 'data' && (
+              <TableHeader
+                dataField=""
+                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                rowcolSpan="rowSpan_2"
+                dataHeader=""
+                dataFormat={row => <CustomCheckbox status={row.selected} />}
+              />
+            )}
             <TableHeader
               dataField="Attribute"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
@@ -175,20 +179,21 @@ const ManageAttributes = () => {
               )}
             />
 
-            <TableHeader
-              dataField="Mandatory"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader={<span>Mandatory</span>}
-              dataFormat={row => (
-                <Toggle
-                  checked={row.mandatory}
-                  onChange={() => {
-                    handleToggleMandatory(row);
-                  }}
-                />
-              )}
-            />
+            {/*           
+              <TableHeader
+                dataField="Mandatory"
+                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                rowcolSpan="rowSpan_2"
+                dataHeader={<span>Mandatory</span>}
+                dataFormat={row => (
+                  <Toggle
+                    checked={row.mandatory}
+                    onChange={() => {
+                      handleToggleMandatory(row);
+                    }}
+                  />
+                )}
+              /> */}
 
             <TableHeader
               dataField="."
@@ -206,6 +211,7 @@ const ManageAttributes = () => {
                       dispatch(toggleModal('add-attributes'));
                     }}
                   />
+
                   <MaterialIcon
                     name="delete_outline"
                     className="naxatw-text-icon-md naxatw-text-[#FF0F0F]"

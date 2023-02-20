@@ -39,6 +39,7 @@ export default function LayerContent() {
     <div className="naxatw-select-none">
       <div className="naxatw-flex-1 naxatw-space-y-2">
         <Select
+          className="naxatw-bg-white naxatw-px-2"
           placeholder="Select Origin Layer"
           style={{ height: '40px' }}
           options={poiLayers}
@@ -50,7 +51,7 @@ export default function LayerContent() {
       <div
         className={`naxatw-mt-2 ${
           originGeojson ? 'naxatw-bg-[#ffffff73]' : ''
-        } naxatw-p-2 naxatw-rounded-[20px] naxatw-py-1 naxatw-max-h-[100px] naxatw-max-w-[300px] naxatw-flex naxatw-flex-wrap naxatw-overflow-y-scroll scrollbar`}
+        } naxatw-p-2 naxatw-rounded-[20px] naxatw-gap-1 naxatw-max-h-[100px] naxatw-flex naxatw-flex-wrap naxatw-overflow-y-scroll scrollbar`}
       >
         {originGeojson &&
           originGeojson.map(origin => (

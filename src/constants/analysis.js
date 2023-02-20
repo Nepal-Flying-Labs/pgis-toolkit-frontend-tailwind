@@ -96,3 +96,5 @@ export const bufferPolygonStyles = {
 
 export const featureSelectColor = '#ffdf65';
 export const errorFeatureColor = '#FF0F0F';
+
+export const analysisWithDataCleaning = ['optimal-route'];

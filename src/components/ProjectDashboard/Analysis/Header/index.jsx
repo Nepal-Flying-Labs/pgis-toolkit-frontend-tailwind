@@ -15,7 +15,12 @@ const headerData = {
   'buffer-analysis': {
     title: 'Buffer Analysis',
     description:
-      'Creates a zone around a selected feature, distance or time-based, known as a buffer, to find features that are within a certain distance of another feature.',
+      'Creates a zone around a selected feature, distance or time-based, known as a buffer.',
+  },
+  'proximity-analysis': {
+    title: 'Proximity Analysis',
+    description:
+      'Creates a zone around a selected feature, distance or time-based, known as a proximity, to find features that are within a certain distance of another feature.',
   },
 };
 

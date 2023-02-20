@@ -74,9 +74,10 @@
 - [x] zoom to layer slow
 - [x] add feature multiple toggle while drawing
 - [x] remove title save while editing
-- [ ] explode delete => multipart still remain (raj)
+- [ ] explode delete => multipart still remain (raj) => (remove from all other list)
 - [ ] snap to self while edit
 - [ ] layer sync after data cleaning
+- [ ] copy helpbox from buffer analysis save to start
 
 ### ISSUES
 

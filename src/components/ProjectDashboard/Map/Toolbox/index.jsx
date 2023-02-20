@@ -18,23 +18,12 @@ const btnClassname =
   'naxatw-p-2 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-rounded-lg hover:naxatw-bg-grey-100';
 
 export default function Toolbox({ map }) {
-  // const [toggleState, setToggleState] = useState(false);
-  // const [isFullScreen, setIsFullScreen] = useState(false);
   const [showToolbox, setShowToolbox] = useState(false);
   const dispatch = useDispatch();
 
   function fullScreenControl() {
-    const inactiveTag = document.createElement('span');
-    inactiveTag.className = 'material-icons naxatw-border-none';
-    inactiveTag.innerText = 'fullscreen';
-
-    const activeTag = document.createElement('span');
-    activeTag.className = 'material-icons naxatw-border-none';
-    activeTag.innerText = 'close';
     const control = new FullScreen({
       target: document.getElementById('map-fullscreen-id'),
-      label: inactiveTag,
-      labelActive: activeTag,
     });
     return control;
   }
@@ -43,11 +32,6 @@ export default function Toolbox({ map }) {
     if (!map) return;
     const control = fullScreenControl();
     map.addControl(control);
-    // console.log(control, 'control');
-    // if (control.isInFullscreen_) {
-    //   setIsFullScreen(true);
-    // } else {
-    //   setIsFullScreen(false);
     // }
   }, [map]);
 
@@ -114,9 +98,12 @@ export default function Toolbox({ map }) {
           <i className="material-icons">straighten</i>
         </a> */}
 
-        <a className={btnClassname} onClick={() => {}} id="map-fullscreen-id">
-          <i className="material-icons">fullscreen</i>
-        </a>
+        <a
+          className={btnClassname}
+          onClick={() => {}}
+          id="map-fullscreen-id"
+          style={{ width: '2.5rem' }}
+        />
 
         {/* <a className={btnClassname} onClick={() => {}}>
           <i className="material-icons">info_outline</i>

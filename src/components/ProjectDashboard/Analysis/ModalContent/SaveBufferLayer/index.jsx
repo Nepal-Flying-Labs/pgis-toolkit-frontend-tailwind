@@ -30,6 +30,7 @@ export default function SaveBufferLayer() {
         analysis: selectedAnalysis.id,
         name: data.name,
         theme: data.category,
+        style: selectedAnalysis.style,
       };
       dispatch(saveBufferLayerRequest(payloadData));
     },

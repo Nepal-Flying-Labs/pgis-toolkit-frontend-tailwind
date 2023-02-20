@@ -25,6 +25,7 @@ import {
   uploadLayer,
   getLayerAttribute,
   getQueryAttribute,
+  updateLayerAttributeFields,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -329,6 +330,34 @@ export function* updateLayerAttributeRequest({ id, payload }) {
   }
 }
 
+export function* updateLayerAttributeFieldsRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(updateLayerAttributeFields, id, formData);
+    yield put(
+      projectMapActions.updateLayerAttributeFieldsSuccess(response.data),
+    );
+    // if (!is_deleted) {
+    yield put(commonActions.toggleModal('manage-attributes'));
+    yield put(
+      toastActions.success({
+        message: 'Layer attribute fields saved successfully.',
+      }),
+    );
+    // } else {
+    //   yield put(commonActions.togglePromptDialog());
+    //   yield put(
+    //     toastActions.success({
+    //       message: 'Layer attribute deleted successfully.',
+    //     }),
+    //   );
+    // }
+  } catch (error) {
+    yield put(projectMapActions.updateLayerAttributeFieldsFailure());
+    throw error;
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -413,6 +442,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.UPDATE_LAYER_ATTRIBUTE_REQUEST,
     withLoader(withErrorHandler(updateLayerAttributeRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+    withLoader(withErrorHandler(updateLayerAttributeFieldsRequest)),
   );
 }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as BufferAnalysisCreators } from '@Actions/bufferAnalysis';
 import { Creators as CommonCreators } from '@Actions/common';
@@ -13,10 +14,13 @@ const { handleRouteCheckbox, setResultsState, setBufferAnalysisState } =
 const { toggleModal, togglePromptDialog } = CommonCreators;
 
 export default function Results() {
+  const { analysisType } = useParams();
   const analysisResults = useSelector(
     state => state.bufferAnalysis.results.analysisResults,
   );
   const dispatch = useDispatch();
+
+  const bufferAnalysisException = ['attribute-table', 'visualize'];
 
   const dropdownOptions = [
     {
@@ -154,7 +158,17 @@ export default function Results() {
                       {result.name}
                     </label>
                   </div>
-                  <DropdownOptions options={dropdownOptions} data={result} />
+                  <DropdownOptions
+                    options={
+                      analysisType === 'buffer-analysis'
+                        ? dropdownOptions.filter(
+                            option =>
+                              !bufferAnalysisException.includes(option.id),
+                          )
+                        : dropdownOptions
+                    }
+                    data={result}
+                  />
                 </div>
               </div>
             }

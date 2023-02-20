@@ -24,6 +24,8 @@ function getAnalysisContent(type) {
       return <OptimalRoute />;
     case 'buffer-analysis':
       return <BufferAnalysis />;
+    case 'proximity-analysis':
+      return <BufferAnalysis />;
 
     default:
       return '';

@@ -33,6 +33,7 @@ import {
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import prepareFormData from '@Utils/prepareFormData';
 import { getProjectGeojson } from '@Services/organizationDashboard';
+import { analysisWithDataCleaning } from '@src/constants/analysis';
 
 export function* copyLayerDataRequest({ payload }) {
   try {
@@ -55,7 +56,7 @@ export function* copyLayerDataRequest({ payload }) {
         projectGeojson,
       }),
     );
-    if (analysisType === 'buffer-analysis') {
+    if (!analysisWithDataCleaning.includes(analysisType)) {
       yield put(
         push(
           `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}`,
@@ -77,7 +78,8 @@ export function* copyLayerDataRequest({ payload }) {
 export function* checkProcessingStatusRequest({ payload }) {
   const { projectId, taskId, analysisType } = payload;
   const action =
-    analysisType === 'buffer-analysis'
+    // eslint-disable-next-line no-constant-condition
+    analysisType === 'buffer-analysis' || 'proximity-analysis'
       ? bufferAnalysisActions
       : analysisType === 'optimal-route'
       ? routeAnalysisActions

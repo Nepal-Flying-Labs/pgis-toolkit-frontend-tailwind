@@ -50,3 +50,6 @@ export const getQueryAttribute = params =>
 
 export const getFeatureGeojson = id =>
   authenticated(api).get(`/maps/feature_geojson/${id}/`);
+
+export const updateLayerAttributeFields = (id, data) =>
+  authenticated(api).patch(`/maps/layer_attribute/${id}/`, data);

@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
+import { useParams } from 'react-router';
 import {
   useOLMap,
   MapContainer as MapComponent,
@@ -30,12 +31,14 @@ import {
 import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileLayer';
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
+import SidebarToggle from '../../SidebarToggle/index';
 import BufferPopup from './BufferPopup/index';
 import InfoContent from '../../InfoContent/index';
 
 const { setDataInputState, setResultsState } = BufferAnalysisCreators;
 
 export default function MapSection() {
+  const { analysisType } = useParams();
   const dispatch = useDispatch();
   const mapState = useSelector(mapStateSelector);
   const projectGeojson = useSelector(state => state.analysis.projectGeojson);
@@ -60,6 +63,7 @@ export default function MapSection() {
     state => state.bufferAnalysis.results.showResultsPopup,
   );
   const poiLayers = useSelector(state => state.bufferAnalysis.poiLayers);
+  const hideSidebar = useSelector(state => state.analysis.hideSidebar);
 
   const { mapRef, map, isMapLoading } = useOLMap({
     center: fromLonLat([85.3, 27.7]),
@@ -68,6 +72,15 @@ export default function MapSection() {
   });
   global.map = map;
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
+
+  // update map size on sidebar toggle
+  useEffect(() => {
+    if (!map) return () => {};
+    const timer = setTimeout(() => {
+      map.updateSize();
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [map, hideSidebar]);
 
   // zoom to project area
   useEffect(() => {
@@ -180,9 +193,10 @@ export default function MapSection() {
             );
           }}
         />
+        <SidebarToggle />
         <LayerSwitcherControl />
         <Scalebar />
-        {/* {mapState.map((item, index) =>
+        {mapState.map((item, index) =>
           item.layer_type === 'Vector' ? (
             <VectorTileLayer
               key={item.id}
@@ -215,7 +229,7 @@ export default function MapSection() {
           ) : (
             ''
           ),
-        )} */}
+        )}
 
         {poiLayers?.map(item =>
           item.layer_type === 'Vector' ? (
@@ -309,7 +323,9 @@ export default function MapSection() {
             />
           ))}
         <MaskedLayer geojson={projectGeojson} />
-        {showResultsPopup && <BufferPopup />}
+        {analysisType === 'proximity-analysis' && showResultsPopup && (
+          <BufferPopup />
+        )}
 
         <MapFooter loading={isMapLoading} />
       </MapComponent>

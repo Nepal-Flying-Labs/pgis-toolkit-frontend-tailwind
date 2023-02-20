@@ -16,7 +16,7 @@ const analysisData = [
   {
     title: 'Buffer analysis',
     description:
-      'Creates a zone around a selected feature, distance or time-based, known as a buffer, to find features that are within a certain distance of another feature.',
+      'Creates a zone around a selected feature, distance or time-based, known as a buffer.',
     analysisType: 'buffer-analysis',
     disabled: false,
   },
@@ -26,6 +26,13 @@ const analysisData = [
   //   analysisType: 'nearest-distance',
   //   disabled: true,
   // },
+  {
+    title: 'Proximity Analysis',
+    description:
+      'Creates a zone around a selected feature, distance or time-based, known as a proximity, to find features that are within a certain distance of another feature.',
+    analysisType: 'proximity-analysis',
+    disabled: false,
+  },
   {
     title: 'Optimal route analysis',
     description:

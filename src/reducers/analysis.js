@@ -29,6 +29,7 @@ const initialState = {
     },
   },
   selectedInfo: null, // selected value for info content
+  hideSidebar: false,
 };
 
 const setAnalysisState = (state, action) => ({
@@ -264,6 +265,11 @@ const setSelectedInfo = (state, action) => ({
   selectedInfo: action.payload,
 });
 
+const toggleSidebar = (state, action) => ({
+  ...state,
+  hideSidebar: !!action.payload || !state.hideSidebar,
+});
+
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
@@ -281,6 +287,7 @@ const analysisReducer = createReducer(initialState, {
   [Types.RESET_LAYER_ATTRIBUTE_LIST_STATE]: resetLayerAttributeListState,
   [Types.HANDLE_TABLE_CHECKBOX]: handleTableCheckbox,
   [Types.SET_SELECTED_INFO]: setSelectedInfo,
+  [Types.TOGGLE_SIDEBAR]: toggleSidebar,
 });
 
 export default analysisReducer;

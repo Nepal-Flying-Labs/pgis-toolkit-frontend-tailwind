@@ -686,6 +686,25 @@ const setSelectedLayerAttribute = (state, action) => ({
   },
 });
 
+const updateLayerAttributeFieldsSuccess = (state, action) => {
+  const data = action.payload;
+  const filterData = {
+    id: data.id,
+    name: data.name,
+    alias: data.alias,
+    data_type: data.data_type,
+    mandatory: data.mandatory,
+  };
+  const newData = state.individualAttributeData.map(item =>
+    item.id !== data.id ? { ...item } : { ...filterData },
+  );
+
+  return {
+    ...state,
+    individualAttributeData: newData,
+  };
+};
+
 const resetProjectMapState = state => ({
   ...initialState,
   mapSettings: state.mapSettings,
@@ -735,6 +754,8 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_QUERY_ATTRIBUTE_SUCCESS]: getQueryAttributeSuccess,
   [Types.SET_SELECTED_LAYER_ATTRIBUTE]: setSelectedLayerAttribute,
   [Types.UPDATE_LAYER_ATTRIBUTE_SUCCESS]: updateLayerAttributeSuccess,
+  [Types.UPDATE_LAYER_ATTRIBUTE_FIELDS_SUCCESS]:
+    updateLayerAttributeFieldsSuccess,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

@@ -2,18 +2,37 @@
 /* eslint-disable arrow-body-style */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import Input from '@Components/common/Input';
 import Select from '@Components/common/Select/index';
 import Button from '@Components/common/Button/index';
 import { Creators, Types } from '@Actions/projectDashboard';
+import {
+  Creators as ProjectMapCreators,
+  Types as ProjectMapTypes,
+} from '@Actions/projectMap';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import useForm from '@Hooks/useForm';
+import Toggle from '@Components/common/Toggle/index';
 
 const {
   postTemplateAttributeRequest,
   clearIndividualAttribute,
   updateTemplateAttributeRequest,
 } = Creators;
+
+const { updateLayerAttributeFieldsRequest } = ProjectMapCreators;
+
+function diffObject(a, b) {
+  const diffObj = Object.keys(b).reduce((diff, key) => {
+    if (a[key] === b[key]) return diff;
+    return {
+      ...diff,
+      [key]: b[key],
+    };
+  }, {});
+  return diffObj;
+}
 
 const initialState = {
   name: '',
@@ -46,16 +65,6 @@ const type = [
 ];
 
 const source = [
-  // {
-  //   id: 1,
-  //   name: 'osm',
-  //   displayName: 'OSM',
-  // },
-  // {
-  //   id: 2,
-  //   name: 'usafiri',
-  //   displayName: 'USAFIRI',
-  // },
   {
     id: 3,
     name: 'custom',
@@ -64,6 +73,7 @@ const source = [
 ];
 
 const AddAttributes = () => {
+  const { tabname } = useParams();
   const dispatch = useDispatch();
   const selectedData = useSelector(
     state => state.projectDashboard.data.manageData.selectedData,
@@ -72,6 +82,7 @@ const AddAttributes = () => {
     checkIfLoading(state, [
       Types.POST_TEMPLATE_ATTRIBUTE_REQUEST,
       Types.UPDATE_TEMPLATE_ATTRIBUTE_REQUEST,
+      ProjectMapTypes.UPDATE_LAYER_ATTRIBUTE_FIELDS_REQUEST,
     ]),
   );
   const individualAttribute = useSelector(
@@ -81,9 +92,21 @@ const AddAttributes = () => {
     initialValues: individualAttribute || initialState,
     onSubmit: data => {
       if (individualAttribute) {
-        dispatch(
-          updateTemplateAttributeRequest(individualAttribute.id, { ...values }),
-        );
+        const finalPayload = diffObject(individualAttribute, values);
+        if (tabname === 'manage-data') {
+          dispatch(
+            updateTemplateAttributeRequest(individualAttribute.id, {
+              ...values,
+            }),
+          );
+        } else {
+          dispatch(
+            updateLayerAttributeFieldsRequest(
+              individualAttribute.id,
+              finalPayload,
+            ),
+          );
+        }
       } else {
         dispatch(
           postTemplateAttributeRequest({
@@ -136,19 +159,33 @@ const AddAttributes = () => {
                 }
               />
             </div>
-            <div className="naxatw-basis-2/4 naxatw-space-y-2">
-              <label className="naxatw-text-body-btn">Source</label>
-              <Select
-                placeholder="Choose"
-                options={source}
-                dataKey="displayName"
-                onChange={data => {
-                  handleCustomChange('source', data.name);
-                }}
-                selected={source.filter(s => s.id === 3)?.[0]?.displayName}
-                disabled
-              />
-            </div>
+            {tabname === 'manage-data' ? (
+              <div className="naxatw-basis-2/4 naxatw-space-y-2">
+                <label className="naxatw-text-body-btn">Source</label>
+                <Select
+                  placeholder="Choose"
+                  options={source}
+                  dataKey="displayName"
+                  onChange={data => {
+                    handleCustomChange('source', data.name);
+                  }}
+                  selected={source.filter(s => s.id === 3)?.[0]?.displayName}
+                  disabled
+                />
+              </div>
+            ) : (
+              <div className="naxatw-basis-2/4 naxatw-space-y-2">
+                <label className="naxatw-text-body-btn">Mandatory</label>
+                <div className="naxatw-flex naxatw-items-center naxatw-h-[40px]">
+                  <Toggle
+                    checked={values.mandatory}
+                    onChange={() => {
+                      handleCustomChange('mandatory', !values.mandatory);
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="naxatw-flex naxatw-justify-center">

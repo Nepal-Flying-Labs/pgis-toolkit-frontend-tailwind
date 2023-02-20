@@ -215,7 +215,7 @@ export function getModalContent(content) {
       return {
         title: 'Manage Attributes',
         content: <ManageAttributes />,
-        className: '!naxatw-w-[56.25rem]',
+        className: '!naxatw-w-[56.25rem] !naxatw-max-h-[calc(100vh-10rem)]',
       };
     case 'add-attributes':
       return {

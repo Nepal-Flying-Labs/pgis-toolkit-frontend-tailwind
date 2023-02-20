@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
+import { useParams } from 'react-router';
 import {
   useOLMap,
   MapContainer as MapComponent,
@@ -36,6 +37,7 @@ import InfoContent from '../../InfoContent/index';
 const { setDataInputState, setResultsState } = BufferAnalysisCreators;
 
 export default function MapSection() {
+  const { analysisType } = useParams();
   const dispatch = useDispatch();
   const mapState = useSelector(mapStateSelector);
   const projectGeojson = useSelector(state => state.analysis.projectGeojson);
@@ -309,7 +311,9 @@ export default function MapSection() {
             />
           ))}
         <MaskedLayer geojson={projectGeojson} />
-        {showResultsPopup && <BufferPopup />}
+        {analysisType === 'proximity-analysis' && showResultsPopup && (
+          <BufferPopup />
+        )}
 
         <MapFooter loading={isMapLoading} />
       </MapComponent>

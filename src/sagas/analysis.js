@@ -78,7 +78,8 @@ export function* copyLayerDataRequest({ payload }) {
 export function* checkProcessingStatusRequest({ payload }) {
   const { projectId, taskId, analysisType } = payload;
   const action =
-    analysisType === 'buffer-analysis'
+    // eslint-disable-next-line no-constant-condition
+    analysisType === 'buffer-analysis' || 'proximity-analysis'
       ? bufferAnalysisActions
       : analysisType === 'optimal-route'
       ? routeAnalysisActions

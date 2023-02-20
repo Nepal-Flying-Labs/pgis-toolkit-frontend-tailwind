@@ -18,9 +18,6 @@ export default function SidebarToggle() {
       <i className="material-icons">
         {hideSidebar ? 'navigate_next' : 'navigate_before'}
       </i>
-      {hideSidebar && (
-        <p className="naxatw-text-body-sm naxatw-font-bold">SHOW DATA</p>
-      )}
     </a>
   );
 }

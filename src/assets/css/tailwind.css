@@ -51,6 +51,12 @@
 }
 
 @layer utilities {
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+  }
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+  }
   @variants responsive {
     /* Chrome, Safari and Opera */
     .no-scrollbar::-webkit-scrollbar {
@@ -79,6 +85,7 @@
       background: #989899;
     }
   }
+ 
 }
 
 .naxatw-color-input {

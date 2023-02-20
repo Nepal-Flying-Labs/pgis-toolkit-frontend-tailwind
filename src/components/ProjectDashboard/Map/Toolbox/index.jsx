@@ -17,7 +17,8 @@ const { setProjectMapState } = ProjectMapCreators;
 const btnClassname =
   'naxatw-p-2 naxatw-h-10 naxatw-flex naxatw-items-center naxatw-rounded-lg hover:naxatw-bg-grey-100';
 
-export default function Toolbox({ map }) {
+// eslint-disable-next-line react/prop-types
+export default function Toolbox({ map, onMeasureToggle }) {
   const [showToolbox, setShowToolbox] = useState(false);
   const dispatch = useDispatch();
 
@@ -91,6 +92,7 @@ export default function Toolbox({ map }) {
             map={map}
             buttonText={<i className="material-icons">straighten</i>}
             measureBoth
+            onMeasureToggle={onMeasureToggle}
           />
         </div>
 

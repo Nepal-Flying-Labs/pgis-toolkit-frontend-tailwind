@@ -53,3 +53,6 @@ export const getFeatureGeojson = id =>
 
 export const updateLayerAttributeFields = (id, data) =>
   authenticated(api).patch(`/maps/layer_attribute/${id}/`, data);
+
+export const getFieldsDropdownOption = params =>
+  authenticated(api).get(`/maps/dropdown_choice/`, { params });

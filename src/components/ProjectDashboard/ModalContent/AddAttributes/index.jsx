@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable arrow-body-style */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import Input from '@Components/common/Input';
@@ -14,6 +14,8 @@ import {
 import { checkIfLoading } from '@Utils/loaderSelector';
 import useForm from '@Hooks/useForm';
 import Toggle from '@Components/common/Toggle/index';
+import Spinner from '@Components/common/Spinner/index';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
 
 const {
   postTemplateAttributeRequest,
@@ -21,7 +23,11 @@ const {
   updateTemplateAttributeRequest,
 } = Creators;
 
-const { updateLayerAttributeFieldsRequest } = ProjectMapCreators;
+const {
+  updateLayerAttributeFieldsRequest,
+  getFieldsDropdownOptionRequest,
+  setProjectMapState,
+} = ProjectMapCreators;
 
 function diffObject(a, b) {
   const diffObj = Object.keys(b).reduce((diff, key) => {
@@ -82,11 +88,17 @@ const AddAttributes = () => {
     checkIfLoading(state, [
       Types.POST_TEMPLATE_ATTRIBUTE_REQUEST,
       Types.UPDATE_TEMPLATE_ATTRIBUTE_REQUEST,
-      ProjectMapTypes.UPDATE_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+      // ProjectMapTypes.UPDATE_LAYER_ATTRIBUTE_FIELDS_REQUEST,
     ]),
+  );
+  const dropdownLoading = useSelector(state =>
+    checkIfLoading(state, [ProjectMapTypes.GET_FIELDS_DROPDOWN_OPTION_REQUEST]),
   );
   const individualAttribute = useSelector(
     state => state.projectDashboard.data.manageData.individualAttribute,
+  );
+  const dropdownOptions = useSelector(
+    state => state.projectMap.fieldsDropdownOptions,
   );
   const { values, handleChange, handleSubmit, handleCustomChange } = useForm({
     initialValues: individualAttribute || initialState,
@@ -119,9 +131,33 @@ const AddAttributes = () => {
     },
   });
 
+  const [isDropdown, setIsDropdown] = useState(
+    individualAttribute?.dropdown_field ? 'yes' : 'no',
+  );
+
+  const handleDropdownChange = e => {
+    setIsDropdown(e.target.value);
+    dispatch(
+      updateLayerAttributeFieldsRequest(individualAttribute.id, {
+        dropdown_field: e.target.value === 'yes',
+        isPatch: true,
+      }),
+    );
+  };
+
+  useEffect(() => {
+    if (individualAttribute?.dropdown_field) {
+      dispatch(
+        getFieldsDropdownOptionRequest({ attribute: individualAttribute.id }),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [individualAttribute]);
+
   useEffect(() => {
     return () => {
       dispatch(clearIndividualAttribute());
+      dispatch(setProjectMapState({ fieldsDropdownOptions: null }));
     };
   }, [dispatch]);
 
@@ -145,7 +181,7 @@ const AddAttributes = () => {
           />
           <div className="naxatw-flex naxatw-gap-x-5">
             <div className="naxatw-basis-2/4 naxatw-space-y-2">
-              <label className="naxatw-text-body-btn">Type</label>
+              <label className="naxatw-label">Type</label>
               <Select
                 placeholder="Choose"
                 options={type}
@@ -160,8 +196,8 @@ const AddAttributes = () => {
               />
             </div>
             {tabname === 'manage-data' ? (
-              <div className="naxatw-basis-2/4 naxatw-space-y-2">
-                <label className="naxatw-text-body-btn">Source</label>
+              <div className="naxatw-basis-1/4 naxatw-space-y-2">
+                <label className="naxatw-label">Source</label>
                 <Select
                   placeholder="Choose"
                   options={source}
@@ -174,8 +210,8 @@ const AddAttributes = () => {
                 />
               </div>
             ) : (
-              <div className="naxatw-basis-2/4 naxatw-space-y-2">
-                <label className="naxatw-text-body-btn">Mandatory</label>
+              <div className="naxatw-basis-1/4 naxatw-space-y-2">
+                <label className="naxatw-label">Mandatory</label>
                 <div className="naxatw-flex naxatw-items-center naxatw-h-[40px]">
                   <Toggle
                     checked={values.mandatory}
@@ -186,7 +222,59 @@ const AddAttributes = () => {
                 </div>
               </div>
             )}
+            <div className="naxatw-basis-1/4 naxatw-space-y-2">
+              <label className="naxatw-label">Choose</label>
+              <div className="naxatw-flex naxatw-gap-x-3">
+                <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                  <input
+                    id="button_yes"
+                    type="radio"
+                    value="yes"
+                    name="gender"
+                    onChange={handleDropdownChange}
+                    checked={isDropdown === 'yes'}
+                  />
+                  <label htmlFor="button_yes" className="naxatw-label">
+                    Yes
+                  </label>
+                </div>
+                <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                  <input
+                    id="button_no"
+                    type="radio"
+                    value="no"
+                    name="gender"
+                    onChange={handleDropdownChange}
+                    checked={isDropdown === 'no'}
+                  />
+                  <label htmlFor="button_no" className="naxatw-label">
+                    No
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
+
+          {isDropdown === 'yes' &&
+            (!dropdownLoading ? (
+              <div>
+                <h4>Choose Options</h4>
+                {dropdownOptions?.map((option, index) => (
+                  <Input
+                    label={`Option ${index + 1}`}
+                    placeholder={`Option ${index + 1}`}
+                    value={option.name}
+                  />
+                ))}
+                <MaterialIcon
+                  name="add"
+                  className="naxatw-text-icon-md naxatw-cursor-pointer"
+                  wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
+                />
+              </div>
+            ) : (
+              <Spinner className="naxatw-fill-primary-400" />
+            ))}
         </div>
         <div className="naxatw-flex naxatw-justify-center">
           <Button
@@ -195,7 +283,7 @@ const AddAttributes = () => {
             loaderClassName="naxatw-fill-secondary-400"
             onClick={handleSubmit}
           >
-            {individualAttribute ? 'Edit' : 'Add'}
+            {individualAttribute ? 'Save' : 'Add'}
           </Button>
         </div>
       </div>

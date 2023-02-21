@@ -26,6 +26,7 @@ import {
   getLayerAttribute,
   getQueryAttribute,
   updateLayerAttributeFields,
+  getFieldsDropdownOption,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -331,29 +332,37 @@ export function* updateLayerAttributeRequest({ id, payload }) {
 }
 
 export function* updateLayerAttributeFieldsRequest({ id, payload }) {
-  const formData = prepareFormData(payload);
+  const { isPatch, ...newData } = payload;
+  const formData = prepareFormData(newData);
   try {
     const response = yield call(updateLayerAttributeFields, id, formData);
-    yield put(
-      projectMapActions.updateLayerAttributeFieldsSuccess(response.data),
-    );
-    // if (!is_deleted) {
-    yield put(commonActions.toggleModal('manage-attributes'));
-    yield put(
-      toastActions.success({
-        message: 'Layer attribute fields saved successfully.',
-      }),
-    );
-    // } else {
-    //   yield put(commonActions.togglePromptDialog());
-    //   yield put(
-    //     toastActions.success({
-    //       message: 'Layer attribute deleted successfully.',
-    //     }),
-    //   );
-    // }
+
+    if (!isPatch) {
+      yield put(
+        projectMapActions.updateLayerAttributeFieldsSuccess(response.data),
+      );
+      yield put(commonActions.toggleModal('manage-attributes'));
+      yield put(
+        toastActions.success({
+          message: 'Layer attribute fields saved successfully.',
+        }),
+      );
+    } else if (response?.data?.dropdown_field)
+      yield put(
+        projectMapActions.getFieldsDropdownOptionRequest({ attribute: id }),
+      );
   } catch (error) {
     yield put(projectMapActions.updateLayerAttributeFieldsFailure());
+    throw error;
+  }
+}
+
+export function* getFieldsDropdownOptionRequest({ params }) {
+  try {
+    const response = yield call(getFieldsDropdownOption, params);
+    yield put(projectMapActions.getFieldsDropdownOptionSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getFieldsDropdownFailure());
     throw error;
   }
 }
@@ -446,6 +455,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.UPDATE_LAYER_ATTRIBUTE_FIELDS_REQUEST,
     withLoader(withErrorHandler(updateLayerAttributeFieldsRequest)),
+  );
+  yield takeLatest(
+    Types.GET_FIELDS_DROPDOWN_OPTION_REQUEST,
+    withLoader(withErrorHandler(getFieldsDropdownOptionRequest)),
   );
 }
 

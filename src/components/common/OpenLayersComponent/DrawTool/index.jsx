@@ -17,6 +17,7 @@ import {
   AddFeature,
   EditFeature,
   DragFeature,
+  SplitFeature,
   // RotateFeature,
 } from './modules';
 
@@ -265,6 +266,17 @@ export default function DrawTool({
           />
         </Tooltip>
       )}
+
+      {/* {toolboxContents.includes('edit') && !pointTypes.includes(geometryType) && (
+        <Tooltip content="Split" direction="right">
+          <SplitFeature
+            type={geometryType}
+            enable={drawType === 'split-feature'}
+            onClick={() => setDrawType('split-feature')}
+            {...props}
+          />
+        </Tooltip>
+    )} */}
 
       {/* {!pointTypes.includes(geometryType) && (
         <Tooltip content="Rotate" direction="right">

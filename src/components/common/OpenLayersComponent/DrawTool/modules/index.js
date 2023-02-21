@@ -9,3 +9,5 @@ export { default as DragFeature } from './DragFeature';
 export { default as DeleteFeature } from './DeleteFeature';
 
 export { default as RotateFeature } from './RotateFeature';
+
+export { default as SplitFeature } from './SplitFeature';

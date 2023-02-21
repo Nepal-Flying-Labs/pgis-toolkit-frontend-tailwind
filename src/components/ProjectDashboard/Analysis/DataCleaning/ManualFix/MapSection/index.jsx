@@ -276,7 +276,7 @@ export default function MapSection() {
           geometryType={selectedLayer.geom_type}
           zIndex={100}
           style={{ ...selectedLayer.style, lineColor: '#ffff00' }}
-          toolboxContents={['add', 'drag', 'edit', 'delete', 'undo']}
+          toolboxContents={['add', 'drag', 'edit', 'extend', 'delete', 'undo']}
           onChange={geojson => {
             const wktString = stringify(geojson);
             dispatch(

@@ -1,6 +1,12 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/forbid-prop-types */
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useMemo,
+} from 'react';
 import PropTypes from 'prop-types';
 import { Collection } from 'ol';
 import { Draw, Snap } from 'ol/interaction';
@@ -10,12 +16,18 @@ import { getUid } from 'ol/util';
 import { Vector as VectorSource } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 import Tooltip from '@Components/common/Tooltip';
-import { defaultStyles, getStyles, pointTypes } from '../helpers/styleUtils';
+import {
+  defaultStyles,
+  getStyles,
+  lineTypes,
+  pointTypes,
+} from '../helpers/styleUtils';
 import getFeatureGeojson from './helpers/getFeatureGeojson';
 import {
   useDrawUtils,
   AddFeature,
   EditFeature,
+  ExtendFeature,
   DragFeature,
   SplitFeature,
   // RotateFeature,
@@ -27,6 +39,7 @@ const drawToolOptions = [
   'add',
   'drag',
   'edit',
+  'extend',
   'delete',
   'undo',
   'save',
@@ -63,7 +76,7 @@ export default function DrawTool({
     [onChange],
   );
 
-  const { select, modify, translate, addInteraction, removeInteraction } =
+  const { select, modify, translate, snap, addInteraction, removeInteraction } =
     useDrawUtils({
       mapInstance: map,
       layerUid,
@@ -124,12 +137,17 @@ export default function DrawTool({
     resetState();
   }, [map, vectorLayer, enable, resetState]);
 
+  const snapCollection = useMemo(
+    () =>
+      new Collection([], {
+        // unique: true,
+      }),
+    [],
+  );
+
   // add snap interaction
   useEffect(() => {
     if (!map || !drawType) return;
-    const snapCollection = new Collection([], {
-      unique: true,
-    });
     setTimeout(() => {
       const layers = map.getLayers();
       layers.forEach(layer => {
@@ -144,7 +162,17 @@ export default function DrawTool({
       });
       map.addInteraction(snapInteraction);
     }, 500);
-  }, [map, drawType]);
+  }, [map, snapCollection, drawType]);
+
+  useEffect(() => {
+    source.on('addfeature', evt => {
+      console.log('addFeaturex');
+      snapCollection.push(evt.feature);
+    });
+    source.on('removefeature', evt => {
+      snapCollection.remove(evt.feature);
+    });
+  }, [snapCollection]);
 
   const handleDrawEnd = useCallback(
     feature => {
@@ -218,6 +246,7 @@ export default function DrawTool({
     select,
     modify,
     translate,
+    snap,
     addInteraction,
     removeInteraction,
     vectorLayer,
@@ -262,6 +291,16 @@ export default function DrawTool({
           <EditFeature
             enable={drawType === 'edit-feature'}
             onClick={() => setDrawType('edit-feature')}
+            {...props}
+          />
+        </Tooltip>
+      )}
+
+      {toolboxContents.includes('extend') && lineTypes.includes(geometryType) && (
+        <Tooltip content="Extend" direction="right">
+          <ExtendFeature
+            enable={drawType === 'extend-feature'}
+            onClick={() => setDrawType('extend-feature')}
             {...props}
           />
         </Tooltip>

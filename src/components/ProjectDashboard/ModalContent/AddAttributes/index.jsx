@@ -16,6 +16,7 @@ import useForm from '@Hooks/useForm';
 import Toggle from '@Components/common/Toggle/index';
 import Spinner from '@Components/common/Spinner/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
+import isEmpty from '@Utils/isEmpty';
 
 const {
   postTemplateAttributeRequest,
@@ -27,6 +28,7 @@ const {
   updateLayerAttributeFieldsRequest,
   getFieldsDropdownOptionRequest,
   setProjectMapState,
+  updateDropdownOptionRequest,
 } = ProjectMapCreators;
 
 function diffObject(a, b) {
@@ -88,12 +90,13 @@ const AddAttributes = () => {
     checkIfLoading(state, [
       Types.POST_TEMPLATE_ATTRIBUTE_REQUEST,
       Types.UPDATE_TEMPLATE_ATTRIBUTE_REQUEST,
-      // ProjectMapTypes.UPDATE_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+      ProjectMapTypes.UPDATE_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+      ProjectMapTypes.GET_FIELDS_DROPDOWN_OPTION_REQUEST,
     ]),
   );
-  const dropdownLoading = useSelector(state =>
-    checkIfLoading(state, [ProjectMapTypes.GET_FIELDS_DROPDOWN_OPTION_REQUEST]),
-  );
+  // const dropdownLoading = useSelector(state =>
+  //   checkIfLoading(state, [ProjectMapTypes.GET_FIELDS_DROPDOWN_OPTION_REQUEST]),
+  // );
   const individualAttribute = useSelector(
     state => state.projectDashboard.data.manageData.individualAttribute,
   );
@@ -127,6 +130,11 @@ const AddAttributes = () => {
             }),
           );
         } else {
+          const diffObj = diffObject(dropdownOptions, formValues);
+          if (!isEmpty(diffObj))
+            dispatch(
+              updateDropdownOptionRequest(individualAttribute.id, diffObj),
+            );
           dispatch(
             updateLayerAttributeFieldsRequest(
               individualAttribute.id,
@@ -270,37 +278,34 @@ const AddAttributes = () => {
             </div>
           </div>
 
-          {isDropdown === 'yes' &&
-            (!dropdownLoading ? (
-              <div className="naxatw-space-y-2">
-                <h4>Choose Options</h4>
-                <div className="naxatw-grid naxatw-grid-cols-2 naxatw-gap-2">
-                  {formValues &&
-                    Object.keys(formValues).map(option => (
-                      <Input
-                        key={option}
-                        label={`Option ${option}`}
-                        placeholder={`Option ${option}`}
-                        name={option}
-                        value={formValues[option]}
-                        onChange={handleOptionChange}
-                      />
-                    ))}
-                </div>
-                <div
-                  className="naxatw-flex naxatw-justify-end"
-                  title="Add Option"
-                >
-                  <MaterialIcon
-                    name="add"
-                    className="naxatw-text-icon-md naxatw-text-white"
-                    wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-bg-secondary-300 naxatw-cursor-pointer hover:naxatw-bg-secondary-400"
-                  />
-                </div>
+          {isDropdown === 'yes' && (
+            <div className="naxatw-space-y-2">
+              <h4>Choose Options</h4>
+              <div className="naxatw-grid naxatw-grid-cols-2 naxatw-gap-2">
+                {formValues &&
+                  Object.keys(formValues).map(option => (
+                    <Input
+                      key={option}
+                      label={`Option ${option}`}
+                      placeholder={`Option ${option}`}
+                      name={option}
+                      value={formValues[option]}
+                      onChange={handleOptionChange}
+                    />
+                  ))}
               </div>
-            ) : (
-              <Spinner className="naxatw-fill-primary-400" />
-            ))}
+              <div
+                className="naxatw-flex naxatw-justify-end"
+                title="Add Option"
+              >
+                <MaterialIcon
+                  name="add"
+                  className="naxatw-text-icon-md naxatw-text-white"
+                  wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-bg-secondary-300 naxatw-cursor-pointer hover:naxatw-bg-secondary-400"
+                />
+              </div>
+            </div>
+          )}
         </div>
         <div className="naxatw-flex naxatw-justify-center">
           <Button

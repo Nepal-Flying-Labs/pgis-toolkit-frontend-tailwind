@@ -27,6 +27,7 @@ import {
   getQueryAttribute,
   updateLayerAttributeFields,
   getFieldsDropdownOption,
+  updateDropdownOption,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -367,6 +368,24 @@ export function* getFieldsDropdownOptionRequest({ params }) {
   }
 }
 
+export function* updateDropdownOptionRequest({ id, payload }) {
+  // const formData = prepareFormData(payload);
+  try {
+    const response = yield all(
+      Object.keys(payload).map(data =>
+        call(updateDropdownOption, data, {
+          name: payload[data],
+          attribute: id,
+        }),
+      ),
+    );
+    yield put(projectMapActions.updateDropdownOptionSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.updateDropdownFailure());
+    throw error;
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -459,6 +478,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_FIELDS_DROPDOWN_OPTION_REQUEST,
     withLoader(withErrorHandler(getFieldsDropdownOptionRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_DROPDOWN_OPTION_REQUEST,
+    withLoader(withErrorHandler(updateDropdownOptionRequest)),
   );
 }
 

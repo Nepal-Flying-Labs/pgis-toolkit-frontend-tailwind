@@ -100,6 +100,21 @@ const AddAttributes = () => {
   const dropdownOptions = useSelector(
     state => state.projectMap.fieldsDropdownOptions,
   );
+
+  const [formValues, setFormValues] = useState(dropdownOptions || {});
+
+  useEffect(() => {
+    setFormValues(dropdownOptions);
+  }, [dropdownOptions]);
+
+  const handleOptionChange = e => {
+    const { value } = e.target;
+    setFormValues({
+      ...formValues,
+      [e.target.name]: value,
+    });
+  };
+
   const { values, handleChange, handleSubmit, handleCustomChange } = useForm({
     initialValues: individualAttribute || initialState,
     onSubmit: data => {
@@ -257,20 +272,31 @@ const AddAttributes = () => {
 
           {isDropdown === 'yes' &&
             (!dropdownLoading ? (
-              <div>
+              <div className="naxatw-space-y-2">
                 <h4>Choose Options</h4>
-                {dropdownOptions?.map((option, index) => (
-                  <Input
-                    label={`Option ${index + 1}`}
-                    placeholder={`Option ${index + 1}`}
-                    value={option.name}
+                <div className="naxatw-grid naxatw-grid-cols-2 naxatw-gap-2">
+                  {formValues &&
+                    Object.keys(formValues).map(option => (
+                      <Input
+                        key={option}
+                        label={`Option ${option}`}
+                        placeholder={`Option ${option}`}
+                        name={option}
+                        value={formValues[option]}
+                        onChange={handleOptionChange}
+                      />
+                    ))}
+                </div>
+                <div
+                  className="naxatw-flex naxatw-justify-end"
+                  title="Add Option"
+                >
+                  <MaterialIcon
+                    name="add"
+                    className="naxatw-text-icon-md naxatw-text-white"
+                    wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-bg-secondary-300 naxatw-cursor-pointer hover:naxatw-bg-secondary-400"
                   />
-                ))}
-                <MaterialIcon
-                  name="add"
-                  className="naxatw-text-icon-md naxatw-cursor-pointer"
-                  wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md"
-                />
+                </div>
               </div>
             ) : (
               <Spinner className="naxatw-fill-primary-400" />

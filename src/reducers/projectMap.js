@@ -706,10 +706,17 @@ const updateLayerAttributeFieldsSuccess = (state, action) => {
   };
 };
 
-const getFieldsDropdownOptionSuccess = (state, action) => ({
-  ...state,
-  fieldsDropdownOptions: action.payload,
-});
+const getFieldsDropdownOptionSuccess = (state, action) => {
+  const data = action.payload;
+  const object = data.reduce(
+    (obj, item) => ({ ...obj, [item.id]: item.name }),
+    {},
+  );
+  return {
+    ...state,
+    fieldsDropdownOptions: object,
+  };
+};
 
 const resetProjectMapState = state => ({
   ...initialState,

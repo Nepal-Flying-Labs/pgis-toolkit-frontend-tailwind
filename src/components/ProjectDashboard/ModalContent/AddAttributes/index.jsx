@@ -104,19 +104,11 @@ const AddAttributes = () => {
     state => state.projectMap.fieldsDropdownOptions,
   );
 
-  const [formValues, setFormValues] = useState(dropdownOptions || {});
+  const [formValues, setFormValues] = useState(dropdownOptions || []);
 
   useEffect(() => {
     setFormValues(dropdownOptions);
   }, [dropdownOptions]);
-
-  const handleOptionChange = e => {
-    const { value } = e.target;
-    setFormValues({
-      ...formValues,
-      [e.target.name]: value,
-    });
-  };
 
   const { values, handleChange, handleSubmit, handleCustomChange } = useForm({
     initialValues: individualAttribute || initialState,
@@ -130,10 +122,14 @@ const AddAttributes = () => {
             }),
           );
         } else {
-          const diffObj = diffObject(dropdownOptions, formValues);
-          if (!isEmpty(diffObj))
+          const patchData = formValues.filter(
+            item => item.flag === 'patch' && item.isChanged,
+          );
+          const postData = formValues.filter(item => item.flag === 'post');
+
+          if (!isEmpty(patchData))
             dispatch(
-              updateDropdownOptionRequest(individualAttribute.id, diffObj),
+              updateDropdownOptionRequest(individualAttribute.id, patchData),
             );
           dispatch(
             updateLayerAttributeFieldsRequest(
@@ -166,6 +162,23 @@ const AddAttributes = () => {
         isPatch: true,
       }),
     );
+  };
+
+  const handleOptionChange = e => {
+    const { value } = e.target;
+    const newData = formValues.map(item =>
+      item.id === +e.target.name
+        ? { ...item, name: value, isChanged: true }
+        : { ...item },
+    );
+    setFormValues(newData);
+  };
+
+  const handleAddOption = () => {
+    setFormValues([
+      ...formValues,
+      { id: formValues.length + 1, name: '', flag: 'post' },
+    ]);
   };
 
   useEffect(() => {
@@ -246,7 +259,7 @@ const AddAttributes = () => {
               </div>
             )}
             <div className="naxatw-basis-1/4 naxatw-space-y-2">
-              <label className="naxatw-label">Choose</label>
+              <label className="naxatw-label">Choice</label>
               <div className="naxatw-flex naxatw-gap-x-3">
                 <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
                   <input
@@ -280,30 +293,27 @@ const AddAttributes = () => {
 
           {isDropdown === 'yes' && (
             <div className="naxatw-space-y-2">
-              <h4>Choose Options</h4>
-              <div className="naxatw-grid naxatw-grid-cols-2 naxatw-gap-2">
+              <h4>Choice Options</h4>
+              <div className="naxatw-max-h-[300px] naxatw-space-y-2 naxatw-overflow-y-auto scrollbar">
                 {formValues &&
-                  Object.keys(formValues).map(option => (
+                  formValues.map(option => (
                     <Input
-                      key={option}
-                      label={`Option ${option}`}
-                      placeholder={`Option ${option}`}
-                      name={option}
-                      value={formValues[option]}
+                      key={option.id}
+                      label={`Option ${option.id}`}
+                      placeholder={`Option ${option.id}`}
+                      name={`${option.id}`}
+                      value={option.name}
                       onChange={handleOptionChange}
                     />
                   ))}
               </div>
-              <div
-                className="naxatw-flex naxatw-justify-end"
-                title="Add Option"
+
+              <Button
+                className="naxatw-btn naxatw-btn-link naxatw-border"
+                onClick={handleAddOption}
               >
-                <MaterialIcon
-                  name="add"
-                  className="naxatw-text-icon-md naxatw-text-white"
-                  wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-bg-secondary-300 naxatw-cursor-pointer hover:naxatw-bg-secondary-400"
-                />
-              </div>
+                Add Option
+              </Button>
             </div>
           )}
         </div>

@@ -707,14 +707,10 @@ const updateLayerAttributeFieldsSuccess = (state, action) => {
 };
 
 const getFieldsDropdownOptionSuccess = (state, action) => {
-  const data = action.payload;
-  const object = data.reduce(
-    (obj, item) => ({ ...obj, [item.id]: item.name }),
-    {},
-  );
+  const data = action.payload.map(item => ({ ...item, flag: 'patch' }));
   return {
     ...state,
-    fieldsDropdownOptions: object,
+    fieldsDropdownOptions: data,
   };
 };
 

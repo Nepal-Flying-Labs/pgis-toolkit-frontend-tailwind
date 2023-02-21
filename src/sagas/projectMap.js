@@ -372,9 +372,9 @@ export function* updateDropdownOptionRequest({ id, payload }) {
   // const formData = prepareFormData(payload);
   try {
     const response = yield all(
-      Object.keys(payload).map(data =>
-        call(updateDropdownOption, data, {
-          name: payload[data],
+      payload.map(data =>
+        call(updateDropdownOption, data.id, {
+          name: data.name,
           attribute: id,
         }),
       ),

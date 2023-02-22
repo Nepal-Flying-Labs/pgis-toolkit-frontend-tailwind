@@ -62,3 +62,6 @@ export const updateDropdownOption = (id, data) =>
 
 export const postDropdownOption = data =>
   authenticated(api).post(`/maps/dropdown_choice/`, data);
+
+export const postLayerAttributeFields = data =>
+  authenticated(api).post(`/maps/layer_attribute/`, data);

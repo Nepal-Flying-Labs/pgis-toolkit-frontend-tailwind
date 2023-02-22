@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable arrow-body-style */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
@@ -14,9 +13,9 @@ import {
 import { checkIfLoading } from '@Utils/loaderSelector';
 import useForm from '@Hooks/useForm';
 import Toggle from '@Components/common/Toggle/index';
-import Spinner from '@Components/common/Spinner/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import isEmpty from '@Utils/isEmpty';
+import toastActions from '@Actions/toast';
 
 const {
   postTemplateAttributeRequest,
@@ -29,8 +28,7 @@ const {
   updateDropdownFieldRequest,
   getFieldsDropdownOptionRequest,
   setProjectMapState,
-  // updateDropdownOptionRequest,
-  // postDropdownOptionRequest,
+  postLayerAttributeFieldsRequest,
 } = ProjectMapCreators;
 
 function diffObject(a, b) {
@@ -42,6 +40,12 @@ function diffObject(a, b) {
     };
   }, {});
   return diffObj;
+}
+
+function validate(data) {
+  const newData = data.map(d => (d.name ? { ...d } : { ...d, error: true }));
+  const errorData = newData.filter(d => d.error);
+  return errorData.length > 0;
 }
 
 const initialState = {
@@ -88,6 +92,9 @@ const AddAttributes = () => {
   const selectedData = useSelector(
     state => state.projectDashboard.data.manageData.selectedData,
   );
+  const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
+  const showModal = useSelector(state => state.common.showModal);
+  const modalContent = useSelector(state => state.common.modalContent);
   const loading = useSelector(state =>
     checkIfLoading(state, [
       Types.POST_TEMPLATE_ATTRIBUTE_REQUEST,
@@ -106,6 +113,21 @@ const AddAttributes = () => {
   );
 
   const [formValues, setFormValues] = useState(dropdownOptions || []);
+  const [isDropdown, setIsDropdown] = useState(
+    individualAttribute?.dropdown_field ? 'yes' : 'no',
+  );
+
+  // reset state on modal unmount
+  useEffect(() => {
+    if (
+      showModal &&
+      (modalContent === 'add-attributes' ||
+        modalContent === 'manage-attributes')
+    )
+      return;
+
+    dispatch(setProjectMapState({ selectedLayer: null }));
+  }, [dispatch, showModal, modalContent]);
 
   useEffect(() => {
     setFormValues(dropdownOptions);
@@ -135,29 +157,43 @@ const AddAttributes = () => {
             }),
           );
         }
-      } else {
+      } else if (tabname === 'manage-data') {
         dispatch(
           postTemplateAttributeRequest({
             ...values,
-            data_type: values.type,
+            data_type: values.data_type,
             layer_template: selectedData.id,
           }),
+        );
+      } else if (
+        (isDropdown === 'yes' && !validate(formValues)) ||
+        isDropdown === 'no'
+      ) {
+        dispatch(
+          postLayerAttributeFieldsRequest({
+            ...values,
+            data_type: values.data_type,
+            layer: selectedLayer.id,
+            dropdown_field: isDropdown === 'yes' ? 'True' : 'False',
+            postData: formValues,
+          }),
+        );
+      } else {
+        dispatch(
+          toastActions.error({ message: 'Options field cannot be empty' }),
         );
       }
     },
   });
 
-  const [isDropdown, setIsDropdown] = useState(
-    individualAttribute?.dropdown_field ? 'yes' : 'no',
-  );
-
   const handleDropdownChange = e => {
     setIsDropdown(e.target.value);
-    dispatch(
-      updateDropdownFieldRequest(individualAttribute.id, {
-        dropdown_field: e.target.value === 'yes',
-      }),
-    );
+    if (individualAttribute)
+      dispatch(
+        updateDropdownFieldRequest(individualAttribute.id, {
+          dropdown_field: e.target.value === 'yes',
+        }),
+      );
   };
 
   const handleOptionChange = e => {
@@ -176,7 +212,7 @@ const AddAttributes = () => {
         id: Date.now(),
         name: '',
         flag: 'post',
-        attribute: individualAttribute.id,
+        attribute: individualAttribute?.id || '',
       },
       ...formValues,
     ]);
@@ -188,6 +224,15 @@ const AddAttributes = () => {
   };
 
   useEffect(() => {
+    if (!individualAttribute && isDropdown === 'yes') {
+      setFormValues([
+        { id: 1, name: '' },
+        { id: 2, name: '' },
+      ]);
+    }
+  }, [individualAttribute, isDropdown]);
+
+  useEffect(() => {
     if (individualAttribute?.dropdown_field) {
       dispatch(
         getFieldsDropdownOptionRequest({ attribute: individualAttribute.id }),
@@ -196,12 +241,13 @@ const AddAttributes = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [individualAttribute]);
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       dispatch(clearIndividualAttribute());
       dispatch(setProjectMapState({ fieldsDropdownOptions: null }));
-    };
-  }, [dispatch]);
+    },
+    [dispatch],
+  );
 
   return (
     <div className="naxatw-container ">
@@ -213,6 +259,7 @@ const AddAttributes = () => {
             name="name"
             value={values.name || ''}
             onChange={handleChange}
+            disabled={!!individualAttribute}
           />
           <Input
             label="Alias"
@@ -221,7 +268,7 @@ const AddAttributes = () => {
             value={values.alias || ''}
             onChange={handleChange}
           />
-          <div className="naxatw-flex naxatw-gap-x-5">
+          <div className="naxatw-flex naxatw-gap-x-5 naxatw-justify-between">
             <div className="naxatw-basis-2/4 naxatw-space-y-2">
               <label className="naxatw-label">Type</label>
               <Select
@@ -238,7 +285,7 @@ const AddAttributes = () => {
               />
             </div>
             {tabname === 'manage-data' ? (
-              <div className="naxatw-basis-1/4 naxatw-space-y-2">
+              <div className="naxatw-basis-2/4 naxatw-space-y-2">
                 <label className="naxatw-label">Source</label>
                 <Select
                   placeholder="Choose"
@@ -266,7 +313,7 @@ const AddAttributes = () => {
             )}
           </div>
           <div className="naxatw-basis-1/4 naxatw-space-y-2">
-            <label className="naxatw-label">Is choice/dropdown?</label>
+            <label className="naxatw-label">Is choice/dropdown field?</label>
             <div className="naxatw-flex naxatw-gap-x-3">
               <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
                 <input
@@ -308,7 +355,7 @@ const AddAttributes = () => {
                     <div className="naxatw-flex naxatw-gap-x-1 naxatw-items-end">
                       <div className="naxatw-basis-11/12">
                         <Input
-                          key={option.name}
+                          key={option.id}
                           label={`Option ${index + 1}`}
                           placeholder={`Option ${index + 1}`}
                           name={`${option.id}`}

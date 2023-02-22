@@ -133,6 +133,10 @@ export const { Types, Creators } = createActions(
     getFieldsDropdownOptionRequest: ['params'],
     getFieldsDropdownOptionSuccess: ['payload'],
     getFieldsDropdownOptionFailure: null,
+
+    postLayerAttributeFieldsRequest: ['payload'],
+    postLayerAttributeFieldsSuccess: ['payload'],
+    postLayerAttributeFieldsFailure: null,
   },
   { prefix: 'projectMap/' },
 );

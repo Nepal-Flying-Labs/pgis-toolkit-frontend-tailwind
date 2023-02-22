@@ -29,6 +29,7 @@ import {
   getFieldsDropdownOption,
   updateDropdownOption,
   postDropdownOption,
+  postLayerAttributeFields,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -334,10 +335,9 @@ export function* updateLayerAttributeRequest({ id, payload }) {
 }
 
 export function* updateLayerAttributeFieldsRequest({ id, payload }) {
-  const { patchData, postData, ...newData } = payload;
-
-  const formData = prepareFormData(newData);
   try {
+    const { patchData, postData, ...newData } = payload;
+    const formData = prepareFormData(newData);
     const response = yield call(updateLayerAttributeFields, id, formData);
 
     if (!isEmpty(patchData)) {
@@ -397,6 +397,36 @@ export function* getFieldsDropdownOptionRequest({ params }) {
     yield put(projectMapActions.getFieldsDropdownOptionSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.getFieldsDropdownFailure());
+    throw error;
+  }
+}
+
+export function* postLayerAttributeFieldsRequest({ payload }) {
+  try {
+    const { postData, ...newData } = payload;
+    const { source, ...filterData } = newData;
+    const formData = prepareFormData(filterData);
+    const response = yield call(postLayerAttributeFields, formData);
+    console.log(response, 'response');
+
+    yield all(
+      postData.map(data =>
+        call(postDropdownOption, {
+          name: data.name,
+          attribute: response.data.id,
+        }),
+      ),
+    );
+
+    yield put(projectMapActions.postLayerAttributeFieldsSuccess(response.data));
+    yield put(commonActions.toggleModal('manage-attributes'));
+    yield put(
+      toastActions.success({
+        message: 'Layer attribute fields added successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.postLayerAttributeFieldsFailure());
     throw error;
   }
 }
@@ -497,6 +527,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.UPDATE_DROPDOWN_FIELD_REQUEST,
     withLoader(withErrorHandler(updateDropdownFieldRequest)),
+  );
+  yield takeLatest(
+    Types.POST_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+    withLoader(withErrorHandler(postLayerAttributeFieldsRequest)),
   );
 }
 

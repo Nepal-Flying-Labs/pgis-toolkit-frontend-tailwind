@@ -59,3 +59,6 @@ export const getFieldsDropdownOption = params =>
 
 export const updateDropdownOption = (id, data) =>
   authenticated(api).patch(`/maps/dropdown_choice/${id}/`, data);
+
+export const postDropdownOption = data =>
+  authenticated(api).post(`/maps/dropdown_choice/`, data);

@@ -28,6 +28,7 @@ import {
   updateLayerAttributeFields,
   getFieldsDropdownOption,
   updateDropdownOption,
+  postDropdownOption,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -333,27 +334,59 @@ export function* updateLayerAttributeRequest({ id, payload }) {
 }
 
 export function* updateLayerAttributeFieldsRequest({ id, payload }) {
-  const { isPatch, ...newData } = payload;
+  const { patchData, postData, ...newData } = payload;
+
   const formData = prepareFormData(newData);
   try {
     const response = yield call(updateLayerAttributeFields, id, formData);
 
-    if (!isPatch) {
-      yield put(
-        projectMapActions.updateLayerAttributeFieldsSuccess(response.data),
+    if (!isEmpty(patchData)) {
+      yield all(
+        patchData.map(data =>
+          call(updateDropdownOption, data.id, {
+            name: data.name,
+            attribute: id,
+          }),
+        ),
       );
-      yield put(commonActions.toggleModal('manage-attributes'));
-      yield put(
-        toastActions.success({
-          message: 'Layer attribute fields saved successfully.',
-        }),
+    }
+
+    if (!isEmpty(postData)) {
+      yield all(
+        postData.map(data =>
+          call(postDropdownOption, {
+            name: data.name,
+            attribute: data.attribute,
+          }),
+        ),
       );
-    } else if (response?.data?.dropdown_field)
+    }
+
+    yield put(
+      projectMapActions.updateLayerAttributeFieldsSuccess(response.data),
+    );
+    yield put(commonActions.toggleModal('manage-attributes'));
+    yield put(
+      toastActions.success({
+        message: 'Layer attribute fields saved successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.updateLayerAttributeFieldsFailure());
+    throw error;
+  }
+}
+
+export function* updateDropdownFieldRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(updateLayerAttributeFields, id, formData);
+    if (response?.data?.dropdown_field)
       yield put(
         projectMapActions.getFieldsDropdownOptionRequest({ attribute: id }),
       );
   } catch (error) {
-    yield put(projectMapActions.updateLayerAttributeFieldsFailure());
+    yield put(projectMapActions.updateDropdownFailure());
     throw error;
   }
 }
@@ -364,24 +397,6 @@ export function* getFieldsDropdownOptionRequest({ params }) {
     yield put(projectMapActions.getFieldsDropdownOptionSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.getFieldsDropdownFailure());
-    throw error;
-  }
-}
-
-export function* updateDropdownOptionRequest({ id, payload }) {
-  // const formData = prepareFormData(payload);
-  try {
-    const response = yield all(
-      payload.map(data =>
-        call(updateDropdownOption, data.id, {
-          name: data.name,
-          attribute: id,
-        }),
-      ),
-    );
-    yield put(projectMapActions.updateDropdownOptionSuccess(response.data));
-  } catch (error) {
-    yield put(projectMapActions.updateDropdownFailure());
     throw error;
   }
 }
@@ -480,8 +495,8 @@ function* projectMapWatcher() {
     withLoader(withErrorHandler(getFieldsDropdownOptionRequest)),
   );
   yield takeLatest(
-    Types.UPDATE_DROPDOWN_OPTION_REQUEST,
-    withLoader(withErrorHandler(updateDropdownOptionRequest)),
+    Types.UPDATE_DROPDOWN_FIELD_REQUEST,
+    withLoader(withErrorHandler(updateDropdownFieldRequest)),
   );
 }
 

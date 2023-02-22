@@ -26,9 +26,11 @@ const {
 
 const {
   updateLayerAttributeFieldsRequest,
+  updateDropdownFieldRequest,
   getFieldsDropdownOptionRequest,
   setProjectMapState,
-  updateDropdownOptionRequest,
+  // updateDropdownOptionRequest,
+  // postDropdownOptionRequest,
 } = ProjectMapCreators;
 
 function diffObject(a, b) {
@@ -91,7 +93,6 @@ const AddAttributes = () => {
       Types.POST_TEMPLATE_ATTRIBUTE_REQUEST,
       Types.UPDATE_TEMPLATE_ATTRIBUTE_REQUEST,
       ProjectMapTypes.UPDATE_LAYER_ATTRIBUTE_FIELDS_REQUEST,
-      ProjectMapTypes.GET_FIELDS_DROPDOWN_OPTION_REQUEST,
     ]),
   );
   // const dropdownLoading = useSelector(state =>
@@ -126,16 +127,12 @@ const AddAttributes = () => {
             item => item.flag === 'patch' && item.isChanged,
           );
           const postData = formValues.filter(item => item.flag === 'post');
-
-          if (!isEmpty(patchData))
-            dispatch(
-              updateDropdownOptionRequest(individualAttribute.id, patchData),
-            );
           dispatch(
-            updateLayerAttributeFieldsRequest(
-              individualAttribute.id,
-              finalPayload,
-            ),
+            updateLayerAttributeFieldsRequest(individualAttribute.id, {
+              ...finalPayload,
+              patchData,
+              postData,
+            }),
           );
         }
       } else {
@@ -157,9 +154,8 @@ const AddAttributes = () => {
   const handleDropdownChange = e => {
     setIsDropdown(e.target.value);
     dispatch(
-      updateLayerAttributeFieldsRequest(individualAttribute.id, {
+      updateDropdownFieldRequest(individualAttribute.id, {
         dropdown_field: e.target.value === 'yes',
-        isPatch: true,
       }),
     );
   };
@@ -176,9 +172,19 @@ const AddAttributes = () => {
 
   const handleAddOption = () => {
     setFormValues([
+      {
+        id: Date.now(),
+        name: '',
+        flag: 'post',
+        attribute: individualAttribute.id,
+      },
       ...formValues,
-      { id: formValues.length + 1, name: '', flag: 'post' },
     ]);
+  };
+
+  const handleDeleteOption = id => {
+    const newData = formValues.filter(data => data.id !== id);
+    setFormValues(newData);
   };
 
   useEffect(() => {
@@ -247,7 +253,7 @@ const AddAttributes = () => {
               </div>
             ) : (
               <div className="naxatw-basis-1/4 naxatw-space-y-2">
-                <label className="naxatw-label">Mandatory</label>
+                <label className="naxatw-label">Is mandatory?</label>
                 <div className="naxatw-flex naxatw-items-center naxatw-h-[40px]">
                   <Toggle
                     checked={values.mandatory}
@@ -258,58 +264,72 @@ const AddAttributes = () => {
                 </div>
               </div>
             )}
-            <div className="naxatw-basis-1/4 naxatw-space-y-2">
-              <label className="naxatw-label">Choice</label>
-              <div className="naxatw-flex naxatw-gap-x-3">
-                <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
-                  <input
-                    id="button_yes"
-                    type="radio"
-                    value="yes"
-                    name="gender"
-                    onChange={handleDropdownChange}
-                    checked={isDropdown === 'yes'}
-                  />
-                  <label htmlFor="button_yes" className="naxatw-label">
-                    Yes
-                  </label>
-                </div>
-                <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
-                  <input
-                    id="button_no"
-                    type="radio"
-                    value="no"
-                    name="gender"
-                    onChange={handleDropdownChange}
-                    checked={isDropdown === 'no'}
-                  />
-                  <label htmlFor="button_no" className="naxatw-label">
-                    No
-                  </label>
-                </div>
+          </div>
+          <div className="naxatw-basis-1/4 naxatw-space-y-2">
+            <label className="naxatw-label">Is choice/dropdown?</label>
+            <div className="naxatw-flex naxatw-gap-x-3">
+              <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                <input
+                  id="button_yes"
+                  type="radio"
+                  value="yes"
+                  name="gender"
+                  onChange={handleDropdownChange}
+                  checked={isDropdown === 'yes'}
+                />
+                <label htmlFor="button_yes" className="naxatw-label">
+                  Yes
+                </label>
+              </div>
+              <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                <input
+                  id="button_no"
+                  type="radio"
+                  value="no"
+                  name="gender"
+                  onChange={handleDropdownChange}
+                  checked={isDropdown === 'no'}
+                />
+                <label htmlFor="button_no" className="naxatw-label">
+                  No
+                </label>
               </div>
             </div>
           </div>
 
           {isDropdown === 'yes' && (
             <div className="naxatw-space-y-2">
-              <h4>Choice Options</h4>
-              <div className="naxatw-max-h-[300px] naxatw-space-y-2 naxatw-overflow-y-auto scrollbar">
+              <span className="naxatw-text-body-lg naxatw-font-semibold">
+                Choice Options
+              </span>
+              <div className="naxatw-max-h-[200px] naxatw-space-y-2 naxatw-overflow-y-auto scrollbar naxatw-px-3 naxatw-py-2">
                 {formValues &&
-                  formValues.map(option => (
-                    <Input
-                      key={option.id}
-                      label={`Option ${option.id}`}
-                      placeholder={`Option ${option.id}`}
-                      name={`${option.id}`}
-                      value={option.name}
-                      onChange={handleOptionChange}
-                    />
+                  formValues.map((option, index) => (
+                    <div className="naxatw-flex naxatw-gap-x-1 naxatw-items-end">
+                      <div className="naxatw-basis-11/12">
+                        <Input
+                          key={option.name}
+                          label={`Option ${index + 1}`}
+                          placeholder={`Option ${index + 1}`}
+                          name={`${option.id}`}
+                          value={option.name}
+                          onChange={handleOptionChange}
+                        />
+                      </div>
+                      {option.flag === 'post' && (
+                        <MaterialIcon
+                          name="delete_outline"
+                          className="naxatw-text-[#FF0F0F] naxatw-text-icon-md"
+                          wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer naxatw-basis-1/12"
+                          onIconClick={() => handleDeleteOption(option.id)}
+                        />
+                      )}
+                    </div>
                   ))}
               </div>
 
               <Button
-                className="naxatw-btn naxatw-btn-link naxatw-border"
+                className="naxatw-btn naxatw-btn-link "
                 onClick={handleAddOption}
               >
                 Add Option

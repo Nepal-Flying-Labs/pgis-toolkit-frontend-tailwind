@@ -714,6 +714,17 @@ const getFieldsDropdownOptionSuccess = (state, action) => {
   };
 };
 
+const deleteLayerAttributeSuccess = (state, action) => {
+  const data = action.payload;
+  const newData = state.individualAttributeData.filter(
+    item => item.id !== data.id,
+  );
+  return {
+    ...state,
+    individualAttributeData: newData,
+  };
+};
+
 const resetProjectMapState = state => ({
   ...initialState,
   mapSettings: state.mapSettings,
@@ -766,6 +777,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.UPDATE_LAYER_ATTRIBUTE_FIELDS_SUCCESS]:
     updateLayerAttributeFieldsSuccess,
   [Types.GET_FIELDS_DROPDOWN_OPTION_SUCCESS]: getFieldsDropdownOptionSuccess,
+  [Types.DELETE_LAYER_ATTRIBUTE_SUCCESS]: deleteLayerAttributeSuccess,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

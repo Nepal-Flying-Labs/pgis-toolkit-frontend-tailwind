@@ -147,7 +147,7 @@ const ManageAttributes = () => {
                 : () => {}
             }
           >
-            {tabname === 'data' && (
+            {tabname === 'manage-data' && (
               <TableHeader
                 dataField=""
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"

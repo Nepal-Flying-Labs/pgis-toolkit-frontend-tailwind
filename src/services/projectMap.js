@@ -65,3 +65,6 @@ export const postDropdownOption = data =>
 
 export const postLayerAttributeFields = data =>
   authenticated(api).post(`/maps/layer_attribute/`, data);
+
+export const deleteLayerAttribute = id =>
+  authenticated(api).delete(`/maps/layer_attribute/${id}/`);

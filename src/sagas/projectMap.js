@@ -30,6 +30,7 @@ import {
   updateDropdownOption,
   postDropdownOption,
   postLayerAttributeFields,
+  deleteLayerAttribute,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -431,6 +432,18 @@ export function* postLayerAttributeFieldsRequest({ payload }) {
   }
 }
 
+export function* deleteLayerAttributeRequest({ id }) {
+  try {
+    yield call(deleteLayerAttribute, id);
+    yield put(projectMapActions.deleteLayerAttributeSuccess({ id }));
+    yield put(commonActions.togglePromptDialog());
+    yield put(toastActions.success({ message: 'Delete attribute success.' }));
+  } catch (error) {
+    yield put(projectMapActions.deleteLayerAttributeFailure());
+    throw error;
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -531,6 +544,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.POST_LAYER_ATTRIBUTE_FIELDS_REQUEST,
     withLoader(withErrorHandler(postLayerAttributeFieldsRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_LAYER_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(deleteLayerAttributeRequest)),
   );
 }
 

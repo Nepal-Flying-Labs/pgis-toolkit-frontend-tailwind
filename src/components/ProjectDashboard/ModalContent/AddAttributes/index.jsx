@@ -100,6 +100,7 @@ const AddAttributes = () => {
       Types.POST_TEMPLATE_ATTRIBUTE_REQUEST,
       Types.UPDATE_TEMPLATE_ATTRIBUTE_REQUEST,
       ProjectMapTypes.UPDATE_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+      ProjectMapTypes.POST_LAYER_ATTRIBUTE_FIELDS_REQUEST,
     ]),
   );
   // const dropdownLoading = useSelector(state =>

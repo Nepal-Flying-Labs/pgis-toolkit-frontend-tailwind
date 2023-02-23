@@ -78,6 +78,7 @@
 - [ ] snap to self while edit
 - [ ] layer sync after data cleaning
 - [ ] copy helpbox from buffer analysis save to start
+- [ ] add icon drag feature to add feature
 
 ### ISSUES
 
@@ -90,4 +91,10 @@
 - [ ] change layer name with underscore while downloading layers
 - [ ] collapse sidebar in analysis page
 
+- [ ] go back option on data cleaning step two
+- [ ] search in data query
+- [ ] label in map (upen dai)
 
+
+### NEW TASK
+- [ ] handle image in add/edit feature 

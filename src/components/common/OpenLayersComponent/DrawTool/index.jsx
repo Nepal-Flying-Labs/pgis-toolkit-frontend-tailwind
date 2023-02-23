@@ -8,7 +8,9 @@ import React, {
   useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
+import { featureCollection } from '@turf/helpers';
 import { Collection } from 'ol';
+import { LineString } from 'ol/geom';
 import { Draw, Snap } from 'ol/interaction';
 import GeoJSON from 'ol/format/GeoJSON';
 import { get } from 'ol/proj';
@@ -23,6 +25,7 @@ import {
   pointTypes,
 } from '../helpers/styleUtils';
 import getFeatureGeojson from './helpers/getFeatureGeojson';
+import getFeaturesGeojson from './helpers/getFeaturesGeojson';
 import {
   useDrawUtils,
   AddFeature,
@@ -166,14 +169,15 @@ export default function DrawTool({
 
   useEffect(() => {
     source.on('addfeature', evt => {
-      console.log('addFeaturex');
       snapCollection.push(evt.feature);
+      evt.feature.setId('idx');
     });
     source.on('removefeature', evt => {
       snapCollection.remove(evt.feature);
     });
   }, [snapCollection]);
 
+  // handle add feature
   const handleDrawEnd = useCallback(
     feature => {
       const featureGeojson = getFeatureGeojson(feature);
@@ -181,6 +185,28 @@ export default function DrawTool({
       setModifiedFeature(feature);
       setDrawType(null);
       onChange(featureGeojson);
+    },
+    [onChange],
+  );
+
+  // handle extend feature
+  const handleExtendEnd = useCallback(
+    features => {
+      const coordinates1 = features[0].getGeometry().getCoordinates();
+      const coordinates2 = features[1].getGeometry().getCoordinates();
+      const union = new LineString(coordinates1.concat(coordinates2));
+      console.log(union, 'unionx');
+      // console.log(features, 'featuresx');
+      // const featureGeojsons = features.map(feature =>
+      //   getFeatureGeojson(feature),
+      // );
+      // console.log(featureGeojsons, 'featureGeojsonx');
+      const singleFeature = featureCollection(union);
+      console.log(singleFeature, 'singleFeaturex');
+      // setModifiedStates(prev => [...prev, featureGeojson]);
+      // setModifiedFeature(features);
+      // setDrawType(null);
+      // onChange(featureGeojson);
     },
     [onChange],
   );
@@ -299,8 +325,10 @@ export default function DrawTool({
       {toolboxContents.includes('extend') && lineTypes.includes(geometryType) && (
         <Tooltip content="Extend" direction="right">
           <ExtendFeature
+            type={geometryType}
             enable={drawType === 'extend-feature'}
             onClick={() => setDrawType('extend-feature')}
+            onDrawEnd={handleExtendEnd}
             {...props}
           />
         </Tooltip>

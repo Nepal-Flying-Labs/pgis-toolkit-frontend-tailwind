@@ -112,14 +112,15 @@ export function* patchProjectRequest({ id, payload }) {
     const formData = prepareFormData(newPayload);
     const response = yield call(patchProject, id, formData);
     yield put(organizationDashboardActions.patchProjectSuccess(response.data));
-    // yield put(organizationDashboardActions.toggleModal(''));
     if (!page) {
-      yield put(push(`/organizations/${organization}/projects`));
+      // yield put(push(`/organizations/${organization}/projects`));
       if (status === 'ongoing' && tabName !== 'Edit a Project') {
-        yield put(push(`/organizations/${organization}/projects`));
+        yield put(
+          push(`/organizations/${organization}/projects/${id}/manage-data`),
+        );
         yield put(commonActions.toggleModal('create-project-success'));
-      } else {
-        // yield put(commonActions.togglePromptDialog(''));
+      }
+      if (status !== 'draft') {
         yield put(push(`/organizations/${organization}/projects`));
       }
     } else {

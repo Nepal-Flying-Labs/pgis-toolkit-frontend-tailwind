@@ -93,6 +93,14 @@ const validation = formValues => {
     errors.thematicFocusArea = 'Choose Thematic Area';
   }
 
+  if (!formValues.contactName) {
+    errors.contactName = 'Contact Name is Required';
+  }
+
+  if (!formValues.contactEmail) {
+    errors.contactEmail = 'Contact Email is Required';
+  }
+
   if (formValues.contactName && formValues.contactEmail) {
     const pattern =
       /[a-zA-Z0-9]+[.]?([a-zA-Z0-9]+)?[@][a-z]{3,9}[.][a-z]{2,5}/g;
@@ -392,7 +400,7 @@ const BasicInfo = ({ setPage }) => {
       <div>
         <Input
           type="text"
-          label="Name of contact person"
+          label="Name of contact person*"
           name="contactName"
           value={values.contactName}
           onChange={handleChange}
@@ -415,7 +423,7 @@ const BasicInfo = ({ setPage }) => {
       <div>
         <Input
           type="email"
-          label="Email"
+          label="Email*"
           name="contactEmail"
           value={values.contactEmail}
           onChange={handleChange}

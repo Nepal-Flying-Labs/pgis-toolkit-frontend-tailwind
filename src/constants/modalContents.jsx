@@ -51,6 +51,7 @@ import AddDatasetCategory from '@Components/ProjectDashboard/ModalContent/AddDat
 import DeleteBufferResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteBufferResult/index';
 import DeleteRouteResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteRouteResult/index';
 import SaveManualFix from '@Components/ProjectDashboard/Analysis/ModalContent/SaveManualFix';
+import SignoutWarning from '@Components/OrganizationDashboard/ModalContent/SignoutWarning';
 
 export function getModalContent(content) {
   switch (content) {
@@ -385,6 +386,12 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <DeleteRouteResult />,
+      };
+
+    case 'signout-warning':
+      return {
+        title: '',
+        content: <SignoutWarning />,
       };
 
     default:

@@ -145,6 +145,13 @@ const BasicInfo = () => {
       const result = pattern.test(formValues.email);
       if (!result) errors.email = 'Enter a valid Email';
     }
+    if (!formValues.contact_person.name) {
+      errors.contactName = 'Contact Name is required';
+    }
+
+    if (!formValues.contact_person.email) {
+      errors.contactEmail = 'Contact Email is required';
+    }
 
     if (formValues.contact) {
       const pattern = /^[0-9\b]+$/;
@@ -420,7 +427,7 @@ const BasicInfo = () => {
         <div className="naxatw-space-y-2">
           <Input
             type="text"
-            label="Name of contact person"
+            label="Name of contact person*"
             name="name"
             value={values?.contact_person?.name || ''}
             onChange={handleContactPersonValues}
@@ -448,7 +455,7 @@ const BasicInfo = () => {
         <div className="naxatw-space-y-2">
           <Input
             type="email"
-            label="Email"
+            label="Email*"
             name="email"
             value={values?.contact_person?.email || ''}
             onChange={handleContactPersonValues}

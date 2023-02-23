@@ -4,8 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { Creators, Types } from '@Actions/organizationDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as AuthCreators } from '@Actions/authentication';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Spinner from '@Components/common/Spinner/index';
+import { isEmpty } from '@Utils/commonUtils';
 import BasicInfo from './FormPages/BasicInfo';
 import Location from './FormPages/Location';
 // import Documents from './FormPages/Documents';
@@ -17,6 +20,10 @@ const {
   getCountryListRequest,
   getProjectGeojsonRequest,
 } = Creators;
+
+const { getUserProfileRequest } = AuthCreators;
+
+const { togglePromptDialog } = CommonCreators;
 
 const getPage = (page, setPage) => {
   switch (page) {
@@ -44,16 +51,6 @@ const pageStatus = [
     value: 2,
     text: 'Location',
   },
-  // {
-  //   id: 3,
-  //   value: 3,
-  //   text: 'Documents',
-  // },
-  // {
-  //   id: 4,
-  //   value: 4,
-  //   text: 'Images',
-  // },
 ];
 
 const ProjectSetup = () => {
@@ -61,7 +58,12 @@ const ProjectSetup = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [page, setPage] = useState(1);
-
+  const project = useSelector(
+    state => state.organizationDashboard.individualProject.project,
+  );
+  const userProfile = useSelector(state => state.authentication.userProfile);
+  const landingPage = useSelector(state => state.authentication.landingPage);
+  const isProjectSetup = landingPage?.page.split('/').includes('project-setup');
   const loading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_INDIVIDUAL_PROJECT_REQUEST,
@@ -70,11 +72,22 @@ const ProjectSetup = () => {
   );
 
   useEffect(() => {
+    if (!isEmpty(userProfile)) return;
+    dispatch(getUserProfileRequest());
+  }, [dispatch, userProfile]);
+
+  useEffect(() => {
     dispatch(getIndividualProjectRequest(projectId));
     dispatch(getContactPersonRequest({ project: projectId, type: 'project' }));
     dispatch(getCountryListRequest());
-    dispatch(getProjectGeojsonRequest({ project: projectId }));
   }, [dispatch, projectId]);
+
+  useEffect(() => {
+    if (!project) return;
+    if (project.status !== 'draft') {
+      dispatch(getProjectGeojsonRequest({ project: projectId }));
+    }
+  }, [dispatch, project, projectId]);
 
   return (
     <div>
@@ -92,8 +105,13 @@ const ProjectSetup = () => {
           </div>
           <button
             type="button"
-            onClick={() =>
-              history.push(`/organizations/${organizationId}/projects`)
+            onClick={
+              isProjectSetup
+                ? () => {
+                    dispatch(togglePromptDialog('signout-warning'));
+                  }
+                : () =>
+                    history.push(`/organizations/${organizationId}/projects`)
             }
             className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-start "
           >

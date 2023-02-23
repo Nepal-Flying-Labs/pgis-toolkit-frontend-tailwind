@@ -101,8 +101,15 @@ export function* uploadDatasetsRequest({ payload }) {
         call(getLayerById, item.layer_id || item.data.id),
       ),
     );
+    const { themes } = yield select(state => state.projectMap);
     const layerData = layerResponses.map(res => res.data);
-    yield put(projectDashboardActions.uploadDatasetsSuccess(layerData));
+
+    // converting theme id to name
+    const newData = layerData.map(data => {
+      const theme = themes.filter(item => item.id === data.theme);
+      return { ...data, theme: theme[0].name };
+    });
+    yield put(projectDashboardActions.uploadDatasetsSuccess(newData));
     yield put(commonActions.toggleModal());
     if (layerData[0]?.layer_type === 'Vector') {
       yield put(

@@ -98,10 +98,9 @@ const getIndividualProjectSuccess = (state, action) => {
     ...state,
     individualProject: {
       ...state.individualProject,
-      othersThematicAreas: [
-        ...state.individualProject.othersThematicAreas,
-        ...thematic_areas,
-      ],
+      othersThematicAreas: thematic_areas
+        ? [...state.individualProject.othersThematicAreas, ...thematic_areas]
+        : [],
       project: {
         ...action.payload,
         file: file
@@ -127,7 +126,7 @@ const getIndividualProjectSuccess = (state, action) => {
             }
           : '',
         description,
-        thematic_areas,
+        thematic_areas: thematic_areas || [],
         start_date,
         end_date,
         partners,

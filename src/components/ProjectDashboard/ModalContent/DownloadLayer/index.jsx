@@ -45,7 +45,12 @@ export default function DownloadLayer() {
             <label className="naxatw-label">Select download format</label>
             <Select
               placeholder="Choose"
-              options={downloadOptions}
+              options={
+                selectedData.geom_type === 'Polygon' ||
+                selectedData.geom_type === 'MultiPolygon'
+                  ? downloadOptions.filter(item => item.value !== 'gpx')
+                  : downloadOptions
+              }
               label="label"
               value="value"
               onChange={selectedItem => setSelectedOption(selectedItem)}

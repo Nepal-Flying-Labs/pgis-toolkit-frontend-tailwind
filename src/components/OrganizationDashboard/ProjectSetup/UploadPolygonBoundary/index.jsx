@@ -90,8 +90,9 @@ function UploadPolygonBoundary({
           </Button>
           <div>
             <span className="naxatw-text-body-md naxatw-text-[#484848]">
-              Please ensure to upload a zipped file containing (.shp, .shx,
-              .dbf, .prj) for shapefile.
+              The system currently supports datasets in geojson and shapefile
+              formats with WGS 84 Geographic Coordinate System (EPSG: 4326)
+              only.
             </span>
           </div>
           <input

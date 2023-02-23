@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators } from '@Actions/bufferAnalysis';
 import Chip from '@Components/common/Chip';
+import Button from '@Components/common/Button/index';
 
 const { setDataInputState } = Creators;
 
@@ -16,15 +17,10 @@ const MapContent = () => {
   );
   return (
     <div>
-      <Chip
-        className="!naxatw-w-fit "
-        label={
-          originGeojson && originGeojson.length > 0
-            ? 'Add new point'
-            : 'Starting Point'
-        }
+      <Button
+        className="!naxatw-w-fit naxatw-btn naxatw-btn-link !naxatw-text-grey-800 naxatw-border naxatw-border-grey-300 hover:naxatw-border-grey-700"
         iconLeft="location_on"
-        active={drawPoint}
+        // active={drawPoint}
         onClick={() => {
           dispatch(
             setDataInputState({
@@ -32,11 +28,17 @@ const MapContent = () => {
             }),
           );
         }}
-      />
+      >
+        <span className="naxatw-text-body-lg">
+          {originGeojson && originGeojson.length > 0
+            ? 'Add new point'
+            : 'Starting Point'}
+        </span>
+      </Button>
       <div
         className={`naxatw-mt-2 ${
           originGeojson ? 'naxatw-bg-[#ffffff73]' : ''
-        } naxatw-p-2 naxatw-rounded-[20px] naxatw-py-1 naxatw-max-h-[100px] naxatw-max-w-[300px] naxatw-flex naxatw-flex-wrap naxatw-overflow-y-scroll scrollbar`}
+        } naxatw-p-2 naxatw-rounded-[20px] naxatw-py-1 naxatw-max-h-[100px] naxatw-flex naxatw-flex-wrap naxatw-overflow-y-scroll scrollbar naxatw-gap-1`}
       >
         {originGeojson &&
           originGeojson.map(origin => (

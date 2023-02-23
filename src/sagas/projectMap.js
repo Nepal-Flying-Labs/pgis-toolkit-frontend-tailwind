@@ -26,6 +26,11 @@ import {
   getLayerAttribute,
   getQueryAttribute,
   updateLayerAttributeFields,
+  getFieldsDropdownOption,
+  updateDropdownOption,
+  postDropdownOption,
+  postLayerAttributeFields,
+  deleteLayerAttribute,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -331,29 +336,110 @@ export function* updateLayerAttributeRequest({ id, payload }) {
 }
 
 export function* updateLayerAttributeFieldsRequest({ id, payload }) {
-  const formData = prepareFormData(payload);
   try {
+    const { patchData, postData, ...newData } = payload;
+    const formData = prepareFormData(newData);
     const response = yield call(updateLayerAttributeFields, id, formData);
+
+    if (!isEmpty(patchData)) {
+      yield all(
+        patchData.map(data =>
+          call(updateDropdownOption, data.id, {
+            name: data.name,
+            attribute: id,
+          }),
+        ),
+      );
+    }
+
+    if (!isEmpty(postData)) {
+      yield all(
+        postData.map(data =>
+          call(postDropdownOption, {
+            name: data.name,
+            attribute: data.attribute,
+          }),
+        ),
+      );
+    }
+
     yield put(
       projectMapActions.updateLayerAttributeFieldsSuccess(response.data),
     );
-    // if (!is_deleted) {
     yield put(commonActions.toggleModal('manage-attributes'));
     yield put(
       toastActions.success({
         message: 'Layer attribute fields saved successfully.',
       }),
     );
-    // } else {
-    //   yield put(commonActions.togglePromptDialog());
-    //   yield put(
-    //     toastActions.success({
-    //       message: 'Layer attribute deleted successfully.',
-    //     }),
-    //   );
-    // }
   } catch (error) {
     yield put(projectMapActions.updateLayerAttributeFieldsFailure());
+    throw error;
+  }
+}
+
+export function* updateDropdownFieldRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(updateLayerAttributeFields, id, formData);
+    if (response?.data?.dropdown_field)
+      yield put(
+        projectMapActions.getFieldsDropdownOptionRequest({ attribute: id }),
+      );
+  } catch (error) {
+    yield put(projectMapActions.updateDropdownFailure());
+    throw error;
+  }
+}
+
+export function* getFieldsDropdownOptionRequest({ params }) {
+  try {
+    const response = yield call(getFieldsDropdownOption, params);
+    yield put(projectMapActions.getFieldsDropdownOptionSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getFieldsDropdownFailure());
+    throw error;
+  }
+}
+
+export function* postLayerAttributeFieldsRequest({ payload }) {
+  try {
+    const { postData, ...newData } = payload;
+    const { source, ...filterData } = newData;
+    const formData = prepareFormData(filterData);
+    const response = yield call(postLayerAttributeFields, formData);
+    console.log(response, 'response');
+
+    yield all(
+      postData.map(data =>
+        call(postDropdownOption, {
+          name: data.name,
+          attribute: response.data.id,
+        }),
+      ),
+    );
+
+    yield put(projectMapActions.postLayerAttributeFieldsSuccess(response.data));
+    yield put(commonActions.toggleModal('manage-attributes'));
+    yield put(
+      toastActions.success({
+        message: 'Layer attribute fields added successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.postLayerAttributeFieldsFailure());
+    throw error;
+  }
+}
+
+export function* deleteLayerAttributeRequest({ id }) {
+  try {
+    yield call(deleteLayerAttribute, id);
+    yield put(projectMapActions.deleteLayerAttributeSuccess({ id }));
+    yield put(commonActions.togglePromptDialog());
+    yield put(toastActions.success({ message: 'Delete attribute success.' }));
+  } catch (error) {
+    yield put(projectMapActions.deleteLayerAttributeFailure());
     throw error;
   }
 }
@@ -446,6 +532,22 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.UPDATE_LAYER_ATTRIBUTE_FIELDS_REQUEST,
     withLoader(withErrorHandler(updateLayerAttributeFieldsRequest)),
+  );
+  yield takeLatest(
+    Types.GET_FIELDS_DROPDOWN_OPTION_REQUEST,
+    withLoader(withErrorHandler(getFieldsDropdownOptionRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_DROPDOWN_FIELD_REQUEST,
+    withLoader(withErrorHandler(updateDropdownFieldRequest)),
+  );
+  yield takeLatest(
+    Types.POST_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+    withLoader(withErrorHandler(postLayerAttributeFieldsRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_LAYER_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(deleteLayerAttributeRequest)),
   );
 }
 

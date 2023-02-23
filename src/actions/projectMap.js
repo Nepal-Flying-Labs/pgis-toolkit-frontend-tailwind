@@ -125,6 +125,22 @@ export const { Types, Creators } = createActions(
     updateLayerAttributeFieldsRequest: ['id', 'payload'],
     updateLayerAttributeFieldsSuccess: ['payload'],
     updateLayerAttributeFieldsFailure: null,
+
+    updateDropdownFieldRequest: ['id', 'payload'],
+    updateDropdownFieldSuccess: ['payload'],
+    updateDropdownFieldFailure: null,
+
+    getFieldsDropdownOptionRequest: ['params'],
+    getFieldsDropdownOptionSuccess: ['payload'],
+    getFieldsDropdownOptionFailure: null,
+
+    postLayerAttributeFieldsRequest: ['payload'],
+    postLayerAttributeFieldsSuccess: ['payload'],
+    postLayerAttributeFieldsFailure: null,
+
+    deleteLayerAttributeRequest: ['id'],
+    deleteLayerAttributeSuccess: ['payload'],
+    deleteLayerAttributeFailure: null,
   },
   { prefix: 'projectMap/' },
 );

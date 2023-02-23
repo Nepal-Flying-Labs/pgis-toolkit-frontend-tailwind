@@ -66,7 +66,7 @@
 - [x] unique id for null, multipart
 - [x] change cursor while hovering
 
-- [x] save text to check 
+- [x] save text to check
 - [x] not zooming to feature after multipart explode
 - [x] highlight select after toolbar icon toggle
 - [x] zoom to layer not working for explode parent
@@ -83,9 +83,9 @@
 
 - [x] map page to data to map reset checkbox state in project map
 
-- [ ] sign in by user/email (raj)
+- [x] sign in by user/email (raj)
 - [ ] replace landing page photo
-- [ ] others in thematic focus area
-- [ ] country list change select list
+- [x] others in thematic focus area
+- [x] country list change select list
 - [ ] change layer name with underscore while downloading layers
-- [ ] collapse sidebar in analysis page
+- [x] collapse sidebar in analysis page

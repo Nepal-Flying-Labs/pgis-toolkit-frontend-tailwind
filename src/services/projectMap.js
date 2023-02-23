@@ -53,3 +53,18 @@ export const getFeatureGeojson = id =>
 
 export const updateLayerAttributeFields = (id, data) =>
   authenticated(api).patch(`/maps/layer_attribute/${id}/`, data);
+
+export const getFieldsDropdownOption = params =>
+  authenticated(api).get(`/maps/dropdown_choice/`, { params });
+
+export const updateDropdownOption = (id, data) =>
+  authenticated(api).patch(`/maps/dropdown_choice/${id}/`, data);
+
+export const postDropdownOption = data =>
+  authenticated(api).post(`/maps/dropdown_choice/`, data);
+
+export const postLayerAttributeFields = data =>
+  authenticated(api).post(`/maps/layer_attribute/`, data);
+
+export const deleteLayerAttribute = id =>
+  authenticated(api).delete(`/maps/layer_attribute/${id}/`);

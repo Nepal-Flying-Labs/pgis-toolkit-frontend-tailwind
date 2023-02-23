@@ -16,7 +16,7 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import SortingContainer from '@Components/common/SortingContainer';
 import Searchbar from '@Components/common/Searchbar/index';
 import Pagination from '@Components/common/Pagination';
-import DropdownOptions from '@Components/common/DropdownOptions';
+import CustomDropdownOptions from '@Components/common/CustomDropdownOptions/index';
 import TableSkeleton from '@Components/common/TableSkeleton';
 
 const { togglePromptDialog } = CommonCreator;
@@ -219,7 +219,7 @@ export default function OrganizationList() {
               rowcolSpan="rowSpan_3"
               dataFormat={row => (
                 <div className="naxatw-flex naxatw-justify-end naxatw-w-full">
-                  <DropdownOptions
+                  <CustomDropdownOptions
                     options={dropdownOptions}
                     data={row}
                     stopPropagation

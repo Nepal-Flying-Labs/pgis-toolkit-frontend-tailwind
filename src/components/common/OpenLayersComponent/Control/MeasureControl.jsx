@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-unused-prop-types */
 /* eslint-disable react/require-default-props */
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Vector as OLVectorLayer } from 'ol/layer';
@@ -17,7 +17,15 @@ import { Polygon, LineString } from 'ol/geom';
 import { unByKey } from 'ol/Observable';
 import useOutsideClick from '@Hooks/useOutsideClick';
 
-function MeasureControl({ map, style, buttonText, measureBoth = false }) {
+function MeasureControl({
+  map,
+  style,
+  buttonText,
+  measureBoth = false,
+  // eslint-disable-next-line react/prop-types
+  onMeasureToggle,
+}) {
+  const [isMeasureEnabled, setIsMeasureEnabled] = useState(false);
   const [divRef, toggle, handleToggle] = useOutsideClick();
 
   // const controlRef = useRef(null);
@@ -27,6 +35,11 @@ function MeasureControl({ map, style, buttonText, measureBoth = false }) {
   let measureVector;
   let measureDraw;
 
+  useEffect(() => {
+    onMeasureToggle(isMeasureEnabled);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMeasureEnabled]);
+
   const clickHandler = ({ type = 'Polygon' }) => {
     const element = document.querySelector('.ol-tooltip-static');
     if (element) {
@@ -34,6 +47,7 @@ function MeasureControl({ map, style, buttonText, measureBoth = false }) {
     }
     map.removeLayer(measureVector);
     map.removeInteraction(measureDraw);
+    setIsMeasureEnabled(false);
 
     const measureSource = new VectorSource();
     measureVector = new OLVectorLayer({
@@ -125,6 +139,7 @@ function MeasureControl({ map, style, buttonText, measureBoth = false }) {
         }),
       });
       map.addInteraction(measureDraw);
+      setIsMeasureEnabled(true);
       createMeasureTooltip();
       let listener;
       measureDraw.on('drawstart', evt => {
@@ -148,6 +163,7 @@ function MeasureControl({ map, style, buttonText, measureBoth = false }) {
         measureTooltipElement.className = 'ol-tooltip ol-tooltip-static';
         measureTooltip.setOffset([0, -7]);
         map.removeInteraction(measureDraw);
+        setIsMeasureEnabled(false);
         sketch = null;
         measureTooltipElement = null;
         unByKey(listener);

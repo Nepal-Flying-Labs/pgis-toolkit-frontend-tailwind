@@ -195,7 +195,7 @@ export default function UploadDataset() {
     <div>
       <p className="naxatw-text-body-lg">
         Note: The system currently supports datasets with WGS 84 Geographic
-        Coordinate System only.
+        Coordinate System (EPSG: 4326) only.
       </p>
 
       <div

@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable arrow-body-style */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import Input from '@Components/common/Input';
@@ -14,6 +13,9 @@ import {
 import { checkIfLoading } from '@Utils/loaderSelector';
 import useForm from '@Hooks/useForm';
 import Toggle from '@Components/common/Toggle/index';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
+import isEmpty from '@Utils/isEmpty';
+import toastActions from '@Actions/toast';
 
 const {
   postTemplateAttributeRequest,
@@ -21,7 +23,13 @@ const {
   updateTemplateAttributeRequest,
 } = Creators;
 
-const { updateLayerAttributeFieldsRequest } = ProjectMapCreators;
+const {
+  updateLayerAttributeFieldsRequest,
+  updateDropdownFieldRequest,
+  getFieldsDropdownOptionRequest,
+  setProjectMapState,
+  postLayerAttributeFieldsRequest,
+} = ProjectMapCreators;
 
 function diffObject(a, b) {
   const diffObj = Object.keys(b).reduce((diff, key) => {
@@ -32,6 +40,12 @@ function diffObject(a, b) {
     };
   }, {});
   return diffObj;
+}
+
+function validate(data) {
+  const newData = data.map(d => (d.name ? { ...d } : { ...d, error: true }));
+  const errorData = newData.filter(d => d.error);
+  return errorData.length > 0;
 }
 
 const initialState = {
@@ -78,16 +92,48 @@ const AddAttributes = () => {
   const selectedData = useSelector(
     state => state.projectDashboard.data.manageData.selectedData,
   );
+  const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
+  const showModal = useSelector(state => state.common.showModal);
+  const modalContent = useSelector(state => state.common.modalContent);
   const loading = useSelector(state =>
     checkIfLoading(state, [
       Types.POST_TEMPLATE_ATTRIBUTE_REQUEST,
       Types.UPDATE_TEMPLATE_ATTRIBUTE_REQUEST,
       ProjectMapTypes.UPDATE_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+      ProjectMapTypes.POST_LAYER_ATTRIBUTE_FIELDS_REQUEST,
     ]),
   );
+  // const dropdownLoading = useSelector(state =>
+  //   checkIfLoading(state, [ProjectMapTypes.GET_FIELDS_DROPDOWN_OPTION_REQUEST]),
+  // );
   const individualAttribute = useSelector(
     state => state.projectDashboard.data.manageData.individualAttribute,
   );
+  const dropdownOptions = useSelector(
+    state => state.projectMap.fieldsDropdownOptions,
+  );
+
+  const [formValues, setFormValues] = useState(dropdownOptions || []);
+  const [isDropdown, setIsDropdown] = useState(
+    individualAttribute?.dropdown_field ? 'yes' : 'no',
+  );
+
+  // reset state on modal unmount
+  useEffect(() => {
+    if (
+      showModal &&
+      (modalContent === 'add-attributes' ||
+        modalContent === 'manage-attributes')
+    )
+      return;
+
+    dispatch(setProjectMapState({ selectedLayer: null }));
+  }, [dispatch, showModal, modalContent]);
+
+  useEffect(() => {
+    setFormValues(dropdownOptions);
+  }, [dropdownOptions]);
+
   const { values, handleChange, handleSubmit, handleCustomChange } = useForm({
     initialValues: individualAttribute || initialState,
     onSubmit: data => {
@@ -100,30 +146,109 @@ const AddAttributes = () => {
             }),
           );
         } else {
+          const patchData = formValues.filter(
+            item => item.flag === 'patch' && item.isChanged,
+          );
+          const postData = formValues.filter(item => item.flag === 'post');
           dispatch(
-            updateLayerAttributeFieldsRequest(
-              individualAttribute.id,
-              finalPayload,
-            ),
+            updateLayerAttributeFieldsRequest(individualAttribute.id, {
+              ...finalPayload,
+              patchData,
+              postData,
+            }),
           );
         }
-      } else {
+      } else if (tabname === 'manage-data') {
         dispatch(
           postTemplateAttributeRequest({
             ...values,
-            data_type: values.type,
+            data_type: values.data_type,
             layer_template: selectedData.id,
           }),
+        );
+      } else if (
+        (isDropdown === 'yes' && !validate(formValues)) ||
+        isDropdown === 'no'
+      ) {
+        dispatch(
+          postLayerAttributeFieldsRequest({
+            ...values,
+            data_type: values.data_type,
+            layer: selectedLayer.id,
+            dropdown_field: isDropdown === 'yes' ? 'True' : 'False',
+            postData: formValues,
+          }),
+        );
+      } else {
+        dispatch(
+          toastActions.error({ message: 'Options field cannot be empty' }),
         );
       }
     },
   });
 
+  const handleDropdownChange = e => {
+    setIsDropdown(e.target.value);
+    if (individualAttribute)
+      dispatch(
+        updateDropdownFieldRequest(individualAttribute.id, {
+          dropdown_field: e.target.value === 'yes',
+        }),
+      );
+  };
+
+  const handleOptionChange = e => {
+    const { value } = e.target;
+    const newData = formValues.map(item =>
+      item.id === +e.target.name
+        ? { ...item, name: value, isChanged: true }
+        : { ...item },
+    );
+    setFormValues(newData);
+  };
+
+  const handleAddOption = () => {
+    setFormValues([
+      {
+        id: Date.now(),
+        name: '',
+        flag: 'post',
+        attribute: individualAttribute?.id || '',
+      },
+      ...formValues,
+    ]);
+  };
+
+  const handleDeleteOption = id => {
+    const newData = formValues.filter(data => data.id !== id);
+    setFormValues(newData);
+  };
+
   useEffect(() => {
-    return () => {
+    if (!individualAttribute && isDropdown === 'yes') {
+      setFormValues([
+        { id: 1, name: '' },
+        { id: 2, name: '' },
+      ]);
+    }
+  }, [individualAttribute, isDropdown]);
+
+  useEffect(() => {
+    if (individualAttribute?.dropdown_field) {
+      dispatch(
+        getFieldsDropdownOptionRequest({ attribute: individualAttribute.id }),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [individualAttribute]);
+
+  useEffect(
+    () => () => {
       dispatch(clearIndividualAttribute());
-    };
-  }, [dispatch]);
+      dispatch(setProjectMapState({ fieldsDropdownOptions: null }));
+    },
+    [dispatch],
+  );
 
   return (
     <div className="naxatw-container ">
@@ -135,6 +260,8 @@ const AddAttributes = () => {
             name="name"
             value={values.name || ''}
             onChange={handleChange}
+            className={individualAttribute ? 'naxatw-input-disabled' : ''}
+            disabled={!!individualAttribute}
           />
           <Input
             label="Alias"
@@ -143,9 +270,9 @@ const AddAttributes = () => {
             value={values.alias || ''}
             onChange={handleChange}
           />
-          <div className="naxatw-flex naxatw-gap-x-5">
+          <div className="naxatw-flex naxatw-gap-x-5 naxatw-justify-between">
             <div className="naxatw-basis-2/4 naxatw-space-y-2">
-              <label className="naxatw-text-body-btn">Type</label>
+              <label className="naxatw-label">Type</label>
               <Select
                 placeholder="Choose"
                 options={type}
@@ -161,7 +288,7 @@ const AddAttributes = () => {
             </div>
             {tabname === 'manage-data' ? (
               <div className="naxatw-basis-2/4 naxatw-space-y-2">
-                <label className="naxatw-text-body-btn">Source</label>
+                <label className="naxatw-label">Source</label>
                 <Select
                   placeholder="Choose"
                   options={source}
@@ -174,8 +301,8 @@ const AddAttributes = () => {
                 />
               </div>
             ) : (
-              <div className="naxatw-basis-2/4 naxatw-space-y-2">
-                <label className="naxatw-text-body-btn">Mandatory</label>
+              <div className="naxatw-basis-1/4 naxatw-space-y-2">
+                <label className="naxatw-label">Is mandatory?</label>
                 <div className="naxatw-flex naxatw-items-center naxatw-h-[40px]">
                   <Toggle
                     checked={values.mandatory}
@@ -187,6 +314,79 @@ const AddAttributes = () => {
               </div>
             )}
           </div>
+          {tabname === 'map' && (
+            <div className="naxatw-basis-1/4 naxatw-space-y-2">
+              <label className="naxatw-label">Is choice/dropdown field?</label>
+              <div className="naxatw-flex naxatw-gap-x-3">
+                <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                  <input
+                    id="button_yes"
+                    type="radio"
+                    value="yes"
+                    name="gender"
+                    onChange={handleDropdownChange}
+                    checked={isDropdown === 'yes'}
+                  />
+                  <label htmlFor="button_yes" className="naxatw-label">
+                    Yes
+                  </label>
+                </div>
+                <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                  <input
+                    id="button_no"
+                    type="radio"
+                    value="no"
+                    name="gender"
+                    onChange={handleDropdownChange}
+                    checked={isDropdown === 'no'}
+                  />
+                  <label htmlFor="button_no" className="naxatw-label">
+                    No
+                  </label>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isDropdown === 'yes' && (
+            <div className="naxatw-space-y-2">
+              <span className="naxatw-text-body-lg naxatw-font-semibold">
+                Choice Options
+              </span>
+              <div className="naxatw-max-h-[200px] naxatw-space-y-2 naxatw-overflow-y-auto scrollbar naxatw-px-3 naxatw-py-2">
+                {formValues &&
+                  formValues.map((option, index) => (
+                    <div className="naxatw-flex naxatw-gap-x-1 naxatw-items-end">
+                      <div className="naxatw-basis-11/12">
+                        <Input
+                          key={option.id}
+                          label={`Option ${index + 1}`}
+                          placeholder={`Option ${index + 1}`}
+                          name={`${option.id}`}
+                          value={option.name}
+                          onChange={handleOptionChange}
+                        />
+                      </div>
+                      {option.flag === 'post' && (
+                        <MaterialIcon
+                          name="delete_outline"
+                          className="naxatw-text-[#FF0F0F] naxatw-text-icon-md"
+                          wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer naxatw-basis-1/12"
+                          onIconClick={() => handleDeleteOption(option.id)}
+                        />
+                      )}
+                    </div>
+                  ))}
+              </div>
+
+              <Button
+                className="naxatw-btn naxatw-btn-link "
+                onClick={handleAddOption}
+              >
+                Add Option
+              </Button>
+            </div>
+          )}
         </div>
         <div className="naxatw-flex naxatw-justify-center">
           <Button
@@ -195,7 +395,7 @@ const AddAttributes = () => {
             loaderClassName="naxatw-fill-secondary-400"
             onClick={handleSubmit}
           >
-            {individualAttribute ? 'Edit' : 'Add'}
+            {individualAttribute ? 'Save' : 'Add'}
           </Button>
         </div>
       </div>

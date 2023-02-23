@@ -20,7 +20,7 @@ export default function SearchContent() {
 
   return (
     <div className="naxatw-select-none">
-      <div className="naxatw-space-y-1 naxatw-max-w-[300px]">
+      <div className="naxatw-space-y-1">
         <SearchOSM
           isSmall
           placeholder="Origin Point"
@@ -44,7 +44,7 @@ export default function SearchContent() {
         <div
           className={`naxatw-mt-2 ${
             originGeojson ? 'naxatw-bg-[#ffffff73]' : ''
-          } naxatw-p-2 naxatw-rounded-[20px] naxatw-py-1 naxatw-space-y-1 naxatw-max-h-[100px] naxatw-w-[300px] naxatw-flex naxatw-flex-wrap naxatw-overflow-y-scroll naxatw-overflow-x-hidden scrollbar`}
+          } naxatw-p-2 naxatw-rounded-[20px] naxatw-py-1 naxatw-gap-1 naxatw-max-h-[100px] naxatw-flex naxatw-flex-wrap naxatw-overflow-y-scroll naxatw-overflow-x-hidden scrollbar`}
         >
           {originGeojson &&
             originGeojson.map(origin => (

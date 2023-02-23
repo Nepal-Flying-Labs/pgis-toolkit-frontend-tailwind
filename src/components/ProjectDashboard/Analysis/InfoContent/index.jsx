@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import IconButton from '@Components/common/IconButton';
@@ -17,18 +17,28 @@ export default function InfoContent() {
     state => state.common.projectHeaderHeight,
   );
 
+  const divRefs = useRef({});
+
+  useEffect(() => {
+    divRefs.current?.[selectedInfo]?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+      inline: 'nearest',
+    });
+  }, [selectedInfo]);
+
   useEffect(() => {
     setCollapsed(false);
   }, [selectedInfo]);
 
   return (
     <div
-      className={`naxatw-absolute naxatw-top-5 naxatw-right-4  naxatw-z-10
-        naxatw-bg-white naxatw-text-grey-800 naxatw-rounded-[20px] naxatw-border naxatw-border-grey-300 
+      className={`naxatw-absolute naxatw-top-0 naxatw-right-0  naxatw-z-10
+        naxatw-bg-white naxatw-text-grey-800 naxatw-border naxatw-border-grey-300 
         naxatw-shadow-3xl ${collapsed ? '' : 'naxatw-w-[21.2rem]'}`}
     >
       <div
-        onClick={() => setCollapsed(!collapsed)}
+        // onClick={() => setCollapsed(!collapsed)}
         className={`naxatw-px-4 naxatw-py-2 naxatw-flex naxatw-items-center naxatw-justify-between naxatw-rounded-t-[20px] naxatw-cursor-pointer ${
           collapsed ? 'naxatw-rounded-b-[20px]' : ''
         }`}
@@ -55,17 +65,20 @@ export default function InfoContent() {
           className="naxatw-px-4 naxatw-py-3 naxatw-pt-0 naxatw-space-y-3 naxatw-border-b
             naxatw-border-b-grey-300 last:naxatw-border-b-0 naxatw-overflow-y-auto scrollbar"
           style={{
-            maxHeight: `calc(100vh - ${projectHeaderHeight}px - 14rem)`,
+            maxHeight: `calc(100vh - ${projectHeaderHeight}px - 8rem)`,
           }}
         >
-          <div
-            className="naxatw-text-body-md naxatw-flex naxatw-flex-col naxatw-space-y-1.5"
-            dangerouslySetInnerHTML={{
-              __html: selectedInfo
-                ? analysisInfoContents?.[analysisType]?.[selectedInfo]
-                : analysisInfoContents?.[analysisType]?.default,
-            }}
-          />
+          {Object.keys(analysisInfoContents?.[analysisType]).map(info => (
+            <div
+              ref={el => {
+                divRefs.current[info] = el;
+              }}
+              className="naxatw-text-body-md naxatw-flex naxatw-flex-col naxatw-space-y-1.5"
+              dangerouslySetInnerHTML={{
+                __html: analysisInfoContents?.[analysisType]?.[info],
+              }}
+            />
+          ))}
         </ul>
       )}
     </div>

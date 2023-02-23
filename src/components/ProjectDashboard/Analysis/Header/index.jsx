@@ -39,7 +39,7 @@ export default function Header() {
           <h3>{headerData[analysisType]?.title || ''}</h3>
           {tabname === 'analysis' && (
             <div
-              onMouseOver={() => dispatch(setSelectedInfo(null))}
+              onMouseOver={() => dispatch(setSelectedInfo('default'))}
               // onMouseOut={() => dispatch(setSelectedInfo(null))}
               onBlur={() => {}}
               onFocus={() => {}}

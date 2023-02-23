@@ -313,37 +313,39 @@ const AddAttributes = () => {
               </div>
             )}
           </div>
-          <div className="naxatw-basis-1/4 naxatw-space-y-2">
-            <label className="naxatw-label">Is choice/dropdown field?</label>
-            <div className="naxatw-flex naxatw-gap-x-3">
-              <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
-                <input
-                  id="button_yes"
-                  type="radio"
-                  value="yes"
-                  name="gender"
-                  onChange={handleDropdownChange}
-                  checked={isDropdown === 'yes'}
-                />
-                <label htmlFor="button_yes" className="naxatw-label">
-                  Yes
-                </label>
-              </div>
-              <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
-                <input
-                  id="button_no"
-                  type="radio"
-                  value="no"
-                  name="gender"
-                  onChange={handleDropdownChange}
-                  checked={isDropdown === 'no'}
-                />
-                <label htmlFor="button_no" className="naxatw-label">
-                  No
-                </label>
+          {tabname === 'map' && (
+            <div className="naxatw-basis-1/4 naxatw-space-y-2">
+              <label className="naxatw-label">Is choice/dropdown field?</label>
+              <div className="naxatw-flex naxatw-gap-x-3">
+                <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                  <input
+                    id="button_yes"
+                    type="radio"
+                    value="yes"
+                    name="gender"
+                    onChange={handleDropdownChange}
+                    checked={isDropdown === 'yes'}
+                  />
+                  <label htmlFor="button_yes" className="naxatw-label">
+                    Yes
+                  </label>
+                </div>
+                <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                  <input
+                    id="button_no"
+                    type="radio"
+                    value="no"
+                    name="gender"
+                    onChange={handleDropdownChange}
+                    checked={isDropdown === 'no'}
+                  />
+                  <label htmlFor="button_no" className="naxatw-label">
+                    No
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {isDropdown === 'yes' && (
             <div className="naxatw-space-y-2">

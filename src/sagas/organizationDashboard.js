@@ -99,6 +99,7 @@ export function* getIndividualProjectRequest({ id }) {
       organizationDashboardActions.getIndividualProjectSuccess(response.data),
     );
   } catch (error) {
+    console.log(error, 'error');
     yield put(organizationDashboardActions.getIndividualProjectFailure());
     throw error;
   }

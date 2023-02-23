@@ -309,7 +309,7 @@ const BasicInfo = ({ setPage }) => {
               ...values.thematic_areas,
             ]);
           }}
-          selected={values?.thematic_areas}
+          selected={values?.thematic_areas || []}
           othersOptions={values?.selectedThematic}
         />
 

@@ -260,6 +260,7 @@ const AddAttributes = () => {
             name="name"
             value={values.name || ''}
             onChange={handleChange}
+            className={individualAttribute ? 'naxatw-input-disabled' : ''}
             disabled={!!individualAttribute}
           />
           <Input

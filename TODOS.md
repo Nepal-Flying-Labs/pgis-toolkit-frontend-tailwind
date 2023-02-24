@@ -89,3 +89,5 @@
 - [x] country list change select list
 - [ ] change layer name with underscore while downloading layers
 - [x] collapse sidebar in analysis page
+
+- [ ] check error change error => errors

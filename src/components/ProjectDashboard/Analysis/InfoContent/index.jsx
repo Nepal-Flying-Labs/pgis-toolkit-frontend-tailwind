@@ -22,7 +22,7 @@ export default function InfoContent() {
   useEffect(() => {
     divRefs.current?.[selectedInfo]?.scrollIntoView({
       behavior: 'smooth',
-      block: 'end',
+      block: 'start',
       inline: 'nearest',
     });
   }, [selectedInfo]);
@@ -34,11 +34,11 @@ export default function InfoContent() {
   return (
     <div
       className={`naxatw-absolute naxatw-top-0 naxatw-right-0  naxatw-z-10
-        naxatw-bg-white naxatw-text-grey-800 naxatw-border naxatw-border-grey-300 
-        naxatw-shadow-3xl ${collapsed ? '' : 'naxatw-w-[21.2rem]'}`}
+        naxatw-bg-white naxatw-text-grey-800 naxatw-border naxatw-rounded-[20px] naxatw-border-grey-300 
+         ${collapsed ? '' : 'naxatw-w-[22.813rem]'}`}
     >
       <div
-        // onClick={() => setCollapsed(!collapsed)}
+        onClick={() => setCollapsed(!collapsed)}
         className={`naxatw-px-4 naxatw-py-2 naxatw-flex naxatw-items-center naxatw-justify-between naxatw-rounded-t-[20px] naxatw-cursor-pointer ${
           collapsed ? 'naxatw-rounded-b-[20px]' : ''
         }`}
@@ -62,10 +62,10 @@ export default function InfoContent() {
 
       {!collapsed && (
         <ul
-          className="naxatw-px-4 naxatw-py-3 naxatw-pt-0 naxatw-space-y-3 naxatw-border-b
+          className="naxatw-px-5 naxatw-py-3 naxatw-pt-0 naxatw-space-y-3 naxatw-border-b
             naxatw-border-b-grey-300 last:naxatw-border-b-0 naxatw-overflow-y-auto scrollbar"
           style={{
-            maxHeight: `calc(100vh - ${projectHeaderHeight}px - 8rem)`,
+            maxHeight: `calc(100vh - ${projectHeaderHeight}px - 7rem)`,
           }}
         >
           {Object.keys(analysisInfoContents?.[analysisType]).map(info => (
@@ -73,7 +73,7 @@ export default function InfoContent() {
               ref={el => {
                 divRefs.current[info] = el;
               }}
-              className="naxatw-text-body-md naxatw-flex naxatw-flex-col naxatw-space-y-1.5"
+              className="naxatw-text-body-lg naxatw-flex naxatw-flex-col naxatw-space-y-1.5"
               dangerouslySetInnerHTML={{
                 __html: analysisInfoContents?.[analysisType]?.[info],
               }}

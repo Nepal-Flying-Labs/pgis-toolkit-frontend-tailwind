@@ -18,6 +18,8 @@ function getStatusIcon(status) {
   switch (status) {
     case 'checking':
       return { color: '#FF5A5F', icon: 'rotate_right' };
+    case 'fixing':
+      return { color: '#FF5A5F', icon: 'rotate_right' };
     case 'error':
       return { color: '#FFB100', icon: 'error_outline' };
     case 'fix-failed':
@@ -47,6 +49,9 @@ export default function StepTwo() {
   );
 
   const isAllChecked = Object.keys(errorStates).length === data.length;
+
+  console.log(data, 'datax');
+  console.log(errorStates, 'errorStatesx');
 
   return (
     <div>

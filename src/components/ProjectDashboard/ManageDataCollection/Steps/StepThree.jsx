@@ -8,8 +8,10 @@ import { useParams } from 'react-router';
 import Button from '@Components/common/Button/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { Creators, Types } from '@Actions/projectDashboard';
+import { Creators as CommonCreators } from '@Actions/common';
 
 const { downloadBulkTemplateRequest } = Creators;
+const { toggleModal } = CommonCreators;
 
 const StepThree = () => {
   const token = localStorage.getItem('userToken');
@@ -47,7 +49,9 @@ const StepThree = () => {
               className="naxatw-btn-secondary naxatw-btn-noborder naxatw-mt-3 "
               isLoading={loading}
               loaderClassName="naxatw-fill-secondary-400"
-              onClick={handleStandardDownload}
+              onClick={() => {
+                dispatch(toggleModal('download-template'));
+              }}
             >
               Download
             </Button>

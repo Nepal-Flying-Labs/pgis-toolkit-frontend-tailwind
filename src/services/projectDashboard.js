@@ -82,7 +82,7 @@ export const updateTemplateAttribute = (id, payload) =>
   );
 
 export const downloadBulkTemplate = params =>
-  authenticated(api).get(`/maps/bulk_template_download/`, { params });
+  authenticated(downloadApi).get(`/maps/bulk_template_download/`, { params });
 
 export const getUsers = params =>
   authenticated(api).get('/users/user/', { params });

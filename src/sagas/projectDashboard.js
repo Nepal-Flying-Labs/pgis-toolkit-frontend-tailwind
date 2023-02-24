@@ -494,17 +494,19 @@ export function* deleteTemplateAttributeRequest({ id, payload }) {
 }
 
 export function* downloadBulkTemplateRequest({ params }) {
+  // const { output_format } = params;
+
   try {
     const response = yield call(downloadBulkTemplate, params);
-    const url = response.request.responseURL;
+    const blob = new Blob([response.data], {
+      type: 'application/octet-stream',
+    });
     const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'template.zip'); // or any other extension
-    document.body.appendChild(link);
+    link.href = URL.createObjectURL(blob);
+    link.download = 'template.zip';
     link.click();
-    yield put(
-      projectDashboardActions.downloadBulkTemplateSuccess(response.data),
-    );
+    yield put(toastActions.success({ message: 'Layer Download Completed.' }));
+    yield put(commonActions.toggleModal());
   } catch (error) {
     yield put(projectDashboardActions.downloadBulkTemplateFailure());
     throw error;

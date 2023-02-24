@@ -50,9 +50,6 @@ export default function StepTwo() {
 
   const isAllChecked = Object.keys(errorStates).length === data.length;
 
-  console.log(data, 'datax');
-  console.log(errorStates, 'errorStatesx');
-
   return (
     <div>
       {/* <h4>Data</h4> */}
@@ -183,7 +180,8 @@ export default function StepTwo() {
                           <span>
                             {status === 'error' || status === 'success' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">
-                                <b>{errorData}</b> error out of{' '}
+                                <b>{errorData}</b>{' '}
+                                {errorData > 1 ? 'errors' : 'error'} out of{' '}
                                 <b>{totalData}</b> data
                               </p>
                             ) : status === 'fix-failed' ? (

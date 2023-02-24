@@ -12,7 +12,7 @@ export default function PrivateRoute({ path, component: Component }) {
 
   const getRedirectRoute = () => {
     if (token) {
-      history.goBack();
+      history.push(landingPage.page);
     }
   };
 

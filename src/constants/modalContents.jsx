@@ -52,6 +52,7 @@ import DeleteBufferResult from '@Components/ProjectDashboard/Analysis/ModalConte
 import DeleteRouteResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteRouteResult/index';
 import SaveManualFix from '@Components/ProjectDashboard/Analysis/ModalContent/SaveManualFix';
 import SignoutWarning from '@Components/OrganizationDashboard/ModalContent/SignoutWarning';
+import DownloadTemplate from '@Components/ProjectDashboard/ModalContent/DownloadTemplate/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -253,6 +254,12 @@ export function getModalContent(content) {
         title: 'Buffer Attribute',
         content: <ViewBufferAttribute />,
         className: '!naxatw-w-[50rem]',
+      };
+
+    case 'download-template':
+      return {
+        title: 'Download Template',
+        content: <DownloadTemplate />,
       };
     default:
       return {

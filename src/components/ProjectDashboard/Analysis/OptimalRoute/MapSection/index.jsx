@@ -42,6 +42,7 @@ import { apiURL } from '@Services';
 import HelpBox from './HelpBox';
 import RoutePopup from './RoutePopup';
 import SidebarToggle from '../../SidebarToggle/index';
+import InfoContent from '../../InfoContent/index';
 
 const { setDataInputState, setResultsState, setRouteAnalysisState } =
   RouteAnalysisCreators;
@@ -56,6 +57,7 @@ export default function MapSection() {
   const roadNetworkLayer = useSelector(
     state => state.routeAnalysis.roadNetworkLayer,
   );
+  const activeTab = useSelector(state => state.routeAnalysis.activeTab);
   const drawPointType = useSelector(
     state => state.routeAnalysis.dataInput.drawPointType,
   );
@@ -198,6 +200,8 @@ export default function MapSection() {
           </span>
         </div>
       )}
+
+      {activeTab === 'dataInput' && <InfoContent />}
 
       <MapComponent
         ref={mapRef}

@@ -323,9 +323,9 @@ export default function MapSection() {
             />
           ))}
         <MaskedLayer geojson={projectGeojson} />
-        {analysisType === 'proximity-analysis' && showResultsPopup && (
-          <BufferPopup />
-        )}
+        {analysisType === 'proximity-analysis' &&
+          activeTab === 'results' &&
+          showResultsPopup && <BufferPopup />}
 
         <MapFooter loading={isMapLoading} />
       </MapComponent>

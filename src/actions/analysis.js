@@ -41,6 +41,8 @@ export const { Types, Creators } = createActions(
 
     setSelectedInfo: ['payload'],
     toggleSidebar: ['payload'],
+
+    resetAnalysisState: null,
   },
   { prefix: 'analysis/' },
 );

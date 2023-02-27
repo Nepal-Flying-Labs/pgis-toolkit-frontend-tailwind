@@ -130,3 +130,9 @@ export const postTemplateDropdownOption = data =>
     '/maps/project_layer_template_attribute_dropdown_choice/',
     data,
   );
+
+export const updateTemplateDropdownOption = (id, data) =>
+  authenticated(api).patch(
+    `/maps/project_layer_template_attribute_dropdown_choice/${id}/`,
+    data,
+  );

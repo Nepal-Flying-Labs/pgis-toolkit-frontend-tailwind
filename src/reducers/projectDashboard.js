@@ -537,16 +537,20 @@ const updateDataLayerSuccess = (state, action) => {
   };
 };
 
-const getTemplateDropdownChoiceSuccess = (state, action) => ({
-  ...state,
-  data: {
-    ...state.data,
-    manageData: {
-      ...state.data.manageData,
-      dropdownOptions: action.payload,
+const getTemplateDropdownChoiceSuccess = (state, action) => {
+  const data = action.payload.map(item => ({ ...item, flag: 'patch' }));
+
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      manageData: {
+        ...state.data.manageData,
+        dropdownOptions: data,
+      },
     },
-  },
-});
+  };
+};
 
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,

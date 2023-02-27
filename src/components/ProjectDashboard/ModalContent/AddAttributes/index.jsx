@@ -146,18 +146,20 @@ const AddAttributes = () => {
     initialValues: individualAttribute || initialState,
     onSubmit: data => {
       if (individualAttribute) {
+        const patchData = formValues.filter(
+          item => item.flag === 'patch' && item.isChanged,
+        );
+        const postData = formValues.filter(item => item.flag === 'post');
         const finalPayload = diffObject(individualAttribute, values);
         if (tabname === 'manage-data') {
           dispatch(
             updateTemplateAttributeRequest(individualAttribute.id, {
-              ...values,
+              ...finalPayload,
+              patchData,
+              postData,
             }),
           );
         } else {
-          const patchData = formValues.filter(
-            item => item.flag === 'patch' && item.isChanged,
-          );
-          const postData = formValues.filter(item => item.flag === 'post');
           dispatch(
             updateLayerAttributeFieldsRequest(individualAttribute.id, {
               ...finalPayload,

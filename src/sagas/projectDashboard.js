@@ -50,6 +50,7 @@ import {
   postDatasetTheme,
   getTemplateDropdownChoice,
   postTemplateDropdownOption,
+  updateTemplateDropdownOption,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -57,6 +58,7 @@ import {
   uploadLayer,
 } from '@Services/projectMap';
 import prepareFormData from '@Utils/prepareFormData';
+import { isEmpty } from '@Utils/commonUtils';
 // import JSZip from 'jszip';
 // import { saveAs } from 'file-saver';
 
@@ -479,7 +481,31 @@ export function* postTemplateAttributeRequest({ payload }) {
 
 export function* updateTemplateAttributeRequest({ id, payload }) {
   try {
-    const response = yield call(updateTemplateAttribute, id, payload);
+    const { patchData, postData, ...newData } = payload;
+    const formData = prepareFormData(newData);
+    const response = yield call(updateTemplateAttribute, id, formData);
+
+    if (!isEmpty(patchData)) {
+      yield all(
+        patchData.map(data =>
+          call(updateTemplateDropdownOption, data.id, {
+            name: data.name,
+            attribute: id,
+          }),
+        ),
+      );
+    }
+
+    if (!isEmpty(postData)) {
+      yield all(
+        postData.map(data =>
+          call(postTemplateDropdownOption, {
+            name: data.name,
+            attribute: data.attribute,
+          }),
+        ),
+      );
+    }
     yield put(
       projectDashboardActions.updateTemplateAttributeSuccess(response.data),
     );

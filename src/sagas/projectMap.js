@@ -174,7 +174,27 @@ export function* saveMapConfigRequest({ params, payload }) {
 export function* getLayerAttributeFieldsRequest({ params }) {
   try {
     const response = yield call(getLayerAttributeFields, params);
-    yield put(projectMapActions.getLayerAttributeFieldsSuccess(response.data));
+    const dropdownFields = response.data.filter(data => data.dropdown_field);
+    const optionsResponse = yield all(
+      dropdownFields.map(field =>
+        call(getFieldsDropdownOption, { attribute: field.id }),
+      ),
+    );
+
+    const dropdownOptions = dropdownFields.map((item, index) => ({
+      ...item,
+      options: optionsResponse[index].data,
+    }));
+
+    const finalData = response.data.map(item => {
+      const newData = dropdownOptions.filter(opt => opt.id === item.id);
+      if (isEmpty(newData)) {
+        return { ...item };
+      }
+      return { ...newData[0] };
+    });
+
+    yield put(projectMapActions.getLayerAttributeFieldsSuccess(finalData));
   } catch (error) {
     yield put(projectMapActions.getLayerAttributeFieldsFailure());
     throw error;

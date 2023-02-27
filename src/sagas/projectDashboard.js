@@ -49,6 +49,7 @@ import {
   downloadProjectLayer,
   postDatasetTheme,
   getTemplateDropdownChoice,
+  postTemplateDropdownOption,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -453,7 +454,18 @@ export function* postAttributeSelectionRequest({ payload }) {
 
 export function* postTemplateAttributeRequest({ payload }) {
   try {
-    const response = yield call(postTemplateAttribute, payload);
+    const { postData, source, ...newData } = payload;
+    // const formData = prepareFormData(newData);
+    const response = yield call(postTemplateAttribute, newData);
+
+    yield all(
+      postData.map(data =>
+        call(postTemplateDropdownOption, {
+          name: data.name,
+          attribute: response.data.data.id,
+        }),
+      ),
+    );
     yield put(
       projectDashboardActions.postTemplateAttributeSuccess(response.data.data),
     );

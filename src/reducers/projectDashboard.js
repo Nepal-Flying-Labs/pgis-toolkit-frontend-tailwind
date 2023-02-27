@@ -543,7 +543,7 @@ const getTemplateDropdownChoiceSuccess = (state, action) => ({
     ...state.data,
     manageData: {
       ...state.data.manageData,
-      dropdownOptions: action.paylaod,
+      dropdownOptions: action.payload,
     },
   },
 });

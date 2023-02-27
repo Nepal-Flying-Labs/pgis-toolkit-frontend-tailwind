@@ -172,6 +172,8 @@ const AddAttributes = () => {
             ...values,
             data_type: values.data_type,
             layer_template: selectedData.id,
+            dropdown_field: isDropdown === 'yes',
+            postData: formValues,
           }),
         );
       } else if (

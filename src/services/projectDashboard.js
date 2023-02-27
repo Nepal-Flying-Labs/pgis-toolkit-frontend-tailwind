@@ -124,3 +124,9 @@ export const getTemplateDropdownChoice = params =>
     '/maps/project_layer_template_attribute_dropdown_choice/',
     { params },
   );
+
+export const postTemplateDropdownOption = data =>
+  authenticated(api).post(
+    '/maps/project_layer_template_attribute_dropdown_choice/',
+    data,
+  );

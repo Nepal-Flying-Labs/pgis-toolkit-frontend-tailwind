@@ -408,7 +408,6 @@ export function* postLayerAttributeFieldsRequest({ payload }) {
     const { source, ...filterData } = newData;
     const formData = prepareFormData(filterData);
     const response = yield call(postLayerAttributeFields, formData);
-    console.log(response, 'response');
 
     yield all(
       postData.map(data =>

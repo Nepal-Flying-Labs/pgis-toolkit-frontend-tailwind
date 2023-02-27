@@ -171,7 +171,7 @@ export default function DataInput() {
               <label className="naxatw-label naxatw-flex naxatw-items-center">
                 {analysisType === 'buffer-analysis'
                   ? 'Buffer Radius'
-                  : 'Proximity Distance'}
+                  : 'Proximity Radius'}
                 <div
                   onMouseOver={() => dispatch(setSelectedInfo('bufferRadius'))}
                   // onMouseOut={() => dispatch(setSelectedInfo(null))}

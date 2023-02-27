@@ -343,7 +343,7 @@ export function* updateLayerAttributeFieldsRequest({ id, payload }) {
 
     if (!isEmpty(patchData)) {
       yield all(
-        patchData.map(data =>
+        patchData?.map(data =>
           call(updateDropdownOption, data.id, {
             name: data.name,
             attribute: id,
@@ -354,7 +354,7 @@ export function* updateLayerAttributeFieldsRequest({ id, payload }) {
 
     if (!isEmpty(postData)) {
       yield all(
-        postData.map(data =>
+        postData?.map(data =>
           call(postDropdownOption, {
             name: data.name,
             attribute: data.attribute,
@@ -409,15 +409,16 @@ export function* postLayerAttributeFieldsRequest({ payload }) {
     const formData = prepareFormData(filterData);
     const response = yield call(postLayerAttributeFields, formData);
 
-    yield all(
-      postData.map(data =>
-        call(postDropdownOption, {
-          name: data.name,
-          attribute: response.data.id,
-        }),
-      ),
-    );
-
+    if (!isEmpty(postData)) {
+      yield all(
+        postData?.map(data =>
+          call(postDropdownOption, {
+            name: data.name,
+            attribute: response.data.id,
+          }),
+        ),
+      );
+    }
     yield put(projectMapActions.postLayerAttributeFieldsSuccess(response.data));
     yield put(commonActions.toggleModal('manage-attributes'));
     yield put(
@@ -439,6 +440,16 @@ export function* deleteLayerAttributeRequest({ id }) {
     yield put(toastActions.success({ message: 'Delete attribute success.' }));
   } catch (error) {
     yield put(projectMapActions.deleteLayerAttributeFailure());
+    throw error;
+  }
+}
+
+export function* getLayerAttributeListRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttributeFields, params);
+    yield put(projectMapActions.getLayerAttributeListSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getLayerAttributeListFailure());
     throw error;
   }
 }
@@ -547,6 +558,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.DELETE_LAYER_ATTRIBUTE_REQUEST,
     withLoader(withErrorHandler(deleteLayerAttributeRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_ATTRIBUTE_LIST_REQUEST,
+    withLoader(withErrorHandler(getLayerAttributeListRequest)),
   );
 }
 

@@ -17,6 +17,7 @@ import Toggle from '@Components/common/Toggle/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import isEmpty from '@Utils/isEmpty';
 import toastActions from '@Actions/toast';
+import Spinner from '@Components/common/Spinner/index';
 
 const {
   postTemplateAttributeRequest,
@@ -79,6 +80,11 @@ const type = [
     name: 'date',
     displayName: 'Date',
   },
+  {
+    id: 5,
+    name: 'image',
+    displayName: 'Image',
+  },
 ];
 
 const source = [
@@ -106,12 +112,14 @@ const AddAttributes = () => {
       ProjectMapTypes.POST_LAYER_ATTRIBUTE_FIELDS_REQUEST,
     ]),
   );
-  // const dropdownLoading = useSelector(state =>
-  //   checkIfLoading(state, [
-  //     ProjectMapTypes.GET_FIELDS_DROPDOWN_OPTION_REQUEST,
-  //     Types.GET_TEMPLATE_DROPDOWN_CHOICE_REQUEST,
-  //   ]),
-  // );
+  const dropdownLoading = useSelector(state =>
+    checkIfLoading(state, [
+      ProjectMapTypes.GET_FIELDS_DROPDOWN_OPTION_REQUEST,
+      ProjectMapTypes.UPDATE_DROPDOWN_FIELD_REQUEST,
+      Types.UPDATE_TEMPLATE_DROPDOWN_REQUEST,
+      Types.GET_TEMPLATE_DROPDOWN_CHOICE_REQUEST,
+    ]),
+  );
   const individualAttribute = useSelector(
     state => state.projectDashboard.data.manageData.individualAttribute,
   );
@@ -146,10 +154,11 @@ const AddAttributes = () => {
     initialValues: individualAttribute || initialState,
     onSubmit: data => {
       if (individualAttribute) {
-        const patchData = formValues.filter(
+        // console.log(formValues, 'values');
+        const patchData = formValues?.filter(
           item => item.flag === 'patch' && item.isChanged,
         );
-        const postData = formValues.filter(item => item.flag === 'post');
+        const postData = formValues?.filter(item => item.flag === 'post');
         const finalPayload = diffObject(individualAttribute, values);
         if (tabname === 'manage-data') {
           dispatch(
@@ -381,45 +390,51 @@ const AddAttributes = () => {
             </div>
           </div>
 
-          {isDropdown === 'yes' && (
-            <div className="naxatw-space-y-2">
-              <span className="naxatw-text-body-lg naxatw-font-semibold">
-                Choice Options
-              </span>
-              <div className="naxatw-max-h-[200px] naxatw-space-y-2 naxatw-overflow-y-auto scrollbar naxatw-px-3 naxatw-py-2">
-                {formValues &&
-                  formValues.map((option, index) => (
-                    <div className="naxatw-flex naxatw-gap-x-1 naxatw-items-end">
-                      <div className="naxatw-basis-11/12">
-                        <Input
-                          key={option.id}
-                          label={`Option ${index + 1}`}
-                          placeholder={`Option ${index + 1}`}
-                          name={`${option.id}`}
-                          value={option.name}
-                          onChange={handleOptionChange}
-                        />
+          {isDropdown === 'yes' &&
+            (!dropdownLoading ? (
+              <div className="naxatw-space-y-2">
+                <span className="naxatw-text-body-lg naxatw-font-semibold">
+                  Choice Options
+                </span>
+                <div className="naxatw-max-h-[200px] naxatw-space-y-2 naxatw-overflow-y-auto scrollbar naxatw-px-3 naxatw-py-2">
+                  {formValues &&
+                    formValues.map((option, index) => (
+                      <div
+                        key={option.id}
+                        className="naxatw-flex naxatw-gap-x-1 naxatw-items-end"
+                      >
+                        <div className="naxatw-basis-11/12">
+                          <Input
+                            key={option.id}
+                            label={`Option ${index + 1}`}
+                            placeholder={`Option ${index + 1}`}
+                            name={`${option.id}`}
+                            value={option.name}
+                            onChange={handleOptionChange}
+                          />
+                        </div>
+                        {option.flag === 'post' && (
+                          <MaterialIcon
+                            name="delete_outline"
+                            className="naxatw-text-[#FF0F0F] naxatw-text-icon-md"
+                            wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer naxatw-basis-1/12"
+                            onIconClick={() => handleDeleteOption(option.id)}
+                          />
+                        )}
                       </div>
-                      {option.flag === 'post' && (
-                        <MaterialIcon
-                          name="delete_outline"
-                          className="naxatw-text-[#FF0F0F] naxatw-text-icon-md"
-                          wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer naxatw-basis-1/12"
-                          onIconClick={() => handleDeleteOption(option.id)}
-                        />
-                      )}
-                    </div>
-                  ))}
-              </div>
+                    ))}
+                </div>
 
-              <Button
-                className="naxatw-btn naxatw-btn-link "
-                onClick={handleAddOption}
-              >
-                Add Option
-              </Button>
-            </div>
-          )}
+                <Button
+                  className="naxatw-btn naxatw-btn-link "
+                  onClick={handleAddOption}
+                >
+                  Add Option
+                </Button>
+              </div>
+            ) : (
+              <Spinner className="naxatw-w-6 naxatw-h-6 naxatw-fill-primary-400" />
+            ))}
         </div>
         <div className="naxatw-flex naxatw-justify-center">
           <Button

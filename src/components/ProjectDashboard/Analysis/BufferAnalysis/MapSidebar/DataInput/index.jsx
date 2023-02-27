@@ -80,6 +80,8 @@ export default function DataInput() {
 
   const poiLayers = useSelector(state => state.bufferAnalysis.poiLayers);
 
+  const selectedInfo = useSelector(state => state.analysis.selectedInfo);
+
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.APPLY_BUFFER_ANALYSIS_REQUEST]),
   );
@@ -173,7 +175,10 @@ export default function DataInput() {
                   ? 'Buffer Radius'
                   : 'Proximity Radius'}
                 <div
-                  onMouseOver={() => dispatch(setSelectedInfo('bufferRadius'))}
+                  onMouseOver={() => {
+                    if (selectedInfo === 'bufferRadius') return;
+                    dispatch(setSelectedInfo('bufferRadius'));
+                  }}
                   // onMouseOut={() => dispatch(setSelectedInfo(null))}
                   onBlur={() => {}}
                   onFocus={() => {}}

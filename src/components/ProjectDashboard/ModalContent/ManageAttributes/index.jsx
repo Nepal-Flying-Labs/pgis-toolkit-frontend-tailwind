@@ -27,8 +27,7 @@ const {
   setIndividualAttribute,
   clearAttributeListData,
 } = Creators;
-const { getLayerAttributeFieldsRequest, setProjectMapState } =
-  ProjectMapCreators;
+const { getLayerAttributeListRequest, setProjectMapState } = ProjectMapCreators;
 
 const ManageAttributes = () => {
   const { tabname } = useParams();
@@ -44,7 +43,7 @@ const ManageAttributes = () => {
     state => state.projectDashboard.data.manageData.attributeList,
   );
   const individualAttributeData = useSelector(
-    state => state.projectMap.individualAttributeData,
+    state => state.projectMap.attributeList,
   );
 
   // reset state on modal unmount
@@ -56,7 +55,7 @@ const ManageAttributes = () => {
     )
       return;
 
-    dispatch(setProjectMapState({ selectedLayer: null }));
+    dispatch(setProjectMapState({ selectedLayer: null, attributeList: null }));
   }, [dispatch, showModal, modalContent]);
 
   useEffect(() => {
@@ -70,17 +69,25 @@ const ManageAttributes = () => {
   useEffect(() => {
     if (!selectedData && !selectedLayer) return;
     if (tabname === 'manage-data') {
-      if (attributeList.length < 1)
+      if (!attributeList)
         dispatch(getLayerAttributeRequest({ layer_template: selectedData.id }));
     }
     if (tabname === 'map')
-      dispatch(getLayerAttributeFieldsRequest({ layer: selectedLayer.id }));
-  }, [attributeList, dispatch, selectedData, selectedLayer, tabname]);
+      if (!individualAttributeData)
+        dispatch(getLayerAttributeListRequest({ layer: selectedLayer.id }));
+  }, [
+    attributeList,
+    dispatch,
+    individualAttributeData,
+    selectedData,
+    selectedLayer,
+    tabname,
+  ]);
 
   const loading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_LAYER_ATTRIBUTE_REQUEST,
-      ProjectMapTypes.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+      ProjectMapTypes.GET_LAYER_ATTRIBUTE_LIST_REQUEST,
     ]),
   );
 

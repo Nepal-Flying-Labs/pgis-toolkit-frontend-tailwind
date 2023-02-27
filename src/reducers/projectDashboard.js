@@ -14,7 +14,7 @@ const initialState = {
       layerTemplate: [],
       selectedLayer: null,
       individualAttribute: null,
-      attributeList: [],
+      attributeList: null, // []
       dropdownOptions: null,
     },
   },
@@ -386,7 +386,8 @@ const clearAttributeListData = state => ({
     ...state.data,
     manageData: {
       ...state.data.manageData,
-      attributeList: [],
+      attributeList: null,
+      selectedData: null,
     },
   },
 });

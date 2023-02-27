@@ -48,6 +48,7 @@ import {
   updateInvitedUserStatus,
   downloadProjectLayer,
   postDatasetTheme,
+  getTemplateDropdownChoice,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -707,6 +708,32 @@ export function* updateDataLayerRequest({ id, payload }) {
   }
 }
 
+export function* updateTemplateDropdownRequest({ id, payload }) {
+  try {
+    yield call(updateTemplateAttribute, id, payload);
+    yield put(
+      projectDashboardActions.getTemplateDropdownChoiceRequest({
+        attribute: id,
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.updateTemplateDropdownFailure());
+    throw error;
+  }
+}
+
+export function* getTemplateDropdownChoiceRequest({ params }) {
+  try {
+    const response = yield call(getTemplateDropdownChoice, params);
+    yield put(
+      projectDashboardActions.getTemplateDropdownChoiceSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.getTemplateDropdownChoiceFailure());
+    throw error;
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -886,6 +913,14 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.UPDATE_DATA_LAYER_REQUEST,
     withLoader(withErrorHandler(updateDataLayerRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_TEMPLATE_DROPDOWN_REQUEST,
+    withLoader(withErrorHandler(updateTemplateDropdownRequest)),
+  );
+  yield takeLatest(
+    Types.GET_TEMPLATE_DROPDOWN_CHOICE_REQUEST,
+    withLoader(withErrorHandler(getTemplateDropdownChoiceRequest)),
   );
 }
 

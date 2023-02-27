@@ -129,3 +129,6 @@
 - [ ] export to excel in detail/summary
 - [ ] x/y label in chart
 - [ ] Clicking on "Visualize" does not do anything?
+
+- [ ] boundary (attribute data not available)
+- [ ] prevent boundary edit delete

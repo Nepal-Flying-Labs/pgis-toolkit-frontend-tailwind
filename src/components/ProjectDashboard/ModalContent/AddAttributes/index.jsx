@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +22,8 @@ const {
   postTemplateAttributeRequest,
   clearIndividualAttribute,
   updateTemplateAttributeRequest,
+  updateTemplateDropdownRequest,
+  getTemplateDropdownChoiceRequest,
 } = Creators;
 
 const {
@@ -104,13 +107,18 @@ const AddAttributes = () => {
     ]),
   );
   // const dropdownLoading = useSelector(state =>
-  //   checkIfLoading(state, [ProjectMapTypes.GET_FIELDS_DROPDOWN_OPTION_REQUEST]),
+  //   checkIfLoading(state, [
+  //     ProjectMapTypes.GET_FIELDS_DROPDOWN_OPTION_REQUEST,
+  //     Types.GET_TEMPLATE_DROPDOWN_CHOICE_REQUEST,
+  //   ]),
   // );
   const individualAttribute = useSelector(
     state => state.projectDashboard.data.manageData.individualAttribute,
   );
   const dropdownOptions = useSelector(
-    state => state.projectMap.fieldsDropdownOptions,
+    tabname === 'map'
+      ? state => state.projectMap.fieldsDropdownOptions
+      : state => state.projectDashboard.data.manageData.dropdownOptions,
   );
 
   const [formValues, setFormValues] = useState(dropdownOptions || []);
@@ -190,11 +198,17 @@ const AddAttributes = () => {
   const handleDropdownChange = e => {
     setIsDropdown(e.target.value);
     if (individualAttribute)
-      dispatch(
-        updateDropdownFieldRequest(individualAttribute.id, {
-          dropdown_field: e.target.value === 'yes',
-        }),
-      );
+      tabname === 'map'
+        ? dispatch(
+            updateDropdownFieldRequest(individualAttribute.id, {
+              dropdown_field: e.target.value === 'yes',
+            }),
+          )
+        : dispatch(
+            updateTemplateDropdownRequest(individualAttribute.id, {
+              dropdown_field: e.target.value === 'yes',
+            }),
+          );
   };
 
   const handleOptionChange = e => {
@@ -233,11 +247,27 @@ const AddAttributes = () => {
     }
   }, [individualAttribute, isDropdown]);
 
+  // useEffect(() => {
+  //   if (individualAttribute && !dropdownOptions && isDropdown === 'yes')
+  //     setFormValues([
+  //       { id: 1, name: '' },
+  //       { id: 2, name: '' },
+  //     ]);
+  // }, [dropdownOptions, individualAttribute, isDropdown]);
+
   useEffect(() => {
     if (individualAttribute?.dropdown_field) {
-      dispatch(
-        getFieldsDropdownOptionRequest({ attribute: individualAttribute.id }),
-      );
+      tabname === 'map'
+        ? dispatch(
+            getFieldsDropdownOptionRequest({
+              attribute: individualAttribute.id,
+            }),
+          )
+        : dispatch(
+            getTemplateDropdownChoiceRequest({
+              attribute: individualAttribute.id,
+            }),
+          );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [individualAttribute]);
@@ -314,39 +344,38 @@ const AddAttributes = () => {
               </div>
             )}
           </div>
-          {tabname === 'map' && (
-            <div className="naxatw-basis-1/4 naxatw-space-y-2">
-              <label className="naxatw-label">Is choice/dropdown field?</label>
-              <div className="naxatw-flex naxatw-gap-x-3">
-                <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
-                  <input
-                    id="button_yes"
-                    type="radio"
-                    value="yes"
-                    name="gender"
-                    onChange={handleDropdownChange}
-                    checked={isDropdown === 'yes'}
-                  />
-                  <label htmlFor="button_yes" className="naxatw-label">
-                    Yes
-                  </label>
-                </div>
-                <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
-                  <input
-                    id="button_no"
-                    type="radio"
-                    value="no"
-                    name="gender"
-                    onChange={handleDropdownChange}
-                    checked={isDropdown === 'no'}
-                  />
-                  <label htmlFor="button_no" className="naxatw-label">
-                    No
-                  </label>
-                </div>
+
+          <div className="naxatw-basis-1/4 naxatw-space-y-2">
+            <label className="naxatw-label">Is choice/dropdown field?</label>
+            <div className="naxatw-flex naxatw-gap-x-3">
+              <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                <input
+                  id="button_yes"
+                  type="radio"
+                  value="yes"
+                  name="gender"
+                  onChange={handleDropdownChange}
+                  checked={isDropdown === 'yes'}
+                />
+                <label htmlFor="button_yes" className="naxatw-label">
+                  Yes
+                </label>
+              </div>
+              <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                <input
+                  id="button_no"
+                  type="radio"
+                  value="no"
+                  name="gender"
+                  onChange={handleDropdownChange}
+                  checked={isDropdown === 'no'}
+                />
+                <label htmlFor="button_no" className="naxatw-label">
+                  No
+                </label>
               </div>
             </div>
-          )}
+          </div>
 
           {isDropdown === 'yes' && (
             <div className="naxatw-space-y-2">

@@ -40,6 +40,7 @@ const initialState = {
     queryResults: [],
     selectedData: null,
   },
+  attributeList: null, // []
   layerAttributesList: {
     attributeList: [],
     searchTerm: '',
@@ -695,14 +696,32 @@ const updateLayerAttributeFieldsSuccess = (state, action) => {
     alias: data.alias,
     data_type: data.data_type,
     mandatory: data.mandatory,
+    dropdown_field: data.dropdown_field,
   };
-  const newData = state.individualAttributeData.map(item =>
+  const newData = state.attributeList.map(item =>
     item.id !== data.id ? { ...item } : { ...filterData },
   );
 
   return {
     ...state,
-    individualAttributeData: newData,
+    attributeList: newData,
+  };
+};
+
+const postLayerAttributeFieldsSuccess = (state, action) => {
+  const data = action.payload;
+  const filterData = {
+    id: data.id,
+    name: data.name,
+    alias: data.alias,
+    data_type: data.data_type,
+    mandatory: data.mandatory,
+    dropdown_field: data.dropdown_field,
+  };
+
+  return {
+    ...state,
+    attributeList: [filterData, ...state.attributeList],
   };
 };
 
@@ -716,12 +735,22 @@ const getFieldsDropdownOptionSuccess = (state, action) => {
 
 const deleteLayerAttributeSuccess = (state, action) => {
   const data = action.payload;
-  const newData = state.individualAttributeData.filter(
-    item => item.id !== data.id,
-  );
+  const newData = state.attributeList.filter(item => item.id !== data.id);
   return {
     ...state,
-    individualAttributeData: newData,
+    attributeList: newData,
+  };
+};
+
+const getLayerAttributeListSuccess = (state, action) => {
+  const { layerAttributes } = state;
+  const individualAttributeData = action.payload.map(item => ({
+    ...item,
+    value: layerAttributes?.[`${item.name}`] || '',
+  }));
+  return {
+    ...state,
+    attributeList: individualAttributeData,
   };
 };
 
@@ -776,8 +805,10 @@ const projectMapReducer = createReducer(initialState, {
   [Types.UPDATE_LAYER_ATTRIBUTE_SUCCESS]: updateLayerAttributeSuccess,
   [Types.UPDATE_LAYER_ATTRIBUTE_FIELDS_SUCCESS]:
     updateLayerAttributeFieldsSuccess,
+  [Types.POST_LAYER_ATTRIBUTE_FIELDS_SUCCESS]: postLayerAttributeFieldsSuccess,
   [Types.GET_FIELDS_DROPDOWN_OPTION_SUCCESS]: getFieldsDropdownOptionSuccess,
   [Types.DELETE_LAYER_ATTRIBUTE_SUCCESS]: deleteLayerAttributeSuccess,
+  [Types.GET_LAYER_ATTRIBUTE_LIST_SUCCESS]: getLayerAttributeListSuccess,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

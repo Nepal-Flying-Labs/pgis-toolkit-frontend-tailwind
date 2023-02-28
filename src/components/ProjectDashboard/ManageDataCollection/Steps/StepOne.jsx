@@ -11,7 +11,7 @@ const StepOne = ({ option, setOption }) => {
   return (
     <div className="naxatw-container ">
       <div className="md:naxatw-w-[800px] md:naxatw-mx-auto">
-        <h4 className="naxatw-mb-2">Data Import</h4>
+        <h4 className="naxatw-mb-2 naxatw-font-semibold">Data Import</h4>
         <p className="naxatw-text-body-lg">
           USAFIRI allows for data import from multiple sources, but it is
           important to review the Data Requirement document before beginning the

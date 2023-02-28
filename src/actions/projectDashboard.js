@@ -209,6 +209,14 @@ export const { Types, Creators } = createActions(
     updateDataLayerRequest: ['id', 'payload'],
     updateDataLayerSuccess: ['payload'],
     updateDataLayerFailure: null,
+
+    updateTemplateDropdownRequest: ['id', 'payload'],
+    updateTemplateDropdownSuccess: ['payload'],
+    updateTemplateDropdownFailure: null,
+
+    getTemplateDropdownChoiceRequest: ['params'],
+    getTemplateDropdownChoiceSuccess: ['payload'],
+    getTemplateDropdownChoiceFailure: null,
   },
   { prefix: 'projectDashboard/' },
 );

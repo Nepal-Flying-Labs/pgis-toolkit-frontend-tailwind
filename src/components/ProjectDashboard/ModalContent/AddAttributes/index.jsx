@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,11 +17,14 @@ import Toggle from '@Components/common/Toggle/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import isEmpty from '@Utils/isEmpty';
 import toastActions from '@Actions/toast';
+import Spinner from '@Components/common/Spinner/index';
 
 const {
   postTemplateAttributeRequest,
   clearIndividualAttribute,
   updateTemplateAttributeRequest,
+  updateTemplateDropdownRequest,
+  getTemplateDropdownChoiceRequest,
 } = Creators;
 
 const {
@@ -76,6 +80,11 @@ const type = [
     name: 'date',
     displayName: 'Date',
   },
+  {
+    id: 5,
+    name: 'image',
+    displayName: 'Image',
+  },
 ];
 
 const source = [
@@ -103,14 +112,21 @@ const AddAttributes = () => {
       ProjectMapTypes.POST_LAYER_ATTRIBUTE_FIELDS_REQUEST,
     ]),
   );
-  // const dropdownLoading = useSelector(state =>
-  //   checkIfLoading(state, [ProjectMapTypes.GET_FIELDS_DROPDOWN_OPTION_REQUEST]),
-  // );
+  const dropdownLoading = useSelector(state =>
+    checkIfLoading(state, [
+      ProjectMapTypes.GET_FIELDS_DROPDOWN_OPTION_REQUEST,
+      ProjectMapTypes.UPDATE_DROPDOWN_FIELD_REQUEST,
+      Types.UPDATE_TEMPLATE_DROPDOWN_REQUEST,
+      Types.GET_TEMPLATE_DROPDOWN_CHOICE_REQUEST,
+    ]),
+  );
   const individualAttribute = useSelector(
     state => state.projectDashboard.data.manageData.individualAttribute,
   );
   const dropdownOptions = useSelector(
-    state => state.projectMap.fieldsDropdownOptions,
+    tabname === 'map'
+      ? state => state.projectMap.fieldsDropdownOptions
+      : state => state.projectDashboard.data.manageData.dropdownOptions,
   );
 
   const [formValues, setFormValues] = useState(dropdownOptions || []);
@@ -138,18 +154,21 @@ const AddAttributes = () => {
     initialValues: individualAttribute || initialState,
     onSubmit: data => {
       if (individualAttribute) {
+        // console.log(formValues, 'values');
+        const patchData = formValues?.filter(
+          item => item.flag === 'patch' && item.isChanged,
+        );
+        const postData = formValues?.filter(item => item.flag === 'post');
         const finalPayload = diffObject(individualAttribute, values);
         if (tabname === 'manage-data') {
           dispatch(
             updateTemplateAttributeRequest(individualAttribute.id, {
-              ...values,
+              ...finalPayload,
+              patchData,
+              postData,
             }),
           );
         } else {
-          const patchData = formValues.filter(
-            item => item.flag === 'patch' && item.isChanged,
-          );
-          const postData = formValues.filter(item => item.flag === 'post');
           dispatch(
             updateLayerAttributeFieldsRequest(individualAttribute.id, {
               ...finalPayload,
@@ -164,6 +183,8 @@ const AddAttributes = () => {
             ...values,
             data_type: values.data_type,
             layer_template: selectedData.id,
+            dropdown_field: isDropdown === 'yes',
+            postData: formValues,
           }),
         );
       } else if (
@@ -190,11 +211,17 @@ const AddAttributes = () => {
   const handleDropdownChange = e => {
     setIsDropdown(e.target.value);
     if (individualAttribute)
-      dispatch(
-        updateDropdownFieldRequest(individualAttribute.id, {
-          dropdown_field: e.target.value === 'yes',
-        }),
-      );
+      tabname === 'map'
+        ? dispatch(
+            updateDropdownFieldRequest(individualAttribute.id, {
+              dropdown_field: e.target.value === 'yes',
+            }),
+          )
+        : dispatch(
+            updateTemplateDropdownRequest(individualAttribute.id, {
+              dropdown_field: e.target.value === 'yes',
+            }),
+          );
   };
 
   const handleOptionChange = e => {
@@ -233,11 +260,27 @@ const AddAttributes = () => {
     }
   }, [individualAttribute, isDropdown]);
 
+  // useEffect(() => {
+  //   if (individualAttribute && !dropdownOptions && isDropdown === 'yes')
+  //     setFormValues([
+  //       { id: 1, name: '' },
+  //       { id: 2, name: '' },
+  //     ]);
+  // }, [dropdownOptions, individualAttribute, isDropdown]);
+
   useEffect(() => {
     if (individualAttribute?.dropdown_field) {
-      dispatch(
-        getFieldsDropdownOptionRequest({ attribute: individualAttribute.id }),
-      );
+      tabname === 'map'
+        ? dispatch(
+            getFieldsDropdownOptionRequest({
+              attribute: individualAttribute.id,
+            }),
+          )
+        : dispatch(
+            getTemplateDropdownChoiceRequest({
+              attribute: individualAttribute.id,
+            }),
+          );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [individualAttribute]);
@@ -314,79 +357,84 @@ const AddAttributes = () => {
               </div>
             )}
           </div>
-          {tabname === 'map' && (
-            <div className="naxatw-basis-1/4 naxatw-space-y-2">
-              <label className="naxatw-label">Is choice/dropdown field?</label>
-              <div className="naxatw-flex naxatw-gap-x-3">
-                <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
-                  <input
-                    id="button_yes"
-                    type="radio"
-                    value="yes"
-                    name="gender"
-                    onChange={handleDropdownChange}
-                    checked={isDropdown === 'yes'}
-                  />
-                  <label htmlFor="button_yes" className="naxatw-label">
-                    Yes
-                  </label>
-                </div>
-                <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
-                  <input
-                    id="button_no"
-                    type="radio"
-                    value="no"
-                    name="gender"
-                    onChange={handleDropdownChange}
-                    checked={isDropdown === 'no'}
-                  />
-                  <label htmlFor="button_no" className="naxatw-label">
-                    No
-                  </label>
-                </div>
+
+          <div className="naxatw-basis-1/4 naxatw-space-y-2">
+            <label className="naxatw-label">Is choice/dropdown field?</label>
+            <div className="naxatw-flex naxatw-gap-x-3">
+              <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                <input
+                  id="button_yes"
+                  type="radio"
+                  value="yes"
+                  name="gender"
+                  onChange={handleDropdownChange}
+                  checked={isDropdown === 'yes'}
+                />
+                <label htmlFor="button_yes" className="naxatw-label">
+                  Yes
+                </label>
+              </div>
+              <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+                <input
+                  id="button_no"
+                  type="radio"
+                  value="no"
+                  name="gender"
+                  onChange={handleDropdownChange}
+                  checked={isDropdown === 'no'}
+                />
+                <label htmlFor="button_no" className="naxatw-label">
+                  No
+                </label>
               </div>
             </div>
-          )}
+          </div>
 
-          {isDropdown === 'yes' && (
-            <div className="naxatw-space-y-2">
-              <span className="naxatw-text-body-lg naxatw-font-semibold">
-                Choice Options
-              </span>
-              <div className="naxatw-max-h-[200px] naxatw-space-y-2 naxatw-overflow-y-auto scrollbar naxatw-px-3 naxatw-py-2">
-                {formValues &&
-                  formValues.map((option, index) => (
-                    <div className="naxatw-flex naxatw-gap-x-1 naxatw-items-end">
-                      <div className="naxatw-basis-11/12">
-                        <Input
-                          key={option.id}
-                          label={`Option ${index + 1}`}
-                          placeholder={`Option ${index + 1}`}
-                          name={`${option.id}`}
-                          value={option.name}
-                          onChange={handleOptionChange}
-                        />
+          {isDropdown === 'yes' &&
+            (!dropdownLoading ? (
+              <div className="naxatw-space-y-2">
+                <span className="naxatw-text-body-lg naxatw-font-semibold">
+                  Choice Options
+                </span>
+                <div className="naxatw-max-h-[200px] naxatw-space-y-2 naxatw-overflow-y-auto scrollbar naxatw-px-3 naxatw-py-2">
+                  {formValues &&
+                    formValues.map((option, index) => (
+                      <div
+                        key={option.id}
+                        className="naxatw-flex naxatw-gap-x-1 naxatw-items-end"
+                      >
+                        <div className="naxatw-basis-11/12">
+                          <Input
+                            key={option.id}
+                            label={`Option ${index + 1}`}
+                            placeholder={`Option ${index + 1}`}
+                            name={`${option.id}`}
+                            value={option.name}
+                            onChange={handleOptionChange}
+                          />
+                        </div>
+                        {option.flag === 'post' && (
+                          <MaterialIcon
+                            name="delete_outline"
+                            className="naxatw-text-[#FF0F0F] naxatw-text-icon-md"
+                            wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer naxatw-basis-1/12"
+                            onIconClick={() => handleDeleteOption(option.id)}
+                          />
+                        )}
                       </div>
-                      {option.flag === 'post' && (
-                        <MaterialIcon
-                          name="delete_outline"
-                          className="naxatw-text-[#FF0F0F] naxatw-text-icon-md"
-                          wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer naxatw-basis-1/12"
-                          onIconClick={() => handleDeleteOption(option.id)}
-                        />
-                      )}
-                    </div>
-                  ))}
-              </div>
+                    ))}
+                </div>
 
-              <Button
-                className="naxatw-btn naxatw-btn-link "
-                onClick={handleAddOption}
-              >
-                Add Option
-              </Button>
-            </div>
-          )}
+                <Button
+                  className="naxatw-btn naxatw-btn-link "
+                  onClick={handleAddOption}
+                >
+                  Add Option
+                </Button>
+              </div>
+            ) : (
+              <Spinner className="naxatw-w-6 naxatw-h-6 naxatw-fill-primary-400" />
+            ))}
         </div>
         <div className="naxatw-flex naxatw-justify-center">
           <Button

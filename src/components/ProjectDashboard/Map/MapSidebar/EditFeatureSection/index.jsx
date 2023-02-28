@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { stringify } from 'wkt';
@@ -9,6 +10,7 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
 import { isEmpty } from '@Utils/commonUtils';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
+import Select from '@Components/common/Select/index';
 
 const {
   setProjectMapState,
@@ -65,6 +67,7 @@ export default function EditFeatureSection() {
     values,
     meta,
     handleChange,
+    handleCustomChange,
     handleSubmit,
     setValues,
     setRequiredFields,
@@ -176,7 +179,20 @@ export default function EditFeatureSection() {
                     {item.alias || item.name}
                     {item.mandatory ? '*' : ''}
                   </label>
-                  {item.data_type === 'date' ? (
+                  {item.dropdown_field ? (
+                    <Select
+                      className="naxatw-bg-white naxatw-h-[48px] naxatw-px-2"
+                      options={item.options}
+                      onChange={data => {
+                        handleCustomChange(`${item.name}`, data.name);
+                      }}
+                      selected={
+                        item.options.filter(
+                          opt => opt.name === values[`${item.name}`],
+                        )?.[0]?.name
+                      }
+                    />
+                  ) : item.data_type === 'date' ? (
                     <CustomCalendar
                       startDate={new Date()}
                       onChange={() => {

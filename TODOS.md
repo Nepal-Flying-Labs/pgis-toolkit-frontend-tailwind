@@ -131,3 +131,6 @@
 
 - [ ] boundary (attribute data not available)
 - [ ] prevent boundary edit delete
+
+### FIXED ISSUE NUMBERS
+- [x] 2.7

@@ -1,5 +1,6 @@
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/projectDashboard';
+import { boundaryLayerName } from '@src/constants/map';
 
 const initialState = {
   projectDetail: null,
@@ -59,7 +60,7 @@ const getProjectDetailSuccess = (state, action) => ({
 const getProjectLayersSuccess = (state, action) => {
   const data = action.payload;
   const projectAreaLayerId =
-    data.find(item => item.name === 'Boundary')?.id || null;
+    data.find(item => item.name === boundaryLayerName)?.id || null;
   return {
     ...state,
     data: {

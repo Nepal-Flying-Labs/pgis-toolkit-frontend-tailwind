@@ -322,7 +322,7 @@ export default function DrawTool({
         </Tooltip>
       )}
 
-      {toolboxContents.includes('extend') && lineTypes.includes(geometryType) && (
+      {/* {toolboxContents.includes('extend') && lineTypes.includes(geometryType) && (
         <Tooltip content="Extend" direction="right">
           <ExtendFeature
             type={geometryType}
@@ -332,9 +332,9 @@ export default function DrawTool({
             {...props}
           />
         </Tooltip>
-      )}
+    )} */}
 
-      {/* {toolboxContents.includes('edit') && !pointTypes.includes(geometryType) && (
+      {toolboxContents.includes('edit') && !pointTypes.includes(geometryType) && (
         <Tooltip content="Split" direction="right">
           <SplitFeature
             type={geometryType}
@@ -343,7 +343,7 @@ export default function DrawTool({
             {...props}
           />
         </Tooltip>
-    )} */}
+      )}
 
       {/* {!pointTypes.includes(geometryType) && (
         <Tooltip content="Rotate" direction="right">

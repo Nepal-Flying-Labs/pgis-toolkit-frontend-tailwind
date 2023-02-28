@@ -7,11 +7,7 @@ import { Draw, Select } from 'ol/interaction';
 import getFeaturesGeojson from '../helpers/getFeaturesGeojson';
 import splitPolygon from '../helpers/splitPolygon';
 import splitLineString from '../helpers/splitLineString';
-import {
-  getGeometryType,
-  lineTypes,
-  pointTypes,
-} from '../../helpers/styleUtils';
+import { getGeometryType } from '../../helpers/styleUtils';
 
 const supportedTypes = ['Polygon', 'LineString'];
 
@@ -24,7 +20,6 @@ export default function SplitFeature({
   onSuccess,
   vectorLayer,
   drawSource,
-  type,
 }) {
   const [oldFeature, setOldFeature] = useState(null);
   const [selectedFeature, setSelectedFeature] = useState(null);
@@ -127,6 +122,7 @@ export default function SplitFeature({
   useEffect(() => {
     if (!selectedFeature || !oldFeature) return;
 
+    console.log('addedx');
     drawInstance.on('drawend', handleDrawEnd);
   }, [selectedFeature, oldFeature, drawInstance, handleDrawEnd]);
 

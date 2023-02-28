@@ -130,3 +130,4 @@
 
 ### FIXED ISSUE NUMBERS
 - [x] 2.7
+- [ ] polygon area/id in boundary drawn attribute

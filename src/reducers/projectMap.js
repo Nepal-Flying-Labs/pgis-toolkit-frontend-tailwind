@@ -3,6 +3,7 @@ import { createReducer } from 'reduxsauce';
 import { parse } from 'wkt';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import { boundaryLayerName } from '@src/constants/map';
 
 const initialState = {
   themes: null, // []
@@ -65,7 +66,7 @@ const getProjectThemesSuccess = (state, action) => ({
 const getProjectThemeLayersSuccess = (state, action) => {
   const { data: layerData, theme } = action.payload;
   const projectAreaLayerId = !state.projectAreaLayerId
-    ? layerData.find(item => item.name === 'Boundary')?.id || null
+    ? layerData.find(item => item.name === boundaryLayerName)?.id || null
     : state.projectAreaLayerId;
   const data = layerData.filter(item => item.upload_status === 'successful');
   const notPresentLayers = data

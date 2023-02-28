@@ -17,6 +17,8 @@ import {
   getMaxPage,
 } from '@Components/common/Pagination/getSelectedItem';
 import Pagination from '@Components/common/Pagination';
+import { isEmpty } from '@Utils/commonUtils';
+import { boundaryLayerName } from '@src/constants/map';
 
 const {
   getLayerAttributeRequest,
@@ -175,6 +177,19 @@ export default function ViewLayerAttribute() {
     },
   ];
 
+  const isBoundaryLayer = selectedLayer?.name !== boundaryLayerName;
+
+  const headerWidths = isBoundaryLayer
+    ? [...headerKeys.map(() => '150px')]
+    : [...headerKeys.map(() => '150px'), '10px'];
+
+  if (!loading && isEmpty(attributeList))
+    return (
+      <div className="naxatw-py-8 naxatw-flex naxatw-justify-center">
+        <h4>No attributes found.</h4>
+      </div>
+    );
+
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-2 naxatw-w-full naxatw-h-full">
       <div>
@@ -185,13 +200,19 @@ export default function ViewLayerAttribute() {
         />
       </div>
 
-      <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative  naxatw-w-full naxatw-max-h-[calc(100vh-19rem)] naxatw-min-h-[calc(100vh-19rem)] xl:naxatw-max-h-[calc(100vh-25rem)] xl:naxatw-min-h-[calc(100vh-25rem)]">
-        {!loading && headerKeys.length > 0 ? (
+      <div
+        className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative
+          naxatw-w-full naxatw-max-h-[calc(100vh-19rem)] naxatw-min-h-[calc(100vh-19rem)] 
+          xl:naxatw-max-h-[calc(100vh-25rem)] xl:naxatw-min-h-[calc(100vh-25rem)]"
+      >
+        {loading ? (
+          <TableSkeleton itemNumber={5} />
+        ) : (
           <Table
             data={attributeList || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            headerWidths={[...headerKeys.map(() => '150px'), '10px']}
+            headerWidths={headerWidths}
             // eslint-disable-next-line
             // onRowClick={row => {}}
           >
@@ -219,7 +240,7 @@ export default function ViewLayerAttribute() {
                       ordering === key
                         ? 'naxatw-text-body-btn'
                         : 'naxatw-text-body-lg'
-                    } `}
+                    } naxatw-p-2.5 `}
                   >
                     {!Array.isArray(row[key]) &&
                     typeof row[key] === 'object' &&
@@ -232,20 +253,20 @@ export default function ViewLayerAttribute() {
                 )}
               />
             ))}
-            <TableHeader
-              dataField=""
-              headerClassName=""
-              rowClassName="sticky-menu"
-              rowcolSpan="rowSpan_3"
-              dataFormat={row => (
-                <div className="naxatw-w-fit naxatw-shadow-xl naxatw-relative">
-                  <DropdownOptions options={dropdownOptions} data={row} />
-                </div>
-              )}
-            />
+            {isBoundaryLayer && (
+              <TableHeader
+                dataField=""
+                headerClassName=""
+                rowClassName="sticky-menu"
+                rowcolSpan="rowSpan_3"
+                dataFormat={row => (
+                  <div className="naxatw-w-fit naxatw-shadow-xl naxatw-relative">
+                    <DropdownOptions options={dropdownOptions} data={row} />
+                  </div>
+                )}
+              />
+            )}
           </Table>
-        ) : (
-          <TableSkeleton itemNumber={5} />
         )}
       </div>
       <Pagination

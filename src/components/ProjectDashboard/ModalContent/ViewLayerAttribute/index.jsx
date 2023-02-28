@@ -29,6 +29,7 @@ const {
   handleAttributeOrdering,
   resetLayerAttributeListState,
   setSelectedLayerAttribute,
+  setProjectMapState,
 } = Creators;
 
 const { toggleModalTwo, togglePromptDialog } = CommonCreators;
@@ -136,7 +137,7 @@ export default function ViewLayerAttribute() {
 
   useEffect(() => {
     if (showModal && modalContent === 'view-layer-attribute') return;
-
+    dispatch(setProjectMapState({ selectedLayer: null }));
     dispatch(resetLayerAttributeListState());
   }, [dispatch, showModal, modalContent]);
 

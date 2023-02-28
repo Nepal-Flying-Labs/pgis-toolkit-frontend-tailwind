@@ -270,6 +270,10 @@ const toggleSidebar = (state, action) => ({
   hideSidebar: !!action.payload || !state.hideSidebar,
 });
 
+const resetAnalysisState = () => ({
+  ...initialState,
+});
+
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
@@ -288,6 +292,7 @@ const analysisReducer = createReducer(initialState, {
   [Types.HANDLE_TABLE_CHECKBOX]: handleTableCheckbox,
   [Types.SET_SELECTED_INFO]: setSelectedInfo,
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
+  [Types.RESET_ANALYSIS_STATE]: resetAnalysisState,
 });
 
 export default analysisReducer;

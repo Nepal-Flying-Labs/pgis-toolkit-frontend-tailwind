@@ -4,7 +4,7 @@ import { useHistory, useParams } from 'react-router';
 import IconButton from '@Components/common/IconButton/index';
 import { Creators } from '@Actions/analysis';
 
-const { setSelectedInfo, toggleSidebar } = Creators;
+const { setSelectedInfo } = Creators;
 
 const headerData = {
   'optimal-route': {
@@ -39,7 +39,7 @@ export default function Header() {
           <h3>{headerData[analysisType]?.title || ''}</h3>
           {tabname === 'analysis' && (
             <div
-              onMouseOver={() => dispatch(setSelectedInfo(null))}
+              onMouseOver={() => dispatch(setSelectedInfo('default'))}
               // onMouseOut={() => dispatch(setSelectedInfo(null))}
               onBlur={() => {}}
               onFocus={() => {}}
@@ -61,7 +61,6 @@ export default function Header() {
       <button
         type="button"
         onClick={() => {
-          dispatch(toggleSidebar(false));
           history.push(
             `/organizations/${organizationId}/projects/${projectId}/map`,
           );

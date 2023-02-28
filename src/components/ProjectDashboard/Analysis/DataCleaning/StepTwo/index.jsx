@@ -18,6 +18,8 @@ function getStatusIcon(status) {
   switch (status) {
     case 'checking':
       return { color: '#FF5A5F', icon: 'rotate_right' };
+    case 'fixing':
+      return { color: '#FF5A5F', icon: 'rotate_right' };
     case 'error':
       return { color: '#FFB100', icon: 'error_outline' };
     case 'fix-failed':
@@ -178,7 +180,8 @@ export default function StepTwo() {
                           <span>
                             {status === 'error' || status === 'success' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">
-                                <b>{errorData}</b> error out of{' '}
+                                <b>{errorData}</b>{' '}
+                                {errorData > 1 ? 'errors' : 'error'} out of{' '}
                                 <b>{totalData}</b> data
                               </p>
                             ) : status === 'fix-failed' ? (

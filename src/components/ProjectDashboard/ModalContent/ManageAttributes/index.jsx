@@ -27,7 +27,7 @@ const {
   setIndividualAttribute,
   clearAttributeListData,
 } = Creators;
-const { getLayerAttributeFieldsRequest } = ProjectMapCreators;
+const { getLayerAttributeListRequest, setProjectMapState } = ProjectMapCreators;
 
 const ManageAttributes = () => {
   const { tabname } = useParams();
@@ -43,8 +43,20 @@ const ManageAttributes = () => {
     state => state.projectDashboard.data.manageData.attributeList,
   );
   const individualAttributeData = useSelector(
-    state => state.projectMap.individualAttributeData,
+    state => state.projectMap.attributeList,
   );
+
+  // reset state on modal unmount
+  useEffect(() => {
+    if (
+      showModal &&
+      (modalContent === 'add-attributes' ||
+        modalContent === 'manage-attributes')
+    )
+      return;
+
+    dispatch(setProjectMapState({ selectedLayer: null, attributeList: null }));
+  }, [dispatch, showModal, modalContent]);
 
   useEffect(() => {
     if (tabname === 'manage-data') {
@@ -55,20 +67,27 @@ const ManageAttributes = () => {
   }, [attributeList, individualAttributeData, tabname]);
 
   useEffect(() => {
+    if (!selectedData && !selectedLayer) return;
     if (tabname === 'manage-data') {
-      if (attributeList.length < 1)
-        dispatch(
-          getLayerAttributeRequest({ layer_template: selectedData?.id }),
-        );
+      if (!attributeList)
+        dispatch(getLayerAttributeRequest({ layer_template: selectedData.id }));
     }
     if (tabname === 'map')
-      dispatch(getLayerAttributeFieldsRequest({ layer: selectedLayer?.id }));
-  }, [attributeList, dispatch, selectedData, selectedLayer, tabname]);
+      if (!individualAttributeData)
+        dispatch(getLayerAttributeListRequest({ layer: selectedLayer.id }));
+  }, [
+    attributeList,
+    dispatch,
+    individualAttributeData,
+    selectedData,
+    selectedLayer,
+    tabname,
+  ]);
 
   const loading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_LAYER_ATTRIBUTE_REQUEST,
-      ProjectMapTypes.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+      ProjectMapTypes.GET_LAYER_ATTRIBUTE_LIST_REQUEST,
     ]),
   );
 
@@ -135,7 +154,7 @@ const ManageAttributes = () => {
                 : () => {}
             }
           >
-            {tabname === 'data' && (
+            {tabname === 'manage-data' && (
               <TableHeader
                 dataField=""
                 headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"

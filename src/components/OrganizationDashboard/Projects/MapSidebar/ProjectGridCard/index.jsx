@@ -3,7 +3,7 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import DropdownOptions from '@Components/common/DropdownOptions';
+import CustomDropdownOptions from '@Components/common/CustomDropdownOptions';
 import { useHistory, useParams, useRouteMatch } from 'react-router';
 import AvatarImage from '@Assets/images/img-sm-avatar.png';
 import Button from '@Components/common/Button/index';
@@ -151,7 +151,7 @@ export default function ProjectGridCard({
             <h5 title={title} className="naxatw-line-clamp-2">
               {title || 'N/A'}
             </h5>{' '}
-            <DropdownOptions
+            <CustomDropdownOptions
               options={dropdownOptions}
               data={id}
               stopPropagation

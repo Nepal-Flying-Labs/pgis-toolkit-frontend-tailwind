@@ -51,6 +51,8 @@ import AddDatasetCategory from '@Components/ProjectDashboard/ModalContent/AddDat
 import DeleteBufferResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteBufferResult/index';
 import DeleteRouteResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteRouteResult/index';
 import SaveManualFix from '@Components/ProjectDashboard/Analysis/ModalContent/SaveManualFix';
+import SignoutWarning from '@Components/OrganizationDashboard/ModalContent/SignoutWarning';
+import DownloadTemplate from '@Components/ProjectDashboard/ModalContent/DownloadTemplate/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -253,6 +255,12 @@ export function getModalContent(content) {
         content: <ViewBufferAttribute />,
         className: '!naxatw-w-[50rem]',
       };
+
+    case 'download-template':
+      return {
+        title: 'Download Template',
+        content: <DownloadTemplate />,
+      };
     default:
       return {
         title: '',
@@ -385,6 +393,12 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <DeleteRouteResult />,
+      };
+
+    case 'signout-warning':
+      return {
+        title: '',
+        content: <SignoutWarning />,
       };
 
     default:

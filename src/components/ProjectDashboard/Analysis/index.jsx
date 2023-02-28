@@ -16,6 +16,7 @@ const {
   getProjectThemesRequest,
   getProjectThemeLayersRequest,
   getProjectGeojsonRequest,
+  resetAnalysisState,
 } = AnalysisCreators;
 
 function getAnalysisContent(type) {
@@ -70,6 +71,14 @@ export default function Analysis() {
       dispatch(getProjectThemeLayersRequest({ theme: id }));
     });
   }, [dispatch, themes, layers]);
+
+  // reset analysis state
+  useEffect(
+    () => () => {
+      dispatch(resetAnalysisState());
+    },
+    [dispatch],
+  );
 
   return (
     <div>

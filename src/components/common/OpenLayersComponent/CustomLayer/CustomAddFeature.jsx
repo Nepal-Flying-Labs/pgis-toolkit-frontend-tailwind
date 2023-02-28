@@ -56,6 +56,9 @@ export default function CustomAddFeature({
     if (!map || !draw || !enable) return;
     map.removeInteraction(draw);
     map.addInteraction(draw);
+    return () => {
+      map.removeInteraction(draw);
+    };
   }, [geometryType, map, draw, enable]);
 
   // add interaction

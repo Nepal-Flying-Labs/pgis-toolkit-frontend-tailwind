@@ -103,6 +103,16 @@ module.exports = {
         light: '0px 2px 20px 4px rgba(0, 0, 0, 0.12)',
         dark: '0px 4px 16px 8px rgba(217, 217, 217, 0.28)',
       },
+      animation: {
+        loader: 'loader 0.6s infinite alternate',
+      },
+      keyframes: {
+        loader: {
+          to: {
+            transform: 'translate3d(0, -0.3rem, 0)',
+          },
+        },
+      },
     },
   },
   plugins: [require('@tailwindcss/line-clamp')],

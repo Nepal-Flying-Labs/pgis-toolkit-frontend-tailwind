@@ -31,24 +31,6 @@ function diffObject(a, b) {
   return diffObj;
 }
 
-const dataSource = [
-  {
-    id: 1,
-    value: 'osm',
-    label: 'OSM',
-  },
-  {
-    id: 2,
-    value: 'survey',
-    label: 'Survey',
-  },
-  {
-    id: 3,
-    value: 'computer',
-    label: 'Computer',
-  },
-];
-
 const EditLayer = () => {
   const { projectId } = useParams();
   const dispatch = useDispatch();
@@ -67,7 +49,7 @@ const EditLayer = () => {
   const { meta, values, handleChange, handleCustomChange, handleSubmit } =
     useForm({
       initialValues: selectedData,
-      required: ['name'],
+      required: ['name', 'source'],
       onSubmit: data => {
         const payload = diffObject(selectedData, data);
         if (Object.keys(payload).length > 0) {
@@ -92,7 +74,7 @@ const EditLayer = () => {
       <div className="naxatw-space-y-3">
         <div>
           <Input
-            label="Name"
+            label="Name*"
             placeholder="Name"
             name="name"
             value={values.name}
@@ -104,7 +86,7 @@ const EditLayer = () => {
         </div>
 
         <div className="naxatw-space-y-2">
-          <label className="naxatw-label">Category</label>
+          <label className="naxatw-label">Category*</label>
           <Select
             options={themes || []}
             dataKey="name"
@@ -117,8 +99,8 @@ const EditLayer = () => {
           />
         </div>
         <div className="naxatw-flex naxatw-justify-between naxatw-gap-x-4">
-          <div className="naxatw-space-y-2 naxatw-basis-3/4">
-            <label className="naxatw-label">Source</label>
+          <div className="naxatw-basis-3/4">
+            {/* <label className="naxatw-label">Source</label>
             <Select
               options={dataSource}
               dataKey="label"
@@ -130,7 +112,17 @@ const EditLayer = () => {
                   source => source.value === values.source,
                 )?.[0]?.label
               }
+            /> */}
+            <Input
+              label="Source*"
+              placeholder="Source"
+              name="source"
+              value={values.source}
+              onChange={handleChange}
             />
+            {meta.source.error && meta.source.touched && (
+              <FormErrorMessage message="Source is required" />
+            )}
           </div>
           <div className="naxatw-space-y-2 naxatw-basis-1/4">
             <label className="naxatw-label">Add To Map</label>

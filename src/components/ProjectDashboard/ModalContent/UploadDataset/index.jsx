@@ -29,23 +29,23 @@ const { toggleModalTwo } = CommonCreators;
 
 const currentDate = new Date();
 
-const dataSource = [
-  {
-    id: 1,
-    value: 'osm',
-    label: 'OSM',
-  },
-  {
-    id: 2,
-    value: 'survey',
-    label: 'Survey',
-  },
-  {
-    id: 3,
-    value: 'computer',
-    label: 'Computer',
-  },
-];
+// const dataSource = [
+//   {
+//     id: 1,
+//     value: 'osm',
+//     label: 'OSM',
+//   },
+//   {
+//     id: 2,
+//     value: 'survey',
+//     label: 'Survey',
+//   },
+//   {
+//     id: 3,
+//     value: 'computer',
+//     label: 'Computer',
+//   },
+// ];
 
 export default function UploadDataset() {
   const { projectId } = useParams();
@@ -119,13 +119,13 @@ export default function UploadDataset() {
     );
   };
 
-  const handleSourceSelect = (id, selectedItem) => {
-    setUploadedFiles(prev =>
-      prev.map(item =>
-        item.id === +id ? { ...item, source: selectedItem.value } : { ...item },
-      ),
-    );
-  };
+  // const handleSourceSelect = (id, selectedItem) => {
+  //   setUploadedFiles(prev =>
+  //     prev.map(item =>
+  //       item.id === +id ? { ...item, source: selectedItem.value } : { ...item },
+  //     ),
+  //   );
+  // };
 
   const handleAddToMap = e => {
     const { id, checked } = e.target;
@@ -195,7 +195,7 @@ export default function UploadDataset() {
     <div>
       <p className="naxatw-text-body-lg">
         Note: The system currently supports datasets with WGS 84 Geographic
-        Coordinate System only.
+        Coordinate System (EPSG: 4326) only.
       </p>
 
       <div
@@ -270,7 +270,7 @@ export default function UploadDataset() {
 
                     <div className="naxatw-space-y-2 naxatw-grow">
                       <label className="naxatw-label">Data Source*</label>
-                      <Select
+                      {/* <Select
                         options={dataSource || []}
                         labelKey="label"
                         valueKey="value"
@@ -280,9 +280,8 @@ export default function UploadDataset() {
                         }
                         selectedValue={source}
                         style={{ minWidth: '10rem' }}
-                      />
-                      {/* <input
-
+                      /> */}
+                      <input
                         type="text"
                         className="naxatw-input"
                         id={id}
@@ -290,7 +289,7 @@ export default function UploadDataset() {
                         value={source}
                         placeholder="Enter Data Source"
                         onChange={handleChange}
-                      /> */}
+                      />
                       {errorFields?.[id]?.includes('source') && (
                         <FormErrorMessage message="Required" />
                       )}

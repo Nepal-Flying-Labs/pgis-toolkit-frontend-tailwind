@@ -82,7 +82,7 @@ export const updateTemplateAttribute = (id, payload) =>
   );
 
 export const downloadBulkTemplate = params =>
-  authenticated(api).get(`/maps/bulk_template_download/`, { params });
+  authenticated(downloadApi).get(`/maps/bulk_template_download/`, { params });
 
 export const getUsers = params =>
   authenticated(api).get('/users/user/', { params });
@@ -118,3 +118,21 @@ export const updateInvitedUserStatus = (id, payload) =>
 
 export const postDatasetTheme = payload =>
   authenticated(api).post('/maps/theme/', payload);
+
+export const getTemplateDropdownChoice = params =>
+  authenticated(api).get(
+    '/maps/project_layer_template_attribute_dropdown_choice/',
+    { params },
+  );
+
+export const postTemplateDropdownOption = data =>
+  authenticated(api).post(
+    '/maps/project_layer_template_attribute_dropdown_choice/',
+    data,
+  );
+
+export const updateTemplateDropdownOption = (id, data) =>
+  authenticated(api).patch(
+    `/maps/project_layer_template_attribute_dropdown_choice/${id}/`,
+    data,
+  );

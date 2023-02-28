@@ -3,17 +3,21 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/routeAnalysis';
+import { Creators as AnalysisCreators } from '@Actions/analysis';
 import toastActions from '@Actions/toast';
 import { analysisHeaderHeight } from '@src/constants';
 import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Chip from '@Components/common/Chip';
+import IconButton from '@Components/common/IconButton/index';
 import MapContent from './OriginPointContents/MapContent';
 import SearchContent from './OriginPointContents/SearchContent';
 import LayerContent from './OriginPointContents/LayerContent';
 
 const { setDataInputState, handleCheckbox, applyRouteAnalysisRequest } =
   Creators;
+
+const { setSelectedInfo } = AnalysisCreators;
 
 const modeOfTransportData = [
   { label: 'Drive', value: 'drive', icon: 'directions_car' },
@@ -120,7 +124,22 @@ export default function DataInput() {
         }}
       >
         <Container>
-          <label className="naxatw-label">Mode of Transport</label>
+          <label className="naxatw-label naxatw-flex naxatw-items-center">
+            Mode of Transport{' '}
+            <div
+              onMouseOver={() => dispatch(setSelectedInfo('modeOfTransport'))}
+              // onMouseOut={() => dispatch(setSelectedInfo(null))}
+              onBlur={() => {}}
+              onFocus={() => {}}
+            >
+              <IconButton
+                className="material-symbols-outlined naxatw-text-[1.2rem]"
+                name="info"
+                title="Info"
+                // onClick={() => dispatch(setSelectedInfo('result'))}
+              />
+            </div>
+          </label>
           <div className="naxatw-flex naxatw-space-x-2">
             {modeOfTransportData.map(({ label, value, icon }) => (
               <Chip
@@ -142,7 +161,22 @@ export default function DataInput() {
         </Container>
 
         <Container>
-          <label className="naxatw-label">Origin & Destination Point</label>
+          <label className="naxatw-label naxatw-flex naxatw-items-center">
+            Origin & Destination Point
+            <div
+              onMouseOver={() => dispatch(setSelectedInfo('origin'))}
+              // onMouseOut={() => dispatch(setSelectedInfo(null))}
+              onBlur={() => {}}
+              onFocus={() => {}}
+            >
+              <IconButton
+                className="material-symbols-outlined naxatw-text-[1.2rem]"
+                name="info"
+                title="Info"
+                // onClick={() => dispatch(setSelectedInfo('result'))}
+              />
+            </div>
+          </label>
           <div className="naxatw-flex naxatw-space-x-2">
             {originPointData.map(({ label, value, icon }) => (
               <Chip
@@ -166,7 +200,22 @@ export default function DataInput() {
         </Container>
 
         <Container>
-          <label className="naxatw-label">Obstacles</label>
+          <label className="naxatw-label naxatw-flex naxatw-items-center">
+            Obstacles
+            <div
+              onMouseOver={() => dispatch(setSelectedInfo('obstacle'))}
+              // onMouseOut={() => dispatch(setSelectedInfo(null))}
+              onBlur={() => {}}
+              onFocus={() => {}}
+            >
+              <IconButton
+                className="material-symbols-outlined naxatw-text-[1.2rem]"
+                name="info"
+                title="Info"
+                // onClick={() => dispatch(setSelectedInfo('result'))}
+              />
+            </div>
+          </label>
           <div
             className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg
               naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem] naxatw-bg-white"

@@ -67,7 +67,6 @@ export default function EditFeatureSection() {
     values,
     meta,
     handleChange,
-    handleCustomChange,
     handleSubmit,
     setValues,
     setRequiredFields,
@@ -113,6 +112,8 @@ export default function EditFeatureSection() {
       }
     },
   });
+
+  console.log(values);
 
   useEffect(() => {
     if (!selectedLayer) return;
@@ -183,9 +184,11 @@ export default function EditFeatureSection() {
                     <Select
                       className="naxatw-bg-white naxatw-h-[48px] naxatw-px-2"
                       options={item.options}
-                      onChange={data => {
-                        handleCustomChange(`${item.name}`, data.name);
-                      }}
+                      onChange={data =>
+                        handleChange({
+                          target: { name: `${item.name}`, value: data.name },
+                        })
+                      }
                       selected={
                         item.options.filter(
                           opt => opt.name === values[`${item.name}`],

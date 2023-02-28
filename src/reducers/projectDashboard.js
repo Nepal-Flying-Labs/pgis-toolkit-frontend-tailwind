@@ -14,7 +14,8 @@ const initialState = {
       layerTemplate: [],
       selectedLayer: null,
       individualAttribute: null,
-      attributeList: [],
+      attributeList: null, // []
+      dropdownOptions: null,
     },
   },
   gallery: {
@@ -385,7 +386,8 @@ const clearAttributeListData = state => ({
     ...state.data,
     manageData: {
       ...state.data.manageData,
-      attributeList: [],
+      attributeList: null,
+      selectedData: null,
     },
   },
 });
@@ -536,6 +538,21 @@ const updateDataLayerSuccess = (state, action) => {
   };
 };
 
+const getTemplateDropdownChoiceSuccess = (state, action) => {
+  const data = action.payload.map(item => ({ ...item, flag: 'patch' }));
+
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      manageData: {
+        ...state.data.manageData,
+        dropdownOptions: data,
+      },
+    },
+  };
+};
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -585,6 +602,8 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.RESEND_INVITATION_SUCCESS]: resendInvitationSuccess,
   [Types.DELETE_INVITED_USER_SUCCESS]: deleteInvitedUserSuccess,
   [Types.UPDATE_DATA_LAYER_SUCCESS]: updateDataLayerSuccess,
+  [Types.GET_TEMPLATE_DROPDOWN_CHOICE_SUCCESS]:
+    getTemplateDropdownChoiceSuccess,
 });
 
 export default projectDashboardReducer;

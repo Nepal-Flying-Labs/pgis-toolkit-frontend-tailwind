@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import IconButton from '@Components/common/IconButton';
 import analysisInfoContents from '@src/constants/analysisInfoContents';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
+import { analysisHeaderHeight } from '@src/constants';
+
 // import { Creators as CommonCreators } from '@Actions/common';
 
 // const { togglePromptDialog, toggleModal } = CommonCreators;
@@ -13,9 +15,6 @@ export default function InfoContent() {
   const { analysisType } = useParams();
   const [collapsed, setCollapsed] = useState(false);
   const selectedInfo = useSelector(state => state.analysis.selectedInfo);
-  const projectHeaderHeight = useSelector(
-    state => state.common.projectHeaderHeight,
-  );
 
   const divRefs = useRef({});
 
@@ -65,7 +64,7 @@ export default function InfoContent() {
           className="naxatw-px-5 naxatw-py-3 naxatw-pt-0 naxatw-space-y-3 naxatw-border-b
             naxatw-border-b-grey-300 last:naxatw-border-b-0 naxatw-overflow-y-auto scrollbar"
           style={{
-            maxHeight: `calc(100vh - ${projectHeaderHeight}px - 7rem)`,
+            maxHeight: `calc(100vh - ${analysisHeaderHeight} - 6rem)`,
           }}
         >
           {Object.keys(analysisInfoContents?.[analysisType]).map(info => (

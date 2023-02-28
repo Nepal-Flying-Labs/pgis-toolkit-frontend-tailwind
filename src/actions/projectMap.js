@@ -118,6 +118,10 @@ export const { Types, Creators } = createActions(
 
     setSelectedLayerAttribute: ['payload'],
 
+    getLayerAttributeListRequest: ['params'],
+    getLayerAttributeListSuccess: ['payload'],
+    getLayerAttributeListFailure: null,
+
     updateLayerAttributeRequest: ['id', 'payload'],
     updateLayerAttributeSuccess: ['payload'],
     updateLayerAttributeFailure: null,

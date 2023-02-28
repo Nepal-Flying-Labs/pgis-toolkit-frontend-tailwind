@@ -8,6 +8,8 @@ import capitalizeFirstLetter from '@src/utils/capitalizeFirstLetter';
 
 const exceptions = [
   // ...popupExceptionKeys,
+  'image',
+  'url',
 ];
 
 export default function PopupUI({ data = {} }) {

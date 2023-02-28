@@ -98,38 +98,36 @@
 - [ ] help box box shadow (sudeep)
 - [ ] input info in buffer analysis result (raj)
 - [ ] buffer analysis => select layer only, implement result window (discussion)
-- [ ] go back to step one from two.. in data cleaning 
+- [ ] go back to step one from two.. in data cleaning
 - [ ] search in field and value in data query
 - [ ] data query result title min width
 - [ ] popup redesign
 - [ ] "documents" in project header
-- [ ] z index for origin and desination point
 
 ### ISSUES WBR
+
+- [ ] draw area on map boundary (discussion)
 - [ ] edit/add boundary attribute ?
-- [ ] layer from query save not working
-- [ ] zoom to layer does not work after saving query
-- [ ] draw area on map boundary (discussion) => no data (sudeep)
 - [ ] add feature refactor
 - [ ] bookmark zoom extent
 - [ ] 5.8 zoom to selected layer choice? highlight query results yellow?
-- [ ] 5.14 After deleting the query layer, the zoom to layer function still does not work.
-- [ ] upload your datasets additional menu => upen dai (discussion)
-
-- [ ] cancel layer upload?
+- [ ] layer from query save not working
+- [ ] zoom to layer does not work after saving query
 - [ ] dropdown option move below option => direction prop
+- [ ] 5.14 After deleting the query layer, the zoom to layer function still does not work.
 - [ ] movable popup?
-
+- [ ] upload your datasets additional menu => upen dai
+- [ ] cancel layer upload?
 - [ ] start analysis not working optimal route
 - [ ] disable auto/manual fix btn while fixing errors
-- [ ] implement split
 - [ ] issue on draw tool (drag and add feature)
-- [ ] undo issue, redo? 
-
-- [ ] measure tool in analysis modules (sudeep)
-- [ ] export to excel in detail/summary (sudeep)
-- [ ] x/y label in chart
-
+- [ ] undo issue, redo?
 - [ ] feat: give point name while drawing
 - [ ] buffer origin point now visible on map
-- [ ] Clicking on “Visualize” does not do anything? (discussion)
+- [ ] measure tool in analysis modules
+- [ ] export to excel in detail/summary
+- [ ] x/y label in chart
+- [ ] Clicking on "Visualize" does not do anything?
+
+- [ ] boundary (attribute data not available)
+- [ ] prevent boundary edit delete

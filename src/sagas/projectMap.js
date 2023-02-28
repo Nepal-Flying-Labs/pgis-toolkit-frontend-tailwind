@@ -174,7 +174,27 @@ export function* saveMapConfigRequest({ params, payload }) {
 export function* getLayerAttributeFieldsRequest({ params }) {
   try {
     const response = yield call(getLayerAttributeFields, params);
-    yield put(projectMapActions.getLayerAttributeFieldsSuccess(response.data));
+    const dropdownFields = response.data.filter(data => data.dropdown_field);
+    const optionsResponse = yield all(
+      dropdownFields.map(field =>
+        call(getFieldsDropdownOption, { attribute: field.id }),
+      ),
+    );
+
+    const dropdownOptions = dropdownFields.map((item, index) => ({
+      ...item,
+      options: optionsResponse[index].data,
+    }));
+
+    const finalData = response.data.map(item => {
+      const newData = dropdownOptions.filter(opt => opt.id === item.id);
+      if (isEmpty(newData)) {
+        return { ...item };
+      }
+      return { ...newData[0] };
+    });
+
+    yield put(projectMapActions.getLayerAttributeFieldsSuccess(finalData));
   } catch (error) {
     yield put(projectMapActions.getLayerAttributeFieldsFailure());
     throw error;
@@ -343,7 +363,7 @@ export function* updateLayerAttributeFieldsRequest({ id, payload }) {
 
     if (!isEmpty(patchData)) {
       yield all(
-        patchData.map(data =>
+        patchData?.map(data =>
           call(updateDropdownOption, data.id, {
             name: data.name,
             attribute: id,
@@ -354,7 +374,7 @@ export function* updateLayerAttributeFieldsRequest({ id, payload }) {
 
     if (!isEmpty(postData)) {
       yield all(
-        postData.map(data =>
+        postData?.map(data =>
           call(postDropdownOption, {
             name: data.name,
             attribute: data.attribute,
@@ -408,17 +428,17 @@ export function* postLayerAttributeFieldsRequest({ payload }) {
     const { source, ...filterData } = newData;
     const formData = prepareFormData(filterData);
     const response = yield call(postLayerAttributeFields, formData);
-    console.log(response, 'response');
 
-    yield all(
-      postData.map(data =>
-        call(postDropdownOption, {
-          name: data.name,
-          attribute: response.data.id,
-        }),
-      ),
-    );
-
+    if (!isEmpty(postData)) {
+      yield all(
+        postData?.map(data =>
+          call(postDropdownOption, {
+            name: data.name,
+            attribute: response.data.id,
+          }),
+        ),
+      );
+    }
     yield put(projectMapActions.postLayerAttributeFieldsSuccess(response.data));
     yield put(commonActions.toggleModal('manage-attributes'));
     yield put(
@@ -440,6 +460,16 @@ export function* deleteLayerAttributeRequest({ id }) {
     yield put(toastActions.success({ message: 'Delete attribute success.' }));
   } catch (error) {
     yield put(projectMapActions.deleteLayerAttributeFailure());
+    throw error;
+  }
+}
+
+export function* getLayerAttributeListRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttributeFields, params);
+    yield put(projectMapActions.getLayerAttributeListSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getLayerAttributeListFailure());
     throw error;
   }
 }
@@ -548,6 +578,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.DELETE_LAYER_ATTRIBUTE_REQUEST,
     withLoader(withErrorHandler(deleteLayerAttributeRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_ATTRIBUTE_LIST_REQUEST,
+    withLoader(withErrorHandler(getLayerAttributeListRequest)),
   );
 }
 

@@ -133,35 +133,38 @@ export default function StepTwo() {
                           <div
                             className={`naxatw-flex naxatw-items-center naxatw-gap-2
                         ${
-                          !isLayerCheckingError && status !== 'error'
+                          (id === 'isolated' && status === 'error') ||
+                          (!isLayerCheckingError && status !== 'error')
                             ? 'naxatw-pl-6'
                             : ''
                         }
                         `}
                           >
-                            {!isLayerCheckingError && status === 'error' && (
-                              <input
-                                id={id}
-                                type="checkbox"
-                                className="naxatw-min-w-[1rem] naxatw-min-h-[1rem]
+                            {id !== 'isolated' &&
+                              !isLayerCheckingError &&
+                              status === 'error' && (
+                                <input
+                                  id={id}
+                                  type="checkbox"
+                                  className="naxatw-min-w-[1rem] naxatw-min-h-[1rem]
                                   naxatw-accent-grey-800 naxatw-cursor-pointer"
-                                checked={errorState.checked}
-                                onChange={e => {
-                                  const { checked } = e.target;
-                                  dispatch(
-                                    handleAutofixCheckbox({
-                                      layerId: layer.id,
-                                      id,
-                                      checked,
-                                    }),
-                                  );
-                                }}
-                              />
-                            )}
+                                  checked={errorState.checked}
+                                  onChange={e => {
+                                    const { checked } = e.target;
+                                    dispatch(
+                                      handleAutofixCheckbox({
+                                        layerId: layer.id,
+                                        id,
+                                        checked,
+                                      }),
+                                    );
+                                  }}
+                                />
+                              )}
 
                             {status !== 'waiting' && (
                               <span
-                                className="naxatw-flex naxatw-items-center"
+                                className="naxatw-flex naxatw-items-center naxatw-select-none"
                                 style={{ color: getStatusIcon(status).color }}
                               >
                                 <i className="material-icons-outlined">

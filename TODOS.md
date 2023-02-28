@@ -105,9 +105,8 @@
 - [ ] "documents" in project header
 
 ### ISSUES WBR
-
-- [ ] draw area on map boundary (discussion)
-- [ ] edit/add boundary attribute ?
+- [x] prevent boundary edit delete
+- [x] boundary (attribute data not available)
 - [ ] add feature refactor
 - [ ] bookmark zoom extent
 - [ ] 5.8 zoom to selected layer choice? highlight query results yellow?
@@ -128,9 +127,6 @@
 - [ ] export to excel in detail/summary
 - [ ] x/y label in chart
 - [ ] Clicking on "Visualize" does not do anything?
-
-- [ ] boundary (attribute data not available)
-- [ ] prevent boundary edit delete
 
 ### FIXED ISSUE NUMBERS
 - [x] 2.7

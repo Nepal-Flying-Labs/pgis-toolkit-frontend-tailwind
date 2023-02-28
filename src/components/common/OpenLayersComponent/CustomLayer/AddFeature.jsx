@@ -52,9 +52,14 @@ export default function AddFeature({
 
   // add interaction
   useEffect(() => {
-    if (!map || !drawType || isDrawInstanceAdded.current || !enable) return;
+    if (!map || !drawType || isDrawInstanceAdded.current || !enable)
+      return () => {};
     map.addInteraction(draw);
     isDrawInstanceAdded.current = true;
+    return () => {
+      map.removeInteraction(draw);
+      isDrawInstanceAdded.current = false;
+    };
   }, [map, draw, drawType, enable]);
 
   // on draw end

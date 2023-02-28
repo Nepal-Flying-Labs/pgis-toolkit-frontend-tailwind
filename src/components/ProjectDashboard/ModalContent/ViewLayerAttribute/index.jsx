@@ -17,6 +17,7 @@ import {
   getMaxPage,
 } from '@Components/common/Pagination/getSelectedItem';
 import Pagination from '@Components/common/Pagination';
+import { isEmpty } from '@Utils/commonUtils';
 import { boundaryLayerName } from '@src/constants/map';
 
 const {
@@ -182,6 +183,13 @@ export default function ViewLayerAttribute() {
     ? [...headerKeys.map(() => '150px')]
     : [...headerKeys.map(() => '150px'), '10px'];
 
+  if (!loading && isEmpty(attributeList))
+    return (
+      <div className="naxatw-py-8 naxatw-flex naxatw-justify-center">
+        <h4>No attributes found.</h4>
+      </div>
+    );
+
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-2 naxatw-w-full naxatw-h-full">
       <div>
@@ -192,8 +200,14 @@ export default function ViewLayerAttribute() {
         />
       </div>
 
-      <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative  naxatw-w-full naxatw-max-h-[calc(100vh-19rem)] naxatw-min-h-[calc(100vh-19rem)] xl:naxatw-max-h-[calc(100vh-25rem)] xl:naxatw-min-h-[calc(100vh-25rem)]">
-        {!loading && headerKeys.length > 0 ? (
+      <div
+        className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative
+          naxatw-w-full naxatw-max-h-[calc(100vh-19rem)] naxatw-min-h-[calc(100vh-19rem)] 
+          xl:naxatw-max-h-[calc(100vh-25rem)] xl:naxatw-min-h-[calc(100vh-25rem)]"
+      >
+        {loading ? (
+          <TableSkeleton itemNumber={5} />
+        ) : (
           <Table
             data={attributeList || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
@@ -253,8 +267,6 @@ export default function ViewLayerAttribute() {
               />
             )}
           </Table>
-        ) : (
-          <TableSkeleton itemNumber={5} />
         )}
       </div>
       <Pagination

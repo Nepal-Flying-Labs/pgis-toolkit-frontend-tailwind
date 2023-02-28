@@ -18,7 +18,7 @@ const CustomInput = ({
           Invite User by Email *
         </label>
         <span className="naxatw-text-grey-600">
-          Please press enter or click plus (+) button to add email
+          Press enter or click plus (+) button to add email
         </span>
       </div>
       <div className="naxatw-relative">

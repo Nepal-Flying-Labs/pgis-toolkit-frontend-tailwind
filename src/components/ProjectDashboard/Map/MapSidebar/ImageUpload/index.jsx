@@ -67,24 +67,25 @@ const ImageUpload = ({ imageList, setImageList }) => {
           value={url}
           onChange={e => setUrl(e.target.value)}
         />
-        <Button onClick={handleAddUrl}>Add</Button>
+        <Button
+          className="naxatw-btn-secondary naxatw-btn-noborder naxatw-text-[#00A699]"
+          onClick={handleAddUrl}
+        >
+          Add
+        </Button>
       </div>
-
-      <span>OR</span>
+      <div className="naxatw-flex naxatw-justify-center naxatw-py-2 ">
+        <span className="naxatw-mr-[3.875rem]">Or</span>
+      </div>
       <div>
         <div className="naxatw-relative naxatw-flex naxatw-items-center naxatw-gap-x-2 naxatw-rounded-xl ">
           <Button
-            className="naxatw-btn-secondary naxatw-btn-noborder "
+            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-text-[#00A699]"
             iconLeft="upload"
             onClick={onFileUpload}
           >
-            <span className="naxatw-text-[15px] naxatw-font-bold naxatw-text-[#00A699]">
-              Upload
-            </span>
+            Upload Image
           </Button>
-          {/* <div>
-            <Spinner />
-          </div> */}
           <input
             type="file"
             ref={inputRef}
@@ -96,32 +97,45 @@ const ImageUpload = ({ imageList, setImageList }) => {
         </div>
       </div>
 
-      {imageList.map(
-        item =>
-          !item?.isDeleted && (
-            <div key={item.id} className="naxatw-flex naxatw-justify-between">
-              <img
-                className="naxatw-w-10 naxatw-h-10 naxatw-rounded-full"
-                src={item.image || item.url}
-                alt=""
-              />
-              <div className="naxatw-flex naxatw-gap-x-2">
-                <MaterialIcon
-                  name="delete_outline"
-                  className="naxatw-text-icon-md naxatw-cursor-pointer"
-                  onIconClick={() => handleDelete(item.id)}
-                />
-                <div>
-                  <Toggle
-                    checked={item.isCoverImage}
-                    onChange={() => {
-                      handleCoverImage(item.id);
-                    }}
+      {!isEmpty(imageList) && (
+        <div className="naxatw-bg-white naxatw-max-h-[300px] naxatw-overflow-y-auto scrollbar naxatw-space-y-2 naxatw-p-2 ">
+          <div className="naxatw-flex naxatw-justify-between">
+            <span className="naxatw-text-body-lg">Image</span>
+            <span className="naxatw-text-body-lg">Is cover image?</span>
+            <span />
+          </div>
+          {imageList.map(
+            item =>
+              !item?.isDeleted && (
+                <div
+                  key={item.id}
+                  className="naxatw-flex naxatw-justify-between naxatw-items-center "
+                >
+                  <img
+                    className="naxatw-w-10 naxatw-h-10 naxatw-rounded-full"
+                    src={item.image || item.url}
+                    alt=""
                   />
+                  <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-basis-1/2">
+                    <div className="naxatw-pt-2">
+                      <Toggle
+                        isSm
+                        checked={item.isCoverImage}
+                        onChange={() => {
+                          handleCoverImage(item.id);
+                        }}
+                      />
+                    </div>
+                    <MaterialIcon
+                      name="delete_outline"
+                      className="naxatw-text-icon-md naxatw-cursor-pointer naxatw-text-[#FF0F0F]"
+                      onIconClick={() => handleDelete(item.id)}
+                    />
+                  </div>
                 </div>
-              </div>
-            </div>
-          ),
+              ),
+          )}
+        </div>
       )}
     </div>
   );

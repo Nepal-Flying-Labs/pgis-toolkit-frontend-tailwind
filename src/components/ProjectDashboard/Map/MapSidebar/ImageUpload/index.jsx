@@ -1,12 +1,23 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import Button from '@Components/common/Button/index';
 import useCustomUpload from '@Hooks/useCustomUpload';
 import Toggle from '@Components/common/Toggle/index';
 import { isEmpty } from '@Utils/commonUtils';
 import PropTypes from 'prop-types';
+import toastActions from '@Actions/toast';
+
+function validateURL(url) {
+  const regex = /(https?:\/\/.*\.(?:png|jpg|jpeg))/i;
+  if (url.match(regex)) {
+    return true;
+  }
+  return false;
+}
 
 const ImageUpload = ({ imageList, setImageList }) => {
+  const dispatch = useDispatch();
   const [inputRef, onFileUpload] = useCustomUpload();
   const [url, setUrl] = useState('');
 
@@ -27,7 +38,7 @@ const ImageUpload = ({ imageList, setImageList }) => {
   };
 
   const handleAddUrl = () => {
-    if (url) {
+    if (validateURL(url)) {
       const urlObject = {
         id: Date.now(),
         url,
@@ -37,6 +48,12 @@ const ImageUpload = ({ imageList, setImageList }) => {
       };
       setImageList([...imageList, urlObject]);
       setUrl('');
+    } else {
+      dispatch(
+        toastActions.error({
+          message: 'Please enter a valid image url.',
+        }),
+      );
     }
   };
 
@@ -66,7 +83,7 @@ const ImageUpload = ({ imageList, setImageList }) => {
       <div className="naxatw-flex naxatw-justify-between">
         <input
           className="naxatw-input"
-          placeholder="Image url"
+          placeholder="Image URL"
           value={url}
           onChange={e => setUrl(e.target.value)}
         />
@@ -77,8 +94,14 @@ const ImageUpload = ({ imageList, setImageList }) => {
           Add
         </Button>
       </div>
-      <div className="naxatw-flex naxatw-justify-center naxatw-py-2 ">
-        <span className="naxatw-mr-[3.875rem]">Or</span>
+      {/* <div className="naxatw-flex naxatw-justify-center naxatw-py-2 ">
+        <span className="naxatw-mr-[3.875rem]">or</span>
+      </div> */}
+
+      <div className="naxatw-pt-2 naxatw-flex naxatw-items-center">
+        <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
+        <p className="naxatw-mx-3 naxatw-text-sm">or</p>
+        <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
       </div>
       <div>
         <div className="naxatw-relative naxatw-flex naxatw-items-center naxatw-gap-x-2 naxatw-rounded-xl ">

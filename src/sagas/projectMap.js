@@ -253,11 +253,11 @@ export function* updateFeatureCollectionRequest({ id, payload }) {
   try {
     const { image, ...finalPayload } = payload;
 
-    const patchImage = image.filter(
+    const patchImage = image?.filter(
       item => item.patch && !item.isDeleted && item.isChanged,
     );
-    const deleteImage = image.filter(item => item.patch && item.isDeleted);
-    const postImage = image.filter(item => item.post && !item.isDeleted);
+    const deleteImage = image?.filter(item => item.patch && item.isDeleted);
+    const postImage = image?.filter(item => item.post && !item.isDeleted);
 
     const response = yield call(updateFeatureCollection, id, finalPayload);
     if (!isEmpty(postImage)) {
@@ -466,11 +466,11 @@ export function* updateLayerAttributeFieldsRequest({ id, payload }) {
       projectMapActions.updateLayerAttributeFieldsSuccess(response.data),
     );
     yield put(commonActions.toggleModal('manage-attributes'));
-    yield put(
-      toastActions.success({
-        message: 'Layer attribute fields saved successfully.',
-      }),
-    );
+    // yield put(
+    //   toastActions.success({
+    //     message: 'Layer attribute fields saved successfully.',
+    //   }),
+    // );
   } catch (error) {
     yield put(projectMapActions.updateLayerAttributeFieldsFailure());
     throw error;

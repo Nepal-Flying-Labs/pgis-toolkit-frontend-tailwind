@@ -40,6 +40,9 @@ export default function EditFeatureSection() {
   const individualAttributeData = useSelector(
     state => state.projectMap.individualAttributeData,
   );
+  const imageDataType = individualAttributeData.filter(
+    item => item.data_type === 'image',
+  );
   const featureImage = useSelector(state => state.projectMap.featureImage);
   const isPosting = useSelector(state =>
     checkIfLoading(state, [
@@ -67,6 +70,9 @@ export default function EditFeatureSection() {
   };
 
   const [imageList, setImageList] = useState(featureImage || []);
+  const [imageError, setImageError] = useState(false);
+
+  const filterImageList = imageList.filter(image => !image.isDeleted);
 
   const {
     values,
@@ -80,6 +86,9 @@ export default function EditFeatureSection() {
   } = useForm({
     initialValues: {},
     onErrorSubmit: () => {
+      if (!isEmpty(imageDataType) && isEmpty(filterImageList)) {
+        setImageError(true);
+      }
       dispatch(
         toastActions.error({
           message: 'Please fill out all the required fields.',
@@ -93,10 +102,21 @@ export default function EditFeatureSection() {
           dispatch(toastActions.error({ message: 'Please draw a geometry' }));
           return;
         }
+        if (!isEmpty(imageDataType) && isEmpty(filterImageList)) {
+          dispatch(
+            toastActions.error({
+              message: 'Please fill out all the required fields.',
+            }),
+          );
+          setImageError(true);
+          return;
+        }
+        if (!isEmpty(imageDataType)) {
+          payloadData.image = imageList;
+        }
         payloadData.layer = selectedLayer.id;
         payloadData.geometry = drawnFeatureWkt;
         payloadData.attributes = data;
-        payloadData.image = imageList;
         dispatch(postNewLayerFeatureRequest(payloadData));
         return;
       }
@@ -111,7 +131,19 @@ export default function EditFeatureSection() {
       if (isFieldsChanged) {
         payloadData.attributes = data;
       }
-      if (!isEmpty(imageList)) {
+      if (!isEmpty(imageDataType) && isEmpty(filterImageList)) {
+        dispatch(
+          toastActions.error({
+            message: 'Please fill out all the required fields.',
+          }),
+        );
+        setImageError(true);
+        return;
+      }
+      if (
+        !isEmpty(imageDataType) &&
+        !isEmpty(imageList.filter(image => image.isChanged))
+      ) {
         payloadData.image = imageList;
       }
       if (!isEmpty(payloadData)) {
@@ -149,12 +181,21 @@ export default function EditFeatureSection() {
   }, [individualAttributeData, setValues]);
 
   useEffect(() => {
-    if (!individualAttributeData || !isFieldsChanged) return;
+    if (
+      !individualAttributeData ||
+      (!isFieldsChanged && sidebarContent !== 'add-feature')
+    )
+      return;
     const mandatoryFields = individualAttributeData
-      .filter(item => item.mandatory)
+      .filter(item => item.mandatory && item.data_type !== 'image')
       .map(item => item.name);
     setRequiredFields(mandatoryFields);
-  }, [individualAttributeData, setRequiredFields, isFieldsChanged]);
+  }, [
+    individualAttributeData,
+    setRequiredFields,
+    isFieldsChanged,
+    sidebarContent,
+  ]);
 
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-5">
@@ -236,7 +277,9 @@ export default function EditFeatureSection() {
                       {...inputProps}
                     />
                   )}
-
+                  {imageError && item.data_type === 'image' && (
+                    <FormErrorMessage message="Required" />
+                  )}
                   {meta[item.name]?.touched && meta[item.name]?.error && (
                     <FormErrorMessage message="Required" />
                   )}

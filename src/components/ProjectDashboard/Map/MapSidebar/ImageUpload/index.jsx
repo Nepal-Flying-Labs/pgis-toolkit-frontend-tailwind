@@ -16,13 +16,11 @@ const ImageUpload = ({ imageList, setImageList }) => {
     const uploadedFileObject = {
       id: Date.now(),
       name: file.name,
-      size: file.size,
-      type: file.type,
-      lastModifiedDate: file.lastModifiedDate,
       image: URL.createObjectURL(files[0]),
       isCoverImage: isEmpty(imageList),
       file,
       post: true,
+      isChanged: true,
     };
     // setUploadImage(file);
     setImageList([...imageList, uploadedFileObject]);
@@ -43,7 +41,9 @@ const ImageUpload = ({ imageList, setImageList }) => {
 
   const handleDelete = id => {
     const newData = imageList.map(image =>
-      image.id === id ? { ...image, isDeleted: true } : { ...image },
+      image.id === id
+        ? { ...image, isDeleted: true, isChanged: true }
+        : { ...image },
     );
     setImageList(newData);
   };

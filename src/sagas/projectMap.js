@@ -232,6 +232,7 @@ export function* postNewLayerFeatureRequest({ payload }) {
       );
     }
     yield put(projectMapActions.postNewLayerFeatureSuccess(response.data));
+    yield put(projectMapActions.setProjectMapState({ featureImage: [] }));
   } catch (error) {
     yield put(projectMapActions.postNewLayerFeatureFailure());
     throw error;
@@ -288,19 +289,10 @@ export function* updateFeatureCollectionRequest({ id, payload }) {
           call(
             updateFeatureImage,
             item.id,
-            prepareFormData(
-              item.file
-                ? {
-                    image: item.file,
-                    feature_id: id,
-                    is_cover_image: !!item.isCoverImage,
-                  }
-                : {
-                    url: item.url,
-                    feature_id: id,
-                    is_cover_image: !!item.isCoverImage,
-                  },
-            ),
+            prepareFormData({
+              feature_id: id,
+              is_cover_image: !!item.isCoverImage,
+            }),
           ),
         ),
       );
@@ -311,6 +303,7 @@ export function* updateFeatureCollectionRequest({ id, payload }) {
     }
 
     yield put(projectMapActions.updateFeatureCollectionSuccess(response.data));
+    yield put(projectMapActions.setProjectMapState({ featureImage: [] }));
     yield put(projectMapActions.getFeatureCollectionSuccess(id));
     yield put(commonActions.toggleModalTwo());
   } catch (error) {

@@ -33,6 +33,7 @@ const ImageUpload = ({ imageList, setImageList }) => {
         url,
         isCoverImage: isEmpty(imageList),
         post: true,
+        isChanged: true,
       };
       setImageList([...imageList, urlObject]);
       setUrl('');

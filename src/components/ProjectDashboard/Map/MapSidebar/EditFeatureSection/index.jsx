@@ -41,7 +41,7 @@ export default function EditFeatureSection() {
     state => state.projectMap.individualAttributeData,
   );
   const imageDataType = individualAttributeData.filter(
-    item => item.data_type === 'image',
+    item => item.data_type === 'image' && item.mandatory,
   );
   const featureImage = useSelector(state => state.projectMap.featureImage);
   const isPosting = useSelector(state =>
@@ -144,6 +144,8 @@ export default function EditFeatureSection() {
         !isEmpty(imageDataType) &&
         !isEmpty(imageList.filter(image => image.isChanged))
       ) {
+        payloadData.image = imageList;
+      } else if (!isEmpty(imageList.filter(image => image.isChanged))) {
         payloadData.image = imageList;
       }
       if (!isEmpty(payloadData)) {

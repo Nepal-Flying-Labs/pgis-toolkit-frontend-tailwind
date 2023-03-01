@@ -61,6 +61,7 @@ export default function EditFeatureSection() {
         individualAttributeData: [],
         layerAttributes: null,
         editFeatureId: null,
+        featureImage: [],
       }),
     );
   };

@@ -58,6 +58,8 @@ const ImageUpload = ({ imageList, setImageList }) => {
     setImageList(newData);
   };
 
+  const filterImageList = imageList.filter(image => !image.isDeleted);
+
   return (
     <div>
       <div className="naxatw-flex naxatw-justify-between">
@@ -92,12 +94,12 @@ const ImageUpload = ({ imageList, setImageList }) => {
             style={{ display: 'none' }}
             onChange={e => handleFileChange(e)}
             multiple="multiple"
-            accept="application/zip,application/x-zip,application/x-zip-compressed,application/octet-stream/,.geojson"
+            accept="image/png, image/gif, image/jpeg, image/jpg"
           />
         </div>
       </div>
 
-      {!isEmpty(imageList) && (
+      {!isEmpty(filterImageList) && (
         <div className="naxatw-bg-white naxatw-max-h-[300px] naxatw-overflow-y-auto scrollbar naxatw-space-y-2 naxatw-p-2 ">
           <div className="naxatw-flex naxatw-justify-between">
             <span className="naxatw-text-body-lg">Image</span>

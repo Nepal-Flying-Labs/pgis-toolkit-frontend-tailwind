@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { stringify } from 'wkt';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
@@ -11,6 +11,7 @@ import CustomCalendar from '@Components/common/CustomCalendar/index';
 import { isEmpty } from '@Utils/commonUtils';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import Select from '@Components/common/Select/index';
+import ImageUpload from '../ImageUpload/index';
 
 const {
   setProjectMapState,
@@ -39,6 +40,7 @@ export default function EditFeatureSection() {
   const individualAttributeData = useSelector(
     state => state.projectMap.individualAttributeData,
   );
+  const featureImage = useSelector(state => state.projectMap.featureImage);
   const isPosting = useSelector(state =>
     checkIfLoading(state, [
       Types.POST_NEW_LAYER_FEATURE_REQUEST,
@@ -62,6 +64,8 @@ export default function EditFeatureSection() {
       }),
     );
   };
+
+  const [imageList, setImageList] = useState(featureImage || []);
 
   const {
     values,
@@ -91,6 +95,7 @@ export default function EditFeatureSection() {
         payloadData.layer = selectedLayer.id;
         payloadData.geometry = drawnFeatureWkt;
         payloadData.attributes = data;
+        payloadData.image = imageList;
         dispatch(postNewLayerFeatureRequest(payloadData));
         return;
       }
@@ -105,15 +110,20 @@ export default function EditFeatureSection() {
       if (isFieldsChanged) {
         payloadData.attributes = data;
       }
+      if (!isEmpty(imageList)) {
+        payloadData.image = imageList;
+      }
       if (!isEmpty(payloadData)) {
-        dispatch(updateFeatureCollectionRequest(editFeatureId, payloadData));
+        dispatch(
+          updateFeatureCollectionRequest(editFeatureId, {
+            ...payloadData,
+          }),
+        );
       } else {
         handleCancel();
       }
     },
   });
-
-  console.log(values);
 
   useEffect(() => {
     if (!selectedLayer) return;
@@ -205,6 +215,13 @@ export default function EditFeatureSection() {
                         // );
                       }}
                       selected={values[`${item.name}`] || ''}
+                    />
+                  ) : item.data_type === 'image' ? (
+                    <ImageUpload
+                      // setImageUrl={url => handlePostImage(url)}
+                      // setUploadImage={file => handlePostImage(file)}
+                      imageList={imageList}
+                      setImageList={setImageList}
                     />
                   ) : (
                     <input

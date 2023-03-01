@@ -93,6 +93,7 @@
 - [ ] check error change error => errors
 
 ### ISSUES 24 FEB
+
 - [ ] source to data source in edit layer (sudeep)
 - [ ] source => dropdown => other organizations(specify) | primary/secondary (raj/sudeep)
 - [ ] help box box shadow (sudeep)
@@ -131,3 +132,4 @@
 
 - [ ] boundary (attribute data not available)
 - [ ] prevent boundary edit delete
+- [ ] change email validation in create project

@@ -107,8 +107,8 @@
 
 ### ISSUES WBR
 
-- [ ] draw area on map boundary (discussion)
-- [ ] edit/add boundary attribute ?
+- [x] prevent boundary edit delete
+- [x] boundary (attribute data not available)
 - [ ] add feature refactor
 - [ ] bookmark zoom extent
 - [ ] 5.8 zoom to selected layer choice? highlight query results yellow?
@@ -130,6 +130,7 @@
 - [ ] x/y label in chart
 - [ ] Clicking on "Visualize" does not do anything?
 
-- [ ] boundary (attribute data not available)
-- [ ] prevent boundary edit delete
-- [ ] change email validation in create project
+### FIXED ISSUE NUMBERS
+
+- [x] 2.7
+- [ ] polygon area/id in boundary drawn attribute

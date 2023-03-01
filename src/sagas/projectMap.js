@@ -31,6 +31,9 @@ import {
   postDropdownOption,
   postLayerAttributeFields,
   deleteLayerAttribute,
+  postFeatureImage,
+  updateFeatureImage,
+  deleteFeatureImage,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -203,8 +206,33 @@ export function* getLayerAttributeFieldsRequest({ params }) {
 
 export function* postNewLayerFeatureRequest({ payload }) {
   try {
-    const response = yield call(postNewLayerFeature, payload);
+    const { image, ...finalPayload } = payload;
+    const response = yield call(postNewLayerFeature, finalPayload);
+
+    if (!isEmpty(image)) {
+      yield all(
+        image.map(item =>
+          call(
+            postFeatureImage,
+            prepareFormData(
+              item.file
+                ? {
+                    image: item.file,
+                    feature_id: response.data.id,
+                    is_cover_image: item.isCoverImage,
+                  }
+                : {
+                    url: item.url,
+                    feature_id: response.data.id,
+                    is_cover_image: item.isCoverImage,
+                  },
+            ),
+          ),
+        ),
+      );
+    }
     yield put(projectMapActions.postNewLayerFeatureSuccess(response.data));
+    yield put(projectMapActions.setProjectMapState({ featureImage: [] }));
   } catch (error) {
     yield put(projectMapActions.postNewLayerFeatureFailure());
     throw error;
@@ -223,8 +251,59 @@ export function* getFeatureCollectionRequest({ id }) {
 
 export function* updateFeatureCollectionRequest({ id, payload }) {
   try {
-    const response = yield call(updateFeatureCollection, id, payload);
+    const { image, ...finalPayload } = payload;
+
+    const patchImage = image?.filter(
+      item => item.patch && !item.isDeleted && item.isChanged,
+    );
+    const deleteImage = image?.filter(item => item.patch && item.isDeleted);
+    const postImage = image?.filter(item => item.post && !item.isDeleted);
+
+    const response = yield call(updateFeatureCollection, id, finalPayload);
+    if (!isEmpty(postImage)) {
+      yield all(
+        postImage.map(item =>
+          call(
+            postFeatureImage,
+            prepareFormData(
+              item.file
+                ? {
+                    image: item.file,
+                    feature_id: id,
+                    is_cover_image: item.isCoverImage,
+                  }
+                : {
+                    url: item.url,
+                    feature_id: id,
+                    is_cover_image: item.isCoverImage,
+                  },
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (!isEmpty(patchImage)) {
+      yield all(
+        patchImage.map(item =>
+          call(
+            updateFeatureImage,
+            item.id,
+            prepareFormData({
+              feature_id: id,
+              is_cover_image: !!item.isCoverImage,
+            }),
+          ),
+        ),
+      );
+    }
+
+    if (!isEmpty(deleteImage)) {
+      yield all(deleteImage.map(item => call(deleteFeatureImage, item.id)));
+    }
+
     yield put(projectMapActions.updateFeatureCollectionSuccess(response.data));
+    yield put(projectMapActions.setProjectMapState({ featureImage: [] }));
     yield put(projectMapActions.getFeatureCollectionSuccess(id));
     yield put(commonActions.toggleModalTwo());
   } catch (error) {
@@ -387,11 +466,11 @@ export function* updateLayerAttributeFieldsRequest({ id, payload }) {
       projectMapActions.updateLayerAttributeFieldsSuccess(response.data),
     );
     yield put(commonActions.toggleModal('manage-attributes'));
-    yield put(
-      toastActions.success({
-        message: 'Layer attribute fields saved successfully.',
-      }),
-    );
+    // yield put(
+    //   toastActions.success({
+    //     message: 'Layer attribute fields saved successfully.',
+    //   }),
+    // );
   } catch (error) {
     yield put(projectMapActions.updateLayerAttributeFieldsFailure());
     throw error;

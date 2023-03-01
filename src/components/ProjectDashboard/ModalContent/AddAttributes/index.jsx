@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-expressions */
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
@@ -18,6 +17,7 @@ import MaterialIcon from '@Components/common/MaterialIcon/index';
 import isEmpty from '@Utils/isEmpty';
 import toastActions from '@Actions/toast';
 import Spinner from '@Components/common/Spinner/index';
+import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 
 const {
   postTemplateAttributeRequest,
@@ -47,9 +47,12 @@ function diffObject(a, b) {
 }
 
 function validate(data) {
-  const newData = data.map(d => (d.name ? { ...d } : { ...d, error: true }));
-  const errorData = newData.filter(d => d.error);
-  return errorData.length > 0;
+  const optionsError = [];
+
+  for (let i = 0; i < data.length; i += 1) {
+    if (!data[i].name) optionsError.push(data[i].id);
+  }
+  return optionsError;
 }
 
 const initialState = {
@@ -96,6 +99,7 @@ const source = [
 ];
 
 const AddAttributes = () => {
+  const [errorFields, setErrorFields] = useState([]);
   const { tabname } = useParams();
   const dispatch = useDispatch();
   const selectedData = useSelector(
@@ -152,57 +156,63 @@ const AddAttributes = () => {
 
   const { values, handleChange, handleSubmit, handleCustomChange } = useForm({
     initialValues: individualAttribute || initialState,
-    onSubmit: data => {
-      if (individualAttribute) {
-        // console.log(formValues, 'values');
-        const patchData = formValues?.filter(
-          item => item.flag === 'patch' && item.isChanged,
-        );
-        const postData = formValues?.filter(item => item.flag === 'post');
-        const finalPayload = diffObject(individualAttribute, values);
-        if (tabname === 'manage-data') {
+    onSubmit: () => {
+      const errors = [];
+      if (!values.name) errors.push('name');
+      if (!values.data_type) errors.push('data_type');
+      let optionsErrors = [];
+      if (isDropdown === 'yes') {
+        optionsErrors = validate(formValues);
+      }
+      setErrorFields([...errors, ...optionsErrors]);
+      if (!isEmpty(errorFields)) {
+        if (individualAttribute) {
+          const patchData = formValues?.filter(
+            item => item.flag === 'patch' && item.isChanged,
+          );
+          const postData = formValues?.filter(item => item.flag === 'post');
+          const finalPayload = diffObject(individualAttribute, values);
+          if (tabname === 'manage-data') {
+            dispatch(
+              updateTemplateAttributeRequest(individualAttribute.id, {
+                ...finalPayload,
+                patchData,
+                postData,
+              }),
+            );
+          } else {
+            dispatch(
+              updateLayerAttributeFieldsRequest(individualAttribute.id, {
+                ...finalPayload,
+                patchData,
+                postData,
+              }),
+            );
+          }
+        } else if (tabname === 'manage-data') {
           dispatch(
-            updateTemplateAttributeRequest(individualAttribute.id, {
-              ...finalPayload,
-              patchData,
-              postData,
+            postTemplateAttributeRequest({
+              ...values,
+              data_type: values.data_type,
+              layer_template: selectedData.id,
+              dropdown_field: isDropdown === 'yes',
+              postData: formValues,
             }),
           );
         } else {
           dispatch(
-            updateLayerAttributeFieldsRequest(individualAttribute.id, {
-              ...finalPayload,
-              patchData,
-              postData,
+            postLayerAttributeFieldsRequest({
+              ...values,
+              data_type: values.data_type,
+              layer: selectedLayer.id,
+              dropdown_field: isDropdown === 'yes' ? 'True' : 'False',
+              postData: formValues,
             }),
           );
         }
-      } else if (tabname === 'manage-data') {
-        dispatch(
-          postTemplateAttributeRequest({
-            ...values,
-            data_type: values.data_type,
-            layer_template: selectedData.id,
-            dropdown_field: isDropdown === 'yes',
-            postData: formValues,
-          }),
-        );
-      } else if (
-        (isDropdown === 'yes' && !validate(formValues)) ||
-        isDropdown === 'no'
-      ) {
-        dispatch(
-          postLayerAttributeFieldsRequest({
-            ...values,
-            data_type: values.data_type,
-            layer: selectedLayer.id,
-            dropdown_field: isDropdown === 'yes' ? 'True' : 'False',
-            postData: formValues,
-          }),
-        );
       } else {
         dispatch(
-          toastActions.error({ message: 'Options field cannot be empty' }),
+          toastActions.error({ message: 'Please fill all required fields' }),
         );
       }
     },
@@ -251,6 +261,7 @@ const AddAttributes = () => {
     setFormValues(newData);
   };
 
+  // add form fields for dropdown in post
   useEffect(() => {
     if (!individualAttribute && isDropdown === 'yes') {
       setFormValues([
@@ -260,13 +271,31 @@ const AddAttributes = () => {
     }
   }, [individualAttribute, isDropdown]);
 
-  // useEffect(() => {
-  //   if (individualAttribute && !dropdownOptions && isDropdown === 'yes')
-  //     setFormValues([
-  //       { id: 1, name: '' },
-  //       { id: 2, name: '' },
-  //     ]);
-  // }, [dropdownOptions, individualAttribute, isDropdown]);
+  // add form fields in edit if no dropdown option
+  useEffect(() => {
+    if (!dropdownLoading)
+      if (
+        individualAttribute &&
+        isEmpty(dropdownOptions) &&
+        isDropdown === 'yes'
+      )
+        setFormValues([
+          {
+            id: 1,
+            name: '',
+            flag: 'post',
+            attribute: individualAttribute?.id,
+            edit: true,
+          },
+          {
+            id: 2,
+            name: '',
+            flag: 'post',
+            attribute: individualAttribute?.id,
+            edit: true,
+          },
+        ]);
+  }, [dropdownLoading, dropdownOptions, individualAttribute, isDropdown]);
 
   useEffect(() => {
     if (individualAttribute?.dropdown_field) {
@@ -297,15 +326,21 @@ const AddAttributes = () => {
     <div className="naxatw-container ">
       <div className="naxatw-w-[41.875rem] naxatw-mx-auto naxatw-px-7 naxatw-py-5">
         <div className="naxatw-space-y-5">
-          <Input
-            label="Attribute"
-            placeholder="Enter Attribute Name"
-            name="name"
-            value={values.name || ''}
-            onChange={handleChange}
-            className={individualAttribute ? 'naxatw-input-disabled' : ''}
-            disabled={!!individualAttribute}
-          />
+          <div>
+            <Input
+              label="Attribute"
+              placeholder="Enter Attribute Name"
+              name="name"
+              value={values.name || ''}
+              onChange={handleChange}
+              className={individualAttribute ? 'naxatw-input-disabled' : ''}
+              disabled={!!individualAttribute}
+            />
+            {errorFields.includes('name') && (
+              <FormErrorMessage message="Attribute name is required" />
+            )}
+          </div>
+
           <Input
             label="Alias"
             placeholder="Enter alias"
@@ -328,6 +363,9 @@ const AddAttributes = () => {
                     ?.displayName
                 }
               />
+              {errorFields.includes('data_type') && (
+                <FormErrorMessage message="Data type is required" />
+              )}
             </div>
             {tabname === 'manage-data' ? (
               <div className="naxatw-basis-2/4 naxatw-space-y-2">
@@ -399,27 +437,32 @@ const AddAttributes = () => {
                 <div className="naxatw-max-h-[200px] naxatw-space-y-2 naxatw-overflow-y-auto scrollbar naxatw-px-3 naxatw-py-2">
                   {formValues &&
                     formValues.map((option, index) => (
-                      <div
-                        key={option.id}
-                        className="naxatw-flex naxatw-gap-x-1 naxatw-items-end"
-                      >
-                        <div className="naxatw-basis-11/12">
-                          <Input
-                            key={option.id}
-                            label={`Option ${index + 1}`}
-                            placeholder={`Option ${index + 1}`}
-                            name={`${option.id}`}
-                            value={option.name}
-                            onChange={handleOptionChange}
-                          />
+                      <div>
+                        <div
+                          key={option.id}
+                          className="naxatw-flex naxatw-gap-x-1 naxatw-items-end"
+                        >
+                          <div className="naxatw-basis-11/12">
+                            <Input
+                              key={option.id}
+                              label={`Option ${index + 1}`}
+                              placeholder={`Option ${index + 1}`}
+                              name={`${option.id}`}
+                              value={option.name}
+                              onChange={handleOptionChange}
+                            />
+                          </div>
+                          {option.flag === 'post' && !option.edit && (
+                            <MaterialIcon
+                              name="delete_outline"
+                              className="naxatw-text-[#FF0F0F] naxatw-text-icon-md"
+                              wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer naxatw-basis-1/12"
+                              onIconClick={() => handleDeleteOption(option.id)}
+                            />
+                          )}
                         </div>
-                        {option.flag === 'post' && (
-                          <MaterialIcon
-                            name="delete_outline"
-                            className="naxatw-text-[#FF0F0F] naxatw-text-icon-md"
-                            wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer naxatw-basis-1/12"
-                            onIconClick={() => handleDeleteOption(option.id)}
-                          />
+                        {errorFields.includes(option.id) && (
+                          <FormErrorMessage message="Required" />
                         )}
                       </div>
                     ))}

@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { stringify } from 'wkt';
 import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
@@ -11,6 +11,7 @@ import CustomCalendar from '@Components/common/CustomCalendar/index';
 import { isEmpty } from '@Utils/commonUtils';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import Select from '@Components/common/Select/index';
+import ImageUpload from '../ImageUpload/index';
 
 const {
   setProjectMapState,
@@ -39,6 +40,10 @@ export default function EditFeatureSection() {
   const individualAttributeData = useSelector(
     state => state.projectMap.individualAttributeData,
   );
+  const imageDataType = individualAttributeData.filter(
+    item => item.data_type === 'image' && item.mandatory,
+  );
+  const featureImage = useSelector(state => state.projectMap.featureImage);
   const isPosting = useSelector(state =>
     checkIfLoading(state, [
       Types.POST_NEW_LAYER_FEATURE_REQUEST,
@@ -59,9 +64,15 @@ export default function EditFeatureSection() {
         individualAttributeData: [],
         layerAttributes: null,
         editFeatureId: null,
+        featureImage: [],
       }),
     );
   };
+
+  const [imageList, setImageList] = useState(featureImage || []);
+  const [imageError, setImageError] = useState(false);
+
+  const filterImageList = imageList.filter(image => !image.isDeleted);
 
   const {
     values,
@@ -75,6 +86,9 @@ export default function EditFeatureSection() {
   } = useForm({
     initialValues: {},
     onErrorSubmit: () => {
+      if (!isEmpty(imageDataType) && isEmpty(filterImageList)) {
+        setImageError(true);
+      }
       dispatch(
         toastActions.error({
           message: 'Please fill out all the required fields.',
@@ -87,6 +101,18 @@ export default function EditFeatureSection() {
         if (!drawnFeatureWkt) {
           dispatch(toastActions.error({ message: 'Please draw a geometry' }));
           return;
+        }
+        if (!isEmpty(imageDataType) && isEmpty(filterImageList)) {
+          dispatch(
+            toastActions.error({
+              message: 'Please fill out all the required fields.',
+            }),
+          );
+          setImageError(true);
+          return;
+        }
+        if (!isEmpty(imageDataType)) {
+          payloadData.image = imageList;
         }
         payloadData.layer = selectedLayer.id;
         payloadData.geometry = drawnFeatureWkt;
@@ -105,15 +131,34 @@ export default function EditFeatureSection() {
       if (isFieldsChanged) {
         payloadData.attributes = data;
       }
+      if (!isEmpty(imageDataType) && isEmpty(filterImageList)) {
+        dispatch(
+          toastActions.error({
+            message: 'Please fill out all the required fields.',
+          }),
+        );
+        setImageError(true);
+        return;
+      }
+      if (
+        !isEmpty(imageDataType) &&
+        !isEmpty(imageList.filter(image => image.isChanged))
+      ) {
+        payloadData.image = imageList;
+      } else if (!isEmpty(imageList.filter(image => image.isChanged))) {
+        payloadData.image = imageList;
+      }
       if (!isEmpty(payloadData)) {
-        dispatch(updateFeatureCollectionRequest(editFeatureId, payloadData));
+        dispatch(
+          updateFeatureCollectionRequest(editFeatureId, {
+            ...payloadData,
+          }),
+        );
       } else {
         handleCancel();
       }
     },
   });
-
-  console.log(values);
 
   useEffect(() => {
     if (!selectedLayer) return;
@@ -138,12 +183,21 @@ export default function EditFeatureSection() {
   }, [individualAttributeData, setValues]);
 
   useEffect(() => {
-    if (!individualAttributeData || !isFieldsChanged) return;
+    if (
+      !individualAttributeData ||
+      (!isFieldsChanged && sidebarContent !== 'add-feature')
+    )
+      return;
     const mandatoryFields = individualAttributeData
-      .filter(item => item.mandatory)
+      .filter(item => item.mandatory && item.data_type !== 'image')
       .map(item => item.name);
     setRequiredFields(mandatoryFields);
-  }, [individualAttributeData, setRequiredFields, isFieldsChanged]);
+  }, [
+    individualAttributeData,
+    setRequiredFields,
+    isFieldsChanged,
+    sidebarContent,
+  ]);
 
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-5">
@@ -206,6 +260,13 @@ export default function EditFeatureSection() {
                       }}
                       selected={values[`${item.name}`] || ''}
                     />
+                  ) : item.data_type === 'image' ? (
+                    <ImageUpload
+                      // setImageUrl={url => handlePostImage(url)}
+                      // setUploadImage={file => handlePostImage(file)}
+                      imageList={imageList}
+                      setImageList={setImageList}
+                    />
                   ) : (
                     <input
                       id={item.id}
@@ -218,7 +279,9 @@ export default function EditFeatureSection() {
                       {...inputProps}
                     />
                   )}
-
+                  {imageError && item.data_type === 'image' && (
+                    <FormErrorMessage message="Required" />
+                  )}
                   {meta[item.name]?.touched && meta[item.name]?.error && (
                     <FormErrorMessage message="Required" />
                   )}

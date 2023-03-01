@@ -56,6 +56,7 @@ const initialState = {
     selectedLayerAttribute: null,
   },
   fieldsDropdownOptions: null,
+  featureImage: [],
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -352,9 +353,14 @@ const postNewLayerFeatureSuccess = (state, action) => {
 };
 
 const getFeatureCollectionSuccess = (state, action) => {
-  const { geometry, attributes, id: featureId } = action.payload;
+  const { geometry, attributes, id: featureId, images } = action.payload;
   const wktString = geometry.split(';')[1];
   const featureGeojson = parse(wktString);
+  const modifiedImage = images?.map(item => ({
+    ...item,
+    patch: true,
+    isCoverImage: item.is_cover_image,
+  }));
   return {
     ...state,
     featureGeojson,
@@ -362,6 +368,7 @@ const getFeatureCollectionSuccess = (state, action) => {
     editFeatureId: featureId,
     sidebarContent: 'edit-feature',
     layerAttributes: attributes,
+    featureImage: modifiedImage || [],
   };
 };
 

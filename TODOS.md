@@ -93,6 +93,7 @@
 - [ ] check error change error => errors
 
 ### ISSUES 24 FEB
+
 - [ ] source to data source in edit layer (sudeep)
 - [ ] source => dropdown => other organizations(specify) | primary/secondary (raj/sudeep)
 - [ ] help box box shadow (sudeep)
@@ -105,6 +106,7 @@
 - [ ] "documents" in project header
 
 ### ISSUES WBR
+
 - [x] prevent boundary edit delete
 - [x] boundary (attribute data not available)
 - [ ] add feature refactor
@@ -129,5 +131,6 @@
 - [ ] Clicking on "Visualize" does not do anything?
 
 ### FIXED ISSUE NUMBERS
+
 - [x] 2.7
 - [ ] polygon area/id in boundary drawn attribute

@@ -265,7 +265,7 @@ export function getModalContent(content) {
 
     case 'upload-bulk-image':
       return {
-        title: 'Upload Image',
+        title: 'Upload Images',
         content: <UploadBulkImage />,
       };
     default:

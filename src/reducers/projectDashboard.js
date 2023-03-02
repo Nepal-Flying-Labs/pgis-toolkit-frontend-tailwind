@@ -6,6 +6,7 @@ const initialState = {
   projectDetail: null,
   searchText: '',
   data: {
+    uploadingImage: [],
     layers: null,
     projectAreaLayerId: null,
     uploadStatusCheckingIds: [],
@@ -554,6 +555,29 @@ const getTemplateDropdownChoiceSuccess = (state, action) => {
   };
 };
 
+const uploadFeatureImageSuccess = (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    uploadingImage: action.payload,
+  },
+});
+
+const setUploadImageStatusCheckingId = (state, action) => {
+  const { id } = action.payload;
+  const filterData = state.data.uploadingImage.filter(
+    item => item.task_id !== id,
+  );
+  // const uploadStatusCheckingIds = [...state.data.uploadStatusCheckingIds, id];
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      uploadingImage: filterData,
+    },
+  };
+};
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -605,6 +629,8 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.UPDATE_DATA_LAYER_SUCCESS]: updateDataLayerSuccess,
   [Types.GET_TEMPLATE_DROPDOWN_CHOICE_SUCCESS]:
     getTemplateDropdownChoiceSuccess,
+  [Types.UPLOAD_FEATURE_IMAGE_SUCCESS]: uploadFeatureImageSuccess,
+  [Types.SET_UPLOAD_IMAGE_STATUS_CHECKING_ID]: setUploadImageStatusCheckingId,
 });
 
 export default projectDashboardReducer;

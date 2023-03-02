@@ -1,15 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import toastActions from '@Actions/toast';
 import {
   Creators as ProjectDashboardCreators,
   Types,
 } from '@Actions/projectDashboard';
-import { Creators as CommonCreators } from '@Actions/common';
 import Dropzone from '@Components/common/Dropzone';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import FileIcon from '@Assets/images/icons/file-icon.svg';
@@ -21,22 +18,17 @@ import { getCSVHeaders } from '@Utils/convertLayerUtils';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
 import FormErrorMessage from '@Components/common/FormErrorMessage';
 
-const { getProjectThemesRequest } = ProjectMapCreators;
-const { uploadDatasetsRequest } = ProjectDashboardCreators;
-const { toggleModalTwo } = CommonCreators;
+const { uploadFeatureImageRequest } = ProjectDashboardCreators;
 
 const currentDate = new Date();
 
 export default function UploadBulkImage() {
-  //   const { projectId } = useParams();
   const selectedData = useSelector(
     state => state.projectDashboard.data.selectedData,
   );
-  console.log(selectedData, 'selected data');
   const [uploadedFiles, setUploadedFiles] = useState([]);
-  //   const [errorFields, setErrorFields] = useState({});
   const isUploading = useSelector(state =>
-    checkIfLoading(state, [Types.UPLOAD_DATASETS_REQUEST]),
+    checkIfLoading(state, [Types.UPLOAD_FEATURE_IMAGE_REQUEST]),
   );
   const { height } = useWindowDimensions();
   const dispatch = useDispatch();
@@ -63,7 +55,6 @@ export default function UploadBulkImage() {
       if (extension === 'zip') {
         setUploadedFiles(prev => [...prev, fileObj]);
       } else {
-        // setUploadedFiles(prev => [...prev, fileObj]);
         dispatch(toastActions.error({ message: 'Only zip format supported' }));
       }
     });
@@ -75,41 +66,14 @@ export default function UploadBulkImage() {
 
   const handleSubmit = () => {
     if (isUploading) return;
-    // let errorCount = 0;
-    // const errors = uploadedFiles.reduce((obj, item) => {
-    //   const fields = [];
-    //   if (!item.name) fields.push('name');
-    //   if (!item.category) fields.push('category');
-    //   if (!item.source) fields.push('source');
-    //   if (item.extension === 'csv') {
-    //     if (!item.latField) fields.push('latField');
-    //     if (!item.lonField) fields.push('lonField');
-    //   }
-    //   if (fields.length) errorCount += 1;
-    //   return {
-    //     ...obj,
-    //     [item.id]: fields,
-    //   };
-    // }, {});
-    // setErrorFields(errors);
-    // if (errorCount === 0) {
     const payloadData = uploadedFiles.map(item => {
       const data = {
         layer: selectedData.id,
         file: item.file,
       };
-      return prepareFormData(data);
+      return data;
     });
-    console.log(payloadData, 'payloadData');
-    //   dispatch(uploadDatasetsRequest(payloadData));
-    // }
-    // else {
-    //   dispatch(
-    //     toastActions.error({
-    //       message: 'Please fill out all the required fields.',
-    //     }),
-    //   );
-    // }
+    dispatch(uploadFeatureImageRequest(payloadData));
   };
 
   return (
@@ -170,7 +134,7 @@ export default function UploadBulkImage() {
             onClick={handleSubmit}
             isLoading={isUploading}
           >
-            Upload Image
+            Upload
           </Button>
         </div>
       )}

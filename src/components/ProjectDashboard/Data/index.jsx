@@ -12,8 +12,11 @@ import Tooltip from '@Components/common/Tooltip/index';
 import NoDataYet from './NoDataYet';
 import LayerList from './LayerList';
 
-const { getProjectLayersRequest, checkUploadStatusRequest } =
-  ProjectDashboardCreators;
+const {
+  getProjectLayersRequest,
+  checkUploadStatusRequest,
+  checkImageUploadStatusRequest,
+} = ProjectDashboardCreators;
 const { toggleModal } = CommonCreators;
 
 export default function Data() {
@@ -25,6 +28,9 @@ export default function Data() {
   const layers = useSelector(state => state.projectDashboard.data.layers);
   const uploadStatusCheckingIds = useSelector(
     state => state.projectDashboard.data.uploadStatusCheckingIds,
+  );
+  const uploadingImages = useSelector(
+    state => state.projectDashboard.data.uploadingImage,
   );
   const dispatch = useDispatch();
 
@@ -41,11 +47,23 @@ export default function Data() {
         item.upload_status === 'uploading' &&
         !uploadStatusCheckingIds.includes(item.id),
     );
-
     uploadingLayers?.forEach(layer => {
       dispatch(checkUploadStatusRequest(layer.id));
     });
   }, [dispatch, layers, uploadStatusCheckingIds]);
+
+  // check upload status for image
+  useEffect(() => {
+    if (isEmpty(uploadingImages)) return;
+    uploadingImages?.forEach(image => {
+      dispatch(
+        checkImageUploadStatusRequest({
+          task_id: image.task_id,
+          name: image.name,
+        }),
+      );
+    });
+  }, [dispatch, layers, uploadingImages]);
 
   const uploadMethods = [
     {

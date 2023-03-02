@@ -183,7 +183,7 @@ export default function ViewLayerAttribute() {
     ? [...headerKeys.map(() => '150px')]
     : [...headerKeys.map(() => '150px'), '10px'];
 
-  if (!loading && isEmpty(attributeList))
+  if (!loading && isEmpty(attributeList) && !searchText)
     return (
       <div className="naxatw-py-8 naxatw-flex naxatw-justify-center">
         <h4>No attributes found.</h4>

@@ -34,6 +34,7 @@ import {
   postFeatureImage,
   updateFeatureImage,
   deleteFeatureImage,
+  postCreateToUrl,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -435,6 +436,7 @@ export function* updateLayerAttributeRequest({ id, payload }) {
 }
 
 export function* updateLayerAttributeFieldsRequest({ id, payload }) {
+  console.log(payload, 'paylaod');
   try {
     const { patchData, postData, ...newData } = payload;
     const formData = prepareFormData(newData);
@@ -459,6 +461,16 @@ export function* updateLayerAttributeFieldsRequest({ id, payload }) {
             attribute: data.attribute,
           }),
         ),
+      );
+    }
+
+    const dataType = response.data.data_type;
+
+    if (dataType === 'image') {
+      yield put(
+        projectMapActions.postCreateImageToUrlRequest({
+          attribute: id,
+        }),
       );
     }
 
@@ -549,6 +561,16 @@ export function* getLayerAttributeListRequest({ params }) {
     yield put(projectMapActions.getLayerAttributeListSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.getLayerAttributeListFailure());
+    throw error;
+  }
+}
+
+export function* postCreateImageToUrlRequest({ payload }) {
+  try {
+    const response = yield call(postCreateToUrl, payload);
+    yield put(projectMapActions.postCreateImageToUrlSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.postCreateImageToUrlFailure());
     throw error;
   }
 }
@@ -661,6 +683,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_LAYER_ATTRIBUTE_LIST_REQUEST,
     withLoader(withErrorHandler(getLayerAttributeListRequest)),
+  );
+  yield takeLatest(
+    Types.POST_CREATE_IMAGE_TO_URL_REQUEST,
+    withLoader(withErrorHandler(postCreateImageToUrlRequest)),
   );
 }
 

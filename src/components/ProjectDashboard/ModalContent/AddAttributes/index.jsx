@@ -164,8 +164,9 @@ const AddAttributes = () => {
       if (isDropdown === 'yes') {
         optionsErrors = validate(formValues);
       }
-      setErrorFields([...errors, ...optionsErrors]);
-      if (!isEmpty(errorFields)) {
+      const newErrorFields = [...errors, ...optionsErrors];
+      setErrorFields(newErrorFields);
+      if (isEmpty(newErrorFields)) {
         if (individualAttribute) {
           const patchData = formValues?.filter(
             item => item.flag === 'patch' && item.isChanged,
@@ -212,7 +213,9 @@ const AddAttributes = () => {
         }
       } else {
         dispatch(
-          toastActions.error({ message: 'Please fill all required fields' }),
+          toastActions.error({
+            message: 'Please fill all the required fields.',
+          }),
         );
       }
     },
@@ -476,7 +479,9 @@ const AddAttributes = () => {
                 </Button>
               </div>
             ) : (
-              <Spinner className="naxatw-w-6 naxatw-h-6 naxatw-fill-primary-400" />
+              <div className="naxatw-ml-7">
+                <Spinner className="!naxatw-h-7 !naxatw-w-7 naxatw-fill-grey-500" />
+              </div>
             ))}
         </div>
         <div className="naxatw-flex naxatw-justify-center">

@@ -57,6 +57,7 @@ const initialState = {
   },
   fieldsDropdownOptions: null,
   featureImage: [],
+  selectedEditFeature: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -762,6 +763,11 @@ const getLayerAttributeListSuccess = (state, action) => {
   };
 };
 
+const getAttributeFieldSuccess = (state, action) => ({
+  ...state,
+  selectedEditFeature: action.payload,
+});
+
 const resetProjectMapState = state => ({
   ...initialState,
   mapSettings: state.mapSettings,
@@ -817,6 +823,8 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_FIELDS_DROPDOWN_OPTION_SUCCESS]: getFieldsDropdownOptionSuccess,
   [Types.DELETE_LAYER_ATTRIBUTE_SUCCESS]: deleteLayerAttributeSuccess,
   [Types.GET_LAYER_ATTRIBUTE_LIST_SUCCESS]: getLayerAttributeListSuccess,
+  [Types.GET_ATTRIBUTE_FIELD_SUCCESS]: getAttributeFieldSuccess,
+
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

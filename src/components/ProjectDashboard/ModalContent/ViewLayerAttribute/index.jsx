@@ -44,6 +44,8 @@ export default function ViewLayerAttribute() {
   );
   const showModal = useSelector(state => state.common.showModal);
   const modalContent = useSelector(state => state.common.modalContent);
+  const showModalTwo = useSelector(state => state.common.showModalTwo);
+  const modalTwoContent = useSelector(state => state.common.modalContent);
   const attributeList = useSelector(
     state => state.projectMap.layerAttributesList.attributeList,
   );
@@ -142,6 +144,11 @@ export default function ViewLayerAttribute() {
     dispatch(setProjectMapState({ selectedLayer: null }));
     dispatch(resetLayerAttributeListState());
   }, [dispatch, showModal, modalContent]);
+
+  useEffect(() => {
+    if (showModalTwo && modalTwoContent === 'view-layer-attribute') return;
+    dispatch(setProjectMapState({ selectedEditFeature: null }));
+  }, [dispatch, showModalTwo, modalTwoContent]);
 
   const headerKeys = useMemo(
     () => Object.keys(attributeList[0] || {}),

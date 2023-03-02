@@ -412,7 +412,54 @@ export function* getQueryAttributeRequest({ params }) {
 export function* updateLayerAttributeRequest({ id, payload }) {
   const { is_deleted } = payload;
   try {
-    const response = yield call(updateFeatureCollection, id, payload);
+    const { image, ...finalPayload } = payload;
+    const patchImage = image?.filter(
+      item => item.patch && !item.isDeleted && item.isChanged,
+    );
+    const deleteImage = image?.filter(item => item.patch && item.isDeleted);
+    const postImage = image?.filter(item => item.post && !item.isDeleted);
+    if (!isEmpty(postImage)) {
+      yield all(
+        postImage.map(item =>
+          call(
+            postFeatureImage,
+            prepareFormData(
+              item.file
+                ? {
+                    image: item.file,
+                    feature_id: id,
+                    is_cover_image: item.isCoverImage,
+                  }
+                : {
+                    url: item.url,
+                    feature_id: id,
+                    is_cover_image: item.isCoverImage,
+                  },
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (!isEmpty(patchImage)) {
+      yield all(
+        patchImage.map(item =>
+          call(
+            updateFeatureImage,
+            item.id,
+            prepareFormData({
+              feature_id: id,
+              is_cover_image: !!item.isCoverImage,
+            }),
+          ),
+        ),
+      );
+    }
+
+    if (!isEmpty(deleteImage)) {
+      yield all(deleteImage.map(item => call(deleteFeatureImage, item.id)));
+    }
+    const response = yield call(updateFeatureCollection, id, finalPayload);
     yield put(projectMapActions.updateLayerAttributeSuccess(response.data));
     if (!is_deleted) {
       yield put(commonActions.toggleModalTwo());
@@ -436,7 +483,6 @@ export function* updateLayerAttributeRequest({ id, payload }) {
 }
 
 export function* updateLayerAttributeFieldsRequest({ id, payload }) {
-  console.log(payload, 'paylaod');
   try {
     const { patchData, postData, ...newData } = payload;
     const formData = prepareFormData(newData);
@@ -575,6 +621,33 @@ export function* postCreateImageToUrlRequest({ payload }) {
   }
 }
 
+export function* getAttributeFieldRequest({ params }) {
+  try {
+    const { featureId, ...newParams } = params;
+    const response = yield call(getLayerAttributeFields, newParams);
+
+    const imageField = response.data.filter(res => res.data_type === 'image');
+    let featureResponse;
+    if (!isEmpty(imageField)) {
+      const responseData = yield call(getFeatureCollection, featureId);
+      featureResponse = responseData.data.images.map(item => ({
+        ...item,
+        patch: true,
+        isCoverImage: item.is_cover_image || false,
+      }));
+    }
+    yield put(
+      projectMapActions.getAttributeFieldSuccess({
+        ...imageField?.[0],
+        images: featureResponse,
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.getAttributeFieldFailure());
+    throw error;
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -687,6 +760,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.POST_CREATE_IMAGE_TO_URL_REQUEST,
     withLoader(withErrorHandler(postCreateImageToUrlRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ATTRIBUTE_FIELD_REQUEST,
+    withLoader(withErrorHandler(getAttributeFieldRequest)),
   );
 }
 

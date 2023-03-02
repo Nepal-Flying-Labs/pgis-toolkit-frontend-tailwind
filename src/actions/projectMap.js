@@ -149,6 +149,10 @@ export const { Types, Creators } = createActions(
     postCreateImageToUrlRequest: ['payload'],
     postCreateImageToUrlSuccess: ['payload'],
     postCreateImageToUrlFailure: null,
+
+    getAttributeFieldRequest: ['params'],
+    getAttributeFieldSuccess: ['payload'],
+    getAttributeFieldFailure: null,
   },
   { prefix: 'projectMap/' },
 );

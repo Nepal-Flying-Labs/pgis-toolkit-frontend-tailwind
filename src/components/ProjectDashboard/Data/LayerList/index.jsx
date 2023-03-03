@@ -70,6 +70,19 @@ export default function LayerList() {
     {
       id: 3,
       label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">upload</i>
+          <p className="naxatw-text-body-lg">Upload Images</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setDataState({ selectedData: data }));
+        dispatch(toggleModal('upload-bulk-image'));
+      },
+    },
+    {
+      id: 4,
+      label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
           <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>

@@ -77,3 +77,6 @@ export const updateFeatureImage = (id, data) =>
 
 export const deleteFeatureImage = id =>
   authenticated(api).delete(`/maps/feature_image/${id}/`);
+
+export const postCreateToUrl = data =>
+  authenticated(api).post(`/maps/bulk_create_image_from_urls/`, data);

@@ -34,6 +34,7 @@ import {
   postFeatureImage,
   updateFeatureImage,
   deleteFeatureImage,
+  postCreateToUrl,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -411,7 +412,54 @@ export function* getQueryAttributeRequest({ params }) {
 export function* updateLayerAttributeRequest({ id, payload }) {
   const { is_deleted } = payload;
   try {
-    const response = yield call(updateFeatureCollection, id, payload);
+    const { image, ...finalPayload } = payload;
+    const patchImage = image?.filter(
+      item => item.patch && !item.isDeleted && item.isChanged,
+    );
+    const deleteImage = image?.filter(item => item.patch && item.isDeleted);
+    const postImage = image?.filter(item => item.post && !item.isDeleted);
+    if (!isEmpty(postImage)) {
+      yield all(
+        postImage.map(item =>
+          call(
+            postFeatureImage,
+            prepareFormData(
+              item.file
+                ? {
+                    image: item.file,
+                    feature_id: id,
+                    is_cover_image: item.isCoverImage,
+                  }
+                : {
+                    url: item.url,
+                    feature_id: id,
+                    is_cover_image: item.isCoverImage,
+                  },
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (!isEmpty(patchImage)) {
+      yield all(
+        patchImage.map(item =>
+          call(
+            updateFeatureImage,
+            item.id,
+            prepareFormData({
+              feature_id: id,
+              is_cover_image: !!item.isCoverImage,
+            }),
+          ),
+        ),
+      );
+    }
+
+    if (!isEmpty(deleteImage)) {
+      yield all(deleteImage.map(item => call(deleteFeatureImage, item.id)));
+    }
+    const response = yield call(updateFeatureCollection, id, finalPayload);
     yield put(projectMapActions.updateLayerAttributeSuccess(response.data));
     if (!is_deleted) {
       yield put(commonActions.toggleModalTwo());
@@ -459,6 +507,16 @@ export function* updateLayerAttributeFieldsRequest({ id, payload }) {
             attribute: data.attribute,
           }),
         ),
+      );
+    }
+
+    const dataType = response.data.data_type;
+
+    if (dataType === 'image') {
+      yield put(
+        projectMapActions.postCreateImageToUrlRequest({
+          attribute: id,
+        }),
       );
     }
 
@@ -549,6 +607,36 @@ export function* getLayerAttributeListRequest({ params }) {
     yield put(projectMapActions.getLayerAttributeListSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.getLayerAttributeListFailure());
+    throw error;
+  }
+}
+
+export function* postCreateImageToUrlRequest({ payload }) {
+  try {
+    const response = yield call(postCreateToUrl, payload);
+    yield put(projectMapActions.postCreateImageToUrlSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.postCreateImageToUrlFailure());
+    throw error;
+  }
+}
+
+export function* getAttributeFieldRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttributeFields, params);
+    yield put(projectMapActions.getAttributeFieldSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getAttributeFieldFailure());
+    throw error;
+  }
+}
+
+export function* getFeatureImageRequest({ id }) {
+  try {
+    const response = yield call(getFeatureCollection, id);
+    yield put(projectMapActions.getFeatureImageSuccess(response.data.images));
+  } catch (error) {
+    yield put(projectMapActions.getFeatureImageFailure());
     throw error;
   }
 }
@@ -661,6 +749,18 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_LAYER_ATTRIBUTE_LIST_REQUEST,
     withLoader(withErrorHandler(getLayerAttributeListRequest)),
+  );
+  yield takeLatest(
+    Types.POST_CREATE_IMAGE_TO_URL_REQUEST,
+    withLoader(withErrorHandler(postCreateImageToUrlRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ATTRIBUTE_FIELD_REQUEST,
+    withLoader(withErrorHandler(getAttributeFieldRequest)),
+  );
+  yield takeLatest(
+    Types.GET_FEATURE_IMAGE_REQUEST,
+    withLoader(withErrorHandler(getFeatureImageRequest)),
   );
 }
 

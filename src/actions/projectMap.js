@@ -145,6 +145,18 @@ export const { Types, Creators } = createActions(
     deleteLayerAttributeRequest: ['id'],
     deleteLayerAttributeSuccess: ['payload'],
     deleteLayerAttributeFailure: null,
+
+    postCreateImageToUrlRequest: ['payload'],
+    postCreateImageToUrlSuccess: ['payload'],
+    postCreateImageToUrlFailure: null,
+
+    getAttributeFieldRequest: ['params'],
+    getAttributeFieldSuccess: ['payload'],
+    getAttributeFieldFailure: null,
+
+    getFeatureImageRequest: ['id'],
+    getFeatureImageSuccess: ['payload'],
+    getFeatureImageFailure: null,
   },
   { prefix: 'projectMap/' },
 );

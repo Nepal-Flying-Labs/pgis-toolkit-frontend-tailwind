@@ -53,6 +53,7 @@ import DeleteRouteResult from '@Components/ProjectDashboard/Analysis/ModalConten
 import SaveManualFix from '@Components/ProjectDashboard/Analysis/ModalContent/SaveManualFix';
 import SignoutWarning from '@Components/OrganizationDashboard/ModalContent/SignoutWarning';
 import DownloadTemplate from '@Components/ProjectDashboard/ModalContent/DownloadTemplate/index';
+import UploadBulkImage from '@Components/ProjectDashboard/ModalContent/UploadBulkImage/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -260,6 +261,12 @@ export function getModalContent(content) {
       return {
         title: 'Download Template',
         content: <DownloadTemplate />,
+      };
+
+    case 'upload-bulk-image':
+      return {
+        title: 'Upload Images',
+        content: <UploadBulkImage />,
       };
     default:
       return {

@@ -19,6 +19,7 @@ import {
 import Pagination from '@Components/common/Pagination';
 import { isEmpty } from '@Utils/commonUtils';
 import { boundaryLayerName } from '@src/constants/map';
+import Button from '@Components/common/Button/index';
 
 const {
   getLayerAttributeRequest,
@@ -32,6 +33,7 @@ const {
   resetLayerAttributeListState,
   setSelectedLayerAttribute,
   setProjectMapState,
+  getAttributeFieldRequest,
 } = Creators;
 
 const { toggleModalTwo, togglePromptDialog } = CommonCreators;
@@ -90,7 +92,10 @@ export default function ViewLayerAttribute() {
     },
   });
   const loading = useSelector(state =>
-    checkIfLoading(state, [Types.GET_LAYER_ATTRIBUTE_REQUEST]),
+    checkIfLoading(state, [
+      Types.GET_LAYER_ATTRIBUTE_REQUEST,
+      Types.GET_ATTRIBUTE_FIELD_REQUEST,
+    ]),
   );
 
   useEffect(() => {
@@ -141,18 +146,38 @@ export default function ViewLayerAttribute() {
 
   useEffect(() => {
     if (showModal && modalContent === 'view-layer-attribute') return;
-    dispatch(setProjectMapState({ selectedLayer: null }));
+    dispatch(
+      setProjectMapState({ selectedLayer: null, selectedLayerAttribute: null }),
+    );
     dispatch(resetLayerAttributeListState());
   }, [dispatch, showModal, modalContent]);
 
   useEffect(() => {
-    if (showModalTwo && modalTwoContent === 'view-layer-attribute') return;
-    dispatch(setProjectMapState({ selectedEditFeature: null }));
+    if (showModalTwo && modalTwoContent === 'edit-layer-attribute') return;
+    dispatch(setProjectMapState({ featureImage: [] }));
   }, [dispatch, showModalTwo, modalTwoContent]);
+
+  const selectedLayerAttribute = useSelector(
+    state => state.projectMap.selectedLayerAttribute,
+  );
+
+  // for layer attribute data type to select image data type
+  useEffect(() => {
+    if (!selectedLayer) return;
+    dispatch(
+      getAttributeFieldRequest({
+        layer: selectedLayer.id,
+      }),
+    );
+  }, [dispatch, selectedLayer]);
 
   const headerKeys = useMemo(
     () => Object.keys(attributeList[0] || {}),
     [attributeList],
+  );
+
+  const imageTypeAttribute = selectedLayerAttribute?.filter(
+    item => item.data_type === 'image',
   );
 
   const dropdownOptions = [
@@ -223,43 +248,72 @@ export default function ViewLayerAttribute() {
             // eslint-disable-next-line
             // onRowClick={row => {}}
           >
-            {headerKeys.map(key => (
+            {headerKeys.map(
+              key =>
+                key !== imageTypeAttribute?.[0]?.name && (
+                  <TableHeader
+                    key={key}
+                    dataField={key}
+                    headerClassName="naxatw-py-[0.8125rem] "
+                    rowcolSpan="rowSpan_2"
+                    rowClassName=""
+                    dataHeader={
+                      <SortingContainer
+                        name={key}
+                        isActive={ordering === key}
+                        handleSort={() =>
+                          dispatch(
+                            handleAttributeOrdering(
+                              ordering === key ? null : key,
+                            ),
+                          )
+                        }
+                      />
+                    }
+                    dataFormat={row => (
+                      <p
+                        className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden ${
+                          ordering === key
+                            ? 'naxatw-text-body-btn'
+                            : 'naxatw-text-body-lg'
+                        } naxatw-p-2.5 `}
+                      >
+                        {!Array.isArray(row[key]) &&
+                        typeof row[key] === 'object' &&
+                        row[key]
+                          ? Object.keys(row[key]).map(item => (
+                              <p>{`${row[key][item]},`}</p>
+                            ))
+                          : row[key] || '-'}
+                      </p>
+                    )}
+                  />
+                ),
+            )}
+
+            {!isEmpty(imageTypeAttribute) && (
               <TableHeader
-                key={key}
-                dataField={key}
-                headerClassName="naxatw-py-[0.8125rem] "
+                key={imageTypeAttribute[0].id}
+                dataField={imageTypeAttribute[0].name}
+                headerClassName="naxatw-py-[0.8125rem] naxatw-text-center"
                 rowcolSpan="rowSpan_2"
                 rowClassName=""
                 dataHeader={
-                  <SortingContainer
-                    name={key}
-                    isActive={ordering === key}
-                    handleSort={() =>
-                      dispatch(
-                        handleAttributeOrdering(ordering === key ? null : key),
-                      )
-                    }
-                  />
+                  <p className="naxatw-text-body-sm naxatw-text-grey-500">
+                    {imageTypeAttribute[0].name}
+                  </p>
                 }
                 dataFormat={row => (
-                  <p
-                    className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden ${
-                      ordering === key
-                        ? 'naxatw-text-body-btn'
-                        : 'naxatw-text-body-lg'
-                    } naxatw-p-2.5 `}
+                  <Button
+                    iconLeft="visibility"
+                    className="naxatw-btn-secondary naxatw-btn-noborder naxatw-text-[#00A699]"
                   >
-                    {!Array.isArray(row[key]) &&
-                    typeof row[key] === 'object' &&
-                    row[key]
-                      ? Object.keys(row[key]).map(item => (
-                          <p>{`${row[key][item]},`}</p>
-                        ))
-                      : row[key] || '-'}
-                  </p>
+                    View Image
+                  </Button>
                 )}
               />
-            ))}
+            )}
+
             {isBoundaryLayer && (
               <TableHeader
                 dataField=""

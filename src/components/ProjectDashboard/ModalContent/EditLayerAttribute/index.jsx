@@ -10,43 +10,38 @@ import ImageUpload from '@Components/ProjectDashboard/Map/MapSidebar/ImageUpload
 import Spinner from '@Components/common/Spinner/index';
 import { isEmpty } from '@Utils/commonUtils';
 
-const { updateLayerAttributeRequest, getAttributeFieldRequest } = Creators;
+const { updateLayerAttributeRequest, getFeatureImageRequest } = Creators;
 
 const EditLayerAttribute = () => {
   const dispatch = useDispatch();
   const selectedAttribute = useSelector(
     state => state.projectMap.layerAttributesList.selectedLayerAttribute,
   );
-  const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.UPDATE_LAYER_ATTRIBUTE_REQUEST]),
   );
-  const selectedEditFeature = useSelector(
-    state => state.projectMap.selectedEditFeature,
-  );
-  const [imageList, setImageList] = useState(selectedEditFeature?.images || []);
+  const featureImage = useSelector(state => state.projectMap.featureImage);
+  const [imageList, setImageList] = useState(featureImage || []);
   const isLoading = useSelector(state =>
-    checkIfLoading(state, [Types.GET_ATTRIBUTE_FIELD_REQUEST]),
-  );
-
-  const filterSelectedAttribute = Object.keys(selectedAttribute).filter(
-    key => key === selectedEditFeature?.name,
+    checkIfLoading(state, [Types.GET_FEATURE_IMAGE_REQUEST]),
   );
 
   useEffect(() => {
-    if (!selectedEditFeature) return;
-    setImageList(selectedEditFeature.images);
-  }, [selectedEditFeature]);
+    setImageList(featureImage);
+  }, [featureImage]);
+
+  const selectedLayerAttribute = useSelector(
+    state => state.projectMap.selectedLayerAttribute,
+  );
+
+  const imageTypeAttribute = selectedLayerAttribute?.filter(
+    item => item.data_type === 'image',
+  );
 
   useEffect(() => {
-    if (!selectedLayer) return;
-    dispatch(
-      getAttributeFieldRequest({
-        layer: selectedLayer.id,
-        featureId: selectedAttribute.id,
-      }),
-    );
-  }, [dispatch, selectedAttribute, selectedLayer]);
+    if (!selectedAttribute) return;
+    dispatch(getFeatureImageRequest(selectedAttribute.id));
+  }, [dispatch, selectedAttribute]);
 
   const { values, setValues, handleChange, handleSubmit } = useForm({
     initialValues: selectedAttribute || {},
@@ -74,7 +69,7 @@ const EditLayerAttribute = () => {
       <div className="naxatw-space-y-3 naxatw-grid naxatw-grid-cols-2 naxatw-gap-x-3 naxatw-max-h-[500px] naxatw-overflow-y-auto scrollbar">
         {Object.keys(selectedAttribute).map(
           attribute =>
-            attribute !== selectedEditFeature?.name && (
+            attribute !== imageTypeAttribute?.[0]?.name && (
               <Input
                 key={attribute.id}
                 label={attribute}
@@ -87,9 +82,9 @@ const EditLayerAttribute = () => {
             ),
         )}
 
-        {!isEmpty(filterSelectedAttribute) && (
+        {!isEmpty(imageTypeAttribute) && (
           <div className="naxatw-space-y-2">
-            <label className="naxatw-label">{filterSelectedAttribute[0]}</label>
+            <label className="naxatw-label">{imageTypeAttribute[0].name}</label>
             <ImageUpload imageList={imageList} setImageList={setImageList} />
           </div>
         )}

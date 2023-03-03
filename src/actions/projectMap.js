@@ -153,6 +153,10 @@ export const { Types, Creators } = createActions(
     getAttributeFieldRequest: ['params'],
     getAttributeFieldSuccess: ['payload'],
     getAttributeFieldFailure: null,
+
+    getFeatureImageRequest: ['id'],
+    getFeatureImageSuccess: ['payload'],
+    getFeatureImageFailure: null,
   },
   { prefix: 'projectMap/' },
 );

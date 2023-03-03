@@ -623,27 +623,20 @@ export function* postCreateImageToUrlRequest({ payload }) {
 
 export function* getAttributeFieldRequest({ params }) {
   try {
-    const { featureId, ...newParams } = params;
-    const response = yield call(getLayerAttributeFields, newParams);
-
-    const imageField = response.data.filter(res => res.data_type === 'image');
-    let featureResponse;
-    if (!isEmpty(imageField)) {
-      const responseData = yield call(getFeatureCollection, featureId);
-      featureResponse = responseData.data.images.map(item => ({
-        ...item,
-        patch: true,
-        isCoverImage: item.is_cover_image || false,
-      }));
-    }
-    yield put(
-      projectMapActions.getAttributeFieldSuccess({
-        ...imageField?.[0],
-        images: featureResponse,
-      }),
-    );
+    const response = yield call(getLayerAttributeFields, params);
+    yield put(projectMapActions.getAttributeFieldSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.getAttributeFieldFailure());
+    throw error;
+  }
+}
+
+export function* getFeatureImageRequest({ id }) {
+  try {
+    const response = yield call(getFeatureCollection, id);
+    yield put(projectMapActions.getFeatureImageSuccess(response.data.images));
+  } catch (error) {
+    yield put(projectMapActions.getFeatureImageFailure());
     throw error;
   }
 }
@@ -764,6 +757,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_ATTRIBUTE_FIELD_REQUEST,
     withLoader(withErrorHandler(getAttributeFieldRequest)),
+  );
+  yield takeLatest(
+    Types.GET_FEATURE_IMAGE_REQUEST,
+    withLoader(withErrorHandler(getFeatureImageRequest)),
   );
 }
 

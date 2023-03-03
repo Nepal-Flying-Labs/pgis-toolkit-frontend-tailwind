@@ -36,7 +36,7 @@ const {
   getAttributeFieldRequest,
 } = Creators;
 
-const { toggleModalTwo, togglePromptDialog } = CommonCreators;
+const { toggleModalTwo, togglePromptDialog, setImageModal } = CommonCreators;
 
 export default function ViewLayerAttribute() {
   const dispatch = useDispatch();
@@ -295,18 +295,25 @@ export default function ViewLayerAttribute() {
               <TableHeader
                 key={imageTypeAttribute[0].id}
                 dataField={imageTypeAttribute[0].name}
-                headerClassName="naxatw-py-[0.8125rem] naxatw-text-center"
+                headerClassName="naxatw-py-[0.8125rem]"
                 rowcolSpan="rowSpan_2"
                 rowClassName=""
                 dataHeader={
-                  <p className="naxatw-text-body-sm naxatw-text-grey-500">
+                  <p className="naxatw-ml-4 naxatw-text-body-sm naxatw-text-grey-500">
                     {imageTypeAttribute[0].name}
                   </p>
                 }
                 dataFormat={row => (
                   <Button
                     iconLeft="visibility"
-                    className="naxatw-btn-secondary naxatw-btn-noborder naxatw-text-[#00A699]"
+                    iconClassName="material-icons naxatw-text-[18px]"
+                    className="naxatw-btn-sm naxatw-btn-secondary naxatw-btn-noborder naxatw-text-secondary-400"
+                    onClick={() => {
+                      dispatch(
+                        setProjectMapState({ selectedFeatureId: row.id }),
+                      );
+                      dispatch(setImageModal(true));
+                    }}
                   >
                     View Image
                   </Button>

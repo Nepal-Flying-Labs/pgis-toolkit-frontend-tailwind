@@ -58,6 +58,7 @@ const initialState = {
   fieldsDropdownOptions: null,
   featureImage: [],
   selectedLayerAttribute: null,
+  selectedFeatureId: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({

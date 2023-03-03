@@ -74,19 +74,24 @@ export default function SignIn() {
         </div> */}
         <form onSubmit={handleSubmit}>
           <div className="mb-6 naxatw-space-y-[1.125rem]">
-            <Input
-              label="Username or Email"
-              type="text"
-              className="naxatw-input"
-              name="username"
-              placeholder="Username or Email"
-              value={values.username}
-              onChange={handleChange}
-              {...inputProps}
-            />
-            {meta.username.error && meta.username.touched && (
-              <FormErrorMessage message="Username is required" />
-            )}
+            <div>
+              <Input
+                label="Username or Email"
+                type="text"
+                className="naxatw-input"
+                name="username"
+                placeholder="Username or Email"
+                value={values.username}
+                onChange={handleChange}
+                {...inputProps}
+              />
+              {meta.username.error && meta.username.touched && (
+                <div className="naxatw-flex naxatw-justify-start">
+                  <FormErrorMessage message="Username is required" />
+                </div>
+              )}
+            </div>
+
             <div className="naxatw-relative">
               <Input
                 label="Password"
@@ -99,7 +104,9 @@ export default function SignIn() {
                 {...inputProps}
               />
               {meta.password.error && meta.password.touched && (
-                <FormErrorMessage message="Password is required" />
+                <div className="naxatw-flex naxatw-justify-start">
+                  <FormErrorMessage message="Password is required" />
+                </div>
               )}
               <span
                 onClick={() => setIsVisible(!isVisible)}

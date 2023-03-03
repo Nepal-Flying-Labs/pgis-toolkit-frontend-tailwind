@@ -226,7 +226,8 @@ export const { Types, Creators } = createActions(
     checkImageUploadStatusSuccess: ['payload'],
     checkImageUploadStatusFailure: null,
 
-    setUploadImageStatusCheckingId: ['payload'],
+    setUploadingImage: ['payload'],
+    setUploadImageStatusCheckingId: ['id'],
   },
   { prefix: 'projectDashboard/' },
 );

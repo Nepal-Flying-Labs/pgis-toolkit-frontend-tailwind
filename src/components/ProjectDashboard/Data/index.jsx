@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
+import {
+  Creators as ProjectDashboardCreators,
+  Types as ProjectDasboardTypes,
+} from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
 import UploadFolder from '@Assets/images/project/upload-folder.png';
 import ImportFromOSM from '@Assets/images/project/import-osm.png';
@@ -9,6 +12,7 @@ import WMSLayer from '@Assets/images/project/wms-layer.png';
 import { isEmpty } from '@Utils/commonUtils';
 import Button from '@Components/common/Button/index';
 import Tooltip from '@Components/common/Tooltip/index';
+import { checkIfLoading } from '@Utils/loaderSelector';
 import NoDataYet from './NoDataYet';
 import LayerList from './LayerList';
 
@@ -31,6 +35,14 @@ export default function Data() {
   );
   const uploadingImages = useSelector(
     state => state.projectDashboard.data.uploadingImage,
+  );
+  const uploadImageStatusId = useSelector(
+    state => state.projectDashboard.data.uploadImageStatusId,
+  );
+  const isCheckStatusLoading = useSelector(state =>
+    checkIfLoading(state, [
+      ProjectDasboardTypes.CHECK_IMAGE_UPLOAD_STATUS_REQUEST,
+    ]),
   );
   const dispatch = useDispatch();
 
@@ -55,7 +67,11 @@ export default function Data() {
   // check upload status for image
   useEffect(() => {
     if (isEmpty(uploadingImages)) return;
-    uploadingImages?.forEach(image => {
+    const uploadingImagesStatus = uploadingImages.filter(
+      item =>
+        !uploadImageStatusId.includes(item.task_id) && !isCheckStatusLoading,
+    );
+    uploadingImagesStatus?.forEach(image => {
       dispatch(
         checkImageUploadStatusRequest({
           task_id: image.task_id,
@@ -63,7 +79,13 @@ export default function Data() {
         }),
       );
     });
-  }, [dispatch, layers, uploadingImages]);
+  }, [
+    dispatch,
+    isCheckStatusLoading,
+    layers,
+    uploadImageStatusId,
+    uploadingImages,
+  ]);
 
   const uploadMethods = [
     {

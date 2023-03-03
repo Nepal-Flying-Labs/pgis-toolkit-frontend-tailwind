@@ -777,6 +777,9 @@ export function* getTemplateDropdownChoiceRequest({ params }) {
 export function* checkImageUploadStatusRequest({ params }) {
   try {
     const { name, ...newParams } = params;
+    yield put(
+      projectDashboardActions.setUploadImageStatusCheckingId(params.task_id),
+    );
     let responseData = { message: 'Please wait result' };
     while (responseData?.message === 'Please wait result') {
       yield delay(15 * 1000); // call api in 10 second interval
@@ -802,7 +805,7 @@ export function* checkImageUploadStatusRequest({ params }) {
       );
     }
     yield put(
-      projectDashboardActions.setUploadImageStatusCheckingId({
+      projectDashboardActions.setUploadingImage({
         id: params.task_id,
       }),
     );

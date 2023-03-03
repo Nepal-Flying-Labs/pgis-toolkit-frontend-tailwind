@@ -8,6 +8,7 @@ import { Creators, Types } from '@Actions/projectMap';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import ImageUpload from '@Components/ProjectDashboard/Map/MapSidebar/ImageUpload/index';
 import Spinner from '@Components/common/Spinner/index';
+import { isEmpty } from '@Utils/commonUtils';
 
 const { updateLayerAttributeRequest, getAttributeFieldRequest } = Creators;
 
@@ -26,6 +27,10 @@ const EditLayerAttribute = () => {
   const [imageList, setImageList] = useState(selectedEditFeature?.images || []);
   const isLoading = useSelector(state =>
     checkIfLoading(state, [Types.GET_ATTRIBUTE_FIELD_REQUEST]),
+  );
+
+  const filterSelectedAttribute = Object.keys(selectedAttribute).filter(
+    key => key === selectedEditFeature?.name,
   );
 
   useEffect(() => {
@@ -67,23 +72,26 @@ const EditLayerAttribute = () => {
   ) : (
     <div>
       <div className="naxatw-space-y-3 naxatw-grid naxatw-grid-cols-2 naxatw-gap-x-3 naxatw-max-h-[500px] naxatw-overflow-y-auto scrollbar">
-        {Object.keys(selectedAttribute).map(attribute =>
-          attribute === selectedEditFeature?.name ? (
-            <div className="naxatw-space-y-2">
-              <label className="naxatw-label">{attribute}</label>
-              <ImageUpload imageList={imageList} setImageList={setImageList} />
-            </div>
-          ) : (
-            <Input
-              key={attribute.id}
-              label={attribute}
-              name={attribute}
-              value={values[attribute]}
-              onChange={handleChange}
-              disabled={attribute === 'id'}
-              className={attribute === 'id' ? 'naxatw-bg-grey-100' : ''}
-            />
-          ),
+        {Object.keys(selectedAttribute).map(
+          attribute =>
+            attribute !== selectedEditFeature?.name && (
+              <Input
+                key={attribute.id}
+                label={attribute}
+                name={attribute}
+                value={values[attribute]}
+                onChange={handleChange}
+                disabled={attribute === 'id'}
+                className={attribute === 'id' ? 'naxatw-bg-grey-100' : ''}
+              />
+            ),
+        )}
+
+        {!isEmpty(filterSelectedAttribute) && (
+          <div className="naxatw-space-y-2">
+            <label className="naxatw-label">{filterSelectedAttribute[0]}</label>
+            <ImageUpload imageList={imageList} setImageList={setImageList} />
+          </div>
         )}
       </div>
       <div className="naxatw-flex naxatw-justify-center naxatw-items-center">

@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators, Types } from '@Actions/projectMap';
 import Lightbox from 'react-image-lightbox';
-// import 'react-image-lightbox/style.css';
+import { checkIfLoading } from '@Utils/loaderSelector';
+import Spinner from '@Components/common/Spinner/index';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
+import { saveAs } from 'file-saver';
 
 const { setImageModal } = CommonCreators;
 const { getFeatureImageRequest, setProjectMapState } = Creators;
@@ -16,9 +19,9 @@ const FeatureImages = () => {
     state => state.projectMap.selectedFeatureId,
   );
   const featureImage = featureImages.map(image => image.image || image.url);
-
-  console.log(featureImage, 'feature image');
-
+  const isLoading = useSelector(state =>
+    checkIfLoading(state, [Types.GET_FEATURE_IMAGE_REQUEST]),
+  );
   useEffect(() => {
     if (!selectedFeatureId) return;
     dispatch(getFeatureImageRequest(selectedFeatureId));
@@ -26,7 +29,17 @@ const FeatureImages = () => {
 
   const handleModalClose = () => {
     dispatch(setImageModal(false));
-    dispatch(setProjectMapState({ selectedFeatureId: null }));
+    dispatch(setProjectMapState({ selectedFeatureId: null, featureImage: [] }));
+  };
+
+  const handleDownloadImage = () => {
+    if (featureImage[photoIndex]) {
+      const fileNameArray = featureImage[photoIndex]?.split('/');
+      const fileName = fileNameArray
+        ? fileNameArray[fileNameArray.length - 1]
+        : '';
+      saveAs(featureImage[photoIndex], fileName);
+    }
   };
 
   return (
@@ -47,9 +60,21 @@ const FeatureImages = () => {
       onMoveNextRequest={() =>
         setPhotoIndex((photoIndex + 1) % featureImage.length)
       }
-      reactModalStyle={{ overlay: { zIndex: '99999999' } }}
-      nextLabel="Next"
-      previousLabel="Previous"
+      reactModalStyle={{
+        overlay: { zIndex: '99999999' },
+      }}
+      loader={
+        <Spinner className="!naxatw-w-4 !naxatw-h-4 naxatw-fill-primary-400" />
+      }
+      toolbarButtons={[
+        <div title="Download">
+          <MaterialIcon
+            name="download"
+            className="naxatw-text-icon-md naxatw-text-grey-600 naxatw-cursor-pointer hover:naxatw-text-white naxatw-pb-2 naxatw-pr-3"
+            onIconClick={handleDownloadImage}
+          />
+        </div>,
+      ]}
     />
   );
 };

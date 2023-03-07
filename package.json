@@ -24,6 +24,8 @@
     "@turf/bbox": "^6.5.0",
     "@turf/flatten": "^6.5.0",
     "@turf/helpers": "^6.5.0",
+    "@turf/line-split": "^6.5.0",
+    "@turf/point-to-line-distance": "^6.5.0",
     "axios": "^0.26.0",
     "body-parser": "^1.19.2",
     "buffer": "^6.0.3",

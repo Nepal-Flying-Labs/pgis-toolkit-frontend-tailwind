@@ -1,13 +1,14 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { get } from 'ol/proj';
+import React, { useEffect, useMemo, useCallback } from 'react';
+import { get, transform } from 'ol/proj';
+import { point } from '@turf/helpers';
 import GeoJSON from 'ol/format/GeoJSON';
-import { Draw, Select } from 'ol/interaction';
+import { Select } from 'ol/interaction';
 import getFeaturesGeojson from '../helpers/getFeaturesGeojson';
-import splitPolygon from '../helpers/splitPolygon';
+// import splitPolygon from "../helpers/splitPolygon";
 import splitLineString from '../helpers/splitLineString';
-import { getGeometryType } from '../../helpers/styleUtils';
+// import { getGeometryType } from "../../helpers/styleUtils";
 
 const supportedTypes = ['Polygon', 'LineString'];
 
@@ -16,23 +17,11 @@ export default function SplitFeature({
   removeInteraction,
   onClick,
   enable,
-  features,
-  onSuccess,
+  // features,
+  // onSuccess,
   vectorLayer,
-  drawSource,
+  // geojson,
 }) {
-  const [oldFeature, setOldFeature] = useState(null);
-  const [selectedFeature, setSelectedFeature] = useState(null);
-
-  const drawInstance = useMemo(
-    () =>
-      new Draw({
-        features,
-        type: 'LineString',
-      }),
-    [features],
-  );
-
   const select = useMemo(
     () =>
       new Select({
@@ -46,85 +35,42 @@ export default function SplitFeature({
   );
 
   useEffect(() => {
-    if (enable && !selectedFeature) {
+    if (enable) {
       addInteraction(select);
     } else {
       removeInteraction(select);
     }
-  }, [addInteraction, removeInteraction, select, enable, selectedFeature]);
+  }, [addInteraction, removeInteraction, select, enable]);
 
   const onFeatureSelect = useCallback(
-    ({ selected }) => {
-      const geojson = getFeaturesGeojson(selected);
-      setSelectedFeature(geojson);
-      setOldFeature(selected[0]);
-      const layer = select.getLayer(selected[0]);
-      const source = layer.getSource();
-    },
-    [select],
-  );
-
-  useEffect(() => {
-    select.on('select', onFeatureSelect);
-  }, [select, onFeatureSelect]);
-
-  useEffect(() => {
-    if (!selectedFeature || !features) return;
-    if (enable) {
-      addInteraction(drawInstance);
-    } else {
-      removeInteraction(drawInstance);
-    }
-  }, [
-    selectedFeature,
-    addInteraction,
-    removeInteraction,
-    features,
-    enable,
-    drawInstance,
-  ]);
-
-  const handleDrawEnd = useCallback(
-    ({ feature }) => {
-      const featureGeometryType = getGeometryType(selectedFeature);
-      console.log(featureGeometryType, 'featureGeometryTypex');
-      const geojson = getFeaturesGeojson(feature);
-      console.log(geojson, 'geojsonx');
-      const splittedFeature =
-        featureGeometryType === 'LineString'
-          ? splitLineString(selectedFeature, geojson)
-          : splitPolygon(selectedFeature, geojson);
-      const properties = oldFeature.getProperties();
-      const newFeature = new GeoJSON().readFeatures(splittedFeature, {
+    e => {
+      // const { selected } = e;
+      const lonlat = transform(
+        e.mapBrowserEvent.coordinate,
+        'EPSG:3857',
+        'EPSG:4326',
+      );
+      const layerFeatures = vectorLayer.getSource().getFeatures();
+      const geojson = getFeaturesGeojson(layerFeatures);
+      const splitterGeojson = point(lonlat);
+      const splitx = splitLineString(geojson, splitterGeojson);
+      const vectorSource = vectorLayer.getSource();
+      vectorSource.clear();
+      const features = new GeoJSON().readFeatures(splitx, {
         featureProjection: get('EPSG:3857'),
       });
-      const source = vectorLayer.getSource();
-      source.removeFeature(oldFeature);
-      source.addFeatures(newFeature);
-      removeInteraction(drawInstance);
-      setOldFeature(null);
-      setSelectedFeature(null);
-      onSuccess(splittedFeature);
-      drawSource.clear();
-      drawInstance.un('drawend', handleDrawEnd);
+      features.forEach(feat => {
+        feat.setId(feat.ol_uid);
+      });
+      vectorSource.addFeatures(features);
     },
-    [
-      drawInstance,
-      drawSource,
-      selectedFeature,
-      oldFeature,
-      onSuccess,
-      removeInteraction,
-      vectorLayer,
-    ],
+    [vectorLayer],
   );
 
   useEffect(() => {
-    if (!selectedFeature || !oldFeature) return;
-
-    console.log('addedx');
-    drawInstance.on('drawend', handleDrawEnd);
-  }, [selectedFeature, oldFeature, drawInstance, handleDrawEnd]);
+    if (!vectorLayer) return;
+    select.on('select', onFeatureSelect);
+  }, [select, onFeatureSelect, vectorLayer]);
 
   return (
     <button

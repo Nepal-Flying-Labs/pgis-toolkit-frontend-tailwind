@@ -8,9 +8,10 @@ import React, {
   useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
+import { Style, Circle, Fill } from 'ol/style';
 import { featureCollection } from '@turf/helpers';
 import { Collection } from 'ol';
-import { LineString } from 'ol/geom';
+import { LineString, Point } from 'ol/geom';
 import { Draw, Snap } from 'ol/interaction';
 import GeoJSON from 'ol/format/GeoJSON';
 import { get } from 'ol/proj';
@@ -18,19 +19,13 @@ import { getUid } from 'ol/util';
 import { Vector as VectorSource } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 import Tooltip from '@Components/common/Tooltip';
-import {
-  defaultStyles,
-  getStyles,
-  lineTypes,
-  pointTypes,
-} from '../helpers/styleUtils';
+import { defaultStyles, getStyles, pointTypes } from '../helpers/styleUtils';
 import getFeatureGeojson from './helpers/getFeatureGeojson';
-import getFeaturesGeojson from './helpers/getFeaturesGeojson';
 import {
   useDrawUtils,
   AddFeature,
   EditFeature,
-  ExtendFeature,
+  // ExtendFeature,
   DragFeature,
   SplitFeature,
   // RotateFeature,
@@ -108,7 +103,25 @@ export default function DrawTool({
     const vectorLyr = new VectorLayer({
       source,
       zIndex: zIndex + 1,
-      style: (feature, resolution) => getStyles({ style, feature, resolution }),
+      style: (feature, resolution) => {
+        const geometry = feature.getGeometry();
+        const coordinates = geometry.getCoordinates();
+        const start = coordinates;
+        const end = start[start.length - 1];
+        const styles = [getStyles({ style, feature, resolution })];
+        styles.push(
+          new Style({
+            geometry: new Point(end),
+            image: new Circle({
+              radius: 3,
+              fill: new Fill({
+                color: '#333333',
+              }),
+            }),
+          }),
+        );
+        return styles;
+      },
     });
     layerUid.current = getUid(vectorLyr);
     map.addLayer(vectorLyr);
@@ -340,6 +353,7 @@ export default function DrawTool({
             type={geometryType}
             enable={drawType === 'split-feature'}
             onClick={() => setDrawType('split-feature')}
+            geojson={geojson}
             {...props}
           />
         </Tooltip>

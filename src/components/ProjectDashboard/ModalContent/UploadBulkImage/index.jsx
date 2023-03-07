@@ -78,10 +78,10 @@ export default function UploadBulkImage() {
 
   return (
     <div>
-      {/* <p className="naxatw-text-body-lg">
-        Note: The system currently supports datasets with WGS 84 Geographic
-        Coordinate System (EPSG: 4326) only.
-      </p> */}
+      <p className="naxatw-text-body-lg">
+        Note: The system currently supports file size upto 100 MB per zip file
+        containing images only.
+      </p>
 
       <div
         className="naxatw-mt-2 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-auto scrollbar naxatw-max-h-96"

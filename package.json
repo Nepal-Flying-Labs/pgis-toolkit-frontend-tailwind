@@ -48,6 +48,7 @@
     "ol-layerswitcher": "^4.1.0",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
+    "react-18-image-lightbox": "^5.1.4",
     "react-calendar": "^4.0.0",
     "react-dom": "^17.0.2",
     "react-hot-loader": "^4.13.0",

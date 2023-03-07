@@ -8,6 +8,7 @@ import { Creators, Types } from '@Actions/projectMap';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import ImageUpload from '@Components/ProjectDashboard/Map/MapSidebar/ImageUpload/index';
 import Spinner from '@Components/common/Spinner/index';
+import SearchSelect from '@Components/common/SearchSelect/index';
 import { isEmpty } from '@Utils/commonUtils';
 
 const { updateLayerAttributeRequest, getFeatureImageRequest } = Creators;
@@ -41,9 +42,18 @@ const EditLayerAttribute = () => {
     item => item.data_type === 'image',
   );
 
+  const dropdownFields = selectedLayerAttribute
+    ?.filter(item => item.dropdown_field)
+    .map(item => item.name);
+
+  const dropdownOptions = useSelector(
+    state => state.projectMap.fieldsDropdownOptions,
+  );
+
   useEffect(() => {
     if (!selectedAttribute) return;
     dispatch(getFeatureImageRequest(selectedAttribute.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, selectedAttribute]);
 
   const { values, setValues, handleChange, handleSubmit } = useForm({
@@ -73,7 +83,24 @@ const EditLayerAttribute = () => {
         <div className="naxatw-space-y-3 naxatw-grid naxatw-grid-cols-2 naxatw-gap-x-3">
           {Object.keys(selectedAttribute).map(
             attribute =>
-              attribute !== imageTypeAttribute?.[0]?.name && (
+              attribute !== imageTypeAttribute?.[0]?.name &&
+              (dropdownFields.includes(attribute) ? (
+                <SearchSelect
+                  key={attribute}
+                  className="naxatw-bg-white naxatw-h-[48px] naxatw-px-2"
+                  options={dropdownOptions[attribute]}
+                  onChange={data =>
+                    handleChange({
+                      target: { name: `${attribute}`, value: data.name },
+                    })
+                  }
+                  selected={
+                    dropdownOptions[attribute].filter(
+                      opt => opt.name === values[`${attribute}`],
+                    )?.[0]?.name
+                  }
+                />
+              ) : (
                 <Input
                   key={attribute.id}
                   label={attribute}
@@ -83,7 +110,7 @@ const EditLayerAttribute = () => {
                   disabled={attribute === 'id'}
                   className={attribute === 'id' ? 'naxatw-bg-grey-100' : ''}
                 />
-              ),
+              )),
           )}
         </div>
         {!isEmpty(imageTypeAttribute) && (

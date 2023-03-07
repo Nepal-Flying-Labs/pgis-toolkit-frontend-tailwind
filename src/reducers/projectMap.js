@@ -4,6 +4,7 @@ import { parse } from 'wkt';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { boundaryLayerName } from '@src/constants/map';
+import { isEmpty } from '@Utils/commonUtils';
 
 const initialState = {
   themes: null, // []
@@ -765,10 +766,22 @@ const getLayerAttributeListSuccess = (state, action) => {
   };
 };
 
-const getAttributeFieldSuccess = (state, action) => ({
-  ...state,
-  selectedLayerAttribute: action.payload,
-});
+const getAttributeFieldSuccess = (state, action) => {
+  const { data, options } = action.payload;
+  const initialValue = {};
+  const modifiedData = options.reduce(
+    (obj, item) => ({
+      ...obj,
+      [item.name]: item.options,
+    }),
+    initialValue,
+  );
+  return {
+    ...state,
+    selectedLayerAttribute: data,
+    fieldsDropdownOptions: !isEmpty(modifiedData) ? modifiedData : null,
+  };
+};
 
 const getFeatureImageSuccess = (state, action) => {
   const { attributes, images } = action.payload;

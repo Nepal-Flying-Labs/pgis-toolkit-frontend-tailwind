@@ -59,6 +59,7 @@ const initialState = {
   featureImage: [],
   selectedLayerAttribute: null,
   selectedFeatureId: null,
+  individualFeatureData: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -770,7 +771,8 @@ const getAttributeFieldSuccess = (state, action) => ({
 });
 
 const getFeatureImageSuccess = (state, action) => {
-  const newData = action.payload.map(item => ({
+  const { attributes, images } = action.payload;
+  const newData = images.map(item => ({
     ...item,
     patch: true,
     isCoverImage: item.is_cover_image,
@@ -778,6 +780,7 @@ const getFeatureImageSuccess = (state, action) => {
   return {
     ...state,
     featureImage: newData,
+    individualFeatureData: attributes,
   };
 };
 

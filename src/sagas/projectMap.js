@@ -413,6 +413,8 @@ export function* updateLayerAttributeRequest({ id, payload }) {
   const { is_deleted } = payload;
   try {
     const { image, ...finalPayload } = payload;
+    const response = yield call(updateFeatureCollection, id, finalPayload);
+
     const patchImage = image?.filter(
       item => item.patch && !item.isDeleted && item.isChanged,
     );
@@ -459,7 +461,6 @@ export function* updateLayerAttributeRequest({ id, payload }) {
     if (!isEmpty(deleteImage)) {
       yield all(deleteImage.map(item => call(deleteFeatureImage, item.id)));
     }
-    const response = yield call(updateFeatureCollection, id, finalPayload);
     yield put(projectMapActions.updateLayerAttributeSuccess(response.data));
     if (!is_deleted) {
       yield put(commonActions.toggleModalTwo());
@@ -634,7 +635,7 @@ export function* getAttributeFieldRequest({ params }) {
 export function* getFeatureImageRequest({ id }) {
   try {
     const response = yield call(getFeatureCollection, id);
-    yield put(projectMapActions.getFeatureImageSuccess(response.data.images));
+    yield put(projectMapActions.getFeatureImageSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.getFeatureImageFailure());
     throw error;

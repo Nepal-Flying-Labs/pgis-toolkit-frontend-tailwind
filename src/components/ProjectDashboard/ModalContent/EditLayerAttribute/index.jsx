@@ -17,6 +17,9 @@ const EditLayerAttribute = () => {
   const selectedAttribute = useSelector(
     state => state.projectMap.layerAttributesList.selectedLayerAttribute,
   );
+  const individualFeatureData = useSelector(
+    state => state.projectMap.individualFeatureData,
+  );
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.UPDATE_LAYER_ATTRIBUTE_REQUEST]),
   );
@@ -44,7 +47,7 @@ const EditLayerAttribute = () => {
   }, [dispatch, selectedAttribute]);
 
   const { values, setValues, handleChange, handleSubmit } = useForm({
-    initialValues: selectedAttribute || {},
+    initialValues: individualFeatureData || {},
     onSubmit: data => {
       const { id } = selectedAttribute;
       dispatch(
@@ -57,8 +60,8 @@ const EditLayerAttribute = () => {
   });
 
   useEffect(() => {
-    setValues(selectedAttribute);
-  }, [setValues, selectedAttribute]);
+    setValues(individualFeatureData);
+  }, [setValues, individualFeatureData]);
 
   return isLoading ? (
     <div className="naxatw-h-[500px] naxatw-flex naxatw-items-center naxatw-justify-center">

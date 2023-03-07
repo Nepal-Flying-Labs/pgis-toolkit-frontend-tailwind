@@ -267,6 +267,8 @@ export function getModalContent(content) {
       return {
         title: 'Upload Images',
         content: <UploadBulkImage />,
+        subtitle:
+          'USAFIRI allows you to bulk upload images for a layer in zip file format.',
       };
     default:
       return {

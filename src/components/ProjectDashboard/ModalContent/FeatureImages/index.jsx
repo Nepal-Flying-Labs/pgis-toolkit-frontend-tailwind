@@ -42,9 +42,13 @@ const FeatureImages = () => {
     }
   };
 
-  return (
+  return isLoading ? (
+    <div className="!naxatw-z-[999999999] naxatw-fixed naxatw-inset-0 naxatw-flex naxatw-justify-center naxatw-items-center naxatw-bg-black naxatw-bg-opacity-80 naxatw-opacity-60">
+      <Spinner className="!naxatw-w-10 !naxatw-h-10 naxatw-fill-grey-800" />
+    </div>
+  ) : (
     <Lightbox
-      mainSrc={featureImage[photoIndex]}
+      mainSrc={featureImage[photoIndex] || 'No Image'}
       nextSrc={featureImage[(photoIndex + 1) % featureImage.length]}
       prevSrc={
         featureImage[
@@ -63,9 +67,6 @@ const FeatureImages = () => {
       reactModalStyle={{
         overlay: { zIndex: '99999999' },
       }}
-      loader={
-        <Spinner className="!naxatw-w-4 !naxatw-h-4 naxatw-fill-primary-400" />
-      }
       toolbarButtons={[
         <div title="Download">
           <MaterialIcon
@@ -75,6 +76,9 @@ const FeatureImages = () => {
           />
         </div>,
       ]}
+      imageLoadErrorMessage={
+        <h4 className="naxatw-text-white">Feature image not found</h4>
+      }
     />
   );
 };

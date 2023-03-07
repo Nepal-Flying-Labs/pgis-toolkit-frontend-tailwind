@@ -69,26 +69,31 @@ const EditLayerAttribute = () => {
     </div>
   ) : (
     <div>
-      <div className="naxatw-space-y-3 naxatw-grid naxatw-grid-cols-2 naxatw-gap-x-3 naxatw-max-h-[500px] naxatw-overflow-y-auto scrollbar">
-        {Object.keys(selectedAttribute).map(
-          attribute =>
-            attribute !== imageTypeAttribute?.[0]?.name && (
-              <Input
-                key={attribute.id}
-                label={attribute}
-                name={attribute}
-                value={values[attribute]}
-                onChange={handleChange}
-                disabled={attribute === 'id'}
-                className={attribute === 'id' ? 'naxatw-bg-grey-100' : ''}
-              />
-            ),
-        )}
-
+      <div className="naxatw-max-h-[500px] naxatw-overflow-y-auto scrollbar naxatw-space-y-3">
+        <div className="naxatw-space-y-3 naxatw-grid naxatw-grid-cols-2 naxatw-gap-x-3">
+          {Object.keys(selectedAttribute).map(
+            attribute =>
+              attribute !== imageTypeAttribute?.[0]?.name && (
+                <Input
+                  key={attribute.id}
+                  label={attribute}
+                  name={attribute}
+                  value={values[attribute]}
+                  onChange={handleChange}
+                  disabled={attribute === 'id'}
+                  className={attribute === 'id' ? 'naxatw-bg-grey-100' : ''}
+                />
+              ),
+          )}
+        </div>
         {!isEmpty(imageTypeAttribute) && (
           <div className="naxatw-space-y-2">
             <label className="naxatw-label">{imageTypeAttribute[0].name}</label>
-            <ImageUpload imageList={imageList} setImageList={setImageList} />
+            <ImageUpload
+              imageList={imageList}
+              setImageList={setImageList}
+              view="row"
+            />
           </div>
         )}
       </div>

@@ -81,7 +81,11 @@ const CreateProject = () => {
         emailList={emailList}
         setEmailList={setEmailList}
         emailError={errors.includes('emailList')}
-        setEmailError={setEmailError}
+        setEmailError={data =>
+          !data
+            ? setErrors(errors.filter(item => item !== 'emailList'))
+            : () => {}
+        }
       />
 
       <div className="naxatw-flex naxatw-justify-center">

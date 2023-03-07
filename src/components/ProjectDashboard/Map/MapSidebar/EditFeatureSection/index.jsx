@@ -10,7 +10,8 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
 import { isEmpty } from '@Utils/commonUtils';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
-import Select from '@Components/common/Select/index';
+import SearchSelect from '@Components/common/SearchSelect/index';
+// import Select from '@Components/common/Select/index';
 import ImageUpload from '../ImageUpload/index';
 
 const {
@@ -235,7 +236,7 @@ export default function EditFeatureSection() {
                     {item.mandatory ? '*' : ''}
                   </label>
                   {item.dropdown_field ? (
-                    <Select
+                    <SearchSelect
                       className="naxatw-bg-white naxatw-h-[48px] naxatw-px-2"
                       options={item.options}
                       onChange={data =>

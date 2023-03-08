@@ -299,7 +299,7 @@ export default function MapSection() {
             area.poi.map(poi =>
               poi.feature_mirror_ids.length > 0 ? (
                 <VectorTileLayer
-                  key={area.id}
+                  key={poi.layer_id}
                   url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${poi.layer_id}&sub_layer=&ids=${poi.feature_mirror_ids}`}
                   authToken={localStorage.getItem('userToken')}
                   visibleOnMap={area.checked}

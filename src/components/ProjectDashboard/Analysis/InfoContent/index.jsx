@@ -70,6 +70,7 @@ export default function InfoContent() {
         >
           {Object.keys(analysisInfoContents?.[analysisType]).map(info => (
             <div
+              key={info}
               ref={el => {
                 divRefs.current[info] = el;
               }}

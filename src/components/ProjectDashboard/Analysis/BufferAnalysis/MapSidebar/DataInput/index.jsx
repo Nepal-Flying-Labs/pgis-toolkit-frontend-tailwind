@@ -21,6 +21,7 @@ const {
   applyBufferAnalysisRequest,
   handleCheckbox,
   copyFeaturesRequest,
+  setBufferAnalysisState,
 } = Creators;
 
 const { setSelectedInfo } = AnalysisCreators;
@@ -104,6 +105,10 @@ export default function DataInput() {
       .filter(item => item.checked)
       .map(item => item.id);
 
+    const selectedPOIName = poiLayers
+      .filter(item => item.checked)
+      .map(item => item.name);
+
     const payloadData = {
       origins: originData,
       dissolve_output: dissolveOutput,
@@ -117,6 +122,11 @@ export default function DataInput() {
       .filter(layer => layer.checked)
       .map(layer => layer.id);
     dispatch(copyFeaturesRequest(poiLayersIds));
+    dispatch(
+      setBufferAnalysisState({
+        inputQuery: { ...payloadData, selectedPOIName },
+      }),
+    );
     dispatch(applyBufferAnalysisRequest(payloadData));
   };
 

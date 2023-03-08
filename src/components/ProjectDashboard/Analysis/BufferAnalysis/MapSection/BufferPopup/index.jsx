@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/bufferAnalysis';
+import { useParams } from 'react-router';
 // import RouteAnalysisActions from '@Actions/bufferAnalysis';
 import IconButton from '@Components/common/IconButton';
 import RoutePopupSkeleton from '@Components/common/SkeletonLoader/RoutePopupSkeleton';
@@ -37,6 +38,7 @@ const {
 } = Creators;
 
 export default function BufferPopup() {
+  const { analysisType } = useParams();
   const [selectedLayer, setSelectedLayer] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showChart, setShowChart] = useState(false);
@@ -70,6 +72,10 @@ export default function BufferPopup() {
   const selectedResultData = analysisResults.find(
     result => result.id === selectedResultsId,
   );
+
+  const originPoints = selectedResultData?.inputQuery.origins;
+  const bufferRadius = selectedResultData?.inputQuery.radius;
+  const selectedPOI = selectedResultData?.inputQuery.selectedPOIName;
 
   const poiLayersDataOptions = poiLayersData.filter(data =>
     selectedResultData?.poiChartData.map(itm => itm.name).includes(data.name),
@@ -230,6 +236,54 @@ export default function BufferPopup() {
                       );
                     })}
                   </div> */}
+
+                  {/* data input */}
+                  <div className="naxatw-flex naxatw-flex-col  naxatw-space-y-2">
+                    <h6>Data Input</h6>
+                    <div className="naxatw-flex naxatw-mt-2">
+                      <p className="naxatw-text-body-lg naxatw-basis-1/2">
+                        Origin Points
+                      </p>
+                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center naxatw-basis-1/2">
+                        {originPoints.map(item => {
+                          const [long, lat] = item;
+
+                          return (
+                            <span
+                              key={item}
+                              className="naxatw-text-body-lg naxatw-font-bold"
+                            >{`(${long.toFixed(2)}, ${lat.toFixed(2)})`}</span>
+                          );
+                        }) || '-'}
+                      </p>
+                    </div>
+                    <div className="naxatw-flex">
+                      <p className="naxatw-text-body-lg naxatw-basis-1/2">
+                        {analysisType === 'proximity-analysis'
+                          ? 'Proximity Radius'
+                          : 'Buffer Radius'}
+                      </p>
+                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center naxatw-basis-1/2">
+                        {meterToKM(bufferRadius) || '-'}
+                      </p>
+                    </div>
+                    <div className="naxatw-flex">
+                      <p className="naxatw-text-body-lg naxatw-basis-1/2">
+                        Selected POI
+                      </p>
+                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center naxatw-basis-1/2">
+                        {selectedPOI.map(item => (
+                          <span
+                            className="naxatw-text-body-lg naxatw-font-bold"
+                            key={item}
+                          >{`${item} ,`}</span>
+                        )) || '-'}
+                      </p>
+                    </div>
+                  </div>
+                  <hr className="naxatw-mb-3" />
+
+                  {/* count */}
                   <div className="naxatw-flex naxatw-justify-between naxatw-py-2">
                     <div className="naxatw-basis-1/2">
                       <p className="naxatw-text-body-lg naxatw-text-center">

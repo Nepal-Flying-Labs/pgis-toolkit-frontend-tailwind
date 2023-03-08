@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/bufferAnalysis';
 import Table, { TableHeader } from '@Components/common/CustomTable';
@@ -10,6 +11,7 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 const { getAnalysisDataRequest } = Creators;
 
 export default function ViewBufferAttribute() {
+  const { analysisType } = useParams();
   const dispatch = useDispatch();
   const selectedAnalysis = useSelector(
     state => state.bufferAnalysis.results.selectedAnalysis,
@@ -81,22 +83,24 @@ export default function ViewBufferAttribute() {
                 </p>
               )}
             /> */}
-            <TableHeader
-              dataField="No. of POI"
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataFormat={row => {
-                const totalPoi = row.poi.reduce(
-                  (sum, item) => sum + item.count,
-                  0,
-                );
-                return (
-                  <p className="naxatw-overflow-ellipsis naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
-                    {totalPoi}
-                  </p>
-                );
-              }}
-            />
+            {analysisType === 'proximity-analysis' && (
+              <TableHeader
+                dataField="No. of POI"
+                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                rowcolSpan="rowSpan_2"
+                dataFormat={row => {
+                  const totalPoi = row.poi.reduce(
+                    (sum, item) => sum + item.count,
+                    0,
+                  );
+                  return (
+                    <p className="naxatw-overflow-ellipsis naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-text-body-lg">
+                      {totalPoi}
+                    </p>
+                  );
+                }}
+              />
+            )}
           </Table>
         )}
       </div>

@@ -106,9 +106,12 @@ export default function ResetPassword() {
                 onChange={handleChange}
                 {...inputProps}
               />
-              {meta.new_password1.error && meta.new_password1.touched && (
-                <FormErrorMessage message={meta.new_password1.message} />
-              )}
+              <div className="naxatw-flex naxatw-justify-start">
+                {meta.new_password1.error && meta.new_password1.touched && (
+                  <FormErrorMessage message={meta.new_password1.message} />
+                )}
+              </div>
+
               <span
                 onClick={() => setIsVisible(!isVisible)}
                 className="material-icons naxatw-absolute naxatw-right-3 naxatw-top-10 naxatw-cursor-pointer"
@@ -127,9 +130,11 @@ export default function ResetPassword() {
               onChange={handleChange}
               {...inputProps}
             />
-            {meta.new_password2.error && meta.new_password2.touched && (
-              <FormErrorMessage message={meta.new_password2.message} />
-            )}
+            <div className="naxatw-flex naxatw-justify-start">
+              {meta.new_password2.error && meta.new_password2.touched && (
+                <FormErrorMessage message={meta.new_password2.message} />
+              )}
+            </div>
           </div>
           <Button
             className="naxatw-btn-primary naxatw-mt-7 naxatw-w-full"

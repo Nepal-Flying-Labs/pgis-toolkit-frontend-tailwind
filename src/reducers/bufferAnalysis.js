@@ -100,7 +100,7 @@ const checkProcessingStatusSuccess = (state, action) =>
       poiChartData: totalPoiCountChartData,
       buffer_areas: data.buffer_areas.map((areas, index) => ({
         ...areas,
-        name: `Result Area ${index + 1}`,
+        name: `Buffer Point ${index + 1}`,
         checked: true,
         style: { ...bufferPolygonStyles },
         originStyle: { ...bufferPointStyles, fillColor: chroma.random().hex() },

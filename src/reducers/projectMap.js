@@ -3,6 +3,7 @@ import { createReducer } from 'reduxsauce';
 import { parse } from 'wkt';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import { boundaryLayerName } from '@src/constants/map';
 
 const initialState = {
   themes: null, // []
@@ -40,6 +41,7 @@ const initialState = {
     queryResults: [],
     selectedData: null,
   },
+  attributeList: null, // []
   layerAttributesList: {
     attributeList: [],
     searchTerm: '',
@@ -53,6 +55,11 @@ const initialState = {
     },
     selectedLayerAttribute: null,
   },
+  fieldsDropdownOptions: null,
+  featureImage: [],
+  selectedLayerAttribute: null,
+  selectedFeatureId: null,
+  individualFeatureData: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -63,7 +70,7 @@ const getProjectThemesSuccess = (state, action) => ({
 const getProjectThemeLayersSuccess = (state, action) => {
   const { data: layerData, theme } = action.payload;
   const projectAreaLayerId = !state.projectAreaLayerId
-    ? layerData.find(item => item.name === 'Boundary')?.id || null
+    ? layerData.find(item => item.name === boundaryLayerName)?.id || null
     : state.projectAreaLayerId;
   const data = layerData.filter(item => item.upload_status === 'successful');
   const notPresentLayers = data
@@ -349,9 +356,14 @@ const postNewLayerFeatureSuccess = (state, action) => {
 };
 
 const getFeatureCollectionSuccess = (state, action) => {
-  const { geometry, attributes, id: featureId } = action.payload;
+  const { geometry, attributes, id: featureId, images } = action.payload;
   const wktString = geometry.split(';')[1];
   const featureGeojson = parse(wktString);
+  const modifiedImage = images?.map(item => ({
+    ...item,
+    patch: true,
+    isCoverImage: item.is_cover_image,
+  }));
   return {
     ...state,
     featureGeojson,
@@ -359,6 +371,7 @@ const getFeatureCollectionSuccess = (state, action) => {
     editFeatureId: featureId,
     sidebarContent: 'edit-feature',
     layerAttributes: attributes,
+    featureImage: modifiedImage || [],
   };
 };
 
@@ -686,6 +699,91 @@ const setSelectedLayerAttribute = (state, action) => ({
   },
 });
 
+const updateLayerAttributeFieldsSuccess = (state, action) => {
+  const data = action.payload;
+  const filterData = {
+    id: data.id,
+    name: data.name,
+    alias: data.alias,
+    data_type: data.data_type,
+    mandatory: data.mandatory,
+    dropdown_field: data.dropdown_field,
+  };
+  const newData = state.attributeList.map(item =>
+    item.id !== data.id ? { ...item } : { ...filterData },
+  );
+
+  return {
+    ...state,
+    attributeList: newData,
+  };
+};
+
+const postLayerAttributeFieldsSuccess = (state, action) => {
+  const data = action.payload;
+  const filterData = {
+    id: data.id,
+    name: data.name,
+    alias: data.alias,
+    data_type: data.data_type,
+    mandatory: data.mandatory,
+    dropdown_field: data.dropdown_field,
+  };
+
+  return {
+    ...state,
+    attributeList: [filterData, ...state.attributeList],
+  };
+};
+
+const getFieldsDropdownOptionSuccess = (state, action) => {
+  const data = action.payload.map(item => ({ ...item, flag: 'patch' }));
+  return {
+    ...state,
+    fieldsDropdownOptions: data,
+  };
+};
+
+const deleteLayerAttributeSuccess = (state, action) => {
+  const data = action.payload;
+  const newData = state.attributeList.filter(item => item.id !== data.id);
+  return {
+    ...state,
+    attributeList: newData,
+  };
+};
+
+const getLayerAttributeListSuccess = (state, action) => {
+  const { layerAttributes } = state;
+  const individualAttributeData = action.payload.map(item => ({
+    ...item,
+    value: layerAttributes?.[`${item.name}`] || '',
+  }));
+  return {
+    ...state,
+    attributeList: individualAttributeData,
+  };
+};
+
+const getAttributeFieldSuccess = (state, action) => ({
+  ...state,
+  selectedLayerAttribute: action.payload,
+});
+
+const getFeatureImageSuccess = (state, action) => {
+  const { attributes, images } = action.payload;
+  const newData = images.map(item => ({
+    ...item,
+    patch: true,
+    isCoverImage: item.is_cover_image,
+  }));
+  return {
+    ...state,
+    featureImage: newData,
+    individualFeatureData: attributes,
+  };
+};
+
 const resetProjectMapState = state => ({
   ...initialState,
   mapSettings: state.mapSettings,
@@ -735,6 +833,15 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_QUERY_ATTRIBUTE_SUCCESS]: getQueryAttributeSuccess,
   [Types.SET_SELECTED_LAYER_ATTRIBUTE]: setSelectedLayerAttribute,
   [Types.UPDATE_LAYER_ATTRIBUTE_SUCCESS]: updateLayerAttributeSuccess,
+  [Types.UPDATE_LAYER_ATTRIBUTE_FIELDS_SUCCESS]:
+    updateLayerAttributeFieldsSuccess,
+  [Types.POST_LAYER_ATTRIBUTE_FIELDS_SUCCESS]: postLayerAttributeFieldsSuccess,
+  [Types.GET_FIELDS_DROPDOWN_OPTION_SUCCESS]: getFieldsDropdownOptionSuccess,
+  [Types.DELETE_LAYER_ATTRIBUTE_SUCCESS]: deleteLayerAttributeSuccess,
+  [Types.GET_LAYER_ATTRIBUTE_LIST_SUCCESS]: getLayerAttributeListSuccess,
+  [Types.GET_ATTRIBUTE_FIELD_SUCCESS]: getAttributeFieldSuccess,
+  [Types.GET_FEATURE_IMAGE_SUCCESS]: getFeatureImageSuccess,
+
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

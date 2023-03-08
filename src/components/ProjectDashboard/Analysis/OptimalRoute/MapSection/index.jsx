@@ -41,6 +41,8 @@ import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/la
 import { apiURL } from '@Services';
 import HelpBox from './HelpBox';
 import RoutePopup from './RoutePopup';
+import SidebarToggle from '../../SidebarToggle/index';
+import InfoContent from '../../InfoContent/index';
 
 const { setDataInputState, setResultsState, setRouteAnalysisState } =
   RouteAnalysisCreators;
@@ -55,6 +57,7 @@ export default function MapSection() {
   const roadNetworkLayer = useSelector(
     state => state.routeAnalysis.roadNetworkLayer,
   );
+  const activeTab = useSelector(state => state.routeAnalysis.activeTab);
   const drawPointType = useSelector(
     state => state.routeAnalysis.dataInput.drawPointType,
   );
@@ -81,7 +84,17 @@ export default function MapSection() {
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [Types.GET_PROJECT_GEOJSON_REQUEST]),
   );
+  const hideSidebar = useSelector(state => state.analysis.hideSidebar);
   const dispatch = useDispatch();
+
+  // update map size on sidebar toggle
+  useEffect(() => {
+    if (!map) return () => {};
+    const timer = setTimeout(() => {
+      map.updateSize();
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [map, hideSidebar]);
 
   // zoom to road network layer on initial map load
   useEffect(() => {
@@ -188,6 +201,8 @@ export default function MapSection() {
         </div>
       )}
 
+      {activeTab === 'dataInput' && <InfoContent />}
+
       <MapComponent
         ref={mapRef}
         mapInstance={map}
@@ -195,6 +210,8 @@ export default function MapSection() {
           height: `calc(100vh - ${analysisHeaderHeight})`,
         }}
       >
+        <SidebarToggle />
+
         <LayerSwitcherControl />
 
         <CustomLayerSwitcher />

@@ -57,7 +57,7 @@ function Container({ children }) {
 export default function DataInput() {
   const [radiusUnit, setRadiusUnit] = useState('meter');
   const dispatch = useDispatch();
-  const { projectId } = useParams();
+  const { projectId, analysisType } = useParams();
 
   const originPointType = useSelector(
     state => state.bufferAnalysis.dataInput?.originPointType,
@@ -79,6 +79,8 @@ export default function DataInput() {
   );
 
   const poiLayers = useSelector(state => state.bufferAnalysis.poiLayers);
+
+  const selectedInfo = useSelector(state => state.analysis.selectedInfo);
 
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.APPLY_BUFFER_ANALYSIS_REQUEST]),
@@ -169,9 +171,14 @@ export default function DataInput() {
           <div>
             <div className="naxatw-space-y-2 ">
               <label className="naxatw-label naxatw-flex naxatw-items-center">
-                Buffer Radius{' '}
+                {analysisType === 'buffer-analysis'
+                  ? 'Buffer Radius'
+                  : 'Proximity Radius'}
                 <div
-                  onMouseOver={() => dispatch(setSelectedInfo('bufferRadius'))}
+                  onMouseOver={() => {
+                    if (selectedInfo === 'bufferRadius') return;
+                    dispatch(setSelectedInfo('bufferRadius'));
+                  }}
                   // onMouseOut={() => dispatch(setSelectedInfo(null))}
                   onBlur={() => {}}
                   onFocus={() => {}}
@@ -255,66 +262,68 @@ export default function DataInput() {
           </div>
         </Container>
 
-        <Container>
-          <label className="naxatw-label naxatw-flex naxatw-items-center">
-            POI{' '}
+        {analysisType === 'proximity-analysis' && (
+          <Container>
+            <label className="naxatw-label naxatw-flex naxatw-items-center">
+              POI{' '}
+              <div
+                onMouseOver={() => dispatch(setSelectedInfo('poi'))}
+                // onMouseOut={() => dispatch(setSelectedInfo(null))}
+                onBlur={() => {}}
+                onFocus={() => {}}
+              >
+                <IconButton
+                  className="material-symbols-outlined naxatw-text-[1.2rem]"
+                  name="info"
+                  title="Info"
+                  // onClick={() => dispatch(setSelectedInfo('result'))}
+                />
+              </div>
+            </label>
             <div
-              onMouseOver={() => dispatch(setSelectedInfo('poi'))}
-              // onMouseOut={() => dispatch(setSelectedInfo(null))}
-              onBlur={() => {}}
-              onFocus={() => {}}
-            >
-              <IconButton
-                className="material-symbols-outlined naxatw-text-[1.2rem]"
-                name="info"
-                title="Info"
-                // onClick={() => dispatch(setSelectedInfo('result'))}
-              />
-            </div>
-          </label>
-          <div
-            className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg
+              className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg
               naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem] naxatw-bg-white"
-          >
-            <ul>
-              {poiLayers?.map(item => (
-                <li
-                  key={item.id}
-                  role="presentation"
-                  className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
+            >
+              <ul>
+                {poiLayers?.map(item => (
+                  <li
+                    key={item.id}
+                    role="presentation"
+                    className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
                       hover:naxatw-bg-grey-100 naxatw-flex naxatw-items-center"
-                  onClick={() => {}}
-                >
-                  <input
-                    id={item.id}
-                    type="checkbox"
-                    className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
+                    onClick={() => {}}
+                  >
+                    <input
+                      id={item.id}
+                      type="checkbox"
+                      className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
                         naxatw-accent-grey-800 naxatw-cursor-pointer"
-                    checked={item.checked}
-                    onChange={e => {
-                      const { id, checked } = e.target;
-                      dispatch(
-                        handleCheckbox({
-                          stateName: 'poiLayers',
-                          id,
-                          checked,
-                        }),
-                      );
-                    }}
-                  />
-                  <LegendItem
-                    styles={item.style}
-                    className="naxatw-mr-2"
-                    size="21px"
-                  />
-                  <label htmlFor={item.id} className="naxatw-cursor-pointer">
-                    {item.name}
-                  </label>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Container>
+                      checked={item.checked}
+                      onChange={e => {
+                        const { id, checked } = e.target;
+                        dispatch(
+                          handleCheckbox({
+                            stateName: 'poiLayers',
+                            id,
+                            checked,
+                          }),
+                        );
+                      }}
+                    />
+                    <LegendItem
+                      styles={item.style}
+                      className="naxatw-mr-2"
+                      size="21px"
+                    />
+                    <label htmlFor={item.id} className="naxatw-cursor-pointer">
+                      {item.name}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Container>
+        )}
 
         <Container>
           <label className="naxatw-label naxatw-flex naxatw-items-center">

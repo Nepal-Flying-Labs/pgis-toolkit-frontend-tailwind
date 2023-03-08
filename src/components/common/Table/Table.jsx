@@ -38,20 +38,20 @@ export default class Table extends Component {
     if (numberOfChildren > 0) {
       const isSubheaderCollection = Children.map(
         children,
-        child => child.props.isSubHeader,
+        child => child?.props?.isSubHeader,
       );
       const containSubHeaderCollection = Children.map(
         children,
-        child => child.props.containSubHeader,
+        child => child?.props?.containSubHeader,
       );
-      const fields = Children.map(children, child => child.props.dataField);
+      const fields = Children.map(children, child => child?.props?.dataField);
       const rowColSpanValue = Children.map(
         children,
-        child => child.props.rowcolSpan,
+        child => child?.props?.rowcolSpan,
       );
       const headClassName = Children.map(
         children,
-        child => child.props.headerClassName,
+        child => child?.props?.headerClassName,
       );
 
       return {

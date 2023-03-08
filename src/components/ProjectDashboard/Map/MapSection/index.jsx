@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { stringify } from 'wkt';
 import { useDispatch, useSelector } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
@@ -92,6 +92,7 @@ export default function MapSection() {
   const isPopupDataFetching = useSelector(state =>
     checkIfLoading(state, [Types.GET_MAP_POPUP_DATA_REQUEST]),
   );
+  const [isMeaureEnabled, setIsMeasureEnabled] = useState(false);
   const dispatch = useDispatch();
 
   // zoom to project location on initial map load
@@ -227,7 +228,10 @@ export default function MapSection() {
         >
           <SidebarToggle />
 
-          <Toolbox map={map} />
+          <Toolbox
+            map={map}
+            onMeasureToggle={toggleState => setIsMeasureEnabled(toggleState)}
+          />
 
           <QueryResultPopup />
 
@@ -379,7 +383,7 @@ export default function MapSection() {
               dispatch(getFeatureCollectionRequest(properties.id));
             }}
             loading={isPopupDataFetching}
-            closePopup={!!selectedLayer || !!featureGeojson}
+            closePopup={!!selectedLayer || !!featureGeojson || isMeaureEnabled}
             layerExceptionIds={[projectAreaLayerId]}
           />
 

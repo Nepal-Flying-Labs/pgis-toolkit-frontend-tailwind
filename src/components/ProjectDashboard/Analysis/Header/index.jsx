@@ -15,7 +15,12 @@ const headerData = {
   'buffer-analysis': {
     title: 'Buffer Analysis',
     description:
-      'Creates a zone around a selected feature, distance or time-based, known as a buffer, to find features that are within a certain distance of another feature.',
+      'Creates a zone around a selected feature, distance or time-based, known as a buffer.',
+  },
+  'proximity-analysis': {
+    title: 'Proximity Analysis',
+    description:
+      'Creates a zone around a selected feature, distance or time-based, known as a proximity, to find features that are within a certain distance of another feature.',
   },
 };
 
@@ -34,7 +39,7 @@ export default function Header() {
           <h3>{headerData[analysisType]?.title || ''}</h3>
           {tabname === 'analysis' && (
             <div
-              onMouseOver={() => dispatch(setSelectedInfo(null))}
+              onMouseOver={() => dispatch(setSelectedInfo('default'))}
               // onMouseOut={() => dispatch(setSelectedInfo(null))}
               onBlur={() => {}}
               onFocus={() => {}}
@@ -55,11 +60,11 @@ export default function Header() {
       </div>
       <button
         type="button"
-        onClick={() =>
+        onClick={() => {
           history.push(
             `/organizations/${organizationId}/projects/${projectId}/map`,
-          )
-        }
+          );
+        }}
         className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 
           hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5
           naxatw-ml-auto naxatw-inline-flex naxatw-items-center naxatw-"

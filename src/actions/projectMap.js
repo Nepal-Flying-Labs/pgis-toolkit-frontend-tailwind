@@ -118,9 +118,45 @@ export const { Types, Creators } = createActions(
 
     setSelectedLayerAttribute: ['payload'],
 
+    getLayerAttributeListRequest: ['params'],
+    getLayerAttributeListSuccess: ['payload'],
+    getLayerAttributeListFailure: null,
+
     updateLayerAttributeRequest: ['id', 'payload'],
     updateLayerAttributeSuccess: ['payload'],
     updateLayerAttributeFailure: null,
+
+    updateLayerAttributeFieldsRequest: ['id', 'payload'],
+    updateLayerAttributeFieldsSuccess: ['payload'],
+    updateLayerAttributeFieldsFailure: null,
+
+    updateDropdownFieldRequest: ['id', 'payload'],
+    updateDropdownFieldSuccess: ['payload'],
+    updateDropdownFieldFailure: null,
+
+    getFieldsDropdownOptionRequest: ['params'],
+    getFieldsDropdownOptionSuccess: ['payload'],
+    getFieldsDropdownOptionFailure: null,
+
+    postLayerAttributeFieldsRequest: ['payload'],
+    postLayerAttributeFieldsSuccess: ['payload'],
+    postLayerAttributeFieldsFailure: null,
+
+    deleteLayerAttributeRequest: ['id'],
+    deleteLayerAttributeSuccess: ['payload'],
+    deleteLayerAttributeFailure: null,
+
+    postCreateImageToUrlRequest: ['payload'],
+    postCreateImageToUrlSuccess: ['payload'],
+    postCreateImageToUrlFailure: null,
+
+    getAttributeFieldRequest: ['params'],
+    getAttributeFieldSuccess: ['payload'],
+    getAttributeFieldFailure: null,
+
+    getFeatureImageRequest: ['id'],
+    getFeatureImageSuccess: ['payload'],
+    getFeatureImageFailure: null,
   },
   { prefix: 'projectMap/' },
 );

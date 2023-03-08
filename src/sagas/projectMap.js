@@ -25,6 +25,16 @@ import {
   uploadLayer,
   getLayerAttribute,
   getQueryAttribute,
+  updateLayerAttributeFields,
+  getFieldsDropdownOption,
+  updateDropdownOption,
+  postDropdownOption,
+  postLayerAttributeFields,
+  deleteLayerAttribute,
+  postFeatureImage,
+  updateFeatureImage,
+  deleteFeatureImage,
+  postCreateToUrl,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -168,7 +178,27 @@ export function* saveMapConfigRequest({ params, payload }) {
 export function* getLayerAttributeFieldsRequest({ params }) {
   try {
     const response = yield call(getLayerAttributeFields, params);
-    yield put(projectMapActions.getLayerAttributeFieldsSuccess(response.data));
+    const dropdownFields = response.data.filter(data => data.dropdown_field);
+    const optionsResponse = yield all(
+      dropdownFields.map(field =>
+        call(getFieldsDropdownOption, { attribute: field.id }),
+      ),
+    );
+
+    const dropdownOptions = dropdownFields.map((item, index) => ({
+      ...item,
+      options: optionsResponse[index].data,
+    }));
+
+    const finalData = response.data.map(item => {
+      const newData = dropdownOptions.filter(opt => opt.id === item.id);
+      if (isEmpty(newData)) {
+        return { ...item };
+      }
+      return { ...newData[0] };
+    });
+
+    yield put(projectMapActions.getLayerAttributeFieldsSuccess(finalData));
   } catch (error) {
     yield put(projectMapActions.getLayerAttributeFieldsFailure());
     throw error;
@@ -177,8 +207,33 @@ export function* getLayerAttributeFieldsRequest({ params }) {
 
 export function* postNewLayerFeatureRequest({ payload }) {
   try {
-    const response = yield call(postNewLayerFeature, payload);
+    const { image, ...finalPayload } = payload;
+    const response = yield call(postNewLayerFeature, finalPayload);
+
+    if (!isEmpty(image)) {
+      yield all(
+        image.map(item =>
+          call(
+            postFeatureImage,
+            prepareFormData(
+              item.file
+                ? {
+                    image: item.file,
+                    feature_id: response.data.id,
+                    is_cover_image: item.isCoverImage,
+                  }
+                : {
+                    url: item.url,
+                    feature_id: response.data.id,
+                    is_cover_image: item.isCoverImage,
+                  },
+            ),
+          ),
+        ),
+      );
+    }
     yield put(projectMapActions.postNewLayerFeatureSuccess(response.data));
+    yield put(projectMapActions.setProjectMapState({ featureImage: [] }));
   } catch (error) {
     yield put(projectMapActions.postNewLayerFeatureFailure());
     throw error;
@@ -197,8 +252,59 @@ export function* getFeatureCollectionRequest({ id }) {
 
 export function* updateFeatureCollectionRequest({ id, payload }) {
   try {
-    const response = yield call(updateFeatureCollection, id, payload);
+    const { image, ...finalPayload } = payload;
+
+    const patchImage = image?.filter(
+      item => item.patch && !item.isDeleted && item.isChanged,
+    );
+    const deleteImage = image?.filter(item => item.patch && item.isDeleted);
+    const postImage = image?.filter(item => item.post && !item.isDeleted);
+
+    const response = yield call(updateFeatureCollection, id, finalPayload);
+    if (!isEmpty(postImage)) {
+      yield all(
+        postImage.map(item =>
+          call(
+            postFeatureImage,
+            prepareFormData(
+              item.file
+                ? {
+                    image: item.file,
+                    feature_id: id,
+                    is_cover_image: item.isCoverImage,
+                  }
+                : {
+                    url: item.url,
+                    feature_id: id,
+                    is_cover_image: item.isCoverImage,
+                  },
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (!isEmpty(patchImage)) {
+      yield all(
+        patchImage.map(item =>
+          call(
+            updateFeatureImage,
+            item.id,
+            prepareFormData({
+              feature_id: id,
+              is_cover_image: !!item.isCoverImage,
+            }),
+          ),
+        ),
+      );
+    }
+
+    if (!isEmpty(deleteImage)) {
+      yield all(deleteImage.map(item => call(deleteFeatureImage, item.id)));
+    }
+
     yield put(projectMapActions.updateFeatureCollectionSuccess(response.data));
+    yield put(projectMapActions.setProjectMapState({ featureImage: [] }));
     yield put(projectMapActions.getFeatureCollectionSuccess(id));
     yield put(commonActions.toggleModalTwo());
   } catch (error) {
@@ -306,7 +412,55 @@ export function* getQueryAttributeRequest({ params }) {
 export function* updateLayerAttributeRequest({ id, payload }) {
   const { is_deleted } = payload;
   try {
-    const response = yield call(updateFeatureCollection, id, payload);
+    const { image, ...finalPayload } = payload;
+    const response = yield call(updateFeatureCollection, id, finalPayload);
+
+    const patchImage = image?.filter(
+      item => item.patch && !item.isDeleted && item.isChanged,
+    );
+    const deleteImage = image?.filter(item => item.patch && item.isDeleted);
+    const postImage = image?.filter(item => item.post && !item.isDeleted);
+    if (!isEmpty(postImage)) {
+      yield all(
+        postImage.map(item =>
+          call(
+            postFeatureImage,
+            prepareFormData(
+              item.file
+                ? {
+                    image: item.file,
+                    feature_id: id,
+                    is_cover_image: item.isCoverImage,
+                  }
+                : {
+                    url: item.url,
+                    feature_id: id,
+                    is_cover_image: item.isCoverImage,
+                  },
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (!isEmpty(patchImage)) {
+      yield all(
+        patchImage.map(item =>
+          call(
+            updateFeatureImage,
+            item.id,
+            prepareFormData({
+              feature_id: id,
+              is_cover_image: !!item.isCoverImage,
+            }),
+          ),
+        ),
+      );
+    }
+
+    if (!isEmpty(deleteImage)) {
+      yield all(deleteImage.map(item => call(deleteFeatureImage, item.id)));
+    }
     yield put(projectMapActions.updateLayerAttributeSuccess(response.data));
     if (!is_deleted) {
       yield put(commonActions.toggleModalTwo());
@@ -325,6 +479,165 @@ export function* updateLayerAttributeRequest({ id, payload }) {
     }
   } catch (error) {
     yield put(projectMapActions.updateLayerAttributeFailure());
+    throw error;
+  }
+}
+
+export function* updateLayerAttributeFieldsRequest({ id, payload }) {
+  try {
+    const { patchData, postData, ...newData } = payload;
+    const formData = prepareFormData(newData);
+    const response = yield call(updateLayerAttributeFields, id, formData);
+
+    if (!isEmpty(patchData)) {
+      yield all(
+        patchData?.map(data =>
+          call(updateDropdownOption, data.id, {
+            name: data.name,
+            attribute: id,
+          }),
+        ),
+      );
+    }
+
+    if (!isEmpty(postData)) {
+      yield all(
+        postData?.map(data =>
+          call(postDropdownOption, {
+            name: data.name,
+            attribute: data.attribute,
+          }),
+        ),
+      );
+    }
+
+    const dataType = response.data.data_type;
+
+    if (dataType === 'image') {
+      yield put(
+        projectMapActions.postCreateImageToUrlRequest({
+          attribute: id,
+        }),
+      );
+    }
+
+    yield put(
+      projectMapActions.updateLayerAttributeFieldsSuccess(response.data),
+    );
+    yield put(commonActions.toggleModal('manage-attributes'));
+    // yield put(
+    //   toastActions.success({
+    //     message: 'Layer attribute fields saved successfully.',
+    //   }),
+    // );
+  } catch (error) {
+    yield put(projectMapActions.updateLayerAttributeFieldsFailure());
+    throw error;
+  }
+}
+
+export function* updateDropdownFieldRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(updateLayerAttributeFields, id, formData);
+    if (response?.data?.dropdown_field)
+      yield put(
+        projectMapActions.getFieldsDropdownOptionRequest({ attribute: id }),
+      );
+  } catch (error) {
+    yield put(projectMapActions.updateDropdownFailure());
+    throw error;
+  }
+}
+
+export function* getFieldsDropdownOptionRequest({ params }) {
+  try {
+    const response = yield call(getFieldsDropdownOption, params);
+    yield put(projectMapActions.getFieldsDropdownOptionSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getFieldsDropdownFailure());
+    throw error;
+  }
+}
+
+export function* postLayerAttributeFieldsRequest({ payload }) {
+  try {
+    const { postData, ...newData } = payload;
+    const { source, ...filterData } = newData;
+    const formData = prepareFormData(filterData);
+    const response = yield call(postLayerAttributeFields, formData);
+
+    if (!isEmpty(postData)) {
+      yield all(
+        postData?.map(data =>
+          call(postDropdownOption, {
+            name: data.name,
+            attribute: response.data.id,
+          }),
+        ),
+      );
+    }
+    yield put(projectMapActions.postLayerAttributeFieldsSuccess(response.data));
+    yield put(commonActions.toggleModal('manage-attributes'));
+    yield put(
+      toastActions.success({
+        message: 'Layer attribute fields added successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.postLayerAttributeFieldsFailure());
+    throw error;
+  }
+}
+
+export function* deleteLayerAttributeRequest({ id }) {
+  try {
+    yield call(deleteLayerAttribute, id);
+    yield put(projectMapActions.deleteLayerAttributeSuccess({ id }));
+    yield put(commonActions.togglePromptDialog());
+    yield put(toastActions.success({ message: 'Delete attribute success.' }));
+  } catch (error) {
+    yield put(projectMapActions.deleteLayerAttributeFailure());
+    throw error;
+  }
+}
+
+export function* getLayerAttributeListRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttributeFields, params);
+    yield put(projectMapActions.getLayerAttributeListSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getLayerAttributeListFailure());
+    throw error;
+  }
+}
+
+export function* postCreateImageToUrlRequest({ payload }) {
+  try {
+    const response = yield call(postCreateToUrl, payload);
+    yield put(projectMapActions.postCreateImageToUrlSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.postCreateImageToUrlFailure());
+    throw error;
+  }
+}
+
+export function* getAttributeFieldRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttributeFields, params);
+    yield put(projectMapActions.getAttributeFieldSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getAttributeFieldFailure());
+    throw error;
+  }
+}
+
+export function* getFeatureImageRequest({ id }) {
+  try {
+    const response = yield call(getFeatureCollection, id);
+    yield put(projectMapActions.getFeatureImageSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getFeatureImageFailure());
     throw error;
   }
 }
@@ -413,6 +726,42 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.UPDATE_LAYER_ATTRIBUTE_REQUEST,
     withLoader(withErrorHandler(updateLayerAttributeRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+    withLoader(withErrorHandler(updateLayerAttributeFieldsRequest)),
+  );
+  yield takeLatest(
+    Types.GET_FIELDS_DROPDOWN_OPTION_REQUEST,
+    withLoader(withErrorHandler(getFieldsDropdownOptionRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_DROPDOWN_FIELD_REQUEST,
+    withLoader(withErrorHandler(updateDropdownFieldRequest)),
+  );
+  yield takeLatest(
+    Types.POST_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+    withLoader(withErrorHandler(postLayerAttributeFieldsRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_LAYER_ATTRIBUTE_REQUEST,
+    withLoader(withErrorHandler(deleteLayerAttributeRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_ATTRIBUTE_LIST_REQUEST,
+    withLoader(withErrorHandler(getLayerAttributeListRequest)),
+  );
+  yield takeLatest(
+    Types.POST_CREATE_IMAGE_TO_URL_REQUEST,
+    withLoader(withErrorHandler(postCreateImageToUrlRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ATTRIBUTE_FIELD_REQUEST,
+    withLoader(withErrorHandler(getAttributeFieldRequest)),
+  );
+  yield takeLatest(
+    Types.GET_FEATURE_IMAGE_REQUEST,
+    withLoader(withErrorHandler(getFeatureImageRequest)),
   );
 }
 

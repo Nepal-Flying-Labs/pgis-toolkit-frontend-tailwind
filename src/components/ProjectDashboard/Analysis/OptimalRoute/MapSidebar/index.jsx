@@ -16,6 +16,7 @@ const tabData = [
 const { setRouteAnalysisState } = Creators;
 
 export default function MapSidebar() {
+  const hideSidebar = useSelector(state => state.analysis.hideSidebar);
   const activeTab = useSelector(state => state.routeAnalysis.activeTab);
   const dispatch = useDispatch();
 
@@ -23,6 +24,12 @@ export default function MapSidebar() {
     <div
       className="naxatw-bg-grey-100 naxatw-px-4 naxatw-overflow-auto
         scrollbar naxatw-min-w-[23rem]"
+      style={{
+        width: hideSidebar ? '0' : '23rem',
+        minWidth: hideSidebar ? '0' : '23rem',
+        padding: hideSidebar ? '0' : '',
+        transition: 'ease-in-out 300ms',
+      }}
     >
       <div className="naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-h-full">
         <Tab

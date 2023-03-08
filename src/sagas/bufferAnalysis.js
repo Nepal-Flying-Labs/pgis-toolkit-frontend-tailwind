@@ -8,7 +8,7 @@ import {
 } from 'redux-saga/effects';
 import bufferAnalysisActions, { Types } from '@Actions/bufferAnalysis';
 import commonActions from '@Actions/common';
-import { getFeatureCollection } from '@Services/projectMap';
+import { getFeatureCollection, updateLayer } from '@Services/projectMap';
 
 import analysisActions from '@Actions/analysis';
 import prepareFormData from '@Utils/prepareFormData';
@@ -117,27 +117,36 @@ export function* getSelectedLayerFeatureRequest() {
 
 export function* saveBufferLayerRequest({ payload }) {
   try {
-    const response = yield call(saveBufferLayer, payload);
+    const { style, ...newPayload } = payload;
+    const response = yield call(saveBufferLayer, newPayload);
     const responseData = response.data;
-    yield put(
-      bufferAnalysisActions.saveBufferLayerSuccess({
-        ...responseData,
-        analysisId: payload.analysis,
-      }),
-    );
     yield put(commonActions.togglePromptDialog());
     const { layers } = yield select(state => state.analysis);
     const { theme, layer } = responseData;
+    // eslint-disable-next-line no-unused-expressions
+    yield call(updateLayer, layer, prepareFormData({ style }));
     yield put(
       analysisActions.setAnalysisState({
         layers: {
           ...layers,
           [theme]: [
-            { ...responseData, checked: true, layer_type: 'Vector', id: layer },
+            {
+              ...responseData,
+              checked: true,
+              layer_type: 'Vector',
+              id: layer,
+              style,
+            },
             ...layers[theme],
           ],
         },
         zoomToLayerId: layer,
+      }),
+    );
+    yield put(
+      bufferAnalysisActions.saveBufferLayerSuccess({
+        ...responseData,
+        analysisId: payload.analysis,
       }),
     );
   } catch (error) {

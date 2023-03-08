@@ -50,3 +50,33 @@ export const getQueryAttribute = params =>
 
 export const getFeatureGeojson = id =>
   authenticated(api).get(`/maps/feature_geojson/${id}/`);
+
+export const updateLayerAttributeFields = (id, data) =>
+  authenticated(api).patch(`/maps/layer_attribute/${id}/`, data);
+
+export const getFieldsDropdownOption = params =>
+  authenticated(api).get(`/maps/dropdown_choice/`, { params });
+
+export const updateDropdownOption = (id, data) =>
+  authenticated(api).patch(`/maps/dropdown_choice/${id}/`, data);
+
+export const postDropdownOption = data =>
+  authenticated(api).post(`/maps/dropdown_choice/`, data);
+
+export const postLayerAttributeFields = data =>
+  authenticated(api).post(`/maps/layer_attribute/`, data);
+
+export const deleteLayerAttribute = id =>
+  authenticated(api).delete(`/maps/layer_attribute/${id}/`);
+
+export const postFeatureImage = data =>
+  authenticated(api).post(`/maps/feature_image/`, data);
+
+export const updateFeatureImage = (id, data) =>
+  authenticated(api).patch(`/maps/feature_image/${id}/`, data);
+
+export const deleteFeatureImage = id =>
+  authenticated(api).delete(`/maps/feature_image/${id}/`);
+
+export const postCreateToUrl = data =>
+  authenticated(api).post(`/maps/bulk_create_image_from_urls/`, data);

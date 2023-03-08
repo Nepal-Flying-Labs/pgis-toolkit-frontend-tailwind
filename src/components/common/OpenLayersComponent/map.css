@@ -109,3 +109,20 @@
   background: transparent !important;
   display: none;
 }
+
+.ol-full-screen {
+  background: transparent !important;
+}
+
+.ol-full-screen button {
+  /* display: none !important; */
+  visibility: hidden;
+}
+.ol-full-screen button::after {
+  font-family: 'Material Icons';
+  content: 'fullscreen';
+  visibility: visible;
+  position: absolute;
+  top: -1px;
+  left: 4px;
+}

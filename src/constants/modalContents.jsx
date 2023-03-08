@@ -51,6 +51,9 @@ import AddDatasetCategory from '@Components/ProjectDashboard/ModalContent/AddDat
 import DeleteBufferResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteBufferResult/index';
 import DeleteRouteResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteRouteResult/index';
 import SaveManualFix from '@Components/ProjectDashboard/Analysis/ModalContent/SaveManualFix';
+import SignoutWarning from '@Components/OrganizationDashboard/ModalContent/SignoutWarning';
+import DownloadTemplate from '@Components/ProjectDashboard/ModalContent/DownloadTemplate/index';
+import UploadBulkImage from '@Components/ProjectDashboard/ModalContent/UploadBulkImage/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -215,7 +218,7 @@ export function getModalContent(content) {
       return {
         title: 'Manage Attributes',
         content: <ManageAttributes />,
-        className: '!naxatw-w-[56.25rem]',
+        className: '!naxatw-w-[56.25rem] !naxatw-max-h-[calc(100vh-10rem)]',
       };
     case 'add-attributes':
       return {
@@ -252,6 +255,20 @@ export function getModalContent(content) {
         title: 'Buffer Attribute',
         content: <ViewBufferAttribute />,
         className: '!naxatw-w-[50rem]',
+      };
+
+    case 'download-template':
+      return {
+        title: 'Download Template',
+        content: <DownloadTemplate />,
+      };
+
+    case 'upload-bulk-image':
+      return {
+        title: 'Upload Images',
+        content: <UploadBulkImage />,
+        subtitle:
+          'USAFIRI allows you to bulk upload images for a layer in zip file format.',
       };
     default:
       return {
@@ -385,6 +402,12 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <DeleteRouteResult />,
+      };
+
+    case 'signout-warning':
+      return {
+        title: '',
+        content: <SignoutWarning />,
       };
 
     default:

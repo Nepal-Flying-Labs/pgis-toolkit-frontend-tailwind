@@ -48,6 +48,11 @@ import {
   updateInvitedUserStatus,
   downloadProjectLayer,
   postDatasetTheme,
+  getTemplateDropdownChoice,
+  postTemplateDropdownOption,
+  updateTemplateDropdownOption,
+  uploadFeatureImage,
+  checkImageUploadStatus,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -55,6 +60,7 @@ import {
   uploadLayer,
 } from '@Services/projectMap';
 import prepareFormData from '@Utils/prepareFormData';
+import { isEmpty } from '@Utils/commonUtils';
 // import JSZip from 'jszip';
 // import { saveAs } from 'file-saver';
 
@@ -101,8 +107,15 @@ export function* uploadDatasetsRequest({ payload }) {
         call(getLayerById, item.layer_id || item.data.id),
       ),
     );
+    const { themes } = yield select(state => state.projectMap);
     const layerData = layerResponses.map(res => res.data);
-    yield put(projectDashboardActions.uploadDatasetsSuccess(layerData));
+
+    // converting theme id to name
+    const newData = layerData.map(data => {
+      const theme = themes.filter(item => item.id === data.theme);
+      return { ...data, theme: theme[0].name };
+    });
+    yield put(projectDashboardActions.uploadDatasetsSuccess(newData));
     yield put(commonActions.toggleModal());
     if (layerData[0]?.layer_type === 'Vector') {
       yield put(
@@ -445,7 +458,18 @@ export function* postAttributeSelectionRequest({ payload }) {
 
 export function* postTemplateAttributeRequest({ payload }) {
   try {
-    const response = yield call(postTemplateAttribute, payload);
+    const { postData, source, ...newData } = payload;
+    // const formData = prepareFormData(newData);
+    const response = yield call(postTemplateAttribute, newData);
+
+    yield all(
+      postData.map(data =>
+        call(postTemplateDropdownOption, {
+          name: data.name,
+          attribute: response.data.data.id,
+        }),
+      ),
+    );
     yield put(
       projectDashboardActions.postTemplateAttributeSuccess(response.data.data),
     );
@@ -459,7 +483,31 @@ export function* postTemplateAttributeRequest({ payload }) {
 
 export function* updateTemplateAttributeRequest({ id, payload }) {
   try {
-    const response = yield call(updateTemplateAttribute, id, payload);
+    const { patchData, postData, ...newData } = payload;
+    const formData = prepareFormData(newData);
+    const response = yield call(updateTemplateAttribute, id, formData);
+
+    if (!isEmpty(patchData)) {
+      yield all(
+        patchData.map(data =>
+          call(updateTemplateDropdownOption, data.id, {
+            name: data.name,
+            attribute: id,
+          }),
+        ),
+      );
+    }
+
+    if (!isEmpty(postData)) {
+      yield all(
+        postData.map(data =>
+          call(postTemplateDropdownOption, {
+            name: data.name,
+            attribute: data.attribute,
+          }),
+        ),
+      );
+    }
     yield put(
       projectDashboardActions.updateTemplateAttributeSuccess(response.data),
     );
@@ -487,17 +535,19 @@ export function* deleteTemplateAttributeRequest({ id, payload }) {
 }
 
 export function* downloadBulkTemplateRequest({ params }) {
+  // const { output_format } = params;
+
   try {
     const response = yield call(downloadBulkTemplate, params);
-    const url = response.request.responseURL;
+    const blob = new Blob([response.data], {
+      type: 'application/octet-stream',
+    });
     const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'template.zip'); // or any other extension
-    document.body.appendChild(link);
+    link.href = URL.createObjectURL(blob);
+    link.download = 'template.zip';
     link.click();
-    yield put(
-      projectDashboardActions.downloadBulkTemplateSuccess(response.data),
-    );
+    yield put(toastActions.success({ message: 'Layer Download Completed.' }));
+    yield put(commonActions.toggleModal());
   } catch (error) {
     yield put(projectDashboardActions.downloadBulkTemplateFailure());
     throw error;
@@ -698,6 +748,97 @@ export function* updateDataLayerRequest({ id, payload }) {
   }
 }
 
+export function* updateTemplateDropdownRequest({ id, payload }) {
+  try {
+    yield call(updateTemplateAttribute, id, payload);
+    yield put(
+      projectDashboardActions.getTemplateDropdownChoiceRequest({
+        attribute: id,
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.updateTemplateDropdownFailure());
+    throw error;
+  }
+}
+
+export function* getTemplateDropdownChoiceRequest({ params }) {
+  try {
+    const response = yield call(getTemplateDropdownChoice, params);
+    yield put(
+      projectDashboardActions.getTemplateDropdownChoiceSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.getTemplateDropdownChoiceFailure());
+    throw error;
+  }
+}
+
+export function* checkImageUploadStatusRequest({ params }) {
+  try {
+    const { name, ...newParams } = params;
+    yield put(
+      projectDashboardActions.setUploadImageStatusCheckingId(params.task_id),
+    );
+    let responseData = { message: 'Please wait result' };
+    while (responseData?.message === 'Please wait result') {
+      yield delay(15 * 1000); // call api in 10 second interval
+      const response = yield call(checkImageUploadStatus, newParams);
+      responseData = response.data;
+    }
+    yield put(
+      projectDashboardActions.checkImageUploadStatusSuccess({
+        ...responseData,
+      }),
+    );
+    if (responseData.message === 'Bulk Image Upload successful') {
+      yield put(
+        toastActions.success({
+          message: `${name} was successfully uploaded.`,
+        }),
+      );
+    } else {
+      yield put(
+        toastActions.error({
+          message: `${name} upload failed.`,
+        }),
+      );
+    }
+    yield put(
+      projectDashboardActions.setUploadingImage({
+        id: params.task_id,
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.checkImageUploadStatusFailure());
+    throw error;
+  }
+}
+
+export function* uploadFeatureImageRequest({ payload }) {
+  try {
+    const responses = yield all(
+      payload.map(data => call(uploadFeatureImage, prepareFormData(data))),
+    );
+    const responseData = responses.map(res => res.data);
+    const finalData = responseData.map((item, index) => ({
+      ...item,
+      name: payload[index].file.name,
+    }));
+    yield put(projectDashboardActions.uploadFeatureImageSuccess(finalData));
+    yield put(commonActions.toggleModal());
+    yield put(
+      toastActions.success({
+        message:
+          'The image is being uploaded. We will notify you shortly after upload success.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.uploadFeatureImageFailure());
+    throw error;
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -877,6 +1018,22 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.UPDATE_DATA_LAYER_REQUEST,
     withLoader(withErrorHandler(updateDataLayerRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_TEMPLATE_DROPDOWN_REQUEST,
+    withLoader(withErrorHandler(updateTemplateDropdownRequest)),
+  );
+  yield takeLatest(
+    Types.GET_TEMPLATE_DROPDOWN_CHOICE_REQUEST,
+    withLoader(withErrorHandler(getTemplateDropdownChoiceRequest)),
+  );
+  yield takeLatest(
+    Types.UPLOAD_FEATURE_IMAGE_REQUEST,
+    withLoader(withErrorHandler(uploadFeatureImageRequest)),
+  );
+  yield takeEvery(
+    Types.CHECK_IMAGE_UPLOAD_STATUS_REQUEST,
+    withLoader(withErrorHandler(checkImageUploadStatusRequest)),
   );
 }
 

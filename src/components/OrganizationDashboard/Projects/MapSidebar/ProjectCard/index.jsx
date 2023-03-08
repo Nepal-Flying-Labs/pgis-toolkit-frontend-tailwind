@@ -3,7 +3,7 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import DropdownOptions from '@Components/common/DropdownOptions';
+import CustomDropdownOptions from '@Components/common/CustomDropdownOptions';
 import { useHistory, useParams } from 'react-router';
 import AvatarImage from '@Assets/images/img-sm-avatar.png';
 import { Creators as CommonCreator } from '@Actions/common';
@@ -190,7 +190,7 @@ export default function ProjectCard({
           </div>
         </div>
         <div className="naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-items-end  ">
-          <DropdownOptions
+          <CustomDropdownOptions
             options={dropdownOptions}
             data={id}
             stopPropagation

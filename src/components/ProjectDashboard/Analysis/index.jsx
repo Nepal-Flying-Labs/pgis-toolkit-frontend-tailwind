@@ -16,6 +16,7 @@ const {
   getProjectThemesRequest,
   getProjectThemeLayersRequest,
   getProjectGeojsonRequest,
+  resetAnalysisState,
 } = AnalysisCreators;
 
 function getAnalysisContent(type) {
@@ -23,6 +24,8 @@ function getAnalysisContent(type) {
     case 'optimal-route':
       return <OptimalRoute />;
     case 'buffer-analysis':
+      return <BufferAnalysis />;
+    case 'proximity-analysis':
       return <BufferAnalysis />;
 
     default:
@@ -68,6 +71,14 @@ export default function Analysis() {
       dispatch(getProjectThemeLayersRequest({ theme: id }));
     });
   }, [dispatch, themes, layers]);
+
+  // reset analysis state
+  useEffect(
+    () => () => {
+      dispatch(resetAnalysisState());
+    },
+    [dispatch],
+  );
 
   return (
     <div>

@@ -1,6 +1,7 @@
 import { createReducer } from 'reduxsauce';
 import { Types } from '@Actions/analysis';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import { boundaryLayerName } from '@src/constants/map';
 
 const initialState = {
   analysisType: null,
@@ -29,6 +30,7 @@ const initialState = {
     },
   },
   selectedInfo: null, // selected value for info content
+  hideSidebar: false,
 };
 
 const setAnalysisState = (state, action) => ({
@@ -44,7 +46,7 @@ const getProjectThemesSuccess = (state, action) => ({
 const getProjectThemeLayersSuccess = (state, action) => {
   const { data: layerData, theme } = action.payload;
   const projectAreaLayerId = !state.projectAreaLayerId
-    ? layerData.find(item => item.name === 'Boundary')?.id || null
+    ? layerData.find(item => item.name === boundaryLayerName)?.id || null
     : state.projectAreaLayerId;
   const data = layerData.filter(item => item.upload_status === 'successful');
   const notPresentLayers = data
@@ -264,6 +266,15 @@ const setSelectedInfo = (state, action) => ({
   selectedInfo: action.payload,
 });
 
+const toggleSidebar = (state, action) => ({
+  ...state,
+  hideSidebar: !!action.payload || !state.hideSidebar,
+});
+
+const resetAnalysisState = () => ({
+  ...initialState,
+});
+
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
@@ -281,6 +292,8 @@ const analysisReducer = createReducer(initialState, {
   [Types.RESET_LAYER_ATTRIBUTE_LIST_STATE]: resetLayerAttributeListState,
   [Types.HANDLE_TABLE_CHECKBOX]: handleTableCheckbox,
   [Types.SET_SELECTED_INFO]: setSelectedInfo,
+  [Types.TOGGLE_SIDEBAR]: toggleSidebar,
+  [Types.RESET_ANALYSIS_STATE]: resetAnalysisState,
 });
 
 export default analysisReducer;

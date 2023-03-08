@@ -66,7 +66,7 @@
 - [x] unique id for null, multipart
 - [x] change cursor while hovering
 
-- [x] save text to check 
+- [x] save text to check
 - [x] not zooming to feature after multipart explode
 - [x] highlight select after toolbar icon toggle
 - [x] zoom to layer not working for explode parent
@@ -74,17 +74,64 @@
 - [x] zoom to layer slow
 - [x] add feature multiple toggle while drawing
 - [x] remove title save while editing
-- [ ] explode delete => multipart still remain (raj)
+- [ ] explode delete => multipart still remain (raj) => (remove from all other list)
 - [ ] snap to self while edit
 - [ ] layer sync after data cleaning
+- [ ] copy helpbox from buffer analysis save to start
 
 ### ISSUES
 
 - [x] map page to data to map reset checkbox state in project map
 
-- [ ] sign in by user/email (raj)
+- [x] sign in by user/email (raj)
 - [ ] replace landing page photo
-- [ ] others in thematic focus area
-- [ ] country list change select list
+- [x] others in thematic focus area
+- [x] country list change select list
 - [ ] change layer name with underscore while downloading layers
-- [ ] collapse sidebar in analysis page
+- [x] collapse sidebar in analysis page
+
+- [ ] check error change error => errors
+
+### ISSUES 24 FEB
+
+- [ ] source to data source in edit layer (sudeep)
+- [ ] source => dropdown => other organizations(specify) | primary/secondary (raj/sudeep)
+- [ ] help box box shadow (sudeep)
+- [ ] input info in buffer analysis result (raj)
+- [ ] buffer analysis => select layer only, implement result window (discussion)
+- [ ] go back to step one from two.. in data cleaning
+- [ ] search in field and value in data query
+- [ ] data query result title min width
+- [ ] popup redesign
+- [ ] "documents" in project header
+
+### ISSUES WBR
+
+- [x] prevent boundary edit delete
+- [x] boundary (attribute data not available)
+- [ ] add feature refactor
+- [ ] bookmark zoom extent
+- [ ] 5.8 zoom to selected layer choice? highlight query results yellow?
+- [ ] layer from query save not working
+- [ ] zoom to layer does not work after saving query
+- [ ] dropdown option move below option => direction prop
+- [ ] 5.14 After deleting the query layer, the zoom to layer function still does not work.
+- [ ] movable popup?
+- [ ] upload your datasets additional menu => upen dai
+- [ ] cancel layer upload?
+- [ ] start analysis not working optimal route
+- [ ] disable auto/manual fix btn while fixing errors
+- [ ] issue on draw tool (drag and add feature)
+- [ ] undo issue, redo?
+- [ ] feat: give point name while drawing
+- [ ] buffer origin point now visible on map
+- [ ] measure tool in analysis modules
+- [ ] export to excel in detail/summary
+- [ ] x/y label in chart
+- [ ] Clicking on "Visualize" does not do anything?
+
+### FIXED ISSUE NUMBERS
+
+- [x] 2.7
+- [ ] polygon area/id in boundary drawn attribute
+- [ ] popup right scroll

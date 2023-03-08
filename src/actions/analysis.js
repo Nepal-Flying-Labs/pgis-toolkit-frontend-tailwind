@@ -40,6 +40,9 @@ export const { Types, Creators } = createActions(
     handleTableCheckbox: ['payload'],
 
     setSelectedInfo: ['payload'],
+    toggleSidebar: ['payload'],
+
+    resetAnalysisState: null,
   },
   { prefix: 'analysis/' },
 );

@@ -2,16 +2,22 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import Table, { TableHeader } from '@Components/common/Table/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import SortingContainer from '@Components/common/SortingContainer/index';
 import Button from '@Components/common/Button/index';
 import { Creators, Types } from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
+import {
+  Creators as ProjectMapCreators,
+  Types as ProjectMapTypes,
+} from '@Actions/projectMap';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import TableSkeleton from '@Components/common/TableSkeleton/index';
 import CustomCheckbox from '@Components/common/CustomCheckbox/index';
+import Toggle from '@Components/common/Toggle/index';
 
 const { toggleModal, togglePromptDialog } = CommonCreators;
 const {
@@ -21,8 +27,10 @@ const {
   setIndividualAttribute,
   clearAttributeListData,
 } = Creators;
+const { getLayerAttributeListRequest, setProjectMapState } = ProjectMapCreators;
 
 const ManageAttributes = () => {
+  const { tabname } = useParams();
   const [checkedData, setCheckedData] = useState([]);
   const dispatch = useDispatch();
   const showModal = useSelector(state => state.common.showModal);
@@ -30,22 +38,57 @@ const ManageAttributes = () => {
   const selectedData = useSelector(
     state => state.projectDashboard.data.manageData.selectedData,
   );
+  const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
   const attributeList = useSelector(
     state => state.projectDashboard.data.manageData.attributeList,
   );
+  const individualAttributeData = useSelector(
+    state => state.projectMap.attributeList,
+  );
+
+  // reset state on modal unmount
+  useEffect(() => {
+    if (
+      showModal &&
+      (modalContent === 'add-attributes' ||
+        modalContent === 'manage-attributes')
+    )
+      return;
+
+    dispatch(setProjectMapState({ selectedLayer: null, attributeList: null }));
+  }, [dispatch, showModal, modalContent]);
 
   useEffect(() => {
-    setCheckedData(attributeList);
-  }, [attributeList]);
+    if (tabname === 'manage-data') {
+      setCheckedData(attributeList);
+    } else {
+      setCheckedData(individualAttributeData);
+    }
+  }, [attributeList, individualAttributeData, tabname]);
 
   useEffect(() => {
-    if (attributeList.length < 1)
-      dispatch(getLayerAttributeRequest({ layer_template: selectedData?.id }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, selectedData]);
+    if (!selectedData && !selectedLayer) return;
+    if (tabname === 'manage-data') {
+      if (!attributeList)
+        dispatch(getLayerAttributeRequest({ layer_template: selectedData.id }));
+    }
+    if (tabname === 'map')
+      if (!individualAttributeData)
+        dispatch(getLayerAttributeListRequest({ layer: selectedLayer.id }));
+  }, [
+    attributeList,
+    dispatch,
+    individualAttributeData,
+    selectedData,
+    selectedLayer,
+    tabname,
+  ]);
 
   const loading = useSelector(state =>
-    checkIfLoading(state, [Types.GET_LAYER_ATTRIBUTE_REQUEST]),
+    checkIfLoading(state, [
+      Types.GET_LAYER_ATTRIBUTE_REQUEST,
+      ProjectMapTypes.GET_LAYER_ATTRIBUTE_LIST_REQUEST,
+    ]),
   );
 
   const submitLoading = useSelector(state =>
@@ -60,6 +103,14 @@ const ManageAttributes = () => {
     setCheckedData(newData);
   };
 
+  const handleToggleMandatory = data => {
+    const { mandatory } = data;
+    const newData = checkedData.map(list =>
+      list.id === data.id ? { ...list, mandatory: !mandatory } : { ...list },
+    );
+    setCheckedData(newData);
+  };
+
   const handleSubmit = () => {
     const initialValue = {};
     const data = checkedData.reduce((obj, item) => {
@@ -68,6 +119,7 @@ const ManageAttributes = () => {
         [item.id]: item.selected,
       };
     }, initialValue);
+
     dispatch(postAttributeSelectionRequest(data));
   };
 
@@ -85,7 +137,8 @@ const ManageAttributes = () => {
           Attribute
         </Button>
       </div>
-      <div className=" naxatw-overflow-x-hidden naxatw-relative naxatw-mt-[0.625rem]">
+
+      <div className=" naxatw-overflow-x-hidden naxatw-relative naxatw-mt-[0.625rem] naxatw-max-h-[calc(100vh-30rem)] scrollbar">
         {!loading ? (
           <Table
             data={checkedData || []}
@@ -93,17 +146,23 @@ const ManageAttributes = () => {
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
             headerWidths={['50px', '200px', '150px', '150px', '50px']}
             // eslint-disable-next-line
-            onRowClick={row => {
-              handleCheckedData(row);
-            }}
+            onRowClick={
+              tabname === 'manage-data'
+                ? row => {
+                    handleCheckedData(row);
+                  }
+                : () => {}
+            }
           >
-            <TableHeader
-              dataField=""
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-              rowcolSpan="rowSpan_2"
-              dataHeader=""
-              dataFormat={row => <CustomCheckbox status={row.selected} />}
-            />
+            {tabname === 'manage-data' && (
+              <TableHeader
+                dataField=""
+                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                rowcolSpan="rowSpan_2"
+                dataHeader=""
+                dataFormat={row => <CustomCheckbox status={row.selected} />}
+              />
+            )}
             <TableHeader
               dataField="Attribute"
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 "
@@ -138,15 +197,23 @@ const ManageAttributes = () => {
                 <span className="naxatw-text-base">{row.data_type}</span>
               )}
             />
-            {/* <TableHeader
-            dataField="Source"
-            headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            rowcolSpan="rowSpan_2"
-            dataHeader={<span>Source</span>}
-            dataFormat={row => (
-              <span className="naxatw-text-base">{row.source}</span>
-            )}
-          /> */}
+
+            {/*           
+              <TableHeader
+                dataField="Mandatory"
+                headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+                rowcolSpan="rowSpan_2"
+                dataHeader={<span>Mandatory</span>}
+                dataFormat={row => (
+                  <Toggle
+                    checked={row.mandatory}
+                    onChange={() => {
+                      handleToggleMandatory(row);
+                    }}
+                  />
+                )}
+              /> */}
+
             <TableHeader
               dataField="."
               headerClassName="naxatw-py-[0.8125rem] naxatw-px-3 naxatw-text-right"
@@ -163,6 +230,7 @@ const ManageAttributes = () => {
                       dispatch(toggleModal('add-attributes'));
                     }}
                   />
+
                   <MaterialIcon
                     name="delete_outline"
                     className="naxatw-text-icon-md naxatw-text-[#FF0F0F]"

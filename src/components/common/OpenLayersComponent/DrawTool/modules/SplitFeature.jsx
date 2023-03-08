@@ -21,6 +21,7 @@ export default function SplitFeature({
   // onSuccess,
   vectorLayer,
   // geojson,
+  onFeatureSplit,
 }) {
   const select = useMemo(
     () =>
@@ -63,8 +64,9 @@ export default function SplitFeature({
         feat.setId(feat.ol_uid);
       });
       vectorSource.addFeatures(features);
+      onFeatureSplit(splitx);
     },
-    [vectorLayer],
+    [vectorLayer, onFeatureSplit],
   );
 
   useEffect(() => {

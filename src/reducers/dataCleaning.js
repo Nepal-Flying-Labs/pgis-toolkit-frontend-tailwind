@@ -12,6 +12,7 @@ import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/style
 //   manualFix: {
 //     sidebarContent: 'error-list', // 'error-list', 'add-feature', 'edit-feature'
 //     drawnFeatureWkt: null,
+//     splittedFeatureWkts: null, // []
 //     layerAttributes: null,
 //     layerAttributesFields: null,
 //     individualAttributeData: [],
@@ -38,6 +39,7 @@ const initialState = {
   manualFix: {
     sidebarContent: 'error-list',
     drawnFeatureWkt: null,
+    splittedFeatureWkts: [],
     layerAttributes: null,
     layerAttributesFields: [
       {

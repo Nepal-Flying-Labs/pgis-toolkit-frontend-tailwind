@@ -224,6 +224,16 @@ export default function DrawTool({
     [onChange],
   );
 
+  // handle feature split
+  const handleFeatureSplit = useCallback(feature => {
+    const featureGeojson = feature;
+    // const featureGeojson = getFeatureGeojson(feature);
+    setModifiedStates(prev => [...prev, featureGeojson]);
+    setModifiedFeature(feature);
+    setDrawType(null);
+    onChange(featureGeojson);
+  }, []);
+
   // handle add-feature click
   useEffect(() => {
     if (!enable || vectorLayer || drawType !== 'add-feature') return;
@@ -354,6 +364,7 @@ export default function DrawTool({
             enable={drawType === 'split-feature'}
             onClick={() => setDrawType('split-feature')}
             geojson={geojson}
+            onFeatureSplit={handleFeatureSplit}
             {...props}
           />
         </Tooltip>

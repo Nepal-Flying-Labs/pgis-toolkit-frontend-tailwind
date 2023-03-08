@@ -227,7 +227,7 @@ export default function BufferPopup() {
               />
             </div>
 
-            <p className="naxatw-btn-text naxatw-mt-7 naxatw-mb-2">
+            <div className="naxatw-btn-text naxatw-mt-7 naxatw-mb-2">
               {popupActiveTab === 'Summary' ? (
                 <div className="naxatw-flex naxatw-flex-col naxatw-px-2 naxatw-gap-3">
                   {/* data input */}
@@ -401,7 +401,7 @@ export default function BufferPopup() {
                   </div>
                 </>
               )}
-            </p>
+            </div>
 
             <Modal
               show={showChart}
@@ -423,8 +423,13 @@ export default function BufferPopup() {
                   }}
                 >
                   {/* <CartesianGrid strokeDasharray="3 3" /> */}
-                  <XAxis dataKey="name" interval={0} tick={CustomXAxisTick} />
-                  <YAxis allowDecimals={false} />
+                  <XAxis
+                    label="Hello"
+                    dataKey="name"
+                    interval={0}
+                    tick={CustomXAxisTick}
+                  />
+                  <YAxis label="hello world" allowDecimals={false} />
                   <Tooltip />
                   <Bar dataKey="value" fill="#8884d8" radius={[10, 10, 0, 0]} />
                 </BarChart>

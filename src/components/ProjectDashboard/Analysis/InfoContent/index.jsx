@@ -35,6 +35,7 @@ export default function InfoContent() {
       className={`naxatw-absolute naxatw-top-0 naxatw-right-0  naxatw-z-10
         naxatw-bg-white naxatw-text-grey-800 naxatw-border naxatw-rounded-[20px] naxatw-border-grey-300 
          ${collapsed ? '' : 'naxatw-w-[22.813rem]'}`}
+      style={{ boxShadow: '-3px 0px 9px -3px rgba(115,104,104,0.75)' }}
     >
       <div
         onClick={() => setCollapsed(!collapsed)}

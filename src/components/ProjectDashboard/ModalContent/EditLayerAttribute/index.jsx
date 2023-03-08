@@ -85,21 +85,24 @@ const EditLayerAttribute = () => {
             attribute =>
               attribute !== imageTypeAttribute?.[0]?.name &&
               (dropdownFields.includes(attribute) ? (
-                <SearchSelect
-                  key={attribute}
-                  className="naxatw-bg-white naxatw-h-[48px] naxatw-px-2"
-                  options={dropdownOptions[attribute]}
-                  onChange={data =>
-                    handleChange({
-                      target: { name: `${attribute}`, value: data.name },
-                    })
-                  }
-                  selected={
-                    dropdownOptions[attribute].filter(
-                      opt => opt.name === values[`${attribute}`],
-                    )?.[0]?.name
-                  }
-                />
+                <div className="naxatw-space-y-2">
+                  <label className="naxatw-label">{attribute}</label>
+                  <SearchSelect
+                    key={attribute}
+                    className="naxatw-bg-white naxatw-h-[48px] naxatw-px-2"
+                    options={dropdownOptions[attribute]}
+                    onChange={data =>
+                      handleChange({
+                        target: { name: `${attribute}`, value: data.name },
+                      })
+                    }
+                    selected={
+                      dropdownOptions[attribute].filter(
+                        opt => opt.name === values[`${attribute}`],
+                      )?.[0]?.name
+                    }
+                  />
+                </div>
               ) : (
                 <Input
                   key={attribute.id}

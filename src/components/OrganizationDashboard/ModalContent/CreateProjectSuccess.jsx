@@ -36,7 +36,7 @@ const CreateProjectSuccess = () => {
           //   loaderClassName="naxatw-fill-secondary-400"
           onClick={() => {
             dispatch(toggleModal());
-            history.push(`/organizations/${organizationId}/projects`);
+            // history.push(`/organizations/${organizationId}/projects`);
           }}
         >
           Done

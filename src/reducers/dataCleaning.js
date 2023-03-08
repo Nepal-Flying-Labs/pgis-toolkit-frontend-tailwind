@@ -1495,6 +1495,45 @@ const getFeatureGeojsonSuccess = (state, action) =>
     }
   });
 
+const splitFeatureSuccess = (state, action) =>
+  produce(state, draft => {
+    const splittedData = action.payload;
+    const refreshLayerId = splittedData.layer;
+    const { id: featureId, type: errorType } = draft.manualFix.selectedError;
+    const splittedFeature = draft.errorFeaturesData[errorType].find(
+      item => item.id === featureId,
+    );
+    splittedFeature.children = splittedData.map(item => ({
+      parentId: featureId,
+      id: item.id,
+      attributes: item.attributes,
+      geojson: parse(item.geometry),
+    }));
+    splittedFeature.fixed = true;
+    const {
+      sidebarContent,
+      splittedFeatureWkts,
+      layerAttributes,
+      individualAttributeData,
+      selectedError,
+      selectedFeaturesForSnap,
+      geojsonFeatures,
+      startEditing,
+    } = initialState.manualFix;
+    draft.manualFix = {
+      ...draft.manualFix,
+      refreshLayerId,
+      sidebarContent,
+      splittedFeatureWkts,
+      layerAttributes,
+      individualAttributeData,
+      selectedError,
+      selectedFeaturesForSnap,
+      geojsonFeatures,
+      startEditing,
+    };
+  });
+
 const dataCleaningReducer = createReducer(initialState, {
   [Types.SET_DATA_CLEANING_STATE]: setDataCleaningState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -1520,6 +1559,7 @@ const dataCleaningReducer = createReducer(initialState, {
     getSelectedFeatureAttributesSuccess,
   [Types.RESET_MANUAL_FIX_STATE]: resetManualFixState,
   [Types.GET_FEATURE_GEOJSON_SUCCESS]: getFeatureGeojsonSuccess,
+  [Types.SPLIT_FEATURE_SUCCESS]: splitFeatureSuccess,
 });
 
 export default dataCleaningReducer;

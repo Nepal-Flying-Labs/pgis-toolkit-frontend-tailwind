@@ -13,6 +13,7 @@ const {
   setManualFixState,
   updateFeatureCollectionRequest,
   getSelectedFeatureAttributesRequest,
+  splitFeatureRequest,
 } = DataCleaningCreators;
 
 export default function EditFeatureSection() {
@@ -97,7 +98,11 @@ export default function EditFeatureSection() {
         payloadData.geometry = drawnFeatureWkt;
       }
       payloadData.attributes = data;
-      dispatch(updateFeatureCollectionRequest(selectedError.id, payloadData));
+      if (Array.isArray(drawnFeatureWkt)) {
+        dispatch(splitFeatureRequest(selectedError.id, payloadData));
+      } else {
+        dispatch(updateFeatureCollectionRequest(selectedError.id, payloadData));
+      }
     },
   });
 

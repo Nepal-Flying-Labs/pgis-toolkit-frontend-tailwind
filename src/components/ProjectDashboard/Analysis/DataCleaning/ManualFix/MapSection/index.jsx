@@ -280,7 +280,11 @@ export default function MapSection() {
           onChange={geojson => {
             if (geojson?.features?.length > 1) {
               const wktStrings = geojson.features.map(item => stringify(item));
-              console.log(wktStrings, 'wktStringsx');
+              dispatch(
+                setManualFixState({
+                  drawnFeatureWkt: wktStrings,
+                }),
+              );
             } else {
               const wktString = stringify(geojson);
               dispatch(

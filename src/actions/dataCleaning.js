@@ -31,6 +31,10 @@ export const { Types, Creators } = createActions(
     updateFeatureCollectionSuccess: ['payload'],
     updateFeatureCollectionFailure: null,
 
+    splitFeatureRequest: ['id', 'payload'],
+    splitFeatureSuccess: ['payload'],
+    splitFeatureFailure: null,
+
     deleteFeatureRequest: ['id'],
     deleteFeatureSuccess: ['payload'],
     deleteFeatureFailure: null,

@@ -48,8 +48,8 @@
 ### ISSUES 24 FEB
 
 - [ ] source => dropdown => other organizations(specify) | primary/secondary (upen dai)
-- [ ] help box box shadow (sudeep)
-- [ ] input info in buffer analysis result (sudeep)
+- [x] help box box shadow (sudeep)
+- [x] input info in buffer analysis result (sudeep)
 - [ ] data query result title min width (sudeep)
 
 - [ ] buffer analysis => select layer only, implement result window (hold)
@@ -75,6 +75,8 @@
 - [ ] buffer origin point now visible on map (sudeep/raj)
 
 - [ ] measure tool in analysis modules (sudeep)
-- [ ] export to excel in detail/summary (sudeep)
+- [x] export to excel in detail/summary (sudeep)
 - [ ] x/y label in chart (sudeep)
 <!-- - [ ] Clicking on "Visualize" does not do anything? -->
+
+- [ ] loading while uploading bulk image

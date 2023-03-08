@@ -23,6 +23,10 @@ import {
   Text,
 } from 'recharts';
 import meterToKM from '@Utils/meterToKM';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
+import { isEmpty } from '@Utils/commonUtils';
+import { saveAs } from 'file-saver';
+import XLSX from 'sheetjs-style';
 
 const calTotalCount = (data, dataKey) => {
   const values = data.map(d => +d?.[dataKey]);
@@ -157,6 +161,23 @@ export default function BufferPopup() {
     return null;
   };
 
+  const handleExcelExport = async fileName => {
+    if (!isEmpty(detailsListData)) {
+      const { data } = detailsListData;
+      // const excelData = JSON.stringify(data);
+
+      const fileType =
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+      const fileExtension = '.xlsx';
+
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
+      const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      const newData = new Blob([excelBuffer], { type: fileType });
+      saveAs(newData, fileName + fileExtension);
+    }
+  };
+
   return (
     <div
       className="naxatw-absolute naxatw-top-4 naxatw-right-4  naxatw-z-10
@@ -209,34 +230,6 @@ export default function BufferPopup() {
             <p className="naxatw-btn-text naxatw-mt-7 naxatw-mb-2">
               {popupActiveTab === 'Summary' ? (
                 <div className="naxatw-flex naxatw-flex-col naxatw-px-2 naxatw-gap-3">
-                  {/* <ul className="naxatw-flex naxatw-flex-col naxatw-gap-2">
-                    {graphData?.map(itm => (
-                      <li className="naxatw-flex naxatw-justify-between">
-                        <span className="naxatw-text-body-lg">{itm?.key}</span>
-                        <span className="naxatw-text-body-lg">
-                          {itm?.value}
-                        </span>
-                      </li>
-                    ))}
-                  </ul> */}
-                  {/* <div className="naxatw-flex naxatw-gap-0 naxatw-w-full naxatw-h-5">
-                    {graphData?.map((itm, index) => {
-                      const pWidth = parseInt(
-                        calPercentage(itm?.[dataKey], data, dataKey),
-                        10,
-                      );
-                      return (
-                        <span
-                          className="naxatw-h-full naxatw-border-0 first:naxatw-rounded-tl-lg first:naxatw-rounded-bl-lg last:naxatw-rounded-tr-lg last:naxatw-rounded-br-lg "
-                          style={{
-                            width: `${pWidth}%`,
-                            backgroundColor: `${colorCode[index]}`,
-                          }}
-                        />
-                      );
-                    })}
-                  </div> */}
-
                   {/* data input */}
                   <div className="naxatw-flex naxatw-flex-col  naxatw-space-y-2">
                     <h6>Data Input</h6>
@@ -382,7 +375,23 @@ export default function BufferPopup() {
                     ))}
                   </div>
 
-                  <div className="naxatw-flex naxatw-justify-end naxatw-mt-4">
+                  <div className="naxatw-flex naxatw-justify-end naxatw-gap-x-3 naxatw-items-center naxatw-mt-4">
+                    {!isEmpty(detailsListData) && (
+                      <div title="Export">
+                        <MaterialIcon
+                          name="ios_share"
+                          className="naxatw-cursor-pointer naxatw-text-icon-md naxatw-pb-2"
+                          onIconClick={() =>
+                            handleExcelExport(
+                              poiLayersDataOptions.filter(
+                                data => data.id === selectedLayer,
+                              )[0].name,
+                            )
+                          }
+                        />
+                      </div>
+                    )}
+
                     <span
                       className="naxatw-text-gray-800  naxatw-px-1 naxatw-cursor-pointer naxatw-border-white naxatw-border-b-[1px] hover:naxatw-border-gray-800"
                       onClick={() => setShowChart(true)}

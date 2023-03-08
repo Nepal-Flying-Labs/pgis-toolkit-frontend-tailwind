@@ -133,6 +133,18 @@ module.exports = (env = {}) => {
               and: [/\.(ts|tsx|js|jsx|md|mdx)$/],
             },
           },
+          {
+            test: /\.pdf$/,
+            use: [
+              {
+                loader: 'file-loader',
+              },
+            ],
+            type: 'javascript/auto',
+            issuer: {
+              and: [/\.(ts|tsx|js|jsx|md|mdx)$/],
+            },
+          },
         ],
       },
       plugins: [

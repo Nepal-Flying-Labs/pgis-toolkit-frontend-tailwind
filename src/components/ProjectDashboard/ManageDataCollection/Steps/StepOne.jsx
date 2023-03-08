@@ -5,6 +5,8 @@ import React from 'react';
 import Button from '@Components/common/Button/index';
 import pcIcon from '@Assets/images/perspective_matte.png';
 import fileIcon from '@Assets/images/group.png';
+import systemRequirementDocument from '@Assets/files/System-Requirement-Document.pdf';
+import { saveAs } from 'file-saver';
 
 const StepOne = ({ option, setOption }) => {
   // const [option, setOption] = useState(null);
@@ -30,12 +32,31 @@ const StepOne = ({ option, setOption }) => {
           <Button
             iconLeft="description"
             className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm naxatw-min-w-fit"
+            onClick={() => {
+              // eslint-disable-next-line new-cap
+              // const doc = new jsPDF();
+              // window.open(doc.output(systemRequirementDocument));
+            }}
           >
-            Read Document
+            <a
+              href={systemRequirementDocument}
+              target="_blank"
+              rel="noreferrer"
+              className="naxatw-text-[0.938rem] naxatw-font-bold"
+            >
+              Read Document
+            </a>
+            {/* Read Document */}
           </Button>
           <Button
             iconLeft="download"
             className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm "
+            onClick={() => {
+              saveAs(
+                systemRequirementDocument,
+                'SystemRequirementDocument.pdf',
+              );
+            }}
           >
             Download
           </Button>

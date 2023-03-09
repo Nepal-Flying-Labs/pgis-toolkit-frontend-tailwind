@@ -74,9 +74,9 @@
 - [ ] feat: give point name while drawing (next phase)
 - [ ] buffer origin point now visible on map (sudeep/raj)
 
-- [ ] measure tool in analysis modules (sudeep)
+- [x] measure tool in analysis modules (sudeep)
 - [x] export to excel in detail/summary (sudeep)
-- [ ] x/y label in chart (sudeep)
+- [x] x/y label in chart (sudeep)
 <!-- - [ ] Clicking on "Visualize" does not do anything? -->
 
 - [ ] loading while uploading bulk image

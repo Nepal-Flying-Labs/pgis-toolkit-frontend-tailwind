@@ -276,7 +276,8 @@ export default function ViewLayerAttribute() {
                     }
                     dataFormat={row => (
                       <p
-                        className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden ${
+                        title={row[key]}
+                        className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-cursor-default ${
                           ordering === key
                             ? 'naxatw-text-body-btn'
                             : 'naxatw-text-body-lg'

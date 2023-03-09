@@ -2,13 +2,13 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from 'reduxsauce';
 import produce from 'immer';
+import { parse } from 'wkt';
+import * as chroma from 'chroma-js';
 import {
   bufferPolygonStyles,
   bufferPointStyles,
   bufferColors,
 } from '@src/constants/analysis';
-import { parse } from 'wkt';
-import * as chroma from 'chroma-js';
 import { Types } from '@Actions/bufferAnalysis';
 
 const initialState = {

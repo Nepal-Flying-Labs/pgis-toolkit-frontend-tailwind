@@ -37,7 +37,18 @@ export default function AdvanceStyling() {
     dashline,
     circleRadius,
     geometryType,
+    icon,
   } = layerStyle;
+
+  const hasIcon = !!icon.id;
+
+  if (hasIcon) {
+    return (
+      <p className="naxatw-px-2 naxatw-text-delete_btn">
+        Remove Icon to enable advance styling
+      </p>
+    );
+  }
 
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-4">

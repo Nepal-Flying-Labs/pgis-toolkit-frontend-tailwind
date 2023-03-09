@@ -24,6 +24,7 @@ import {
   Label,
   Text,
 } from 'recharts';
+import { useCurrentPng } from 'recharts-to-png';
 import meterToKM from '@Utils/meterToKM';
 import { isEmpty } from '@Utils/commonUtils';
 import { saveAs } from 'file-saver';
@@ -48,6 +49,7 @@ export default function BufferPopup() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showChart, setShowChart] = useState(false);
   const [chartData, setChartData] = useState([]);
+  const [getPng, { ref, isLoading }] = useCurrentPng();
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
@@ -189,6 +191,13 @@ export default function BufferPopup() {
       saveAs(newData, fileName + fileExtension);
     }
   };
+
+  const handleChartExport = React.useCallback(async () => {
+    const png = await getPng();
+    if (png) {
+      saveAs(png, `${selectedPOIName}.png`);
+    }
+  }, [getPng, selectedPOIName]);
 
   return (
     <div
@@ -416,8 +425,18 @@ export default function BufferPopup() {
               zIndex="111111"
               className="naxatw-w-[62rem]"
             >
+              <div className="naxatw-flex naxatw-justify-end">
+                <Button
+                  className="naxatw-btn-secondary naxatw-btn-noborder"
+                  onClick={handleChartExport}
+                >
+                  Export Chart
+                </Button>
+              </div>
+
               <div className="naxatw-w-full naxatw-h-full naxatw-flex naxatw-justify-center">
                 <BarChart
+                  ref={ref}
                   width={800}
                   height={560}
                   data={chartData}

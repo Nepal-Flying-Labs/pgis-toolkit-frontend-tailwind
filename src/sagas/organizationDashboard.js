@@ -121,7 +121,7 @@ export function* patchProjectRequest({ id, payload }) {
         );
         yield put(commonActions.toggleModal('create-project-success'));
       }
-      if (status !== 'draft') {
+      if (status !== 'draft' && tabName === 'Edit a Project') {
         yield put(push(`/organizations/${organization}/projects`));
       }
     } else {

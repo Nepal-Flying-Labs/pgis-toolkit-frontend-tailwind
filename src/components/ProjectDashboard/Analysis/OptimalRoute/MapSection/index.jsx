@@ -14,6 +14,7 @@ import {
   MapContainer as MapComponent,
 } from '@Components/common/OpenLayersComponent';
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher';
+import MeasureControl from '@Components/common/OpenLayersComponent/Control/MeasureControl';
 import CustomLayerSwitcher from '@Components/common/OpenLayersComponent/CustomLayerSwitcher';
 import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
@@ -217,6 +218,24 @@ export default function MapSection() {
         <CustomLayerSwitcher />
 
         <HelpBox />
+
+        <div
+          className="naxatw-absolute naxatw-top-16 naxatw-left-4 naxatw-z-10 
+                    naxatw-cursor-pointer naxatw-h-10 naxatw-bg-white naxatw-rounded-lg 
+                   naxatw-text-grey-800  naxatw-border naxatw-border-grey-300 hover:naxatw-bg-grey-100"
+        >
+          <MeasureControl
+            map={map}
+            buttonText={
+              <i className="material-icons naxatw-block naxatw-p-2 naxatw-rounded-lg !naxatw-pt-1">
+                straighten
+              </i>
+            }
+            measureBoth
+            direction="right"
+            // onMeasureToggle={onMeasureToggle}
+          />
+        </div>
 
         {mapState.map((item, index) =>
           item.layer_type === 'Vector' ? (

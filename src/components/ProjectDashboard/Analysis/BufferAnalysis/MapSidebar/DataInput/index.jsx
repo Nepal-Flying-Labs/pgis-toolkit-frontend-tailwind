@@ -124,7 +124,7 @@ export default function DataInput() {
     dispatch(copyFeaturesRequest(poiLayersIds));
     dispatch(
       setBufferAnalysisState({
-        inputQuery: { ...payloadData, selectedPOIName },
+        inputQuery: { ...payloadData, selectedPOIName, analysisType },
       }),
     );
     dispatch(applyBufferAnalysisRequest(payloadData));

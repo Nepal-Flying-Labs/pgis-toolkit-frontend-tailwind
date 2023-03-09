@@ -19,7 +19,7 @@ export default {
               <p class="naxatw-text-justify">First, you select layers from the dropdown. The attribute table of the layer selected appears in the pop-up with checkboxes. You may select a single or multiple features from the table for input.</p>`,
     bufferRadius: `
                   <h5 class="naxatw-font-semibold">Buffer Radius</h5>
-                  <p class="">Buffer radius is the distance around the input features that will be buffered. The unit of the distance needs to be defined in metres.</p>
+                  <p class="">Buffer radius is the distance around the input features that will be buffered.The unit of the distance could be chosen by the user from the dropdown options (Meter, Kilometer).</p>
                   `,
     dissolveOutput: `
                   <h5 class="naxatw-font-semibold">Dissolve Output</h5>
@@ -57,7 +57,7 @@ export default {
               <p class="naxatw-text-justify">First, you select layers from the dropdown. The attribute table of the layer selected appears in the pop-up with checkboxes. You may select a single or multiple features from the table for input.</p>`,
     bufferRadius: `
                   <h5 class="naxatw-font-semibold">Proximity Radius</h5>
-                  <p class="">Proximity radius is the distance around the input features that will be buffered. The unit of the distance needs to be defined in metres.</p>
+                  <p class="">Proximity radius is the distance around the input features that will be buffered.The unit of the distance could be chosen by the user from the dropdown options (Meter, Kilometer).</p>
                   `,
     dissolveOutput: `
                   <h5 class="naxatw-font-semibold">Dissolve Output</h5>

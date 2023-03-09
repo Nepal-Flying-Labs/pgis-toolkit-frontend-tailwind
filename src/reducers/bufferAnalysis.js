@@ -95,13 +95,16 @@ const checkProcessingStatusSuccess = (state, action) =>
         }
       });
     });
+    const { analysisType } = draft.inputQuery;
     const analysisResult = {
       ...data,
       checked: true,
       poiChartData: totalPoiCountChartData,
       buffer_areas: data.buffer_areas.map((areas, index) => ({
         ...areas,
-        name: `Buffer Point ${index + 1}`,
+        name: `${analysisType === 'buffer-analysis' ? 'Buffer ' : ''}Point ${
+          index + 1
+        }`,
         checked: true,
         style: { ...bufferPolygonStyles },
         originStyle: { ...bufferPointStyles, fillColor: chroma.random().hex() },

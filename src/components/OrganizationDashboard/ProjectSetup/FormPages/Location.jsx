@@ -21,8 +21,8 @@ import removeObjectKeys from '@Utils/removeObjectKeys';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import hasKey from '@Utils/hasKey';
 import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetup/UploadPolygonBoundary/index';
+import SearchSelect from '@Components/common/SearchSelect';
 import MapSection from '../MapSection/index';
-import SearchSelect from '../SearchSelect';
 
 const { togglePromptDialog } = CommonCreators;
 const {

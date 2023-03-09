@@ -11,6 +11,7 @@ import useForm from '@Hooks/useForm';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import CustomInput from '@Components/common/CustomInput/index';
+import { isEmpty } from '@Utils/commonUtils';
 
 const { postProjectInviteRequest } = Creators;
 
@@ -28,32 +29,28 @@ const CreateProject = () => {
   const dispatch = useDispatch();
   const [emailList, setEmailList] = useState([]);
   const [emailError, setEmailError] = useState(false);
-  const { meta, values, inputProps, handleChange, handleSubmit } = useForm({
+  const [errors, setErrors] = useState([]);
+  const { values, inputProps, handleChange, handleSubmit } = useForm({
     initialValues: initialState,
-    required: ['project_name'],
     onSubmit: data => {
-      if (Object.keys(emailList).length > 0) {
+      const error = [];
+      if (!values.project_name) {
+        error.push('project_name');
+      }
+      if (isEmpty(emailList)) {
+        error.push('emailList');
+      }
+      setErrors(error);
+      if (isEmpty(error)) {
         const newData = {
           ...data,
           email: emailList.map(e => e.value),
           organization: organizationId,
         };
         dispatch(postProjectInviteRequest(newData));
-      } else {
-        setEmailError(true);
       }
     },
   });
-
-  const handleFocus = () => {
-    const addElement = document.getElementById('add-icon');
-    addElement.className =
-      'naxatw-absolute naxatw-right-4 naxatw-top-11 naxatw-animate-bounce';
-  };
-  const handleBlur = () => {
-    const addElement = document.getElementById('add-icon');
-    addElement.className = 'naxatw-absolute naxatw-right-4 naxatw-top-11';
-  };
 
   return (
     <div className="naxatw-space-y-8">
@@ -75,7 +72,7 @@ const CreateProject = () => {
           onChange={handleChange}
           {...inputProps}
         />
-        {meta.project_name.error && meta.project_name.touched && (
+        {errors.includes('project_name') && (
           <FormErrorMessage message="Please Provide Project Name" />
         )}
       </div>
@@ -83,8 +80,12 @@ const CreateProject = () => {
       <CustomInput
         emailList={emailList}
         setEmailList={setEmailList}
-        emailError={emailError}
-        setEmailError={setEmailError}
+        emailError={errors.includes('emailList')}
+        setEmailError={data =>
+          !data
+            ? setErrors(errors.filter(item => item !== 'emailList'))
+            : () => {}
+        }
       />
 
       <div className="naxatw-flex naxatw-justify-center">

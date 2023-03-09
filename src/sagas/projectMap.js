@@ -625,7 +625,25 @@ export function* postCreateImageToUrlRequest({ payload }) {
 export function* getAttributeFieldRequest({ params }) {
   try {
     const response = yield call(getLayerAttributeFields, params);
-    yield put(projectMapActions.getAttributeFieldSuccess(response.data));
+    const dropdownFields = response.data.filter(item => item.dropdown_field);
+    let options = [];
+    if (!isEmpty(dropdownFields)) {
+      const optionsResponse = yield all(
+        dropdownFields.map(field =>
+          call(getFieldsDropdownOption, { attribute: field.id }),
+        ),
+      );
+      options = dropdownFields.map((item, index) => {
+        const dropdown = optionsResponse[index].data;
+        return { ...item, options: dropdown };
+      });
+    }
+    yield put(
+      projectMapActions.getAttributeFieldSuccess({
+        data: response.data,
+        options,
+      }),
+    );
   } catch (error) {
     yield put(projectMapActions.getAttributeFieldFailure());
     throw error;

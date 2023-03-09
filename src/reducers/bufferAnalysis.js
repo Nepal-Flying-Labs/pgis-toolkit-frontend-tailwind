@@ -31,6 +31,7 @@ const initialState = {
     selectedAnalysis: null,
     individualAnalysisData: null,
   },
+  inputQuery: null,
   analysisTaskId: null,
   poiLayers: [],
   popupActiveTab: 'Summary',
@@ -105,9 +106,11 @@ const checkProcessingStatusSuccess = (state, action) =>
         style: { ...bufferPolygonStyles },
         originStyle: { ...bufferPointStyles, fillColor: chroma.random().hex() },
       })),
+      inputQuery: draft.inputQuery,
     };
 
     draft.dataInput = initialState.dataInput;
+    draft.inputQuery = initialState.inputQuery;
     draft.results.analysisResults = [
       ...draft.results.analysisResults,
       analysisResult,

@@ -147,7 +147,11 @@ export default function ViewLayerAttribute() {
   useEffect(() => {
     if (showModal && modalContent === 'view-layer-attribute') return;
     dispatch(
-      setProjectMapState({ selectedLayer: null, selectedLayerAttribute: null }),
+      setProjectMapState({
+        selectedLayer: null,
+        selectedLayerAttribute: null,
+        fieldsDropdownOptions: null,
+      }),
     );
     dispatch(resetLayerAttributeListState());
   }, [dispatch, showModal, modalContent]);

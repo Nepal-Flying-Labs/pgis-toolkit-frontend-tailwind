@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import toastActions from '@Actions/toast';
 import MaterialIcon from '../MaterialIcon/index';
 import FormErrorMessage from '../FormErrorMessage/index';
+
+function validateEmail(email) {
+  const pattern = /[a-zA-Z0-9]+[.]?([a-zA-Z0-9]+)?[@][a-z]{3,9}[.][a-z]{2,5}/g;
+  const result = pattern.test(email);
+  return result;
+}
 
 const CustomInput = ({
   setEmailList,
@@ -10,6 +18,7 @@ const CustomInput = ({
   emailList,
 }) => {
   const [email, setEmail] = useState('');
+  const dispatch = useDispatch();
 
   return (
     <div className="naxatw-space-y-2">
@@ -32,13 +41,19 @@ const CustomInput = ({
           onChange={e => setEmail(e.target.value)}
           onKeyDown={e => {
             if (e.key === 'Enter') {
-              if (email) {
+              if (email && validateEmail(email)) {
                 setEmailList(prev => [
                   ...prev,
                   { id: Math.floor(Math.random() * 100), value: email },
                 ]);
                 setEmail('');
                 setEmailError(false);
+              } else {
+                dispatch(
+                  toastActions.error({
+                    message: 'Please provide a valid email address',
+                  }),
+                );
               }
             }
           }}
@@ -48,13 +63,19 @@ const CustomInput = ({
         </span>
         <a
           onClick={() => {
-            if (email) {
+            if (email && validateEmail(email)) {
               setEmailList(prev => [
                 ...prev,
                 { id: Math.floor(Math.random() * 100), value: email },
               ]);
               setEmail('');
               setEmailError(false);
+            } else {
+              dispatch(
+                toastActions.error({
+                  message: 'Please provide a valid email address',
+                }),
+              );
             }
           }}
         >

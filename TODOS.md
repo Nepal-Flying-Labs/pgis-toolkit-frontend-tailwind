@@ -52,7 +52,7 @@
 - [x] input info in buffer analysis result (sudeep)
 - [x] data query result title min width (sudeep)
 
-- [ ] buffer analysis => select layer only, implement result window (hold)
+- [x] buffer analysis => select layer only, implement result window (hold)
 
 ### ISSUES WBR
 
@@ -62,7 +62,7 @@
 - [ ] 5.8 zoom to selected layer choice? highlight query results yellow?
 - [ ] cancel layer upload?
 
-- [ ] dropdown option move below option => direction prop (design) (sudeep)
+- [x] dropdown option move below option => direction prop (design) (sudeep)
 
 - [ ] movable popup? (feature request/hold)
 
@@ -79,4 +79,4 @@
 - [x] x/y label in chart (sudeep)
 <!-- - [ ] Clicking on "Visualize" does not do anything? -->
 
-- [ ] loading while uploading bulk image
+- [x] loading while uploading bulk image

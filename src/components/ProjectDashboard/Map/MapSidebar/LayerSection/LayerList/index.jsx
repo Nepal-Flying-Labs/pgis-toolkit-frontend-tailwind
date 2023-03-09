@@ -192,6 +192,7 @@ export default function LayerList({ dropdownOptions }) {
                         </span>
                       )}
                       <DropdownOptions
+                        direction="left-bottom"
                         options={
                           layer.layer_type === 'WMS'
                             ? dropdownOptions.filter(

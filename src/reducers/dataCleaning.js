@@ -1349,9 +1349,7 @@ const handleErrorCheckbox = (state, action) =>
       const parentData = draft.errorFeaturesData[name].find(
         item => item.id === parentId,
       );
-      const featureData = parentData.explodedFeatures.find(
-        item => item.id === id,
-      );
+      const featureData = parentData.children.find(item => item.id === id);
       featureData.checked = checked;
     } else {
       const featureData = draft.errorFeaturesData[name].find(
@@ -1410,10 +1408,9 @@ const saveAttributeEdit = (state, action) =>
       const selectedFeatureAttribute = draft.errorFeaturesData.multipart.find(
         item => item.id === +draft.manualFix.selectedError.id.split('-')[0],
       );
-      const selectedExplodedFeature =
-        selectedFeatureAttribute.explodedFeatures.find(
-          item => item.id === draft.manualFix.selectedError.id,
-        );
+      const selectedExplodedFeature = selectedFeatureAttribute.children.find(
+        item => item.id === draft.manualFix.selectedError.id,
+      );
       selectedExplodedFeature.attributes = data;
     }
     const { sidebarContent, individualAttributeData, selectedError } =
@@ -1438,7 +1435,7 @@ const explodeFeatureSuccess = (state, action) =>
     const explodedFeature = draft.errorFeaturesData.multipart.find(
       item => item.id === featureId,
     );
-    explodedFeature.explodedFeatures = explodeData.map(item => ({
+    explodedFeature.children = explodeData.map(item => ({
       parentId: featureId,
       id: item.id,
       attributes: item.attributes,
@@ -1481,7 +1478,7 @@ const getFeatureGeojsonSuccess = (state, action) =>
       const parentData = draft.errorFeaturesData[type].find(
         item => item.id === parentId,
       );
-      const featureData = parentData.explodedFeatures.find(
+      const featureData = parentData.children.find(
         item => item.id === featureId,
       );
       featureData.checked = true;

@@ -179,7 +179,7 @@ export default function ErrorSection() {
                         />
                       )}
 
-                      {type === 'multipart' && !feature.fixed && (
+                      {feature?.children && !feature.fixed && (
                         <DropdownOptions
                           options={dropdownOptions}
                           data={{ ...feature, type }}

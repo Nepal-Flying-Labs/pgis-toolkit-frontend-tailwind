@@ -50,7 +50,7 @@
 - [ ] source => dropdown => other organizations(specify) | primary/secondary (upen dai)
 - [x] help box box shadow (sudeep)
 - [x] input info in buffer analysis result (sudeep)
-- [ ] data query result title min width (sudeep)
+- [x] data query result title min width (sudeep)
 
 - [ ] buffer analysis => select layer only, implement result window (hold)
 

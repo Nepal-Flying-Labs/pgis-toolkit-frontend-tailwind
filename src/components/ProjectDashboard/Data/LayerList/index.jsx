@@ -16,6 +16,7 @@ import Button from '@Components/common/Button';
 import Toggle from '@Components/common/Toggle';
 import TableSkeleton from '@Components/common/TableSkeleton/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import Spinner from '@Components/common/Spinner/index';
 
 const currentPage = 1;
 const dataPerPage = 10;
@@ -36,6 +37,13 @@ export default function LayerList() {
   );
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_PROJECT_LAYERS_REQUEST]),
+  );
+
+  const imageLoading = useSelector(state =>
+    checkIfLoading(state, [Types.CHECK_IMAGE_UPLOAD_STATUS_REQUEST]),
+  );
+  const selectedData = useSelector(
+    state => state.projectDashboard.data.selectedData,
   );
 
   const dispatch = useDispatch();
@@ -161,11 +169,20 @@ export default function LayerList() {
               headerClassName="naxatw-py-1 naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <span className="naxatw-text-body-lg naxatw-font-bold naxatw-flex naxatw-gap-2">
-                  {row.name}
-                </span>
+                <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-gap-x-3">
+                  <span className="naxatw-text-body-lg naxatw-font-bold naxatw-flex naxatw-gap-2">
+                    {row.name}
+                  </span>
+                  {imageLoading && selectedData.id === row.id && (
+                    <span className="naxatw-text-base naxatw-flex naxatw-gap-x-1">
+                      Uploading image{' '}
+                      <Spinner className="naxatw-fill-primary-400" />
+                    </span>
+                  )}
+                </div>
               )}
             />
+
             <TableHeader
               dataField="Category"
               headerClassName="naxatw-py-1 naxatw-px-3"

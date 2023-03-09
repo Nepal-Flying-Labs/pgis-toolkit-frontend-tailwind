@@ -21,10 +21,11 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Label,
   Text,
 } from 'recharts';
+import { useCurrentPng } from 'recharts-to-png';
 import meterToKM from '@Utils/meterToKM';
-import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { isEmpty } from '@Utils/commonUtils';
 import { saveAs } from 'file-saver';
 import XLSX from 'sheetjs-style';
@@ -48,6 +49,7 @@ export default function BufferPopup() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showChart, setShowChart] = useState(false);
   const [chartData, setChartData] = useState([]);
+  const [getPng, { ref, isLoading }] = useCurrentPng();
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
@@ -144,12 +146,23 @@ export default function BufferPopup() {
     setChartData(tempChartData);
   }, [detailsChartData]);
 
+  useEffect(() => {
+    if (isEmpty(poiLayersDataOptions)) return;
+    if (poiLayersDataOptions.length === 1) {
+      setSelectedLayer(poiLayersDataOptions[0].id);
+    }
+  }, [poiLayersDataOptions]);
+
+  const selectedPOIName = poiLayersDataOptions.filter(
+    data => data.id === selectedLayer,
+  )?.[0]?.name;
+
   const CustomXAxisTick = ({ x, y, payload }) => {
     if (payload && payload.value) {
       return (
         <Text
           fontSize={'12px'}
-          width={'12px'}
+          width={120}
           x={x}
           y={y}
           textAnchor="middle"
@@ -178,6 +191,13 @@ export default function BufferPopup() {
       saveAs(newData, fileName + fileExtension);
     }
   };
+
+  const handleChartExport = React.useCallback(async () => {
+    const png = await getPng();
+    if (png) {
+      saveAs(png, `${selectedPOIName}.png`);
+    }
+  }, [getPng, selectedPOIName]);
 
   return (
     <div
@@ -296,12 +316,7 @@ export default function BufferPopup() {
                     <div className="naxatw">
                       <p className="naxatw-text-body-lg ">Selected POI</p>
                       <p className="naxatw-text-body-lg naxatw-font-bold">
-                        {selectedPOI.map(item => (
-                          <span
-                            className="naxatw-text-body-lg naxatw-font-bold"
-                            key={item}
-                          >{`${item}, `}</span>
-                        )) || '-'}
+                        {selectedPOI.join(', ') || '-'}
                       </p>
                     </div>
                   </div>
@@ -327,6 +342,7 @@ export default function BufferPopup() {
                         selectedValue={selectedLayer}
                         labelKey="name"
                         valueKey="id"
+                        disabled={poiLayersDataOptions.length === 1}
                       />
                     </div>
                     <div className="naxatw-space-y-2">
@@ -404,13 +420,23 @@ export default function BufferPopup() {
 
             <Modal
               show={showChart}
-              title="Chart"
+              title={`${selectedPOIName} Chart`}
               onClose={() => setShowChart(false)}
               zIndex="111111"
               className="naxatw-w-[62rem]"
             >
+              <div className="naxatw-flex naxatw-justify-end">
+                <Button
+                  className="naxatw-btn-secondary naxatw-btn-noborder"
+                  onClick={handleChartExport}
+                >
+                  Export Chart
+                </Button>
+              </div>
+
               <div className="naxatw-w-full naxatw-h-full naxatw-flex naxatw-justify-center">
                 <BarChart
+                  ref={ref}
                   width={800}
                   height={560}
                   data={chartData}
@@ -420,17 +446,22 @@ export default function BufferPopup() {
                     left: 20,
                     bottom: 40,
                   }}
+                  barSize={100}
                 >
-                  {/* <CartesianGrid strokeDasharray="3 3" /> */}
-                  <XAxis
-                    label="Hello"
-                    dataKey="name"
-                    interval={0}
-                    tick={CustomXAxisTick}
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" interval={0} tick={<CustomXAxisTick />}>
+                    <Label value="Category" offset={8} position="bottom" />
+                  </XAxis>
+                  <YAxis
+                    allowDecimals={false}
+                    label={{
+                      value: `No of ${selectedPOIName}`,
+                      angle: -90,
+                      position: 'insideLeft',
+                    }}
                   />
-                  <YAxis label="hello world" allowDecimals={false} />
                   <Tooltip />
-                  <Bar dataKey="value" fill="#8884d8" radius={[10, 10, 0, 0]} />
+                  <Bar dataKey="value" fill="#8884d8" />
                 </BarChart>
               </div>
             </Modal>

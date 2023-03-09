@@ -252,7 +252,7 @@ export function getModalContent(content) {
     // buffer analysis
     case 'view-buffer-attribute':
       return {
-        title: 'Buffer Attribute',
+        title: 'Attribute Table',
         content: <ViewBufferAttribute />,
         className: '!naxatw-w-[50rem]',
       };

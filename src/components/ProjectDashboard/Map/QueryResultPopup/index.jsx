@@ -25,9 +25,14 @@ export default function QueryResultPopup() {
 
   return (
     <div
-      className="naxatw-absolute naxatw-top-20 naxatw-right-4  naxatw-z-10
+      className={`naxatw-absolute naxatw-top-20 naxatw-right-4  naxatw-z-10
         naxatw-bg-white naxatw-text-grey-800 naxatw-rounded-[20px] naxatw-border naxatw-border-grey-300 
-        naxatw-shadow-3xl naxatw-w-[21.2rem]"
+        naxatw-shadow-3xl ${
+          collapsed
+            ? 'naxatw-w-fit naxatw-cursor-pointer'
+            : 'naxatw-w-[21.2rem]'
+        }`}
+      onClick={collapsed ? () => setCollapsed(!collapsed) : () => {}}
     >
       <div
         className={`naxatw-px-5 naxatw-py-3.5 naxatw-flex naxatw-items-center naxatw-justify-between naxatw-rounded-t-[20px] ${

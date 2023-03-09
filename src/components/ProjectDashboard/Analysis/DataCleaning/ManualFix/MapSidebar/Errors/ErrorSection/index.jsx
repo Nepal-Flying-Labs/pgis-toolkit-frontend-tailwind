@@ -38,7 +38,7 @@ export default function ErrorSection() {
     dispatch(
       setManualFixState({
         sidebarContent:
-          type === 'null' && !feature.fixed ? 'add-feature' : 'add-feature',
+          type === 'null' && !feature.fixed ? 'add-feature' : 'edit-feature',
         selectedError: { ...feature, type },
       }),
     );

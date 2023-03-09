@@ -8,6 +8,7 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import CustomCalendar from '@Components/common/CustomCalendar/index';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import { individualAttributeDataSelector } from '@Selectors/dataCleaning';
+import { analysisHeaderHeight } from '@src/constants';
 
 const {
   setManualFixState,
@@ -19,9 +20,6 @@ const {
 export default function EditFeatureSection() {
   const sidebarContent = useSelector(
     state => state.dataCleaning.manualFix.sidebarContent,
-  );
-  const projectHeaderHeight = useSelector(
-    state => state.common.projectHeaderHeight,
   );
   const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
   const drawnFeatureWkt = useSelector(
@@ -131,7 +129,7 @@ export default function EditFeatureSection() {
       <div
         className="naxatw-overflow-auto scrollbar naxatw-flex naxatw-flex-col naxatw-gap-5"
         style={{
-          height: `calc(100vh - ${projectHeaderHeight}px - 9rem)`,
+          height: `calc(100vh - ${analysisHeaderHeight} - 15rem)`,
         }}
       >
         {sidebarContent === 'add-feature' && !drawnFeatureWkt && (

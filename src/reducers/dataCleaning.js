@@ -11,8 +11,7 @@ import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/style
 //   stepIndex: 1,
 //   manualFix: {
 //     sidebarContent: 'error-list', // 'error-list', 'add-feature', 'edit-feature'
-//     drawnFeatureWkt: null,
-//     splittedFeatureWkts: null, // []
+//     drawnFeatureWkt: null, //  '' | [], array for split
 //     layerAttributes: null,
 //     layerAttributesFields: null,
 //     individualAttributeData: [],
@@ -39,7 +38,6 @@ const initialState = {
   manualFix: {
     sidebarContent: 'error-list',
     drawnFeatureWkt: null,
-    splittedFeatureWkts: [],
     layerAttributes: null,
     layerAttributesFields: [
       {
@@ -1302,11 +1300,11 @@ const updateFeatureCollectionSuccess = (state, action) =>
     const refreshLayerId = action.payload.layer;
     const { id, attributes, geometry } = action.payload;
     const { type, parentId } = draft.manualFix.selectedError;
-    if (type === 'multipart') {
+    if (parentId) {
       const parentFeature = draft.errorFeaturesData[type].find(
         item => item.id === parentId,
       );
-      const changedFeature = parentFeature.explodedFeatures.find(
+      const changedFeature = parentFeature.children.find(
         item => item.id === id,
       );
       changedFeature.fixed = true;
@@ -1512,7 +1510,7 @@ const splitFeatureSuccess = (state, action) =>
     splittedFeature.fixed = true;
     const {
       sidebarContent,
-      splittedFeatureWkts,
+      drawnFeatureWkt,
       layerAttributes,
       individualAttributeData,
       selectedError,
@@ -1524,7 +1522,7 @@ const splitFeatureSuccess = (state, action) =>
       ...draft.manualFix,
       refreshLayerId,
       sidebarContent,
-      splittedFeatureWkts,
+      drawnFeatureWkt,
       layerAttributes,
       individualAttributeData,
       selectedError,

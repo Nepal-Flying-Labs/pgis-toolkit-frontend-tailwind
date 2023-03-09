@@ -23,6 +23,7 @@
 - [ ] After data upload is successful, repeatative toast message is shown
 - [ ] Cross icon for processing execution
 - [ ] Project Boundary line color not displaying on map.
+- [ ] layer styling cancel
 
 ### ROUTE ANALYSIS
 

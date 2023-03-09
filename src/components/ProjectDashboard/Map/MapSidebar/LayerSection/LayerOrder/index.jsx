@@ -132,7 +132,7 @@ export default function LayerOrder({ dropdownOptions }) {
                         }}
                       >
                         <MaterialIcon
-                          name="edit"
+                          name="brush"
                           className="material-icons-outlined naxatw-mt-1"
                           style={{ fontSize: '20px' }}
                         />

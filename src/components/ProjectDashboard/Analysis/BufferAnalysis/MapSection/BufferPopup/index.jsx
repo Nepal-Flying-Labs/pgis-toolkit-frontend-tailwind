@@ -10,6 +10,7 @@ import { VerticalBlockChart } from '@Components/common/VerticleAndHorizontalBloc
 import Chip from '@Components/common/Chip';
 import Select from '@Components/common/Select';
 import Modal from '@Components/common/Modal';
+import Button from '@Components/common/Button';
 import {
   BarChart,
   Bar,
@@ -231,50 +232,6 @@ export default function BufferPopup() {
               {popupActiveTab === 'Summary' ? (
                 <div className="naxatw-flex naxatw-flex-col naxatw-px-2 naxatw-gap-3">
                   {/* data input */}
-                  <div className="naxatw-flex naxatw-flex-col  naxatw-space-y-2">
-                    <h6>Data Input</h6>
-                    <div className="naxatw-flex naxatw-mt-2">
-                      <p className="naxatw-text-body-lg naxatw-basis-1/2">
-                        Origin Points
-                      </p>
-                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center naxatw-basis-1/2">
-                        {originPoints.map(item => {
-                          const [long, lat] = item;
-
-                          return (
-                            <span
-                              key={item}
-                              className="naxatw-text-body-lg naxatw-font-bold"
-                            >{`(${long.toFixed(2)}, ${lat.toFixed(2)})`}</span>
-                          );
-                        }) || '-'}
-                      </p>
-                    </div>
-                    <div className="naxatw-flex">
-                      <p className="naxatw-text-body-lg naxatw-basis-1/2">
-                        {analysisType === 'proximity-analysis'
-                          ? 'Proximity Radius'
-                          : 'Buffer Radius'}
-                      </p>
-                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center naxatw-basis-1/2">
-                        {meterToKM(bufferRadius) || '-'}
-                      </p>
-                    </div>
-                    <div className="naxatw-flex">
-                      <p className="naxatw-text-body-lg naxatw-basis-1/2">
-                        Selected POI
-                      </p>
-                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center naxatw-basis-1/2">
-                        {selectedPOI.map(item => (
-                          <span
-                            className="naxatw-text-body-lg naxatw-font-bold"
-                            key={item}
-                          >{`${item} ,`}</span>
-                        )) || '-'}
-                      </p>
-                    </div>
-                  </div>
-                  <hr className="naxatw-mb-3" />
 
                   {/* count */}
                   <div className="naxatw-flex naxatw-justify-between naxatw-py-2">
@@ -304,6 +261,50 @@ export default function BufferPopup() {
                     }
                     dataKey="count"
                   />
+
+                  <hr className="naxatw-mb-3" />
+
+                  <div className="naxatw-flex naxatw-flex-col  naxatw-space-y-2">
+                    {/* <h6>Data Input</h6> */}
+                    {/* <div className="naxatw-flex naxatw-mt-2">
+                      <p className="naxatw-text-body-lg naxatw-basis-1/2">
+                        Origin Points
+                      </p>
+                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center naxatw-basis-1/2">
+                        {originPoints.map(item => {
+                          const [long, lat] = item;
+
+                          return (
+                            <span
+                              key={item}
+                              className="naxatw-text-body-lg naxatw-font-bold"
+                            >{`(${long.toFixed(2)}, ${lat.toFixed(2)})`}</span>
+                          );
+                        }) || '-'}
+                      </p>
+                    </div> */}
+                    <div className="naxatw-flex">
+                      <p className="naxatw-text-body-lg naxatw-basis-1/2">
+                        {analysisType === 'proximity-analysis'
+                          ? 'Proximity Radius'
+                          : 'Buffer Radius'}
+                      </p>
+                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-basis-1/2">
+                        {meterToKM(bufferRadius) || '-'}
+                      </p>
+                    </div>
+                    <div className="naxatw">
+                      <p className="naxatw-text-body-lg ">Selected POI</p>
+                      <p className="naxatw-text-body-lg naxatw-font-bold">
+                        {selectedPOI.map(item => (
+                          <span
+                            className="naxatw-text-body-lg naxatw-font-bold"
+                            key={item}
+                          >{`${item}, `}</span>
+                        )) || '-'}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <>
@@ -374,31 +375,29 @@ export default function BufferPopup() {
                       </div>
                     ))}
                   </div>
+                  {!isEmpty(detailsListData) && (
+                    <div className="naxatw-flex naxatw-justify-between naxatw-gap-x-3 naxatw-items-center naxatw-mt-4">
+                      <Button
+                        className="naxatw-btn-secondary naxatw-btn-noborder"
+                        onClick={() =>
+                          handleExcelExport(
+                            poiLayersDataOptions.filter(
+                              data => data.id === selectedLayer,
+                            )[0].name,
+                          )
+                        }
+                      >
+                        Excel Export
+                      </Button>
 
-                  <div className="naxatw-flex naxatw-justify-end naxatw-gap-x-3 naxatw-items-center naxatw-mt-4">
-                    {!isEmpty(detailsListData) && (
-                      <div title="Export">
-                        <MaterialIcon
-                          name="ios_share"
-                          className="naxatw-cursor-pointer naxatw-text-icon-md naxatw-pb-2"
-                          onIconClick={() =>
-                            handleExcelExport(
-                              poiLayersDataOptions.filter(
-                                data => data.id === selectedLayer,
-                              )[0].name,
-                            )
-                          }
-                        />
-                      </div>
-                    )}
-
-                    <span
-                      className="naxatw-text-gray-800  naxatw-px-1 naxatw-cursor-pointer naxatw-border-white naxatw-border-b-[1px] hover:naxatw-border-gray-800"
-                      onClick={() => setShowChart(true)}
-                    >
-                      Chart View
-                    </span>
-                  </div>
+                      <Button
+                        className="naxatw-btn-secondary naxatw-btn-noborder"
+                        onClick={() => setShowChart(true)}
+                      >
+                        Chart View
+                      </Button>
+                    </div>
+                  )}
                 </>
               )}
             </div>

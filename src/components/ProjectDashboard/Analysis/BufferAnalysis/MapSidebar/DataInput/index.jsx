@@ -180,7 +180,7 @@ export default function DataInput() {
             </>
           ) : (
             <>
-              <div className="naxatw-flex naxatw-space-x-2">
+              {/* <div className="naxatw-flex naxatw-space-x-2">
                 <Chip
                   key="layer"
                   active="layer"
@@ -188,7 +188,7 @@ export default function DataInput() {
                   iconClassName="material-symbols-outlined"
                   iconLeft="format_list_bulleted"
                 />
-              </div>
+              </div> */}
 
               <Container>
                 <LayerContent />

@@ -169,14 +169,14 @@ export default function LayerList() {
               headerClassName="naxatw-py-1 naxatw-px-3 "
               rowcolSpan="rowSpan_2"
               dataFormat={row => (
-                <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-gap-x-3">
+                <div className="naxatw-flex naxatw-items-center naxatw-gap-x-8">
                   <span className="naxatw-text-body-lg naxatw-font-bold naxatw-flex naxatw-gap-2">
                     {row.name}
                   </span>
                   {imageLoading && selectedData.id === row.id && (
-                    <span className="naxatw-text-base naxatw-flex naxatw-gap-x-1">
-                      Uploading image{' '}
-                      <Spinner className="naxatw-fill-primary-400" />
+                    <span className="naxatw-text-body-lg naxatw-flex naxatw-gap-x-3">
+                      Uploading images{' '}
+                      <Spinner className="naxatw-fill-primary-400 naxatw-w-[20px] naxatw-h-[20px]" />
                     </span>
                   )}
                 </div>

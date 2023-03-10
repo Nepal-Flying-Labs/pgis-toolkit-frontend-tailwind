@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators, Types } from '@Actions/projectMap';
-import Lightbox from 'react-image-lightbox';
+import Lightbox from 'react-18-image-lightbox';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Spinner from '@Components/common/Spinner/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { saveAs } from 'file-saver';
+import isEmpty from '@Utils/isEmpty';
+import 'react-18-image-lightbox/style.css';
 
 const { setImageModal } = CommonCreators;
 const { getFeatureImageRequest, setProjectMapState } = Creators;
@@ -67,17 +69,21 @@ const FeatureImages = () => {
       reactModalStyle={{
         overlay: { zIndex: '99999999' },
       }}
-      toolbarButtons={[
-        <div title="Download">
-          <MaterialIcon
-            name="download"
-            className="naxatw-text-icon-md naxatw-text-grey-600 naxatw-cursor-pointer hover:naxatw-text-white naxatw-pb-2 naxatw-pr-3"
-            onIconClick={handleDownloadImage}
-          />
-        </div>,
-      ]}
+      toolbarButtons={
+        !isEmpty(featureImage)
+          ? [
+              <div title="Download">
+                <MaterialIcon
+                  name="download"
+                  className="naxatw-text-icon-md naxatw-text-grey-600 naxatw-cursor-pointer hover:naxatw-text-white naxatw-pb-2 naxatw-pr-3"
+                  onIconClick={handleDownloadImage}
+                />
+              </div>,
+            ]
+          : []
+      }
       imageLoadErrorMessage={
-        <h4 className="naxatw-text-white">Feature image not found</h4>
+        <h4 className="naxatw-text-white">Image not found</h4>
       }
     />
   );

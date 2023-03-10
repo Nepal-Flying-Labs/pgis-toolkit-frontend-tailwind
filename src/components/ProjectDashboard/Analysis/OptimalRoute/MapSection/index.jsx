@@ -220,7 +220,7 @@ export default function MapSection() {
         <HelpBox />
 
         <div
-          className="naxatw-absolute naxatw-top-16 naxatw-left-4 naxatw-z-10 
+          className="naxatw-absolute naxatw-bottom-44 naxatw-left-4 naxatw-z-10 
                     naxatw-cursor-pointer naxatw-h-10 naxatw-bg-white naxatw-rounded-lg 
                    naxatw-text-grey-800  naxatw-border naxatw-border-grey-300 hover:naxatw-bg-grey-100"
         >

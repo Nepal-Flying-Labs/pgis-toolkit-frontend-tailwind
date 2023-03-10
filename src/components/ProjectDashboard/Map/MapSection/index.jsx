@@ -23,8 +23,10 @@ import {
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import Spinner from '@Components/common/Spinner';
 import PopupUI from '@Components/common/OpenLayersComponent/Custom/PopupUI';
+import CustomPopupUI from '@Components/common/OpenLayersComponent/Custom/CustomPopupUI';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import AsyncPopup from '@Components/common/OpenLayersComponent/Custom/AsyncPopup';
+import CustomPopup from '@Components/common/OpenLayersComponent/Custom/CustomPopup/index';
 import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
@@ -166,7 +168,7 @@ export default function MapSection() {
           <Spinner className="naxatw-w-8 naxatw-h-8 naxatw-fill-secondary-400" />
         </div>
       ) : (
-        <PopupUI data={popupData} />
+        <CustomPopupUI data={popupData} />
       );
     },
     [popupData, isPopupDataFetching], // eslint-disable-line
@@ -357,7 +359,7 @@ export default function MapSection() {
 
           <MaskedLayer geojson={projectGeojson} />
 
-          <AsyncPopup
+          <CustomPopup
             fetchPopupData={properties => {
               const params = {
                 feature_id: properties.id,
@@ -365,6 +367,7 @@ export default function MapSection() {
               dispatch(getMapPopupDataRequest(params));
             }}
             popupUI={properties => getPopupUI(properties)}
+            popupData={popupData}
             // openPopupFor={searchedId}
             // zoomedExtent={zoomedExtent}
             onPopupClose={() => {

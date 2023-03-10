@@ -21,6 +21,7 @@ export const checkErrorData = [
   },
   {
     id: 'overlapping',
+    alternativeId: 'overlap',
     label: 'Overlapping Geometry',
     checkAPI: 'check_overlapping_geometry',
     fixAPI: 'fix_overlapping_geometry',

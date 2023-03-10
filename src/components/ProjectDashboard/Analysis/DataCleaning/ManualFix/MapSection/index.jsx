@@ -276,14 +276,23 @@ export default function MapSection() {
           geometryType={selectedLayer.geom_type}
           zIndex={100}
           style={{ ...selectedLayer.style, lineColor: '#ffff00' }}
-          toolboxContents={['add', 'drag', 'edit', 'delete', 'undo']}
+          toolboxContents={['add', 'drag', 'edit', 'extend', 'delete', 'undo']}
           onChange={geojson => {
-            const wktString = stringify(geojson);
-            dispatch(
-              setManualFixState({
-                drawnFeatureWkt: wktString,
-              }),
-            );
+            if (geojson?.features?.length > 1) {
+              const wktStrings = geojson.features.map(item => stringify(item));
+              dispatch(
+                setManualFixState({
+                  drawnFeatureWkt: wktStrings,
+                }),
+              );
+            } else {
+              const wktString = stringify(geojson);
+              dispatch(
+                setManualFixState({
+                  drawnFeatureWkt: wktString,
+                }),
+              );
+            }
           }}
         />
 

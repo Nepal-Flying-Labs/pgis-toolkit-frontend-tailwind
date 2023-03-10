@@ -15,21 +15,21 @@ const CustomNumberInput = ({ max, min, onChange }) => {
     onChange(value);
   }, [onChange, value]);
   return (
-    <div className="naxatw-flex naxatw-gap-3">
+    <div className="naxatw-flex naxatw-bg-grey-100 naxatw-border naxatw-rounded-md">
       <span
-        className="naxatw-w-10 naxatw-h-10 naxatw-rounded-md naxatw-border naxatw-cursor-pointer naxatw-flex naxatw-items-center naxatw-justify-center naxatw-bg-grey-100"
+        className="naxatw-w-10 naxatw-h-10 naxatw-rounded-md  naxatw-cursor-pointer naxatw-flex naxatw-items-center naxatw-justify-center hover:naxatw-bg-white"
         onClick={handleMinus}
       >
         -
       </span>
       <input
         type="text"
-        className="naxatw-input !naxatw-h-10 !naxatw-w-10"
+        className="naxatw-px-3 naxatw-bg-grey-100 naxatw-h-10 !naxatw-w-10"
         value={value}
         onChange={onChange}
       />
       <span
-        className="naxatw-w-10 naxatw-h-10 naxatw-rounded-md naxatw-border naxatw-cursor-pointer naxatw-flex naxatw-items-center naxatw-justify-center naxatw-bg-grey-100"
+        className="naxatw-w-10 naxatw-h-10 naxatw-rounded-md  naxatw-cursor-pointer naxatw-flex naxatw-items-center naxatw-justify-center hover:naxatw-bg-white"
         onClick={handlePlus}
       >
         +

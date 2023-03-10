@@ -83,7 +83,7 @@
 
 ### NEW TASKS
 - [x] add icon/style change issue  
-- [ ] query result highlight in map
+- [x] query result highlight in map
 - [ ] bbox negative (raj) [https://pgis.naxa.com.np/api/maps/project_theme_layers/?theme=640]
 - [ ] start point click auto save (analysis origin point input)
 

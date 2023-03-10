@@ -38,7 +38,7 @@ export default function ErrorSection() {
     dispatch(
       setManualFixState({
         sidebarContent:
-          type === 'null' && !feature.fixed ? 'add-feature' : 'add-feature',
+          type === 'null' && !feature.fixed ? 'add-feature' : 'edit-feature',
         selectedError: { ...feature, type },
       }),
     );
@@ -179,7 +179,7 @@ export default function ErrorSection() {
                         />
                       )}
 
-                      {type === 'multipart' && !feature.fixed && (
+                      {feature?.children && !feature.fixed && (
                         <DropdownOptions
                           options={dropdownOptions}
                           data={{ ...feature, type }}
@@ -188,56 +188,55 @@ export default function ErrorSection() {
                     </div>
                   </div>
 
-                  {type === 'multipart' &&
-                    feature?.explodedFeatures?.map(explodedFeat => (
-                      <div
-                        key={explodedFeat.id}
-                        className="naxatw-pl-3 naxatw-flex naxatw-justify-between naxatw-items-center"
-                      >
-                        <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-                          <input
-                            id={explodedFeat.id}
-                            type="checkbox"
-                            className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                            checked={explodedFeat.checked || false}
-                            onChange={e =>
-                              dispatch(
-                                handleErrorCheckbox({
-                                  id: explodedFeat.id,
-                                  name: type,
-                                  checked: e.target.checked,
-                                  parentId: explodedFeat.parentId,
-                                }),
-                              )
-                            }
-                          />
+                  {feature?.children?.map(childFeature => (
+                    <div
+                      key={childFeature.id}
+                      className="naxatw-pl-3 naxatw-flex naxatw-justify-between naxatw-items-center"
+                    >
+                      <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+                        <input
+                          id={childFeature.id}
+                          type="checkbox"
+                          className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
+                          checked={childFeature.checked || false}
+                          onChange={e =>
+                            dispatch(
+                              handleErrorCheckbox({
+                                id: childFeature.id,
+                                name: type,
+                                checked: e.target.checked,
+                                parentId: childFeature.parentId,
+                              }),
+                            )
+                          }
+                        />
 
-                          <label
-                            className="naxatw-text-body-lg naxatw-text-grey-800"
-                            htmlFor={explodedFeat.id}
-                          >
-                            {explodedFeat.id}
-                          </label>
-                        </div>
-
-                        <div className="naxatw-flex">
-                          <span
-                            className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
-                            onClick={() => handleEditClick(type, explodedFeat)}
-                          >
-                            <IconButton
-                              name="edit"
-                              className="material-icons-outlined"
-                            />
-                          </span>
-
-                          <DropdownOptions
-                            options={dropdownOptions}
-                            data={{ ...explodedFeat, type }}
-                          />
-                        </div>
+                        <label
+                          className="naxatw-text-body-lg naxatw-text-grey-800"
+                          htmlFor={childFeature.id}
+                        >
+                          {childFeature.id}
+                        </label>
                       </div>
-                    ))}
+
+                      <div className="naxatw-flex">
+                        <span
+                          className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
+                          onClick={() => handleEditClick(type, childFeature)}
+                        >
+                          <IconButton
+                            name="edit"
+                            className="material-icons-outlined"
+                          />
+                        </span>
+
+                        <DropdownOptions
+                          options={dropdownOptions}
+                          data={{ ...childFeature, type }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ))}
               {type === 'null' && (

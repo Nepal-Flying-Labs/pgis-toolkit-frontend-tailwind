@@ -11,7 +11,7 @@ const initialState = {
   stepIndex: 1,
   manualFix: {
     sidebarContent: 'error-list', // 'error-list', 'add-feature', 'edit-feature'
-    drawnFeatureWkt: null,
+    drawnFeatureWkt: null, //  '' | [], array for split
     layerAttributes: null,
     layerAttributesFields: null,
     individualAttributeData: [],
@@ -194,11 +194,11 @@ const updateFeatureCollectionSuccess = (state, action) =>
     const refreshLayerId = action.payload.layer;
     const { id, attributes, geometry } = action.payload;
     const { type, parentId } = draft.manualFix.selectedError;
-    if (type === 'multipart') {
+    if (parentId) {
       const parentFeature = draft.errorFeaturesData[type].find(
         item => item.id === parentId,
       );
-      const changedFeature = parentFeature.explodedFeatures.find(
+      const changedFeature = parentFeature.children.find(
         item => item.id === id,
       );
       changedFeature.fixed = true;
@@ -243,9 +243,7 @@ const handleErrorCheckbox = (state, action) =>
       const parentData = draft.errorFeaturesData[name].find(
         item => item.id === parentId,
       );
-      const featureData = parentData.explodedFeatures.find(
-        item => item.id === id,
-      );
+      const featureData = parentData.children.find(item => item.id === id);
       featureData.checked = checked;
     } else {
       const featureData = draft.errorFeaturesData[name].find(
@@ -304,10 +302,9 @@ const saveAttributeEdit = (state, action) =>
       const selectedFeatureAttribute = draft.errorFeaturesData.multipart.find(
         item => item.id === +draft.manualFix.selectedError.id.split('-')[0],
       );
-      const selectedExplodedFeature =
-        selectedFeatureAttribute.explodedFeatures.find(
-          item => item.id === draft.manualFix.selectedError.id,
-        );
+      const selectedExplodedFeature = selectedFeatureAttribute.children.find(
+        item => item.id === draft.manualFix.selectedError.id,
+      );
       selectedExplodedFeature.attributes = data;
     }
     const { sidebarContent, individualAttributeData, selectedError } =
@@ -332,7 +329,7 @@ const explodeFeatureSuccess = (state, action) =>
     const explodedFeature = draft.errorFeaturesData.multipart.find(
       item => item.id === featureId,
     );
-    explodedFeature.explodedFeatures = explodeData.map(item => ({
+    explodedFeature.children = explodeData.map(item => ({
       parentId: featureId,
       id: item.id,
       attributes: item.attributes,
@@ -375,7 +372,7 @@ const getFeatureGeojsonSuccess = (state, action) =>
       const parentData = draft.errorFeaturesData[type].find(
         item => item.id === parentId,
       );
-      const featureData = parentData.explodedFeatures.find(
+      const featureData = parentData.children.find(
         item => item.id === featureId,
       );
       featureData.checked = true;
@@ -385,6 +382,45 @@ const getFeatureGeojsonSuccess = (state, action) =>
       );
       featureData.checked = true;
     }
+  });
+
+const splitFeatureSuccess = (state, action) =>
+  produce(state, draft => {
+    const splittedData = action.payload;
+    const refreshLayerId = splittedData.layer;
+    const { id: featureId, type: errorType } = draft.manualFix.selectedError;
+    const splittedFeature = draft.errorFeaturesData[errorType].find(
+      item => item.id === featureId,
+    );
+    splittedFeature.children = splittedData.map(item => ({
+      parentId: featureId,
+      id: item.id,
+      attributes: item.attributes,
+      geojson: parse(item.geometry),
+    }));
+    splittedFeature.fixed = true;
+    const {
+      sidebarContent,
+      drawnFeatureWkt,
+      layerAttributes,
+      individualAttributeData,
+      selectedError,
+      selectedFeaturesForSnap,
+      geojsonFeatures,
+      startEditing,
+    } = initialState.manualFix;
+    draft.manualFix = {
+      ...draft.manualFix,
+      refreshLayerId,
+      sidebarContent,
+      drawnFeatureWkt,
+      layerAttributes,
+      individualAttributeData,
+      selectedError,
+      selectedFeaturesForSnap,
+      geojsonFeatures,
+      startEditing,
+    };
   });
 
 const dataCleaningReducer = createReducer(initialState, {
@@ -412,6 +448,7 @@ const dataCleaningReducer = createReducer(initialState, {
     getSelectedFeatureAttributesSuccess,
   [Types.RESET_MANUAL_FIX_STATE]: resetManualFixState,
   [Types.GET_FEATURE_GEOJSON_SUCCESS]: getFeatureGeojsonSuccess,
+  [Types.SPLIT_FEATURE_SUCCESS]: splitFeatureSuccess,
 });
 
 export default dataCleaningReducer;

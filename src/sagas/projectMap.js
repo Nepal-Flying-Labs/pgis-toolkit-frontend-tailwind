@@ -375,7 +375,7 @@ export function* saveDataQueryRequest({ payload }) {
       style: selectedData.style,
     };
     const formdata = prepareFormData(layerData);
-    yield call(updateLayer, selectedData.layer, formdata);
+    yield call(updateLayer, response.data.layer, formdata);
     yield put(projectMapActions.saveDataQuerySuccess(response.data));
     yield put(commonActions.togglePromptDialog());
     yield put(

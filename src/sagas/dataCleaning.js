@@ -126,6 +126,29 @@ export function* updateFeatureCollectionRequest({ id, payload }) {
   }
 }
 
+export function* splitFeatureRequest({ id, payload }) {
+  try {
+    const { layer, geometry, attributes } = payload;
+    // post new splitted layers
+    const splitResponse = yield all(
+      geometry.map(wkt =>
+        call(postFeatureCollection, {
+          attributes,
+          geometry: wkt,
+          layer,
+        }),
+      ),
+    );
+    // delete old layer
+    yield call(updateFeatureCollection, id, { is_deleted: true });
+    const splitResponseData = splitResponse.map(item => item.data);
+    yield put(dataCleaningActions.splitFeatureSuccess(splitResponseData));
+  } catch (error) {
+    yield put(dataCleaningActions.splitFeatureFailure());
+    throw error;
+  }
+}
+
 export function* deleteFeatureRequest({ id }) {
   try {
     const payload = { is_deleted: true };
@@ -320,6 +343,10 @@ function* dataCleaningWatcher() {
   yield takeLatest(
     Types.UPDATE_FEATURE_COLLECTION_REQUEST,
     withLoader(withErrorHandler(updateFeatureCollectionRequest)),
+  );
+  yield takeLatest(
+    Types.SPLIT_FEATURE_REQUEST,
+    withLoader(withErrorHandler(splitFeatureRequest)),
   );
   yield takeLatest(
     Types.DELETE_FEATURE_REQUEST,

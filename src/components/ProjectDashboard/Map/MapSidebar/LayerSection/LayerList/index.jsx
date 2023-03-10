@@ -145,7 +145,7 @@ export default function LayerList({ dropdownOptions }) {
                         <input
                           id={layer.id}
                           type="checkbox"
-                          className="naxatw-w-full naxatw-h-full  naxatw-accent-grey-800"
+                          className="naxatw-w-4 naxatw-h-4 naxatw-accent-grey-800"
                           checked={layer.checked}
                           onChange={e =>
                             handleLayerCheck({

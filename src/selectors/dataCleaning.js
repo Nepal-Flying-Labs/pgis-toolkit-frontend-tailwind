@@ -47,8 +47,8 @@ export const checkedFeatureIdsSelector = createSelector(
     errorFeaturesMapState.reduce((arr, item) => {
       const arrx = [];
       item.features.forEach(feat => {
-        if (feat.explodedFeatures) {
-          feat.explodedFeatures.forEach(i => {
+        if (feat.children) {
+          feat.children.forEach(i => {
             if (!i.checked) return;
             arrx.push(i.id);
           });

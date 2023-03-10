@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { createReducer } from 'reduxsauce';
+import * as chroma from 'chroma-js';
 import { parse } from 'wkt';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
@@ -436,13 +437,19 @@ const postAdvanceQuerySuccess = (state, action) => {
     theme,
     id: layer,
   } = state.dataQuery.selectedLayer;
+  const randomColor = chroma.random().hex();
   const queryResults = [
     ...state.dataQuery.queryResults,
     {
       ...action.payload,
       checked: true,
       layerName,
-      style,
+      style: {
+        // ...defaultStyles,
+        ...style,
+        fillColor: randomColor,
+        lineColor: randomColor,
+      },
       theme,
       layer,
     },

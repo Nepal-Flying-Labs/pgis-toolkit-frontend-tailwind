@@ -8,7 +8,8 @@ import Spinner from '@Components/common/Spinner/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { saveAs } from 'file-saver';
 import isEmpty from '@Utils/isEmpty';
-import 'react-18-image-lightbox/style.css';
+// import 'react-18-image-lightbox/style.css';
+import './lightbox.css';
 
 const { setImageModal } = CommonCreators;
 const { getFeatureImageRequest, setProjectMapState } = Creators;

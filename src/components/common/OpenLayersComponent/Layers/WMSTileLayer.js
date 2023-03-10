@@ -71,7 +71,6 @@ const WMSTileLayer = ({ map, url, layer, zIndex = 1, visibleOnMap = true }) => {
   //        .then(response => response.json())
   //        .then(json => {
   //          const jsonData = json.features[0].properties;
-  //          console.log(jsonData, 'jsonDatax');
   //        });
   //    }
   //  });

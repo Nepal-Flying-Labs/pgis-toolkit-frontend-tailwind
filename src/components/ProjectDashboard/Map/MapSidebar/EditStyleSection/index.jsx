@@ -100,7 +100,7 @@ export default function EditStyleSection() {
                         key={label}
                         className={`naxatw-w-fit naxatw-bg-white naxatw-border naxatw-rounded-2xl naxatw-px-3 naxatw-py-2 naxatw-cursor-pointer ${
                           styleTab === label
-                            ? 'naxatw-border-grey-800'
+                            ? 'naxatw-border-grey-500'
                             : 'naxatw-border-grey-100'
                         }`}
                         onClick={() => {

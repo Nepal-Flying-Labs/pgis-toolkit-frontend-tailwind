@@ -18,7 +18,7 @@ const MapContent = () => {
   return (
     <div>
       <Button
-        className="!naxatw-w-fit naxatw-btn naxatw-btn-link !naxatw-text-grey-800 naxatw-border naxatw-border-grey-300 hover:naxatw-border-grey-700"
+        className="hover:!naxatw-bg-white !naxatw-w-fit naxatw-btn naxatw-btn-secondary naxatw-btn-noborder"
         iconLeft="location_on"
         // active={drawPoint}
         onClick={() => {
@@ -29,7 +29,7 @@ const MapContent = () => {
           );
         }}
       >
-        <span className="naxatw-text-body-lg">
+        <span className="naxatw-text-body-lg naxatw-text-inherit">
           {originGeojson && originGeojson.length > 0
             ? 'Add new point'
             : 'Starting Point'}

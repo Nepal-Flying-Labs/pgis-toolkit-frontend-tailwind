@@ -52,6 +52,10 @@ export const { Types, Creators } = createActions({
   changePasswordFailure: null,
 
   resetAuthenticationState: null,
+
+  updateShowLoginMessageRequest: ['id', 'payload'],
+  updateShowLoginMessageSuccess: ['payload'],
+  updateShowLoginMessageFailure: null,
 });
 
 export default Creators;

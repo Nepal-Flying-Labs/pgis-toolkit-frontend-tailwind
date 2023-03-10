@@ -66,9 +66,11 @@ export default function ForgotPassword() {
             onChange={e => handleChange(e)}
             {...inputProps}
           />
-          {meta.email.error && meta.email.touched && (
-            <FormErrorMessage message="Please Enter Email or Username" />
-          )}
+          <div className="naxatw-flex naxatw-justify-start">
+            {meta.email.error && meta.email.touched && (
+              <FormErrorMessage message="Please Enter Email or Username" />
+            )}
+          </div>
         </div>
         <Button
           type="Submit"

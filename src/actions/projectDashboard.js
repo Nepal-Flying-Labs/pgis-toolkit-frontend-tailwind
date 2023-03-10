@@ -217,6 +217,17 @@ export const { Types, Creators } = createActions(
     getTemplateDropdownChoiceRequest: ['params'],
     getTemplateDropdownChoiceSuccess: ['payload'],
     getTemplateDropdownChoiceFailure: null,
+
+    uploadFeatureImageRequest: ['payload'],
+    uploadFeatureImageSuccess: ['payload'],
+    uploadFeatureImageFailure: null,
+
+    checkImageUploadStatusRequest: ['params'],
+    checkImageUploadStatusSuccess: ['payload'],
+    checkImageUploadStatusFailure: null,
+
+    setUploadingImage: ['payload'],
+    setUploadImageStatusCheckingId: ['id'],
   },
   { prefix: 'projectDashboard/' },
 );

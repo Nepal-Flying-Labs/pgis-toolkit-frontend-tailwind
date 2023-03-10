@@ -51,6 +51,8 @@ import {
   getTemplateDropdownChoice,
   postTemplateDropdownOption,
   updateTemplateDropdownOption,
+  uploadFeatureImage,
+  checkImageUploadStatus,
 } from '@Services/projectDashboard';
 import {
   getProjectThemes,
@@ -772,6 +774,71 @@ export function* getTemplateDropdownChoiceRequest({ params }) {
   }
 }
 
+export function* checkImageUploadStatusRequest({ params }) {
+  try {
+    const { name, ...newParams } = params;
+    yield put(
+      projectDashboardActions.setUploadImageStatusCheckingId(params.task_id),
+    );
+    let responseData = { message: 'Please wait result' };
+    while (responseData?.message === 'Please wait result') {
+      yield delay(15 * 1000); // call api in 10 second interval
+      const response = yield call(checkImageUploadStatus, newParams);
+      responseData = response.data;
+    }
+    yield put(
+      projectDashboardActions.checkImageUploadStatusSuccess({
+        ...responseData,
+      }),
+    );
+    if (responseData.message === 'Bulk Image Upload successful') {
+      yield put(
+        toastActions.success({
+          message: `${name} was successfully uploaded.`,
+        }),
+      );
+    } else {
+      yield put(
+        toastActions.error({
+          message: `${name} upload failed.`,
+        }),
+      );
+    }
+    yield put(
+      projectDashboardActions.setUploadingImage({
+        id: params.task_id,
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.checkImageUploadStatusFailure());
+    throw error;
+  }
+}
+
+export function* uploadFeatureImageRequest({ payload }) {
+  try {
+    const responses = yield all(
+      payload.map(data => call(uploadFeatureImage, prepareFormData(data))),
+    );
+    const responseData = responses.map(res => res.data);
+    const finalData = responseData.map((item, index) => ({
+      ...item,
+      name: payload[index].file.name,
+    }));
+    yield put(projectDashboardActions.uploadFeatureImageSuccess(finalData));
+    yield put(commonActions.toggleModal());
+    yield put(
+      toastActions.success({
+        message:
+          'The image is being uploaded. We will notify you shortly after upload success.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectDashboardActions.uploadFeatureImageFailure());
+    throw error;
+  }
+}
+
 function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_DETAIL_REQUEST,
@@ -959,6 +1026,14 @@ function* projectDashboardWatcher() {
   yield takeLatest(
     Types.GET_TEMPLATE_DROPDOWN_CHOICE_REQUEST,
     withLoader(withErrorHandler(getTemplateDropdownChoiceRequest)),
+  );
+  yield takeLatest(
+    Types.UPLOAD_FEATURE_IMAGE_REQUEST,
+    withLoader(withErrorHandler(uploadFeatureImageRequest)),
+  );
+  yield takeEvery(
+    Types.CHECK_IMAGE_UPLOAD_STATUS_REQUEST,
+    withLoader(withErrorHandler(checkImageUploadStatusRequest)),
   );
 }
 

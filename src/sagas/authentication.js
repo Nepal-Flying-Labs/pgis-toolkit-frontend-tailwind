@@ -30,7 +30,9 @@ export function* loginRequest({ payload }) {
     yield put(authActions.getLandingPageSuccess(landingResponse.data));
     yield put(authActions.setInfoDialogContent(null));
     yield put(push(`${landingResponse.data.page}`));
-    yield put(commonActions.toggleModal('access-to-functionalities'));
+    if (landingResponse.data.show_login_message) {
+      yield put(commonActions.toggleModal('access-to-functionalities'));
+    }
   } catch (error) {
     yield put(authActions.loginFailure());
     yield put(
@@ -230,6 +232,18 @@ function* changePasswordRequest({ payload }) {
   }
 }
 
+function* updateShowLoginMessageRequest({ id, payload }) {
+  const formdata = prepareFormData(payload);
+  try {
+    yield call(updateUser, id, formdata);
+    yield put(authActions.updateShowLoginMessageSuccess());
+    yield put(commonActions.toggleModal());
+  } catch (error) {
+    yield put(authActions.updateShowLoginMessageFailure());
+    throw error;
+  }
+}
+
 function* authenticationWatcher() {
   yield takeLatest(Types.LOGIN_REQUEST, withLoader(loginRequest));
   yield takeLatest(
@@ -275,6 +289,10 @@ function* authenticationWatcher() {
   yield takeLatest(
     Types.CHANGE_PASSWORD_REQUEST,
     withLoader(withErrorHandler(changePasswordRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_SHOW_LOGIN_MESSAGE_REQUEST,
+    withLoader(withErrorHandler(updateShowLoginMessageRequest)),
   );
 }
 

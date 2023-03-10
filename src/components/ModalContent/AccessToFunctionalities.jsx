@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '@Components/common/Button';
-import { Creators } from '@Actions/common';
-import { Types } from '@Actions/authentication';
+import { Creators as CommonCreators } from '@Actions/common';
+
+import { Creators, Types } from '@Actions/authentication';
 import {
   webAdmin,
   organizationAdmin,
@@ -10,7 +11,8 @@ import {
 } from '@src/constants/accessToFunctionalities';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
-const { toggleModal } = Creators;
+const { toggleModal } = CommonCreators;
+const { updateShowLoginMessageRequest } = Creators;
 
 const getUserFunctionalities = role => {
   switch (role) {
@@ -43,12 +45,32 @@ const getArticle = role => {
 };
 
 const AccessToFunctionalities = () => {
+  const [isChecked, setIsChecked] = useState(false);
   const userProfile = useSelector(state => state.authentication.userProfile);
   const functionalities = getUserFunctionalities(userProfile?.role);
+  const showPopupOnLogin = useSelector(
+    state => state.authentication.landingPage?.show_login_message,
+  );
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_USER_PROFILE_REQUEST]),
   );
+  const buttonLoading = useSelector(state =>
+    checkIfLoading(state, [Types.UPDATE_SHOW_LOGIN_MESSAGE_REQUEST]),
+  );
   const dispatch = useDispatch();
+
+  const handleGotItBUtton = () => {
+    if (isChecked) {
+      dispatch(
+        updateShowLoginMessageRequest(userProfile.id, {
+          show_login_message: !isChecked,
+        }),
+      );
+    } else {
+      dispatch(toggleModal());
+    }
+  };
+
   return (
     <div>
       {!loading && Object.keys(userProfile).length > 0 ? (
@@ -83,10 +105,30 @@ const AccessToFunctionalities = () => {
               ))}
             </ul>
           </div>
-          <div className="naxatw-flex naxatw-justify-center naxatw-mt-9 naxatw-mb-2">
+          {showPopupOnLogin && (
+            <div className="naxatw-flex naxatw-gap-x-3 naxatw-pt-4 naxatw-px-3">
+              <input
+                id="dont-show"
+                type="checkbox"
+                checked={isChecked}
+                className="naxatw-min-h-[1rem] naxatw-min-w-[1rem] naxatw-accent-grey-800"
+                onChange={() => setIsChecked(!isChecked)}
+              />
+              <label
+                htmlFor="dont-show"
+                className="naxatw-text-grey-800 naxatw-text-body-lg"
+              >
+                Don&apos;t show this again
+              </label>
+            </div>
+          )}
+
+          <div className="naxatw-flex naxatw-justify-center naxatw-mt-7 naxatw-mb-2">
             <Button
+              isLoading={buttonLoading}
+              loaderClassName="naxatw-fill-secondary-400"
               className="naxatw-btn-primary  naxatw-w-20"
-              onClick={() => dispatch(toggleModal())}
+              onClick={handleGotItBUtton}
             >
               Got it
             </Button>

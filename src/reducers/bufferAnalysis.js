@@ -2,13 +2,13 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from 'reduxsauce';
 import produce from 'immer';
+import { parse } from 'wkt';
+import * as chroma from 'chroma-js';
 import {
   bufferPolygonStyles,
   bufferPointStyles,
   bufferColors,
 } from '@src/constants/analysis';
-import { parse } from 'wkt';
-import * as chroma from 'chroma-js';
 import { Types } from '@Actions/bufferAnalysis';
 
 const initialState = {
@@ -31,6 +31,7 @@ const initialState = {
     selectedAnalysis: null,
     individualAnalysisData: null,
   },
+  inputQuery: null,
   analysisTaskId: null,
   poiLayers: [],
   popupActiveTab: 'Summary',
@@ -94,20 +95,25 @@ const checkProcessingStatusSuccess = (state, action) =>
         }
       });
     });
+    const { analysisType } = draft.inputQuery;
     const analysisResult = {
       ...data,
       checked: true,
       poiChartData: totalPoiCountChartData,
       buffer_areas: data.buffer_areas.map((areas, index) => ({
         ...areas,
-        name: `Buffer Point ${index + 1}`,
+        name: `${analysisType === 'buffer-analysis' ? 'Buffer ' : ''}Point ${
+          index + 1
+        }`,
         checked: true,
         style: { ...bufferPolygonStyles },
         originStyle: { ...bufferPointStyles, fillColor: chroma.random().hex() },
       })),
+      inputQuery: draft.inputQuery,
     };
 
     draft.dataInput = initialState.dataInput;
+    draft.inputQuery = initialState.inputQuery;
     draft.results.analysisResults = [
       ...draft.results.analysisResults,
       analysisResult,

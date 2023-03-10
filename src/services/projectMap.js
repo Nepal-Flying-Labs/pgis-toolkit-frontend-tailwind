@@ -68,3 +68,15 @@ export const postLayerAttributeFields = data =>
 
 export const deleteLayerAttribute = id =>
   authenticated(api).delete(`/maps/layer_attribute/${id}/`);
+
+export const postFeatureImage = data =>
+  authenticated(api).post(`/maps/feature_image/`, data);
+
+export const updateFeatureImage = (id, data) =>
+  authenticated(api).patch(`/maps/feature_image/${id}/`, data);
+
+export const deleteFeatureImage = id =>
+  authenticated(api).delete(`/maps/feature_image/${id}/`);
+
+export const postCreateToUrl = data =>
+  authenticated(api).post(`/maps/bulk_create_image_from_urls/`, data);

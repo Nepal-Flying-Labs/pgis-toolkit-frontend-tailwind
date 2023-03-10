@@ -13,6 +13,8 @@ export const { Types, Creators } = createActions(
 
     setProjectHeaderHeight: ['payload'],
     setRightSidebarState: ['payload'],
+
+    setImageModal: ['payload'],
   },
   { prefix: 'common/' },
 );

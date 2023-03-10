@@ -17,6 +17,9 @@ import {
   getMaxPage,
 } from '@Components/common/Pagination/getSelectedItem';
 import Pagination from '@Components/common/Pagination';
+import { isEmpty } from '@Utils/commonUtils';
+import { boundaryLayerName } from '@src/constants/map';
+import Button from '@Components/common/Button/index';
 
 const {
   getLayerAttributeRequest,
@@ -30,9 +33,10 @@ const {
   resetLayerAttributeListState,
   setSelectedLayerAttribute,
   setProjectMapState,
+  getAttributeFieldRequest,
 } = Creators;
 
-const { toggleModalTwo, togglePromptDialog } = CommonCreators;
+const { toggleModalTwo, togglePromptDialog, setImageModal } = CommonCreators;
 
 export default function ViewLayerAttribute() {
   const dispatch = useDispatch();
@@ -42,6 +46,8 @@ export default function ViewLayerAttribute() {
   );
   const showModal = useSelector(state => state.common.showModal);
   const modalContent = useSelector(state => state.common.modalContent);
+  const showModalTwo = useSelector(state => state.common.showModalTwo);
+  const modalTwoContent = useSelector(state => state.common.modalContent);
   const attributeList = useSelector(
     state => state.projectMap.layerAttributesList.attributeList,
   );
@@ -86,7 +92,10 @@ export default function ViewLayerAttribute() {
     },
   });
   const loading = useSelector(state =>
-    checkIfLoading(state, [Types.GET_LAYER_ATTRIBUTE_REQUEST]),
+    checkIfLoading(state, [
+      Types.GET_LAYER_ATTRIBUTE_REQUEST,
+      Types.GET_ATTRIBUTE_FIELD_REQUEST,
+    ]),
   );
 
   useEffect(() => {
@@ -137,13 +146,42 @@ export default function ViewLayerAttribute() {
 
   useEffect(() => {
     if (showModal && modalContent === 'view-layer-attribute') return;
-    dispatch(setProjectMapState({ selectedLayer: null }));
+    dispatch(
+      setProjectMapState({
+        selectedLayer: null,
+        selectedLayerAttribute: null,
+        fieldsDropdownOptions: null,
+      }),
+    );
     dispatch(resetLayerAttributeListState());
   }, [dispatch, showModal, modalContent]);
+
+  useEffect(() => {
+    if (showModalTwo && modalTwoContent === 'edit-layer-attribute') return;
+    dispatch(setProjectMapState({ featureImage: [] }));
+  }, [dispatch, showModalTwo, modalTwoContent]);
+
+  const selectedLayerAttribute = useSelector(
+    state => state.projectMap.selectedLayerAttribute,
+  );
+
+  // for layer attribute data type to select image data type
+  useEffect(() => {
+    if (!selectedLayer) return;
+    dispatch(
+      getAttributeFieldRequest({
+        layer: selectedLayer.id,
+      }),
+    );
+  }, [dispatch, selectedLayer]);
 
   const headerKeys = useMemo(
     () => Object.keys(attributeList[0] || {}),
     [attributeList],
+  );
+
+  const imageTypeAttribute = selectedLayerAttribute?.filter(
+    item => item.data_type === 'image',
   );
 
   const dropdownOptions = [
@@ -175,6 +213,19 @@ export default function ViewLayerAttribute() {
     },
   ];
 
+  const isBoundaryLayer = selectedLayer?.name !== boundaryLayerName;
+
+  const headerWidths = isBoundaryLayer
+    ? [...headerKeys.map(() => '150px')]
+    : [...headerKeys.map(() => '150px'), '10px'];
+
+  if (!loading && isEmpty(attributeList) && !searchText)
+    return (
+      <div className="naxatw-py-8 naxatw-flex naxatw-justify-center">
+        <h4>No attributes found.</h4>
+      </div>
+    );
+
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-y-2 naxatw-w-full naxatw-h-full">
       <div>
@@ -185,67 +236,110 @@ export default function ViewLayerAttribute() {
         />
       </div>
 
-      <div className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative  naxatw-w-full naxatw-max-h-[calc(100vh-19rem)] naxatw-min-h-[calc(100vh-19rem)] xl:naxatw-max-h-[calc(100vh-25rem)] xl:naxatw-min-h-[calc(100vh-25rem)]">
-        {!loading && headerKeys.length > 0 ? (
+      <div
+        className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative
+          naxatw-w-full naxatw-max-h-[calc(100vh-19rem)] naxatw-min-h-[calc(100vh-19rem)] 
+          xl:naxatw-max-h-[calc(100vh-25rem)] xl:naxatw-min-h-[calc(100vh-25rem)]"
+      >
+        {loading ? (
+          <TableSkeleton itemNumber={5} />
+        ) : (
           <Table
             data={attributeList || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            headerWidths={[...headerKeys.map(() => '150px'), '10px']}
+            headerWidths={headerWidths}
             // eslint-disable-next-line
             // onRowClick={row => {}}
           >
-            {headerKeys.map(key => (
+            {headerKeys.map(
+              key =>
+                key !== imageTypeAttribute?.[0]?.name && (
+                  <TableHeader
+                    key={key}
+                    dataField={key}
+                    headerClassName="naxatw-py-[0.8125rem] "
+                    rowcolSpan="rowSpan_2"
+                    rowClassName=""
+                    dataHeader={
+                      <SortingContainer
+                        name={key}
+                        isActive={ordering === key}
+                        handleSort={() =>
+                          dispatch(
+                            handleAttributeOrdering(
+                              ordering === key ? null : key,
+                            ),
+                          )
+                        }
+                      />
+                    }
+                    dataFormat={row => (
+                      <p
+                        title={row[key]}
+                        className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-cursor-default ${
+                          ordering === key
+                            ? 'naxatw-text-body-btn'
+                            : 'naxatw-text-body-lg'
+                        } naxatw-p-2.5 `}
+                      >
+                        {!Array.isArray(row[key]) &&
+                        typeof row[key] === 'object' &&
+                        row[key]
+                          ? Object.keys(row[key]).map(item => (
+                              <p>{`${row[key][item]},`}</p>
+                            ))
+                          : row[key] || '-'}
+                      </p>
+                    )}
+                  />
+                ),
+            )}
+
+            {!isEmpty(imageTypeAttribute) && (
               <TableHeader
-                key={key}
-                dataField={key}
-                headerClassName="naxatw-py-[0.8125rem] "
+                key={imageTypeAttribute[0].id}
+                dataField={imageTypeAttribute[0].name}
+                headerClassName="naxatw-py-[0.8125rem]"
                 rowcolSpan="rowSpan_2"
                 rowClassName=""
                 dataHeader={
-                  <SortingContainer
-                    name={key}
-                    isActive={ordering === key}
-                    handleSort={() =>
-                      dispatch(
-                        handleAttributeOrdering(ordering === key ? null : key),
-                      )
-                    }
-                  />
+                  <p className="naxatw-ml-4 naxatw-text-body-sm naxatw-text-grey-500">
+                    {imageTypeAttribute[0].name}
+                  </p>
                 }
                 dataFormat={row => (
-                  <p
-                    className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden ${
-                      ordering === key
-                        ? 'naxatw-text-body-btn'
-                        : 'naxatw-text-body-lg'
-                    } `}
+                  <Button
+                    iconLeft="visibility"
+                    iconClassName="material-icons naxatw-text-[18px]"
+                    className="naxatw-btn-sm naxatw-btn-secondary naxatw-btn-noborder naxatw-text-secondary-400"
+                    onClick={() => {
+                      dispatch(
+                        setProjectMapState({ selectedFeatureId: row.id }),
+                      );
+                      dispatch(setImageModal(true));
+                    }}
                   >
-                    {!Array.isArray(row[key]) &&
-                    typeof row[key] === 'object' &&
-                    row[key]
-                      ? Object.keys(row[key]).map(item => (
-                          <p>{`${row[key][item]},`}</p>
-                        ))
-                      : row[key] || '-'}
-                  </p>
+                    View Image
+                  </Button>
                 )}
               />
-            ))}
-            <TableHeader
-              dataField=""
-              headerClassName=""
-              rowClassName="sticky-menu"
-              rowcolSpan="rowSpan_3"
-              dataFormat={row => (
-                <div className="naxatw-w-fit naxatw-shadow-xl naxatw-relative">
-                  <DropdownOptions options={dropdownOptions} data={row} />
-                </div>
-              )}
-            />
+            )}
+
+            {isBoundaryLayer && (
+              <TableHeader
+                dataField=""
+                headerClassName=""
+                rowClassName="sticky-menu"
+                rowcolSpan="rowSpan_3"
+                dataFormat={row => (
+                  <div className="naxatw-w-fit naxatw-shadow-xl naxatw-relative">
+                    <DropdownOptions options={dropdownOptions} data={row} />
+                  </div>
+                )}
+              />
+            )}
           </Table>
-        ) : (
-          <TableSkeleton itemNumber={5} />
         )}
       </div>
       <Pagination

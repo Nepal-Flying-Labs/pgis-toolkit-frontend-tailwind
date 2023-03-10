@@ -15,6 +15,7 @@ import Info from '@Components/ProjectDashboard/Info';
 import Settings from '@Components/ProjectDashboard/Settings';
 import AppLoader from '@Components/common/AppLoader';
 import Analysis from '@Components/ProjectDashboard/Analysis';
+import FeatureImages from '@Components/ProjectDashboard/ModalContent/FeatureImages/index';
 
 const { getOrganizationDetailRequest } = OrganizationDashboardCreators;
 const {
@@ -53,6 +54,7 @@ export default function ProjectDashboard() {
   const layers = useSelector(state => state.projectDashboard.data.layers);
   const pushedToManageDataPage = useRef(false);
   const dispatch = useDispatch();
+  const showImageModal = useSelector(state => state.common.showImageModal);
 
   useEffect(
     () => () => {
@@ -89,6 +91,7 @@ export default function ProjectDashboard() {
     <Analysis />
   ) : (
     <div>
+      {showImageModal && <FeatureImages />}
       <ProjectHeader />
       <div
         style={{

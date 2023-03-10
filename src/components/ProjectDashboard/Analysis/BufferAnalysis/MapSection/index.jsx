@@ -16,6 +16,7 @@ import CircleMarker from '@Components/common/OpenLayersComponent/CustomLayer/Cir
 import toastActions from '@Actions/toast';
 import { analysisHeaderHeight } from '@src/constants';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool/index';
+import MeasureControl from '@Components/common/OpenLayersComponent/Control/MeasureControl';
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher/index';
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 
@@ -194,6 +195,23 @@ export default function MapSection() {
           }}
         />
         <SidebarToggle />
+        <div
+          className="naxatw-absolute naxatw-top-16 naxatw-left-4 naxatw-z-10 
+                    naxatw-cursor-pointer naxatw-h-10 naxatw-bg-white naxatw-rounded-lg 
+                   naxatw-text-grey-800  naxatw-border naxatw-border-grey-300 hover:naxatw-bg-grey-100"
+        >
+          <MeasureControl
+            map={map}
+            buttonText={
+              <i className="material-icons naxatw-block naxatw-p-2 naxatw-rounded-lg !naxatw-pt-1">
+                straighten
+              </i>
+            }
+            measureBoth
+            direction="right"
+            // onMeasureToggle={onMeasureToggle}
+          />
+        </div>
         <LayerSwitcherControl />
         <Scalebar />
         {mapState.map((item, index) =>
@@ -299,7 +317,7 @@ export default function MapSection() {
             area.poi.map(poi =>
               poi.feature_mirror_ids.length > 0 ? (
                 <VectorTileLayer
-                  key={area.id}
+                  key={poi.layer_id}
                   url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${poi.layer_id}&sub_layer=&ids=${poi.feature_mirror_ids}`}
                   authToken={localStorage.getItem('userToken')}
                   visibleOnMap={area.checked}

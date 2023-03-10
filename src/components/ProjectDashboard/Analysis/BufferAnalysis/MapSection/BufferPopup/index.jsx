@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/bufferAnalysis';
+import { useParams } from 'react-router';
 // import RouteAnalysisActions from '@Actions/bufferAnalysis';
 import IconButton from '@Components/common/IconButton';
 import RoutePopupSkeleton from '@Components/common/SkeletonLoader/RoutePopupSkeleton';
@@ -9,6 +10,7 @@ import { VerticalBlockChart } from '@Components/common/VerticleAndHorizontalBloc
 import Chip from '@Components/common/Chip';
 import Select from '@Components/common/Select';
 import Modal from '@Components/common/Modal';
+import Button from '@Components/common/Button';
 import {
   BarChart,
   Bar,
@@ -19,9 +21,14 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Label,
   Text,
 } from 'recharts';
+import { useCurrentPng } from 'recharts-to-png';
 import meterToKM from '@Utils/meterToKM';
+import { isEmpty } from '@Utils/commonUtils';
+import { saveAs } from 'file-saver';
+import XLSX from 'sheetjs-style';
 
 const calTotalCount = (data, dataKey) => {
   const values = data.map(d => +d?.[dataKey]);
@@ -37,10 +44,12 @@ const {
 } = Creators;
 
 export default function BufferPopup() {
+  const { analysisType } = useParams();
   const [selectedLayer, setSelectedLayer] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showChart, setShowChart] = useState(false);
   const [chartData, setChartData] = useState([]);
+  const [getPng, { ref, isLoading }] = useCurrentPng();
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
   );
@@ -70,6 +79,10 @@ export default function BufferPopup() {
   const selectedResultData = analysisResults.find(
     result => result.id === selectedResultsId,
   );
+
+  const originPoints = selectedResultData?.inputQuery.origins;
+  const bufferRadius = selectedResultData?.inputQuery.radius;
+  const selectedPOI = selectedResultData?.inputQuery.selectedPOIName;
 
   const poiLayersDataOptions = poiLayersData.filter(data =>
     selectedResultData?.poiChartData.map(itm => itm.name).includes(data.name),
@@ -133,12 +146,23 @@ export default function BufferPopup() {
     setChartData(tempChartData);
   }, [detailsChartData]);
 
+  useEffect(() => {
+    if (isEmpty(poiLayersDataOptions)) return;
+    if (poiLayersDataOptions.length === 1) {
+      setSelectedLayer(poiLayersDataOptions[0].id);
+    }
+  }, [poiLayersDataOptions]);
+
+  const selectedPOIName = poiLayersDataOptions.filter(
+    data => data.id === selectedLayer,
+  )?.[0]?.name;
+
   const CustomXAxisTick = ({ x, y, payload }) => {
     if (payload && payload.value) {
       return (
         <Text
           fontSize={'12px'}
-          width={'12px'}
+          width={120}
           x={x}
           y={y}
           textAnchor="middle"
@@ -150,6 +174,30 @@ export default function BufferPopup() {
     }
     return null;
   };
+
+  const handleExcelExport = async fileName => {
+    if (!isEmpty(detailsListData)) {
+      const { data } = detailsListData;
+      // const excelData = JSON.stringify(data);
+
+      const fileType =
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+      const fileExtension = '.xlsx';
+
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
+      const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      const newData = new Blob([excelBuffer], { type: fileType });
+      saveAs(newData, fileName + fileExtension);
+    }
+  };
+
+  const handleChartExport = React.useCallback(async () => {
+    const png = await getPng();
+    if (png) {
+      saveAs(png, `${selectedPOIName}.png`);
+    }
+  }, [getPng, selectedPOIName]);
 
   return (
     <div
@@ -200,36 +248,12 @@ export default function BufferPopup() {
               />
             </div>
 
-            <p className="naxatw-btn-text naxatw-mt-7 naxatw-mb-2">
+            <div className="naxatw-btn-text naxatw-mt-7 naxatw-mb-2">
               {popupActiveTab === 'Summary' ? (
                 <div className="naxatw-flex naxatw-flex-col naxatw-px-2 naxatw-gap-3">
-                  {/* <ul className="naxatw-flex naxatw-flex-col naxatw-gap-2">
-                    {graphData?.map(itm => (
-                      <li className="naxatw-flex naxatw-justify-between">
-                        <span className="naxatw-text-body-lg">{itm?.key}</span>
-                        <span className="naxatw-text-body-lg">
-                          {itm?.value}
-                        </span>
-                      </li>
-                    ))}
-                  </ul> */}
-                  {/* <div className="naxatw-flex naxatw-gap-0 naxatw-w-full naxatw-h-5">
-                    {graphData?.map((itm, index) => {
-                      const pWidth = parseInt(
-                        calPercentage(itm?.[dataKey], data, dataKey),
-                        10,
-                      );
-                      return (
-                        <span
-                          className="naxatw-h-full naxatw-border-0 first:naxatw-rounded-tl-lg first:naxatw-rounded-bl-lg last:naxatw-rounded-tr-lg last:naxatw-rounded-br-lg "
-                          style={{
-                            width: `${pWidth}%`,
-                            backgroundColor: `${colorCode[index]}`,
-                          }}
-                        />
-                      );
-                    })}
-                  </div> */}
+                  {/* data input */}
+
+                  {/* count */}
                   <div className="naxatw-flex naxatw-justify-between naxatw-py-2">
                     <div className="naxatw-basis-1/2">
                       <p className="naxatw-text-body-lg naxatw-text-center">
@@ -257,6 +281,45 @@ export default function BufferPopup() {
                     }
                     dataKey="count"
                   />
+
+                  <hr className="naxatw-mb-3" />
+
+                  <div className="naxatw-flex naxatw-flex-col  naxatw-space-y-2">
+                    {/* <h6>Data Input</h6> */}
+                    {/* <div className="naxatw-flex naxatw-mt-2">
+                      <p className="naxatw-text-body-lg naxatw-basis-1/2">
+                        Origin Points
+                      </p>
+                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center naxatw-basis-1/2">
+                        {originPoints.map(item => {
+                          const [long, lat] = item;
+
+                          return (
+                            <span
+                              key={item}
+                              className="naxatw-text-body-lg naxatw-font-bold"
+                            >{`(${long.toFixed(2)}, ${lat.toFixed(2)})`}</span>
+                          );
+                        }) || '-'}
+                      </p>
+                    </div> */}
+                    <div className="naxatw-flex">
+                      <p className="naxatw-text-body-lg naxatw-basis-1/2">
+                        {analysisType === 'proximity-analysis'
+                          ? 'Proximity Radius'
+                          : 'Buffer Radius'}
+                      </p>
+                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-basis-1/2">
+                        {meterToKM(bufferRadius) || '-'}
+                      </p>
+                    </div>
+                    <div className="naxatw">
+                      <p className="naxatw-text-body-lg ">Selected POI</p>
+                      <p className="naxatw-text-body-lg naxatw-font-bold">
+                        {selectedPOI.join(', ') || '-'}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <>
@@ -279,6 +342,7 @@ export default function BufferPopup() {
                         selectedValue={selectedLayer}
                         labelKey="name"
                         valueKey="id"
+                        disabled={poiLayersDataOptions.length === 1}
                       />
                     </div>
                     <div className="naxatw-space-y-2">
@@ -327,28 +391,52 @@ export default function BufferPopup() {
                       </div>
                     ))}
                   </div>
+                  {!isEmpty(detailsListData) && (
+                    <div className="naxatw-flex naxatw-justify-between naxatw-gap-x-3 naxatw-items-center naxatw-mt-4">
+                      <Button
+                        className="naxatw-btn-secondary naxatw-btn-noborder"
+                        onClick={() =>
+                          handleExcelExport(
+                            poiLayersDataOptions.filter(
+                              data => data.id === selectedLayer,
+                            )[0].name,
+                          )
+                        }
+                      >
+                        Excel Export
+                      </Button>
 
-                  <div className="naxatw-flex naxatw-justify-end naxatw-mt-4">
-                    <span
-                      className="naxatw-text-gray-800  naxatw-px-1 naxatw-cursor-pointer naxatw-border-white naxatw-border-b-[1px] hover:naxatw-border-gray-800"
-                      onClick={() => setShowChart(true)}
-                    >
-                      Chart View
-                    </span>
-                  </div>
+                      <Button
+                        className="naxatw-btn-secondary naxatw-btn-noborder"
+                        onClick={() => setShowChart(true)}
+                      >
+                        Chart View
+                      </Button>
+                    </div>
+                  )}
                 </>
               )}
-            </p>
+            </div>
 
             <Modal
               show={showChart}
-              title="Chart"
+              title={`${selectedPOIName} Chart`}
               onClose={() => setShowChart(false)}
               zIndex="111111"
               className="naxatw-w-[62rem]"
             >
+              <div className="naxatw-flex naxatw-justify-end">
+                <Button
+                  className="naxatw-btn-secondary naxatw-btn-noborder"
+                  onClick={handleChartExport}
+                >
+                  Export Chart
+                </Button>
+              </div>
+
               <div className="naxatw-w-full naxatw-h-full naxatw-flex naxatw-justify-center">
                 <BarChart
+                  ref={ref}
                   width={800}
                   height={560}
                   data={chartData}
@@ -358,12 +446,22 @@ export default function BufferPopup() {
                     left: 20,
                     bottom: 40,
                   }}
+                  barSize={100}
                 >
-                  {/* <CartesianGrid strokeDasharray="3 3" /> */}
-                  <XAxis dataKey="name" interval={0} tick={CustomXAxisTick} />
-                  <YAxis allowDecimals={false} />
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" interval={0} tick={<CustomXAxisTick />}>
+                    <Label value="Category" offset={8} position="bottom" />
+                  </XAxis>
+                  <YAxis
+                    allowDecimals={false}
+                    label={{
+                      value: `No of ${selectedPOIName}`,
+                      angle: -90,
+                      position: 'insideLeft',
+                    }}
+                  />
                   <Tooltip />
-                  <Bar dataKey="value" fill="#8884d8" radius={[10, 10, 0, 0]} />
+                  <Bar dataKey="value" fill="#8884d8" />
                 </BarChart>
               </div>
             </Modal>

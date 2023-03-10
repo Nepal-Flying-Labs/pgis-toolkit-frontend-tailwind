@@ -136,3 +136,9 @@ export const updateTemplateDropdownOption = (id, data) =>
     `/maps/project_layer_template_attribute_dropdown_choice/${id}/`,
     data,
   );
+
+export const uploadFeatureImage = data =>
+  authenticated(api).post(`/maps/bulk_upload_image/`, data);
+
+export const checkImageUploadStatus = params =>
+  authenticated(api).get(`/maps/get_bulk_upload_image_response/`, { params });

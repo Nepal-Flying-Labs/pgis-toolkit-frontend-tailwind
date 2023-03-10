@@ -1,8 +1,11 @@
 /* eslint-disable camelcase */
 import { createReducer } from 'reduxsauce';
+import * as chroma from 'chroma-js';
 import { parse } from 'wkt';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import { boundaryLayerName } from '@src/constants/map';
+import { isEmpty } from '@Utils/commonUtils';
 
 const initialState = {
   themes: null, // []
@@ -55,6 +58,10 @@ const initialState = {
     selectedLayerAttribute: null,
   },
   fieldsDropdownOptions: null,
+  featureImage: [],
+  selectedLayerAttribute: null,
+  selectedFeatureId: null,
+  individualFeatureData: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -65,7 +72,7 @@ const getProjectThemesSuccess = (state, action) => ({
 const getProjectThemeLayersSuccess = (state, action) => {
   const { data: layerData, theme } = action.payload;
   const projectAreaLayerId = !state.projectAreaLayerId
-    ? layerData.find(item => item.name === 'Boundary')?.id || null
+    ? layerData.find(item => item.name === boundaryLayerName)?.id || null
     : state.projectAreaLayerId;
   const data = layerData.filter(item => item.upload_status === 'successful');
   const notPresentLayers = data
@@ -351,9 +358,14 @@ const postNewLayerFeatureSuccess = (state, action) => {
 };
 
 const getFeatureCollectionSuccess = (state, action) => {
-  const { geometry, attributes, id: featureId } = action.payload;
+  const { geometry, attributes, id: featureId, images } = action.payload;
   const wktString = geometry.split(';')[1];
   const featureGeojson = parse(wktString);
+  const modifiedImage = images?.map(item => ({
+    ...item,
+    patch: true,
+    isCoverImage: item.is_cover_image,
+  }));
   return {
     ...state,
     featureGeojson,
@@ -361,6 +373,7 @@ const getFeatureCollectionSuccess = (state, action) => {
     editFeatureId: featureId,
     sidebarContent: 'edit-feature',
     layerAttributes: attributes,
+    featureImage: modifiedImage || [],
   };
 };
 
@@ -424,13 +437,19 @@ const postAdvanceQuerySuccess = (state, action) => {
     theme,
     id: layer,
   } = state.dataQuery.selectedLayer;
+  const randomColor = chroma.random().hex();
   const queryResults = [
     ...state.dataQuery.queryResults,
     {
       ...action.payload,
       checked: true,
       layerName,
-      style,
+      style: {
+        // ...defaultStyles,
+        ...style,
+        fillColor: randomColor,
+        lineColor: randomColor,
+      },
       theme,
       layer,
     },
@@ -754,6 +773,37 @@ const getLayerAttributeListSuccess = (state, action) => {
   };
 };
 
+const getAttributeFieldSuccess = (state, action) => {
+  const { data, options } = action.payload;
+  const initialValue = {};
+  const modifiedData = options.reduce(
+    (obj, item) => ({
+      ...obj,
+      [item.name]: item.options,
+    }),
+    initialValue,
+  );
+  return {
+    ...state,
+    selectedLayerAttribute: data,
+    fieldsDropdownOptions: !isEmpty(modifiedData) ? modifiedData : null,
+  };
+};
+
+const getFeatureImageSuccess = (state, action) => {
+  const { attributes, images } = action.payload;
+  const newData = images.map(item => ({
+    ...item,
+    patch: true,
+    isCoverImage: item.is_cover_image,
+  }));
+  return {
+    ...state,
+    featureImage: newData,
+    individualFeatureData: attributes,
+  };
+};
+
 const resetProjectMapState = state => ({
   ...initialState,
   mapSettings: state.mapSettings,
@@ -809,6 +859,9 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_FIELDS_DROPDOWN_OPTION_SUCCESS]: getFieldsDropdownOptionSuccess,
   [Types.DELETE_LAYER_ATTRIBUTE_SUCCESS]: deleteLayerAttributeSuccess,
   [Types.GET_LAYER_ATTRIBUTE_LIST_SUCCESS]: getLayerAttributeListSuccess,
+  [Types.GET_ATTRIBUTE_FIELD_SUCCESS]: getAttributeFieldSuccess,
+  [Types.GET_FEATURE_IMAGE_SUCCESS]: getFeatureImageSuccess,
+
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

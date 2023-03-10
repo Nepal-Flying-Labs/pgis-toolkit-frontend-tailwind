@@ -87,6 +87,7 @@ export default function MapSection() {
       Types.GET_PROJECT_THEMES_REQUEST,
       Types.GET_PROJECT_THEME_LAYERS_REQUEST,
       Types.GET_PROJECT_GEOJSON_REQUEST,
+      Types.GET_FEATURE_COLLECTION_REQUEST,
     ]),
   );
   const isPopupDataFetching = useSelector(state =>

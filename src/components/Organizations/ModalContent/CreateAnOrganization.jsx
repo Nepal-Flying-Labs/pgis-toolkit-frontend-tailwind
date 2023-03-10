@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/organizations';
 import useForm from '@Hooks/useForm';
@@ -7,6 +7,8 @@ import Button from '@Components/common/Button';
 import Input from '@Components/common/Input/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
+import CustomInput from '@Components/common/CustomInput/index';
+import { isEmpty } from '@Utils/commonUtils';
 
 const { createOrganizationRequest } = Creators;
 
@@ -35,9 +37,9 @@ const initialState = {
 
 export default function CreateAnOrganization() {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('');
   const [emailList, setEmailList] = useState([]);
-  const [emailError, setEmailError] = useState(false);
+  const [errors, setErrors] = useState([]);
+
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.CREATE_ORGANIZATION_REQUEST]),
   );
@@ -52,34 +54,25 @@ export default function CreateAnOrganization() {
     handleSubmit,
   } = useForm({
     initialValues: initialState,
-    required: ['organizationName'],
     onSubmit: data => {
-      if (Object.keys(emailList).length > 0) {
+      const error = [];
+      if (!values.organizationName) {
+        error.push('organizationName');
+      }
+      if (isEmpty(emailList)) {
+        error.push('emailList');
+      }
+      setErrors(error);
+
+      if (isEmpty(error)) {
         const payload = {
           organization_name: data.organizationName,
           email: emailList.map(e => e.value),
         };
         dispatch(createOrganizationRequest(payload));
-      } else {
-        setEmailError(true);
       }
     },
   });
-
-  // const [uploadFile, setUploadFile] = useState(null);
-  // const onChangeFileUpload = e => {
-  //   const { files } = e.target;
-  //   const file = files[0];
-  //   const uploadedFileObject = {
-  //     name: file.name,
-  //     size: file.size,
-  //     type: file.type,
-  //     lastModifiedDate: file.lastModifiedDate,
-  //     image: URL.createObjectURL(files[0]),
-  //   };
-  //   // onChange(file);
-  //   setUploadFile(uploadedFileObject);
-  // };
 
   return (
     <div>
@@ -96,7 +89,7 @@ export default function CreateAnOrganization() {
           onChange={handleChange}
           {...inputProps}
         />
-        {meta.organizationName.error && meta.organizationName.touched && (
+        {errors.includes('organizationName') && (
           <span className="naxatw--mt-[10px] naxatw-text-red-500">
             Required field
           </span>
@@ -140,87 +133,16 @@ export default function CreateAnOrganization() {
           />
         </div> */}
 
-        <div className="naxatw-space-y-2">
-          <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
-            Invite User by Email *
-          </label>
-          <div className="naxatw-flex naxatw-items-center naxatw-relative">
-            <input
-              type="text"
-              className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-pr-3 naxatw-pl-[50px] naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gregrey-700 naxatw-focus:bg-white focus:naxatw-border-gray-600 focus:naxatw-outline-none"
-              name="email"
-              placeholder="Enter email address of organization admin"
-              value={email}
-              onChange={e => {
-                setEmail(e.target.value);
-              }}
-              onKeyDown={e => {
-                if (e.key === 'Enter') {
-                  if (email) {
-                    setEmailList(prev => [
-                      ...prev,
-                      {
-                        id: Math.floor(Math.random() * 100),
-                        value: email,
-                      },
-                    ]);
-                    setEmail('');
-                    setEmailError(false);
-                  }
-                }
-              }}
-              {...inputProps}
-            />
-            <span className="material-icons naxatw-absolute naxatw-left-[13px]">
-              mail_outline
-            </span>
-            <a
-              type="submit"
-              className="naxatw-text-2xl naxatw-ml-2 naxatw-cursor-pointer naxatw-select-none"
-              onClick={() => {
-                if (email) {
-                  setEmailList(prev => [
-                    ...prev,
-                    {
-                      id: Math.floor(Math.random() * 100),
-                      value: email,
-                    },
-                  ]);
-                  setEmail('');
-                  setEmailError(false);
-                }
-              }}
-            >
-              <i className="material-icons naxatw-text-[#40B449] naxatw-absolute naxatw-right-4 naxatw-top-3">
-                add
-              </i>
-            </a>
-          </div>
-          {emailError && (
-            <span className="naxatw--mt-[10px] naxatw-text-red-500">
-              Please add email
-            </span>
-          )}
-          <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-2 ">
-            {emailList.map(item => (
-              <div
-                key={item.id}
-                className="naxatw-flex hover:naxatw- naxatw-justify-between naxatw-items-center hover:naxatw-border-[#484848] naxatw-cursor-pointer naxatw-gap-x-2 naxatw-rounded-3xl naxatw-border naxatw-border-[#D7D7D7] naxatw-bg-[#F5F5F5] naxatw-px-3 naxatw-py-[7px]"
-              >
-                <p className="naxatw-text-[#484848]">{item.value}</p>
-
-                <i
-                  className="material-icons naxatw-text-lg naxatw-text-[#484848] naxatw-cursor-pointer"
-                  onClick={() => {
-                    setEmailList(emailList.filter(e => e.id !== item.id));
-                  }}
-                >
-                  close
-                </i>
-              </div>
-            ))}
-          </div>
-        </div>
+        <CustomInput
+          emailList={emailList}
+          setEmailList={setEmailList}
+          emailError={errors.includes('emailList')}
+          setEmailError={data =>
+            !data
+              ? setErrors(errors.filter(item => item !== 'emailList'))
+              : () => {}
+          }
+        />
       </div>
 
       <div className="naxatw-flex naxatw-items-center naxatw-justify-center">

@@ -4,7 +4,7 @@ import React from 'react';
 
 const TableSkeleton = ({ itemNumber }) => {
   return (
-    <table className=" naxatw-animate-pulse naxatw-w-full naxatw-border-separate naxatw-border-spacing-y-4 ">
+    <table className="naxatw-animate-pulse naxatw-w-full naxatw-border-separate naxatw-border-spacing-y-4 ">
       {Array.from({ length: itemNumber }, (_, i) => (
         <thead key={i} className="naxatw-w-full">
           <tr className=" naxatw-w-full naxatw-flex naxatw-gap-x-40 naxatw-h-8">

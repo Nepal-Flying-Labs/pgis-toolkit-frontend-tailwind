@@ -278,7 +278,7 @@ export default function MapSection() {
           style={{ ...selectedLayer.style, lineColor: '#ffff00' }}
           toolboxContents={['add', 'drag', 'edit', 'extend', 'delete', 'undo']}
           onChange={geojson => {
-            if (geojson?.features?.length > 1) {
+            if (geojson.type === 'FeatureCollection') {
               const wktStrings = geojson.features.map(item => stringify(item));
               dispatch(
                 setManualFixState({

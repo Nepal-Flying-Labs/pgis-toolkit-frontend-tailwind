@@ -21,7 +21,6 @@ import {
   getModalTwoContent,
 } from './constants/modalContents';
 import './assets/css/tailwind.css';
-import 'react-image-lightbox/style.css';
 
 const {
   toggleModal,

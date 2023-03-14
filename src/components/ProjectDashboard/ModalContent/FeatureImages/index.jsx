@@ -9,7 +9,7 @@ import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { saveAs } from 'file-saver';
 import isEmpty from '@Utils/isEmpty';
 import 'react-image-lightbox/style.css';
-// import './lightbox.css';
+import './lightbox.css';
 
 const { setImageModal } = CommonCreators;
 const { getFeatureImageRequest, setProjectMapState } = Creators;
@@ -31,8 +31,8 @@ const FeatureImages = () => {
   }, [dispatch, selectedFeatureId]);
 
   const handleModalClose = () => {
-    dispatch(setImageModal(false));
     dispatch(setProjectMapState({ selectedFeatureId: null, featureImage: [] }));
+    dispatch(setImageModal(false));
   };
 
   const handleDownloadImage = () => {
@@ -68,7 +68,7 @@ const FeatureImages = () => {
         setPhotoIndex((photoIndex + 1) % featureImage.length)
       }
       reactModalStyle={{
-        overlay: { zIndex: '99999999' },
+        overlay: { zIndex: '999999' },
       }}
       toolbarButtons={
         !isEmpty(featureImage)

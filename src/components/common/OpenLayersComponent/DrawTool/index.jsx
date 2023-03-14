@@ -30,6 +30,7 @@ import {
   SplitFeature,
   // RotateFeature,
 } from './modules';
+import getFeaturesGeojson from './helpers/getFeaturesGeojson';
 
 const source = new VectorSource();
 
@@ -62,6 +63,7 @@ export default function DrawTool({
   const [drawType, setDrawType] = useState(null);
   const [modifiedStates, setModifiedStates] = useState([]);
   const [modifiedFeature, setModifiedFeature] = useState(null);
+  const selectedFeatureUId = useRef(null);
   const layerUid = useRef(null);
 
   const handleFeatureEdit = useCallback(
@@ -88,6 +90,13 @@ export default function DrawTool({
     if (!enable) return;
     setDrawType(selectedDrawType);
   }, [enable, selectedDrawType]);
+
+  // useEffect(() => {
+  //   if (!vectorLayer) return;
+  //   select.on('select', ({ selected }) => {
+  //     console.log(selected, 'selectedx');
+  //   });
+  // }, [select, vectorLayer]);
 
   // add geojson for edit feature
   useEffect(() => {
@@ -249,10 +258,22 @@ export default function DrawTool({
   }, [enable, drawType, map, zIndex, style, vectorLayer]);
 
   const handleDelete = () => {
-    source.clear();
+    // const featureCount = source.getFeatures().length;
+    const selectedFeatures = select.getFeatures().getArray();
+    const allFeatures = source.getFeatures();
+    const selectedFeature = allFeatures.find(
+      item => item === selectedFeatures[0],
+    );
+    if (!selectedFeature) return;
+    source.removeFeature(selectedFeature);
+    const featureGeojson = getFeaturesGeojson(source.getFeatures());
+    onChange(featureGeojson);
+    if (allFeatures.length === 1) {
+      setModifiedFeature(null);
+      setVectorLayer(null);
+    }
+    // source.clear();
     // setModifiedStates((prev) => [...prev, null]);
-    setModifiedFeature(null);
-    setVectorLayer(null);
     // setDrawType('add-feature');
   };
 

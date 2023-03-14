@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import noImg from '@Assets/images/noImage.png';
 import { isEmpty } from '@Utils/commonUtils';
-import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
+import Lightbox from 'react-18-image-lightbox';
+import 'react-18-image-lightbox/style.css';
 
 const ProjectInfo = () => {
   const info = useSelector(state => state.projectDashboard.info.details);

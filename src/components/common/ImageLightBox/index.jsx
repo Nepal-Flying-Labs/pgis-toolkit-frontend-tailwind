@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import 'react-image-lightbox/style.css';
-import Lightbox from 'react-image-lightbox';
+import 'react-18-image-lightbox/style.css';
+import Lightbox from 'react-18-image-lightbox';
 import PropTypes from 'prop-types';
 
 function ImageLightBox({ data, trigger }) {

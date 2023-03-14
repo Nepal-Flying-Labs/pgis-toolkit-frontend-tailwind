@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import 'react-18-image-lightbox/style.css';
-import Lightbox from 'react-18-image-lightbox';
+import 'react-image-lightbox/style.css';
+import Lightbox from 'react-image-lightbox';
 import PropTypes from 'prop-types';
 
 function ImageLightBox({ data, trigger }) {
-  console.log('data', data);
-
   const [images, setImages] = useState([]);
   useEffect(() => {
     if (data.length > 0) {
@@ -13,7 +11,6 @@ function ImageLightBox({ data, trigger }) {
         console.log('array');
         setImages([data]);
       }
-      console.log('array');
       if (
         typeof data === 'string' ||
         data instanceof String ||
@@ -22,7 +19,6 @@ function ImageLightBox({ data, trigger }) {
         console.log('string');
         setImages([data]);
       }
-      console.log('outside');
 
       return setImages(data);
     }
@@ -38,7 +34,6 @@ function ImageLightBox({ data, trigger }) {
     setPhotoIndex((photoIndex + images.length - 1) % images.length);
   };
 
-  console.log('images', images);
   return (
     <div>
       {images.length > 0 && (

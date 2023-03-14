@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators, Types } from '@Actions/projectMap';
-import Lightbox from 'react-18-image-lightbox';
+import Lightbox from 'react-image-lightbox';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Spinner from '@Components/common/Spinner/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { saveAs } from 'file-saver';
 import isEmpty from '@Utils/isEmpty';
-// import 'react-18-image-lightbox/style.css';
-import './lightbox.css';
+import 'react-image-lightbox/style.css';
+// import './lightbox.css';
 
 const { setImageModal } = CommonCreators;
 const { getFeatureImageRequest, setProjectMapState } = Creators;

@@ -123,21 +123,35 @@ export default function DrawTool({
       style: (feature, resolution) => {
         const geometry = feature.getGeometry();
         const coordinates = geometry.getCoordinates();
-        const start = coordinates;
-        const end = start[start.length - 1];
         const styles = [getStyles({ style, feature, resolution })];
-        styles.push(
-          new Style({
-            geometry: new Point(end),
-            image: new Circle({
-              radius: +style.lineThickness + 1 || 4,
-              fill: new Fill({
-                color: '#FFA500',
+        geometry.forEachSegment((start, end) => {
+          styles.push(
+            new Style({
+              geometry: new Point(end),
+              image: new Circle({
+                radius: +style.lineThickness + 1 || 4,
+                fill: new Fill({
+                  color: '#FFA500',
+                }),
               }),
             }),
-          }),
-        );
+          );
+        });
         return styles;
+        // const start = coordinates;
+        // const end = start[start.length - 1];
+        // styles.push(
+        //   new Style({
+        //     geometry: new Point(end),
+        //     image: new Circle({
+        //       radius: +style.lineThickness + 1 || 4,
+        //       fill: new Fill({
+        //         color: '#FFA500',
+        //       }),
+        //     }),
+        //   }),
+        // );
+        // return styles;
       },
     });
     layerUid.current = getUid(vectorLyr);

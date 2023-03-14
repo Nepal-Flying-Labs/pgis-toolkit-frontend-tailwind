@@ -130,7 +130,7 @@ export default function DrawTool({
           new Style({
             geometry: new Point(end),
             image: new Circle({
-              radius: 4,
+              radius: +style.lineThickness + 1 || 4,
               fill: new Fill({
                 color: '#FFA500',
               }),

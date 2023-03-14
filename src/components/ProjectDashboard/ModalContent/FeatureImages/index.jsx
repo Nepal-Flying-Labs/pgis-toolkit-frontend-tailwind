@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators, Types } from '@Actions/projectMap';
-import Lightbox from 'react-18-image-lightbox';
+import Lightbox from 'react-image-lightbox';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Spinner from '@Components/common/Spinner/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { saveAs } from 'file-saver';
 import isEmpty from '@Utils/isEmpty';
-// import 'react-18-image-lightbox/style.css';
+import 'react-image-lightbox/style.css';
 import './lightbox.css';
 
 const { setImageModal } = CommonCreators;
@@ -31,8 +31,8 @@ const FeatureImages = () => {
   }, [dispatch, selectedFeatureId]);
 
   const handleModalClose = () => {
-    dispatch(setImageModal(false));
     dispatch(setProjectMapState({ selectedFeatureId: null, featureImage: [] }));
+    dispatch(setImageModal(false));
   };
 
   const handleDownloadImage = () => {
@@ -68,7 +68,7 @@ const FeatureImages = () => {
         setPhotoIndex((photoIndex + 1) % featureImage.length)
       }
       reactModalStyle={{
-        overlay: { zIndex: '99999999' },
+        overlay: { zIndex: '999999' },
       }}
       toolbarButtons={
         !isEmpty(featureImage)

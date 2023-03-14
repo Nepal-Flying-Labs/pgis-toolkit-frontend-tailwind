@@ -91,6 +91,14 @@ export default function DrawTool({
     setDrawType(selectedDrawType);
   }, [enable, selectedDrawType]);
 
+  useEffect(() => {
+    if (enable) {
+      addInteraction(select);
+    } else {
+      removeInteraction(select);
+    }
+  }, [select, enable, addInteraction, removeInteraction]);
+
   // useEffect(() => {
   //   if (!vectorLayer) return;
   //   select.on('select', ({ selected }) => {
@@ -266,8 +274,10 @@ export default function DrawTool({
     );
     if (!selectedFeature) return;
     source.removeFeature(selectedFeature);
-    const featureGeojson = getFeaturesGeojson(source.getFeatures());
-    onChange(featureGeojson);
+    if (source.getFeatures().length) {
+      const featureGeojson = getFeaturesGeojson(source.getFeatures());
+      onChange(featureGeojson);
+    }
     if (allFeatures.length === 1) {
       setModifiedFeature(null);
       setVectorLayer(null);

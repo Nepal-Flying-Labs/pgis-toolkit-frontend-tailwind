@@ -2,6 +2,7 @@ import { featureCollection } from '@turf/helpers';
 import lineSplit from '@turf/line-split';
 import pointToLineDistance from '@turf/point-to-line-distance';
 import flatten from '@turf/flatten';
+import truncate from '@turf/truncate';
 
 export default function splitLineString(line, splitter) {
   const lineFeatures = line.features.map(feat => {
@@ -22,7 +23,7 @@ export default function splitLineString(line, splitter) {
     closestLine = lineFeat;
     closestLineIndex = index;
   });
-  const split = lineSplit(closestLine, splitter);
+  const split = lineSplit(closestLine, truncate(splitter));
   if (lineFeatures.length === 1) {
     return split;
   }

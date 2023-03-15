@@ -181,11 +181,21 @@ export default function StepTwo() {
                             </p>
                           </div>
                           <span>
-                            {status === 'error' || status === 'success' ? (
+                            {status === 'success' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">
-                                <b>{errorData}</b>{' '}
-                                {errorData > 1 ? 'errors' : 'error'} out of{' '}
-                                <b>{totalData}</b> data
+                                No error
+                              </p>
+                            ) : status === 'error' ? (
+                              <p className="naxatw-text-body-lg naxatw-text-grey-800">
+                                {errorData === 0 ? (
+                                  'No error'
+                                ) : (
+                                  <>
+                                    <b>{errorData}</b>{' '}
+                                    {errorData > 1 ? 'errors' : 'error'} out of{' '}
+                                    <b>{totalData}</b> data
+                                  </>
+                                )}
                               </p>
                             ) : status === 'fix-failed' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">

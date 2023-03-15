@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import Input from '@Components/common/Input';
@@ -102,6 +102,7 @@ const source = [
 ];
 
 const AddAttributes = () => {
+  const warningRef = useRef(true);
   const [errorFields, setErrorFields] = useState([]);
   const { tabname } = useParams();
   const dispatch = useDispatch();
@@ -333,6 +334,13 @@ const AddAttributes = () => {
     [dispatch],
   );
 
+  const handleFocus = () => {
+    if (warningRef.current) {
+      dispatch(togglePromptDialog('dropdown-edit-warning'));
+      warningRef.current = false;
+    }
+  };
+
   return (
     <div className="naxatw-container ">
       <div className="naxatw-w-[41.875rem] naxatw-mx-auto naxatw-px-7 naxatw-py-5">
@@ -461,6 +469,7 @@ const AddAttributes = () => {
                               name={`${option.id}`}
                               value={option.name}
                               onChange={handleOptionChange}
+                              onFocus={handleFocus}
                             />
                           </div>
                           {formValues.length > 2 && (

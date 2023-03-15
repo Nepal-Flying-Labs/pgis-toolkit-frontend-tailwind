@@ -55,6 +55,7 @@ import SignoutWarning from '@Components/OrganizationDashboard/ModalContent/Signo
 import DownloadTemplate from '@Components/ProjectDashboard/ModalContent/DownloadTemplate/index';
 import UploadBulkImage from '@Components/ProjectDashboard/ModalContent/UploadBulkImage/index';
 import DeleteDropdownOption from '@Components/ProjectDashboard/ModalContent/DeleteDropdownOption/index';
+import DropdownEditWarning from '@Components/ProjectDashboard/ModalContent/DropdownEditWarning/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -415,6 +416,12 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <DeleteDropdownOption />,
+      };
+
+    case 'dropdown-edit-warning':
+      return {
+        title: '',
+        content: <DropdownEditWarning />,
       };
 
     default:

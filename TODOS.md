@@ -88,5 +88,5 @@
 - [ ] start point click auto save (analysis origin point input)
 
 - [x] delete only selected feature
-- [ ] go back from manual fix, autofix and come back, the state is still there
+- [x] go back from manual fix, autofix and come back, the state is still there (raj)
 - [ ] delete feature in dropdown option

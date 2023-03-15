@@ -10,6 +10,7 @@ import {
   Creators as ProjectMapCreators,
   Types as ProjectMapTypes,
 } from '@Actions/projectMap';
+import { Creators as CommonCreators } from '@Actions/common';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import useForm from '@Hooks/useForm';
 import Toggle from '@Components/common/Toggle/index';
@@ -18,6 +19,8 @@ import isEmpty from '@Utils/isEmpty';
 import toastActions from '@Actions/toast';
 import Spinner from '@Components/common/Spinner/index';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
+
+const { togglePromptDialog } = CommonCreators;
 
 const {
   postTemplateAttributeRequest,
@@ -259,9 +262,14 @@ const AddAttributes = () => {
     ]);
   };
 
-  const handleDeleteOption = id => {
-    const newData = formValues.filter(data => data.id !== id);
-    setFormValues(newData);
+  const handleDeleteOption = (id, flag) => {
+    if (individualAttribute && flag === 'patch') {
+      dispatch(setProjectMapState({ selectedDropdownOptionId: id }));
+      dispatch(togglePromptDialog('delete-dropdown-option'));
+    } else {
+      const newData = formValues.filter(data => data.id !== id);
+      setFormValues(newData);
+    }
   };
 
   // add form fields for dropdown in post
@@ -440,7 +448,7 @@ const AddAttributes = () => {
                 <div className="naxatw-max-h-[200px] naxatw-space-y-2 naxatw-overflow-y-auto scrollbar naxatw-px-3 naxatw-py-2">
                   {formValues &&
                     formValues.map((option, index) => (
-                      <div>
+                      <div key={option.id}>
                         <div
                           key={option.id}
                           className="naxatw-flex naxatw-gap-x-1 naxatw-items-end"
@@ -455,12 +463,14 @@ const AddAttributes = () => {
                               onChange={handleOptionChange}
                             />
                           </div>
-                          {option.flag === 'post' && !option.edit && (
+                          {formValues.length > 2 && (
                             <MaterialIcon
                               name="delete_outline"
                               className="naxatw-text-[#FF0F0F] naxatw-text-icon-md"
                               wrapperClassName="naxatw-icon-btn naxatw-icon-btn-md naxatw-cursor-pointer naxatw-basis-1/12"
-                              onIconClick={() => handleDeleteOption(option.id)}
+                              onIconClick={() =>
+                                handleDeleteOption(option.id, option.flag)
+                              }
                             />
                           )}
                         </div>

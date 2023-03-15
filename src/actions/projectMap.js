@@ -157,6 +157,10 @@ export const { Types, Creators } = createActions(
     getFeatureImageRequest: ['id'],
     getFeatureImageSuccess: ['payload'],
     getFeatureImageFailure: null,
+
+    deleteDropdownOptionRequest: ['id'],
+    deleteDropdownOptionSuccess: ['payload'],
+    deleteDropdownOptionFailure: null,
   },
   { prefix: 'projectMap/' },
 );

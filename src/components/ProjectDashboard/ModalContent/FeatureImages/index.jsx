@@ -7,6 +7,9 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import Spinner from '@Components/common/Spinner/index';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import { saveAs } from 'file-saver';
+import isEmpty from '@Utils/isEmpty';
+import 'react-image-lightbox/style.css';
+import './lightbox.css';
 
 const { setImageModal } = CommonCreators;
 const { getFeatureImageRequest, setProjectMapState } = Creators;
@@ -28,8 +31,8 @@ const FeatureImages = () => {
   }, [dispatch, selectedFeatureId]);
 
   const handleModalClose = () => {
-    dispatch(setImageModal(false));
     dispatch(setProjectMapState({ selectedFeatureId: null, featureImage: [] }));
+    dispatch(setImageModal(false));
   };
 
   const handleDownloadImage = () => {
@@ -65,19 +68,23 @@ const FeatureImages = () => {
         setPhotoIndex((photoIndex + 1) % featureImage.length)
       }
       reactModalStyle={{
-        overlay: { zIndex: '99999999' },
+        overlay: { zIndex: '999999' },
       }}
-      toolbarButtons={[
-        <div title="Download">
-          <MaterialIcon
-            name="download"
-            className="naxatw-text-icon-md naxatw-text-grey-600 naxatw-cursor-pointer hover:naxatw-text-white naxatw-pb-2 naxatw-pr-3"
-            onIconClick={handleDownloadImage}
-          />
-        </div>,
-      ]}
+      toolbarButtons={
+        !isEmpty(featureImage)
+          ? [
+              <div title="Download">
+                <MaterialIcon
+                  name="download"
+                  className="naxatw-text-icon-md naxatw-text-grey-600 naxatw-cursor-pointer hover:naxatw-text-white naxatw-pb-2 naxatw-pr-3"
+                  onIconClick={handleDownloadImage}
+                />
+              </div>,
+            ]
+          : []
+      }
       imageLoadErrorMessage={
-        <h4 className="naxatw-text-white">Feature image not found</h4>
+        <h4 className="naxatw-text-white">Image not found</h4>
       }
     />
   );

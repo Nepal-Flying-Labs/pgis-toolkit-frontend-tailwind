@@ -25,37 +25,20 @@ export default function PopupUI({ data = {} }) {
     return { ...obj, [name]: value };
   }, {});
 
-  const { Name, Image, Url, ...filterData } = popupData;
-
   return (
-    <>
-      {Name && <h4>{Name}</h4>}
-
-      <div className="naxatw-max-h-72 naxatw-overflow-y-auto scrollbar">
-        {(Image || Url) && (
-          <div className="naxatw-py-2">
-            <img
-              src={Image || Url}
-              className="naxatw-h-[200px] naxatw-w-full"
-              alt=""
-            />
-          </div>
-        )}
-        <ul className=" naxatw-flex naxatw-flex-col naxatw-gap-2 ">
-          {filterData &&
-            Object.keys(filterData).map(key => (
-              <li
-                key={key}
-                className="naxatw-flex naxatw-items-center naxatw-text-grey-900"
-              >
-                <p className="naxatw-w-1/2 naxatw-text-grey-900">{key}</p>
-                <p className="naxatw-text-grey-900 naxatw-w-1/2">
-                  {filterData[key]?.toString() || '-'}
-                </p>
-              </li>
-            ))}
-        </ul>
-      </div>
-    </>
+    <ul className=" naxatw-flex naxatw-flex-col naxatw-gap-2 ">
+      {popupData &&
+        Object.keys(popupData).map(key => (
+          <li
+            key={key}
+            className="naxatw-flex naxatw-items-center naxatw-text-grey-900"
+          >
+            <p className="naxatw-w-1/2 naxatw-text-grey-900">{key}</p>
+            <p className="naxatw-text-grey-900 naxatw-w-1/2">
+              {popupData[key]?.toString() || '-'}
+            </p>
+          </li>
+        ))}
+    </ul>
   );
 }

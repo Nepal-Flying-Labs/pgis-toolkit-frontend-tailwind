@@ -87,6 +87,9 @@ export default function StandardStyling() {
           </a>
         )}
       </div>
+      <p className="naxatw-text-body-md">
+        Note: You may upload locally stored icons in jpeg, png or svg format.
+      </p>
 
       {hasIcon && (
         <Input

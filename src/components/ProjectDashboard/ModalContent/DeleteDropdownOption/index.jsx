@@ -27,11 +27,11 @@ export default function DeleteDropdownOption() {
 
   return (
     <div>
-      <div className="naxatw-mb-5">
+      <div className="naxatw-mb-5 naxatw-space-y-3">
         <h4>Are you sure to delete ?</h4>
         <p className="naxatw-text-body-lg">
           Deleting this data option will remove this data from all the feature
-          from given layer
+          from given layer.
         </p>
       </div>
       <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-gap-2">

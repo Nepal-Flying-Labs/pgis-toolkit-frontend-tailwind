@@ -199,6 +199,14 @@ export default function BufferPopup() {
     }
   }, [getPng, selectedPOIName]);
 
+  function displayArrayList(list) {
+    const listData = list.map(item => item);
+    const finalName = listData?.pop();
+    return listData.length
+      ? `${listData.join(', ')} & ${finalName}`
+      : finalName;
+  }
+
   return (
     <div
       className="naxatw-absolute naxatw-top-4 naxatw-right-4  naxatw-z-10
@@ -316,7 +324,7 @@ export default function BufferPopup() {
                     <div className="naxatw">
                       <p className="naxatw-text-body-lg ">Selected POI</p>
                       <p className="naxatw-text-body-lg naxatw-font-bold">
-                        {selectedPOI.join(', ') || '-'}
+                        {displayArrayList(selectedPOI) || '-'}
                       </p>
                     </div>
                   </div>

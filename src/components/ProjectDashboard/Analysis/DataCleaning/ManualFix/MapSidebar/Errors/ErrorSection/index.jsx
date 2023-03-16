@@ -12,6 +12,7 @@ import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import Spinner from '@Components/common/Spinner/index';
+import { isEmpty } from '@Utils/commonUtils';
 
 const {
   setManualFixState,
@@ -164,7 +165,7 @@ export default function ErrorSection() {
                           onClick={() => {
                             dispatch(
                               setManualFixState({
-                                selectedError: feature,
+                                selectedError: { ...feature, type },
                               }),
                             );
                             dispatch(togglePromptDialog('delete-error'));
@@ -239,7 +240,7 @@ export default function ErrorSection() {
                   ))}
                 </div>
               ))}
-              {type === 'null' && (
+              {type === 'null' && !isEmpty(features) && (
                 <div className="naxatw-flex naxatw-justify-center">
                   <Button
                     className="naxatw-text-delete_btn"

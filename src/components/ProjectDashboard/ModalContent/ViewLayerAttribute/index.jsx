@@ -10,7 +10,7 @@ import SortingContainer from '@Components/common/SortingContainer/index';
 import DropdownOptions from '@Components/common/DropdownOptions/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import '@Components/OrganizationDashboard/User/Users/index.css';
-import TableSkeleton from '@Components/common/TableSkeleton/index';
+// import TableSkeleton from '@Components/common/TableSkeleton/index';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import {
   getSelectedRange,
@@ -20,6 +20,7 @@ import Pagination from '@Components/common/Pagination';
 import { isEmpty } from '@Utils/commonUtils';
 import { boundaryLayerName } from '@src/constants/map';
 import Button from '@Components/common/Button/index';
+import TableSkeleton2 from '@Components/common/TableSkeleton2/index';
 
 const {
   getLayerAttributeRequest,
@@ -235,14 +236,14 @@ export default function ViewLayerAttribute() {
           onChange={handleSearch}
         />
       </div>
-
       <div
-        className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative
-          naxatw-w-full naxatw-max-h-[calc(100vh-19rem)] naxatw-min-h-[calc(100vh-19rem)] 
+        className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative 
+          naxatw-w-full naxatw-max-h-[calc(100vh-19rem)] naxatw-min-h-[calc(100vh-19rem)]
           xl:naxatw-max-h-[calc(100vh-25rem)] xl:naxatw-min-h-[calc(100vh-25rem)]"
       >
         {loading ? (
-          <TableSkeleton itemNumber={5} />
+          // <TableSkeleton itemNumber={5} />
+          <TableSkeleton2 />
         ) : (
           <Table
             data={attributeList || []}
@@ -312,7 +313,7 @@ export default function ViewLayerAttribute() {
                   <Button
                     iconLeft="visibility"
                     iconClassName="material-icons naxatw-text-[18px]"
-                    className="naxatw-btn-sm naxatw-btn-secondary naxatw-btn-noborder naxatw-text-secondary-400"
+                    className="naxatw-btn-sm !naxatw-w-fit naxatw-btn-secondary naxatw-btn-noborder naxatw-text-secondary-400"
                     onClick={() => {
                       dispatch(
                         setProjectMapState({ selectedFeatureId: row.id }),

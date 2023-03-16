@@ -129,7 +129,8 @@ export function getModalContent(content) {
       return {
         title: 'Layer Attribute',
         content: <ViewLayerAttribute />,
-        className: '!naxatw-w-[calc(100vw-10rem)]',
+        className:
+          '!naxatw-min-w-[calc(100vw-70rem)] !naxatw-max-w-[calc(100vw-10rem)] !naxatw-w-fit',
       };
     case 'view-query-attribute':
       return {

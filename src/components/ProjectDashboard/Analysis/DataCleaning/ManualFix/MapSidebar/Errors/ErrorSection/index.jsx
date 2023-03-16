@@ -68,6 +68,25 @@ export default function ErrorSection() {
         );
       },
     },
+    {
+      id: 'delete-feature',
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-delete_btn">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-delete_btn">
+            Delete Feature
+          </p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(
+          setManualFixState({
+            selectedError: { ...data },
+          }),
+        );
+        dispatch(togglePromptDialog('delete-error'));
+      },
+    },
   ];
 
   return (

@@ -254,11 +254,14 @@ const handleErrorCheckbox = (state, action) =>
   });
 
 const deleteFeatureSuccess = state => {
-  const { id, type } = state.manualFix.selectedError;
-  const errorFeaturesData = {
-    ...state.errorFeaturesData,
-    [type]: state.errorFeaturesData[type].filter(item => item.id !== id),
-  };
+  const { id } = state.manualFix.selectedError;
+  const errorFeaturesData = Object.entries(state.errorFeaturesData).reduce(
+    (obj, [key, val]) => ({
+      ...obj,
+      [key]: val.filter(item => item.id !== id),
+    }),
+    {},
+  );
   return {
     ...state,
     errorFeaturesData,

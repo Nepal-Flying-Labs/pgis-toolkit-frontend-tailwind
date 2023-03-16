@@ -7,22 +7,28 @@
 ### FEATURES
 
 - [x] hand icon while edit hover
-- [ ] zoom to feature on attr table
-- [ ] data query value search
-- [ ] format date/time in all sections (table etc)
-- [ ] boundary zindex least
-- [ ] label in map
+- [ ] boundary zindex least (hold)
+- [ ] label in map (raj)
 
-- [ ] Implement User Permission and role (individual button needs to be reviewed) (sudeep)
+- [x] data query value search (sudeep)
+- [x] data input in summary poi in selected poi (need & )
 - [ ] In alternative route input, UI redesign (+, -) (sudeep)
-- [ ] popup image view (sudeep)
+- [x] popup image view (sudeep) (style of download button in lightbox)
+- [x] dropdown option move below option => direction prop (design) (sudeep new direction and animation)
+- [x] x/y label bold in chart (sudeep )
+- [ ] attribute table on less data design (ward 1 ditch layer /sudeep)
+- [ ] zoom to feature on attr table (sudeep)
+- [ ] scroll to input field for validation (research/sudeep)
+- [ ] handle date data format (component wise) in all section
+- [ ] format date/time in all sections (table etc) (sudeep)
+- [ ] Implement User Permission and role (individual button needs to be reviewed) (sudeep)
 
 - [ ] download layer not working (raj)
 
 ### ISSUES
 
 - [ ] Check error text review (data cleaning)
-- [ ] After data upload is successful, repeatative toast message is shown
+- [ ] After data upload is successful, repeatative toast message is shown (hold)
 - [ ] Cross icon for processing execution
 - [ ] Project Boundary line color not displaying on map.
 
@@ -43,16 +49,12 @@
 
 - [ ] show vertex while editing
 - [ ] show popup for feature
-- [ ] scroll to input field for validation
 
 ### ISSUES 24 FEB
 
 - [ ] source => dropdown => other organizations(specify) | primary/secondary (upen dai)
-- [x] help box box shadow (sudeep)
-- [x] input info in buffer analysis result (sudeep)
-- [x] data query result title min width (sudeep)
 
-- [x] buffer analysis => select layer only, implement result window (hold)
+- [x] buffer analysis => select layer only, implement result window (backend needs to be implemented)
 
 ### ISSUES WBR
 
@@ -62,8 +64,6 @@
 - [ ] 5.8 zoom to selected layer choice? highlight query results yellow?
 - [ ] cancel layer upload?
 
-- [x] dropdown option move below option => direction prop (design) (sudeep)
-
 - [ ] movable popup? (feature request/hold)
 
 - [ ] upload your datasets additional menu => (upen dai/hold)
@@ -72,17 +72,12 @@
 - [ ] undo issue, redo?
 
 - [ ] feat: give point name while drawing (next phase)
-- [ ] buffer origin point now visible on map (sudeep/raj)
 
-- [x] measure tool in analysis modules (sudeep)
-- [x] export to excel in detail/summary (sudeep)
-- [x] x/y label in chart (sudeep)
 <!-- - [ ] Clicking on "Visualize" does not do anything? -->
 
-- [x] loading while uploading bulk image
-
 ### NEW TASKS
-- [x] add icon/style change issue  
+
+- [x] add icon/style change issue
 - [x] query result highlight in map
 - [ ] bbox negative (raj) [https://pgis.naxa.com.np/api/maps/project_theme_layers/?theme=640]
 - [ ] start point click auto save (analysis origin point input)

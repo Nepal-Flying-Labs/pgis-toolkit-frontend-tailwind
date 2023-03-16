@@ -174,7 +174,7 @@ const CustomPopup = ({
               <div className="naxatw-py-2 naxatw-relative naxatw-group">
                 <img
                   src={popupData.image || popupData.url}
-                  className="naxatw-h-[200px] naxatw-w-full "
+                  className="naxatw-h-[200px] naxatw-w-full naxatw-object-cover"
                   alt=""
                 />
                 <div

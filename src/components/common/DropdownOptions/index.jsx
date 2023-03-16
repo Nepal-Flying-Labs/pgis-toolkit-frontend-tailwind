@@ -14,6 +14,10 @@ function getPosition(direction) {
       return 'naxatw-top-[40px] naxatw-left-[0px]';
     case 'right-top':
       return 'naxatw-top-[2px] naxatw-left-[40px]';
+    case 'top-left':
+      return 'naxatw-bottom-[40px] naxatw-right-[0px]';
+    case 'top-right':
+      return 'naxatw-bottom-[40px] naxatw-left-[0px]';
     default:
       return 'naxatw-top-[2px] naxatw-right-[40px]';
   }

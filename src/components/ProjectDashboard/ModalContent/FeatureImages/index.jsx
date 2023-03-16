@@ -76,7 +76,8 @@ const FeatureImages = () => {
               <div title="Download">
                 <MaterialIcon
                   name="download"
-                  className="naxatw-text-icon-md naxatw-text-grey-600 naxatw-cursor-pointer hover:naxatw-text-white naxatw-pb-2 naxatw-pr-3"
+                  className="naxatw-text-icon-md naxatw-text-[#B8B8B8] naxatw-cursor-pointer hover:naxatw-text-white 
+                              naxatw-pb-2.5 naxatw-pr-3"
                   onIconClick={handleDownloadImage}
                 />
               </div>,

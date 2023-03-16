@@ -54,6 +54,8 @@ import SaveManualFix from '@Components/ProjectDashboard/Analysis/ModalContent/Sa
 import SignoutWarning from '@Components/OrganizationDashboard/ModalContent/SignoutWarning';
 import DownloadTemplate from '@Components/ProjectDashboard/ModalContent/DownloadTemplate/index';
 import UploadBulkImage from '@Components/ProjectDashboard/ModalContent/UploadBulkImage/index';
+import DeleteDropdownOption from '@Components/ProjectDashboard/ModalContent/DeleteDropdownOption/index';
+import DropdownEditWarning from '@Components/ProjectDashboard/ModalContent/DropdownEditWarning/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -127,7 +129,8 @@ export function getModalContent(content) {
       return {
         title: 'Layer Attribute',
         content: <ViewLayerAttribute />,
-        className: '!naxatw-w-[calc(100vw-10rem)]',
+        className:
+          '!naxatw-min-w-[calc(100vw-70rem)] !naxatw-max-w-[calc(100vw-10rem)] !naxatw-w-fit',
       };
     case 'view-query-attribute':
       return {
@@ -408,6 +411,18 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <SignoutWarning />,
+      };
+
+    case 'delete-dropdown-option':
+      return {
+        title: '',
+        content: <DeleteDropdownOption />,
+      };
+
+    case 'dropdown-edit-warning':
+      return {
+        title: '',
+        content: <DropdownEditWarning />,
       };
 
     default:

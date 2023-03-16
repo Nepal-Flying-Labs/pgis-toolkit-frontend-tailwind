@@ -12,6 +12,7 @@ import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import Spinner from '@Components/common/Spinner/index';
+import { isEmpty } from '@Utils/commonUtils';
 
 const {
   setManualFixState,
@@ -65,6 +66,25 @@ export default function ErrorSection() {
             type: data.type,
           }),
         );
+      },
+    },
+    {
+      id: 'delete-feature',
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-delete_btn">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-delete_btn">
+            Delete Feature
+          </p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(
+          setManualFixState({
+            selectedError: { ...data },
+          }),
+        );
+        dispatch(togglePromptDialog('delete-error'));
       },
     },
   ];
@@ -164,7 +184,7 @@ export default function ErrorSection() {
                           onClick={() => {
                             dispatch(
                               setManualFixState({
-                                selectedError: feature,
+                                selectedError: { ...feature, type },
                               }),
                             );
                             dispatch(togglePromptDialog('delete-error'));
@@ -239,7 +259,7 @@ export default function ErrorSection() {
                   ))}
                 </div>
               ))}
-              {type === 'null' && (
+              {type === 'null' && !isEmpty(features) && (
                 <div className="naxatw-flex naxatw-justify-center">
                   <Button
                     className="naxatw-text-delete_btn"

@@ -62,7 +62,7 @@ export default function StepTwo() {
         {data.map(layer => {
           const errorState = errorStates[layer.id];
           const isLayerCheckingError =
-            errorState && errorState.some(item => item.status === 'waiting');
+            errorState && errorState.some(item => item.status === 'checking');
           const hasError = errorState?.some(item => item.errorData);
           return (
             <Accordion

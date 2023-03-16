@@ -254,11 +254,14 @@ const handleErrorCheckbox = (state, action) =>
   });
 
 const deleteFeatureSuccess = state => {
-  const { id, type } = state.manualFix.selectedError;
-  const errorFeaturesData = {
-    ...state.errorFeaturesData,
-    [type]: state.errorFeaturesData[type].filter(item => item.id !== id),
-  };
+  const { id } = state.manualFix.selectedError;
+  const errorFeaturesData = Object.entries(state.errorFeaturesData).reduce(
+    (obj, [key, val]) => ({
+      ...obj,
+      [key]: val.filter(item => item.id !== id),
+    }),
+    {},
+  );
   return {
     ...state,
     errorFeaturesData,
@@ -338,6 +341,14 @@ const explodeFeatureSuccess = (state, action) =>
     explodedFeature.fixed = true;
     draft.manualFix.explodingFeatureIds =
       draft.manualFix.explodingFeatureIds.filter(item => item !== featureId);
+    draft.errorFeaturesData = Object.entries(draft.errorFeaturesData).reduce(
+      (obj, [key, val]) => ({
+        ...obj,
+        [key]:
+          key === 'multipart' ? val : val.filter(item => item.id !== featureId),
+      }),
+      {},
+    );
   });
 
 const explodeFeatureFailure = (state, action) =>

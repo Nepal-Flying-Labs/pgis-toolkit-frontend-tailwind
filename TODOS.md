@@ -81,3 +81,7 @@
 - [x] query result highlight in map
 - [ ] bbox negative (raj) [https://pgis.naxa.com.np/api/maps/project_theme_layers/?theme=640]
 - [ ] start point click auto save (analysis origin point input)
+
+- [x] delete only selected feature
+- [x] go back from manual fix, autofix and come back, the state is still there (raj)
+- [ ] delete feature in dropdown option

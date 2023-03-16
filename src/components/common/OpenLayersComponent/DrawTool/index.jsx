@@ -30,6 +30,7 @@ import {
   SplitFeature,
   // RotateFeature,
 } from './modules';
+import getFeaturesGeojson from './helpers/getFeaturesGeojson';
 
 const source = new VectorSource();
 
@@ -62,6 +63,7 @@ export default function DrawTool({
   const [drawType, setDrawType] = useState(null);
   const [modifiedStates, setModifiedStates] = useState([]);
   const [modifiedFeature, setModifiedFeature] = useState(null);
+  const selectedFeatureUId = useRef(null);
   const layerUid = useRef(null);
 
   const handleFeatureEdit = useCallback(
@@ -89,6 +91,21 @@ export default function DrawTool({
     setDrawType(selectedDrawType);
   }, [enable, selectedDrawType]);
 
+  useEffect(() => {
+    if (enable) {
+      addInteraction(select);
+    } else {
+      removeInteraction(select);
+    }
+  }, [select, enable, addInteraction, removeInteraction]);
+
+  // useEffect(() => {
+  //   if (!vectorLayer) return;
+  //   select.on('select', ({ selected }) => {
+  //     console.log(selected, 'selectedx');
+  //   });
+  // }, [select, vectorLayer]);
+
   // add geojson for edit feature
   useEffect(() => {
     if (!map || !enable || !geojson) return;
@@ -106,21 +123,35 @@ export default function DrawTool({
       style: (feature, resolution) => {
         const geometry = feature.getGeometry();
         const coordinates = geometry.getCoordinates();
-        const start = coordinates;
-        const end = start[start.length - 1];
         const styles = [getStyles({ style, feature, resolution })];
-        styles.push(
-          new Style({
-            geometry: new Point(end),
-            image: new Circle({
-              radius: 3,
-              fill: new Fill({
-                color: '#333333',
+        geometry.forEachSegment((start, end) => {
+          styles.push(
+            new Style({
+              geometry: new Point(end),
+              image: new Circle({
+                radius: +style.lineThickness + 1 || 4,
+                fill: new Fill({
+                  color: '#FFA500',
+                }),
               }),
             }),
-          }),
-        );
+          );
+        });
         return styles;
+        // const start = coordinates;
+        // const end = start[start.length - 1];
+        // styles.push(
+        //   new Style({
+        //     geometry: new Point(end),
+        //     image: new Circle({
+        //       radius: +style.lineThickness + 1 || 4,
+        //       fill: new Fill({
+        //         color: '#FFA500',
+        //       }),
+        //     }),
+        //   }),
+        // );
+        // return styles;
       },
     });
     layerUid.current = getUid(vectorLyr);
@@ -249,10 +280,24 @@ export default function DrawTool({
   }, [enable, drawType, map, zIndex, style, vectorLayer]);
 
   const handleDelete = () => {
-    source.clear();
+    // const featureCount = source.getFeatures().length;
+    const selectedFeatures = select.getFeatures().getArray();
+    const allFeatures = source.getFeatures();
+    const selectedFeature = allFeatures.find(
+      item => item === selectedFeatures[0],
+    );
+    if (!selectedFeature) return;
+    source.removeFeature(selectedFeature);
+    if (source.getFeatures().length) {
+      const featureGeojson = getFeaturesGeojson(source.getFeatures());
+      onChange(featureGeojson);
+    }
+    if (allFeatures.length === 1) {
+      setModifiedFeature(null);
+      setVectorLayer(null);
+    }
+    // source.clear();
     // setModifiedStates((prev) => [...prev, null]);
-    setModifiedFeature(null);
-    setVectorLayer(null);
     // setDrawType('add-feature');
   };
 

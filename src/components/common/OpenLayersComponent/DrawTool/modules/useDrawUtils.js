@@ -24,6 +24,7 @@ export default function useDrawUtils({
       new Modify({
         features: select.getFeatures(),
         deleteCondition: event => shiftKeyOnly(event) && singleClick(event),
+        snapToPointer: true,
       }),
     [select],
   );

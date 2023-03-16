@@ -12,6 +12,8 @@ import {
   defaultStyles,
   getStyles,
 } from '@src/components/common/OpenLayersComponent/helpers/styleUtils';
+import { Circle, Fill, Style } from 'ol/style';
+import { Point } from 'ol/geom';
 import { isExtentValid } from '../helpers/layerUtils';
 
 const VectorLayer = ({
@@ -61,9 +63,25 @@ const VectorLayer = ({
 
   useEffect(() => {
     if (!vectorLayer || !style) return;
-    vectorLayer.setStyle((feature, resolution) =>
-      getStyles({ style, feature, resolution }),
-    );
+    vectorLayer.setStyle((feature, resolution) => {
+      return getStyles({ style, feature, resolution });
+      // const styles = [getStyles({ style, feature, resolution })];
+      // const geometry = feature.getGeometry();
+      // geometry.forEachSegment((start, end) => {
+      //   styles.push(
+      //     new Style({
+      //       geometry: new Point(end),
+      //       image: new Circle({
+      //         radius: 3,
+      //         fill: new Fill({
+      //           color: '#333333',
+      //         }),
+      //       }),
+      //     }),
+      //   );
+      // });
+      // return styles;
+    });
   }, [vectorLayer, style]);
 
   useEffect(() => {

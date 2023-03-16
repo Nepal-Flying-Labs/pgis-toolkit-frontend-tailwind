@@ -132,7 +132,7 @@ export default function ErrorSection() {
                     </div>
 
                     <div className="naxatw-flex">
-                      {type !== 'multipart' && (
+                      {!feature?.children && (
                         <span
                           className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
                           onClick={() => handleEditClick(type, feature)}

@@ -361,6 +361,7 @@ const resetManualFixState = state =>
   produce(state, draft => {
     draft.manualFix = initialState.manualFix;
     draft.selectedLayer = initialState.selectedLayer;
+    draft.errorFeaturesData = initialState.errorFeaturesData;
   });
 
 const getFeatureGeojsonSuccess = (state, action) =>

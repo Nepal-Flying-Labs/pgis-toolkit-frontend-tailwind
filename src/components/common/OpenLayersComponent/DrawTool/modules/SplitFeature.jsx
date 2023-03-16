@@ -55,6 +55,7 @@ export default function SplitFeature({
       const geojson = getFeaturesGeojson(layerFeatures);
       const splitterGeojson = point(lonlat);
       const splitx = splitLineString(geojson, splitterGeojson);
+      if (splitx.features.length === 1) return; // no split case
       const vectorSource = vectorLayer.getSource();
       vectorSource.clear();
       const features = new GeoJSON().readFeatures(splitx, {

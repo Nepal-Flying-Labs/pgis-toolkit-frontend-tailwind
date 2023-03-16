@@ -430,8 +430,8 @@ export default function BufferPopup() {
               show={showChart}
               title={`${selectedPOIName} Chart`}
               onClose={() => setShowChart(false)}
-              zIndex="111111"
-              className="naxatw-w-[62rem]"
+              zIndex={9999999}
+              className="naxatw-w-[62rem] !naxatw-z-20"
             >
               <div className="naxatw-flex naxatw-justify-end">
                 <Button
@@ -458,16 +458,29 @@ export default function BufferPopup() {
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" interval={0} tick={<CustomXAxisTick />}>
-                    <Label value="Category" offset={8} position="bottom" />
+                    <Label
+                      value="Category"
+                      offset={10}
+                      position="bottom"
+                      style={{
+                        textAnchor: 'middle',
+                        fontSize: '120%',
+                        fill: 'rgba(0, 0, 0, 0.87)',
+                      }}
+                    />
                   </XAxis>
-                  <YAxis
-                    allowDecimals={false}
-                    label={{
-                      value: `No of ${selectedPOIName}`,
-                      angle: -90,
-                      position: 'insideLeft',
-                    }}
-                  />
+                  <YAxis allowDecimals={false}>
+                    <Label
+                      value={`No of ${selectedPOIName}`}
+                      angle={-90}
+                      position="insideLeft"
+                      style={{
+                        textAnchor: 'middle',
+                        fontSize: '120%',
+                        fill: 'rgba(0, 0, 0, 0.87)',
+                      }}
+                    />
+                  </YAxis>
                   <Tooltip />
                   <Bar dataKey="value" fill="#8884d8" />
                 </BarChart>

@@ -341,6 +341,14 @@ const explodeFeatureSuccess = (state, action) =>
     explodedFeature.fixed = true;
     draft.manualFix.explodingFeatureIds =
       draft.manualFix.explodingFeatureIds.filter(item => item !== featureId);
+    draft.errorFeaturesData = Object.entries(draft.errorFeaturesData).reduce(
+      (obj, [key, val]) => ({
+        ...obj,
+        [key]:
+          key === 'multipart' ? val : val.filter(item => item.id !== featureId),
+      }),
+      {},
+    );
   });
 
 const explodeFeatureFailure = (state, action) =>

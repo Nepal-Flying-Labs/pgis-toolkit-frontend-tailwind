@@ -16,12 +16,16 @@ export default function HelpBox() {
   const startEditing = useSelector(
     state => state.dataCleaning.manualFix.startEditing,
   );
+  const sidebarContent = useSelector(
+    state => state.dataCleaning.manualFix.sidebarContent,
+  );
   const isDataFetching = useSelector(state =>
     checkIfLoading(state, [Types.GET_FEATURES_GEOJSON_REQUEST]),
   );
   const dispatch = useDispatch();
 
-  if (!selectedError?.type || startEditing) return '';
+  if (!selectedError?.type || sidebarContent === 'error-list' || startEditing)
+    return '';
 
   return (
     <div className="naxatw-absolute naxatw-w-full naxatw-top-4 naxatw-z-10 naxatw-flex naxatw-justify-center">

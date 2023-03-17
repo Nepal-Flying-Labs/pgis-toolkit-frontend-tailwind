@@ -192,7 +192,7 @@ export default function ViewLayerAttribute() {
       label: (
         <span className="naxatw-flex naxatw-items-center">
           <i className="material-icons naxatw-mr-2">zoom_in</i>
-          <p className="naxatw-text-body-lg ">Zoom to Layer</p>
+          <p className="naxatw-text-body-lg ">Zoom to Feature</p>
         </span>
       ),
       onClick: data => {

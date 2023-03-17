@@ -11,6 +11,7 @@ import CustomCalendar from '@Components/common/CustomCalendar/index';
 import { isEmpty } from '@Utils/commonUtils';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import SearchSelect from '@Components/common/SearchSelect/index';
+import { format } from 'date-fns';
 // import Select from '@Components/common/Select/index';
 import ImageUpload from '../ImageUpload/index';
 
@@ -252,12 +253,15 @@ export default function EditFeatureSection() {
                     />
                   ) : item.data_type === 'date' ? (
                     <CustomCalendar
+                      className="naxatw-bg-white"
                       startDate={new Date()}
-                      onChange={() => {
-                        // handleCustomChange(
-                        //   'start_date',
-                        //   format(date, 'yyyy-MM-dd'),
-                        // );
+                      onChange={date => {
+                        handleChange({
+                          target: {
+                            name: `${item.name}`,
+                            value: format(date, 'yyyy-MM-dd'),
+                          },
+                        });
                       }}
                       selected={values[`${item.name}`] || ''}
                     />

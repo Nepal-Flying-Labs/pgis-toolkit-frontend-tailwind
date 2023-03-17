@@ -20,7 +20,7 @@ const SearchList = ({
         ? d[dataKey].toLowerCase().includes(searchTerm.toLowerCase())
         : d[alternateKey]
         ? d[alternateKey].toLowerCase().includes(searchTerm.toLowerCase())
-        : d.toLowerCase().includes(searchTerm.toLowerCase()),
+        : d.toString().toLowerCase().includes(searchTerm.toLowerCase()),
     );
   }, [searchTerm, data, alternateKey, dataKey]);
 

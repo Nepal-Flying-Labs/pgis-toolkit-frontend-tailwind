@@ -16,7 +16,7 @@
 - [x] popup image view (sudeep) (style of download button in lightbox)
 - [x] dropdown option move below option => direction prop (design) (sudeep new direction and animation)
 - [x] x/y label bold in chart (sudeep )
-- [ ] attribute table on less data design (ward 1 ditch layer /sudeep)
+- [x] attribute table on less data design (ward 1 ditch layer /sudeep)
 - [ ] zoom to feature on attr table (sudeep)
 - [ ] scroll to input field for validation (research/sudeep)
 - [ ] handle date data format (component wise) in all section

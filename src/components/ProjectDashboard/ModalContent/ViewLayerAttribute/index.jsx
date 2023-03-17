@@ -35,6 +35,7 @@ const {
   setSelectedLayerAttribute,
   setProjectMapState,
   getAttributeFieldRequest,
+  getFeatureGeometryRequest,
 } = Creators;
 
 const { toggleModalTwo, togglePromptDialog, setImageModal } = CommonCreators;
@@ -186,6 +187,18 @@ export default function ViewLayerAttribute() {
   );
 
   const dropdownOptions = [
+    {
+      id: 3,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">zoom_in</i>
+          <p className="naxatw-text-body-lg ">Zoom to Layer</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(getFeatureGeometryRequest(data.id));
+      },
+    },
     {
       id: 1,
       label: (

@@ -36,6 +36,8 @@ import EditableLayer from '@Components/common/OpenLayersComponent/CustomLayer/Ed
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import { apiURL } from '@Services';
 import { FullScreen, defaults as defaultControls } from 'ol/control';
+import { Vector as VectorSource } from 'ol/source';
+import GeoJSON from 'ol/format/GeoJSON';
 import SidebarToggle from '../SidebarToggle';
 import Toolbox from '../Toolbox';
 import QueryResultPopup from '../QueryResultPopup';
@@ -83,6 +85,9 @@ export default function MapSection() {
   );
   const queryResults = useSelector(
     state => state.projectMap.dataQuery.queryResults,
+  );
+  const featureGeometry = useSelector(
+    state => state.projectMap.featureGeometry,
   );
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
@@ -138,6 +143,28 @@ export default function MapSection() {
     }
     dispatch(setZoomToLayerId(null));
   }, [dispatch, map, mapState, zoomToLayerId]);
+
+  // zoom to individual feature
+  useEffect(() => {
+    if (!map || !featureGeometry) return;
+    const vectorSource = new VectorSource({
+      features: new GeoJSON().readFeatures(featureGeometry),
+    });
+    const zoomExtent = transformExtent(
+      vectorSource.getExtent(),
+      'EPSG:4326',
+      'EPSG:3857',
+    );
+
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 2000,
+        constrainResolution: true,
+      });
+    }
+    dispatch(setProjectMapState({ featureGeometry: null }));
+  }, [dispatch, map, featureGeometry]);
 
   // refresh vectortile after layer edit
   useEffect(() => {

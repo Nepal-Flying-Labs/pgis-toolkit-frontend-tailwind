@@ -5,10 +5,11 @@ import toastActions from '@Actions/toast';
 import { mapStateSelector } from '@Selectors/projectMap';
 import Select from '@Components/common/Select';
 import Button from '@Components/common/Button';
-import Spinner from '@Components/common/Spinner';
+// import Spinner from '@Components/common/Spinner';
 import { dataQueryOperators } from '@src/constants/map';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
+import SearchList from '@Components/common/SearchList';
 
 const btnClassname =
   'naxatw-p-2 naxatw-h-10 naxatw-w-10 naxatw-rounded-lg naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-flex naxatw-items-center naxatw-justify-center naxatw-font-bold naxatw-text-[13px] naxatw-text-grey-800 naxatw-bg-grey-100';
@@ -205,7 +206,7 @@ export default function DataQuery() {
                 <span className="naxatw-text-body-btn naxatw-flex naxatw-justify-center">
                   Field
                 </span>
-                <div
+                {/* <div
                   className="naxatw-w-full naxatw-border naxatw-border-grey-400 
                   naxatw-rounded-lg naxatw-overflow-y-auto scrollbar naxatw-h-[13rem]"
                 >
@@ -225,7 +226,16 @@ export default function DataQuery() {
                       </li>
                     ))}
                   </ul>
-                </div>
+                </div> */}
+                <SearchList
+                  data={fields}
+                  dataKey="alias"
+                  alternateKey="name"
+                  onOptionClick={item => {
+                    handleFieldSelect(item.name);
+                    handleQuerySelect(item.name, 'field');
+                  }}
+                />
               </div>
 
               <div className="naxatw-w-full naxatw-space-y-4 naxatw-h-[13rem]">
@@ -269,7 +279,7 @@ export default function DataQuery() {
                 <span className="naxatw-text-body-btn naxatw-flex naxatw-justify-center">
                   Value
                 </span>
-                <div className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-overflow-y-auto scrollbar naxatw-h-[13rem]">
+                {/* <div className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg naxatw-overflow-y-auto scrollbar naxatw-h-[13rem]">
                   {isValuesFetching && (
                     <div className="naxatw-h-full naxatw-flex naxatw-items-center naxatw-justify-center">
                       <Spinner className="!naxatw-h-7 !naxatw-w-7 naxatw-fill-grey-500" />
@@ -298,7 +308,22 @@ export default function DataQuery() {
                       </li>
                     ))}
                   </ul>
-                </div>
+                </div> */}
+                <SearchList
+                  data={values || []}
+                  isLoading={isValuesFetching}
+                  onOptionClick={item => {
+                    if (!lastQueryItem?.operator) {
+                      dispatch(
+                        toastActions.error({
+                          message: 'Please select operator first.',
+                        }),
+                      );
+                      return;
+                    }
+                    handleQuerySelect(item, 'value');
+                  }}
+                />
               </div>
             </div>
 

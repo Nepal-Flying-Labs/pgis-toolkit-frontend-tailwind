@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types  */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
@@ -17,7 +18,7 @@ const {
   splitFeatureRequest,
 } = DataCleaningCreators;
 
-export default function EditFeatureSection() {
+export default function EditFeatureSection({ style }) {
   const sidebarContent = useSelector(
     state => state.dataCleaning.manualFix.sidebarContent,
   );
@@ -121,7 +122,7 @@ export default function EditFeatureSection() {
   }, [individualAttributeData, setValues, setRequiredFields]);
 
   return (
-    <div className="naxatw-flex naxatw-flex-col naxatw-gap-5">
+    <div className="naxatw-flex naxatw-flex-col naxatw-gap-5" style={style}>
       <div className="naxatw-flex naxatw-items-center">
         <h4>{sidebarContent === 'add-feature' ? 'Add' : 'Edit'} Feature</h4>
       </div>

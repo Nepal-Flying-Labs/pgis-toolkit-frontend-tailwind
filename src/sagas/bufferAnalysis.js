@@ -18,6 +18,7 @@ import {
   getBufferAnalysisData,
   getBufferAreaCollection,
   saveBufferLayer,
+  getFeatureCollectionMirror,
 } from '@Services/bufferAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { copyFeatures } from '@Services/dataCleaning';
@@ -155,6 +156,17 @@ export function* saveBufferLayerRequest({ payload }) {
   }
 }
 
+export function* getFeatureCollectionRequest({ params }) {
+  try {
+    const response = yield call(getFeatureCollectionMirror, params);
+    yield put(bufferAnalysisActions.getFeatureCollectionSuccess(response.data));
+  } catch (error) {
+    console.log(error, 'error');
+    yield put(bufferAnalysisActions.getFeatureCollectionFailure());
+    throw error;
+  }
+}
+
 function* bufferAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_BUFFER_ANALYSIS_REQUEST,
@@ -183,6 +195,10 @@ function* bufferAnalysisWatcher() {
   yield takeLatest(
     Types.SAVE_BUFFER_LAYER_REQUEST,
     withLoader(withErrorHandler(saveBufferLayerRequest)),
+  );
+  yield takeLatest(
+    Types.GET_FEATURE_COLLECTION_REQUEST,
+    withLoader(withErrorHandler(getFeatureCollectionRequest)),
   );
 }
 

@@ -56,6 +56,7 @@ import DownloadTemplate from '@Components/ProjectDashboard/ModalContent/Download
 import UploadBulkImage from '@Components/ProjectDashboard/ModalContent/UploadBulkImage/index';
 import DeleteDropdownOption from '@Components/ProjectDashboard/ModalContent/DeleteDropdownOption/index';
 import DropdownEditWarning from '@Components/ProjectDashboard/ModalContent/DropdownEditWarning/index';
+import ViewAnalysisDetails from '@Components/ProjectDashboard/ModalContent/ViewAnalysisDetails/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -272,6 +273,12 @@ export function getModalContent(content) {
         content: <UploadBulkImage />,
         subtitle:
           'USAFIRI allows you to bulk upload images for a layer in zip file format.',
+      };
+
+    case 'view-analysis-details':
+      return {
+        title: 'Analysis Details',
+        content: <ViewAnalysisDetails />,
       };
     default:
       return {

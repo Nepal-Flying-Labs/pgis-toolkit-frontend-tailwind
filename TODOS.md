@@ -12,14 +12,14 @@
 
 - [x] data query value search (sudeep)
 - [x] data input in summary poi in selected poi (need & )
-- [ ] In alternative route input, UI redesign (+, -) (sudeep)
+- [x] In alternative route input, UI redesign (+, -) (sudeep)
 - [x] popup image view (sudeep) (style of download button in lightbox)
 - [x] dropdown option move below option => direction prop (design) (sudeep new direction and animation)
 - [x] x/y label bold in chart (sudeep )
 - [x] attribute table on less data design (ward 1 ditch layer /sudeep)
 - [x] zoom to feature on attr table (sudeep)
 - [ ] scroll to input field for validation (research/sudeep)
-- [ ] handle date data format (component wise) in all section
+- [x] handle date data format (component wise) in all section
 - [ ] format date/time in all sections (table etc) (sudeep)
 - [ ] Implement User Permission and role (individual button needs to be reviewed) (sudeep)
 

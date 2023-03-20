@@ -1,6 +1,8 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/bufferAnalysis';
+import { Creators as CommonCreators } from '@Actions/common';
 import { useParams } from 'react-router';
 // import RouteAnalysisActions from '@Actions/bufferAnalysis';
 import IconButton from '@Components/common/IconButton';
@@ -42,6 +44,8 @@ const {
   setResultsState,
   setBufferAnalysisState,
 } = Creators;
+
+const { toggleModal } = CommonCreators;
 
 export default function BufferPopup() {
   const { analysisType } = useParams();
@@ -101,17 +105,28 @@ export default function BufferPopup() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (popupActiveTab === 'Details' && isEmpty(detailsListData)) {
+      dispatch(
+        getDetailsChartRequest({
+          analysis: selectedResultsId,
+          view: 'list',
+        }),
+      );
+    }
+    return () => {};
+  }, [detailsListData, dispatch, popupActiveTab, selectedResultsId]);
+
+  useEffect(() => {
     if (selectedLayer !== null) {
       dispatch(
         getDetailsCategoryRequest({
-          analysis: selectedResultsId,
           layer: selectedLayer,
-          view: 'chart',
         }),
       );
     }
     return () => {};
   }, [selectedLayer]);
+
   useEffect(() => {
     if (selectedCategory !== null) {
       dispatch(
@@ -119,14 +134,6 @@ export default function BufferPopup() {
           analysis: selectedResultsId,
           layer: selectedLayer,
           view: 'chart',
-          field: selectedCategory,
-        }),
-      );
-      dispatch(
-        getDetailsChartRequest({
-          analysis: selectedResultsId,
-          layer: selectedLayer,
-          view: 'list',
           field: selectedCategory,
         }),
       );
@@ -175,7 +182,7 @@ export default function BufferPopup() {
     return null;
   };
 
-  const handleExcelExport = async fileName => {
+  const handleExcelExport = async () => {
     if (!isEmpty(detailsListData)) {
       const { data } = detailsListData;
       // const excelData = JSON.stringify(data);
@@ -188,7 +195,7 @@ export default function BufferPopup() {
       const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
       const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
       const newData = new Blob([excelBuffer], { type: fileType });
-      saveAs(newData, fileName + fileExtension);
+      saveAs(newData, `results${fileExtension}`);
     }
   };
 
@@ -248,6 +255,11 @@ export default function BufferPopup() {
                 label="Summary"
                 active={popupActiveTab === 'Summary'}
                 onClick={() => dispatch(setPopupActiveTab('Summary'))}
+              />
+              <Chip
+                label="Charts"
+                active={popupActiveTab === 'Charts'}
+                onClick={() => dispatch(setPopupActiveTab('Charts'))}
               />
               <Chip
                 label="Details"
@@ -329,7 +341,7 @@ export default function BufferPopup() {
                     </div>
                   </div>
                 </div>
-              ) : (
+              ) : popupActiveTab === 'Charts' ? (
                 <>
                   <div className="naxatw-space-y-3">
                     <div className="naxatw-space-y-2">
@@ -343,7 +355,6 @@ export default function BufferPopup() {
                             setBufferAnalysisState({
                               detailsCategory: [],
                               detailsChartData: {},
-                              detailsListData: [],
                             }),
                           );
                         }}
@@ -367,7 +378,20 @@ export default function BufferPopup() {
                     </div>
                   </div>
 
-                  <div className="naxatw-mt-5 naxatw-max-h-[10rem] naxatw-overflow-y-auto scrollbar naxatw-pr-2 naxatw-shadow-inner">
+                  {!isEmpty(detailsChartData) && (
+                    <div className="naxatw-flex naxatw-justify-end naxatw-gap-x-3 naxatw-items-center naxatw-mt-4">
+                      <Button
+                        className="naxatw-btn-secondary naxatw-btn-noborder"
+                        onClick={() => setShowChart(true)}
+                      >
+                        Chart View
+                      </Button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div>
+                  <div className="naxatw-mt-5 naxatw-max-h-[15rem] naxatw-overflow-y-auto scrollbar naxatw-pr-2 naxatw-shadow-inner">
                     {/* <div>{selectedCategory}</div> */}
                     {detailsListData?.data?.map(itm => (
                       <div className="naxatw-py-2 naxatw-border-b-2">
@@ -403,26 +427,22 @@ export default function BufferPopup() {
                     <div className="naxatw-flex naxatw-justify-between naxatw-gap-x-3 naxatw-items-center naxatw-mt-4">
                       <Button
                         className="naxatw-btn-secondary naxatw-btn-noborder"
-                        onClick={() =>
-                          handleExcelExport(
-                            poiLayersDataOptions.filter(
-                              data => data.id === selectedLayer,
-                            )[0].name,
-                          )
-                        }
+                        onClick={() => handleExcelExport()}
                       >
                         Excel Export
                       </Button>
 
                       <Button
                         className="naxatw-btn-secondary naxatw-btn-noborder"
-                        onClick={() => setShowChart(true)}
+                        onClick={() =>
+                          dispatch(toggleModal('view-analysis-details'))
+                        }
                       >
-                        Chart View
+                        View Details
                       </Button>
                     </div>
                   )}
-                </>
+                </div>
               )}
             </div>
 
@@ -486,28 +506,6 @@ export default function BufferPopup() {
                 </BarChart>
               </div>
             </Modal>
-
-            {/* <div className="naxatw-grid naxatw-grid-cols-3 naxatw-items-center naxatw-gap-2.5">
-              {routePopupData?.obstacles?.map(item => (
-                <React.Fragment key={item.layer_id}>
-                  <p>{item.layer_name}</p>
-                  <p>{item.count}</p>
-                  <Toggle
-                    isSm
-                    className="naxatw-ml-auto"
-                    checked={item.checked}
-                    onChange={e => {
-                      dispatch(
-                        handleObstaclesToggle({
-                          layerId: item.layer_id,
-                          checked: e.target.checked,
-                        }),
-                      );
-                    }}
-                  />
-                </React.Fragment>
-              ))}
-            </div> */}
           </>
         )}
       </div>

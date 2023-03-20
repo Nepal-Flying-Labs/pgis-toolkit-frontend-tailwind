@@ -46,6 +46,10 @@ export const { Types, Creators } = createActions(
     saveBufferLayerFailure: null,
 
     deleteBufferResult: ['payload'],
+
+    getFeatureCollectionRequest: ['params'],
+    getFeatureCollectionSuccess: ['payload'],
+    getFeatureCollectionFailure: null,
   },
   { prefix: 'bufferAnalysis/' },
 );

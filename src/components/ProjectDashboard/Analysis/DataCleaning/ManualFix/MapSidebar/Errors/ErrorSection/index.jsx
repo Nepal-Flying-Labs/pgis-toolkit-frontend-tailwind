@@ -153,9 +153,10 @@ export default function ErrorSection({ style = {} }) {
                     </div>
 
                     <div className="naxatw-flex">
-                      {!feature?.children && (
+                      {!feature?.children && type !== 'multipart' && (
                         <span
-                          className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
+                          className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg
+                            naxatw-cursor-pointer naxatw-flex naxatw-items-center"
                           onClick={() => handleEditClick(type, feature)}
                         >
                           <IconButton
@@ -167,7 +168,10 @@ export default function ErrorSection({ style = {} }) {
                       {type === 'multipart' &&
                         !feature.fixed &&
                         (explodingFeatureIds.includes(feature.id) ? (
-                          <Spinner className="naxatw-w-6 naxatw-h-6 naxatw-mr-2 naxatw-fill-secondary-400" />
+                          <Spinner
+                            className="naxatw-w-6 naxatw-h-6 naxatw-mr-2 
+                              naxatw-fill-secondary-400"
+                          />
                         ) : (
                           <IconButton
                             title="Explode"
@@ -193,7 +197,7 @@ export default function ErrorSection({ style = {} }) {
                         />
                       )}
 
-                      {type !== 'null' && type !== 'multipart' && (
+                      {type !== 'null' && (
                         <DropdownOptions
                           options={dropdownOptions}
                           data={{ ...feature, type }}
@@ -242,7 +246,8 @@ export default function ErrorSection({ style = {} }) {
 
                       <div className="naxatw-flex">
                         <span
-                          className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
+                          className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg
+                            naxatw-cursor-pointer naxatw-flex naxatw-items-center"
                           onClick={() => handleEditClick(type, childFeature)}
                         >
                           <IconButton

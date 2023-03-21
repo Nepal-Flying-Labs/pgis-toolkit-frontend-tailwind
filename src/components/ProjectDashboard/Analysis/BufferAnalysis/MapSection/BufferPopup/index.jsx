@@ -211,16 +211,20 @@ export default function BufferPopup() {
                 active={popupActiveTab === 'Summary'}
                 onClick={() => dispatch(setPopupActiveTab('Summary'))}
               />
-              <Chip
-                label="Charts"
-                active={popupActiveTab === 'Charts'}
-                onClick={() => dispatch(setPopupActiveTab('Charts'))}
-              />
-              <Chip
-                label="Details"
-                active={popupActiveTab === 'Details'}
-                onClick={() => dispatch(setPopupActiveTab('Details'))}
-              />
+              {analysisType === 'proximity-analysis' && (
+                <>
+                  <Chip
+                    label="Charts"
+                    active={popupActiveTab === 'Charts'}
+                    onClick={() => dispatch(setPopupActiveTab('Charts'))}
+                  />
+                  <Chip
+                    label="Details"
+                    active={popupActiveTab === 'Details'}
+                    onClick={() => dispatch(setPopupActiveTab('Details'))}
+                  />
+                </>
+              )}
             </div>
 
             <div className="naxatw-btn-text naxatw-mt-7 naxatw-mb-2">
@@ -247,37 +251,23 @@ export default function BufferPopup() {
                       </p>
                     </div>
                   </div>
-                  <hr className="naxatw-mb-3" />
-                  <VerticalBlockChart
-                    data={
-                      analysisResults.filter(
-                        result => result.id === selectedResultsId,
-                      )[0]?.poiChartData
-                    }
-                    dataKey="count"
-                  />
+                  {analysisType === 'proximity-analysis' && (
+                    <>
+                      <hr className="naxatw-mb-3" />
+                      <VerticalBlockChart
+                        data={
+                          analysisResults.filter(
+                            result => result.id === selectedResultsId,
+                          )[0]?.poiChartData
+                        }
+                        dataKey="count"
+                      />
 
-                  <hr className="naxatw-mb-3" />
+                      <hr className="naxatw-mb-3" />
+                    </>
+                  )}
 
                   <div className="naxatw-flex naxatw-flex-col  naxatw-space-y-2">
-                    {/* <h6>Data Input</h6> */}
-                    {/* <div className="naxatw-flex naxatw-mt-2">
-                      <p className="naxatw-text-body-lg naxatw-basis-1/2">
-                        Origin Points
-                      </p>
-                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center naxatw-basis-1/2">
-                        {originPoints.map(item => {
-                          const [long, lat] = item;
-
-                          return (
-                            <span
-                              key={item}
-                              className="naxatw-text-body-lg naxatw-font-bold"
-                            >{`(${long.toFixed(2)}, ${lat.toFixed(2)})`}</span>
-                          );
-                        }) || '-'}
-                      </p>
-                    </div> */}
                     <div className="naxatw-flex">
                       <p className="naxatw-text-body-lg naxatw-basis-1/2">
                         {analysisType === 'proximity-analysis'

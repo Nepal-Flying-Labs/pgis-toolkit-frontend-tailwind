@@ -129,7 +129,13 @@ const ViewAnalysisDetails = () => {
                 dataFormat={row => (
                   <p
                     title={row[key]}
-                    className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-cursor-default naxatw-p-2.5 `}
+                    className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-cursor-default 
+                    ${
+                      ordering === key
+                        ? 'naxatw-text-body-btn'
+                        : 'naxatw-text-body-lg'
+                    }
+                    naxatw-p-2.5 `}
                   >
                     {row[key] || ''}
                   </p>

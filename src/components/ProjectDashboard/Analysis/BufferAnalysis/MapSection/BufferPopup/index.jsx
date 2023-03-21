@@ -464,7 +464,37 @@ export default function BufferPopup() {
               zIndex={9999999}
               className="naxatw-w-[62rem] !naxatw-z-20"
             >
-              <div className="naxatw-flex naxatw-justify-end">
+              <div className="naxatw-flex naxatw-justify-end naxatw-items-center naxatw-gap-x-2">
+                <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
+                  <div className="naxatw-space-y-2">
+                    <Select
+                      options={poiLayersDataOptions}
+                      onChange={selected => {
+                        setSelectedLayer(selected.id);
+                        setSelectedCategory(null);
+                        dispatch(
+                          setBufferAnalysisState({
+                            detailsCategory: [],
+                            detailsChartData: {},
+                          }),
+                        );
+                      }}
+                      selectedValue={selectedLayer}
+                      labelKey="name"
+                      valueKey="id"
+                      disabled={poiLayersDataOptions.length === 1}
+                    />
+                  </div>
+                  <div className="naxatw-space-y-2">
+                    <Select
+                      options={categoryListData}
+                      onChange={selected => setSelectedCategory(selected.name)}
+                      selected={selectedCategory}
+                      labelKey="name"
+                      valueKey="name"
+                    />
+                  </div>
+                </div>
                 <Button
                   className="naxatw-btn-secondary naxatw-btn-noborder"
                   onClick={handleChartExport}

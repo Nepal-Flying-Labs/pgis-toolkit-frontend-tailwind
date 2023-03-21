@@ -95,8 +95,13 @@ export const { Types, Creators } = createActions(
     saveDataQuerySuccess: ['payload'],
     saveDataQueryFailure: null,
 
-    deleteDataQuery: ['payload'],
-    deleteAllDataQuery: null,
+    deleteDataQueryRequest: ['payload'],
+    deleteDataQuerySuccess: ['payload'],
+    deleteDataQueryFailure: null,
+
+    deleteAllDataQueryRequest: ['payload'],
+    deleteAllDataQuerySuccess: null,
+    deleteAllDataQueryFailure: null,
 
     getLayerAttributeRequest: ['params'],
     getLayerAttributeSuccess: ['payload'],

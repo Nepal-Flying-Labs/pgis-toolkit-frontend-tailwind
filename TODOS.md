@@ -41,7 +41,7 @@
 
 ### MANUAL FIX
 
-- [ ] explode delete => multipart still remain (raj) => (remove from all other list)
+- [x] explode delete => multipart still remain (raj) => (remove from all other list)
 - [ ] snap to self while edit
 - [ ] copy helpbox from buffer analysis save to start
 - [ ] add icon drag feature to add feature

@@ -34,7 +34,7 @@
 
 ### ROUTE ANALYSIS
 
-- [ ] geometry type polygon after route layer save
+- [x] geometry type polygon after route layer save
 - [ ] route to data cleaning on reload
 - [ ] go back to step one from two.. in data cleaning
 - [ ] zoom to feature after select in osm search (discussion)

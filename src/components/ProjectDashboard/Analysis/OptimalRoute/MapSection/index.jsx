@@ -340,7 +340,7 @@ export default function MapSection() {
           // geojson={featureGeojson}
           geometryType="Point"
           selectedDrawType="add-feature"
-          zIndex={10}
+          zIndex={50}
           style={
             drawPointType === 'start'
               ? { ...startPointStyles }
@@ -372,7 +372,7 @@ export default function MapSection() {
           <VectorLayer
             geojson={startingPoint.geojson}
             visibleOnMap
-            zIndex={10}
+            zIndex={50}
             style={{ ...startPointStyles }}
           />
         )}
@@ -380,7 +380,7 @@ export default function MapSection() {
           <VectorLayer
             geojson={destinationPoint.geojson}
             visibleOnMap
-            zIndex={10}
+            zIndex={50}
             style={{ ...destinationPointStyles }}
           />
         )}

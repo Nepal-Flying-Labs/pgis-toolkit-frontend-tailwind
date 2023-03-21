@@ -12,11 +12,10 @@ import useDebouncedInput from '@Hooks/useDebouncedInput';
 
 import { isEmpty } from '@Utils/commonUtils';
 
-const { getFeatureCollectionRequest } = Creators;
+const { getFeatureCollectionRequest, setFilterState } = Creators;
 
 const ViewAnalysisDetails = () => {
   const dispatch = useDispatch();
-  const [searchText, setSearchText] = useState('');
   const detailsListData = useSelector(
     state => state.bufferAnalysis.detailsListData.data,
   );
@@ -43,6 +42,10 @@ const ViewAnalysisDetails = () => {
     () => Object.keys(featureList[0] || {}),
     [featureList],
   );
+  const searchText = useSelector(
+    state => state.bufferAnalysis.filter.searchText,
+  );
+  const ordering = useSelector(state => state.bufferAnalysis.filter.ordering);
 
   const headerWidths = [...headerKeys.map(() => '150px')];
 
@@ -50,7 +53,7 @@ const ViewAnalysisDetails = () => {
     ms: 300,
     init: searchText,
     onChange: debouncedEvent => {
-      setSearchText(debouncedEvent.target.value);
+      dispatch(setFilterState({ searchText: debouncedEvent.target.value }));
     },
   });
 
@@ -59,9 +62,11 @@ const ViewAnalysisDetails = () => {
       getFeatureCollectionRequest({
         layer: selectedLayer,
         ids: featureId.join(','),
+        search: searchText,
+        ordering,
       }),
     );
-  }, [dispatch, selectedLayer]);
+  }, [dispatch, selectedLayer, searchText, ordering]);
 
   return (
     <div className="naxatw-space-y-3">
@@ -108,7 +113,19 @@ const ViewAnalysisDetails = () => {
                 headerClassName="naxatw-py-[0.8125rem] "
                 rowcolSpan="rowSpan_2"
                 rowClassName=""
-                dataHeader={<p>{key}</p>}
+                dataHeader={
+                  <SortingContainer
+                    name={key}
+                    isActive={ordering === key}
+                    handleSort={() =>
+                      dispatch(
+                        setFilterState({
+                          ordering: ordering === key ? `-${key}` : key,
+                        }),
+                      )
+                    }
+                  />
+                }
                 dataFormat={row => (
                   <p
                     title={row[key]}

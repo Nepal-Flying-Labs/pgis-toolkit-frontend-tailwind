@@ -306,11 +306,23 @@ const initialState = {
   detailsChartData: {},
   detailsListData: [],
   featureCollectionList: [],
+  filter: {
+    searchText: '',
+    ordering: null,
+  },
 };
 
 const setBufferAnalysisState = (state, action) => ({
   ...state,
   ...action.payload,
+});
+
+const setFilterState = (state, action) => ({
+  ...state,
+  filter: {
+    ...state.filter,
+    ...action.payload,
+  },
 });
 
 const setDataInputState = (state, action) => ({
@@ -530,6 +542,7 @@ const getFeatureCollectionSuccess = (state, action) => {
 
 const bufferAnalysisReducer = createReducer(initialState, {
   [Types.SET_BUFFER_ANALYSIS_STATE]: setBufferAnalysisState,
+  [Types.SET_FILTER_STATE]: setFilterState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
   [Types.SET_RESULTS_STATE]: setResultsState,
   [Types.RESET_BUFFER_ANALYSIS_STATE]: resetBufferAnalysisState,

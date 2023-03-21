@@ -3,6 +3,7 @@ import { createActions } from 'reduxsauce';
 export const { Types, Creators } = createActions(
   {
     setBufferAnalysisState: ['payload'],
+    setFilterState: ['payload'],
     setDataInputState: ['payload'],
     setResultsState: ['payload'],
 

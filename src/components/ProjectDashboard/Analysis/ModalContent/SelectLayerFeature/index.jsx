@@ -172,13 +172,13 @@ export default function SelectLayerFeature() {
               dataFormat={row => (
                 <input
                   type="checkbox"
-                  className="naxatw-w-5 naxatw-h-5 naxatw-accent-grey-800 naxatw-m-2"
+                  className="naxatw-w-5 naxatw-h-5 naxatw-accent-grey-800 naxatw-m-2 naxatw-cursor-pointer"
                   checked={row.checked}
-                  onChange={() =>
-                    dispatch(
-                      handleTableCheckbox({ id: row.attrId, analysisType }),
-                    )
-                  }
+                  // onChange={() =>
+                  //   dispatch(
+                  //     handleTableCheckbox({ id: row.attrId, analysisType }),
+                  //   )
+                  // }
                 />
               )}
             />

@@ -12,3 +12,6 @@ export const getBufferAreaCollection = params =>
 
 export const saveBufferLayer = data =>
   authenticated(api).post(`/maps/layer_from_buffer/`, data);
+
+export const getFeatureCollectionMirror = params =>
+  authenticated(api).get(`/maps/feature_collection_mirror/`, { params });

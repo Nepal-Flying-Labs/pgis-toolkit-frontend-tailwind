@@ -56,6 +56,8 @@ import DownloadTemplate from '@Components/ProjectDashboard/ModalContent/Download
 import UploadBulkImage from '@Components/ProjectDashboard/ModalContent/UploadBulkImage/index';
 import DeleteDropdownOption from '@Components/ProjectDashboard/ModalContent/DeleteDropdownOption/index';
 import DropdownEditWarning from '@Components/ProjectDashboard/ModalContent/DropdownEditWarning/index';
+import ViewAnalysisDetails from '@Components/ProjectDashboard/ModalContent/ViewAnalysisDetails/index';
+import ViewBufferChart from '@Components/ProjectDashboard/ModalContent/ViewBufferChart/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -123,7 +125,7 @@ export function getModalContent(content) {
         title: 'Upload your datasets',
         content: <UploadDataset />,
         subtitle:
-          'USAFIRI allows you to import data in different formats(shp, csv, geojson or gpkg file format). Please upload your datasets below.',
+          'USAFIRI allows you to import data in different formats( .zip, .geojson, .csv, .kml or .gpx). Please upload your datasets below.',
       };
     case 'view-layer-attribute':
       return {
@@ -272,6 +274,21 @@ export function getModalContent(content) {
         content: <UploadBulkImage />,
         subtitle:
           'USAFIRI allows you to bulk upload images for a layer in zip file format.',
+      };
+
+    case 'view-analysis-details':
+      return {
+        title: 'Analysis Details',
+        content: <ViewAnalysisDetails />,
+        className:
+          '!naxatw-min-w-[calc(100vw-70rem)] !naxatw-max-w-[calc(100vw-10rem)] !naxatw-w-fit naxatw-max-h-[calc(100vh-19rem)] ',
+      };
+    case 'view-buffer-chart':
+      return {
+        title: 'Chart',
+        content: <ViewBufferChart />,
+        className:
+          '!naxatw-min-w-[calc(100vw-70rem)] !naxatw-max-w-[calc(100vw-10rem)] !naxatw-w-fit naxatw-max-h-[calc(100vh-19rem)] ',
       };
     default:
       return {

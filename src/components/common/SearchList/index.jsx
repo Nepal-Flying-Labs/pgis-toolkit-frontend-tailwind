@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
@@ -15,12 +16,12 @@ const SearchList = ({
 
   const datas = useMemo(() => {
     if (!searchTerm) return data;
-    return data.filter(d =>
-      d[dataKey]
-        ? d[dataKey].toLowerCase().includes(searchTerm.toLowerCase())
-        : d[alternateKey]
-        ? d[alternateKey].toLowerCase().includes(searchTerm.toLowerCase())
-        : d.toString().toLowerCase().includes(searchTerm.toLowerCase()),
+    return data.filter(item =>
+      item[dataKey]
+        ? item[dataKey].toLowerCase().includes(searchTerm.toLowerCase())
+        : item[alternateKey]
+        ? item[alternateKey].toLowerCase().includes(searchTerm.toLowerCase())
+        : item.toString().toLowerCase().includes(searchTerm.toLowerCase()),
     );
   }, [searchTerm, data, alternateKey, dataKey]);
 
@@ -50,8 +51,9 @@ const SearchList = ({
           </div>
         )}
         <ul>
-          {datas.map(opt => (
+          {datas.map((opt, index) => (
             <li
+              key={index}
               role="presentation"
               className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
                     naxatw-cursor-pointer hover:naxatw-bg-grey-100"

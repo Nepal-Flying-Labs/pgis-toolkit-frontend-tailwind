@@ -228,7 +228,9 @@ export default function DataQuery() {
                   </ul>
                 </div> */}
                 <SearchList
-                  data={fields}
+                  data={fields?.filter(
+                    field => field.alias !== null || field.name !== null,
+                  )}
                   dataKey="alias"
                   alternateKey="name"
                   onOptionClick={item => {
@@ -310,7 +312,7 @@ export default function DataQuery() {
                   </ul>
                 </div> */}
                 <SearchList
-                  data={values || []}
+                  data={values?.filter(value => value !== null) || []}
                   isLoading={isValuesFetching}
                   onOptionClick={item => {
                     if (!lastQueryItem?.operator) {

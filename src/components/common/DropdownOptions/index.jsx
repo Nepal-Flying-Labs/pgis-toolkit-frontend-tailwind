@@ -53,7 +53,7 @@ export default function DropdownOptions({
         className={`${
           toggle
             ? '-naxatw-translate-x-1'
-            : 'naxatw-invisible naxatw-translate-x-3'
+            : 'naxatw-hidden naxatw-translate-x-3'
         } naxatw-absolute ${getPosition(
           direction,
         )} naxatw-z-[50] naxatw-w-[12.5rem]

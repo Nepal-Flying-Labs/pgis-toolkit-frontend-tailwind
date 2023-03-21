@@ -31,7 +31,7 @@ export default function Header() {
 
   return (
     <div
-      className="naxatw-w-full naxatw-px-10 naxatw-py-5 naxatw-sticky naxatw-top-0
+      className="naxatw-w-full naxatw-px-10 naxatw-py-5 naxatw-sticky naxatw-z-20 naxatw-bg-white naxatw-top-0
         naxatw-flex naxatw-justify-between naxatw-border-b naxatw-border-b-grey-300"
     >
       <div>

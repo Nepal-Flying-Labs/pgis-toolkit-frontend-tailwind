@@ -70,9 +70,7 @@ export default function Modal({
                 >
                   {headerContent || (
                     <div className="naxatw-space-y-1">
-                      <h3 className="naxatw-font-bold naxatw-tracking-wider">
-                        {title}
-                      </h3>
+                      <h3 className="naxatw-font-bold ">{title}</h3>
                       <p className="naxatw-text-body-lg">{subtitle}</p>
                     </div>
                   )}

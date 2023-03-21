@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types  */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -24,7 +25,7 @@ const {
 
 const { togglePromptDialog } = CommonCreators;
 
-export default function ErrorSection() {
+export default function ErrorSection({ style = {} }) {
   const errorFeaturesMapState = useSelector(errorFeaturesMapStateSelector);
   const totalErrors = useSelector(totalErrorsSelector);
   const isDeleting = useSelector(state =>
@@ -90,7 +91,7 @@ export default function ErrorSection() {
   ];
 
   return (
-    <>
+    <React.Fragment style={style}>
       {errorFeaturesMapState.map(({ type, label, features }) => (
         <Accordion
           key={type}
@@ -278,6 +279,6 @@ export default function ErrorSection() {
           }
         />
       ))}
-    </>
+    </React.Fragment>
   );
 }

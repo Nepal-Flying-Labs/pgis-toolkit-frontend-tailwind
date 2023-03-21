@@ -47,7 +47,12 @@ export default function MapSidebar() {
                 dispatch(resetManualFixState());
               }}
             />
-            <h4>{selectedLayer?.name}</h4>
+            <h4
+              title={selectedLayer?.name}
+              className="naxatw-truncate naxatw-w-[12rem] naxatw-cursor-default"
+            >
+              {selectedLayer?.name}
+            </h4>
           </div>
           {sidebarContent === 'error-list' && (
             <Button className="naxatw-btn-primary" onClick={handleSave}>

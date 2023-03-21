@@ -111,7 +111,7 @@ export default function MapSection() {
     }
   }, [map, zoomToLayerId, mapState, dispatch]);
 
-  // zoom to layer
+  // zoom to feature
   useEffect(() => {
     if (!map || !featureBbox) return;
     const zoomExtent = transformExtent(featureBbox, 'EPSG:4326', 'EPSG:3857');

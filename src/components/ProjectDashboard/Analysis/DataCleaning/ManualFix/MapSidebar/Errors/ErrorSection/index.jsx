@@ -52,11 +52,11 @@ export default function ErrorSection({ style = {} }) {
 
   const dropdownOptions = [
     {
-      id: 'zoom-to-layer',
+      id: 'zoom-to-feature',
       label: (
         <span className="naxatw-flex naxatw-items-center">
           <i className="material-icons naxatw-mr-2">zoom_in</i>
-          <p className="naxatw-text-body-lg">Zoom To Layer</p>
+          <p className="naxatw-text-body-lg">Zoom To Feature</p>
         </span>
       ),
       onClick: data => {

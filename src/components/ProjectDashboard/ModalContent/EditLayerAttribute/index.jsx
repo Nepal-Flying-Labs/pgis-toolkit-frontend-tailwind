@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable arrow-body-style */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,6 +11,8 @@ import ImageUpload from '@Components/ProjectDashboard/Map/MapSidebar/ImageUpload
 import Spinner from '@Components/common/Spinner/index';
 import SearchSelect from '@Components/common/SearchSelect/index';
 import { isEmpty } from '@Utils/commonUtils';
+import CustomCalendar from '@Components/common/CustomCalendar/index';
+import { format } from 'date-fns';
 
 const { updateLayerAttributeRequest, getFeatureImageRequest } = Creators;
 
@@ -40,6 +43,9 @@ const EditLayerAttribute = () => {
 
   const imageTypeAttribute = selectedLayerAttribute?.filter(
     item => item.data_type === 'image',
+  );
+  const dateTypeAttribute = selectedLayerAttribute?.filter(
+    item => item.data_type === 'date',
   );
 
   const dropdownFields = selectedLayerAttribute
@@ -101,6 +107,25 @@ const EditLayerAttribute = () => {
                         opt => opt.name === values[`${attribute}`],
                       )?.[0]?.name
                     }
+                  />
+                </div>
+              ) : dateTypeAttribute
+                  .map(item => item.name)
+                  .includes(attribute) ? (
+                <div className="naxatw-space-y-2">
+                  <label className="naxatw-label">{attribute}</label>
+                  <CustomCalendar
+                    className="naxatw-bg-white"
+                    startDate={new Date()}
+                    onChange={date => {
+                      handleChange({
+                        target: {
+                          name: `${attribute}`,
+                          value: format(date, 'yyyy-MM-dd'),
+                        },
+                      });
+                    }}
+                    selected={values[`${attribute}`] || ''}
                   />
                 </div>
               ) : (

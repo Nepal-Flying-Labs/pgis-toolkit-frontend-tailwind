@@ -36,6 +36,7 @@ import {
   deleteFeatureImage,
   postCreateToUrl,
   deleteDropdownOption,
+  getFeatureGeojson,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -672,6 +673,17 @@ export function* deleteDropdownOptionRequest({ id }) {
   }
 }
 
+export function* getFeatureGeometryRequest({ id }) {
+  try {
+    const response = yield call(getFeatureGeojson, id);
+    yield put(projectMapActions.getFeatureGeometrySuccess(response.data));
+    yield put(commonActions.toggleModal());
+  } catch (error) {
+    yield put(projectMapActions.getFeatureGeometryFailure());
+    throw error;
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -796,6 +808,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.DELETE_DROPDOWN_OPTION_REQUEST,
     withLoader(withErrorHandler(deleteDropdownOptionRequest)),
+  );
+  yield takeLatest(
+    Types.GET_FEATURE_GEOMETRY_REQUEST,
+    withLoader(withErrorHandler(getFeatureGeometryRequest)),
   );
 }
 

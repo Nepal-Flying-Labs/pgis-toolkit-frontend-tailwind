@@ -37,6 +37,11 @@ const calTotalCount = (data, dataKey) => {
   return values.reduce((item, value) => item + value, 0);
 };
 
+function getOriginPoint(origin) {
+  const [lat, long] = origin;
+  return `${lat.toFixed(3)} - ${long.toFixed(3)}`;
+}
+
 const {
   getDetailsCategoryRequest,
   getDetailsChartRequest,
@@ -384,7 +389,7 @@ export default function BufferPopup() {
                         className="naxatw-btn-secondary naxatw-btn-noborder"
                         onClick={() => setShowChart(true)}
                       >
-                        Chart View
+                        View Chart
                       </Button>
                     </div>
                   )}
@@ -393,35 +398,41 @@ export default function BufferPopup() {
                 <div>
                   <div className="naxatw-mt-5 naxatw-max-h-[15rem] naxatw-overflow-y-auto scrollbar naxatw-pr-2 naxatw-shadow-inner">
                     {/* <div>{selectedCategory}</div> */}
-                    {detailsListData?.data?.map(itm => (
-                      <div className="naxatw-py-2 naxatw-border-b-2">
-                        <div className="naxatw-flex naxatw-gap-x-3 naxatw-items-center">
-                          <p className="naxatw-text-body-btn naxatw-basis-1/2">
-                            {itm?.name || itm?.id}
-                          </p>
-                          <span
-                            className="naxatw-font-bold naxatw-basis-1/2 naxatw-truncate"
-                            title={itm[selectedCategory]}
-                          >
-                            {itm[selectedCategory]}
-                          </span>
-                        </div>
-                        <div className="naxatw-flex naxatw-gap-x-3 naxatw-mt-2">
-                          <div className="naxatw-basis-1/2">
-                            <p className="naxatw-text-body-md">
-                              Buffer Distance
+                    {detailsListData?.data
+                      ?.sort((a, b) => a.buffer_distance - b.buffer_distance)
+                      .map(itm => (
+                        <div className="naxatw-py-2 naxatw-border-b-2">
+                          <div className="naxatw-flex naxatw-gap-x-3 naxatw-items-center">
+                            <p className="naxatw-text-body-btn naxatw-basis-1/2">
+                              {itm?.name || itm?.id}
                             </p>
-                            <p className="naxatw-text-body-lg naxatw-mt-1">
-                              {meterToKM(itm?.buffer_distance?.toFixed(2))}
-                            </p>
+                            <span
+                              className="naxatw-font-bold naxatw-basis-1/2 naxatw-truncate"
+                              title={itm.layer}
+                            >
+                              {itm.layer}
+                            </span>
                           </div>
-                          <div className="naxatw-basis-1/2">
-                            <p className="naxatw-text-body-md">Origin Point</p>
-                            <p className="naxatw-text-body-lg naxatw-mt-1">-</p>
+                          <div className="naxatw-flex naxatw-gap-x-3 naxatw-mt-2">
+                            <div className="naxatw-basis-1/2">
+                              <p className="naxatw-text-body-md">
+                                Buffer Distance
+                              </p>
+                              <p className="naxatw-text-body-lg naxatw-mt-1">
+                                {meterToKM(itm?.buffer_distance?.toFixed(2))}
+                              </p>
+                            </div>
+                            <div className="naxatw-basis-1/2">
+                              <p className="naxatw-text-body-md">
+                                Origin Point
+                              </p>
+                              <p className="naxatw-text-body-md naxatw-mt-1">
+                                {getOriginPoint(itm.origin[0])}
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                   {!isEmpty(detailsListData) && (
                     <div className="naxatw-flex naxatw-justify-between naxatw-gap-x-3 naxatw-items-center naxatw-mt-4">
@@ -429,7 +440,7 @@ export default function BufferPopup() {
                         className="naxatw-btn-secondary naxatw-btn-noborder"
                         onClick={() => handleExcelExport()}
                       >
-                        Excel Export
+                        Export Excel
                       </Button>
 
                       <Button

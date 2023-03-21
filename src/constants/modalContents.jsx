@@ -57,6 +57,7 @@ import UploadBulkImage from '@Components/ProjectDashboard/ModalContent/UploadBul
 import DeleteDropdownOption from '@Components/ProjectDashboard/ModalContent/DeleteDropdownOption/index';
 import DropdownEditWarning from '@Components/ProjectDashboard/ModalContent/DropdownEditWarning/index';
 import ViewAnalysisDetails from '@Components/ProjectDashboard/ModalContent/ViewAnalysisDetails/index';
+import ViewBufferChart from '@Components/ProjectDashboard/ModalContent/ViewBufferChart/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -279,6 +280,13 @@ export function getModalContent(content) {
       return {
         title: 'Analysis Details',
         content: <ViewAnalysisDetails />,
+        className:
+          '!naxatw-min-w-[calc(100vw-70rem)] !naxatw-max-w-[calc(100vw-10rem)] !naxatw-w-fit naxatw-max-h-[calc(100vh-19rem)] ',
+      };
+    case 'view-buffer-chart':
+      return {
+        title: 'Chart',
+        content: <ViewBufferChart />,
         className:
           '!naxatw-min-w-[calc(100vw-70rem)] !naxatw-max-w-[calc(100vw-10rem)] !naxatw-w-fit naxatw-max-h-[calc(100vh-19rem)] ',
       };

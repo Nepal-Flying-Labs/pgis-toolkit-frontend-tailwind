@@ -1,36 +1,21 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/bufferAnalysis';
 import { Creators as CommonCreators } from '@Actions/common';
 import { useParams } from 'react-router';
-// import RouteAnalysisActions from '@Actions/bufferAnalysis';
 import IconButton from '@Components/common/IconButton';
 import RoutePopupSkeleton from '@Components/common/SkeletonLoader/RoutePopupSkeleton';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { VerticalBlockChart } from '@Components/common/VerticleAndHorizontalBlockChart';
 import Chip from '@Components/common/Chip';
 import Select from '@Components/common/Select';
-import Modal from '@Components/common/Modal';
 import Button from '@Components/common/Button';
-import {
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  Label,
-  Text,
-} from 'recharts';
-import { useCurrentPng } from 'recharts-to-png';
 import meterToKM from '@Utils/meterToKM';
 import { isEmpty } from '@Utils/commonUtils';
 import { saveAs } from 'file-saver';
 import XLSX from 'sheetjs-style';
+import Spinner from '@Components/common/Spinner/index';
 
 const calTotalCount = (data, dataKey) => {
   const values = data.map(d => +d?.[dataKey]);
@@ -54,14 +39,6 @@ const { toggleModal } = CommonCreators;
 
 export default function BufferPopup() {
   const { analysisType } = useParams();
-  const [selectedLayer, setSelectedLayer] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [showChart, setShowChart] = useState(false);
-  const [chartData, setChartData] = useState([]);
-  const [getPng, { ref, isLoading }] = useCurrentPng();
-  const projectHeaderHeight = useSelector(
-    state => state.common.projectHeaderHeight,
-  );
   const analysisResults = useSelector(
     state => state.bufferAnalysis.results.analysisResults,
   );
@@ -88,8 +65,18 @@ export default function BufferPopup() {
   const selectedResultData = analysisResults.find(
     result => result.id === selectedResultsId,
   );
+  const selectedLayer = useSelector(
+    state => state.bufferAnalysis.selectedLayer,
+  );
+  const selectedCategory = useSelector(
+    state => state.bufferAnalysis.selectedCategory,
+  );
 
-  const originPoints = selectedResultData?.inputQuery.origins;
+  const isListLoading = useSelector(state =>
+    checkIfLoading(state, [Types.GET_DETAILS_CHART_REQUEST]),
+  );
+
+  // const originPoints = selectedResultData?.inputQuery.origins;
   const bufferRadius = selectedResultData?.inputQuery.radius;
   const selectedPOI = selectedResultData?.inputQuery.selectedPOIName;
 
@@ -147,45 +134,13 @@ export default function BufferPopup() {
   }, [selectedCategory]);
 
   useEffect(() => {
-    if (Object.keys(detailsChartData)?.length === 0) return;
-    const tempChartData = [];
-    const newD = detailsChartData?.data;
-
-    Object.entries(newD)?.map(([key, value]) => {
-      tempChartData.push({ name: key, value: value });
-    });
-
-    setChartData(tempChartData);
-  }, [detailsChartData]);
-
-  useEffect(() => {
     if (isEmpty(poiLayersDataOptions)) return;
     if (poiLayersDataOptions.length === 1) {
-      setSelectedLayer(poiLayersDataOptions[0].id);
-    }
-  }, [poiLayersDataOptions]);
-
-  const selectedPOIName = poiLayersDataOptions.filter(
-    data => data.id === selectedLayer,
-  )?.[0]?.name;
-
-  const CustomXAxisTick = ({ x, y, payload }) => {
-    if (payload && payload.value) {
-      return (
-        <Text
-          fontSize={'12px'}
-          width={120}
-          x={x}
-          y={y}
-          textAnchor="middle"
-          verticalAnchor="start"
-        >
-          {payload.value}
-        </Text>
+      dispatch(
+        setBufferAnalysisState({ selectedLayer: poiLayersDataOptions[0].id }),
       );
     }
-    return null;
-  };
+  }, [poiLayersDataOptions]);
 
   const handleExcelExport = async () => {
     if (!isEmpty(detailsListData)) {
@@ -203,13 +158,6 @@ export default function BufferPopup() {
       saveAs(newData, `results${fileExtension}`);
     }
   };
-
-  const handleChartExport = React.useCallback(async () => {
-    const png = await getPng();
-    if (png) {
-      saveAs(png, `${selectedPOIName}.png`);
-    }
-  }, [getPng, selectedPOIName]);
 
   function displayArrayList(list) {
     const listData = list.map(item => item);
@@ -238,6 +186,8 @@ export default function BufferPopup() {
                   detailsCategory: [],
                   detailsChartData: {},
                   detailsListData: [],
+                  selectedCategory: null,
+                  selectedLayer: null,
                 }),
               );
             }}
@@ -354,8 +304,14 @@ export default function BufferPopup() {
                       <Select
                         options={poiLayersDataOptions}
                         onChange={selected => {
-                          setSelectedLayer(selected.id);
-                          setSelectedCategory(null);
+                          dispatch(
+                            setBufferAnalysisState({
+                              selectedLayer: selected.id,
+                            }),
+                          );
+                          dispatch(
+                            setBufferAnalysisState({ selectedCategory: null }),
+                          );
                           dispatch(
                             setBufferAnalysisState({
                               detailsCategory: [],
@@ -374,7 +330,11 @@ export default function BufferPopup() {
                       <Select
                         options={categoryListData}
                         onChange={selected =>
-                          setSelectedCategory(selected.name)
+                          dispatch(
+                            setBufferAnalysisState({
+                              selectedCategory: selected.name,
+                            }),
+                          )
                         }
                         selected={selectedCategory}
                         labelKey="name"
@@ -387,7 +347,9 @@ export default function BufferPopup() {
                     <div className="naxatw-flex naxatw-justify-end naxatw-gap-x-3 naxatw-items-center naxatw-mt-4">
                       <Button
                         className="naxatw-btn-secondary naxatw-btn-noborder"
-                        onClick={() => setShowChart(true)}
+                        onClick={() =>
+                          dispatch(toggleModal('view-buffer-chart'))
+                        }
                       >
                         View Chart
                       </Button>
@@ -397,42 +359,47 @@ export default function BufferPopup() {
               ) : (
                 <div>
                   <div className="naxatw-mt-5 naxatw-max-h-[15rem] naxatw-overflow-y-auto scrollbar naxatw-pr-2 naxatw-shadow-inner">
-                    {/* <div>{selectedCategory}</div> */}
-                    {detailsListData?.data
-                      ?.sort((a, b) => a.buffer_distance - b.buffer_distance)
-                      .map(itm => (
-                        <div className="naxatw-py-2 naxatw-border-b-2">
-                          <div className="naxatw-flex naxatw-gap-x-3 naxatw-items-center">
-                            <p className="naxatw-text-body-btn naxatw-basis-1/2">
-                              {itm?.name || itm?.id}
-                            </p>
-                            <span
-                              className="naxatw-font-bold naxatw-basis-1/2 naxatw-truncate"
-                              title={itm.layer}
-                            >
-                              {itm.layer}
-                            </span>
-                          </div>
-                          <div className="naxatw-flex naxatw-gap-x-3 naxatw-mt-2">
-                            <div className="naxatw-basis-1/2">
-                              <p className="naxatw-text-body-md">
-                                Buffer Distance
+                    {isListLoading ? (
+                      <div className="naxatw-h-[15rem] naxatw-flex naxatw-justify-center naxatw-items-center">
+                        <Spinner className="!naxatw-w-10 !naxatw-h-10 naxatw-fill-grey-800" />
+                      </div>
+                    ) : (
+                      detailsListData?.data
+                        ?.sort((a, b) => a.buffer_distance - b.buffer_distance)
+                        .map(itm => (
+                          <div className="naxatw-py-2 naxatw-border-b-2">
+                            <div className="naxatw-flex naxatw-gap-x-3 naxatw-items-center">
+                              <p className="naxatw-text-body-btn naxatw-basis-1/2">
+                                {itm?.name || itm?.id}
                               </p>
-                              <p className="naxatw-text-body-lg naxatw-mt-1">
-                                {meterToKM(itm?.buffer_distance?.toFixed(2))}
-                              </p>
+                              <span
+                                className="naxatw-font-bold naxatw-basis-1/2 naxatw-truncate"
+                                title={itm.layer}
+                              >
+                                {itm.layer}
+                              </span>
                             </div>
-                            <div className="naxatw-basis-1/2">
-                              <p className="naxatw-text-body-md">
-                                Origin Point
-                              </p>
-                              <p className="naxatw-text-body-md naxatw-mt-1">
-                                {getOriginPoint(itm.origin[0])}
-                              </p>
+                            <div className="naxatw-flex naxatw-gap-x-3 naxatw-mt-2">
+                              <div className="naxatw-basis-1/2">
+                                <p className="naxatw-text-body-md">
+                                  Buffer Distance
+                                </p>
+                                <p className="naxatw-text-body-lg naxatw-mt-1">
+                                  {meterToKM(itm?.buffer_distance?.toFixed(2))}
+                                </p>
+                              </div>
+                              <div className="naxatw-basis-1/2">
+                                <p className="naxatw-text-body-md">
+                                  Origin Point
+                                </p>
+                                <p className="naxatw-text-body-md naxatw-mt-1">
+                                  {getOriginPoint(itm.origin[0])}
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))
+                    )}
                   </div>
                   {!isEmpty(detailsListData) && (
                     <div className="naxatw-flex naxatw-justify-between naxatw-gap-x-3 naxatw-items-center naxatw-mt-4">
@@ -456,97 +423,6 @@ export default function BufferPopup() {
                 </div>
               )}
             </div>
-
-            <Modal
-              show={showChart}
-              title={`${selectedPOIName} Chart`}
-              onClose={() => setShowChart(false)}
-              zIndex={9999999}
-              className="naxatw-w-[62rem] !naxatw-z-20"
-            >
-              <div className="naxatw-flex naxatw-justify-end naxatw-items-center naxatw-gap-x-2">
-                <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2">
-                  <div className="naxatw-space-y-2">
-                    <Select
-                      options={poiLayersDataOptions}
-                      onChange={selected => {
-                        setSelectedLayer(selected.id);
-                        setSelectedCategory(null);
-                        dispatch(
-                          setBufferAnalysisState({
-                            detailsCategory: [],
-                            detailsChartData: {},
-                          }),
-                        );
-                      }}
-                      selectedValue={selectedLayer}
-                      labelKey="name"
-                      valueKey="id"
-                      disabled={poiLayersDataOptions.length === 1}
-                    />
-                  </div>
-                  <div className="naxatw-space-y-2">
-                    <Select
-                      options={categoryListData}
-                      onChange={selected => setSelectedCategory(selected.name)}
-                      selected={selectedCategory}
-                      labelKey="name"
-                      valueKey="name"
-                    />
-                  </div>
-                </div>
-                <Button
-                  className="naxatw-btn-secondary naxatw-btn-noborder"
-                  onClick={handleChartExport}
-                >
-                  Export Chart
-                </Button>
-              </div>
-
-              <div className="naxatw-w-full naxatw-h-full naxatw-flex naxatw-justify-center">
-                <BarChart
-                  ref={ref}
-                  width={800}
-                  height={560}
-                  data={chartData}
-                  margin={{
-                    top: 20,
-                    right: 30,
-                    left: 20,
-                    bottom: 40,
-                  }}
-                  barSize={100}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" interval={0} tick={<CustomXAxisTick />}>
-                    <Label
-                      value="Category"
-                      offset={10}
-                      position="bottom"
-                      style={{
-                        textAnchor: 'middle',
-                        fontSize: '120%',
-                        fill: 'rgba(0, 0, 0, 0.87)',
-                      }}
-                    />
-                  </XAxis>
-                  <YAxis allowDecimals={false}>
-                    <Label
-                      value={`No of ${selectedPOIName}`}
-                      angle={-90}
-                      position="insideLeft"
-                      style={{
-                        textAnchor: 'middle',
-                        fontSize: '120%',
-                        fill: 'rgba(0, 0, 0, 0.87)',
-                      }}
-                    />
-                  </YAxis>
-                  <Tooltip />
-                  <Bar dataKey="value" fill="#8884d8" />
-                </BarChart>
-              </div>
-            </Modal>
           </>
         )}
       </div>

@@ -203,7 +203,7 @@ export default function UploadDataset() {
         style={{ maxHeight: `${height / 16 - 22}rem` }}
       >
         <Dropzone
-          label="Please upload your datasets (shp, csv, geojson or gpkg file format)"
+          label="Please upload your datasets here. It supports multiple data uploads at a time."
           accept=".zip, .geojson, .csv, .gpkg"
           multiple
           onChange={handleUpload}

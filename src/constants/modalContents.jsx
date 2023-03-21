@@ -125,7 +125,7 @@ export function getModalContent(content) {
         title: 'Upload your datasets',
         content: <UploadDataset />,
         subtitle:
-          'USAFIRI allows you to import data in different formats(shp, csv, geojson or gpkg file format). Please upload your datasets below.',
+          'USAFIRI allows you to import data in different formats( .zip, .geojson, .csv, .kml or .gpx). Please upload your datasets below.',
       };
     case 'view-layer-attribute':
       return {

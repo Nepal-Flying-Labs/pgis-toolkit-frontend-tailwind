@@ -14,13 +14,13 @@ import {
 } from '@Selectors/analysis';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import { analysisHeaderHeight } from '@src/constants';
+import { useParams } from 'react-router';
 
 const { handleLayerCheckbox, setZoomToLayerId } = AnalysisCreators;
 
 export default function LayerSection() {
-  const projectHeaderHeight = useSelector(
-    state => state.common.projectHeaderHeight,
-  );
+  const { tabname } = useParams();
   const [hideTitle, setHideTitle] = useState([]);
   const titleLimit = 40;
   const themes = useSelector(filteredThemesSelector);
@@ -62,7 +62,9 @@ export default function LayerSection() {
     <div
       className="naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-y-auto scrollbar"
       style={{
-        height: `calc(100vh - ${projectHeaderHeight}px - 5.5rem)`,
+        height: `calc(100vh - ${analysisHeaderHeight} - ${
+          tabname === 'data-cleaning' ? '7.5rem' : '3.5rem'
+        })`,
       }}
     >
       {isLoading || themes === null

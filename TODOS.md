@@ -86,4 +86,4 @@
 
 - [x] delete only selected feature
 - [x] go back from manual fix, autofix and come back, the state is still there (raj)
-- [ ] delete feature in dropdown option
+- [x] delete feature in dropdown option

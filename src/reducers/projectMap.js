@@ -63,6 +63,7 @@ const initialState = {
   selectedFeatureId: null,
   individualFeatureData: null,
   selectedDropdownOptionId: null,
+  featureGeometry: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -815,6 +816,11 @@ const deleteDropdownOptionSuccess = (state, action) => {
   };
 };
 
+const getFeatureGeometrySuccess = (state, action) => ({
+  ...state,
+  featureGeometry: action.payload,
+});
+
 const resetProjectMapState = state => ({
   ...initialState,
   mapSettings: state.mapSettings,
@@ -873,6 +879,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_ATTRIBUTE_FIELD_SUCCESS]: getAttributeFieldSuccess,
   [Types.GET_FEATURE_IMAGE_SUCCESS]: getFeatureImageSuccess,
   [Types.DELETE_DROPDOWN_OPTION_SUCCESS]: deleteDropdownOptionSuccess,
+  [Types.GET_FEATURE_GEOMETRY_SUCCESS]: getFeatureGeometrySuccess,
 
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });

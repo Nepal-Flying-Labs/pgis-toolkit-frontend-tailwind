@@ -208,6 +208,7 @@ class CustomCalendar extends PureComponent {
         errorClassName,
         placeholder,
         selected,
+        className,
       },
       staticDateRangeOptions,
       renderDates,
@@ -226,7 +227,7 @@ class CustomCalendar extends PureComponent {
         role="button"
       >
         <div
-          className={`naxatw-flex naxatw-justify-between naxatw-items-center ${
+          className={`naxatw-flex naxatw-justify-between ${className} naxatw-items-center ${
             showCalendar && 'naxatw-bg-grey-100'
           } hover:naxatw-bg-grey-100 naxatw-border naxatw-border-[#D7D7D7] naxatw-h-[54px]  naxatw-px-3 naxatw-py-[15px] naxatw-w-full naxatw-rounded-md  is-date ${
             errorClassName ? 'errorInput' : ''
@@ -299,6 +300,7 @@ CustomCalendar.propTypes = {
   errorClassName: PropTypes.bool,
   placeholder: PropTypes.string,
   selected: PropTypes.string,
+  className: PropTypes.string,
 };
 
 CustomCalendar.defaultProps = {
@@ -310,6 +312,7 @@ CustomCalendar.defaultProps = {
   errorClassName: false,
   placeholder: 'Choose',
   selected: null,
+  className: '',
 };
 
 export default CustomCalendar;

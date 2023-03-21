@@ -10,6 +10,7 @@ import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import Chip from '@Components/common/Chip';
 import IconButton from '@Components/common/IconButton/index';
+import CustomNumberInput from '@Components/common/CustomNumberInput/index';
 import MapContent from './OriginPointContents/MapContent';
 import SearchContent from './OriginPointContents/SearchContent';
 import LayerContent from './OriginPointContents/LayerContent';
@@ -100,7 +101,7 @@ export default function DataInput() {
       .map(item => item.id);
     const payloadData = {
       source: 'system',
-      road_network: roadNetworkLayer.id,
+      road_network: roadNetworkLayer?.id,
       mode: selectedModeOfTransport,
       origin_long: originLong,
       origin_lat: originLat,
@@ -258,7 +259,7 @@ export default function DataInput() {
         <Container>
           <label className="naxatw-label">Preferred alternative path</label>
           <p className="naxatw-text-body-sm">(Values between 1 and 5)</p>
-          <input
+          {/* <input
             type="number"
             className="naxatw-input"
             min="1"
@@ -266,6 +267,18 @@ export default function DataInput() {
             value={alternativePaths || ''}
             onChange={e => {
               const { value } = e.target;
+              if (value < 1 || value > 5) return;
+              dispatch(
+                setDataInputState({
+                  alternativePaths: value,
+                }),
+              );
+            }}
+          /> */}
+          <CustomNumberInput
+            min={1}
+            max={5}
+            onChange={value => {
               if (value < 1 || value > 5) return;
               dispatch(
                 setDataInputState({

@@ -35,8 +35,10 @@ export default function CustomPopupUI({ data = {} }) {
             key={key}
             className="naxatw-flex naxatw-items-center naxatw-text-grey-900"
           >
-            <p className="naxatw-w-1/2 naxatw-text-grey-900">{key}</p>
-            <p className="naxatw-text-grey-900 naxatw-w-1/2">
+            <p className="naxatw-w-1/2 naxatw-text-grey-900 naxatw-text-body-lg">
+              {key}
+            </p>
+            <p className="naxatw-text-grey-900 naxatw-w-1/2 naxatw-text-body-lg">
               {filterData[key]?.toString() || '-'}
             </p>
           </li>

@@ -88,8 +88,7 @@ export default {
     default: `<h5 class="naxatw-font-semibold">Optimal Route Analysis</h5>
              <p class="naxatw-text-justify ">Optimal route analysis is used to determine the most efficient or cost-effective route for a particular set of conditions. This includes finding the shortest distance between two locations, determining the best route for avoiding certain obstacles or areas, or minimizing the overall cost of a trip.
              </p>
-             <p class="naxatw-text-justify ">The output of the analysis is a suggested route, represented as a series of connected edges or nodes of the network, which is displayed as a path on a map.
-             </p>
+             <img src="${MEDIA_URL}optimal_route_GsbbWHT.png" />
              `,
     modeOfTransport: `<h5 class="naxatw-font-semibold">Mode of transport</h5>
              <div class="naxatw-y-1"><p class=" naxatw-font-semibold">Search</p><p>You may select the different modes of transportation and obtain different routes based on selected modes.

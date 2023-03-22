@@ -29,7 +29,7 @@ ModalTwo.defaultProps = {
   onClose: () => {},
   children: '',
   className: '',
-  zIndex: '11111',
+  zIndex: '1111111',
 };
 
 ModalTwo.propTypes = {

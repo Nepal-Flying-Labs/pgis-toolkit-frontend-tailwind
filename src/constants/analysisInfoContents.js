@@ -47,7 +47,9 @@ export default {
     default: `<h5 class="naxatw-font-semibold">Proximity Analysis</h5>
              <p class="naxatw-text-justify ">Proximity analysis is a geographic information system (GIS) technique used to identify and analyze spatial relationships between different features or objects within a given area. It involves measuring the distance or proximity between various geographic features, such as buildings, roads, rivers, and other land-use elements.
              </p>
-             <p class="naxatw-text-justify ">Proximity analysis can be used to answer questions like "What is the closest school to a particular residential area?" or "How many hospitals are located within a 5-mile radius of a city center?"
+             <p class="naxatw-text-justify naxatw-font-bold">Example</p>
+             <p class="naxatw-text-justify ">
+             How many school are located within a 500 meter radius of a city center?             
              </p>
              <img src="${MEDIA_URL}proximity_analysis.png"/>
              `,

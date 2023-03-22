@@ -5,8 +5,31 @@ import SelfIntersection from '@Assets/images/self-intersection.png';
 import Multipart from '@Assets/images/multipart-geometry.png';
 import Overlapping from '@Assets/images/overlapping-geometry.png';
 import Overshoot from '@Assets/images/overshoot-geometry.png';
+import { useSelector } from 'react-redux';
 
-const infoData = [
+const stepOneInfoData = [
+  {
+    title: 'Road layer',
+    description: `
+      <p>Choose from the Transportation Network theme to select the road network with
+      which you would like to perform the analysis.</p><br/>
+      <p>Optimal route analysis is more dependent on road network. Therefore, the topology
+      check needs to be done inorder to get the best results for optimum route analysis.</p><br/>
+      <p>The selected layer will undergo topology check before starting the analysis.</p>
+    `,
+  },
+  {
+    title: 'Obstacles',
+    description: `<p>Select the layers under the Transportation Obstacles theme to identify
+      whether the route has any obstacles or not. You may choose multiple layers at once.</p><br/>
+      <p>The optimum route analysis provides the best route avoiding the obstacles. But the
+      obstacles should intersect with the above selected road network.</p><br/>
+      <p>Therefore, the selected layer will undergo a topology check before starting the analysis.</p>
+    `,
+  },
+];
+
+const stepTwoInfoData = [
   {
     title: 'Null Geometry',
     description: `<p>A feature shouldn’t have an empty geometry. Null geometries occur when a feature 
@@ -48,6 +71,10 @@ const infoData = [
 ];
 
 export default function HelpContent() {
+  const stepIndex = useSelector(state => state.dataCleaning.stepIndex);
+
+  const infoData = stepIndex === 1 ? stepOneInfoData : stepTwoInfoData;
+
   return (
     <div
       className="naxatw-w-[22.8125rem] naxatw-bg-secondary-50 naxatw-ml-auto naxatw-p-5

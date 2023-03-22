@@ -174,6 +174,7 @@ export default function SelectLayerFeature() {
                   type="checkbox"
                   className="naxatw-w-5 naxatw-h-5 naxatw-accent-grey-800 naxatw-m-2 naxatw-cursor-pointer"
                   checked={row.checked}
+                  onChange={() => {}}
                   // onChange={() =>
                   //   dispatch(
                   //     handleTableCheckbox({ id: row.attrId, analysisType }),

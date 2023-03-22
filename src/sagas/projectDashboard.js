@@ -10,6 +10,7 @@ import {
 } from 'redux-saga/effects';
 import projectDashboardActions, { Types } from '@Actions/projectDashboard';
 import projectMapActions from '@Actions/projectMap';
+import analysisActions from '@Actions/analysis';
 import toastActions from '@Actions/toast';
 import commonActions from '@Actions/common';
 import { withLoader, withErrorHandler } from '@Utils/sagaUtils';
@@ -716,11 +717,15 @@ export function* resendInvitationRequest({ id, payload }) {
 }
 
 export function* postDatasetThemeRequest({ payload }) {
-  const { project } = payload;
+  const { project, analysisType } = payload;
   const formData = prepareFormData(payload);
   try {
     yield call(postDatasetTheme, formData);
     yield put(projectMapActions.getProjectThemesRequest({ project }));
+    if (analysisType) {
+      yield put(analysisActions.getProjectThemesRequest({ project }));
+    }
+
     yield put(commonActions.toggleModalTwo());
   } catch (error) {
     yield put(projectDashboardActions.postDatasetThemeFailure());

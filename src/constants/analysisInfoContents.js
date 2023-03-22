@@ -1,4 +1,4 @@
-import dissolveOutput from '@Assets/images/dissolve_output.png';
+const { MEDIA_URL } = process.env;
 
 export default {
   'buffer-analysis': {
@@ -25,7 +25,7 @@ export default {
                   <h5 class="naxatw-font-semibold">Dissolve Output</h5>
                   <p class="">Specifies the type of dissolve to be performed to remove buffer overlap. The output varies on different inputs as shown in the figure below:
                   </p>
-                  <img src="/images/dissolve_output.png"/>
+                  <img src="${MEDIA_URL}dissolve_output.png"/>
                   `,
     poi: `    <h5 class="naxatw-font-semibold">POI</h5>
                <p class="">On selecting the layers under POI, the final output will include the features of the selected layers filtered out by the buffer region. 
@@ -49,6 +49,7 @@ export default {
              </p>
              <p class="naxatw-text-justify ">Proximity analysis can be used to answer questions like "What is the closest school to a particular residential area?" or "How many hospitals are located within a 5-mile radius of a city center?"
              </p>
+             <img src="${MEDIA_URL}proximity_analysis.png"/>
              `,
     origin: `<h5 class="naxatw-font-semibold">Input Feature</h5>
               <div class="naxatw-y-1"><p class=" naxatw-font-semibold">Search</p><p> Search the point features within the project area for input. Input can be multiple features.</p></div>
@@ -63,7 +64,7 @@ export default {
                   <h5 class="naxatw-font-semibold">Dissolve Output</h5>
                   <p class="">Specifies the type of dissolve to be performed to remove buffer overlap. The output varies on different inputs as shown in the figure below:
                   </p>
-                  <img src=${dissolveOutput}/>
+                  <img src="${MEDIA_URL}dissolve_output.png" />
                   `,
     poi: `    <h5 class="naxatw-font-semibold">POI</h5>
                <p class="">On selecting the layers under POI, the final output will include the features of the selected layers filtered out by the buffer region. 

@@ -113,7 +113,7 @@ const checkProcessingStatusSuccess = (state, action) =>
         },
       ],
     };
-    draft.dataInput = initialState.dataInput;
+    // draft.dataInput = initialState.dataInput;
     draft.results.analysisResults = [
       analysisResult,
       ...draft.results.analysisResults,

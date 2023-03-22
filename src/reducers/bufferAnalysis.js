@@ -588,7 +588,7 @@ const checkProcessingStatusSuccess = (state, action) =>
       poiChartData: totalPoiCountChartData,
       buffer_areas: data.buffer_areas.map((areas, index) => ({
         ...areas,
-        name: `${analysisType === 'buffer-analysis' ? 'Buffer ' : ''}Point ${
+        name: `${analysisType === 'buffer-analysis' ? 'Buffer ' : ''}Area ${
           index + 1
         }`,
         checked: true,

@@ -524,8 +524,8 @@ const saveDataQuerySuccess = (state, action) => {
   };
 };
 
-const deleteDataQuery = (state, action) => {
-  const queryLayerId = action.payload;
+const deleteDataQuerySuccess = (state, action) => {
+  const queryLayerId = action.payload.layer;
   const queryResults = state.dataQuery.queryResults.filter(
     item => item.id !== queryLayerId,
   );
@@ -539,7 +539,7 @@ const deleteDataQuery = (state, action) => {
   };
 };
 
-const deleteAllDataQuery = state => {
+const deleteAllDataQuerySuccess = state => {
   const { queryResults } = initialState.dataQuery;
   return {
     ...state,
@@ -857,8 +857,8 @@ const projectMapReducer = createReducer(initialState, {
   [Types.HANDLE_DATA_QUERY_CHECKBOX]: handleDataQueryCheckbox,
   [Types.SET_DATA_QUERY_STATE]: setDataQueryState,
   [Types.SAVE_DATA_QUERY_SUCCESS]: saveDataQuerySuccess,
-  [Types.DELETE_DATA_QUERY]: deleteDataQuery,
-  [Types.DELETE_ALL_DATA_QUERY]: deleteAllDataQuery,
+  [Types.DELETE_DATA_QUERY_SUCCESS]: deleteDataQuerySuccess,
+  [Types.DELETE_ALL_DATA_QUERY_SUCCESS]: deleteAllDataQuerySuccess,
   [Types.GET_LAYER_ATTRIBUTE_SUCCESS]: getLayerAttributeSuccess,
   [Types.SET_ATTRIBUTE_TABLE_SEARCH_TERM]: setAttributeTableSearchTerm,
   [Types.HANDLE_ATTRIBUTE_NEXT_CLICK]: handleAttributeNextClick,

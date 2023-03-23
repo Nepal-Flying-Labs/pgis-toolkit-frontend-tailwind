@@ -20,7 +20,7 @@ export default function Results() {
   );
   const dispatch = useDispatch();
 
-  const bufferAnalysisException = ['attribute-table', 'visualize'];
+  const proximityAnalysisException = ['attribute-table'];
 
   const dropdownOptions = [
     {
@@ -160,10 +160,10 @@ export default function Results() {
                   </div>
                   <DropdownOptions
                     options={
-                      analysisType === 'buffer-analysis'
+                      analysisType === 'proximity-analysis'
                         ? dropdownOptions.filter(
                             option =>
-                              !bufferAnalysisException.includes(option.id),
+                              !proximityAnalysisException.includes(option.id),
                           )
                         : dropdownOptions
                     }

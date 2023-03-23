@@ -8,6 +8,8 @@ import capitalizeFirstLetter from '@src/utils/capitalizeFirstLetter';
 
 const exceptions = [
   // ...popupExceptionKeys,
+  'pois',
+  'analysis_id',
 ];
 
 export default function CustomPopupUI({ data = {} }) {
@@ -26,6 +28,7 @@ export default function CustomPopupUI({ data = {} }) {
   }, {});
 
   const { Name, Image, Url, ...filterData } = popupData;
+  console.log(data, 'data');
 
   return (
     <ul className=" naxatw-flex naxatw-flex-col naxatw-gap-2 ">
@@ -33,10 +36,12 @@ export default function CustomPopupUI({ data = {} }) {
         Object.keys(filterData).map(key => (
           <li
             key={key}
-            className="naxatw-flex naxatw-items-center naxatw-text-grey-900"
+            className="naxatw-flex naxatw-items-start naxatw-text-grey-900"
           >
-            <p className="naxatw-w-1/2 naxatw-text-grey-900">{key}</p>
-            <p className="naxatw-text-grey-900 naxatw-w-1/2">
+            <p className="naxatw-w-1/2 naxatw-text-grey-900 naxatw-text-body-lg">
+              {key}
+            </p>
+            <p className="naxatw-text-grey-900 naxatw-w-1/2 naxatw-text-body-lg naxatw-break-words">
               {filterData[key]?.toString() || '-'}
             </p>
           </li>

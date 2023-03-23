@@ -37,6 +37,7 @@ import {
   postCreateToUrl,
   deleteDropdownOption,
   getFeatureGeojson,
+  deleteDataQuery,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -684,6 +685,31 @@ export function* getFeatureGeometryRequest({ id }) {
   }
 }
 
+export function* deleteDataQueryRequest({ payload }) {
+  try {
+    const formData = prepareFormData(payload);
+    yield call(deleteDataQuery, formData);
+    yield put(
+      projectMapActions.deleteDataQuerySuccess({ layer: payload.layer }),
+    );
+    yield put(commonActions.togglePromptDialog());
+  } catch (error) {
+    yield put(projectMapActions.deleteDataQueryFailure());
+    throw error;
+  }
+}
+
+export function* deleteAllDataQueryRequest({ payload }) {
+  try {
+    yield all(payload.map(item => call(deleteDataQuery, { layer: item })));
+    yield put(projectMapActions.deleteAllDataQuerySuccess());
+    yield put(commonActions.togglePromptDialog());
+  } catch (error) {
+    yield put(projectMapActions.deleteAllDataQueryFailure());
+    throw error;
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -812,6 +838,14 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_FEATURE_GEOMETRY_REQUEST,
     withLoader(withErrorHandler(getFeatureGeometryRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_DATA_QUERY_REQUEST,
+    withLoader(withErrorHandler(deleteDataQueryRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_ALL_DATA_QUERY_REQUEST,
+    withLoader(withErrorHandler(deleteAllDataQueryRequest)),
   );
 }
 

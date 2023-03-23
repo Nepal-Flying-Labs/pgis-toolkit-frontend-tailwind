@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/bufferAnalysis';
+import { Creators as CommonCreators } from '@Actions/common';
 import useForm from '@Hooks/useForm';
 import Button from '@Components/common/Button';
 import Select from '@Components/common/Select';
@@ -8,6 +9,7 @@ import FormErrorMessage from '@Components/common/FormErrorMessage';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { saveBufferLayerRequest } = Creators;
+const { toggleModalTwo } = CommonCreators;
 
 export default function SaveBufferLayer() {
   const themes = useSelector(state => state.analysis.themes);
@@ -56,25 +58,36 @@ export default function SaveBufferLayer() {
             <FormErrorMessage message="Name is required." />
           )}
         </div>
-
-        <div className="naxatw-space-y-2">
-          <label className="naxatw-label">Category</label>
-          <Select
-            placeholder="Choose"
-            options={themes}
-            labelKey="name"
-            valueKey="id"
-            onChange={selectedItem => {
-              handleChange({
-                target: { name: 'category', value: selectedItem.id },
-              });
-            }}
-            selectedValue={values.category}
-            {...inputProps}
-          />
-          {meta.category.touched && meta.category.error && (
-            <FormErrorMessage message="Category is required" />
-          )}
+        <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-end">
+          <div className="naxatw-space-y-2 naxatw-basis-3/4">
+            <label className="naxatw-label">Category</label>
+            <Select
+              placeholder="Choose"
+              options={themes}
+              labelKey="name"
+              valueKey="id"
+              onChange={selectedItem => {
+                handleChange({
+                  target: { name: 'category', value: selectedItem.id },
+                });
+              }}
+              selectedValue={values.category}
+              {...inputProps}
+            />
+            {meta.category.touched && meta.category.error && (
+              <FormErrorMessage message="Category is required" />
+            )}
+          </div>
+          <div title="Add Category" className="naxatw-basis-1/4">
+            <Button
+              className="naxatw-btn-secondary naxatw-btn-noborder"
+              onClick={() => {
+                dispatch(toggleModalTwo('add-dataset-category'));
+              }}
+            >
+              Add Category
+            </Button>
+          </div>
         </div>
       </div>
 

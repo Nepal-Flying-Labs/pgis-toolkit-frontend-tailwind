@@ -10,6 +10,7 @@ import {
   bufferColors,
 } from '@src/constants/analysis';
 import { Types } from '@Actions/bufferAnalysis';
+import { isEmpty } from '@Utils/commonUtils';
 
 const initialState = {
   activeTab: 'dataInput', // 'dataInput', 'results', 'layers'
@@ -117,7 +118,7 @@ const checkProcessingStatusSuccess = (state, action) =>
       poiChartData: totalPoiCountChartData,
       buffer_areas: data.buffer_areas.map((areas, index) => ({
         ...areas,
-        name: `${analysisType === 'buffer-analysis' ? 'Buffer ' : ''}Point ${
+        name: `${analysisType === 'buffer-analysis' ? 'Buffer ' : ''}Area ${
           index + 1
         }`,
         checked: true,
@@ -130,8 +131,8 @@ const checkProcessingStatusSuccess = (state, action) =>
     draft.dataInput = initialState.dataInput;
     draft.inputQuery = initialState.inputQuery;
     draft.results.analysisResults = [
-      ...draft.results.analysisResults,
       analysisResult,
+      ...draft.results.analysisResults,
     ];
     const analysisResultStyle = draft.results.analysisResults.map(
       (result, i) => ({
@@ -175,6 +176,12 @@ const handleRouteCheckbox = (state, action) =>
 
     if (name === 'area') {
       area.checked = checked;
+      const checkedAreas = result.buffer_areas.filter(item => item.checked);
+      if (isEmpty(checkedAreas)) {
+        result.checked = false;
+      } else {
+        result.checked = true;
+      }
     }
   });
 const setPopupActiveTab = (state, action) => ({

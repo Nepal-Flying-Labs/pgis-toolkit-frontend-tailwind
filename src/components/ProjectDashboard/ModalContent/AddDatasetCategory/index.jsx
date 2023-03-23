@@ -10,7 +10,7 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 const { postDatasetThemeRequest } = Creators;
 
 const AddDatasetCategory = () => {
-  const { projectId } = useParams();
+  const { projectId, analysisType } = useParams();
   const [category, setCategory] = useState('');
   const dispatch = useDispatch();
   const [error, setError] = useState(false);
@@ -27,7 +27,13 @@ const AddDatasetCategory = () => {
     if (!category) {
       setError(true);
     } else {
-      dispatch(postDatasetThemeRequest({ project: projectId, name: category }));
+      dispatch(
+        postDatasetThemeRequest({
+          project: projectId,
+          name: category,
+          analysisType,
+        }),
+      );
     }
   };
 

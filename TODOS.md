@@ -90,3 +90,6 @@
 
 - [ ] back to project extent after query layer save
 - [ ] undo/redo button manual fix
+
+- [ ] reload vt layer after delete
+- [ ] feature highlight issue multipart

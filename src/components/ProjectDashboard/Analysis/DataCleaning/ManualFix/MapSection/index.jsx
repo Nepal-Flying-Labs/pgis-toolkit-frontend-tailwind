@@ -152,7 +152,9 @@ export default function MapSection() {
         stylex.fillOpacity = 0;
         stylex.lineOpacity = 0;
         stylex.icon = {};
-      } else if (checkedFeatureIds.includes(feature.getProperties()?.id)) {
+      } else if (
+        checkedFeatureIds.includes(feature.getProperties()?.id || featureId)
+      ) {
         stylex.fillColor = featureSelectColor;
         stylex.lineColor = featureSelectColor;
         stylex.icon = {};
@@ -232,7 +234,7 @@ export default function MapSection() {
               resolution,
             )
           }
-          style={selectedLayer.style}
+          // style={selectedLayer.style}
           zIndex={10}
           properties={{ layerId: selectedLayer.id }}
           // renderMode="vector"

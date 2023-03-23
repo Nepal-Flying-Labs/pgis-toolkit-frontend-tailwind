@@ -87,3 +87,6 @@
 - [x] delete only selected feature
 - [x] go back from manual fix, autofix and come back, the state is still there (raj)
 - [x] delete feature in dropdown option
+
+- [ ] back to project extent after query layer save
+- [ ] undo/redo button manual fix

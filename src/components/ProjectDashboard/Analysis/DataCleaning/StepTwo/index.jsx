@@ -105,7 +105,9 @@ export default function StepTwo() {
                       */}
                       <Button
                         className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
-                        disabled={isLayerCheckingError}
+                        disabled={
+                          isLayerCheckingError || layer.id in errorStates
+                        }
                         onClick={() => {
                           if (!errorState)
                             dispatch(

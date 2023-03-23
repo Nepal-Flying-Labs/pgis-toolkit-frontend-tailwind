@@ -64,6 +64,7 @@ const initialState = {
   individualFeatureData: null,
   selectedDropdownOptionId: null,
   featureGeometry: null,
+  resetMapExtent: false,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -521,6 +522,7 @@ const saveDataQuerySuccess = (state, action) => {
       queryResults,
       selectedData: null,
     },
+    resetMapExtent: true,
   };
 };
 

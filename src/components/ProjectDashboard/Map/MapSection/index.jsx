@@ -22,10 +22,8 @@ import {
   getStyles,
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import Spinner from '@Components/common/Spinner';
-import PopupUI from '@Components/common/OpenLayersComponent/Custom/PopupUI';
 import CustomPopupUI from '@Components/common/OpenLayersComponent/Custom/CustomPopupUI';
 import { checkIfLoading } from '@Utils/loaderSelector';
-import AsyncPopup from '@Components/common/OpenLayersComponent/Custom/AsyncPopup';
 import CustomPopup from '@Components/common/OpenLayersComponent/Custom/CustomPopup/index';
 import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
@@ -89,6 +87,7 @@ export default function MapSection() {
   const featureGeometry = useSelector(
     state => state.projectMap.featureGeometry,
   );
+  const resetMapExtent = useSelector(state => state.projectMap.resetMapExtent);
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,
@@ -103,9 +102,9 @@ export default function MapSection() {
   const [isMeaureEnabled, setIsMeasureEnabled] = useState(false);
   const dispatch = useDispatch();
 
-  // zoom to project location on initial map load
+  // zoom to project location on initial map load or map reset
   useEffect(() => {
-    if (!map || !projectDetail) return;
+    if (!map || !projectDetail || !resetMapExtent) return;
     const bbox = projectDetail?.bbox;
     if (!bbox) return;
     const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
@@ -115,8 +114,9 @@ export default function MapSection() {
         // duration: 3500,
         constrainResolution: true,
       });
+      dispatch(setProjectMapState({ resetMapExtent: false }));
     }
-  }, [map, projectDetail]);
+  }, [map, projectDetail, resetMapExtent, dispatch]);
 
   // update map size on sidebar toggle
   useEffect(() => {

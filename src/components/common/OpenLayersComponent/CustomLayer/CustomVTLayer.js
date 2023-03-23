@@ -33,6 +33,7 @@ export default function CustomVTLayer({
   renderMode = 'hybrid',
   hoverEffect = false,
   onFeatureSelect = () => {},
+  hoverExceptionIds,
 }) {
   const hoveredFeatures = useRef({});
   const selectedFeatures = useRef({});
@@ -171,6 +172,7 @@ export default function CustomVTLayer({
           return;
         }
         const fid = feature.getId();
+        if (hoverExceptionIds.includes(fid)) return;
         hoveredFeatures.current[fid] = feature;
         hoverLayer.current.changed();
       });
@@ -209,7 +211,7 @@ export default function CustomVTLayer({
     return () => {
       map?.un('singleclick', hoverInteraction);
     };
-  }, [map, vectorTileLayer, hoverEffect, style]);
+  }, [map, vectorTileLayer, hoverEffect, style, hoverExceptionIds]);
 
   // add select effect
   useEffect(() => {
@@ -223,6 +225,7 @@ export default function CustomVTLayer({
           return;
         }
         const fid = feature.getId();
+        if (hoverExceptionIds.includes(fid)) return;
         if (fid in selectedFeatures.current) {
           delete selectedFeatures.current[fid];
           selectionLayer.current.changed();
@@ -268,7 +271,7 @@ export default function CustomVTLayer({
     return () => {
       map?.un('singleclick', selectInteraction);
     };
-  }, [map, vectorTileLayer, hoverEffect, style]); // eslint-disable-line
+  }, [map, vectorTileLayer, hoverEffect, style, hoverExceptionIds]); // eslint-disable-line
 
   // cleanup
   useEffect(

@@ -239,6 +239,7 @@ export default function MapSection() {
           properties={{ layerId: selectedLayer.id }}
           // renderMode="vector"
           hoverEffect={!!selectedError?.id && !geojsonFeatures}
+          hoverExceptionIds={[selectedError?.id]}
           onFeatureSelect={features => {
             dispatch(
               setManualFixState({

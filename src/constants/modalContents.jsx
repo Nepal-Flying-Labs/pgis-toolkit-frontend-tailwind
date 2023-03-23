@@ -58,6 +58,7 @@ import DeleteDropdownOption from '@Components/ProjectDashboard/ModalContent/Dele
 import DropdownEditWarning from '@Components/ProjectDashboard/ModalContent/DropdownEditWarning/index';
 import ViewAnalysisDetails from '@Components/ProjectDashboard/ModalContent/ViewAnalysisDetails/index';
 import ViewBufferChart from '@Components/ProjectDashboard/ModalContent/ViewBufferChart/index';
+import StartAnalysisPrompt from '@Components/ProjectDashboard/Analysis/ModalContent/StartAnalysisPrompt';
 
 export function getModalContent(content) {
   switch (content) {
@@ -440,6 +441,13 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <DropdownEditWarning />,
+      };
+
+    // data-cleaning
+    case 'start-analysis-prompt':
+      return {
+        title: '',
+        content: <StartAnalysisPrompt />,
       };
 
     default:

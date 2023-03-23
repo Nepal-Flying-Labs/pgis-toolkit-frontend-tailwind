@@ -5,7 +5,7 @@ export const lineTypes = ['LineString', 'MultiLineString'];
 // const polygonTypes = ['Polygon', 'MultiPolygon'];
 
 export const hoverEffectColor = '#7BCBC3';
-export const selectEffectColor = '#fde047';
+export const selectEffectColor = '#ffd808'; // '#fde047';
 
 export function hexToRgba(hex, opacity = 100) {
   if (!hex) return '';

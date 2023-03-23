@@ -117,7 +117,7 @@ export default function BufferPopup() {
       );
     }
     return () => {};
-  }, [selectedLayer]);
+  }, [dispatch, selectedLayer]);
 
   useEffect(() => {
     if (selectedCategory !== null) {
@@ -131,7 +131,7 @@ export default function BufferPopup() {
       );
     }
     return () => {};
-  }, [selectedCategory]);
+  }, [dispatch, selectedCategory, selectedLayer, selectedResultsId]);
 
   useEffect(() => {
     if (isEmpty(poiLayersDataOptions)) return;
@@ -140,7 +140,7 @@ export default function BufferPopup() {
         setBufferAnalysisState({ selectedLayer: poiLayersDataOptions[0].id }),
       );
     }
-  }, [poiLayersDataOptions]);
+  }, [dispatch, poiLayersDataOptions]);
 
   const handleExcelExport = async () => {
     if (!isEmpty(detailsListData)) {
@@ -229,63 +229,81 @@ export default function BufferPopup() {
 
             <div className="naxatw-btn-text naxatw-mt-7 naxatw-mb-2">
               {popupActiveTab === 'Summary' ? (
-                <div className="naxatw-flex naxatw-flex-col naxatw-px-2 naxatw-gap-3">
-                  {/* data input */}
+                analysisType === 'proximity-analysis' ? (
+                  <div className="naxatw-flex naxatw-flex-col naxatw-px-2 naxatw-gap-3">
+                    <div className="naxatw-flex naxatw-justify-between naxatw-py-2">
+                      <div className="naxatw-basis-1/2">
+                        <p className="naxatw-text-body-lg naxatw-text-center">
+                          Origin Count
+                        </p>
+                        <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center">
+                          {originCount || '-'}
+                        </p>
+                      </div>
 
-                  {/* count */}
-                  <div className="naxatw-flex naxatw-justify-between naxatw-py-2">
-                    <div className="naxatw-basis-1/2">
-                      <p className="naxatw-text-body-lg naxatw-text-center">
-                        Origin Count
-                      </p>
-                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center">
-                        {originCount || '-'}
-                      </p>
+                      <div className="naxatw-basis-1/2">
+                        <p className="naxatw-text-body-lg naxatw-text-center">
+                          POI Count
+                        </p>
+                        <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center">
+                          {poiCount || '-'}
+                        </p>
+                      </div>
                     </div>
-                    <div className="naxatw-basis-1/2">
-                      <p className="naxatw-text-body-lg naxatw-text-center">
-                        POI Count
-                      </p>
-                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center">
-                        {poiCount || '-'}
-                      </p>
+
+                    <hr className="naxatw-mb-3" />
+                    <VerticalBlockChart
+                      data={
+                        analysisResults.filter(
+                          result => result.id === selectedResultsId,
+                        )[0]?.poiChartData
+                      }
+                      dataKey="count"
+                    />
+
+                    <hr className="naxatw-mb-3" />
+
+                    <div className="naxatw-flex naxatw-flex-col  naxatw-space-y-2">
+                      <div className="naxatw-flex">
+                        <p className="naxatw-text-body-lg naxatw-basis-1/2">
+                          {analysisType === 'proximity-analysis'
+                            ? 'Proximity Radius'
+                            : 'Buffer Radius'}
+                        </p>
+                        <p className="naxatw-text-body-lg naxatw-font-bold naxatw-basis-1/2">
+                          {meterToKM(bufferRadius) || '-'}
+                        </p>
+                      </div>
+                      <div className="naxatw">
+                        <p className="naxatw-text-body-lg ">Selected POI</p>
+                        <p className="naxatw-text-body-lg naxatw-font-bold">
+                          {displayArrayList(selectedPOI) || '-'}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  {analysisType === 'proximity-analysis' && (
-                    <>
-                      <hr className="naxatw-mb-3" />
-                      <VerticalBlockChart
-                        data={
-                          analysisResults.filter(
-                            result => result.id === selectedResultsId,
-                          )[0]?.poiChartData
-                        }
-                        dataKey="count"
-                      />
-
-                      <hr className="naxatw-mb-3" />
-                    </>
-                  )}
-
-                  <div className="naxatw-flex naxatw-flex-col  naxatw-space-y-2">
-                    <div className="naxatw-flex">
-                      <p className="naxatw-text-body-lg naxatw-basis-1/2">
-                        {analysisType === 'proximity-analysis'
-                          ? 'Proximity Radius'
-                          : 'Buffer Radius'}
-                      </p>
-                      <p className="naxatw-text-body-lg naxatw-font-bold naxatw-basis-1/2">
-                        {meterToKM(bufferRadius) || '-'}
-                      </p>
-                    </div>
-                    <div className="naxatw">
-                      <p className="naxatw-text-body-lg ">Selected POI</p>
-                      <p className="naxatw-text-body-lg naxatw-font-bold">
-                        {displayArrayList(selectedPOI) || '-'}
-                      </p>
+                ) : (
+                  <div className="naxatw-flex naxatw-flex-col naxatw-px-2 naxatw-gap-3">
+                    <div className="naxatw-flex naxatw-justify-between naxatw-py-2">
+                      <div className="naxatw-basis-1/2">
+                        <p className="naxatw-text-body-lg naxatw-text-center">
+                          Origin Count
+                        </p>
+                        <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center">
+                          {originCount || '-'}
+                        </p>
+                      </div>
+                      <div className="naxatw-basis-1/2">
+                        <p className="naxatw-text-body-lg naxatw-text-center">
+                          Buffer Radius
+                        </p>
+                        <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center">
+                          {meterToKM(bufferRadius) || '-'}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )
               ) : popupActiveTab === 'Charts' ? (
                 <>
                   <div className="naxatw-space-y-3">

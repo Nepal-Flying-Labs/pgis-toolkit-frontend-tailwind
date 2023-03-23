@@ -116,7 +116,9 @@ export default function LayerOrder({ dropdownOptions }) {
                     <LegendItem styles={layer.style} className="naxatw-mr-2" />
 
                     <label
-                      className="naxatw-text-body-lg naxatw-text-grey-800"
+                      title={layer.name}
+                      className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-w-[7rem]
+                          naxatw-truncate"
                       htmlFor={layer.id}
                     >
                       {layer.name}

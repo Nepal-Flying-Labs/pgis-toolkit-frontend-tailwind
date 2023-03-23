@@ -10,6 +10,7 @@ import {
 } from '@Services/routeAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { getFeatureCollection } from '@Services/projectMap';
+import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
 export function* applyRouteAnalysisRequest({ payload }) {
   try {
@@ -63,7 +64,13 @@ export function* saveRouteLayerRequest({ payload }) {
         layers: {
           ...layers,
           [theme]: [
-            { ...responseData, checked: true, layer_type: 'Vector', id: layer },
+            {
+              ...responseData,
+              checked: true,
+              layer_type: 'Vector',
+              id: layer,
+              style: { ...defaultStyles, geometryType: responseData.geom_type },
+            },
             ...layers[theme],
           ],
         },

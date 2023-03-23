@@ -3,8 +3,10 @@ import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
+import { Creators as CommonCreators } from '@Actions/common';
 import Button from '@Components/common/Button';
 import Accordion from '@Components/common/Accordion';
+import { isErrorLeftSelector } from '@Selectors/dataCleaning';
 
 const {
   checkErrorRequest,
@@ -13,6 +15,8 @@ const {
   startAnalysisRequest,
   setDataCleaningState,
 } = DataCleaningCreators;
+
+const { togglePromptDialog } = CommonCreators;
 
 function getStatusIcon(status) {
   switch (status) {
@@ -41,6 +45,7 @@ export default function StepTwo() {
   );
   const [toggledStates, setToggledStates] = useState({});
   const errorStates = useSelector(state => state.dataCleaning.errorStates);
+  const isErrorLeft = useSelector(isErrorLeftSelector);
   const dispatch = useDispatch();
 
   const data = useMemo(
@@ -263,7 +268,12 @@ export default function StepTwo() {
             !isAllChecked ? 'naxatw-btn-disabled' : ''
           }`}
           onClick={() => {
-            dispatch(startAnalysisRequest(params));
+            if (!isAllChecked) return;
+            if (isErrorLeft) {
+              dispatch(togglePromptDialog('start-analysis-prompt'));
+            } else {
+              dispatch(startAnalysisRequest(params));
+            }
           }}
           disabled={!isAllChecked}
         >

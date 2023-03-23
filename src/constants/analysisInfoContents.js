@@ -1,4 +1,4 @@
-const { MEDIA_URL } = process.env;
+const { BASE_URL } = process.env;
 
 export default {
   'buffer-analysis': {
@@ -25,7 +25,7 @@ export default {
                   <h5 class="naxatw-font-semibold">Dissolve Output</h5>
                   <p class="">Specifies the type of dissolve to be performed to remove buffer overlap. The output varies on different inputs as shown in the figure below:
                   </p>
-                  <img src="${MEDIA_URL}dissolve_output.png"/>
+                  <img src="${BASE_URL}/media/usafiri_content/dissolve_output.png"/>
                   `,
     poi: `    <h5 class="naxatw-font-semibold">POI</h5>
                <p class="">On selecting the layers under POI, the final output will include the features of the selected layers filtered out by the buffer region. 
@@ -51,7 +51,7 @@ export default {
              <p class="naxatw-text-justify ">
              How many school are located within a 500 meter radius of a city center?             
              </p>
-             <img src="${MEDIA_URL}proximity_analysis.png"/>
+             <img src="${BASE_URL}/media/usafiri_content/proximity_analysis.png"/>
              `,
     origin: `<h5 class="naxatw-font-semibold">Input Feature</h5>
               <div class="naxatw-y-1"><p class=" naxatw-font-semibold">Search</p><p> Search the point features within the project area for input. Input can be multiple features.</p></div>
@@ -66,7 +66,7 @@ export default {
                   <h5 class="naxatw-font-semibold">Dissolve Output</h5>
                   <p class="">Specifies the type of dissolve to be performed to remove buffer overlap. The output varies on different inputs as shown in the figure below:
                   </p>
-                  <img src="${MEDIA_URL}dissolve_output.png" />
+                  <img src="${BASE_URL}/media/usafiri_content/dissolve_output.png" />
                   `,
     poi: `    <h5 class="naxatw-font-semibold">POI</h5>
                <p class="">On selecting the layers under POI, the final output will include the features of the selected layers filtered out by the buffer region. 
@@ -88,7 +88,7 @@ export default {
     default: `<h5 class="naxatw-font-semibold">Optimal Route Analysis</h5>
              <p class="naxatw-text-justify ">Optimal route analysis is used to determine the most efficient or cost-effective route for a particular set of conditions. This includes finding the shortest distance between two locations, determining the best route for avoiding certain obstacles or areas, or minimizing the overall cost of a trip.
              </p>
-             <img src="${MEDIA_URL}optimal_route_GsbbWHT.png" />
+             <img src="${BASE_URL}/media/usafiri_content/optimal_route_GsbbWHT.png" />
              `,
     modeOfTransport: `<h5 class="naxatw-font-semibold">Mode of transport</h5>
              <div class="naxatw-y-1"><p class=" naxatw-font-semibold">Search</p><p>You may select the different modes of transportation and obtain different routes based on selected modes.

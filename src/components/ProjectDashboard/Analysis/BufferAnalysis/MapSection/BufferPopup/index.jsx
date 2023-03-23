@@ -16,6 +16,7 @@ import { isEmpty } from '@Utils/commonUtils';
 import { saveAs } from 'file-saver';
 import XLSX from 'sheetjs-style';
 import Spinner from '@Components/common/Spinner/index';
+import { chartDataSelector } from '@Selectors/bufferAnalysis';
 
 const calTotalCount = (data, dataKey) => {
   const values = data.map(d => +d?.[dataKey]);
@@ -76,6 +77,8 @@ export default function BufferPopup() {
     checkIfLoading(state, [Types.GET_DETAILS_CHART_REQUEST]),
   );
 
+  const verticalChartData = useSelector(chartDataSelector);
+
   // const originPoints = selectedResultData?.inputQuery.origins;
   const bufferRadius = selectedResultData?.inputQuery.radius;
   const selectedPOI = selectedResultData?.inputQuery.selectedPOIName;
@@ -84,12 +87,12 @@ export default function BufferPopup() {
     selectedResultData?.poiChartData.map(itm => itm.name).includes(data.name),
   );
 
-  const originCount = selectedResultData?.buffer_areas?.reduce(
-    (total, item) => total + item.origin?.length,
-    0,
-  );
+  // const originCount = selectedResultData?.buffer_areas?.reduce(
+  //   (total, item) => total + item.origin?.length,
+  //   0,
+  // );
 
-  const poiCount = calTotalCount(selectedResultData?.poiChartData, 'count');
+  const poiCount = calTotalCount(verticalChartData.poiChartData, 'count');
 
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.GET_ROUTE_POPUP_DATA_REQUEST]),
@@ -237,7 +240,7 @@ export default function BufferPopup() {
                           Origin Count
                         </p>
                         <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center">
-                          {originCount || '-'}
+                          {verticalChartData.originCount || '-'}
                         </p>
                       </div>
 
@@ -250,18 +253,17 @@ export default function BufferPopup() {
                         </p>
                       </div>
                     </div>
+                    {!isEmpty(verticalChartData.poiChartData) && (
+                      <>
+                        <hr className="naxatw-mb-3" />
+                        <VerticalBlockChart
+                          data={verticalChartData.poiChartData}
+                          dataKey="count"
+                        />
 
-                    <hr className="naxatw-mb-3" />
-                    <VerticalBlockChart
-                      data={
-                        analysisResults.filter(
-                          result => result.id === selectedResultsId,
-                        )[0]?.poiChartData
-                      }
-                      dataKey="count"
-                    />
-
-                    <hr className="naxatw-mb-3" />
+                        <hr className="naxatw-mb-3" />
+                      </>
+                    )}
 
                     <div className="naxatw-flex naxatw-flex-col  naxatw-space-y-2">
                       <div className="naxatw-flex">
@@ -290,7 +292,7 @@ export default function BufferPopup() {
                           Origin Count
                         </p>
                         <p className="naxatw-text-body-lg naxatw-font-bold naxatw-text-center">
-                          {originCount || '-'}
+                          {verticalChartData.originCount || '-'}
                         </p>
                       </div>
                       <div className="naxatw-basis-1/2">

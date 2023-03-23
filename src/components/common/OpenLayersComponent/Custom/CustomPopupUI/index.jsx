@@ -28,7 +28,6 @@ export default function CustomPopupUI({ data = {} }) {
   }, {});
 
   const { Name, Image, Url, ...filterData } = popupData;
-  console.log(data, 'data');
 
   return (
     <ul className=" naxatw-flex naxatw-flex-col naxatw-gap-2 ">

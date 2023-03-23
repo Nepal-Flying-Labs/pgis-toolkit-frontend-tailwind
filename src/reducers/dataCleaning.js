@@ -265,6 +265,10 @@ const deleteFeatureSuccess = state => {
   return {
     ...state,
     errorFeaturesData,
+    manualFix: {
+      ...state.manualFix,
+      refreshLayerId: state.selectedLayer.id,
+    },
   };
 };
 

@@ -79,17 +79,10 @@
 
 ### NEW TASKS
 
-- [x] add icon/style change issue
-- [x] query result highlight in map
 - [ ] bbox negative (raj) [https://pgis.naxa.com.np/api/maps/project_theme_layers/?theme=640]
 - [ ] start point click auto save (analysis origin point input)
 
-- [x] delete only selected feature
-- [x] go back from manual fix, autofix and come back, the state is still there (raj)
-- [x] delete feature in dropdown option
 
-- [ ] back to project extent after query layer save
 - [ ] undo/redo button manual fix
 
-- [ ] reload vt layer after delete
 - [ ] feature highlight issue multipart

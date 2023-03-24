@@ -86,3 +86,19 @@
 - [ ] undo/redo button manual fix
 
 - [ ] feature highlight issue multipart
+
+
+### DESIGN REVIEW
+- [ ] font issue in safari
+- [ ] project map => line seperator in map and sidebar
+- [ ] button sm padding
+- [ ] accordion content padding
+- [ ] center align save button edit sidebar section
+- [ ] project header 
+- [ ] scrollbar on hover => ref =>slack 
+- [ ] airbnb reference map/sidebar
+- [ ] border in toolbar
+- [ ] google earth reference
+- [ ] organization map card design => fix height
+- [ ] clear button on search 
+- [ ] analysis modal design

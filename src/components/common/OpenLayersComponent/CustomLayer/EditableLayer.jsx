@@ -202,6 +202,7 @@ const EditableLayer = ({
     setDrawType(null);
     const newFeature = source.getFeatures()[0];
     select.getFeatures().push(newFeature);
+    onChange(previousModifiedFeature);
   };
 
   const handleDelete = () => {

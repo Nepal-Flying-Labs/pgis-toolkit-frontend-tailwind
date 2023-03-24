@@ -4,23 +4,21 @@ import React, { useEffect } from 'react';
 export default function EditFeature({
   onClick,
   enable,
-  select,
   modify,
-  snap,
   addInteraction,
   removeInteraction,
 }) {
   useEffect(() => {
     if (enable) {
-      addInteraction(select);
+      // addInteraction(select);
       addInteraction(modify);
       // addInteraction(snap);
     } else {
-      removeInteraction(select);
+      // removeInteraction(select);
       removeInteraction(modify);
       // removeInteraction(snap);
     }
-  }, [addInteraction, removeInteraction, enable, modify, select, snap]);
+  }, [addInteraction, removeInteraction, enable, modify]);
 
   return (
     <button

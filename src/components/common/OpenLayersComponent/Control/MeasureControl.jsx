@@ -21,6 +21,7 @@ function MeasureControl({
   map,
   style,
   buttonText,
+  direction,
   measureBoth = false,
   // eslint-disable-next-line react/prop-types
   onMeasureToggle,
@@ -34,6 +35,36 @@ function MeasureControl({
 
   let measureVector;
   let measureDraw;
+
+  const getDropdownPosition = value => {
+    switch (value) {
+      case 'bottom-right':
+        return {
+          right: '0px',
+          top: '42px',
+        };
+      case 'bottom-left':
+        return {
+          left: '0px',
+          top: '42px',
+        };
+      case 'right':
+        return {
+          left: '45px',
+          top: '0px',
+        };
+      case 'left':
+        return {
+          right: '45px',
+          top: '0px',
+        };
+      default:
+        return {
+          right: '0px',
+          top: '0px',
+        };
+    }
+  };
 
   useEffect(() => {
     onMeasureToggle(isMeasureEnabled);
@@ -206,9 +237,7 @@ function MeasureControl({
           className="naxatw-bg-white naxatw-rounded-sm naxatw-flex naxatw-shadow-3xl"
           style={{
             position: 'absolute',
-            right: '0px',
-            top: '42px',
-            // display: options ? '' : 'none',
+            ...getDropdownPosition(direction),
           }}
         >
           <li className="naxatw-p-2 naxatw-h-10 naxatw-items-center naxatw-justify-center hover:naxatw-bg-grey-100">
@@ -245,5 +274,11 @@ MeasureControl.propTypes = {
   buttonText: PropTypes.object,
   measureBoth: PropTypes.bool,
   map: PropTypes.object,
+  onMeasureToggle: PropTypes.func,
+  direction: PropTypes.string,
+};
+MeasureControl.defaultProps = {
+  onMeasureToggle: () => {},
+  direction: 'bottom-right',
 };
 export default MeasureControl;

@@ -1,20 +1,64 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-danger */
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable func-names */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import Overlay from 'ol/Overlay';
+import { getCenter } from 'ol/extent';
 import '../../Popup/popup.scss';
+import Button from '@Components/common/Button';
 
-const CustomPopup = ({ map, fetchPopupData, popupUI }) => {
+import { Creators as CommonCreators } from '@Actions/common';
+import { isEmpty } from '@Utils/commonUtils';
+import { checkIfLoading } from '@Utils/loaderSelector';
+import { Types, Creators } from '@Actions/projectMap';
+import Spinner from '@Components/common/Spinner';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
+
+const { setImageModal } = CommonCreators;
+const { setProjectMapState } = Creators;
+
+function hasKey(obj, key) {
+  return Object.keys(obj).some(item => item === key);
+}
+
+const popupId = 'popupx';
+
+const CustomPopup = ({
+  map,
+  fetchPopupData,
+  popupUI,
+  openPopupFor,
+  zoomedExtent,
+  onPopupClose,
+  buttonText,
+  onButtonClick,
+  closePopup = false,
+  loading = false,
+  popupData,
+  layerExceptionIds = [],
+}) => {
+  const dispatch = useDispatch();
   const popupRef = useRef(null);
   const popupCloserRef = useRef(null);
   const [coordinates, setCoordinates] = useState(null);
   const [overlay, setOverlay] = useState(null);
   const [properties, setProperties] = useState(null);
   const [popupHTML, setPopupHTML] = useState('');
+  const exceptionIds = useRef([]);
+  const disabled = useRef(false);
+
+  useEffect(() => {
+    disabled.current = closePopup;
+  }, [closePopup]);
+
+  useEffect(() => {
+    exceptionIds.current = layerExceptionIds;
+  }, [layerExceptionIds]);
 
   // add overlay to popupRef
   useEffect(() => {
@@ -25,64 +69,149 @@ const CustomPopup = ({ map, fetchPopupData, popupUI }) => {
       autoPanAnimation: {
         duration: 250,
       },
+      id: popupId,
     });
     setOverlay(overlayInstance);
   }, [map, popupRef]);
 
   // function for closing popup
-  const closePopup = useCallback(() => {
+  const closePopupFn = useCallback(() => {
     if (!popupCloserRef.current || !overlay) return;
     overlay.setPosition(undefined);
+    // onPopupClose();
     setPopupHTML('');
+    setProperties(null);
     popupCloserRef.current.blur();
   }, [overlay, popupCloserRef]);
+
+  useEffect(() => {
+    if (!map || !closePopup) return;
+    closePopupFn();
+  }, [map, closePopup, closePopupFn]);
 
   // get properties and coordinates of feature
   useEffect(() => {
     if (!map) return;
-    map.on('singleclick', evt => {
+    map.on('click', evt => {
+      if (disabled.current) return;
       const { coordinate } = evt;
       const features = map.getFeaturesAtPixel(evt.pixel);
       if (features.length < 1) {
-        closePopup();
+        closePopupFn();
         return;
       }
       const featureProperties = features[0].getProperties();
-      setProperties(featureProperties);
-      setCoordinates(coordinate);
+      const { layer_id: layerId } = featureProperties;
+      if (!exceptionIds.current.includes(layerId)) {
+        setProperties(featureProperties);
+        setCoordinates(coordinate);
+      } else {
+        closePopupFn();
+        setProperties(null);
+        setCoordinates(null);
+      }
     });
-  }, [map, closePopup]);
+  }, [map, closePopupFn]);
 
   // fetch popup data when properties is set
   useEffect(() => {
     if (!map || !properties) return;
+    // const { layerId } = properties;
+    // if (layerIds.includes(layerId) || hasKey(properties, 'layer')) {
     fetchPopupData(properties);
+    // }
     // eslint-disable-next-line
   }, [map, properties]);
 
   // getPopupUI, setpopupHTML, setOverlayPosition, addOverlayToMap
   useEffect(() => {
-    if (!map || !coordinates || !overlay) return;
-    const htmlString = renderToString(popupUI());
+    if (!map || !coordinates || !overlay || !properties || closePopup) return;
+    const htmlString = renderToString(popupUI(properties));
     setPopupHTML(htmlString);
     overlay.setPosition(coordinates);
-    map.addOverlay(overlay);
-  }, [map, overlay, coordinates, popupUI]);
+    const popupOverlay = map.getOverlayById(popupId);
+    if (!popupOverlay) {
+      map.addOverlay(overlay);
+    }
+  }, [map, overlay, coordinates, popupUI, properties, closePopup]);
+
+  useEffect(() => {
+    if (!map || !openPopupFor || !zoomedExtent) return;
+    const center = getCenter(zoomedExtent);
+    setProperties({ id: openPopupFor, layer: 'site' });
+    setCoordinates(center);
+  }, [map, openPopupFor, zoomedExtent]);
+
+  const isPopupDataFetching = useSelector(state =>
+    checkIfLoading(state, [Types.GET_MAP_POPUP_DATA_REQUEST]),
+  );
 
   return (
     <div ref={popupRef} id="popup" className="ol-popup">
       <a
         ref={popupCloserRef}
-        href={() => {}}
+        // href={() => {}}
         id="popup-closer"
-        className="ol-popup-closer"
-        onClick={closePopup}
+        className="ol-popup-closer naxatw-text-grey-800"
+        onClick={closePopupFn}
       />
-      <div
-        id="popup-content"
-        className="naxatw-overflow-auto scrollbar"
-        dangerouslySetInnerHTML={{ __html: popupHTML }}
-      />
+      {isPopupDataFetching ? (
+        <div
+          style={{
+            height: '170px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Spinner className="naxatw-w-8 naxatw-h-8 naxatw-fill-secondary-400" />
+        </div>
+      ) : (
+        <>
+          {!isEmpty(popupData) && popupData.Name && <h4>{popupData.Name}</h4>}
+          <div className="naxatw-max-h-72 naxatw-overflow-y-auto scrollbar">
+            {!isEmpty(popupData) && (popupData.image || popupData.url) && (
+              <div className="naxatw-py-2 naxatw-relative naxatw-group">
+                <img
+                  src={popupData.image || popupData.url}
+                  className="naxatw-h-[200px] naxatw-w-full naxatw-object-cover"
+                  alt=""
+                />
+                <div
+                  className="naxatw-absolute naxatw-top-0 naxatw-left-0 naxatw-w-full naxatw-h-[210px] naxatw-flex naxatw-cursor-pointer 
+                naxatw-justify-center naxatw-items-center naxatw-bg-black naxatw-opacity-0 group-hover:naxatw-opacity-60 naxatw-duration-500"
+                  onClick={() => {
+                    dispatch(
+                      setProjectMapState({ selectedFeatureId: properties.id }),
+                    );
+                    dispatch(setImageModal(true));
+                  }}
+                >
+                  <MaterialIcon
+                    name="crop_free"
+                    className="naxatw-text-icon-md naxatw-cursor-pointer naxatw-text-white"
+                  />
+                </div>
+              </div>
+            )}
+            <div
+              id="popup-content"
+              style={{ marginTop: '0.5rem' }}
+              dangerouslySetInnerHTML={{ __html: popupHTML }}
+            />
+          </div>
+        </>
+      )}
+      {!loading && (
+        <div className="naxatw-mt-2">
+          <Button
+            className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
+            onClick={() => onButtonClick(properties)}
+          >
+            {buttonText}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

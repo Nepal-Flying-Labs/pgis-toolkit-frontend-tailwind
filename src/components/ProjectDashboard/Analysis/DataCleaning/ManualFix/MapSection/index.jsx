@@ -111,7 +111,7 @@ export default function MapSection() {
     }
   }, [map, zoomToLayerId, mapState, dispatch]);
 
-  // zoom to layer
+  // zoom to feature
   useEffect(() => {
     if (!map || !featureBbox) return;
     const zoomExtent = transformExtent(featureBbox, 'EPSG:4326', 'EPSG:3857');
@@ -152,7 +152,9 @@ export default function MapSection() {
         stylex.fillOpacity = 0;
         stylex.lineOpacity = 0;
         stylex.icon = {};
-      } else if (checkedFeatureIds.includes(feature.getProperties()?.id)) {
+      } else if (
+        checkedFeatureIds.includes(feature.getProperties()?.id || featureId)
+      ) {
         stylex.fillColor = featureSelectColor;
         stylex.lineColor = featureSelectColor;
         stylex.icon = {};
@@ -232,11 +234,12 @@ export default function MapSection() {
               resolution,
             )
           }
-          style={selectedLayer.style}
+          // style={selectedLayer.style}
           zIndex={10}
           properties={{ layerId: selectedLayer.id }}
           // renderMode="vector"
           hoverEffect={!!selectedError?.id && !geojsonFeatures}
+          hoverExceptionIds={[selectedError?.id]}
           onFeatureSelect={features => {
             dispatch(
               setManualFixState({
@@ -276,14 +279,23 @@ export default function MapSection() {
           geometryType={selectedLayer.geom_type}
           zIndex={100}
           style={{ ...selectedLayer.style, lineColor: '#ffff00' }}
-          toolboxContents={['add', 'drag', 'edit', 'delete', 'undo']}
+          toolboxContents={['add', 'drag', 'edit', 'extend', 'delete', 'undo']}
           onChange={geojson => {
-            const wktString = stringify(geojson);
-            dispatch(
-              setManualFixState({
-                drawnFeatureWkt: wktString,
-              }),
-            );
+            if (geojson.type === 'FeatureCollection') {
+              const wktStrings = geojson.features.map(item => stringify(item));
+              dispatch(
+                setManualFixState({
+                  drawnFeatureWkt: wktStrings,
+                }),
+              );
+            } else {
+              const wktString = stringify(geojson);
+              dispatch(
+                setManualFixState({
+                  drawnFeatureWkt: wktString,
+                }),
+              );
+            }
           }}
         />
 

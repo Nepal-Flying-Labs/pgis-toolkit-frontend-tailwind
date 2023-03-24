@@ -95,8 +95,13 @@ export const { Types, Creators } = createActions(
     saveDataQuerySuccess: ['payload'],
     saveDataQueryFailure: null,
 
-    deleteDataQuery: ['payload'],
-    deleteAllDataQuery: null,
+    deleteDataQueryRequest: ['payload'],
+    deleteDataQuerySuccess: ['payload'],
+    deleteDataQueryFailure: null,
+
+    deleteAllDataQueryRequest: ['payload'],
+    deleteAllDataQuerySuccess: null,
+    deleteAllDataQueryFailure: null,
 
     getLayerAttributeRequest: ['params'],
     getLayerAttributeSuccess: ['payload'],
@@ -157,6 +162,14 @@ export const { Types, Creators } = createActions(
     getFeatureImageRequest: ['id'],
     getFeatureImageSuccess: ['payload'],
     getFeatureImageFailure: null,
+
+    deleteDropdownOptionRequest: ['id'],
+    deleteDropdownOptionSuccess: ['payload'],
+    deleteDropdownOptionFailure: null,
+
+    getFeatureGeometryRequest: ['id'],
+    getFeatureGeometrySuccess: ['payload'],
+    getFeatureGeometryFailure: null,
   },
   { prefix: 'projectMap/' },
 );

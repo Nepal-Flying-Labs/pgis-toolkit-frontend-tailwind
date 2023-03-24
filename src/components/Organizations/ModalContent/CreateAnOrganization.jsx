@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators, Types } from '@Actions/organizations';
 import useForm from '@Hooks/useForm';
@@ -8,6 +8,7 @@ import Input from '@Components/common/Input/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
 import CustomInput from '@Components/common/CustomInput/index';
+import { isEmpty } from '@Utils/commonUtils';
 
 const { createOrganizationRequest } = Creators;
 
@@ -37,7 +38,8 @@ const initialState = {
 export default function CreateAnOrganization() {
   const dispatch = useDispatch();
   const [emailList, setEmailList] = useState([]);
-  const [emailError, setEmailError] = useState(false);
+  const [errors, setErrors] = useState([]);
+
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.CREATE_ORGANIZATION_REQUEST]),
   );
@@ -52,16 +54,22 @@ export default function CreateAnOrganization() {
     handleSubmit,
   } = useForm({
     initialValues: initialState,
-    required: ['organizationName'],
     onSubmit: data => {
-      if (Object.keys(emailList).length > 0) {
+      const error = [];
+      if (!values.organizationName) {
+        error.push('organizationName');
+      }
+      if (isEmpty(emailList)) {
+        error.push('emailList');
+      }
+      setErrors(error);
+
+      if (isEmpty(error)) {
         const payload = {
           organization_name: data.organizationName,
           email: emailList.map(e => e.value),
         };
         dispatch(createOrganizationRequest(payload));
-      } else {
-        setEmailError(true);
       }
     },
   });
@@ -81,7 +89,7 @@ export default function CreateAnOrganization() {
           onChange={handleChange}
           {...inputProps}
         />
-        {meta.organizationName.error && meta.organizationName.touched && (
+        {errors.includes('organizationName') && (
           <span className="naxatw--mt-[10px] naxatw-text-red-500">
             Required field
           </span>
@@ -128,8 +136,12 @@ export default function CreateAnOrganization() {
         <CustomInput
           emailList={emailList}
           setEmailList={setEmailList}
-          emailError={emailError}
-          setEmailError={setEmailError}
+          emailError={errors.includes('emailList')}
+          setEmailError={data =>
+            !data
+              ? setErrors(errors.filter(item => item !== 'emailList'))
+              : () => {}
+          }
         />
       </div>
 

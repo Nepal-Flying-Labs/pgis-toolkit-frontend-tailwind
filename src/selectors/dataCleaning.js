@@ -3,6 +3,7 @@ import { checkErrorData } from '@src/constants/analysis';
 import removeObjectKeys from '@Utils/removeObjectKeys';
 
 const errorFeaturesDataSelector = state => state.dataCleaning.errorFeaturesData;
+const errorStatesSelector = state => state.dataCleaning.errorStates;
 const layerAttributesFieldsSelector = state =>
   state.dataCleaning.manualFix.layerAttributesFields;
 const selectedErrorSelector = state =>
@@ -47,8 +48,8 @@ export const checkedFeatureIdsSelector = createSelector(
     errorFeaturesMapState.reduce((arr, item) => {
       const arrx = [];
       item.features.forEach(feat => {
-        if (feat.explodedFeatures) {
-          feat.explodedFeatures.forEach(i => {
+        if (feat.children) {
+          feat.children.forEach(i => {
             if (!i.checked) return;
             arrx.push(i.id);
           });
@@ -58,4 +59,13 @@ export const checkedFeatureIdsSelector = createSelector(
       });
       return [...arr, ...arrx];
     }, []),
+);
+
+export const isErrorLeftSelector = createSelector(
+  errorStatesSelector,
+  errorStates => {
+    const errorValues = Object.values(errorStates).flat();
+    const hasError = errorValues.some(item => item.errorData);
+    return hasError;
+  },
 );

@@ -1,9 +1,11 @@
 /* eslint-disable camelcase */
 import { createReducer } from 'reduxsauce';
+import * as chroma from 'chroma-js';
 import { parse } from 'wkt';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { boundaryLayerName } from '@src/constants/map';
+import { isEmpty } from '@Utils/commonUtils';
 
 const initialState = {
   themes: null, // []
@@ -60,6 +62,9 @@ const initialState = {
   selectedLayerAttribute: null,
   selectedFeatureId: null,
   individualFeatureData: null,
+  selectedDropdownOptionId: null,
+  featureGeometry: null,
+  resetMapExtent: false,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -435,13 +440,19 @@ const postAdvanceQuerySuccess = (state, action) => {
     theme,
     id: layer,
   } = state.dataQuery.selectedLayer;
+  const randomColor = chroma.random().hex();
   const queryResults = [
     ...state.dataQuery.queryResults,
     {
       ...action.payload,
       checked: true,
       layerName,
-      style,
+      style: {
+        // ...defaultStyles,
+        ...style,
+        fillColor: randomColor,
+        lineColor: randomColor,
+      },
       theme,
       layer,
     },
@@ -511,11 +522,12 @@ const saveDataQuerySuccess = (state, action) => {
       queryResults,
       selectedData: null,
     },
+    resetMapExtent: true,
   };
 };
 
-const deleteDataQuery = (state, action) => {
-  const queryLayerId = action.payload;
+const deleteDataQuerySuccess = (state, action) => {
+  const queryLayerId = action.payload.layer;
   const queryResults = state.dataQuery.queryResults.filter(
     item => item.id !== queryLayerId,
   );
@@ -529,7 +541,7 @@ const deleteDataQuery = (state, action) => {
   };
 };
 
-const deleteAllDataQuery = state => {
+const deleteAllDataQuerySuccess = state => {
   const { queryResults } = initialState.dataQuery;
   return {
     ...state,
@@ -765,10 +777,22 @@ const getLayerAttributeListSuccess = (state, action) => {
   };
 };
 
-const getAttributeFieldSuccess = (state, action) => ({
-  ...state,
-  selectedLayerAttribute: action.payload,
-});
+const getAttributeFieldSuccess = (state, action) => {
+  const { data, options } = action.payload;
+  const initialValue = {};
+  const modifiedData = options.reduce(
+    (obj, item) => ({
+      ...obj,
+      [item.name]: item.options,
+    }),
+    initialValue,
+  );
+  return {
+    ...state,
+    selectedLayerAttribute: data,
+    fieldsDropdownOptions: !isEmpty(modifiedData) ? modifiedData : null,
+  };
+};
 
 const getFeatureImageSuccess = (state, action) => {
   const { attributes, images } = action.payload;
@@ -783,6 +807,21 @@ const getFeatureImageSuccess = (state, action) => {
     individualFeatureData: attributes,
   };
 };
+
+const deleteDropdownOptionSuccess = (state, action) => {
+  const newData = state.fieldsDropdownOptions.filter(
+    item => item.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    fieldsDropdownOptions: newData,
+  };
+};
+
+const getFeatureGeometrySuccess = (state, action) => ({
+  ...state,
+  featureGeometry: action.payload,
+});
 
 const resetProjectMapState = state => ({
   ...initialState,
@@ -820,8 +859,8 @@ const projectMapReducer = createReducer(initialState, {
   [Types.HANDLE_DATA_QUERY_CHECKBOX]: handleDataQueryCheckbox,
   [Types.SET_DATA_QUERY_STATE]: setDataQueryState,
   [Types.SAVE_DATA_QUERY_SUCCESS]: saveDataQuerySuccess,
-  [Types.DELETE_DATA_QUERY]: deleteDataQuery,
-  [Types.DELETE_ALL_DATA_QUERY]: deleteAllDataQuery,
+  [Types.DELETE_DATA_QUERY_SUCCESS]: deleteDataQuerySuccess,
+  [Types.DELETE_ALL_DATA_QUERY_SUCCESS]: deleteAllDataQuerySuccess,
   [Types.GET_LAYER_ATTRIBUTE_SUCCESS]: getLayerAttributeSuccess,
   [Types.SET_ATTRIBUTE_TABLE_SEARCH_TERM]: setAttributeTableSearchTerm,
   [Types.HANDLE_ATTRIBUTE_NEXT_CLICK]: handleAttributeNextClick,
@@ -841,6 +880,8 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_LAYER_ATTRIBUTE_LIST_SUCCESS]: getLayerAttributeListSuccess,
   [Types.GET_ATTRIBUTE_FIELD_SUCCESS]: getAttributeFieldSuccess,
   [Types.GET_FEATURE_IMAGE_SUCCESS]: getFeatureImageSuccess,
+  [Types.DELETE_DROPDOWN_OPTION_SUCCESS]: deleteDropdownOptionSuccess,
+  [Types.GET_FEATURE_GEOMETRY_SUCCESS]: getFeatureGeometrySuccess,
 
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });

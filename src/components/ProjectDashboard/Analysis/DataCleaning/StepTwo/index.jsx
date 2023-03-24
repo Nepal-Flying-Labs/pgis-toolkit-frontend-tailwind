@@ -3,8 +3,10 @@ import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
+import { Creators as CommonCreators } from '@Actions/common';
 import Button from '@Components/common/Button';
 import Accordion from '@Components/common/Accordion';
+import { isErrorLeftSelector } from '@Selectors/dataCleaning';
 
 const {
   checkErrorRequest,
@@ -13,6 +15,8 @@ const {
   startAnalysisRequest,
   setDataCleaningState,
 } = DataCleaningCreators;
+
+const { togglePromptDialog } = CommonCreators;
 
 function getStatusIcon(status) {
   switch (status) {
@@ -41,6 +45,7 @@ export default function StepTwo() {
   );
   const [toggledStates, setToggledStates] = useState({});
   const errorStates = useSelector(state => state.dataCleaning.errorStates);
+  const isErrorLeft = useSelector(isErrorLeftSelector);
   const dispatch = useDispatch();
 
   const data = useMemo(
@@ -62,7 +67,7 @@ export default function StepTwo() {
         {data.map(layer => {
           const errorState = errorStates[layer.id];
           const isLayerCheckingError =
-            errorState && errorState.some(item => item.status === 'waiting');
+            errorState && errorState.some(item => item.status === 'checking');
           const hasError = errorState?.some(item => item.errorData);
           return (
             <Accordion
@@ -100,7 +105,9 @@ export default function StepTwo() {
                       */}
                       <Button
                         className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-sm"
-                        disabled={isLayerCheckingError}
+                        disabled={
+                          isLayerCheckingError || layer.id in errorStates
+                        }
                         onClick={() => {
                           if (!errorState)
                             dispatch(
@@ -181,11 +188,21 @@ export default function StepTwo() {
                             </p>
                           </div>
                           <span>
-                            {status === 'error' || status === 'success' ? (
+                            {status === 'success' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">
-                                <b>{errorData}</b>{' '}
-                                {errorData > 1 ? 'errors' : 'error'} out of{' '}
-                                <b>{totalData}</b> data
+                                No error
+                              </p>
+                            ) : status === 'error' ? (
+                              <p className="naxatw-text-body-lg naxatw-text-grey-800">
+                                {errorData === 0 ? (
+                                  'No error'
+                                ) : (
+                                  <>
+                                    <b>{errorData}</b>{' '}
+                                    {errorData > 1 ? 'errors' : 'error'} out of{' '}
+                                    <b>{totalData}</b> data
+                                  </>
+                                )}
                               </p>
                             ) : status === 'fix-failed' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">
@@ -253,7 +270,12 @@ export default function StepTwo() {
             !isAllChecked ? 'naxatw-btn-disabled' : ''
           }`}
           onClick={() => {
-            dispatch(startAnalysisRequest(params));
+            if (!isAllChecked) return;
+            if (isErrorLeft) {
+              dispatch(togglePromptDialog('start-analysis-prompt'));
+            } else {
+              dispatch(startAnalysisRequest(params));
+            }
           }}
           disabled={!isAllChecked}
         >

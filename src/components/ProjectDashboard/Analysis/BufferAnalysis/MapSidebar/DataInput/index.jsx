@@ -21,6 +21,7 @@ const {
   applyBufferAnalysisRequest,
   handleCheckbox,
   copyFeaturesRequest,
+  setBufferAnalysisState,
 } = Creators;
 
 const { setSelectedInfo } = AnalysisCreators;
@@ -104,6 +105,10 @@ export default function DataInput() {
       .filter(item => item.checked)
       .map(item => item.id);
 
+    const selectedPOIName = poiLayers
+      .filter(item => item.checked)
+      .map(item => item.name);
+
     const payloadData = {
       origins: originData,
       dissolve_output: dissolveOutput,
@@ -117,6 +122,11 @@ export default function DataInput() {
       .filter(layer => layer.checked)
       .map(layer => layer.id);
     dispatch(copyFeaturesRequest(poiLayersIds));
+    dispatch(
+      setBufferAnalysisState({
+        inputQuery: { ...payloadData, selectedPOIName, analysisType },
+      }),
+    );
     dispatch(applyBufferAnalysisRequest(payloadData));
   };
 
@@ -145,26 +155,46 @@ export default function DataInput() {
               />
             </div>
           </label>
-          <div className="naxatw-flex naxatw-space-x-2">
-            {originPointData.map(({ label, value, icon }) => (
-              <Chip
-                key={value}
-                active={originPointType === value}
-                label={label}
-                iconClassName="material-symbols-outlined"
-                iconLeft={icon}
-                onClick={() => {
-                  dispatch(
-                    setDataInputState({
-                      originPointType: value,
-                    }),
-                  );
-                }}
-              />
-            ))}
-          </div>
+          {analysisType === 'proximity-analysis' ? (
+            <>
+              <div className="naxatw-flex naxatw-space-x-2">
+                {originPointData.map(({ label, value, icon }) => (
+                  <Chip
+                    key={value}
+                    active={originPointType === value}
+                    label={label}
+                    iconClassName="material-symbols-outlined"
+                    iconLeft={icon}
+                    onClick={() => {
+                      dispatch(
+                        setDataInputState({
+                          originPointType: value,
+                        }),
+                      );
+                    }}
+                  />
+                ))}
+              </div>
 
-          <Container>{getOriginPointsContent(originPointType)}</Container>
+              <Container>{getOriginPointsContent(originPointType)}</Container>
+            </>
+          ) : (
+            <>
+              {/* <div className="naxatw-flex naxatw-space-x-2">
+                <Chip
+                  key="layer"
+                  active="layer"
+                  label="Layer"
+                  iconClassName="material-symbols-outlined"
+                  iconLeft="format_list_bulleted"
+                />
+              </div> */}
+
+              <Container>
+                <LayerContent />
+              </Container>
+            </>
+          )}
         </Container>
 
         <Container>

@@ -25,7 +25,11 @@ const errorTypeThree2 = {
 };
 */
 export default function errorResponseHandler(errorResponse) {
-  const error = errorResponse.response.data;
+  const errorData = errorResponse.response.data;
+  const error =
+    errorData instanceof ArrayBuffer
+      ? JSON.parse(String.fromCharCode.apply(null, new Uint8Array(errorData)))
+      : errorData;
   // handle error type two
   const hasErrorField = Object.keys(error).includes('Error');
   if (hasErrorField) {

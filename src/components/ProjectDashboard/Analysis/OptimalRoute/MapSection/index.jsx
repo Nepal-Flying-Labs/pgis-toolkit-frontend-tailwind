@@ -14,6 +14,7 @@ import {
   MapContainer as MapComponent,
 } from '@Components/common/OpenLayersComponent';
 import LayerSwitcherControl from '@Components/common/OpenLayersComponent/LayerSwitcher';
+import MeasureControl from '@Components/common/OpenLayersComponent/Control/MeasureControl';
 import CustomLayerSwitcher from '@Components/common/OpenLayersComponent/CustomLayerSwitcher';
 import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
@@ -218,6 +219,24 @@ export default function MapSection() {
 
         <HelpBox />
 
+        <div
+          className="naxatw-absolute naxatw-bottom-44 naxatw-left-4 naxatw-z-10 
+                    naxatw-cursor-pointer naxatw-h-10 naxatw-bg-white naxatw-rounded-lg 
+                   naxatw-text-grey-800  naxatw-border naxatw-border-grey-300 hover:naxatw-bg-grey-100"
+        >
+          <MeasureControl
+            map={map}
+            buttonText={
+              <i className="material-icons naxatw-block naxatw-p-2 naxatw-rounded-lg !naxatw-pt-1">
+                straighten
+              </i>
+            }
+            measureBoth
+            direction="right"
+            // onMeasureToggle={onMeasureToggle}
+          />
+        </div>
+
         {mapState.map((item, index) =>
           item.layer_type === 'Vector' ? (
             <VectorTileLayer
@@ -321,7 +340,7 @@ export default function MapSection() {
           // geojson={featureGeojson}
           geometryType="Point"
           selectedDrawType="add-feature"
-          zIndex={10}
+          zIndex={50}
           style={
             drawPointType === 'start'
               ? { ...startPointStyles }
@@ -353,7 +372,7 @@ export default function MapSection() {
           <VectorLayer
             geojson={startingPoint.geojson}
             visibleOnMap
-            zIndex={10}
+            zIndex={50}
             style={{ ...startPointStyles }}
           />
         )}
@@ -361,7 +380,7 @@ export default function MapSection() {
           <VectorLayer
             geojson={destinationPoint.geojson}
             visibleOnMap
-            zIndex={10}
+            zIndex={50}
             style={{ ...destinationPointStyles }}
           />
         )}

@@ -4,20 +4,19 @@ import React, { useEffect } from 'react';
 export default function DragFeature({
   onClick,
   enable,
-  select,
   translate,
   addInteraction,
   removeInteraction,
 }) {
   useEffect(() => {
     if (enable) {
-      addInteraction(select);
+      // addInteraction(select);
       addInteraction(translate);
     } else {
-      removeInteraction(select);
+      // removeInteraction(select);
       removeInteraction(translate);
     }
-  }, [addInteraction, removeInteraction, enable, translate, select]);
+  }, [addInteraction, removeInteraction, enable, translate]);
 
   return (
     <button

@@ -145,7 +145,7 @@ export default function LayerList({ dropdownOptions }) {
                         <input
                           id={layer.id}
                           type="checkbox"
-                          className="naxatw-w-full naxatw-h-full  naxatw-accent-grey-800"
+                          className="naxatw-w-4 naxatw-h-4 naxatw-accent-grey-800"
                           checked={layer.checked}
                           onChange={e =>
                             handleLayerCheck({
@@ -164,7 +164,9 @@ export default function LayerList({ dropdownOptions }) {
                       />
 
                       <label
-                        className="naxatw-text-body-lg naxatw-text-grey-800"
+                        title={layer.name}
+                        className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-w-[9rem]
+                          naxatw-truncate"
                         htmlFor={layer.id}
                       >
                         {layer.name}
@@ -174,7 +176,8 @@ export default function LayerList({ dropdownOptions }) {
                     <div className="naxatw-flex">
                       {layer.id === hoverId && (
                         <span
-                          className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
+                          className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg
+                            naxatw-cursor-pointer naxatw-flex naxatw-items-center"
                           onClick={() => {
                             dispatch(
                               setProjectMapState({
@@ -192,6 +195,7 @@ export default function LayerList({ dropdownOptions }) {
                         </span>
                       )}
                       <DropdownOptions
+                        direction="left-bottom"
                         options={
                           layer.layer_type === 'WMS'
                             ? dropdownOptions.filter(

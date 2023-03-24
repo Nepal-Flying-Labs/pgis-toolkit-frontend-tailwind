@@ -63,6 +63,9 @@ export const updateDropdownOption = (id, data) =>
 export const postDropdownOption = data =>
   authenticated(api).post(`/maps/dropdown_choice/`, data);
 
+export const deleteDropdownOption = id =>
+  authenticated(api).delete(`/maps/dropdown_choice/${id}/`);
+
 export const postLayerAttributeFields = data =>
   authenticated(api).post(`/maps/layer_attribute/`, data);
 
@@ -80,3 +83,6 @@ export const deleteFeatureImage = id =>
 
 export const postCreateToUrl = data =>
   authenticated(api).post(`/maps/bulk_create_image_from_urls/`, data);
+
+export const deleteDataQuery = data =>
+  authenticated(api).delete(`/maps/advance_query/`, { data });

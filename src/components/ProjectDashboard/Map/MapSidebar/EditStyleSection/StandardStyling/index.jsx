@@ -54,7 +54,10 @@ export default function StandardStyling() {
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-4">
       <div className="naxatw-flex naxatw-items-center naxatw-gap-4">
         <div
-          className="naxatw-w-10 naxatw-h-10 naxatw-border naxatw-flex naxatw-items-center naxatw-justify-center naxatw-rounded-lg naxatw-border-grey-800 naxatw-cursor-pointer naxatw-bg-white naxatw-p-1"
+          className="naxatw-w-10 naxatw-h-10 naxatw-border naxatw-flex
+            naxatw-items-center naxatw-justify-center naxatw-rounded-lg
+            naxatw-border-grey-500 naxatw-cursor-pointer naxatw-bg-white
+            naxatw-p-1"
           onClick={onFileUpload}
         >
           {isIconUploading ? (
@@ -69,7 +72,7 @@ export default function StandardStyling() {
           className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent"
           onClick={onFileUpload}
         >
-          {hasIcon ? 'Update' : 'Upload'} Icon
+          {hasIcon ? 'Change' : 'Upload'} Icon
         </Button>
         <input
           type="file"
@@ -79,11 +82,14 @@ export default function StandardStyling() {
         />
 
         {hasIcon && (
-          <a className="naxatw-text-[#FF0F0F]" onClick={handleIconDelete}>
-            <MaterialIcon name="delete" />
+          <a title="Remove" onClick={handleIconDelete}>
+            <MaterialIcon className="naxatw-text-delete_btn" name="delete" />
           </a>
         )}
       </div>
+      <p className="naxatw-text-body-md">
+        Note: You may upload locally stored icons in jpeg, png or svg format.
+      </p>
 
       {hasIcon && (
         <Input

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable arrow-body-style */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,7 +9,10 @@ import { Creators, Types } from '@Actions/projectMap';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import ImageUpload from '@Components/ProjectDashboard/Map/MapSidebar/ImageUpload/index';
 import Spinner from '@Components/common/Spinner/index';
+import SearchSelect from '@Components/common/SearchSelect/index';
 import { isEmpty } from '@Utils/commonUtils';
+import CustomCalendar from '@Components/common/CustomCalendar/index';
+import { format } from 'date-fns';
 
 const { updateLayerAttributeRequest, getFeatureImageRequest } = Creators;
 
@@ -40,10 +44,22 @@ const EditLayerAttribute = () => {
   const imageTypeAttribute = selectedLayerAttribute?.filter(
     item => item.data_type === 'image',
   );
+  const dateTypeAttribute = selectedLayerAttribute?.filter(
+    item => item.data_type === 'date',
+  );
+
+  const dropdownFields = selectedLayerAttribute
+    ?.filter(item => item.dropdown_field)
+    .map(item => item.name);
+
+  const dropdownOptions = useSelector(
+    state => state.projectMap.fieldsDropdownOptions,
+  );
 
   useEffect(() => {
     if (!selectedAttribute) return;
     dispatch(getFeatureImageRequest(selectedAttribute.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, selectedAttribute]);
 
   const { values, setValues, handleChange, handleSubmit } = useForm({
@@ -73,7 +89,46 @@ const EditLayerAttribute = () => {
         <div className="naxatw-space-y-3 naxatw-grid naxatw-grid-cols-2 naxatw-gap-x-3">
           {Object.keys(selectedAttribute).map(
             attribute =>
-              attribute !== imageTypeAttribute?.[0]?.name && (
+              attribute !== imageTypeAttribute?.[0]?.name &&
+              (dropdownFields.includes(attribute) ? (
+                <div className="naxatw-space-y-2">
+                  <label className="naxatw-label">{attribute}</label>
+                  <SearchSelect
+                    key={attribute}
+                    className="naxatw-bg-white naxatw-h-[48px] naxatw-px-2"
+                    options={dropdownOptions[attribute]}
+                    onChange={data =>
+                      handleChange({
+                        target: { name: `${attribute}`, value: data.name },
+                      })
+                    }
+                    selected={
+                      dropdownOptions[attribute].filter(
+                        opt => opt.name === values[`${attribute}`],
+                      )?.[0]?.name
+                    }
+                  />
+                </div>
+              ) : dateTypeAttribute
+                  .map(item => item.name)
+                  .includes(attribute) ? (
+                <div className="naxatw-space-y-2">
+                  <label className="naxatw-label">{attribute}</label>
+                  <CustomCalendar
+                    className="naxatw-bg-white"
+                    startDate={new Date()}
+                    onChange={date => {
+                      handleChange({
+                        target: {
+                          name: `${attribute}`,
+                          value: format(date, 'yyyy-MM-dd'),
+                        },
+                      });
+                    }}
+                    selected={values[`${attribute}`] || ''}
+                  />
+                </div>
+              ) : (
                 <Input
                   key={attribute.id}
                   label={attribute}
@@ -83,7 +138,7 @@ const EditLayerAttribute = () => {
                   disabled={attribute === 'id'}
                   className={attribute === 'id' ? 'naxatw-bg-grey-100' : ''}
                 />
-              ),
+              )),
           )}
         </div>
         {!isEmpty(imageTypeAttribute) && (

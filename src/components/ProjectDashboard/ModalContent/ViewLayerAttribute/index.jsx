@@ -10,7 +10,7 @@ import SortingContainer from '@Components/common/SortingContainer/index';
 import DropdownOptions from '@Components/common/DropdownOptions/index';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import '@Components/OrganizationDashboard/User/Users/index.css';
-import TableSkeleton from '@Components/common/TableSkeleton/index';
+// import TableSkeleton from '@Components/common/TableSkeleton/index';
 import useDebouncedInput from '@Hooks/useDebouncedInput';
 import {
   getSelectedRange,
@@ -20,6 +20,7 @@ import Pagination from '@Components/common/Pagination';
 import { isEmpty } from '@Utils/commonUtils';
 import { boundaryLayerName } from '@src/constants/map';
 import Button from '@Components/common/Button/index';
+import TableSkeleton2 from '@Components/common/TableSkeleton2/index';
 
 const {
   getLayerAttributeRequest,
@@ -34,6 +35,7 @@ const {
   setSelectedLayerAttribute,
   setProjectMapState,
   getAttributeFieldRequest,
+  getFeatureGeometryRequest,
 } = Creators;
 
 const { toggleModalTwo, togglePromptDialog, setImageModal } = CommonCreators;
@@ -147,7 +149,11 @@ export default function ViewLayerAttribute() {
   useEffect(() => {
     if (showModal && modalContent === 'view-layer-attribute') return;
     dispatch(
-      setProjectMapState({ selectedLayer: null, selectedLayerAttribute: null }),
+      setProjectMapState({
+        selectedLayer: null,
+        selectedLayerAttribute: null,
+        fieldsDropdownOptions: null,
+      }),
     );
     dispatch(resetLayerAttributeListState());
   }, [dispatch, showModal, modalContent]);
@@ -181,6 +187,18 @@ export default function ViewLayerAttribute() {
   );
 
   const dropdownOptions = [
+    {
+      id: 3,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">zoom_in</i>
+          <p className="naxatw-text-body-lg ">Zoom to Feature</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(getFeatureGeometryRequest(data.id));
+      },
+    },
     {
       id: 1,
       label: (
@@ -231,14 +249,14 @@ export default function ViewLayerAttribute() {
           onChange={handleSearch}
         />
       </div>
-
       <div
-        className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative
-          naxatw-w-full naxatw-max-h-[calc(100vh-19rem)] naxatw-min-h-[calc(100vh-19rem)] 
+        className="naxa-table naxatw-overflow-x-auto scrollbar naxatw-relative 
+          naxatw-w-full naxatw-max-h-[calc(100vh-19rem)] naxatw-min-h-[calc(100vh-19rem)]
           xl:naxatw-max-h-[calc(100vh-25rem)] xl:naxatw-min-h-[calc(100vh-25rem)]"
       >
         {loading ? (
-          <TableSkeleton itemNumber={5} />
+          // <TableSkeleton itemNumber={5} />
+          <TableSkeleton2 />
         ) : (
           <Table
             data={attributeList || []}
@@ -272,7 +290,8 @@ export default function ViewLayerAttribute() {
                     }
                     dataFormat={row => (
                       <p
-                        className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden ${
+                        title={row[key]}
+                        className={`naxatw-overflow-ellipsis naxatw-w-[150px] naxatw-whitespace-nowrap naxatw-overflow-hidden naxatw-cursor-default ${
                           ordering === key
                             ? 'naxatw-text-body-btn'
                             : 'naxatw-text-body-lg'
@@ -307,7 +326,7 @@ export default function ViewLayerAttribute() {
                   <Button
                     iconLeft="visibility"
                     iconClassName="material-icons naxatw-text-[18px]"
-                    className="naxatw-btn-sm naxatw-btn-secondary naxatw-btn-noborder naxatw-text-secondary-400"
+                    className="naxatw-btn-sm !naxatw-w-fit naxatw-btn-secondary naxatw-btn-noborder naxatw-text-secondary-400"
                     onClick={() => {
                       dispatch(
                         setProjectMapState({ selectedFeatureId: row.id }),

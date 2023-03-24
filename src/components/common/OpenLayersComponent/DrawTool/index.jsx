@@ -1,8 +1,17 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/forbid-prop-types */
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useMemo,
+} from 'react';
 import PropTypes from 'prop-types';
+import { Style, Circle, Fill } from 'ol/style';
+import { featureCollection } from '@turf/helpers';
 import { Collection } from 'ol';
+import { LineString, Point } from 'ol/geom';
 import { Draw, Snap } from 'ol/interaction';
 import GeoJSON from 'ol/format/GeoJSON';
 import { get } from 'ol/proj';
@@ -16,9 +25,12 @@ import {
   useDrawUtils,
   AddFeature,
   EditFeature,
+  // ExtendFeature,
   DragFeature,
+  SplitFeature,
   // RotateFeature,
 } from './modules';
+import getFeaturesGeojson from './helpers/getFeaturesGeojson';
 
 const source = new VectorSource();
 
@@ -26,6 +38,7 @@ const drawToolOptions = [
   'add',
   'drag',
   'edit',
+  'extend',
   'delete',
   'undo',
   'save',
@@ -50,6 +63,7 @@ export default function DrawTool({
   const [drawType, setDrawType] = useState(null);
   const [modifiedStates, setModifiedStates] = useState([]);
   const [modifiedFeature, setModifiedFeature] = useState(null);
+  // const selectedFeatureUId = useRef(null);
   const layerUid = useRef(null);
 
   const handleFeatureEdit = useCallback(
@@ -62,7 +76,7 @@ export default function DrawTool({
     [onChange],
   );
 
-  const { select, modify, translate, addInteraction, removeInteraction } =
+  const { select, modify, translate, snap, addInteraction, removeInteraction } =
     useDrawUtils({
       mapInstance: map,
       layerUid,
@@ -76,6 +90,21 @@ export default function DrawTool({
     if (!enable) return;
     setDrawType(selectedDrawType);
   }, [enable, selectedDrawType]);
+
+  useEffect(() => {
+    if (enable) {
+      addInteraction(select);
+    } else {
+      removeInteraction(select);
+    }
+  }, [select, enable, addInteraction, removeInteraction]);
+
+  // useEffect(() => {
+  //   if (!vectorLayer) return;
+  //   select.on('select', ({ selected }) => {
+  //     console.log(selected, 'selectedx');
+  //   });
+  // }, [select, vectorLayer]);
 
   // add geojson for edit feature
   useEffect(() => {
@@ -91,15 +120,57 @@ export default function DrawTool({
     const vectorLyr = new VectorLayer({
       source,
       zIndex: zIndex + 1,
-      style: (feature, resolution) => getStyles({ style, feature, resolution }),
+      style: (feature, resolution) => {
+        const geometry = feature.getGeometry();
+        // const coordinates = geometry.getCoordinates();
+        const styles = [getStyles({ style, feature, resolution })];
+        geometry.forEachSegment((start, end) => {
+          styles.push(
+            new Style({
+              geometry: new Point(end),
+              image: new Circle({
+                radius: +style.lineThickness + 1 || 4,
+                fill: new Fill({
+                  color: '#FFA500',
+                }),
+              }),
+            }),
+          );
+        });
+        return styles;
+        // const start = coordinates;
+        // const end = start[start.length - 1];
+        // styles.push(
+        //   new Style({
+        //     geometry: new Point(end),
+        //     image: new Circle({
+        //       radius: +style.lineThickness + 1 || 4,
+        //       fill: new Fill({
+        //         color: '#FFA500',
+        //       }),
+        //     }),
+        //   }),
+        // );
+        // return styles;
+      },
     });
     layerUid.current = getUid(vectorLyr);
     map.addLayer(vectorLyr);
     setVectorLayer(vectorLyr);
-    select.getFeatures().push(features[0]);
+    // select.getFeatures().push(features[0]);
     setModifiedStates([geojson]);
     setModifiedFeature(features[0]);
   }, [map, enable, geojson, zIndex, select, style]);
+
+  useEffect(() => {
+    if (!select || !drawType) return;
+    if (drawType === 'drag-feature' || drawType === 'edit-feature') {
+      const features = source.getFeatures();
+      select.getFeatures().push(features[0]);
+    } else {
+      select.getFeatures().clear();
+    }
+  }, [drawType, select]);
 
   // reset state and remove layer
   const resetState = useCallback(() => {
@@ -123,12 +194,17 @@ export default function DrawTool({
     resetState();
   }, [map, vectorLayer, enable, resetState]);
 
+  const snapCollection = useMemo(
+    () =>
+      new Collection([], {
+        // unique: true,
+      }),
+    [],
+  );
+
   // add snap interaction
   useEffect(() => {
     if (!map || !drawType) return;
-    const snapCollection = new Collection([], {
-      unique: true,
-    });
     setTimeout(() => {
       const layers = map.getLayers();
       layers.forEach(layer => {
@@ -143,8 +219,19 @@ export default function DrawTool({
       });
       map.addInteraction(snapInteraction);
     }, 500);
-  }, [map, drawType]);
+  }, [map, snapCollection, drawType]);
 
+  useEffect(() => {
+    source.on('addfeature', evt => {
+      snapCollection.push(evt.feature);
+      evt.feature.setId('idx');
+    });
+    source.on('removefeature', evt => {
+      snapCollection.remove(evt.feature);
+    });
+  }, [snapCollection]);
+
+  // handle add feature
   const handleDrawEnd = useCallback(
     feature => {
       const featureGeojson = getFeatureGeojson(feature);
@@ -155,6 +242,38 @@ export default function DrawTool({
     },
     [onChange],
   );
+
+  // handle extend feature
+  const handleExtendEnd = useCallback(
+    features => {
+      const coordinates1 = features[0].getGeometry().getCoordinates();
+      const coordinates2 = features[1].getGeometry().getCoordinates();
+      const union = new LineString(coordinates1.concat(coordinates2));
+      // console.log(union, 'unionx');
+      // console.log(features, 'featuresx');
+      // const featureGeojsons = features.map(feature =>
+      //   getFeatureGeojson(feature),
+      // );
+      // console.log(featureGeojsons, 'featureGeojsonx');
+      const singleFeature = featureCollection(union);
+      // console.log(singleFeature, 'singleFeaturex');
+      // setModifiedStates(prev => [...prev, featureGeojson]);
+      // setModifiedFeature(features);
+      // setDrawType(null);
+      // onChange(featureGeojson);
+    },
+    [onChange],
+  );
+
+  // handle feature split
+  const handleFeatureSplit = useCallback(feature => {
+    const featureGeojson = feature;
+    // const featureGeojson = getFeatureGeojson(feature);
+    setModifiedStates(prev => [...prev, featureGeojson]);
+    setModifiedFeature(feature);
+    setDrawType(null);
+    onChange(featureGeojson);
+  }, []);
 
   // handle add-feature click
   useEffect(() => {
@@ -171,10 +290,24 @@ export default function DrawTool({
   }, [enable, drawType, map, zIndex, style, vectorLayer]);
 
   const handleDelete = () => {
-    source.clear();
+    // const featureCount = source.getFeatures().length;
+    const selectedFeatures = select.getFeatures().getArray();
+    const allFeatures = source.getFeatures();
+    const selectedFeature = allFeatures.find(
+      item => item === selectedFeatures[0],
+    );
+    if (!selectedFeature) return;
+    source.removeFeature(selectedFeature);
+    if (source.getFeatures().length) {
+      const featureGeojson = getFeaturesGeojson(source.getFeatures());
+      onChange(featureGeojson);
+    }
+    if (allFeatures.length === 1) {
+      setModifiedFeature(null);
+      setVectorLayer(null);
+    }
+    // source.clear();
     // setModifiedStates((prev) => [...prev, null]);
-    setModifiedFeature(null);
-    setVectorLayer(null);
     // setDrawType('add-feature');
   };
 
@@ -217,6 +350,7 @@ export default function DrawTool({
     select,
     modify,
     translate,
+    snap,
     addInteraction,
     removeInteraction,
     vectorLayer,
@@ -261,6 +395,31 @@ export default function DrawTool({
           <EditFeature
             enable={drawType === 'edit-feature'}
             onClick={() => setDrawType('edit-feature')}
+            {...props}
+          />
+        </Tooltip>
+      )}
+
+      {/* {toolboxContents.includes('extend') && lineTypes.includes(geometryType) && (
+        <Tooltip content="Extend" direction="right">
+          <ExtendFeature
+            type={geometryType}
+            enable={drawType === 'extend-feature'}
+            onClick={() => setDrawType('extend-feature')}
+            onDrawEnd={handleExtendEnd}
+            {...props}
+          />
+        </Tooltip>
+    )} */}
+
+      {toolboxContents.includes('edit') && !pointTypes.includes(geometryType) && (
+        <Tooltip content="Split" direction="right">
+          <SplitFeature
+            type={geometryType}
+            enable={drawType === 'split-feature'}
+            onClick={() => setDrawType('split-feature')}
+            geojson={geojson}
+            onFeatureSplit={handleFeatureSplit}
             {...props}
           />
         </Tooltip>

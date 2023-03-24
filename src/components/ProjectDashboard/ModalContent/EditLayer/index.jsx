@@ -114,8 +114,8 @@ const EditLayer = () => {
               }
             /> */}
             <Input
-              label="Source*"
-              placeholder="Source"
+              label="Data source*"
+              placeholder="Data source"
               name="source"
               value={values.source}
               onChange={handleChange}

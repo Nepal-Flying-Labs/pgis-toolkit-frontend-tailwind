@@ -1,11 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
-import { Creators as ProjectMapCreators } from '@Actions/projectMap';
+import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import Button from '@Components/common/Button';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { togglePromptDialog } = CommonCreators;
-const { deleteDataQuery, deleteAllDataQuery } = ProjectMapCreators;
+const { deleteDataQueryRequest, deleteAllDataQueryRequest } =
+  ProjectMapCreators;
 
 export default function DeleteDataQuery() {
   const promptDialogContent = useSelector(
@@ -14,15 +16,24 @@ export default function DeleteDataQuery() {
   const selectedData = useSelector(
     state => state.projectMap.dataQuery.selectedData,
   );
+  const queryData = useSelector(
+    state => state.projectMap.dataQuery.queryResults,
+  );
   const dispatch = useDispatch();
+  const isDeleting = useSelector(state =>
+    checkIfLoading(state, [
+      Types.DELETE_DATA_QUERY_REQUEST,
+      Types.DELETE_ALL_DATA_QUERY_REQUEST,
+    ]),
+  );
 
   const handleDelete = () => {
     if (promptDialogContent === 'delete-all-data-query') {
-      dispatch(deleteAllDataQuery());
+      const payloadData = queryData.map(item => item.id);
+      dispatch(deleteAllDataQueryRequest(payloadData));
     } else {
-      dispatch(deleteDataQuery(selectedData.id));
+      dispatch(deleteDataQueryRequest({ layer: selectedData.id }));
     }
-    dispatch(togglePromptDialog());
   };
 
   return (
@@ -46,7 +57,7 @@ export default function DeleteDataQuery() {
         <Button
           className="naxatw-bg-[#FF0F0F] naxatw-text-white"
           iconLeft="delete_outline"
-          // isLoading={isDeleting}
+          isLoading={isDeleting}
           loaderClassName="naxatw-fill-secondary-400"
           onClick={handleDelete}
         >

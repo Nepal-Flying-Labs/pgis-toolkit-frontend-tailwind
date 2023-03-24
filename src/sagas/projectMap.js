@@ -35,6 +35,9 @@ import {
   updateFeatureImage,
   deleteFeatureImage,
   postCreateToUrl,
+  deleteDropdownOption,
+  getFeatureGeojson,
+  deleteDataQuery,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -375,7 +378,7 @@ export function* saveDataQueryRequest({ payload }) {
       style: selectedData.style,
     };
     const formdata = prepareFormData(layerData);
-    yield call(updateLayer, selectedData.layer, formdata);
+    yield call(updateLayer, response.data.layer, formdata);
     yield put(projectMapActions.saveDataQuerySuccess(response.data));
     yield put(commonActions.togglePromptDialog());
     yield put(
@@ -625,7 +628,25 @@ export function* postCreateImageToUrlRequest({ payload }) {
 export function* getAttributeFieldRequest({ params }) {
   try {
     const response = yield call(getLayerAttributeFields, params);
-    yield put(projectMapActions.getAttributeFieldSuccess(response.data));
+    const dropdownFields = response.data.filter(item => item.dropdown_field);
+    let options = [];
+    if (!isEmpty(dropdownFields)) {
+      const optionsResponse = yield all(
+        dropdownFields.map(field =>
+          call(getFieldsDropdownOption, { attribute: field.id }),
+        ),
+      );
+      options = dropdownFields.map((item, index) => {
+        const dropdown = optionsResponse[index].data;
+        return { ...item, options: dropdown };
+      });
+    }
+    yield put(
+      projectMapActions.getAttributeFieldSuccess({
+        data: response.data,
+        options,
+      }),
+    );
   } catch (error) {
     yield put(projectMapActions.getAttributeFieldFailure());
     throw error;
@@ -638,6 +659,53 @@ export function* getFeatureImageRequest({ id }) {
     yield put(projectMapActions.getFeatureImageSuccess(response.data));
   } catch (error) {
     yield put(projectMapActions.getFeatureImageFailure());
+    throw error;
+  }
+}
+
+export function* deleteDropdownOptionRequest({ id }) {
+  try {
+    yield call(deleteDropdownOption, id);
+    yield put(projectMapActions.deleteDropdownOptionSuccess({ id }));
+    yield put(commonActions.togglePromptDialog());
+  } catch (error) {
+    yield put(projectMapActions.deleteDropdownOptionFailure());
+    throw error;
+  }
+}
+
+export function* getFeatureGeometryRequest({ id }) {
+  try {
+    const response = yield call(getFeatureGeojson, id);
+    yield put(projectMapActions.getFeatureGeometrySuccess(response.data));
+    yield put(commonActions.toggleModal());
+  } catch (error) {
+    yield put(projectMapActions.getFeatureGeometryFailure());
+    throw error;
+  }
+}
+
+export function* deleteDataQueryRequest({ payload }) {
+  try {
+    const formData = prepareFormData(payload);
+    yield call(deleteDataQuery, formData);
+    yield put(
+      projectMapActions.deleteDataQuerySuccess({ layer: payload.layer }),
+    );
+    yield put(commonActions.togglePromptDialog());
+  } catch (error) {
+    yield put(projectMapActions.deleteDataQueryFailure());
+    throw error;
+  }
+}
+
+export function* deleteAllDataQueryRequest({ payload }) {
+  try {
+    yield all(payload.map(item => call(deleteDataQuery, { layer: item })));
+    yield put(projectMapActions.deleteAllDataQuerySuccess());
+    yield put(commonActions.togglePromptDialog());
+  } catch (error) {
+    yield put(projectMapActions.deleteAllDataQueryFailure());
     throw error;
   }
 }
@@ -762,6 +830,22 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_FEATURE_IMAGE_REQUEST,
     withLoader(withErrorHandler(getFeatureImageRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_DROPDOWN_OPTION_REQUEST,
+    withLoader(withErrorHandler(deleteDropdownOptionRequest)),
+  );
+  yield takeLatest(
+    Types.GET_FEATURE_GEOMETRY_REQUEST,
+    withLoader(withErrorHandler(getFeatureGeometryRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_DATA_QUERY_REQUEST,
+    withLoader(withErrorHandler(deleteDataQueryRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_ALL_DATA_QUERY_REQUEST,
+    withLoader(withErrorHandler(deleteAllDataQueryRequest)),
   );
 }
 

@@ -20,7 +20,7 @@ export default function Results() {
   );
   const dispatch = useDispatch();
 
-  const bufferAnalysisException = ['attribute-table', 'visualize'];
+  const proximityAnalysisException = ['attribute-table'];
 
   const dropdownOptions = [
     {
@@ -55,11 +55,11 @@ export default function Results() {
       },
     },
     {
-      id: 'visualize',
+      id: 'summary',
       label: (
         <span className="naxatw-flex naxatw-items-center">
           <i className="material-symbols-outlined naxatw-mr-2">monitoring</i>
-          <p className="naxatw-text-body-lg">Visualize</p>
+          <p className="naxatw-text-body-lg">Summary</p>
         </span>
       ),
       onClick: data => {
@@ -160,10 +160,10 @@ export default function Results() {
                   </div>
                   <DropdownOptions
                     options={
-                      analysisType === 'buffer-analysis'
+                      analysisType === 'proximity-analysis'
                         ? dropdownOptions.filter(
                             option =>
-                              !bufferAnalysisException.includes(option.id),
+                              !proximityAnalysisException.includes(option.id),
                           )
                         : dropdownOptions
                     }

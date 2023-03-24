@@ -22,9 +22,9 @@ import {
   getStyles,
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import Spinner from '@Components/common/Spinner';
-import PopupUI from '@Components/common/OpenLayersComponent/Custom/PopupUI';
+import CustomPopupUI from '@Components/common/OpenLayersComponent/Custom/CustomPopupUI';
 import { checkIfLoading } from '@Utils/loaderSelector';
-import AsyncPopup from '@Components/common/OpenLayersComponent/Custom/AsyncPopup';
+import CustomPopup from '@Components/common/OpenLayersComponent/Custom/CustomPopup/index';
 import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
@@ -34,6 +34,8 @@ import EditableLayer from '@Components/common/OpenLayersComponent/CustomLayer/Ed
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import { apiURL } from '@Services';
 import { FullScreen, defaults as defaultControls } from 'ol/control';
+import { Vector as VectorSource } from 'ol/source';
+import GeoJSON from 'ol/format/GeoJSON';
 import SidebarToggle from '../SidebarToggle';
 import Toolbox from '../Toolbox';
 import QueryResultPopup from '../QueryResultPopup';
@@ -82,11 +84,17 @@ export default function MapSection() {
   const queryResults = useSelector(
     state => state.projectMap.dataQuery.queryResults,
   );
+  const featureGeometry = useSelector(
+    state => state.projectMap.featureGeometry,
+  );
+  const resetMapExtent = useSelector(state => state.projectMap.resetMapExtent);
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,
       Types.GET_PROJECT_THEME_LAYERS_REQUEST,
       Types.GET_PROJECT_GEOJSON_REQUEST,
+      Types.GET_FEATURE_COLLECTION_REQUEST,
+      Types.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
     ]),
   );
   const isPopupDataFetching = useSelector(state =>
@@ -95,9 +103,9 @@ export default function MapSection() {
   const [isMeaureEnabled, setIsMeasureEnabled] = useState(false);
   const dispatch = useDispatch();
 
-  // zoom to project location on initial map load
+  // zoom to project location on initial map load or map reset
   useEffect(() => {
-    if (!map || !projectDetail) return;
+    if (!map || !projectDetail || !resetMapExtent) return;
     const bbox = projectDetail?.bbox;
     if (!bbox) return;
     const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
@@ -107,8 +115,9 @@ export default function MapSection() {
         // duration: 3500,
         constrainResolution: true,
       });
+      dispatch(setProjectMapState({ resetMapExtent: false }));
     }
-  }, [map, projectDetail]);
+  }, [map, projectDetail, resetMapExtent, dispatch]);
 
   // update map size on sidebar toggle
   useEffect(() => {
@@ -135,6 +144,28 @@ export default function MapSection() {
     }
     dispatch(setZoomToLayerId(null));
   }, [dispatch, map, mapState, zoomToLayerId]);
+
+  // zoom to individual feature
+  useEffect(() => {
+    if (!map || !featureGeometry) return;
+    const vectorSource = new VectorSource({
+      features: new GeoJSON().readFeatures(featureGeometry),
+    });
+    const zoomExtent = transformExtent(
+      vectorSource.getExtent(),
+      'EPSG:4326',
+      'EPSG:3857',
+    );
+
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 2000,
+        constrainResolution: true,
+      });
+    }
+    dispatch(setProjectMapState({ featureGeometry: null }));
+  }, [dispatch, map, featureGeometry]);
 
   // refresh vectortile after layer edit
   useEffect(() => {
@@ -166,7 +197,7 @@ export default function MapSection() {
           <Spinner className="naxatw-w-8 naxatw-h-8 naxatw-fill-secondary-400" />
         </div>
       ) : (
-        <PopupUI data={popupData} />
+        <CustomPopupUI data={popupData} />
       );
     },
     [popupData, isPopupDataFetching], // eslint-disable-line
@@ -357,7 +388,7 @@ export default function MapSection() {
 
           <MaskedLayer geojson={projectGeojson} />
 
-          <AsyncPopup
+          <CustomPopup
             fetchPopupData={properties => {
               const params = {
                 feature_id: properties.id,
@@ -365,6 +396,7 @@ export default function MapSection() {
               dispatch(getMapPopupDataRequest(params));
             }}
             popupUI={properties => getPopupUI(properties)}
+            popupData={popupData}
             // openPopupFor={searchedId}
             // zoomedExtent={zoomedExtent}
             onPopupClose={() => {

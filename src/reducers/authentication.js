@@ -82,6 +82,14 @@ const getLandingPageSuccess = (state, action) => ({
 //   },
 // });
 
+const updateShowLoginMessageSuccess = state => ({
+  ...state,
+  landingPage: {
+    ...state.landingPage,
+    show_login_message: false,
+  },
+});
+
 const authenticationReducer = createReducer(initialState, {
   [Types.LOGIN_SUCCESS]: loginSuccess,
   [Types.VERIFY_USER_SUCCESS]: verifyUserSuccess,
@@ -91,6 +99,8 @@ const authenticationReducer = createReducer(initialState, {
   [Types.GET_USER_PROFILE_SUCCESS]: getUserProfileSuccess,
   [Types.RESET_AUTHENTICATION_STATE]: resetAuthenticationState,
   [Types.GET_LANDING_PAGE_SUCCESS]: getLandingPageSuccess,
+  [Types.UPDATE_SHOW_LOGIN_MESSAGE_SUCCESS]: updateShowLoginMessageSuccess,
+
   // [Types.UPDATE_USER_SUCCESS]: updateUserSuccess,
 });
 

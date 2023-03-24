@@ -2,14 +2,15 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from 'reduxsauce';
 import produce from 'immer';
+import { parse } from 'wkt';
+import * as chroma from 'chroma-js';
 import {
   bufferPolygonStyles,
   bufferPointStyles,
   bufferColors,
 } from '@src/constants/analysis';
-import { parse } from 'wkt';
-import * as chroma from 'chroma-js';
 import { Types } from '@Actions/bufferAnalysis';
+import { isEmpty } from '@Utils/commonUtils';
 
 const initialState = {
   activeTab: 'dataInput', // 'dataInput', 'results', 'layers'
@@ -31,17 +32,33 @@ const initialState = {
     selectedAnalysis: null,
     individualAnalysisData: null,
   },
+  inputQuery: null,
   analysisTaskId: null,
   poiLayers: [],
   popupActiveTab: 'Summary',
   detailsCategory: [],
   detailsChartData: {},
   detailsListData: [],
+  featureCollectionList: [],
+  filter: {
+    searchText: '',
+    ordering: null,
+  },
+  selectedLayer: null,
+  selectedCategory: null,
 };
 
 const setBufferAnalysisState = (state, action) => ({
   ...state,
   ...action.payload,
+});
+
+const setFilterState = (state, action) => ({
+  ...state,
+  filter: {
+    ...state.filter,
+    ...action.payload,
+  },
 });
 
 const setDataInputState = (state, action) => ({
@@ -94,23 +111,28 @@ const checkProcessingStatusSuccess = (state, action) =>
         }
       });
     });
+    const { analysisType } = draft.inputQuery;
     const analysisResult = {
       ...data,
       checked: true,
       poiChartData: totalPoiCountChartData,
       buffer_areas: data.buffer_areas.map((areas, index) => ({
         ...areas,
-        name: `Buffer Point ${index + 1}`,
+        name: `${analysisType === 'buffer-analysis' ? 'Buffer ' : ''}Area ${
+          index + 1
+        }`,
         checked: true,
         style: { ...bufferPolygonStyles },
         originStyle: { ...bufferPointStyles, fillColor: chroma.random().hex() },
       })),
+      inputQuery: draft.inputQuery,
     };
 
     draft.dataInput = initialState.dataInput;
+    draft.inputQuery = initialState.inputQuery;
     draft.results.analysisResults = [
-      ...draft.results.analysisResults,
       analysisResult,
+      ...draft.results.analysisResults,
     ];
     const analysisResultStyle = draft.results.analysisResults.map(
       (result, i) => ({
@@ -154,6 +176,12 @@ const handleRouteCheckbox = (state, action) =>
 
     if (name === 'area') {
       area.checked = checked;
+      const checkedAreas = result.buffer_areas.filter(item => item.checked);
+      if (isEmpty(checkedAreas)) {
+        result.checked = false;
+      } else {
+        result.checked = true;
+      }
     }
   });
 const setPopupActiveTab = (state, action) => ({
@@ -234,8 +262,29 @@ const deleteBufferResult = (state, action) =>
     }
   });
 
+const getFeatureCollectionSuccess = (state, action) => {
+  const featureList = action.payload;
+  const listData = state.detailsListData;
+  const newFeatureList = featureList.map(list => {
+    const resultData = listData.data.find(datax => datax.id === list.id);
+    if (resultData) {
+      return {
+        ...list,
+        buffer_distance: resultData.buffer_distance,
+        origin: resultData.origin,
+      };
+    }
+    return list;
+  });
+  return {
+    ...state,
+    featureCollectionList: newFeatureList,
+  };
+};
+
 const bufferAnalysisReducer = createReducer(initialState, {
   [Types.SET_BUFFER_ANALYSIS_STATE]: setBufferAnalysisState,
+  [Types.SET_FILTER_STATE]: setFilterState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
   [Types.SET_RESULTS_STATE]: setResultsState,
   [Types.RESET_BUFFER_ANALYSIS_STATE]: resetBufferAnalysisState,
@@ -250,6 +299,7 @@ const bufferAnalysisReducer = createReducer(initialState, {
   [Types.GET_SELECTED_LAYER_FEATURE_SUCCESS]: getSelectedLayerFeatureSuccess,
   [Types.SAVE_BUFFER_LAYER_SUCCESS]: saveBufferLayerSuccess,
   [Types.DELETE_BUFFER_RESULT]: deleteBufferResult,
+  [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
 });
 
 export default bufferAnalysisReducer;

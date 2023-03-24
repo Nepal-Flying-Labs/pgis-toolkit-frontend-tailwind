@@ -87,9 +87,7 @@ export default function SplitFeature({
   const handleDrawEnd = useCallback(
     ({ feature }) => {
       const featureGeometryType = getGeometryType(selectedFeature);
-      console.log(featureGeometryType, 'featureGeometryTypex');
       const geojson = getFeaturesGeojson(feature);
-      console.log(geojson, 'geojsonx');
       const splittedFeature =
         featureGeometryType === 'LineString'
           ? splitLineString(selectedFeature, geojson)

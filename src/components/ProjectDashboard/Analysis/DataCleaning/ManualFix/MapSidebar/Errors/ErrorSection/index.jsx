@@ -90,6 +90,31 @@ export default function ErrorSection() {
     },
   ];
 
+  const getDropdownOptions = ({ feature, type }) => {
+    const { children, fixed } = feature;
+    if (type === 'null') return '';
+    if (!children && fixed) return '';
+    return (
+      <DropdownOptions options={dropdownOptions} data={{ ...feature, type }} />
+    );
+    if (type !== null) {
+      return (
+        <DropdownOptions
+          options={dropdownOptions}
+          data={{ ...feature, type }}
+        />
+      );
+    }
+    if (feature?.children && !feature.fixed) {
+      return (
+        <DropdownOptions
+          options={dropdownOptions}
+          data={{ ...feature, type }}
+        />
+      );
+    }
+  };
+
   return (
     <>
       {errorFeaturesMapState.map(({ type, label, features }) => (
@@ -197,19 +222,7 @@ export default function ErrorSection() {
                         />
                       )}
 
-                      {type !== 'null' && (
-                        <DropdownOptions
-                          options={dropdownOptions}
-                          data={{ ...feature, type }}
-                        />
-                      )}
-
-                      {feature?.children && !feature.fixed && (
-                        <DropdownOptions
-                          options={dropdownOptions}
-                          data={{ ...feature, type }}
-                        />
-                      )}
+                      {getDropdownOptions({ feature, type })}
                     </div>
                   </div>
 

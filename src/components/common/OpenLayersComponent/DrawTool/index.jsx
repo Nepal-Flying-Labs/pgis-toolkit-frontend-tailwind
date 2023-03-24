@@ -63,7 +63,7 @@ export default function DrawTool({
   const [drawType, setDrawType] = useState(null);
   const [modifiedStates, setModifiedStates] = useState([]);
   const [modifiedFeature, setModifiedFeature] = useState(null);
-  const selectedFeatureUId = useRef(null);
+  // const selectedFeatureUId = useRef(null);
   const layerUid = useRef(null);
 
   const handleFeatureEdit = useCallback(
@@ -122,7 +122,7 @@ export default function DrawTool({
       zIndex: zIndex + 1,
       style: (feature, resolution) => {
         const geometry = feature.getGeometry();
-        const coordinates = geometry.getCoordinates();
+        // const coordinates = geometry.getCoordinates();
         const styles = [getStyles({ style, feature, resolution })];
         geometry.forEachSegment((start, end) => {
           styles.push(
@@ -157,10 +157,20 @@ export default function DrawTool({
     layerUid.current = getUid(vectorLyr);
     map.addLayer(vectorLyr);
     setVectorLayer(vectorLyr);
-    select.getFeatures().push(features[0]);
+    // select.getFeatures().push(features[0]);
     setModifiedStates([geojson]);
     setModifiedFeature(features[0]);
   }, [map, enable, geojson, zIndex, select, style]);
+
+  useEffect(() => {
+    if (!select || !drawType) return;
+    if (drawType === 'drag-feature' || drawType === 'edit-feature') {
+      const features = source.getFeatures();
+      select.getFeatures().push(features[0]);
+    } else {
+      select.getFeatures().clear();
+    }
+  }, [drawType, select]);
 
   // reset state and remove layer
   const resetState = useCallback(() => {
@@ -239,14 +249,14 @@ export default function DrawTool({
       const coordinates1 = features[0].getGeometry().getCoordinates();
       const coordinates2 = features[1].getGeometry().getCoordinates();
       const union = new LineString(coordinates1.concat(coordinates2));
-      console.log(union, 'unionx');
+      // console.log(union, 'unionx');
       // console.log(features, 'featuresx');
       // const featureGeojsons = features.map(feature =>
       //   getFeatureGeojson(feature),
       // );
       // console.log(featureGeojsons, 'featureGeojsonx');
       const singleFeature = featureCollection(union);
-      console.log(singleFeature, 'singleFeaturex');
+      // console.log(singleFeature, 'singleFeaturex');
       // setModifiedStates(prev => [...prev, featureGeojson]);
       // setModifiedFeature(features);
       // setDrawType(null);

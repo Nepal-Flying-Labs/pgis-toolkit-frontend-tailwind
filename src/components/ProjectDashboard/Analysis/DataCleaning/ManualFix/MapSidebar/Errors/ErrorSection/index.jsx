@@ -25,7 +25,7 @@ const {
 
 const { togglePromptDialog } = CommonCreators;
 
-export default function ErrorSection({ style = {} }) {
+export default function ErrorSection() {
   const errorFeaturesMapState = useSelector(errorFeaturesMapStateSelector);
   const totalErrors = useSelector(totalErrorsSelector);
   const isDeleting = useSelector(state =>
@@ -91,7 +91,7 @@ export default function ErrorSection({ style = {} }) {
   ];
 
   return (
-    <React.Fragment style={style}>
+    <>
       {errorFeaturesMapState.map(({ type, label, features }) => (
         <Accordion
           key={type}
@@ -284,6 +284,6 @@ export default function ErrorSection({ style = {} }) {
           }
         />
       ))}
-    </React.Fragment>
+    </>
   );
 }

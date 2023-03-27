@@ -190,19 +190,13 @@ export default function StepTwo() {
                           <span>
                             {status === 'success' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">
-                                No error
+                                <b>0</b> error out of <b>{totalData}</b> data
                               </p>
                             ) : status === 'error' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">
-                                {errorData === 0 ? (
-                                  'No error'
-                                ) : (
-                                  <>
-                                    <b>{errorData}</b>{' '}
-                                    {errorData > 1 ? 'errors' : 'error'} out of{' '}
-                                    <b>{totalData}</b> data
-                                  </>
-                                )}
+                                <b>{errorData}</b>{' '}
+                                {errorData > 1 ? 'errors' : 'error'} out of{' '}
+                                <b>{totalData}</b> data
                               </p>
                             ) : status === 'fix-failed' ? (
                               <p className="naxatw-text-body-lg naxatw-text-grey-800">

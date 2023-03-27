@@ -89,8 +89,7 @@
 
 
 ### DESIGN REVIEW
-- [ ] font issue in safari
-- [ ] project map => line seperator in map and sidebar
+- [x] project map => line seperator in map and sidebar
 - [ ] button sm padding
 - [ ] accordion content padding
 - [ ] center align save button edit sidebar section
@@ -102,3 +101,4 @@
 - [ ] organization map card design => fix height
 - [ ] clear button on search 
 - [ ] analysis modal design
+- [ ] font issue in safari

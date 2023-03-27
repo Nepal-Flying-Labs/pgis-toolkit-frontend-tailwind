@@ -36,7 +36,7 @@ export default function MapSidebar() {
   return (
     <div
       className="naxatw-bg-grey-100 naxatw-pl-4 naxatw-pr-4 naxatw-pt-3
-        naxatw-overflow-auto scrollbar naxatw-min-w-[23rem]"
+        naxatw-overflow-auto scrollbar naxatw-min-w-[23rem] naxatw-border-r naxatw-border-grey-300"
     >
       <div className="naxatw-flex naxatw-flex-col naxatw-gap-2">
         <div className="naxatw-flex naxatw-items-center naxatw-justify-between">

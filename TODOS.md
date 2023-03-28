@@ -90,7 +90,7 @@
 
 ### DESIGN REVIEW
 - [x] project map => line seperator in map and sidebar
-- [ ] button sm padding
+- [x] button sm padding
 - [ ] accordion content padding
 - [ ] center align save button edit sidebar section
 - [ ] project header 

@@ -58,15 +58,19 @@ export default function ProjectHeader() {
   return (
     <header
       id="project-header"
-      className={`naxatw-h-[${projectHeaderHeight}] naxatw-fixed naxatw-w-full naxatw-z-[999] naxatw-top-0 naxatw-border-b naxatw-border-grey-300 naxatw-bg-white`}
+      className={`naxatw-h-[${projectHeaderHeight}] naxatw-fixed naxatw-w-full naxatw-z-[999]
+        naxatw-top-0 naxatw-border-b naxatw-border-grey-300 naxatw-bg-white`}
     >
       <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-px-8  naxatw-h-full">
         {projectId ? (
           <div>
             <nav>
-              <ul className="naxatw-font-bold  naxatw-text-grey-500 naxatw-text-[0.9375rem]  naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-2 naxatw-h-full">
+              <ul
+                className="naxatw-font-bold  naxatw-text-grey-500 naxatw-text-[0.9375rem]
+                  naxatw-flex naxatw-items-center naxatw-justify-center naxatw-h-full"
+              >
                 <li
-                  className="naxatw-flex naxatw-gap-x-2 naxatw-items-center"
+                  className="naxatw-flex naxatw-items-center"
                   style={{
                     pointerEvents: landingPage?.project ? 'none' : '',
                   }}
@@ -124,7 +128,10 @@ export default function ProjectHeader() {
 
         <div className="naxatw-flex naxatw-gap-10 ">
           <nav className="">
-            <ul className="naxatw-font-bold  naxatw-text-grey-500 naxatw-text-[0.9375rem] naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-2 naxatw-h-full">
+            <ul
+              className="naxatw-font-bold naxatw-text-grey-500 naxatw-text-[0.9375rem]
+                naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-h-full"
+            >
               {headerData.map(({ label, route, disabled }) => (
                 <li key={label}>
                   <Link

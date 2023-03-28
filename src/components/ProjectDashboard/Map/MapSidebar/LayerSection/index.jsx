@@ -111,9 +111,9 @@ export default function LayerSection() {
     {
       id: 'delete-layer',
       label: (
-        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+        <span className="naxatw-flex naxatw-items-center naxatw-text-delete_btn">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
-          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+          <p className="naxatw-text-body-lg naxatw-text-delete_btn">Delete</p>
         </span>
       ),
       onClick: data => {

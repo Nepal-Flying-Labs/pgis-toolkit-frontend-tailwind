@@ -45,11 +45,14 @@ export default function DropdownOptions({
           handleToggle();
         }}
       >
-        <MaterialIcon
-          className="naxatw-text-icon-md"
-          name="more_vert"
-          wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
-        />
+        <span
+          className="naxatw-flex naxatw-items-center naxatw-justify-center
+            naxatw-w-9 naxatw-h-9"
+        >
+          <button type="button" className="naxatw-text-icon-md naxatw-flex">
+            <i className="material-icons naxatw-text-icon-md">more_vert</i>
+          </button>
+        </span>
       </a>
       <CSSTransition
         in={toggle}
@@ -69,11 +72,12 @@ export default function DropdownOptions({
         <div
           ref={nodeRef}
           className={`
-          ${toggle ? '' : 'naxatw-hidden'} 
-          naxatw-absolute ${getPosition(
-            direction,
-          )} naxatw-z-[50] naxatw-w-[12.5rem]
-          naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100 naxatw-shadow-3xl naxatw-transition-all naxatw-ease-in-out naxatw-duration-200`}
+            ${toggle ? '' : 'naxatw-hidden'} 
+            naxatw-absolute ${getPosition(
+              direction,
+            )} naxatw-z-[50] naxatw-w-[12.5rem]
+            naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100
+            naxatw-shadow-3xl naxatw-transition-all naxatw-ease-in-out naxatw-duration-200`}
         >
           <ul
             className="naxatw-py-2 naxatw-text-sm naxatw-text-grey-700"

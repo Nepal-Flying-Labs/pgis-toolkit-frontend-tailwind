@@ -79,7 +79,8 @@ export default function MapSidebar() {
 
   return (
     <div
-      className={`naxatw-relative naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-2 naxatw-pt-5`}
+      className="naxatw-relative naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-2
+        naxatw-pt-5 naxatw-border-r naxatw-border-grey-300"
       style={{
         width: hideSidebar ? '0' : '44.375rem',
         minWidth: hideSidebar ? '0' : '40rem',
@@ -89,7 +90,10 @@ export default function MapSidebar() {
     >
       {!hasNoProject && (
         <>
-          <div className="naxatw-flex naxatw-items-center naxatw-pr-5 naxatw-justify-between naxatw-gap-2">
+          <div
+            className="naxatw-flex naxatw-items-center naxatw-pr-5
+              naxatw-justify-between naxatw-gap-2"
+          >
             <Searchbar
               className="naxatw-bg-white"
               value={searchValue}

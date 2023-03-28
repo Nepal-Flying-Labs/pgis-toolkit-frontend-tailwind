@@ -67,12 +67,10 @@ export default function LayerList({ dropdownOptions }) {
             key={theme.id}
             collapsed={hasNoLayer}
             header={
-              <div className="naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-w-full">
+              <div className="naxatw-flex naxatw-flex-col naxatw-w-full">
                 <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
-                  <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
-                    <h5 className="naxatw-text-grey-800 naxatw-font-semibold">
-                      {theme.name}
-                    </h5>
+                  <div className="naxatw-flex naxatw-items-center naxatw-gap-2 naxatw-cursor-pointer naxatw-select-none">
+                    <h5 className="naxatw-text-grey-800">{theme.name}</h5>
                     {/*
                     <span className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer">
                       <MaterialIcon
@@ -141,11 +139,14 @@ export default function LayerList({ dropdownOptions }) {
                     onMouseLeave={() => setHoverId(null)}
                   >
                     <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-                      <div className="naxatw-w-6 naxatw-h-6 naxatw-p-[3px] naxatw-mr-3 naxatw-flex naxatw-items-center naxatw-justify-center">
+                      <div
+                        className="naxatw-w-6 naxatw-h-6 naxatw-mr-2 naxatw-flex
+                          naxatw-items-center naxatw-justify-center naxatw-p-4"
+                      >
                         <input
                           id={layer.id}
                           type="checkbox"
-                          className="naxatw-w-4 naxatw-h-4 naxatw-accent-grey-800"
+                          className="naxatw-min-w-[16px] naxatw-min-h-[16px] naxatw-accent-grey-800"
                           checked={layer.checked}
                           onChange={e =>
                             handleLayerCheck({
@@ -159,8 +160,8 @@ export default function LayerList({ dropdownOptions }) {
 
                       <LegendItem
                         styles={layer.style}
-                        className="naxatw-mr-2"
-                        size="21px"
+                        className="naxatw-mr-2.5"
+                        size="24px"
                       />
 
                       <label

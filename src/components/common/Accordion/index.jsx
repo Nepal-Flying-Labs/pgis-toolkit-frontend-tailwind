@@ -16,20 +16,36 @@ export default function Accordion({
 
   return (
     <div
-      className={`naxatw-bg-white naxatw-border naxatw-rounded-lg naxatw-p-5 naxatw-border-grey-300 ${className}`}
+      className={`naxatw-bg-white naxatw-border naxatw-rounded-lg naxatw-p-2
+        naxatw-pb-3 naxatw-border-grey-300 ${className} hover:naxatw-border-grey-800`}
     >
-      <div className=" naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full naxatw-font-medium naxatw-gap-3">
-        {header}
-        <span className="naxatw-flex">
+      <div
+        className="naxatw-flex naxatw-items-center naxatw-justify-between
+          naxatw-w-full naxatw-font-medium naxatw-gap-3 naxatw-pl-2"
+      >
+        <div
+          onClick={() => {
+            setCollapsed(!collapsed);
+            onToggle(collapsed);
+          }}
+        >
+          {header}
+        </div>
+        <span className="naxatw-flex naxatw-w-9 naxatw-h-9">
           <button
             type="button"
-            className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-p-2"
+            className={`naxatw-rounded-lg
+              naxatw-p-1.5 ${
+                !collapsed
+                  ? 'naxatw-bg-primary-50 naxatw-text-primary-500'
+                  : 'hover:naxatw-bg-grey-100'
+              }`}
             onClick={() => {
               setCollapsed(!collapsed);
               onToggle(collapsed);
             }}
           >
-            <i className="material-icons">
+            <i className="material-icons naxatw-text-icon-md">
               {collapsed ? 'expand_more' : 'expand_less'}
             </i>
           </button>

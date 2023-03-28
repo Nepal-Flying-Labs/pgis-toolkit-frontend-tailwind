@@ -69,7 +69,7 @@ export default function LayerList({ dropdownOptions }) {
             header={
               <div className="naxatw-flex naxatw-flex-col naxatw-w-full">
                 <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
-                  <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
+                  <div className="naxatw-flex naxatw-items-center naxatw-gap-2 naxatw-cursor-pointer naxatw-select-none">
                     <h5 className="naxatw-text-grey-800">{theme.name}</h5>
                     {/*
                     <span className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer">

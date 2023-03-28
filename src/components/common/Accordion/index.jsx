@@ -23,7 +23,14 @@ export default function Accordion({
         className="naxatw-flex naxatw-items-center naxatw-justify-between
           naxatw-w-full naxatw-font-medium naxatw-gap-3 naxatw-pl-2"
       >
-        {header}
+        <div
+          onClick={() => {
+            setCollapsed(!collapsed);
+            onToggle(collapsed);
+          }}
+        >
+          {header}
+        </div>
         <span className="naxatw-flex naxatw-w-9 naxatw-h-9">
           <button
             type="button"

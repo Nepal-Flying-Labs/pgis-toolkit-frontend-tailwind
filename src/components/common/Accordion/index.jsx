@@ -17,7 +17,7 @@ export default function Accordion({
   return (
     <div
       className={`naxatw-bg-white naxatw-border naxatw-rounded-lg naxatw-p-2
-        naxatw-pb-3 naxatw-border-grey-300 ${className}`}
+        naxatw-pb-3 naxatw-border-grey-300 ${className} hover:naxatw-border-grey-800`}
     >
       <div
         className="naxatw-flex naxatw-items-center naxatw-justify-between

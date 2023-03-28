@@ -34,8 +34,12 @@ export default function Accordion({
         <span className="naxatw-flex naxatw-w-9 naxatw-h-9">
           <button
             type="button"
-            className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg
-              naxatw-p-1.5"
+            className={`naxatw-rounded-lg
+              naxatw-p-1.5 ${
+                !collapsed
+                  ? 'naxatw-bg-primary-50 naxatw-text-primary-500'
+                  : 'hover:naxatw-bg-grey-100'
+              }`}
             onClick={() => {
               setCollapsed(!collapsed);
               onToggle(collapsed);

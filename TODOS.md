@@ -91,7 +91,7 @@
 ### DESIGN REVIEW
 - [x] project map => line seperator in map and sidebar
 - [x] button sm padding
-- [ ] accordion content padding
+- [x] accordion content padding
 - [ ] center align save button edit sidebar section
 - [ ] project header 
 - [ ] scrollbar on hover => ref =>slack 

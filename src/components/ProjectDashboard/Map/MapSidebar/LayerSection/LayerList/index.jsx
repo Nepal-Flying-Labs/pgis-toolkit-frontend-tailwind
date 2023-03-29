@@ -81,52 +81,54 @@ export default function LayerList({ dropdownOptions }) {
                 */}
                   </div>
                 </div>
-                <div className={`${!theme.description ? '' : 'naxatw-mb-3'}`}>
-                  <p
-                    className={`${
-                      !hideTitle?.includes(theme.id)
-                        ? 'naxatw-h-fit'
-                        : 'naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden'
-                    } naxatw-text-body-md`}
-                  >
-                    {hideTitle?.includes(theme.id) &&
-                    theme.description?.length > 0
-                      ? theme?.description
-                      : theme?.description?.slice(0, titleLimit + 10)}
-                    {theme?.description?.length > 0 ? (
-                      hideTitle?.includes(theme.id) ? (
+              </div>
+            }
+            description={
+              <div>
+                <p
+                  className={`${
+                    !hideTitle?.includes(theme.id)
+                      ? 'naxatw-h-fit'
+                      : 'naxatw-text-ellipsis naxatw-overflow-hidden'
+                  } naxatw-text-body-md`}
+                >
+                  {hideTitle?.includes(theme.id) &&
+                  theme.description?.length > 0
+                    ? theme?.description
+                    : theme?.description?.slice(0, titleLimit + 10)}{' '}
+                  {theme?.description?.length > 0 ? (
+                    hideTitle?.includes(theme.id) ? (
+                      <button
+                        type="button"
+                        className="naxatw-text-secondary-400 hover:naxatw-underline"
+                        onClick={e => {
+                          e.stopPropagation();
+                          setHideTitle(prev =>
+                            prev.filter(item => item !== theme.id),
+                          );
+                        }}
+                      >
+                        See less
+                      </button>
+                    ) : (
+                      <span className="naxatw-inline-flex">
+                        <span className="naxatw-px-1">...</span>
                         <button
                           type="button"
                           className="naxatw-text-secondary-400 hover:naxatw-underline"
                           onClick={e => {
                             e.stopPropagation();
-                            setHideTitle(prev =>
-                              prev.filter(item => item !== theme.id),
-                            );
+                            setHideTitle([...hideTitle, theme.id]);
                           }}
                         >
-                          See less
+                          See more
                         </button>
-                      ) : (
-                        <span className="naxatw-inline-flex">
-                          <span className="naxatw-px-1">...</span>
-                          <button
-                            type="button"
-                            className="naxatw-text-secondary-400 hover:naxatw-underline"
-                            onClick={e => {
-                              e.stopPropagation();
-                              setHideTitle([...hideTitle, theme.id]);
-                            }}
-                          >
-                            See more
-                          </button>
-                        </span>
-                      )
-                    ) : (
-                      ''
-                    )}
-                  </p>
-                </div>
+                      </span>
+                    )
+                  ) : (
+                    ''
+                  )}
+                </p>
               </div>
             }
             body={

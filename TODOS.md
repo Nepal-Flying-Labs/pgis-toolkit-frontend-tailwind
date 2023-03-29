@@ -92,13 +92,13 @@
 - [x] project map => line seperator in map and sidebar
 - [x] button sm padding
 - [x] accordion content padding
-- [ ] center align save button edit sidebar section
-- [ ] project header 
+- [x] project header 
 - [ ] scrollbar on hover => ref =>slack 
 - [ ] airbnb reference map/sidebar
 - [ ] border in toolbar
 - [ ] google earth reference
 - [ ] organization map card design => fix height
 - [ ] clear button on search 
+- [ ] center align save button edit sidebar section
 - [ ] analysis modal design
 - [ ] font issue in safari

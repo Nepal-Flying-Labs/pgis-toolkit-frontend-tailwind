@@ -166,7 +166,7 @@ export default function LayerList({ dropdownOptions }) {
 
                       <label
                         title={layer.name}
-                        className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-w-[9rem]
+                        className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-w-[10rem]
                           naxatw-truncate"
                         htmlFor={layer.id}
                       >
@@ -178,7 +178,8 @@ export default function LayerList({ dropdownOptions }) {
                       {layer.id === hoverId && (
                         <span
                           className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg
-                            naxatw-cursor-pointer naxatw-flex naxatw-items-center"
+                            naxatw-cursor-pointer naxatw-flex naxatw-items-center naxatw-justify-center
+                            naxatw-w-9 naxatw-h-9"
                           onClick={() => {
                             dispatch(
                               setProjectMapState({

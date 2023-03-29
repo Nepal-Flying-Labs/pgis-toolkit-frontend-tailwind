@@ -34,12 +34,11 @@ export default function Accordion({
         <span className="naxatw-flex naxatw-w-9 naxatw-h-9">
           <button
             type="button"
-            className={`naxatw-rounded-lg
-              naxatw-p-1.5 ${
-                !collapsed
-                  ? 'naxatw-bg-primary-50 naxatw-text-primary-500'
-                  : 'hover:naxatw-bg-grey-100'
-              }`}
+            className={`naxatw-rounded-lg naxatw-p-1.5 ${
+              !collapsed
+                ? 'naxatw-bg-primary-50 naxatw-text-primary-500'
+                : 'hover:naxatw-bg-grey-100'
+            }`}
             onClick={() => {
               setCollapsed(!collapsed);
               onToggle(collapsed);
@@ -51,9 +50,7 @@ export default function Accordion({
           </button>
         </span>
       </div>
-      <div className={`${collapsed ? 'naxatw-hidden' : ''}`}>
-        <div className="naxatw-font-light">{body}</div>
-      </div>
+      <div className={`${collapsed ? 'naxatw-hidden' : ''}`}>{body}</div>
     </div>
   );
 }

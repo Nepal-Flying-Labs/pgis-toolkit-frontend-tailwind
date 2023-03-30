@@ -91,14 +91,15 @@
 ### DESIGN REVIEW
 - [x] project map => line seperator in map and sidebar
 - [x] button sm padding
-- [ ] accordion content padding
-- [ ] center align save button edit sidebar section
-- [ ] project header 
-- [ ] scrollbar on hover => ref =>slack 
+- [x] accordion content padding
+- [x] project header 
+- [x] border in toolbar
+- [ ] font issue in safari
 - [ ] airbnb reference map/sidebar
-- [ ] border in toolbar
+- [ ] scrollbar on hover => ref =>slack 
+- [ ] analysis modal design
+- [ ] drop shadow
+- [ ] center align save button edit sidebar section
 - [ ] google earth reference
 - [ ] organization map card design => fix height
 - [ ] clear button on search 
-- [ ] analysis modal design
-- [ ] font issue in safari

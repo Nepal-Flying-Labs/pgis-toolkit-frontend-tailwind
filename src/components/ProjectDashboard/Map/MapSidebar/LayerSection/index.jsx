@@ -172,6 +172,8 @@ export default function LayerSection() {
         className="naxatw-mt-3 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-y-auto scrollbar"
         style={{
           height: `calc(100vh - ${projectHeaderHeight}px - 7.7rem)`,
+          marginRight: '-0.7125rem',
+          paddingRight: '0.25rem',
         }}
       >
         {sidebarContent === 'layer-order' ? (

@@ -68,24 +68,47 @@
       scrollbar-width: none; /* Firefox */
     }
 
-    .scrollbar::-webkit-scrollbar {
-      width: 8px;
-      height: 10px;
+    .scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent;
+      transition: scrollbar-color 0.3s;
+
+      &:hover {
+        scrollbar-color: #989898 transparent;
+      }
+
+      &:not(:hover)::-webkit-scrollbar-thumb {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        transition: background 0.3s;
+        background: #989898;
+      }
     }
-    .scrollbar::-webkit-scrollbar-track {
-      border-radius: 100vh;
-      background: #f7f4ed;
-    }
-    .scrollbar::-webkit-scrollbar-thumb {
-      background: #989898;
-      border-radius: 100vh;
-      border: 1px solid white;
-    }
-    .scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #989899;
-    }
+
+    /* .scrollbar::-webkit-scrollbar { */
+    /*   width: 8px; */
+    /*   height: 10px; */
+    /* } */
+    /* .scrollbar::-webkit-scrollbar-track { */
+    /*   border-radius: 100vh; */
+    /*   background: #f7f4ed; */
+    /* } */
+    /* .scrollbar::-webkit-scrollbar-thumb { */
+    /*   background: #989898; */
+    /*   border-radius: 100vh; */
+    /*   border: 1px solid white; */
+    /* } */
+    /* .scrollbar::-webkit-scrollbar-thumb:hover { */
+    /*   background: #989899; */
+    /* } */
   }
- 
 }
 
 .naxatw-color-input {

@@ -3,7 +3,6 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import useOutsideClick from '@Hooks/useOutsideClick';
 import { CSSTransition } from 'react-transition-group';
-import MaterialIcon from '../MaterialIcon/index';
 
 function getPosition(direction) {
   switch (direction) {

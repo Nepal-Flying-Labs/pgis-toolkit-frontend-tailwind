@@ -82,24 +82,27 @@
 - [ ] bbox negative (raj) [https://pgis.naxa.com.np/api/maps/project_theme_layers/?theme=640]
 - [ ] start point click auto save (analysis origin point input)
 
-
 - [ ] undo/redo button manual fix
 
 - [ ] feature highlight issue multipart
 
-
 ### DESIGN REVIEW
+
 - [x] project map => line seperator in map and sidebar
 - [x] button sm padding
 - [x] accordion content padding
-- [x] project header 
+- [x] project header
 - [x] border in toolbar
 - [ ] font issue in safari
 - [ ] airbnb reference map/sidebar
-- [ ] scrollbar on hover => ref =>slack 
+- [ ] scrollbar on hover => ref =>slack
 - [ ] analysis modal design
 - [ ] drop shadow
 - [ ] center align save button edit sidebar section
 - [ ] google earth reference
 - [ ] organization map card design => fix height
-- [ ] clear button on search 
+- [ ] clear button on search
+
+### NEW ISSUES
+
+- [ ] add is-editable field in manage attribute

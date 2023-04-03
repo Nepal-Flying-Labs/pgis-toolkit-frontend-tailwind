@@ -104,11 +104,15 @@ function SearchSelect({
       <div
         className="naxatw-relative naxatw-group naxatw-w-full"
         ref={ref}
-        onClick={() => setToggle(!toggle)}
+        onClick={disabled ? () => {} : () => setToggle(!toggle)}
       >
         <button
           type="button"
-          className={`naxatw-select !naxatw-rounded-lg ${className}  ${
+          className={`!naxatw-rounded-lg ${
+            disabled
+              ? 'naxatw-select-disabled naxatw-bg-grey-100 naxatw-cursor-not-allowed'
+              : 'naxatw-select'
+          } ${className}  ${
             toggle ? 'naxatw-bg-[#F5F5F5] naxatw-border-[#484848]' : ''
           }`}
           style={style}
@@ -121,11 +125,14 @@ function SearchSelect({
           ref={searchRef}
           type="text"
           placeholder={selected || placeholder}
-          className={`naxatw-input naxatw-absolute naxatw-top-0 naxatw-left-0`}
+          className={`naxatw-input naxatw-absolute naxatw-top-0 naxatw-left-0 ${
+            disabled ? '!naxatw-bg-grey-100' : ''
+          }`}
           value={searchText}
           onChange={e => {
             setSearchText(e.target.value);
           }}
+          disabled={disabled}
         />
 
         <div className="naxatw-absolute naxatw-top-3 naxatw-right-4 naxatw-flex naxatw-gap-x-2 naxatw-divide-x-2">

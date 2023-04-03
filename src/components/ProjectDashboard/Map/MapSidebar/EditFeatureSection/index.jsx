@@ -250,6 +250,7 @@ export default function EditFeatureSection() {
                           opt => opt.name === values[`${item.name}`],
                         )?.[0]?.name
                       }
+                      disabled={!item.editable}
                     />
                   ) : item.data_type === 'date' ? (
                     <CustomCalendar
@@ -276,11 +277,14 @@ export default function EditFeatureSection() {
                     <input
                       id={item.id}
                       type={item.data_type === 'str' ? 'text' : 'number'}
-                      className="naxatw-input"
+                      className={`naxatw-input ${
+                        !item.editable ? 'naxatw-input-disabled' : ''
+                      }`}
                       step={item.data_type === 'float' ? 'any' : ''}
                       name={item.name}
                       value={values[`${item.name}`] || ''}
                       onChange={handleChange}
+                      disabled={!item.editable}
                       {...inputProps}
                     />
                   )}

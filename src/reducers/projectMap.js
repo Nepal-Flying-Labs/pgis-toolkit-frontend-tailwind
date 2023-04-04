@@ -573,6 +573,10 @@ const setAttributeTableSearchTerm = (state, action) => ({
   layerAttributesList: {
     ...state.layerAttributesList,
     searchTerm: action.payload,
+    pagination: {
+      ...state.layerAttributesList.pagination,
+      page: 1,
+    },
   },
 });
 

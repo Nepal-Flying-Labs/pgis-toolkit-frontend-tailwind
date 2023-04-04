@@ -209,6 +209,7 @@ class CustomCalendar extends PureComponent {
         placeholder,
         selected,
         className,
+        disabled,
       },
       staticDateRangeOptions,
       renderDates,
@@ -229,12 +230,16 @@ class CustomCalendar extends PureComponent {
         <div
           className={`naxatw-flex naxatw-justify-between ${className} naxatw-items-center ${
             showCalendar && 'naxatw-bg-grey-100'
-          } hover:naxatw-bg-grey-100 naxatw-border naxatw-border-[#D7D7D7] naxatw-h-[54px]  naxatw-px-3 naxatw-py-[15px] naxatw-w-full naxatw-rounded-md  is-date ${
+          } ${
+            disabled
+              ? 'naxatw-bg-grey-100 naxatw-text-grey-400 naxatw-cursor-not-allowed'
+              : ''
+          } hover:naxatw-bg-grey-100 naxatw-border naxatw-border-[#D7D7D7] naxatw-h-[48px]  naxatw-px-3 naxatw-py-[15px] naxatw-w-full naxatw-rounded-md  is-date ${
             errorClassName ? 'errorInput' : ''
           }`}
           tabIndex="0"
-          onClick={toggleCalendar}
-          onKeyUp={toggleCalendar}
+          onClick={disabled ? () => {} : toggleCalendar}
+          onKeyUp={disabled ? () => {} : toggleCalendar}
           role="button"
         >
           <div className="naxatw-flex naxatw-items-center">
@@ -243,7 +248,11 @@ class CustomCalendar extends PureComponent {
             </i>
 
             {/* {renderDates()} */}
-            <span className="naxatw-text-body-lg">
+            <span
+              className={`naxatw-text-body-lg ${
+                disabled ? 'naxatw-text-grey-400' : ''
+              }`}
+            >
               {' '}
               {selected || placeholder}
             </span>
@@ -301,6 +310,7 @@ CustomCalendar.propTypes = {
   placeholder: PropTypes.string,
   selected: PropTypes.string,
   className: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 CustomCalendar.defaultProps = {
@@ -313,6 +323,7 @@ CustomCalendar.defaultProps = {
   placeholder: 'Choose',
   selected: null,
   className: '',
+  disabled: false,
 };
 
 export default CustomCalendar;

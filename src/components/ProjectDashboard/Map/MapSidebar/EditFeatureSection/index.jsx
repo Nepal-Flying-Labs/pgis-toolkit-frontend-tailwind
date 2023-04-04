@@ -242,7 +242,10 @@ export default function EditFeatureSection() {
                       options={item.options}
                       onChange={data =>
                         handleChange({
-                          target: { name: `${item.name}`, value: data.name },
+                          target: {
+                            name: `${item.name}`,
+                            value: data ? data.name : null,
+                          },
                         })
                       }
                       selected={
@@ -265,6 +268,7 @@ export default function EditFeatureSection() {
                         });
                       }}
                       selected={values[`${item.name}`] || ''}
+                      disabled={!item.editable}
                     />
                   ) : item.data_type === 'image' ? (
                     <ImageUpload
@@ -272,6 +276,7 @@ export default function EditFeatureSection() {
                       // setUploadImage={file => handlePostImage(file)}
                       imageList={imageList}
                       setImageList={setImageList}
+                      disabled={!item.editable}
                     />
                   ) : (
                     <input

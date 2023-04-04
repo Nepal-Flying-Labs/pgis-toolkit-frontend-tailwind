@@ -208,7 +208,7 @@ export default function EditFeatureSection() {
       </div>
 
       <div
-        className="naxatw-overflow-auto scrollbar naxatw-flex naxatw-flex-col naxatw-gap-5"
+        className="naxatw-overflow-auto scrollbar naxatw-flex naxatw-flex-col naxatw-gap-5 naxatw-pr-[0.25rem] -naxatw-mr-[0.7125rem]"
         style={{
           height: `calc(100vh - ${projectHeaderHeight}px - 9rem)`,
         }}

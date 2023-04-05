@@ -155,7 +155,7 @@ export default function DataInput() {
   return (
     <div className=" naxatw-h-full">
       <div
-        className="naxatw-flex naxatw-flex-col naxatw-gap-y-5 naxatw-overflow-y-auto scrollbar"
+        className="naxatw-flex naxatw-flex-col naxatw-gap-y-5 naxatw-overflow-y-auto scrollbar -naxatw-mr-[0.7125rem] naxatw-pr-[0.25rem]"
         style={{
           height: `calc(100vh - ${analysisHeaderHeight} - 7.5rem)`,
         }}

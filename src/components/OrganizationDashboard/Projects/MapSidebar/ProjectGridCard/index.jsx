@@ -11,6 +11,7 @@ import { Creators as CommonCreator } from '@Actions/common';
 import { Creators } from '@Actions/organizationDashboard';
 import { format } from 'date-fns';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
+import { isEmpty } from '@Utils/commonUtils';
 
 const { togglePromptDialog } = CommonCreator;
 const { setSelectedProject, setZoomToLayer } = Creators;
@@ -132,7 +133,7 @@ export default function ProjectGridCard({
   return (
     <div
       // naxatw-min-h-[408px] naxatw-max-h-[415px] naxatw-min-w-[321px]
-      className={` naxatw-border naxatw-border-grey-300 naxatw-rounded-xl naxatw-max-h-[420px] hover:naxatw-bg-[#F5F5F5] naxatw-h-full hover:naxatw-border-grey-800  naxatw-cursor-pointer naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-pb-1 ${
+      className={` naxatw-border naxatw-border-grey-300 naxatw-rounded-xl hover:naxatw-bg-[#F5F5F5] naxatw-h-[25.25rem] hover:naxatw-border-grey-800  naxatw-cursor-pointer naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-pb-1 ${
         status === 'draft' ? 'naxatw-bg-[#F5F5F5]' : 'naxatw-bg-white'
       }`}
       onClick={onClick}
@@ -175,9 +176,11 @@ export default function ProjectGridCard({
               Thematic areas
             </p>
             <div className="naxatw-line-clamp-2">
-              <span className="naxatw-text-body-md">
-                {thematicAreas ? thematicAreas.toString() : 'N/A'}
-              </span>
+              <p className="naxatw-text-body-md">
+                {thematicAreas && !isEmpty(thematicAreas)
+                  ? thematicAreas.toString()
+                  : 'N/A'}
+              </p>
             </div>
           </div>
         </div>
@@ -185,7 +188,7 @@ export default function ProjectGridCard({
       {status !== 'draft' ? (
         <div className="naxatw-flex  naxatw-items-end">
           <Button
-            className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-w-[160.5px]"
+            className="naxatw-btn naxatw-btn-sm naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-w-[160.5px]"
             onClick={e => {
               e.stopPropagation();
               history.push(
@@ -196,7 +199,7 @@ export default function ProjectGridCard({
             Info
           </Button>
           <Button
-            className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-w-[160.5px]"
+            className="naxatw-btn naxatw-btn-sm naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-w-[160.5px]"
             onClick={e => {
               e.stopPropagation();
               dispatch(setZoomToLayer({ id, bbox }));
@@ -206,7 +209,7 @@ export default function ProjectGridCard({
           </Button>
         </div>
       ) : (
-        <Button className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]">
+        <Button className="naxatw-btn naxatw-btn-sm naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]">
           Edit
         </Button>
       )}

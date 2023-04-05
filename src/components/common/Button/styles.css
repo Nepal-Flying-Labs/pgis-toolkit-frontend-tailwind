@@ -1,12 +1,12 @@
 .naxatw-btn {
-  @apply naxatw-px-5 naxatw-h-12 naxatw-font-bold naxatw-rounded-lg naxatw-text-[0.938rem]
+  @apply naxatw-px-5 naxatw-h-11 naxatw-font-bold naxatw-rounded-lg naxatw-text-[0.938rem]
   naxatw-leading-[1.25rem] naxatw-flex naxatw-items-center naxatw-justify-center 
   naxatw-gap-2 naxatw-transition-colors naxatw-duration-150 
   disabled:naxatw-cursor-not-allowed disabled:!naxatw-text-grey-400
   disabled:hover:!naxatw-bg-transparent;
 }
 .naxatw-btn.naxatw-btn-sm {
-  @apply naxatw-px-4 naxatw-h-10 naxatw-gap-1;
+  @apply naxatw-px-4 naxatw-h-9 naxatw-gap-1;
   /* naxatw-py-2 */
 }
 .naxatw-btn.naxatw-btn-primary {

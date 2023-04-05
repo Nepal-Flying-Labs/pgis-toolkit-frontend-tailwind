@@ -12,6 +12,8 @@ import { Creators as AnalysisCreators } from '@Actions/analysis';
 import Chip from '@Components/common/Chip';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 import IconButton from '@Components/common/IconButton/index';
+import { isEmpty } from '@Utils/commonUtils';
+import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import MapContent from './OriginPointContents/MapContent';
 import SearchContent from './OriginPointContents/SearchContent';
 import LayerContent from './OriginPointContents/LayerContent';
@@ -56,6 +58,7 @@ function Container({ children }) {
 }
 
 export default function DataInput() {
+  const [error, setError] = useState([]);
   const [radiusUnit, setRadiusUnit] = useState('meter');
   const dispatch = useDispatch();
   const { projectId, analysisType } = useParams();
@@ -88,7 +91,29 @@ export default function DataInput() {
   );
 
   const handleApply = () => {
-    if (!originGeojson || !bufferRadius || !outputName) {
+    const selectedPOI = poiLayers
+      .filter(item => item.checked)
+      .map(item => item.id);
+    if (
+      !originGeojson ||
+      !bufferRadius ||
+      !outputName ||
+      (isEmpty(selectedPOI) && analysisType === 'proximity-analysis')
+    ) {
+      const errors = [];
+      if (!originGeojson) {
+        errors.push('originGeojson');
+      }
+      if (!bufferRadius) {
+        errors.push('bufferRadius');
+      }
+      if (!outputName) {
+        errors.push('outputName');
+      }
+      if (isEmpty(selectedPOI) && analysisType === 'proximity-analysis') {
+        errors.push('poi');
+      }
+      setError(errors);
       dispatch(
         toastActions.error({
           message: 'Please input all the required fields!',
@@ -96,14 +121,11 @@ export default function DataInput() {
       );
       return;
     }
+    setError([]);
 
     const originData = originGeojson.map(
       origin => origin.geojson.geometry.coordinates,
     );
-
-    const selectedPOI = poiLayers
-      .filter(item => item.checked)
-      .map(item => item.id);
 
     const selectedPOIName = poiLayers
       .filter(item => item.checked)
@@ -195,6 +217,9 @@ export default function DataInput() {
               </Container>
             </>
           )}
+          {error.includes('originGeojson') && (
+            <FormErrorMessage message="Required Field" />
+          )}
         </Container>
 
         <Container>
@@ -253,6 +278,9 @@ export default function DataInput() {
                   />
                 </div>
               </div>
+              {error.includes('bufferRadius') && (
+                <FormErrorMessage message="Required Field" />
+              )}
             </div>
             <div className="naxatw-flex naxatw-items-center naxatw-gap-x-4 naxatw-mt-5 naxatw-p-2">
               <input
@@ -352,6 +380,9 @@ export default function DataInput() {
                 ))}
               </ul>
             </div>
+            {error.includes('poi') && (
+              <FormErrorMessage message="Required Field" />
+            )}
           </Container>
         )}
 
@@ -385,6 +416,9 @@ export default function DataInput() {
               );
             }}
           />
+          {error.includes('outputName') && (
+            <FormErrorMessage message="Required Field" />
+          )}
         </Container>
       </div>
 

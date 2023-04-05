@@ -39,6 +39,7 @@ const {
   handleAttributeOrdering,
   resetLayerAttributeListState,
   handleTableCheckbox,
+  handleSelectAllCheckbox,
 } = AnalysisCreators;
 
 const { getSelectedLayerFeatureRequest } = RouteAnalysisCreators;
@@ -159,16 +160,38 @@ export default function SelectLayerFeature() {
             data={attributeList || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
-            headerWidths={['50px', ...headerKeys.map(() => '150px'), '10px']}
+            headerWidths={[
+              analysisType === 'bufferAnalysis' ? '150px' : '50px',
+              ...headerKeys.map(() => '150px'),
+              '10px',
+            ]}
             onRowClick={row => {
               dispatch(handleTableCheckbox({ id: row.attrId, analysisType }));
             }}
           >
             <TableHeader
-              dataField=" "
-              headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
+              dataField=""
+              headerClassName="naxatw-py-[0.8125rem]"
               rowcolSpan="rowSpan_2"
               rowClassName=""
+              dataHeader={
+                analysisType === 'bufferAnalysis' ? (
+                  <div className="naxatw-flex naxatw-items-center">
+                    <input
+                      id="select-all"
+                      className="naxatw-w-5 naxatw-h-5 naxatw-accent-grey-800 naxatw-m-2 naxatw-cursor-pointer"
+                      type="checkbox"
+                      checked={attributeList.every(item => item.checked)}
+                      onChange={e =>
+                        dispatch(handleSelectAllCheckbox(e.target.checked))
+                      }
+                    />
+                    <label htmlFor="select-all">Select All</label>
+                  </div>
+                ) : (
+                  <div />
+                )
+              }
               dataFormat={row => (
                 <input
                   type="checkbox"

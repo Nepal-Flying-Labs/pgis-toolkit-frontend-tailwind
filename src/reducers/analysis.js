@@ -231,6 +231,17 @@ const resetLayerAttributeListState = state => ({
   },
 });
 
+const handleSelectAllCheckbox = (state, action) => ({
+  ...state,
+  layerAttributesList: {
+    ...state.layerAttributesList,
+    attributeList: state.layerAttributesList.attributeList.map(item => ({
+      ...item,
+      checked: action.payload,
+    })),
+  },
+});
+
 const handleTableCheckbox = (state, action) => {
   const { id, analysisType } = action.payload;
   if (analysisType === 'bufferAnalysis') {
@@ -291,6 +302,7 @@ const analysisReducer = createReducer(initialState, {
   [Types.HANDLE_ATTRIBUTE_ORDERING]: handleAttributeOrdering,
   [Types.RESET_LAYER_ATTRIBUTE_LIST_STATE]: resetLayerAttributeListState,
   [Types.HANDLE_TABLE_CHECKBOX]: handleTableCheckbox,
+  [Types.HANDLE_SELECT_ALL_CHECKBOX]: handleSelectAllCheckbox,
   [Types.SET_SELECTED_INFO]: setSelectedInfo,
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
   [Types.RESET_ANALYSIS_STATE]: resetAnalysisState,

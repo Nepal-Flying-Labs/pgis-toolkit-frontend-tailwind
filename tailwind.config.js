@@ -52,7 +52,7 @@ module.exports = {
         'body-lg': [
           '0.938rem',
           {
-            lineHeight: '1.25',
+            lineHeight: '1.25rem',
             fontWeight: '400',
             letterSpacing: '0',
           },
@@ -60,7 +60,7 @@ module.exports = {
         'body-md': [
           '0.813rem',
           {
-            lineHeight: '1.125',
+            lineHeight: '1.125rem',
             fontWeight: '400',
             letterSpacing: '0',
           },
@@ -68,7 +68,7 @@ module.exports = {
         'body-sm': [
           '0.75rem',
           {
-            lineHeight: '1',
+            lineHeight: '1rem',
             fontWeight: '700',
             letterSpacing: '0',
           },
@@ -76,7 +76,7 @@ module.exports = {
         'body-btn': [
           '0.938rem',
           {
-            lineHeight: '1.25',
+            lineHeight: '1.25rem',
             fontWeight: '700',
             letterSpacing: '0',
           },
@@ -92,7 +92,7 @@ module.exports = {
         'icon-sm': [
           '1.125rem',
           {
-            lineHeight: '1.125',
+            lineHeight: '1.125rem',
             fontWeight: '400',
             letterSpacing: '0',
           },

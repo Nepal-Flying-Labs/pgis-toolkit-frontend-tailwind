@@ -102,7 +102,7 @@ const CustomPopup = ({
       }
       const featureProperties = features[0].getProperties();
       const { layer_id: layerId } = featureProperties;
-      if (!exceptionIds.current.includes(layerId)) {
+      if (layerId && !exceptionIds.current.includes(layerId)) {
         setProperties(featureProperties);
         setCoordinates(coordinate);
       } else {

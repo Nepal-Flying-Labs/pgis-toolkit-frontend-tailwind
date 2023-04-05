@@ -40,7 +40,7 @@
     @apply naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-text-[15px];
   }
   .naxatw-input.naxatw-input-disabled {
-    @apply naxatw-text-grey-300 naxatw-bg-grey-100 naxatw-cursor-not-allowed naxatw-select-none;
+    @apply naxatw-text-grey-400 naxatw-bg-grey-100 naxatw-cursor-not-allowed naxatw-select-none;
   }
   .naxatw-label.naxatw-label-disabled {
     @apply naxatw-text-grey-300 naxatw-cursor-not-allowed naxatw-select-none;

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Creators as AnalysisCreators, Types } from '@Actions/analysis';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
+import FeatureImages from '@Components/ProjectDashboard/ModalContent/FeatureImages/index';
 import Header from './Header';
 import HelpContent from './HelpContent';
 import DataCleaning from './DataCleaning';
@@ -46,6 +47,7 @@ export default function Analysis() {
     checkIfLoading(state, [Types.CHECK_PROCESSING_STATUS_REQUEST]),
   );
   const dispatch = useDispatch();
+  const showImageModal = useSelector(state => state.common.showImageModal);
 
   useEffect(() => {
     if (!analysisTaskId) return;
@@ -83,6 +85,7 @@ export default function Analysis() {
   return (
     <div>
       {isProcessing && <AnalysisLoader />}
+      {showImageModal && <FeatureImages />}
 
       <Header />
 

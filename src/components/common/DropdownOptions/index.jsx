@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useRef } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import useOutsideClick from '@Hooks/useOutsideClick';
 import { CSSTransition } from 'react-transition-group';
@@ -31,9 +31,27 @@ export default function DropdownOptions({
 }) {
   const [toggleRef, toggle, handleToggle] = useOutsideClick();
   const nodeRef = useRef(null);
+  const dropdownRef = useRef(null);
+  const [position, setPosition] = useState(direction);
+
+  useLayoutEffect(() => {
+    if (!dropdownRef?.current || !toggle) return;
+    const { bottom } = dropdownRef.current.getBoundingClientRect();
+    const { height } = nodeRef.current.getBoundingClientRect();
+
+    const windowHeight = window.innerHeight;
+    if (bottom + height > windowHeight) {
+      setPosition('top-left');
+    } else {
+      setPosition('left-bottom');
+    }
+  }, [toggle]);
 
   return (
-    <div className="naxatw-relative naxatw-w-10 naxatw-flex naxatw-justify-end">
+    <div
+      className="naxatw-relative naxatw-w-10 naxatw-flex naxatw-justify-end"
+      ref={dropdownRef}
+    >
       <a
         ref={toggleRef}
         className="naxatw-inline-flex naxatw-items-center naxatw-text-sm naxatw-font-medium 
@@ -73,7 +91,7 @@ export default function DropdownOptions({
           className={`
             ${toggle ? '' : 'naxatw-hidden'} 
             naxatw-absolute ${getPosition(
-              direction,
+              position,
             )} naxatw-z-[50] naxatw-w-[12.5rem]
             naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100
             naxatw-shadow-3xl naxatw-transition-all naxatw-ease-in-out naxatw-duration-200`}

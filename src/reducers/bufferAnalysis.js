@@ -20,6 +20,7 @@ const initialState = {
     drawPoint: false,
     originGeojson: null,
     bufferRadius: 1,
+    radiusUnit: 'meter',
     dissolveOutput: false,
     outputName: '',
   },
@@ -128,7 +129,9 @@ const checkProcessingStatusSuccess = (state, action) =>
       inputQuery: draft.inputQuery,
     };
 
-    draft.dataInput = initialState.dataInput;
+    // draft.dataInput = initialState.dataInput;
+    draft.dataInput = { ...draft.dataInput, outputName: '' };
+
     draft.inputQuery = initialState.inputQuery;
     draft.results.analysisResults = [
       analysisResult,
@@ -149,10 +152,10 @@ const checkProcessingStatusSuccess = (state, action) =>
     draft.results.selectedResultId = analysisResult.id;
     draft.results.showResultsPopup = true;
 
-    draft.poiLayers = draft.poiLayers.map(item => ({
-      ...item,
-      checked: false,
-    }));
+    // draft.poiLayers = draft.poiLayers.map(item => ({
+    //   ...item,
+    //   checked: false,
+    // }));
   });
 
 const handleRouteCheckbox = (state, action) =>

@@ -59,7 +59,7 @@ function Container({ children }) {
 
 export default function DataInput() {
   const [error, setError] = useState([]);
-  const [radiusUnit, setRadiusUnit] = useState('meter');
+  // const [radiusUnit, setRadiusUnit] = useState('meter');
   const dispatch = useDispatch();
   const { projectId, analysisType } = useParams();
 
@@ -72,6 +72,9 @@ export default function DataInput() {
 
   const bufferRadius = useSelector(
     state => state.bufferAnalysis.dataInput.bufferRadius,
+  );
+  const radiusUnit = useSelector(
+    state => state.bufferAnalysis.dataInput.radiusUnit,
   );
 
   const outputName = useSelector(
@@ -274,7 +277,9 @@ export default function DataInput() {
                       radiusOptions.filter(opt => opt.value === radiusUnit)[0]
                         .label
                     }
-                    onChange={item => setRadiusUnit(item.value)}
+                    onChange={item =>
+                      dispatch(setDataInputState({ radiusUnit: item.value }))
+                    }
                   />
                 </div>
               </div>

@@ -35,10 +35,9 @@ export default function DropdownOptions({
   const [position, setPosition] = useState(direction);
 
   useLayoutEffect(() => {
-    if (!dropdownRef?.current || !toggle) return;
+    if (!toggle || !dropdownRef?.current) return;
     const { bottom } = dropdownRef.current.getBoundingClientRect();
     const { height } = nodeRef.current.getBoundingClientRect();
-
     const windowHeight = window.innerHeight;
     if (bottom + height > windowHeight) {
       setPosition('top-left');

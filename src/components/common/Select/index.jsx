@@ -97,7 +97,7 @@ function Select({
         </button>
         {toggle && (
           <div
-            className={`naxatw-dropdown naxatw-min-w-fit naxatw-py-2 naxatw-max-h-[14rem]
+            className={`naxatw-dropdown naxatw-py-2 naxatw-max-h-[14rem]
               naxatw-overflow-y-auto scrollbar  ${getPosition(position)}`}
             // style={{
             //   display: toggle ? 'block' : 'none',
@@ -110,7 +110,7 @@ function Select({
                     <li
                       key={item[valueKey]}
                       role="menuitem"
-                      className={`naxatw-dropdown-items  ${
+                      className={`naxatw-dropdown-items   ${
                         selected === item[dataKey] || item[valueKey] ? '' : ''
                       }`}
                       onClick={() => {

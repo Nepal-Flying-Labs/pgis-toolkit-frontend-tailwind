@@ -10,6 +10,10 @@ import {
 } from '@Components/common/OpenLayersComponent';
 import { startPointStyles } from '@src/constants/analysis';
 import { Creators as BufferAnalysisCreators } from '@Actions/bufferAnalysis';
+import {
+  Creators as MapCreators,
+  Types as MapTypes,
+} from '@Actions/projectMap';
 import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/VectorTileLayer';
 import VectorLayer from '@Components/common/OpenLayersComponent/Layers/VectorLayer';
 import CircleMarker from '@Components/common/OpenLayersComponent/CustomLayer/CircleMarker';
@@ -31,6 +35,10 @@ import {
   defaultStyles,
   getStyles,
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import CustomPopup from '@Components/common/OpenLayersComponent/Custom/CustomPopup/index';
+import CustomPopupUI from '@Components/common/OpenLayersComponent/Custom/CustomPopupUI/index';
+import Spinner from '@Components/common/Spinner/index';
+import { checkIfLoading } from '@Utils/loaderSelector';
 import WMSTileLayer from '@Components/common/OpenLayersComponent/Layers/WMSTileLayer';
 import MaskedLayer from '@Components/common/OpenLayersComponent/CustomLayer/MaskedLayer';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
@@ -40,12 +48,13 @@ import InfoContent from '../../InfoContent/index';
 
 const { setDataInputState, setResultsState } = BufferAnalysisCreators;
 
+const { getMapPopupDataRequest } = MapCreators;
+
 export default function MapSection() {
   const { analysisType } = useParams();
   const dispatch = useDispatch();
   const mapState = useSelector(mapStateSelector);
   const projectGeojson = useSelector(state => state.analysis.projectGeojson);
-
   const drawPoint = useSelector(
     state => state.bufferAnalysis.dataInput.drawPoint,
   );
@@ -67,6 +76,15 @@ export default function MapSection() {
   );
   const poiLayers = useSelector(state => state.bufferAnalysis.poiLayers);
   const hideSidebar = useSelector(state => state.analysis.hideSidebar);
+  const popupData = useSelector(state => state.projectMap.popupData);
+  const isPopupDataFetching = useSelector(state =>
+    checkIfLoading(state, [MapTypes.GET_MAP_POPUP_DATA_REQUEST]),
+  );
+  const featureGeojson = useSelector(state => state.projectMap.featureGeojson);
+  // const [isMeaureEnabled, setIsMeasureEnabled] = useState(false);
+  const projectAreaLayerId = useSelector(
+    state => state.analysis.projectAreaLayerId,
+  );
 
   const { mapRef, map, isMapLoading } = useOLMap({
     center: fromLonLat([85.3, 27.7]),
@@ -141,6 +159,27 @@ export default function MapSection() {
     const style = mapState.find(item => item.id === layerId)?.style;
     return style || { ...defaultStyles };
   };
+
+  const getPopupUI = useCallback(
+    properties => {
+      const { id } = properties;
+      return isPopupDataFetching ? (
+        <div
+          style={{
+            height: '170px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Spinner className="naxatw-w-8 naxatw-h-8 naxatw-fill-secondary-400" />
+        </div>
+      ) : (
+        <CustomPopupUI data={popupData} />
+      );
+    },
+    [popupData, isPopupDataFetching], // eslint-disable-line
+  );
 
   return (
     <div className="naxatw-w-full naxatw-relative">
@@ -218,6 +257,24 @@ export default function MapSection() {
         </div>
         <LayerSwitcherControl />
         <Scalebar />
+        <CustomPopup
+          fetchPopupData={properties => {
+            const params = {
+              feature_id: properties.feature_id
+                ? properties.feature_id
+                : properties.id,
+            };
+            dispatch(getMapPopupDataRequest(params));
+          }}
+          popupUI={properties => getPopupUI(properties)}
+          popupData={popupData}
+          onPopupClose={() => {
+            // console.log('closex');
+          }}
+          loading={isPopupDataFetching}
+          closePopup={!!selectedLayer || !!featureGeojson || drawPoint}
+          layerExceptionIds={[projectAreaLayerId]}
+        />
         {mapState.map((item, index) =>
           item.layer_type === 'Vector' ? (
             <VectorTileLayer
@@ -239,7 +296,11 @@ export default function MapSection() {
               //     ? selectedLayer.style
               //     : item?.style || { ...defaultStyles }
               // }
-              zIndex={mapState.length + 10 - index}
+              zIndex={
+                item.id === projectAreaLayerId
+                  ? 10
+                  : mapState.length + 10 - index
+              }
               properties={{ layerId: item.id }}
             />
           ) : item.layer_type === 'WMS' ? (

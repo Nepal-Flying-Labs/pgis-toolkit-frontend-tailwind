@@ -208,7 +208,7 @@ export default function EditFeatureSection() {
       </div>
 
       <div
-        className="naxatw-overflow-auto scrollbar naxatw-flex naxatw-flex-col naxatw-gap-5"
+        className="naxatw-overflow-auto scrollbar naxatw-flex naxatw-flex-col naxatw-gap-5 naxatw-pr-[0.25rem] -naxatw-mr-[0.7125rem]"
         style={{
           height: `calc(100vh - ${projectHeaderHeight}px - 9rem)`,
         }}
@@ -242,7 +242,10 @@ export default function EditFeatureSection() {
                       options={item.options}
                       onChange={data =>
                         handleChange({
-                          target: { name: `${item.name}`, value: data.name },
+                          target: {
+                            name: `${item.name}`,
+                            value: data ? data.name : null,
+                          },
                         })
                       }
                       selected={
@@ -250,6 +253,7 @@ export default function EditFeatureSection() {
                           opt => opt.name === values[`${item.name}`],
                         )?.[0]?.name
                       }
+                      disabled={!item.editable}
                     />
                   ) : item.data_type === 'date' ? (
                     <CustomCalendar
@@ -264,6 +268,7 @@ export default function EditFeatureSection() {
                         });
                       }}
                       selected={values[`${item.name}`] || ''}
+                      disabled={!item.editable}
                     />
                   ) : item.data_type === 'image' ? (
                     <ImageUpload
@@ -271,16 +276,20 @@ export default function EditFeatureSection() {
                       // setUploadImage={file => handlePostImage(file)}
                       imageList={imageList}
                       setImageList={setImageList}
+                      disabled={!item.editable}
                     />
                   ) : (
                     <input
                       id={item.id}
                       type={item.data_type === 'str' ? 'text' : 'number'}
-                      className="naxatw-input"
+                      className={`naxatw-input ${
+                        !item.editable ? 'naxatw-input-disabled' : ''
+                      }`}
                       step={item.data_type === 'float' ? 'any' : ''}
                       name={item.name}
                       value={values[`${item.name}`] || ''}
                       onChange={handleChange}
+                      disabled={!item.editable}
                       {...inputProps}
                     />
                   )}

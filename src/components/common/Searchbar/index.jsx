@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 export default function Searchbar({
@@ -7,12 +7,18 @@ export default function Searchbar({
   value,
   onChange,
   isSmall,
+  isFocus,
 }) {
   const inputRef = useRef();
   const handleClearSearch = () => {
     onChange({ target: { value: '' } });
     inputRef.current.focus();
   };
+
+  useEffect(() => {
+    if (!isFocus) return;
+    inputRef.current.focus();
+  }, [isFocus]);
 
   return (
     <div className="naxatw-flex naxatw-items-center naxatw-w-full naxatw-h-12">
@@ -78,6 +84,7 @@ Searchbar.defaultProps = {
   value: '',
   onChange: () => {},
   isSmall: false,
+  isFocus: false,
 };
 
 Searchbar.propTypes = {
@@ -86,4 +93,5 @@ Searchbar.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   isSmall: PropTypes.bool,
+  isFocus: PropTypes.bool,
 };

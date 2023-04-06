@@ -22,8 +22,8 @@
 - [x] handle date data format (component wise) in all section
 - [ ] format date/time in all sections (table etc) (sudeep)(hold)
 - [ ] Implement User Permission and role (individual button needs to be reviewed) (sudeep)
-- [ ] popup text size reduce (sudeep)
-- [ ] data query api integration (sudeep)
+- [x] popup text size reduce (sudeep)
+- [x] data query api integration (sudeep)
 
 - [ ] download layer not working (raj)
 
@@ -94,14 +94,14 @@
 - [x] project header
 - [x] border in toolbar
 - [ ] font issue in safari
-- [ ] airbnb reference map/sidebar
-- [ ] scrollbar on hover => ref =>slack
+- [x] airbnb reference map/sidebar
+- [x] scrollbar on hover => ref =>slack
 - [ ] analysis modal design
 - [ ] drop shadow
 - [ ] center align save button edit sidebar section
 - [ ] google earth reference
-- [ ] organization map card design => fix height
-- [ ] clear button on search
+- [x] organization map card design => fix height
+- [x] clear button on search
 
 ### NEW ISSUES
 

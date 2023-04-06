@@ -40,7 +40,9 @@ export default function useDebouncedInput({
 
   const handleChange = useCallback(
     event => {
-      event.persist();
+      if (event.persist) {
+        event.persist();
+      }
       const { name, value } = event.target;
       setInput(prev =>
         typeof init === 'object' ? { ...prev, [name]: value } : value,

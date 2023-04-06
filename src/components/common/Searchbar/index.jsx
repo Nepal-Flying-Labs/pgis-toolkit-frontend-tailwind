@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 
 export default function Searchbar({
@@ -8,6 +8,12 @@ export default function Searchbar({
   onChange,
   isSmall,
 }) {
+  const inputRef = useRef();
+  const handleClearSearch = () => {
+    onChange({ target: { value: '' } });
+    inputRef.current.focus();
+  };
+
   return (
     <div className="naxatw-flex naxatw-items-center naxatw-w-full naxatw-h-12">
       <label htmlFor="simple-search" className="naxatw-sr-only">
@@ -29,7 +35,25 @@ export default function Searchbar({
             />
           </svg>
         </div>
+        {value && (
+          <div
+            className={`naxatw-absolute naxatw-right-3 ${
+              isSmall ? 'naxatw-top-2' : 'naxatw-top-3'
+            } naxatw-cursor-pointer 
+        naxatw-rounded-full naxatw-bg-grey-200 hover:naxatw-bg-grey-400 naxatw-flex naxatw-items-center naxatw-justify-center naxatw-p-1`}
+            onClick={handleClearSearch}
+          >
+            <span
+              className="material-icons naxatw-text-grey-800  
+         naxatw-text-icon-sm"
+            >
+              close
+            </span>
+          </div>
+        )}
+
         <input
+          ref={inputRef}
           type="text"
           className={`naxatw-border naxatw-border-grey-300 naxatw-text-grey-900  naxatw-rounded-full focus:naxatw-outline-none  focus:naxatw-border-[#484848]
             naxatw-block naxatw-w-full naxatw-pl-[44px] naxatw-pr-3 ${

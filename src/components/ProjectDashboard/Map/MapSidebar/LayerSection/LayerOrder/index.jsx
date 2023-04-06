@@ -76,7 +76,7 @@ export default function LayerOrder({ dropdownOptions }) {
   };
 
   return (
-    <div className="naxatw-bg-white naxatw-border naxatw-border-grey-800 naxatw-rounded-lg naxatw-p-5">
+    <div className="naxatw-bg-white naxatw-border naxatw-border-grey-800 naxatw-rounded-lg naxatw-p-2">
       <SortableList items={mapState} onDragEnd={handleLayerSort}>
         <div className="naxatw-font-light">
           {mapState.map(layer => (
@@ -91,33 +91,37 @@ export default function LayerOrder({ dropdownOptions }) {
                   onMouseLeave={() => setHoverId(null)}
                 >
                   <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-                    <input
-                      id={layer.id}
-                      type="checkbox"
-                      className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                      checked={layer.checked}
-                      onChange={e =>
-                        handleLayerCheck({
-                          checked: e.target.checked,
-                          layerId: layer.id,
-                          themeId: layer.theme,
-                        })
-                      }
-                    />
-
                     <a
-                      className="naxatw-flex naxatw-cursor-move naxatw-mr-2"
+                      className="naxatw-flex naxatw-cursor-move naxatw-mx-1"
                       {...listeners}
                       {...attributes}
                     >
                       <MaterialIcon name="unfold_more" />
                     </a>
+                    <div
+                      className="naxatw-w-6 naxatw-h-6 naxatw-flex naxatw-mr-1
+                          naxatw-items-center naxatw-justify-center naxatw-p-4"
+                    >
+                      <input
+                        id={layer.id}
+                        type="checkbox"
+                        className="naxatw-min-w-[16px] naxatw-min-h-[16px] naxatw-accent-grey-800"
+                        checked={layer.checked}
+                        onChange={e =>
+                          handleLayerCheck({
+                            checked: e.target.checked,
+                            layerId: layer.id,
+                            themeId: layer.theme,
+                          })
+                        }
+                      />
+                    </div>
 
                     <LegendItem styles={layer.style} className="naxatw-mr-2" />
 
                     <label
                       title={layer.name}
-                      className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-w-[7rem]
+                      className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-w-[9rem]
                           naxatw-truncate"
                       htmlFor={layer.id}
                     >

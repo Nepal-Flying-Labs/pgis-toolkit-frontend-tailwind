@@ -63,7 +63,7 @@ export default function CustomLayerSwitcher({ map }) {
         className="naxatw-top-4 naxatw-left-4 naxatw-z-10 naxatw-bg-white
         naxatw-text-grey-800 naxatw-h-10 naxatw-p-2 naxatw-rounded-lg naxatw-border
         naxatw-border-grey-300 naxatw-flex naxatw-items-center hover:naxatw-bg-grey-100
-        naxatw-w-10"
+        naxatw-w-10 naxatw-shadow-light"
       >
         <i className="material-symbols-outlined">layers</i>
       </a>
@@ -71,7 +71,7 @@ export default function CustomLayerSwitcher({ map }) {
       <div
         className="naxatw-baselayer-container naxatw-bg-primarycolor naxatw-absolute 
           naxatw-left-12 naxatw-top-0 naxatw-px-4 naxatw-py-2 naxatw-rounded-lg naxatw-w-max 
-          naxatw-bg-white naxatw-shadow-3xl naxatw-hidden group-hover:naxatw-block naxatw-group"
+          naxatw-bg-white naxatw-shadow-light naxatw-hidden group-hover:naxatw-block naxatw-group"
       >
         <ul className="naxatw-flex naxatw-flex-row ">
           {baseLayerData.map(({ id, name, label, img }) => (

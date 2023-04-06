@@ -25,7 +25,7 @@ export default {
                   <h5 class="naxatw-font-semibold">Dissolve Output</h5>
                   <p class="">Specifies the type of dissolve to be performed to remove buffer overlap. The output varies on different inputs as shown in the figure below:
                   </p>
-                  <img src="${BASE_URL}/media/usafiri_content/dissolve_output.png"/>
+                  <img src="${BASE_URL}/media/usafiri_content/Bufer_info.jpg"/>
                   `,
     poi: `    <h5 class="naxatw-font-semibold">POI</h5>
                <p class="">On selecting the layers under POI, the final output will include the features of the selected layers filtered out by the buffer region. 
@@ -66,7 +66,7 @@ export default {
                   <h5 class="naxatw-font-semibold">Dissolve Output</h5>
                   <p class="">Specifies the type of dissolve to be performed to remove buffer overlap. The output varies on different inputs as shown in the figure below:
                   </p>
-                  <img src="${BASE_URL}/media/usafiri_content/dissolve_output.png" />
+                  <img src="${BASE_URL}/media/usafiri_content/Bufer_info.jpg" />
                   `,
     poi: `    <h5 class="naxatw-font-semibold">POI</h5>
                <p class="">On selecting the layers under POI, the final output will include the features of the selected layers filtered out by the buffer region. 

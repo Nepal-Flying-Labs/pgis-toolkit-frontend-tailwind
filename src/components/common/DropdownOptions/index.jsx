@@ -93,7 +93,7 @@ export default function DropdownOptions({
               position,
             )} naxatw-z-[50] naxatw-w-[12.5rem]
             naxatw-bg-white naxatw-rounded-lg naxatw-divide-y naxatw-divide-grey-100
-            naxatw-shadow-3xl naxatw-transition-all naxatw-ease-in-out naxatw-duration-200`}
+            naxatw-shadow-3xl`}
         >
           <ul
             className="naxatw-py-2 naxatw-text-sm naxatw-text-grey-700"

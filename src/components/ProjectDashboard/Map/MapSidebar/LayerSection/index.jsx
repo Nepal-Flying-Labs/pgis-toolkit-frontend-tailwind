@@ -151,7 +151,7 @@ export default function LayerSection() {
           />
         </div>
       ) : (
-        <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-mt-2">
+        <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
           <Button
             className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent naxatw-btn-sm"
             onClick={() => {
@@ -186,7 +186,7 @@ export default function LayerSection() {
       <div
         className="naxatw-mt-3 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-y-auto scrollbar"
         style={{
-          height: `calc(100vh - ${projectHeaderHeight}px - 7.7rem)`,
+          height: `calc(100vh - ${projectHeaderHeight}px - 4.7rem)`,
           marginRight: '-0.7125rem',
           paddingRight: '0.25rem',
         }}

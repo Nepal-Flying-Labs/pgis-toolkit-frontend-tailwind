@@ -21,7 +21,11 @@ export default function Searchbar({
   }, [isFocus]);
 
   return (
-    <div className="naxatw-flex naxatw-items-center naxatw-w-full naxatw-h-12">
+    <div
+      className={`naxatw-flex naxatw-items-center naxatw-w-full ${
+        isSmall ? 'naxatw-h-10' : 'naxatw-h-12'
+      } `}
+    >
       <label htmlFor="simple-search" className="naxatw-sr-only">
         {placeholder}
       </label>

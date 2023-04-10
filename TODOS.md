@@ -103,6 +103,10 @@
 - [x] organization map card design => fix height
 - [x] clear button on search
 
-### NEW ISSUES
+## NEW ISSUES (APRIL 10)
 
-- [ ] add is-editable field in manage attribute
+### PROJECT MAP
+- [ ] layer category sorting issue in map sidebar
+
+### DESIGN
+- [ ] layer order accordion border color

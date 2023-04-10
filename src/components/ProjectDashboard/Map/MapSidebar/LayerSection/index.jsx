@@ -45,7 +45,7 @@ export default function LayerSection() {
         </span>
       ),
       onClick: data => {
-        dispatch(setZoomToLayerId(data.id));
+        dispatch(setZoomToLayerId({ layer: data.id, theme: data.theme }));
       },
     },
     {

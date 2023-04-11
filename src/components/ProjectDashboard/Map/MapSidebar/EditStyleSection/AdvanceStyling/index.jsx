@@ -44,7 +44,7 @@ export default function AdvanceStyling() {
 
   if (hasIcon) {
     return (
-      <p className="naxatw-px-2 naxatw-text-delete_btn">
+      <p className="naxatw-px-2 naxatw-text-delete_btn naxatw-text-body-md">
         Remove Icon to enable advance styling
       </p>
     );

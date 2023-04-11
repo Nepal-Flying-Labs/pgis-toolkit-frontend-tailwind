@@ -16,7 +16,7 @@ import {
 } from '@Selectors/projectMap';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
-const { handleCheckbox, saveMapConfigRequest, setProjectMapState } =
+const { handleCheckbox, saveMapConfigRequest, toggleStyleEdit } =
   ProjectMapCreators;
 
 export default function LayerList({ dropdownOptions }) {
@@ -183,12 +183,7 @@ export default function LayerList({ dropdownOptions }) {
                             naxatw-cursor-pointer naxatw-flex naxatw-items-center naxatw-justify-center
                             naxatw-w-9 naxatw-h-9"
                           onClick={() => {
-                            dispatch(
-                              setProjectMapState({
-                                selectedLayer: layer,
-                                sidebarContent: 'edit-style',
-                              }),
-                            );
+                            dispatch(toggleStyleEdit(layer));
                           }}
                         >
                           <MaterialIcon

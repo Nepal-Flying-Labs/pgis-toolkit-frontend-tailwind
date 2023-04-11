@@ -15,7 +15,7 @@ import { mapStateSelector } from '@Selectors/projectMap';
 
 const {
   handleCheckbox,
-  setSelectedLayer,
+  toggleStyleEdit,
   saveMapConfigRequest,
   setProjectMapState,
 } = ProjectMapCreators;
@@ -134,7 +134,7 @@ export default function LayerOrder({ dropdownOptions }) {
                       <span
                         className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
                         onClick={() => {
-                          dispatch(setSelectedLayer(layer));
+                          dispatch(toggleStyleEdit(layer));
                         }}
                       >
                         <MaterialIcon

@@ -138,10 +138,21 @@ const handleCheckbox = (state, action) => {
   };
 };
 
-const setZoomToLayerId = (state, action) => ({
-  ...state,
-  zoomToLayerId: action.payload,
-});
+const setZoomToLayerId = (state, action) => {
+  if (!action.payload) return { ...state, zoomToLayerId: null };
+  const { layer, theme } = action.payload;
+  const layers = {
+    ...state.layers,
+    [theme]: state.layers[theme].map(item =>
+      item.id === layer ? { ...item, checked: true } : { ...item },
+    ),
+  };
+  return {
+    ...state,
+    zoomToLayerId: layer,
+    layers,
+  };
+};
 
 const setSelectedProjectTheme = (state, action) => ({
   ...state,

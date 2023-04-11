@@ -33,7 +33,7 @@ export function stringifyQuery(data) {
     }
     return `${str} ${field ? `"${field}"` : ''} ${
       getOperatorLabel(operator) || ''
-    } ${value ? `"${value}"` : ''}`;
+    } ${value?.toString() ? `"${value}"` : ''}`;
   }, '');
 }
 

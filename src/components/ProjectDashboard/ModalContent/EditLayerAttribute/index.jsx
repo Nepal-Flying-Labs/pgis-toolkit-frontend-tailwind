@@ -147,7 +147,10 @@ const EditLayerAttribute = () => {
                   name={attribute}
                   value={values[attribute]}
                   onChange={handleChange}
-                  disabled={nonEditableAttributes.includes(attribute)}
+                  disabled={
+                    nonEditableAttributes.includes(attribute) ||
+                    attribute.toLowerCase() === 'id'
+                  }
                   className={attribute === 'id' ? 'naxatw-bg-grey-100' : ''}
                 />
               )),

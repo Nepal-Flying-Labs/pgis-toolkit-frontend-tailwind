@@ -162,7 +162,7 @@ export default function LayerSection() {
               );
             }}
           >
-            {sidebarContent === 'layer-order' ? 'Category' : 'Layer Order'}
+            {sidebarContent === 'layer-order' ? 'Catalog' : 'Layer Order'}
           </Button>
           <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
             <MaterialIcon

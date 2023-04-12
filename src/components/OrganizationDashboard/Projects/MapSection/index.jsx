@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
+import { Creators } from '@Actions/organizationDashboard';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import {
   useOLMap,
@@ -12,7 +13,6 @@ import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/Vecto
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import ClusterLayer from '@Components/common/OpenLayersComponent/Layers/ClusterLayer';
 import '@Components/common/OpenLayersComponent/map.css';
-import { Creators } from '@Actions/organizationDashboard';
 
 const { setZoomToLayer } = Creators;
 
@@ -22,9 +22,9 @@ export default function MapSection() {
   const [currentZoom, setCurrentZoom] = useState(1);
   const dispatch = useDispatch();
   const projects = useSelector(state => state.organizationDashboard.projects);
-  const organizationDetail = useSelector(
-    state => state.organizationDashboard.organizationDetail,
-  );
+  // const organizationDetail = useSelector(
+  //   state => state.organizationDashboard.organizationDetail,
+  // );
   const hideSidebar = useSelector(
     state => state.organizationDashboard.hideSidebar,
   );
@@ -109,10 +109,11 @@ export default function MapSection() {
         <LayerSwitcherControl />
 
         <Scalebar />
+
         <ClusterLayer
           map={map}
           source={centroidGeojson}
-          zIndex="100"
+          zIndex={100}
           visibleOnMap={currentZoom <= 10}
           style={{
             ...defaultStyles,

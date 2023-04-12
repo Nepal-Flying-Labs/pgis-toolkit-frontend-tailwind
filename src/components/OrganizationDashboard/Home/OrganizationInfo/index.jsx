@@ -89,9 +89,7 @@ const OrganizationInfo = () => {
                 // eslint-disable-next-line react/jsx-curly-brace-presence
                 className={`naxatw-bg-[#0076FF] naxatw-w-2 naxatw-h-2 naxatw-rounded-full`}
               />
-              <p className={` naxatw-capitalize naxatw-text-body-lg `}>
-                Ongoing
-              </p>
+              <p className="naxatw-capitalize naxatw-text-body-lg">Ongoing</p>
               <h5>{organizationDetails?.ongoing}</h5>
             </div>
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">

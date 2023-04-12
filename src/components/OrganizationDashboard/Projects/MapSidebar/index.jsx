@@ -111,10 +111,10 @@ export default function MapSidebar() {
           </div>
 
           {projects?.results.length > 0 && (
-            <div className="naxatw-flex naxatw-justify-between naxatw-pr-5 naxatw-items-center">
-              <div className="naxatw-flex naxatw-mt-2 naxatw-gap-2">
+            <div className="naxatw-flex naxatw-justify-between naxatw-pr-5 naxatw-items-center naxatw-mt-2">
+              <div className="naxatw-flex naxatw-gap-2">
                 <Chip
-                  label={`All( ${organizationDetail?.projects || ''} )`}
+                  label={`All ( ${organizationDetail?.projects || ''} )`}
                   active={projectStatus === null}
                   onClick={() => {
                     // setChipStatus('all');
@@ -122,7 +122,7 @@ export default function MapSidebar() {
                   }}
                 />
                 <Chip
-                  label={`Ongoing( ${organizationDetail?.ongoing || ''} )`}
+                  label={`Ongoing ( ${organizationDetail?.ongoing || ''} )`}
                   active={projectStatus === 'ongoing'}
                   onClick={() => {
                     // setChipStatus('ongoing');
@@ -206,9 +206,8 @@ export default function MapSidebar() {
                     }
                   />
                 ) : (
-                  <div className="naxatw-w-full">
+                  <div key={id} className="naxatw-w-full">
                     <ProjectGridCard
-                      key={id}
                       title={name}
                       address="kenya"
                       id={id}
@@ -228,7 +227,7 @@ export default function MapSidebar() {
                                 `/organizations/${organizationId}/project-setup/${id}`,
                               )
                       }
-                    />{' '}
+                    />
                   </div>
                 ),
             )

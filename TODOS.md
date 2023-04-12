@@ -107,6 +107,7 @@
 
 ### PROJECT MAP
 - [ ] layer category sorting issue in map sidebar
+- [ ] project clustering bbox issue
 
 ### DESIGN
 - [ ] layer order accordion border color

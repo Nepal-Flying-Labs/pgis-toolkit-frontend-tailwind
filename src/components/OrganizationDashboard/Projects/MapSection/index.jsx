@@ -22,9 +22,9 @@ export default function MapSection() {
   const [currentZoom, setCurrentZoom] = useState(1);
   const dispatch = useDispatch();
   const projects = useSelector(state => state.organizationDashboard.projects);
-  // const organizationDetail = useSelector(
-  //   state => state.organizationDashboard.organizationDetail,
-  // );
+  const organizationDetail = useSelector(
+    state => state.organizationDashboard.organizationDetail,
+  );
   const hideSidebar = useSelector(
     state => state.organizationDashboard.hideSidebar,
   );
@@ -56,19 +56,19 @@ export default function MapSection() {
   }, [map, hideSidebar]);
 
   // zoom to project location on initial map load
-  // useEffect(() => {
-  //   if (!map || !organizationDetail) return;
-  //   const bbox = organizationDetail?.bbox;
-  //   if (!bbox) return;
-  //   const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
-  //   if (isExtentValid(zoomExtent)) {
-  //     map.getView().fit(zoomExtent, {
-  //       padding: [50, 50, 50, 50],
-  //       duration: 3500,
-  //       constrainResolution: true,
-  //     });
-  //   }
-  // }, [map, organizationDetail]);
+  useEffect(() => {
+    if (!map || !organizationDetail) return;
+    const bbox = organizationDetail?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 2500,
+        constrainResolution: true,
+      });
+    }
+  }, [map, organizationDetail]);
 
   useEffect(() => {
     if (!map) return;

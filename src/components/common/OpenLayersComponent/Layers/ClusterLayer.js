@@ -159,7 +159,7 @@ const ClusterLayer = ({
     map.on('singleclick', evt => {
       // eslint-disable-next-line camelcase
       let area_no_9_extent = null;
-      const featurez = map.forEachFeatureAtPixel(
+      map.forEachFeatureAtPixel(
         evt.pixel,
         featurex => {
           // eslint-disable-next-line camelcase
@@ -167,16 +167,16 @@ const ClusterLayer = ({
           return featurex;
         },
         true,
-        {
-          layerFilter(layer) {
-            return layer.get('layer_name') === 'someName';
-          },
-        },
+        // {
+        //   layerFilter(layer) {
+        //     return layer.get('layer_name') === 'someName';
+        //   },
+        // },
       );
       map.getView().fit(area_no_9_extent, {
         duration: 1000,
         padding: [50, 50, 50, 50],
-        maxZoom: 12,
+        maxZoom: 11,
       });
     });
   }, [map]);

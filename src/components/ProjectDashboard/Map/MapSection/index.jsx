@@ -36,6 +36,7 @@ import { apiURL } from '@Services';
 import { FullScreen, defaults as defaultControls } from 'ol/control';
 import { Vector as VectorSource } from 'ol/source';
 import GeoJSON from 'ol/format/GeoJSON';
+import MapLoader from '@Components/common/MapLoader';
 import SidebarToggle from '../SidebarToggle';
 import Toolbox from '../Toolbox';
 import QueryResultPopup from '../QueryResultPopup';
@@ -241,14 +242,18 @@ export default function MapSection() {
       )}
       <MapSidebar />
       <div className="naxatw-w-full naxatw-relative">
-        {isMapDataLoading && (
-          <div className="naxatw-absolute naxatw-w-full naxatw-top-4 naxatw-z-10 naxatw-flex naxatw-justify-center">
-            <span className="naxatw-bg-white naxatw-p-3 naxatw-flex naxatw-items-center naxatw-gap-3 naxatw-rounded-md naxatw-shadow-3xl">
-              <h5 className="">Loading</h5>
-              <Spinner className="naxatw-w-6 naxatw-h-6 naxatw-fill-primary-400" />
-            </span>
-          </div>
+        {/*
+          {isMapDataLoading && (
+            <div className="naxatw-absolute naxatw-w-full naxatw-top-4 naxatw-z-10 naxatw-flex naxatw-justify-center">
+              <span className="naxatw-bg-white naxatw-p-3 naxatw-flex naxatw-items-center naxatw-gap-3 naxatw-rounded-md naxatw-shadow-3xl">
+                <h5 className="">Loading</h5>
+                <Spinner className="naxatw-w-6 naxatw-h-6 naxatw-fill-primary-400" />
+              </span>
+            </div>
         )}
+      */}
+
+        {isMapDataLoading && <MapLoader />}
 
         <MapComponent
           ref={mapRef}
@@ -257,18 +262,20 @@ export default function MapSection() {
             height: `calc(100vh - ${projectHeaderHeight}px)`,
           }}
         >
-          <SidebarToggle />
+          {!isMapDataLoading && <SidebarToggle />}
 
-          <Toolbox
-            map={map}
-            onMeasureToggle={toggleState => setIsMeasureEnabled(toggleState)}
-          />
+          {!isMapDataLoading && (
+            <Toolbox
+              map={map}
+              onMeasureToggle={toggleState => setIsMeasureEnabled(toggleState)}
+            />
+          )}
 
           <QueryResultPopup />
 
-          <LayerSwitcherControl />
+          {!isMapDataLoading && <LayerSwitcherControl />}
 
-          <CustomLayerSwitcher />
+          {!isMapDataLoading && <CustomLayerSwitcher />}
 
           {mapState.map((item, index) =>
             item.layer_type === 'Vector' ? (
@@ -386,7 +393,7 @@ export default function MapSection() {
             }}
           />
 
-          <MaskedLayer geojson={projectGeojson} />
+          {!isMapDataLoading && <MaskedLayer geojson={projectGeojson} />}
 
           <CustomPopup
             fetchPopupData={properties => {
@@ -419,7 +426,7 @@ export default function MapSection() {
             layerExceptionIds={[projectAreaLayerId]}
           />
 
-          <MapFooter loading={isMapLoading} />
+          {!isMapDataLoading && <MapFooter loading={isMapLoading} />}
         </MapComponent>
       </div>
     </div>

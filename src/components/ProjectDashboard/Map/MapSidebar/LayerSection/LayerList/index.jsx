@@ -182,6 +182,7 @@ export default function LayerList({ dropdownOptions }) {
                           className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg
                             naxatw-cursor-pointer naxatw-flex naxatw-items-center naxatw-justify-center
                             naxatw-w-9 naxatw-h-9"
+                          title="Edit Style"
                           onClick={() => {
                             dispatch(toggleStyleEdit(layer));
                           }}

@@ -132,7 +132,9 @@ export default function LayerOrder({ dropdownOptions }) {
                   <div className="naxatw-flex">
                     {layer.id === hoverId && (
                       <span
-                        className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
+                        className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg
+                          naxatw-cursor-pointer naxatw-flex naxatw-items-center"
+                        title="Edit Style"
                         onClick={() => {
                           dispatch(toggleStyleEdit(layer));
                         }}

@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
+import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
 import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
@@ -20,6 +21,7 @@ const {
   setDeleteLayer,
   setProjectMapState,
 } = ProjectMapCreators;
+const { setDataState } = ProjectDashboardCreators;
 const { togglePromptDialog, toggleModal } = CommonCreators;
 
 export default function LayerSection() {
@@ -108,6 +110,19 @@ export default function LayerSection() {
             drawType: 'add-feature',
           }),
         );
+      },
+    },
+    {
+      id: 'download-layer',
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">download</i>
+          <p className="naxatw-text-body-lg">Download Layer</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(setDataState({ selectedData: data }));
+        dispatch(toggleModal('download-layer'));
       },
     },
     {

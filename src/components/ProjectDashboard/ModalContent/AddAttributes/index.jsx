@@ -401,15 +401,28 @@ const AddAttributes = () => {
                 />
               </div>
             ) : (
-              <div className="naxatw-basis-1/4 naxatw-space-y-2">
-                <label className="naxatw-label">Is mandatory?</label>
-                <div className="naxatw-flex naxatw-items-center naxatw-h-[40px]">
-                  <Toggle
-                    checked={values.mandatory}
-                    onChange={() => {
-                      handleCustomChange('mandatory', !values.mandatory);
-                    }}
-                  />
+              <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2 naxatw-basis-2/4">
+                <div className="naxatw-basis-2/4 naxatw-space-y-2">
+                  <label className="naxatw-label">Is mandatory?</label>
+                  <div className="naxatw-flex naxatw-items-center naxatw-h-[40px]">
+                    <Toggle
+                      checked={values.mandatory}
+                      onChange={() => {
+                        handleCustomChange('mandatory', !values.mandatory);
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="naxatw-basis-2/4 naxatw-space-y-2">
+                  <label className="naxatw-label">Is editable?</label>
+                  <div className="naxatw-flex naxatw-items-center naxatw-h-[40px]">
+                    <Toggle
+                      checked={values.editable}
+                      onChange={() => {
+                        handleCustomChange('editable', !values.editable);
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             )}

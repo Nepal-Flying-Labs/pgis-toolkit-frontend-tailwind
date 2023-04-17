@@ -39,7 +39,7 @@ export default function Toolbox({ map, onMeasureToggle }) {
   return (
     <div
       className={`naxatw-absolute naxatw-top-4 naxatw-right-4 naxatw-px-2 naxatw-py-1 naxatw-z-10 
-       naxatw-bg-white naxatw-shadow-3xl naxatw-border naxatw-border-grey-300
+       naxatw-bg-white naxatw-shadow-light naxatw-border naxatw-border-grey-300
           
       } naxatw-text-grey-800 naxatw-rounded-lg  naxatw-flex naxatw-items-center `}
     >

@@ -16,7 +16,7 @@ import {
 } from '@Selectors/projectMap';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
-const { handleCheckbox, saveMapConfigRequest, setProjectMapState } =
+const { handleCheckbox, saveMapConfigRequest, toggleStyleEdit } =
   ProjectMapCreators;
 
 export default function LayerList({ dropdownOptions }) {
@@ -67,12 +67,10 @@ export default function LayerList({ dropdownOptions }) {
             key={theme.id}
             collapsed={hasNoLayer}
             header={
-              <div className="naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-w-full">
+              <div className="naxatw-flex naxatw-flex-col naxatw-w-full">
                 <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
-                  <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
-                    <h5 className="naxatw-text-grey-800 naxatw-font-semibold">
-                      {theme.name}
-                    </h5>
+                  <div className="naxatw-flex naxatw-items-center naxatw-gap-2 naxatw-cursor-pointer naxatw-select-none">
+                    <h5 className="naxatw-text-grey-800">{theme.name}</h5>
                     {/*
                     <span className="naxatw-p-1 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer">
                       <MaterialIcon
@@ -83,52 +81,54 @@ export default function LayerList({ dropdownOptions }) {
                 */}
                   </div>
                 </div>
-                <div className={`${!theme.description ? '' : 'naxatw-mb-3'}`}>
-                  <p
-                    className={`${
-                      !hideTitle?.includes(theme.id)
-                        ? 'naxatw-h-fit'
-                        : 'naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden'
-                    } naxatw-text-body-md`}
-                  >
-                    {hideTitle?.includes(theme.id) &&
-                    theme.description?.length > 0
-                      ? theme?.description
-                      : theme?.description?.slice(0, titleLimit + 10)}
-                    {theme?.description?.length > 0 ? (
-                      hideTitle?.includes(theme.id) ? (
+              </div>
+            }
+            description={
+              <div>
+                <p
+                  className={`${
+                    !hideTitle?.includes(theme.id)
+                      ? 'naxatw-h-fit'
+                      : 'naxatw-text-ellipsis naxatw-overflow-hidden'
+                  } naxatw-text-body-md`}
+                >
+                  {hideTitle?.includes(theme.id) &&
+                  theme.description?.length > 0
+                    ? theme?.description
+                    : theme?.description?.slice(0, titleLimit + 10)}{' '}
+                  {theme?.description?.length > 0 ? (
+                    hideTitle?.includes(theme.id) ? (
+                      <button
+                        type="button"
+                        className="naxatw-text-secondary-400 hover:naxatw-underline"
+                        onClick={e => {
+                          e.stopPropagation();
+                          setHideTitle(prev =>
+                            prev.filter(item => item !== theme.id),
+                          );
+                        }}
+                      >
+                        See less
+                      </button>
+                    ) : (
+                      <span className="naxatw-inline-flex">
+                        <span className="naxatw-px-1">...</span>
                         <button
                           type="button"
                           className="naxatw-text-secondary-400 hover:naxatw-underline"
                           onClick={e => {
                             e.stopPropagation();
-                            setHideTitle(prev =>
-                              prev.filter(item => item !== theme.id),
-                            );
+                            setHideTitle([...hideTitle, theme.id]);
                           }}
                         >
-                          See less
+                          See more
                         </button>
-                      ) : (
-                        <span className="naxatw-inline-flex">
-                          <span className="naxatw-px-1">...</span>
-                          <button
-                            type="button"
-                            className="naxatw-text-secondary-400 hover:naxatw-underline"
-                            onClick={e => {
-                              e.stopPropagation();
-                              setHideTitle([...hideTitle, theme.id]);
-                            }}
-                          >
-                            See more
-                          </button>
-                        </span>
-                      )
-                    ) : (
-                      ''
-                    )}
-                  </p>
-                </div>
+                      </span>
+                    )
+                  ) : (
+                    ''
+                  )}
+                </p>
               </div>
             }
             body={
@@ -141,11 +141,14 @@ export default function LayerList({ dropdownOptions }) {
                     onMouseLeave={() => setHoverId(null)}
                   >
                     <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-                      <div className="naxatw-w-6 naxatw-h-6 naxatw-p-[3px] naxatw-mr-3 naxatw-flex naxatw-items-center naxatw-justify-center">
+                      <div
+                        className="naxatw-w-6 naxatw-h-6 naxatw-mr-2 naxatw-flex
+                          naxatw-items-center naxatw-justify-center naxatw-p-4"
+                      >
                         <input
                           id={layer.id}
                           type="checkbox"
-                          className="naxatw-w-4 naxatw-h-4 naxatw-accent-grey-800"
+                          className="naxatw-min-w-[16px] naxatw-min-h-[16px] naxatw-accent-grey-800"
                           checked={layer.checked}
                           onChange={e =>
                             handleLayerCheck({
@@ -159,13 +162,13 @@ export default function LayerList({ dropdownOptions }) {
 
                       <LegendItem
                         styles={layer.style}
-                        className="naxatw-mr-2"
-                        size="21px"
+                        className="naxatw-mr-2.5"
+                        size="24px"
                       />
 
                       <label
                         title={layer.name}
-                        className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-w-[9rem]
+                        className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-w-[10rem]
                           naxatw-truncate"
                         htmlFor={layer.id}
                       >
@@ -177,14 +180,11 @@ export default function LayerList({ dropdownOptions }) {
                       {layer.id === hoverId && (
                         <span
                           className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg
-                            naxatw-cursor-pointer naxatw-flex naxatw-items-center"
+                            naxatw-cursor-pointer naxatw-flex naxatw-items-center naxatw-justify-center
+                            naxatw-w-9 naxatw-h-9"
+                          title="Edit Style"
                           onClick={() => {
-                            dispatch(
-                              setProjectMapState({
-                                selectedLayer: layer,
-                                sidebarContent: 'edit-style',
-                              }),
-                            );
+                            dispatch(toggleStyleEdit(layer));
                           }}
                         >
                           <MaterialIcon

@@ -16,7 +16,7 @@ function validateURL(url) {
   return false;
 }
 
-const ImageUpload = ({ imageList, setImageList, view }) => {
+const ImageUpload = ({ imageList, setImageList, view, disabled }) => {
   const dispatch = useDispatch();
   const [inputRef, onFileUpload] = useCustomUpload();
   const [url, setUrl] = useState('');
@@ -87,14 +87,19 @@ const ImageUpload = ({ imageList, setImageList, view }) => {
       <div className="naxatw-basis-1/2">
         <div className="naxatw-flex naxatw-justify-between">
           <input
-            className="naxatw-input"
+            className={`naxatw-input ${
+              disabled ? 'naxatw-input-disabled' : ''
+            }`}
             placeholder="Image URL"
             value={url}
             onChange={e => setUrl(e.target.value)}
+            disabled={disabled}
           />
           <Button
-            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-text-[#00A699]"
-            onClick={handleAddUrl}
+            className={`naxatw-btn-secondary naxatw-btn-noborder naxatw-text-[#00A699] ${
+              disabled ? '!naxatw-text-grey-400 naxatw-cursor-not-allowed' : ''
+            }`}
+            onClick={!disabled ? handleAddUrl : () => {}}
           >
             Add
           </Button>
@@ -111,9 +116,13 @@ const ImageUpload = ({ imageList, setImageList, view }) => {
         <div>
           <div className="naxatw-relative naxatw-flex naxatw-items-center naxatw-gap-x-2 naxatw-rounded-xl ">
             <Button
-              className="naxatw-btn-secondary naxatw-btn-noborder naxatw-text-[#00A699]"
+              className={`naxatw-btn-secondary naxatw-btn-noborder naxatw-text-[#00A699] ${
+                disabled
+                  ? '!naxatw-text-grey-400 naxatw-cursor-not-allowed'
+                  : ''
+              }`}
               iconLeft="upload"
-              onClick={onFileUpload}
+              onClick={!disabled ? onFileUpload : () => {}}
             >
               Upload Image
             </Button>
@@ -121,7 +130,7 @@ const ImageUpload = ({ imageList, setImageList, view }) => {
               type="file"
               ref={inputRef}
               style={{ display: 'none' }}
-              onChange={e => handleFileChange(e)}
+              onChange={!disabled ? e => handleFileChange(e) : () => {}}
               multiple="multiple"
               accept="image/png, image/gif, image/jpeg, image/jpg"
             />
@@ -154,15 +163,25 @@ const ImageUpload = ({ imageList, setImageList, view }) => {
                         <Toggle
                           isSm
                           checked={item.isCoverImage}
-                          onChange={() => {
-                            handleCoverImage(item.id);
-                          }}
+                          onChange={
+                            disabled
+                              ? () => {}
+                              : () => {
+                                  handleCoverImage(item.id);
+                                }
+                          }
                         />
                       </div>
                       <MaterialIcon
                         name="delete_outline"
-                        className="naxatw-text-icon-md naxatw-cursor-pointer naxatw-text-[#FF0F0F]"
-                        onIconClick={() => handleDelete(item.id)}
+                        className={`naxatw-text-icon-md naxatw-cursor-pointer naxatw-text-[#FF0F0F] ${
+                          disabled
+                            ? '!naxatw-text-grey-400 !naxatw-cursor-not-allowed'
+                            : ''
+                        }`}
+                        onIconClick={
+                          disabled ? () => {} : () => handleDelete(item.id)
+                        }
                       />
                     </div>
                   </div>
@@ -179,12 +198,14 @@ ImageUpload.propTypes = {
   imageList: PropTypes.array,
   setImageList: PropTypes.func,
   view: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 ImageUpload.defaultProps = {
   imageList: [],
   setImageList: () => {},
   view: 'column',
+  disabled: false,
 };
 
 export default ImageUpload;

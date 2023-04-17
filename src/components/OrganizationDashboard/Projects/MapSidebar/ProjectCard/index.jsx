@@ -10,6 +10,7 @@ import { Creators as CommonCreator } from '@Actions/common';
 import { Creators } from '@Actions/organizationDashboard';
 import Button from '@Components/common/Button/index';
 import { format } from 'date-fns';
+import { isEmpty } from '@Utils/commonUtils';
 
 const { togglePromptDialog } = CommonCreator;
 const { setSelectedProject, setZoomToLayer } = Creators;
@@ -121,7 +122,7 @@ export default function ProjectCard({
 
   return (
     <div
-      className={`naxatw-flex naxatw-border naxatw-border-grey-300 naxatw-rounded-xl naxatw-cursor-pointer hover:naxatw-bg-[#F8F8F8] hover:naxatw-border-[#484848]  ${
+      className={`naxatw-flex naxatw-h-[10.25rem] naxatw-border naxatw-border-grey-300 naxatw-rounded-xl naxatw-cursor-pointer hover:naxatw-bg-[#F8F8F8] hover:naxatw-border-[#484848]  ${
         status === 'draft' ? 'naxatw-bg-[#F5F5F5]' : 'naxatw-bg-white'
       }`}
       onClick={onClick}
@@ -138,30 +139,6 @@ export default function ProjectCard({
         <div className="">
           <h5 title={title} className="naxatw-line-clamp-2">
             {title || 'N/A'}
-            {/* <h5
-                className={`${
-                      !hideTitle
-                        ? 'naxatw-h-fit'
-                        : 'naxatw-h-[2.78rem] naxatw-text-ellipsis naxatw-overflow-hidden'
-                    } `}
-                  >
-                {hideTitle ? title.slice(0, titleLimit + 10) : title || 'N/A'}
-              {hideTitle && (
-                <span className="naxatw-inline-flex">
-                  <span className="naxatw-px-1">...</span>
-                  <button
-                    type="button"
-                    className="naxatw-text-secondary-400 hover:naxatw-underline"
-                    onClick={e => {
-                      e.stopPropagation();
-                      setHideTitle(!hideTitle);
-                    }}
-                  >
-                    See more
-                  </button>
-                </span>
-              )}
-             */}
           </h5>
           <div className="naxatw-flex naxatw-flex-wrap naxatw-mt-2.5 naxatw-gap-x-3">
             <span className="naxatw-text-body-md">{`${
@@ -183,9 +160,11 @@ export default function ProjectCard({
               Thematic areas
             </p>
             <div className="naxatw-line-clamp-2">
-              <span className="naxatw-text-body-md">
-                {thematicAreas ? thematicAreas.toString() : 'N/A'}
-              </span>
+              <p className="naxatw-text-body-md">
+                {thematicAreas && !isEmpty(thematicAreas)
+                  ? thematicAreas.toString()
+                  : 'N/A'}
+              </p>
             </div>
           </div>
         </div>
@@ -198,7 +177,7 @@ export default function ProjectCard({
           {status !== 'draft' ? (
             <div className="naxatw-flex naxatw-flex-col naxatw-items-end">
               <Button
-                className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]"
+                className="naxatw-btn naxatw-btn-sm naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]"
                 onClick={e => {
                   e.stopPropagation();
                   history.push(
@@ -209,7 +188,7 @@ export default function ProjectCard({
                 Info
               </Button>
               <Button
-                className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-w-[124px]"
+                className="naxatw-btn naxatw-btn-sm naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5] naxatw-w-[124px]"
                 onClick={e => {
                   e.stopPropagation();
                   dispatch(setZoomToLayer({ id, bbox }));
@@ -219,45 +198,16 @@ export default function ProjectCard({
               </Button>
             </div>
           ) : (
-            <Button className="naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]">
+            <Button
+              iconLeft="edit"
+              className="naxatw-btn naxatw-btn-sm naxatw-text-secondary-400 hover:naxatw-bg-[#F5F5F5]"
+            >
               Edit
             </Button>
           )}
         </div>
       </div>
     </div>
-    // <div className="naxatw-flex naxatw-border naxatw-rounded-md">
-    //   <img
-    //     className="naxatw-w-[120px] naxatw-h-[164px] "
-    //     src={AvatarIcon}
-    //     alt="cover_image"
-    //   />
-    //   <div className=" naxatw-pt-4 naxatw-pl-4 naxatw-pr-2 naxatw-pb-3 naxatw-flex naxatw-bg-white">
-    //     <div className="">
-    //       <h5>Transportation mapping Kenya 2</h5>
-    //       <div className="naxatw-flex naxatw-mt-2.5 naxatw-gap-x-3">
-    //         <span>Jan 04, 2020 - Jan 04, 2024</span>
-    //         <span>Ongoing</span>
-    //       </div>
-    //       <div className="naxatw-mt-3">
-    //         <p className="naxatw-text-body-sm">Thematic areas</p>
-    //         <span>
-    //           Climate change and energy, Ecosystem services, Planetary Health,
-    //           Sustainable Development ...
-    //         </span>
-    //       </div>
-    //     </div>
-    //     <div className="naxatw-flex naxatw-flex-col naxatw-justify-between naxatw-items-end">
-    //       <span>dropdown</span>
-    //       <div className="naxatw-flex naxatw-flex-col naxatw-items-end">
-    //         <Button className="naxatw-btn-secondary naxatw-btn-transparent">
-    //           Info
-    //         </Button>
-    //         <Button className="naxatw-w-fit">View on Map</Button>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
   );
 }
 

@@ -29,30 +29,21 @@ function SearchSelect({
   ...rest
 }) {
   function useClickOutside(ref, handler) {
-    useEffect(
-      () => {
-        const listener = event => {
-          // Do nothing if clicking ref's element or descendent elements
-          if (!ref.current || ref.current.contains(event.target)) {
-            return;
-          }
-          handler(event);
-        };
-        document.addEventListener('mousedown', listener);
-        document.addEventListener('touchstart', listener);
-        return () => {
-          document.removeEventListener('mousedown', listener);
-          document.removeEventListener('touchstart', listener);
-        };
-      },
-      // Add ref and handler to effect dependencies
-      // It's worth noting that because passed in handler is a new ...
-      // ... function on every render that will cause this effect ...
-      // ... callback/cleanup to run every render. It's not a big deal ...
-      // ... but to optimize you can wrap handler in useCallback before ...
-      // ... passing it into this hook.
-      [ref, handler],
-    );
+    useEffect(() => {
+      const listener = event => {
+        // Do nothing if clicking ref's element or descendent elements
+        if (!ref.current || ref.current.contains(event.target)) {
+          return;
+        }
+        handler(event);
+      };
+      document.addEventListener('mousedown', listener);
+      document.addEventListener('touchstart', listener);
+      return () => {
+        document.removeEventListener('mousedown', listener);
+        document.removeEventListener('touchstart', listener);
+      };
+    }, [ref, handler]);
   }
   const [toggle, setToggle] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -104,32 +95,45 @@ function SearchSelect({
       <div
         className="naxatw-relative naxatw-group naxatw-w-full"
         ref={ref}
-        onClick={() => setToggle(!toggle)}
+        onClick={disabled ? () => {} : () => setToggle(!toggle)}
       >
         <button
           type="button"
-          className={`naxatw-select !naxatw-rounded-lg ${className}  ${
+          className={`!naxatw-rounded-lg ${
+            disabled
+              ? 'naxatw-select-disabled naxatw-bg-grey-100 naxatw-cursor-not-allowed'
+              : 'naxatw-select'
+          } ${className}  ${
             toggle ? 'naxatw-bg-[#F5F5F5] naxatw-border-[#484848]' : ''
           }`}
           style={style}
           {...rest}
         >
-          <span className="naxatw-text-body-lg">{getSelectedValue()}</span>
+          <span
+            className={`naxatw-text-body-lg ${
+              disabled ? 'naxatw-text-grey-400' : ''
+            }`}
+          >
+            {getSelectedValue()}
+          </span>
         </button>
         <input
           style={{ display: toggle ? 'block' : 'none' }}
           ref={searchRef}
           type="text"
           placeholder={selected || placeholder}
-          className={`naxatw-input naxatw-absolute naxatw-top-0 naxatw-left-0`}
+          className={`naxatw-input naxatw-absolute naxatw-top-0 naxatw-left-0 ${
+            disabled ? '!naxatw-bg-grey-100' : ''
+          }`}
           value={searchText}
           onChange={e => {
             setSearchText(e.target.value);
           }}
+          disabled={disabled}
         />
 
         <div className="naxatw-absolute naxatw-top-3 naxatw-right-4 naxatw-flex naxatw-gap-x-2 naxatw-divide-x-2">
-          {selected ? (
+          {selected && !disabled ? (
             <MaterialIcon
               name="close"
               className="naxatw-text-icon-sm naxatw-cursor-pointer"
@@ -141,7 +145,9 @@ function SearchSelect({
 
           <MaterialIcon
             name={`${!toggle ? 'arrow_drop_down' : 'arrow_drop_up'}`}
-            className="naxatw-text-icon-md naxatw-cursor-pointer"
+            className={`naxatw-text-icon-md naxatw-cursor-pointer ${
+              disabled ? 'naxatw-text-grey-400' : ''
+            }`}
           />
         </div>
 

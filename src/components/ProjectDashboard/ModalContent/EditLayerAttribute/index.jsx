@@ -56,6 +56,13 @@ const EditLayerAttribute = () => {
     state => state.projectMap.fieldsDropdownOptions,
   );
 
+  const nonEditableAttributes = selectedLayerAttribute.reduce((acc, obj) => {
+    if (!obj.editable) {
+      acc.push(obj.name);
+    }
+    return acc;
+  }, []);
+
   useEffect(() => {
     if (!selectedAttribute) return;
     dispatch(getFeatureImageRequest(selectedAttribute.id));
@@ -91,7 +98,7 @@ const EditLayerAttribute = () => {
             attribute =>
               attribute !== imageTypeAttribute?.[0]?.name &&
               (dropdownFields.includes(attribute) ? (
-                <div className="naxatw-space-y-2">
+                <div className="naxatw-space-y-2" key={attribute}>
                   <label className="naxatw-label">{attribute}</label>
                   <SearchSelect
                     key={attribute}
@@ -99,7 +106,10 @@ const EditLayerAttribute = () => {
                     options={dropdownOptions[attribute]}
                     onChange={data =>
                       handleChange({
-                        target: { name: `${attribute}`, value: data.name },
+                        target: {
+                          name: `${attribute}`,
+                          value: data ? data.name : null,
+                        },
                       })
                     }
                     selected={
@@ -107,12 +117,13 @@ const EditLayerAttribute = () => {
                         opt => opt.name === values[`${attribute}`],
                       )?.[0]?.name
                     }
+                    disabled={nonEditableAttributes.includes(attribute)}
                   />
                 </div>
               ) : dateTypeAttribute
                   .map(item => item.name)
                   .includes(attribute) ? (
-                <div className="naxatw-space-y-2">
+                <div className="naxatw-space-y-2" key={attribute}>
                   <label className="naxatw-label">{attribute}</label>
                   <CustomCalendar
                     className="naxatw-bg-white"
@@ -126,6 +137,7 @@ const EditLayerAttribute = () => {
                       });
                     }}
                     selected={values[`${attribute}`] || ''}
+                    disabled={nonEditableAttributes.includes(attribute)}
                   />
                 </div>
               ) : (
@@ -135,7 +147,10 @@ const EditLayerAttribute = () => {
                   name={attribute}
                   value={values[attribute]}
                   onChange={handleChange}
-                  disabled={attribute === 'id'}
+                  disabled={
+                    nonEditableAttributes.includes(attribute) ||
+                    attribute.toLowerCase() === 'id'
+                  }
                   className={attribute === 'id' ? 'naxatw-bg-grey-100' : ''}
                 />
               )),
@@ -148,6 +163,7 @@ const EditLayerAttribute = () => {
               imageList={imageList}
               setImageList={setImageList}
               view="row"
+              disabled={!imageTypeAttribute[0].editable}
             />
           </div>
         )}

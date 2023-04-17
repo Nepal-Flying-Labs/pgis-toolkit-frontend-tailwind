@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fromLonLat, transformExtent } from 'ol/proj';
+import { Creators } from '@Actions/organizationDashboard';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import {
   useOLMap,
@@ -12,7 +13,6 @@ import VectorTileLayer from '@Components/common/OpenLayersComponent/Layers/Vecto
 import { isExtentValid } from '@Components/common/OpenLayersComponent/helpers/layerUtils';
 import ClusterLayer from '@Components/common/OpenLayersComponent/Layers/ClusterLayer';
 import '@Components/common/OpenLayersComponent/map.css';
-import { Creators } from '@Actions/organizationDashboard';
 
 const { setZoomToLayer } = Creators;
 
@@ -56,19 +56,19 @@ export default function MapSection() {
   }, [map, hideSidebar]);
 
   // zoom to project location on initial map load
-  // useEffect(() => {
-  //   if (!map || !organizationDetail) return;
-  //   const bbox = organizationDetail?.bbox;
-  //   if (!bbox) return;
-  //   const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
-  //   if (isExtentValid(zoomExtent)) {
-  //     map.getView().fit(zoomExtent, {
-  //       padding: [50, 50, 50, 50],
-  //       duration: 3500,
-  //       constrainResolution: true,
-  //     });
-  //   }
-  // }, [map, organizationDetail]);
+  useEffect(() => {
+    if (!map || !organizationDetail) return;
+    const bbox = organizationDetail?.bbox;
+    if (!bbox) return;
+    const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
+    if (isExtentValid(zoomExtent)) {
+      map.getView().fit(zoomExtent, {
+        padding: [50, 50, 50, 50],
+        duration: 2500,
+        constrainResolution: true,
+      });
+    }
+  }, [map, organizationDetail]);
 
   useEffect(() => {
     if (!map) return;
@@ -109,10 +109,11 @@ export default function MapSection() {
         <LayerSwitcherControl />
 
         <Scalebar />
+
         <ClusterLayer
           map={map}
           source={centroidGeojson}
-          zIndex="100"
+          zIndex={100}
           visibleOnMap={currentZoom <= 10}
           style={{
             ...defaultStyles,

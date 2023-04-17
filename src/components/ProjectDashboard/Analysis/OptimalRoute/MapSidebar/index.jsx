@@ -23,7 +23,7 @@ export default function MapSidebar() {
   return (
     <div
       className="naxatw-bg-grey-100 naxatw-px-4 naxatw-overflow-auto
-        scrollbar naxatw-min-w-[23rem]"
+        scrollbar naxatw-min-w-[23rem] naxatw-border-r naxatw-border-grey-300"
       style={{
         width: hideSidebar ? '0' : '23rem',
         minWidth: hideSidebar ? '0' : '23rem',

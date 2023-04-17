@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-extra-boolean-cast */
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
@@ -9,6 +9,7 @@ import { Creators as CommonCreators } from '@Actions/common';
 import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar';
+import MaterialIcon from '@Components/common/MaterialIcon/index';
 import LayerOrder from './LayerOrder';
 import LayerList from './LayerList';
 
@@ -22,6 +23,7 @@ const {
 const { togglePromptDialog, toggleModal } = CommonCreators;
 
 export default function LayerSection() {
+  const [isSearchActive, setIsSearchActive] = useState(false);
   const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
   const projectHeaderHeight = useSelector(
     state => state.common.projectHeaderHeight,
@@ -43,7 +45,7 @@ export default function LayerSection() {
         </span>
       ),
       onClick: data => {
-        dispatch(setZoomToLayerId(data.id));
+        dispatch(setZoomToLayerId({ layer: data.id, theme: data.theme }));
       },
     },
     {
@@ -111,9 +113,9 @@ export default function LayerSection() {
     {
       id: 'delete-layer',
       label: (
-        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+        <span className="naxatw-flex naxatw-items-center naxatw-text-delete_btn">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
-          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Delete</p>
+          <p className="naxatw-text-body-lg naxatw-text-delete_btn">Delete</p>
         </span>
       ),
       onClick: data => {
@@ -131,47 +133,63 @@ export default function LayerSection() {
 
   return (
     <>
-      <div className="naxatw-flex naxatw-items-center">
-        <Searchbar
-          className="naxatw-bg-white"
-          isSmall
-          value={searchText}
-          onChange={e => {
-            dispatch(setSearchText(e.target.value));
-          }}
-        />
-      </div>
-
-      <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-mt-2">
-        <Button
-          className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent naxatw-btn-sm"
-          onClick={() => {
-            dispatch(
-              setSidebarContent(
-                sidebarContent === 'layer-order' ? '' : 'layer-order',
-              ),
-            );
-          }}
-        >
-          {sidebarContent === 'layer-order' ? 'Category' : 'Layer Order'}
-        </Button>
-        <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
+      {isSearchActive ? (
+        <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+          <MaterialIcon
+            name="arrow_back"
+            onIconClick={() => setIsSearchActive(false)}
+            wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-grey-300 naxatw-rounded-full naxatw-cursor-pointer"
+          />
+          <Searchbar
+            className="naxatw-bg-white"
+            isSmall
+            value={searchText}
+            onChange={e => {
+              dispatch(setSearchText(e.target.value));
+            }}
+            isFocus
+          />
+        </div>
+      ) : (
+        <div className="naxatw-flex naxatw-items-center naxatw-justify-between">
           <Button
-            className="naxatw-btn-primary naxatw-btn-sm"
-            iconLeft="add"
+            className="naxatw-btn-secondary naxatw-btn-noborder naxatw-btn-transparent naxatw-btn-sm"
             onClick={() => {
-              history.push('data');
+              dispatch(
+                setSidebarContent(
+                  sidebarContent === 'layer-order' ? '' : 'layer-order',
+                ),
+              );
             }}
           >
-            Add Data
+            {sidebarContent === 'layer-order' ? 'Catalog' : 'Layer Order'}
           </Button>
+          <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
+            <MaterialIcon
+              name="search"
+              title="Search"
+              onIconClick={() => setIsSearchActive(true)}
+              wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-grey-300 naxatw-rounded-full naxatw-cursor-pointer"
+            />
+            <Button
+              className="naxatw-btn-primary naxatw-btn-sm"
+              iconLeft="add"
+              onClick={() => {
+                history.push('data');
+              }}
+            >
+              Add Data
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
 
       <div
         className="naxatw-mt-3 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-y-auto scrollbar"
         style={{
-          height: `calc(100vh - ${projectHeaderHeight}px - 7.7rem)`,
+          height: `calc(100vh - ${projectHeaderHeight}px - 4.7rem)`,
+          marginRight: '-0.7125rem',
+          paddingRight: '0.25rem',
         }}
       >
         {sidebarContent === 'layer-order' ? (

@@ -22,8 +22,8 @@
 - [x] handle date data format (component wise) in all section
 - [ ] format date/time in all sections (table etc) (sudeep)(hold)
 - [ ] Implement User Permission and role (individual button needs to be reviewed) (sudeep)
-- [ ] popup text size reduce (sudeep)
-- [ ] data query api integration (sudeep)
+- [x] popup text size reduce (sudeep)
+- [x] data query api integration (sudeep)
 
 - [ ] download layer not working (raj)
 
@@ -82,23 +82,32 @@
 - [ ] bbox negative (raj) [https://pgis.naxa.com.np/api/maps/project_theme_layers/?theme=640]
 - [ ] start point click auto save (analysis origin point input)
 
-
 - [ ] undo/redo button manual fix
 
 - [ ] feature highlight issue multipart
 
-
 ### DESIGN REVIEW
+
+- [x] project map => line seperator in map and sidebar
+- [x] button sm padding
+- [x] accordion content padding
+- [x] project header
+- [x] border in toolbar
 - [ ] font issue in safari
-- [ ] project map => line seperator in map and sidebar
-- [ ] button sm padding
-- [ ] accordion content padding
-- [ ] center align save button edit sidebar section
-- [ ] project header 
-- [ ] scrollbar on hover => ref =>slack 
-- [ ] airbnb reference map/sidebar
-- [ ] border in toolbar
-- [ ] google earth reference
-- [ ] organization map card design => fix height
-- [ ] clear button on search 
+- [x] airbnb reference map/sidebar
+- [x] scrollbar on hover => ref =>slack
 - [ ] analysis modal design
+- [ ] drop shadow
+- [ ] center align save button edit sidebar section
+- [ ] google earth reference
+- [x] organization map card design => fix height
+- [x] clear button on search
+
+## NEW ISSUES (APRIL 10)
+
+### PROJECT MAP
+- [ ] layer category sorting issue in map sidebar
+- [ ] project clustering bbox issue
+
+### DESIGN
+- [ ] layer order accordion border color

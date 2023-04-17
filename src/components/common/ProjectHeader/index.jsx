@@ -58,32 +58,42 @@ export default function ProjectHeader() {
   return (
     <header
       id="project-header"
-      className={`naxatw-h-[${projectHeaderHeight}] naxatw-fixed naxatw-w-full naxatw-z-[999] naxatw-top-0 naxatw-border-b naxatw-border-grey-300 naxatw-bg-white`}
+      className={`naxatw-h-[${projectHeaderHeight}] naxatw-fixed naxatw-w-full naxatw-z-[999]
+        naxatw-top-0 naxatw-border-b naxatw-border-grey-300 naxatw-bg-white naxatw-h-12`}
     >
-      <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-px-8  naxatw-h-full">
+      <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-px-5 naxatw-h-full">
         {projectId ? (
           <div>
             <nav>
-              <ul className="naxatw-font-bold  naxatw-text-grey-500 naxatw-text-[0.9375rem]  naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-2 naxatw-h-full">
+              <ul
+                className="naxatw-font-bold  naxatw-text-grey-500 naxatw-text-[0.9375rem]
+                  naxatw-flex naxatw-items-center naxatw-justify-center naxatw-h-full naxatw-gap-2"
+              >
                 <li
-                  className="naxatw-flex naxatw-gap-x-2 naxatw-items-center"
+                  title={projectDetail?.organization_name}
+                  className="naxatw-flex naxatw-items-center"
                   style={{
                     pointerEvents: landingPage?.project ? 'none' : '',
                   }}
                 >
                   <Link
-                    className="naxatw-py-2.5 hover:naxatw-text-[#484848] naxatw-text-body-btn hover:naxatw-underline"
+                    className="naxatw-py-2.5 hover:naxatw-text-grey-800 naxatw-text-body-btn 
+                      hover:naxatw-underline naxatw-max-w-[8rem] naxatw-truncate lg:naxatw-max-w-[12rem]"
                     to={`/organizations/${organizationId}/projects`}
                   >
                     {projectDetail?.organization_name}
                   </Link>
                 </li>
+                <MaterialIcon
+                  name="chevron_right"
+                  className="naxatw-text-grey-800"
+                />
                 <li className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
-                  <MaterialIcon
-                    name="chevron_right"
-                    className="naxatw-text-[#484848]"
-                  />
-                  <a className=" naxatw-text-[#484848] naxatw-py-2.5 naxatw-text-body-btn">
+                  <a
+                    title={projectDetail?.name}
+                    className="naxatw-text-grey-800 naxatw-py-2.5 naxatw-text-body-btn naxatw-max-w-[14rem]
+                      naxatw-truncate lg:naxatw-max-w-[50rem]"
+                  >
                     {projectDetail?.name}
                   </a>
                 </li>
@@ -122,11 +132,14 @@ export default function ProjectHeader() {
           </div>
         )}
 
-        <div className="naxatw-flex naxatw-gap-10 ">
+        <div className="naxatw-flex naxatw-gap-3">
           <nav className="">
-            <ul className="naxatw-font-bold  naxatw-text-grey-500 naxatw-text-[0.9375rem] naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-gap-2 naxatw-h-full">
+            <ul
+              className="naxatw-font-bold naxatw-text-grey-500 naxatw-text-[0.9375rem]
+                naxatw-tracking-wider naxatw-flex naxatw-items-center naxatw-justify-center naxatw-h-full"
+            >
               {headerData.map(({ label, route, disabled }) => (
-                <li key={label}>
+                <li key={label} className="naxatw-w-max">
                   <Link
                     className={`naxatw-inline-block naxatw-px-3 naxatw-py-3.5 ${
                       tabname === route

@@ -79,7 +79,8 @@ export default function MapSidebar() {
 
   return (
     <div
-      className={`naxatw-relative naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-2 naxatw-pt-5`}
+      className="naxatw-relative naxatw-bg-grey-100 naxatw-pl-10 naxatw-pr-2
+        naxatw-pt-5 naxatw-border-r naxatw-border-grey-300"
       style={{
         width: hideSidebar ? '0' : '44.375rem',
         minWidth: hideSidebar ? '0' : '40rem',
@@ -89,7 +90,10 @@ export default function MapSidebar() {
     >
       {!hasNoProject && (
         <>
-          <div className="naxatw-flex naxatw-items-center naxatw-pr-5 naxatw-justify-between naxatw-gap-2">
+          <div
+            className="naxatw-flex naxatw-items-center naxatw-pr-5
+              naxatw-justify-between naxatw-gap-2"
+          >
             <Searchbar
               className="naxatw-bg-white"
               value={searchValue}
@@ -107,10 +111,10 @@ export default function MapSidebar() {
           </div>
 
           {projects?.results.length > 0 && (
-            <div className="naxatw-flex naxatw-justify-between naxatw-pr-5 naxatw-items-center">
-              <div className="naxatw-flex naxatw-mt-2 naxatw-gap-2">
+            <div className="naxatw-flex naxatw-justify-between naxatw-pr-5 naxatw-items-center naxatw-mt-2">
+              <div className="naxatw-flex naxatw-gap-2">
                 <Chip
-                  label={`All( ${organizationDetail?.projects || ''} )`}
+                  label={`All ( ${organizationDetail?.projects || ''} )`}
                   active={projectStatus === null}
                   onClick={() => {
                     // setChipStatus('all');
@@ -118,7 +122,7 @@ export default function MapSidebar() {
                   }}
                 />
                 <Chip
-                  label={`Ongoing( ${organizationDetail?.ongoing || ''} )`}
+                  label={`Ongoing ( ${organizationDetail?.ongoing || ''} )`}
                   active={projectStatus === 'ongoing'}
                   onClick={() => {
                     // setChipStatus('ongoing');
@@ -202,9 +206,8 @@ export default function MapSidebar() {
                     }
                   />
                 ) : (
-                  <div className="naxatw-w-full">
+                  <div key={id} className="naxatw-w-full">
                     <ProjectGridCard
-                      key={id}
                       title={name}
                       address="kenya"
                       id={id}
@@ -224,7 +227,7 @@ export default function MapSidebar() {
                                 `/organizations/${organizationId}/project-setup/${id}`,
                               )
                       }
-                    />{' '}
+                    />
                   </div>
                 ),
             )
@@ -267,7 +270,10 @@ export default function MapSidebar() {
 
       <div>
         <a
-          className="naxatw-absolute naxatw-top-4 -naxatw-right-12 naxatw-z-10 naxatw-bg-white naxatw-text-grey-800 naxatw-h-10 naxatw-p-2 naxatw-rounded-lg naxatw-border naxatw-border-grey-300 naxatw-flex naxatw-items-center hover:naxatw-bg-[#F5F5F5]"
+          className="naxatw-absolute naxatw-top-4 -naxatw-right-12 naxatw-z-10 naxatw-bg-white
+            naxatw-text-grey-800 naxatw-h-10 naxatw-p-2 naxatw-rounded-lg naxatw-border
+            naxatw-border-grey-300 naxatw-flex naxatw-items-center
+            naxatw-shadow-light hover:naxatw-bg-grey-100"
           onClick={() => dispatch(toggleSidebar())}
         >
           <i className="material-icons ">

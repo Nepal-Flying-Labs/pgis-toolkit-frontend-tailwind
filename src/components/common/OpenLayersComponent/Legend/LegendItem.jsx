@@ -55,7 +55,7 @@ const LegendItem = ({
     <div
       role="presentation"
       className={`custom__legend ${className}`}
-      title="Edit style"
+      // title="Edit style"
       onClick={onClick}
       onKeyUp={() => {}}
       style={{

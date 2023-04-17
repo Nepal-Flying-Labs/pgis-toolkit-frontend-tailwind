@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles.css';
 
 export default function AppLoader() {
   return (
@@ -7,11 +8,12 @@ export default function AppLoader() {
         className="naxatw-fixed naxatw-inset-0 naxatw-flex naxatw-justify-center
           naxatw-items-center naxatw-font-normal"
       >
-        <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-end naxatw-select-none">
-          Initializing App{' '}
-          <span className="naxatw-w-1 naxatw-h-1 naxatw-rounded-full naxatw-bg-grey-800 naxatw-animate-loader " />
-          <span className="naxatw-w-1 naxatw-h-1 naxatw-rounded-full naxatw-bg-grey-800 naxatw-animate-loader animation-delay-200" />
-          <span className="naxatw-w-1 naxatw-h-1 naxatw-rounded-full naxatw-bg-grey-800 naxatw-animate-loader animation-delay-400" />
+        <div className="col-3">
+          <div className="snippet" data-title="dot-pulse">
+            <div className="stage">
+              <div className="dot-pulse" />
+            </div>
+          </div>
         </div>
       </h3>
     </div>

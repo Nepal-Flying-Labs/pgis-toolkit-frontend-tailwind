@@ -170,6 +170,8 @@ export const { Types, Creators } = createActions(
     getFeatureGeometryRequest: ['id'],
     getFeatureGeometrySuccess: ['payload'],
     getFeatureGeometryFailure: null,
+
+    toggleStyleEdit: ['payload'],
   },
   { prefix: 'projectMap/' },
 );

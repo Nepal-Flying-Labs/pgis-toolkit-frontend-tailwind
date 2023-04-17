@@ -38,6 +38,7 @@ export const { Types, Creators } = createActions(
 
     resetLayerAttributeListState: null,
     handleTableCheckbox: ['payload'],
+    handleSelectAllCheckbox: ['payload'],
 
     setSelectedInfo: ['payload'],
     toggleSidebar: ['payload'],

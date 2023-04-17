@@ -33,7 +33,9 @@ const Input = ({
         type={type}
         name={name}
         value={value || ''}
-        className={`naxatw-input ${className} naxatw-pr-6`}
+        className={`naxatw-input ${
+          disabled ? 'naxatw-input-disabled' : ''
+        } ${className} naxatw-pr-6`}
         onChange={onChange}
         disabled={disabled}
         {...rest}

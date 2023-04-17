@@ -7,6 +7,7 @@ export default function Accordion({
   body,
   className,
   onToggle,
+  description,
 }) {
   const [collapsed, setCollapsed] = useState(isCollapsed);
 
@@ -16,28 +17,42 @@ export default function Accordion({
 
   return (
     <div
-      className={`naxatw-bg-white naxatw-border naxatw-rounded-lg naxatw-p-5 naxatw-border-grey-300 ${className}`}
+      className={`naxatw-bg-white naxatw-border naxatw-rounded-lg naxatw-p-2
+        naxatw-pb-3 naxatw-border-grey-300 ${className} hover:naxatw-border-grey-800`}
     >
-      <div className=" naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full naxatw-font-medium naxatw-gap-3">
-        {header}
-        <span className="naxatw-flex">
-          <button
-            type="button"
-            className="hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-p-2"
-            onClick={() => {
-              setCollapsed(!collapsed);
-              onToggle(collapsed);
-            }}
-          >
-            <i className="material-icons">
-              {collapsed ? 'expand_more' : 'expand_less'}
-            </i>
-          </button>
-        </span>
+      <div className="naxatw-pl-2">
+        <div
+          className="naxatw-flex naxatw-items-center naxatw-justify-between
+            naxatw-w-full naxatw-font-medium naxatw-gap-3 naxatw-cursor-pointer"
+          onClick={() => {
+            setCollapsed(!collapsed);
+            onToggle(collapsed);
+          }}
+        >
+          {header}
+          <span className="naxatw-flex naxatw-w-9 naxatw-h-9">
+            <button
+              type="button"
+              title={collapsed ? 'Expand' : 'Collapse'}
+              className={`naxatw-rounded-lg naxatw-p-1.5 ${
+                !collapsed
+                  ? 'naxatw-bg-primary-50 naxatw-text-primary-500'
+                  : 'hover:naxatw-bg-grey-100'
+              }`}
+              onClick={() => {
+                setCollapsed(!collapsed);
+                onToggle(collapsed);
+              }}
+            >
+              <i className="material-icons naxatw-text-icon-md">
+                {collapsed ? 'expand_more' : 'expand_less'}
+              </i>
+            </button>
+          </span>
+        </div>
+        <div>{description}</div>
       </div>
-      <div className={`${collapsed ? 'naxatw-hidden' : ''}`}>
-        <div className="naxatw-font-light">{body}</div>
-      </div>
+      <div className={`${collapsed ? 'naxatw-hidden' : ''}`}>{body}</div>
     </div>
   );
 }
@@ -48,6 +63,7 @@ Accordion.defaultProps = {
   body: '',
   className: '',
   onToggle: () => {},
+  description: '',
 };
 
 Accordion.propTypes = {
@@ -56,4 +72,5 @@ Accordion.propTypes = {
   className: PropTypes.string,
   body: PropTypes.node,
   onToggle: PropTypes.func,
+  description: PropTypes.node,
 };

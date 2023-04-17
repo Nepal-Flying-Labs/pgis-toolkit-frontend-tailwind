@@ -34,9 +34,7 @@ export default function Button({
       {...rest}
     >
       {iconLeft && (
-        <i className={`naxatw-mr-2 naxatw-text-[22px] ${iconClassName}`}>
-          {iconLeft}
-        </i>
+        <i className={`naxatw-text-[22px] ${iconClassName}`}>{iconLeft}</i>
       )}
       {isLoading ? (
         <div role="status">
@@ -66,9 +64,7 @@ export default function Button({
           </p>
 
           {iconRight && (
-            <i className={`naxatw-mr-2 naxatw-text-[22px] ${iconClassName}`}>
-              {iconRight}
-            </i>
+            <i className={`naxatw-text-[22px] ${iconClassName}`}>{iconRight}</i>
           )}
         </>
       )}

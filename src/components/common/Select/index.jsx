@@ -3,12 +3,22 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import useOutsideClick from '@Hooks/useOutsideClick';
-// import isEmpty from '@Utils/commonUtils';
 import PropTypes from 'prop-types';
 import './styles.css';
 import MaterialIcon from '../MaterialIcon';
+
+function getPosition(direction) {
+  switch (direction) {
+    case 'top':
+      return 'naxatw-bottom-[3.4rem]';
+    case 'bottom':
+      return 'naxatw-top-[3rem]';
+    default:
+      return 'naxatw-top-[3rem]';
+  }
+}
 
 function Select({
   options,
@@ -25,9 +35,11 @@ function Select({
   valueKey,
   selectedValue,
   style,
+  direction,
   ...rest
 }) {
   const [divRef, toggle, handleToggle] = useOutsideClick();
+  const [position, setPosition] = useState(direction);
   const handleSelect = item => {
     onChange(item);
   };
@@ -39,6 +51,18 @@ function Select({
       placeholder
     );
   };
+
+  useLayoutEffect(() => {
+    if (!toggle) return;
+    const { bottom } = divRef.current.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    if (windowHeight / 2 < bottom - 30) {
+      setPosition('top');
+    } else {
+      setPosition('bottom');
+    }
+  }, [toggle, divRef]);
+
   return (
     // eslint-disable-next-line react/jsx-curly-brace-presence
     <div
@@ -53,9 +77,7 @@ function Select({
           onClick={disabled ? () => {} : () => handleToggle()}
           className={`${
             disabled ? 'naxatw-select-disabled' : 'naxatw-select'
-          }  ${className}  ${
-            toggle ? 'naxatw-bg-[#F5F5F5] naxatw-border-[#484848]' : ''
-          }`}
+          }  ${className}  ${toggle ? 'naxatw-bg-100 naxatw-border-800' : ''}`}
           style={style}
           {...rest}
         >
@@ -75,8 +97,8 @@ function Select({
         </button>
         {toggle && (
           <div
-            className="naxatw-dropdown naxatw-min-w-fit naxatw-py-2 naxatw-max-h-[14rem]
-              naxatw-overflow-y-auto scrollbar"
+            className={`naxatw-dropdown naxatw-py-2 naxatw-max-h-[14rem]
+              naxatw-overflow-y-auto scrollbar  ${getPosition(position)}`}
             // style={{
             //   display: toggle ? 'block' : 'none',
             // }}
@@ -88,7 +110,7 @@ function Select({
                     <li
                       key={item[valueKey]}
                       role="menuitem"
-                      className={`naxatw-dropdown-items  ${
+                      className={`naxatw-dropdown-items   ${
                         selected === item[dataKey] || item[valueKey] ? '' : ''
                       }`}
                       onClick={() => {
@@ -135,6 +157,7 @@ Select.defaultProps = {
   valueKey: 'id',
   selectedValue: '',
   style: {},
+  direction: 'bottom',
 };
 
 Select.propTypes = {
@@ -152,6 +175,7 @@ Select.propTypes = {
   valueKey: PropTypes.string,
   selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   style: PropTypes.object,
+  direction: PropTypes.string,
 };
 
 export default Select;

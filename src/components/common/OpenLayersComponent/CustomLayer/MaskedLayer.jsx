@@ -55,7 +55,8 @@ export default function MaskedLayer({ map, geojson }) {
       feature: f,
       fill: new Fill({
         // color: [58, 109, 255, 0.7],
-        color: [255, 255, 255, 0.7],
+        // color: [255, 255, 255, 0.7],
+        color: [0, 0, 0, 0.22],
         // monochrome
         // color: [197, 222, 246, 0.8],
         // monochrome midnight

@@ -17,7 +17,8 @@ export default function MapSidebar() {
 
   return (
     <div
-      className="naxatw-bg-grey-100 naxatw-pl-4 naxatw-pr-4 naxatw-pt-3 naxatw-overflow-auto scrollbar"
+      className="naxatw-bg-grey-100 naxatw-pl-4 naxatw-pr-4
+        naxatw-pt-3 naxatw-overflow-auto naxatw-border-r naxatw-border-grey-300 scrollbar"
       style={{
         width: hideSidebar ? '0' : '23rem',
         minWidth: hideSidebar ? '0' : '23rem',
@@ -26,7 +27,10 @@ export default function MapSidebar() {
       }}
     >
       {themes !== null && isEmpty(themes) ? (
-        <div className="naxatw-h-full naxatw-flex naxatw-flex-col naxatw-justify-center naxatw-items-center naxatw-pb-8">
+        <div
+          className="naxatw-h-full naxatw-flex naxatw-flex-col
+            naxatw-justify-center naxatw-items-center naxatw-pb-8"
+        >
           <NoDataYet />
           <Button
             className="naxatw-btn-primary"

@@ -7,12 +7,14 @@ export default function MaterialIcon({
   style,
   wrapperClassName,
   onIconClick,
+  ...rest
 }) {
   return (
     <span
       type="button"
       onClick={onIconClick}
       className={`naxatw-flex naxatw-items-center ${wrapperClassName}`}
+      {...rest}
     >
       <i className={`material-icons ${className}`} style={style}>
         {name}

@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable consistent-return */
 /* eslint-disable react/prop-types */
-import React, { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import AnimatedCluster from 'ol-ext/layer/AnimatedCluster';
 import * as olExtent from 'ol/extent';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -14,12 +14,7 @@ import VectorSource from 'ol/source/Vector';
 import { hexToRgba } from '@Utils/commonUtils';
 import getSvgImageIcon from '@Utils/getSvgImageIcon';
 // import MapContext from '../MapContext';
-import {
-  defaultStyles,
-  generateLayerStylePoint,
-  generateLayerStylePt,
-} from '../helpers/styleUtils';
-import checkIfSvgUrl from '../helpers/checkIfSvgUrl';
+import { generateLayerStylePoint } from '../helpers/styleUtils';
 
 function setAsyncStyle(style, feature) {
   // if (style?.icon && style?.background_color) {
@@ -65,37 +60,37 @@ function setAsyncStyle(style, feature) {
   return stylex;
 }
 
-function getStyles(style, feature) {
-  const styleCache = {};
-  const size = feature?.get('features')?.length;
-
-  if (size === 1) {
-    return generateLayerStylePoint({ style, feature });
-  }
-  let stylex = styleCache[size];
-  stylex = new Style({
-    image: new Circle({
-      radius: 13,
-      stroke: new Stroke({
-        color: hexToRgba(style.color, 100),
-        // color: 'rgba(200, 13, 18, 0.6)',
-        width: 4,
-      }),
-      fill: new Fill({
-        color: hexToRgba(style.background_color, 100),
-        width: 40,
-      }),
-    }),
-    text: new Text({
-      text: size.toString(),
-      fill: new Fill({
-        color: '#fff',
-      }),
-    }),
-  });
-  styleCache[size] = stylex;
-  return stylex;
-}
+// function getStyles(style, feature) {
+//   const styleCache = {};
+//   const size = feature?.get('features')?.length;
+//
+//   if (size === 1) {
+//     return generateLayerStylePoint({ style, feature });
+//   }
+//   let stylex = styleCache[size];
+//   stylex = new Style({
+//     image: new Circle({
+//       radius: 13,
+//       stroke: new Stroke({
+//         color: hexToRgba(style.color, 100),
+//         // color: 'rgba(200, 13, 18, 0.6)',
+//         width: 4,
+//       }),
+//       fill: new Fill({
+//         color: hexToRgba(style.background_color, 100),
+//         width: 40,
+//       }),
+//     }),
+//     text: new Text({
+//       text: size.toString(),
+//       fill: new Fill({
+//         color: '#fff',
+//       }),
+//     }),
+//   });
+//   styleCache[size] = stylex;
+//   return stylex;
+// }
 
 const ClusterLayer = ({
   map,
@@ -136,7 +131,7 @@ const ClusterLayer = ({
     });
 
     setVectorLayer(animatedClusterLayer);
-  }, [map, layerSource, style]);
+  }, [map, layerSource]); // eslint-disable-line
 
   useEffect(() => {
     if (map && vectorLayer) {
@@ -164,7 +159,7 @@ const ClusterLayer = ({
     map.on('singleclick', evt => {
       // eslint-disable-next-line camelcase
       let area_no_9_extent = null;
-      const featurez = map.forEachFeatureAtPixel(
+      map.forEachFeatureAtPixel(
         evt.pixel,
         featurex => {
           // eslint-disable-next-line camelcase
@@ -172,16 +167,16 @@ const ClusterLayer = ({
           return featurex;
         },
         true,
-        {
-          layerFilter(layer) {
-            return layer.get('layer_name') === 'someName';
-          },
-        },
+        // {
+        //   layerFilter(layer) {
+        //     return layer.get('layer_name') === 'someName';
+        //   },
+        // },
       );
       map.getView().fit(area_no_9_extent, {
         duration: 1000,
         padding: [50, 50, 50, 50],
-        maxZoom: 12,
+        maxZoom: 11,
       });
     });
   }, [map]);
@@ -209,12 +204,11 @@ const ClusterLayer = ({
   }, [map, popupProps, fetchPopupData]);
 
   useEffect(() => {
-    if (map && vectorLayer) {
-      if (visibleOnMap) {
-        map.addLayer(vectorLayer);
-      } else {
-        map.removeLayer(vectorLayer);
-      }
+    if (!map || !vectorLayer) return;
+    if (visibleOnMap) {
+      map.addLayer(vectorLayer);
+    } else {
+      map.removeLayer(vectorLayer);
     }
   }, [map, vectorLayer, visibleOnMap]);
 
@@ -225,4 +219,5 @@ const ClusterLayer = ({
 
   return null;
 };
+
 export default ClusterLayer;

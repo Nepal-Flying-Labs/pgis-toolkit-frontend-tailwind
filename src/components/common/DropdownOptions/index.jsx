@@ -64,6 +64,7 @@ export default function DropdownOptions({
         <span
           className="naxatw-flex naxatw-items-center naxatw-justify-center
             naxatw-w-9 naxatw-h-9"
+          title="Options"
         >
           <button type="button" className="naxatw-text-icon-md naxatw-flex">
             <i className="material-icons naxatw-text-icon-md">more_vert</i>

@@ -162,11 +162,12 @@ export default function LayerSection() {
               );
             }}
           >
-            {sidebarContent === 'layer-order' ? 'Category' : 'Layer Order'}
+            {sidebarContent === 'layer-order' ? 'Catalog' : 'Layer Order'}
           </Button>
           <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
             <MaterialIcon
               name="search"
+              title="Search"
               onIconClick={() => setIsSearchActive(true)}
               wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm hover:naxatw-bg-grey-300 naxatw-rounded-full naxatw-cursor-pointer"
             />

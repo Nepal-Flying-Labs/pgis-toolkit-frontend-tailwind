@@ -838,6 +838,22 @@ const getFeatureGeometrySuccess = (state, action) => ({
   featureGeometry: action.payload,
 });
 
+const toggleStyleEdit = (state, action) => {
+  const { theme, id: layerId } = action.payload;
+  const layers = {
+    ...state.layers,
+    [theme]: state.layers[theme].map(item =>
+      item.id === layerId ? { ...item, checked: true } : { ...item },
+    ),
+  };
+  return {
+    ...state,
+    selectedLayer: action.payload,
+    sidebarContent: 'edit-style',
+    layers,
+  };
+};
+
 const resetProjectMapState = state => ({
   ...initialState,
   mapSettings: state.mapSettings,
@@ -898,6 +914,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.DELETE_DROPDOWN_OPTION_SUCCESS]: deleteDropdownOptionSuccess,
   [Types.GET_FEATURE_GEOMETRY_SUCCESS]: getFeatureGeometrySuccess,
 
+  [Types.TOGGLE_STYLE_EDIT]: toggleStyleEdit,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
 });
 

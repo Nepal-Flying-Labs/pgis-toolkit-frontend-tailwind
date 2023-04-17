@@ -15,7 +15,7 @@ import { mapStateSelector } from '@Selectors/projectMap';
 
 const {
   handleCheckbox,
-  setSelectedLayer,
+  toggleStyleEdit,
   saveMapConfigRequest,
   setProjectMapState,
 } = ProjectMapCreators;
@@ -76,7 +76,7 @@ export default function LayerOrder({ dropdownOptions }) {
   };
 
   return (
-    <div className="naxatw-bg-white naxatw-border naxatw-border-grey-800 naxatw-rounded-lg naxatw-p-2">
+    <div className="naxatw-bg-white naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-p-2">
       <SortableList items={mapState} onDragEnd={handleLayerSort}>
         <div className="naxatw-font-light">
           {mapState.map(layer => (
@@ -132,9 +132,11 @@ export default function LayerOrder({ dropdownOptions }) {
                   <div className="naxatw-flex">
                     {layer.id === hoverId && (
                       <span
-                        className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg naxatw-cursor-pointer naxatw-flex naxatw-items-center"
+                        className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg
+                          naxatw-cursor-pointer naxatw-flex naxatw-items-center"
+                        title="Edit Style"
                         onClick={() => {
-                          dispatch(setSelectedLayer(layer));
+                          dispatch(toggleStyleEdit(layer));
                         }}
                       >
                         <MaterialIcon

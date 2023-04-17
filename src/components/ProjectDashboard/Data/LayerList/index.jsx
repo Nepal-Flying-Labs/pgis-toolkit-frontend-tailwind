@@ -21,7 +21,7 @@ import Spinner from '@Components/common/Spinner/index';
 const currentPage = 1;
 const dataPerPage = 10;
 
-const { setDeleteLayer } = ProjectMapCreators;
+const { setDeleteLayer, setProjectMapState } = ProjectMapCreators;
 const {
   setDataState,
   permanentDataDeleteRequest,
@@ -60,6 +60,42 @@ export default function LayerList() {
       onClick: data => {
         dispatch(setDataState({ selectedData: data }));
         dispatch(toggleModal('edit-layer'));
+      },
+    },
+    {
+      id: 'attribute-table',
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-symbols-outlined naxatw-mr-2">table_chart</i>
+          <p className="naxatw-text-body-lg">Attribute Table</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(
+          setProjectMapState({
+            selectedLayer: data,
+          }),
+        );
+        dispatch(toggleModal('view-layer-attribute'));
+      },
+    },
+    {
+      id: 'manage-attribute',
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-symbols-outlined naxatw-mr-2 naxatw-text-[22px]">
+            database
+          </i>
+          <p className="naxatw-text-body-lg">Manage Attribute</p>
+        </span>
+      ),
+      onClick: data => {
+        dispatch(
+          setProjectMapState({
+            selectedLayer: data,
+          }),
+        );
+        dispatch(toggleModal('manage-attributes'));
       },
     },
     {

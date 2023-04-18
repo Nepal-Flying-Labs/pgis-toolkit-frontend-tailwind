@@ -26,6 +26,7 @@ import noImg from '@Assets/images/noImage.png';
 import { v4 as uuidv4 } from 'uuid';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import getImageSource from '@Utils/getImageSource';
+import TextArea from '@Components/common/TextArea/index';
 
 const { uploadGalleryRequest } = ProjectDashboardCreators;
 
@@ -134,7 +135,7 @@ export default function UploadGallery() {
           <label className="naxatw-label">Upload an image</label>
           <Dropzone
             label="Please upload images (JPEG, PNG, or GIF file format)"
-            accept=".jpeg, .png, .gif"
+            accept=".jpeg, .png, .gif, .jpg"
             multiple
             onChange={handleUpload}
           />
@@ -225,6 +226,7 @@ export default function UploadGallery() {
               <div className="naxatw-w-full naxatw-space-y-2">
                 <Input
                   id={id}
+                  maxlength="100"
                   label="Title of Image*"
                   name="title"
                   value={title || ''}
@@ -238,14 +240,14 @@ export default function UploadGallery() {
                   <FormErrorMessage message="Required" />
                 )}
 
-                <Input
+                <TextArea
                   id={id}
-                  label="Suitable Caption"
+                  label="Caption"
                   name="caption"
                   value={caption || ''}
                   placeholder="Write a Suitable Caption"
                   onChange={handleChange}
-                  className=""
+                  className="naxatw-resize-none"
                   required={false}
                   type="text"
                 />

@@ -61,6 +61,18 @@ function GalleryCard({
     {
       id: 2,
       label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">file_download</i>
+          <p className="naxatw-text-body-lg">Download</p>
+        </span>
+      ),
+      onClick: () => {
+        handleDownloadImage(imgSrc);
+      },
+    },
+    {
+      id: 3,
+      label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-delete_btn">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
           <p className="naxatw-text-body-lg naxatw-text-delete_btn">Delete</p>
@@ -76,18 +88,7 @@ function GalleryCard({
         dispatch(togglePromptDialog('delete-gallery'));
       },
     },
-    {
-      id: 3,
-      label: (
-        <span className="naxatw-flex naxatw-items-center">
-          <i className="material-icons naxatw-mr-2">file_download</i>
-          <p className="naxatw-text-body-lg">Download</p>
-        </span>
-      ),
-      onClick: () => {
-        handleDownloadImage(imgSrc);
-      },
-    },
+    
   ];
 
 
@@ -106,7 +107,7 @@ function GalleryCard({
       role="button"
       tabIndex="0"
       className="naxatw-min-h-[260px] naxatw-max-h-[260px] naxatw-min-w-[215px] naxatw-max-w-[215px] naxatw-group hover:naxatw-cursor-pointer"
-      onClick={() => {
+      onClick={() => { 
         onCardClick(id);
       }}
     >
@@ -124,6 +125,7 @@ function GalleryCard({
               handleCorousel();
             }}
           />
+
           {open && (
             <Lightbox
               mainSrc={corouselImages[currentIndex]}
@@ -168,11 +170,11 @@ function GalleryCard({
           status={checked}
         />
       </div>
-      <div className=" naxatw-flex naxatw-justify-between">
+      <div className="naxatw-flex naxatw-justify-between">
         <p
           className={`${
             status === id ? 'naxatw-text-[#00A699]' : ''
-          } group-hover:naxatw-text-[#00A699] naxatw-py-[10px] naxatw-text-body-btn`}
+          } group-hover:naxatw-text-[#00A699] naxatw-my-[10px] naxatw-text-body-btn naxatw-line-clamp-2`}
         >
           {label}
         </p>

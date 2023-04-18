@@ -206,12 +206,21 @@ export default function UploadGallery() {
                   alt="file"
                   className="naxatw-w-40 naxatw-h-32 naxatw-object-cover naxatw-rounded-lg"
                 />
-                <Button
+                {/* <Button
                   className="naxatw-btn-primary naxatw-w-full"
                   onClick={() => handleDelete(id)}
                 >
                   Delete
-                </Button>
+                </Button> */}
+                <a
+                  className="naxatw-flex naxatw-items-center naxatw-p-2 naxatw-justify-center"
+                  onClick={() => handleDelete(id)}
+                >
+                  <MaterialIcon
+                    className="naxatw-text-delete_btn"
+                    name="delete_outline"
+                  />
+                </a>
               </div>
               <div className="naxatw-w-full naxatw-space-y-2">
                 <Input

@@ -39,7 +39,7 @@ export default function DownloadLayer() {
 
   return (
     <div>
-      <div className="naxatw-space-y-5 naxatw-max-h-[28rem]">
+      <div className="naxatw-space-y-5 naxatw-max-h-[28rem] naxatw-mb-[12rem]">
         <div className="">
           <div className="naxatw-space-y-2">
             <label className="naxatw-label">Select download format</label>

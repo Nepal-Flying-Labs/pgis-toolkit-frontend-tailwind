@@ -133,81 +133,87 @@ export default function LayerList({ dropdownOptions }) {
             }
             body={
               <div>
-                {layers?.[theme.id]?.map(layer => (
-                  <div
-                    key={layer.id}
-                    className="naxatw-flex naxatw-justify-between naxatw-items-center"
-                    onMouseEnter={() => setHoverId(layer.id)}
-                    onMouseLeave={() => setHoverId(null)}
-                  >
-                    <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-                      <div
-                        className="naxatw-w-6 naxatw-h-6 naxatw-mr-2 naxatw-flex
+                {hasNoLayer ? (
+                  <p className="naxatw-text-body-lg naxatw-px-2">
+                    No layers found.
+                  </p>
+                ) : (
+                  layers?.[theme.id]?.map(layer => (
+                    <div
+                      key={layer.id}
+                      className="naxatw-flex naxatw-justify-between naxatw-items-center"
+                      onMouseEnter={() => setHoverId(layer.id)}
+                      onMouseLeave={() => setHoverId(null)}
+                    >
+                      <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+                        <div
+                          className="naxatw-w-6 naxatw-h-6 naxatw-mr-2 naxatw-flex
                           naxatw-items-center naxatw-justify-center naxatw-p-4"
-                      >
-                        <input
-                          id={layer.id}
-                          type="checkbox"
-                          className="naxatw-min-w-[16px] naxatw-min-h-[16px] naxatw-accent-grey-800"
-                          checked={layer.checked}
-                          onChange={e =>
-                            handleLayerCheck({
-                              checked: e.target.checked,
-                              layerId: layer.id,
-                              themeId: theme.id,
-                            })
-                          }
+                        >
+                          <input
+                            id={layer.id}
+                            type="checkbox"
+                            className="naxatw-min-w-[16px] naxatw-min-h-[16px] naxatw-accent-grey-800"
+                            checked={layer.checked}
+                            onChange={e =>
+                              handleLayerCheck({
+                                checked: e.target.checked,
+                                layerId: layer.id,
+                                themeId: theme.id,
+                              })
+                            }
+                          />
+                        </div>
+
+                        <LegendItem
+                          styles={layer.style}
+                          className="naxatw-mr-2.5"
+                          size="24px"
                         />
+
+                        <label
+                          title={layer.name}
+                          className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-w-[10rem]
+                          naxatw-truncate"
+                          htmlFor={layer.id}
+                        >
+                          {layer.name}
+                        </label>
                       </div>
 
-                      <LegendItem
-                        styles={layer.style}
-                        className="naxatw-mr-2.5"
-                        size="24px"
-                      />
-
-                      <label
-                        title={layer.name}
-                        className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-w-[10rem]
-                          naxatw-truncate"
-                        htmlFor={layer.id}
-                      >
-                        {layer.name}
-                      </label>
-                    </div>
-
-                    <div className="naxatw-flex">
-                      {layer.id === hoverId && (
-                        <span
-                          className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg
+                      <div className="naxatw-flex">
+                        {layer.id === hoverId && (
+                          <span
+                            className="naxatw-p-1.5 hover:naxatw-bg-grey-100 hover:naxatw-rounded-lg
                             naxatw-cursor-pointer naxatw-flex naxatw-items-center naxatw-justify-center
                             naxatw-w-9 naxatw-h-9"
-                          title="Edit Style"
-                          onClick={() => {
-                            dispatch(toggleStyleEdit(layer));
-                          }}
-                        >
-                          <MaterialIcon
-                            name="brush"
-                            className="material-icons-outlined naxatw-mt-1"
-                            style={{ fontSize: '20px' }}
-                          />
-                        </span>
-                      )}
-                      <DropdownOptions
-                        direction="left-bottom"
-                        options={
-                          layer.layer_type === 'WMS'
-                            ? dropdownOptions.filter(
-                                item => item.id === 'delete-layer',
-                              )
-                            : dropdownOptions
-                        }
-                        data={layer}
-                      />
+                            title="Edit Style"
+                            onClick={() => {
+                              dispatch(toggleStyleEdit(layer));
+                            }}
+                          >
+                            <MaterialIcon
+                              name="brush"
+                              className="material-icons-outlined naxatw-mt-1"
+                              style={{ fontSize: '20px' }}
+                            />
+                          </span>
+                        )}
+                        <DropdownOptions
+                          direction="left-bottom"
+                          options={
+                            layer.layer_type === 'WMS'
+                              ? dropdownOptions.filter(
+                                  item => item.id === 'delete-layer',
+                                )
+                              : dropdownOptions
+                          }
+                          data={layer}
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             }
           />

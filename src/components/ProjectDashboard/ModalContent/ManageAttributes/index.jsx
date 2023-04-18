@@ -72,7 +72,7 @@ const ManageAttributes = () => {
       if (!attributeList)
         dispatch(getLayerAttributeRequest({ layer_template: selectedData.id }));
     }
-    if (tabname === 'map')
+    if (tabname === 'map' || tabname === 'data')
       if (!individualAttributeData)
         dispatch(getLayerAttributeListRequest({ layer: selectedLayer.id }));
   }, [

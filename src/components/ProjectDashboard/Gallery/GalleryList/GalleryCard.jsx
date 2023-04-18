@@ -1,15 +1,16 @@
 /* eslint-disable import/no-named-as-default */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions/index';
 import CustomCheckbox from '@Components/common/CustomCheckbox/index';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Creators from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
 import { useParams } from 'react-router';
 
 const { togglePromptDialog, toggleModal } = CommonCreators;
-const { setGalleryState, getGalleryByIdRequest } = Creators;
+const { setGalleryState, getGalleryByIdRequest, downloadDocumentRequest } =
+  Creators;
 
 function GalleryCard({
   id,
@@ -22,6 +23,21 @@ function GalleryCard({
 }) {
   const dispatch = useDispatch();
   const { projectId } = useParams();
+
+  // const featureImages = useSelector(state => state.projectMap.featureImage);
+
+  // const featureImage = featureImages.map(image => image.image || image.url);
+
+  const handleDownloadImage = imgSrc => {
+    console.log(imgSrc);
+
+    const fileNameArray = imgSrc?.split('/');
+    const fileName = fileNameArray
+      ? fileNameArray[fileNameArray.length - 1]
+      : '';
+    saveAs(imgSrc, fileName);
+  };
+
   const dropdownOptions = [
     {
       id: 1,
@@ -53,6 +69,18 @@ function GalleryCard({
           }),
         );
         dispatch(togglePromptDialog('delete-gallery'));
+      },
+    },
+    {
+      id: 3,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">file_download</i>
+          <p className="naxatw-text-body-lg">Download</p>
+        </span>
+      ),
+      onClick: () => {
+        handleDownloadImage(imgSrc);
       },
     },
   ];

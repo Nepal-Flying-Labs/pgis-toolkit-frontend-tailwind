@@ -133,8 +133,8 @@ export default function UploadGallery() {
         <div className="naxatw-space-y-2">
           <label className="naxatw-label">Upload an image</label>
           <Dropzone
-            label="Please upload images (JPEG, PNG, GIF or PDF file format)"
-            accept=".jpeg, .png, .gif, .pdf"
+            label="Please upload images (JPEG, PNG, or GIF file format)"
+            accept=".jpeg, .png, .gif"
             multiple
             onChange={handleUpload}
           />

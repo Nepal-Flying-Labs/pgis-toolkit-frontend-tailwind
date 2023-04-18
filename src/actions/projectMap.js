@@ -171,6 +171,10 @@ export const { Types, Creators } = createActions(
     getFeatureGeometrySuccess: ['payload'],
     getFeatureGeometryFailure: null,
 
+    getLabelFieldOptionsRequest: ['params'],
+    getLabelFieldOptionsSuccess: ['payload'],
+    getLabelFieldOptionsFailure: null,
+
     toggleStyleEdit: ['payload'],
   },
   { prefix: 'projectMap/' },

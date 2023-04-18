@@ -6,10 +6,29 @@ import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import AdvanceStyling from './AdvanceStyling';
 import StandardStyling from './StandardStyling';
+import LabelStyling from './LabelStyling';
 
 const { setProjectMapState, updateLayerRequest } = ProjectMapCreators;
 
-const tabData = [{ label: 'Standard' }, { label: 'Advance' }];
+const tabData = [
+  { label: 'Standard' },
+  { label: 'Advance' },
+  { label: 'Label' },
+];
+
+function getStyleContent(tabname) {
+  switch (tabname) {
+    case ' Standard':
+      return <StandardStyling />;
+    case 'Advance':
+      return <AdvanceStyling />;
+    case 'Label':
+      return <LabelStyling />;
+
+    default:
+      return <StandardStyling />;
+  }
+}
 
 export default function EditStyleSection() {
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
@@ -116,11 +135,7 @@ export default function EditStyleSection() {
             </div>
 
             <div className="naxatw-flex naxatw-flex-col naxatw-gap-4">
-              {styleTab === 'Standard' ? (
-                <StandardStyling />
-              ) : (
-                <AdvanceStyling />
-              )}
+              {getStyleContent(styleTab)}
             </div>
           </>
         )}

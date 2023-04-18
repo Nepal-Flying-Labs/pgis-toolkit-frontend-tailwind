@@ -65,6 +65,7 @@ const initialState = {
   selectedDropdownOptionId: null,
   featureGeometry: null,
   resetMapExtent: false,
+  labelFields: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -859,6 +860,18 @@ const resetProjectMapState = state => ({
   mapSettings: state.mapSettings,
 });
 
+const getLabelFieldOptionsSuccess = (state, action) => {
+  const labelFields = action.payload.map(item => ({
+    id: item.id,
+    name: item.name,
+    alias: item.alias,
+  }));
+  return {
+    ...state,
+    labelFields,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -916,6 +929,7 @@ const projectMapReducer = createReducer(initialState, {
 
   [Types.TOGGLE_STYLE_EDIT]: toggleStyleEdit,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
+  [Types.GET_LABEL_FIELD_OPTIONS_SUCCESS]: getLabelFieldOptionsSuccess,
 });
 
 export default projectMapReducer;

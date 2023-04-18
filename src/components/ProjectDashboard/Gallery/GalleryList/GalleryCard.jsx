@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Creators from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
 import { useParams } from 'react-router';
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 
 const { togglePromptDialog, toggleModal } = CommonCreators;
 const { setGalleryState, getGalleryByIdRequest, downloadDocumentRequest } =
@@ -20,7 +22,11 @@ function GalleryCard({
   checked,
   status,
   onCheckSelected,
+  corouselImages,
 }) {
+  const [open, setOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   const dispatch = useDispatch();
   const { projectId } = useParams();
 
@@ -28,9 +34,8 @@ function GalleryCard({
 
   // const featureImage = featureImages.map(image => image.image || image.url);
 
+  // download image 
   const handleDownloadImage = imgSrc => {
-    console.log(imgSrc);
-
     const fileNameArray = imgSrc?.split('/');
     const fileName = fileNameArray
       ? fileNameArray[fileNameArray.length - 1]
@@ -85,6 +90,17 @@ function GalleryCard({
     },
   ];
 
+
+  const handleCorousel = () => {
+    corouselImages.map((ci, i) => {
+      if (ci === imgSrc) {
+        setCurrentIndex(i);
+      }
+    });
+    setOpen(true);
+  };
+  console.log(currentIndex);
+
   return (
     <div
       role="button"
@@ -104,7 +120,36 @@ function GalleryCard({
             className={`${
               status === id ? 'naxatw-border-2 naxatw-border-primary-400' : ''
             } naxatw-object-cover naxatw-h-full naxatw-w-full naxatw-rounded-lg naxatw-border-2`}
+            onClick={() => {
+              handleCorousel();
+            }}
           />
+          {open && (
+            <Lightbox
+              mainSrc={corouselImages[currentIndex]}
+              nextSrc={
+                corouselImages[(currentIndex + 1) % corouselImages.length]
+              }
+              prevSrc={
+                corouselImages[
+                  (currentIndex + corouselImages.length - 1) %
+                    corouselImages.length
+                ]
+              }
+              onMovePrevRequest={() =>
+                setCurrentIndex(
+                  (currentIndex + corouselImages.length - 1) %
+                    corouselImages.length,
+                )
+              }
+              onMoveNextRequest={() =>
+                setCurrentIndex((currentIndex + 1) % corouselImages.length)
+              }
+              enableZoom
+              onCloseRequest={() => setOpen(false)}
+              reactModalStyle={{ overlay: { zIndex: '999999999' } }}
+            />
+          )}
         </div>
         {/* <input
           type="checkbox"

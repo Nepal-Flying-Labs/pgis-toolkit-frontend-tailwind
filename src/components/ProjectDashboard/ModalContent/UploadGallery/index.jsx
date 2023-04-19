@@ -26,6 +26,7 @@ import noImg from '@Assets/images/noImage.png';
 import { v4 as uuidv4 } from 'uuid';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import getImageSource from '@Utils/getImageSource';
+import TextArea from '@Components/common/TextArea/index';
 
 const { uploadGalleryRequest } = ProjectDashboardCreators;
 
@@ -133,8 +134,8 @@ export default function UploadGallery() {
         <div className="naxatw-space-y-2">
           <label className="naxatw-label">Upload an image</label>
           <Dropzone
-            label="Please upload images (JPEG, PNG, GIF or PDF file format)"
-            accept=".jpeg, .png, .gif, .pdf"
+            label="Please upload images (JPEG, PNG, or GIF file format)"
+            accept=".jpeg, .png, .gif, .jpg"
             multiple
             onChange={handleUpload}
           />
@@ -206,16 +207,26 @@ export default function UploadGallery() {
                   alt="file"
                   className="naxatw-w-40 naxatw-h-32 naxatw-object-cover naxatw-rounded-lg"
                 />
-                <Button
+                {/* <Button
                   className="naxatw-btn-primary naxatw-w-full"
                   onClick={() => handleDelete(id)}
                 >
                   Delete
-                </Button>
+                </Button> */}
+                <a
+                  className="naxatw-flex naxatw-items-center naxatw-p-2 naxatw-justify-center"
+                  onClick={() => handleDelete(id)}
+                >
+                  <MaterialIcon
+                    className="naxatw-text-delete_btn"
+                    name="delete_outline"
+                  />
+                </a>
               </div>
               <div className="naxatw-w-full naxatw-space-y-2">
                 <Input
                   id={id}
+                  maxlength="100"
                   label="Title of Image*"
                   name="title"
                   value={title || ''}
@@ -229,14 +240,14 @@ export default function UploadGallery() {
                   <FormErrorMessage message="Required" />
                 )}
 
-                <Input
+                <TextArea
                   id={id}
-                  label="Suitable Caption"
+                  label="Caption"
                   name="caption"
                   value={caption || ''}
                   placeholder="Write a Suitable Caption"
                   onChange={handleChange}
-                  className=""
+                  className="naxatw-resize-none"
                   required={false}
                   type="text"
                 />

@@ -62,6 +62,8 @@ function GalleryList() {
   };
 
   const [resultList, setResultList] = useState([]);
+  const corouselImages = []
+  resultList?.map((rl) => corouselImages.push(rl?.image))
 
   // useEffect(() => {
   //   if (!isEmpty(gallery)) {
@@ -133,6 +135,7 @@ function GalleryList() {
                   e.stopPropagation();
                   handleSelect(item.id);
                 }}
+                corouselImages={corouselImages}
               />
             ))) || (
             <div className="naxatw-flex naxatw-flex-col naxatw-px-5 naxatw-py-5 naxatw-items-center">

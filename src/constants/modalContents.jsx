@@ -183,7 +183,7 @@ export function getModalContent(content) {
       return {
         title: 'Upload your image',
         subtitle:
-          'You can add any sort of relevant photographs & images or maps, in file format JPEG, PNG, GIF or PDF.',
+          'You can add any sort of relevant photographs & images or maps, in file format JPEG, PNG, GIF or JPG.',
         content: <UploadGallery />,
       };
 

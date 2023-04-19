@@ -74,7 +74,7 @@ export default function Document() {
                 dispatch(toggleModal('upload-document'));
               }}
             >
-              Documents
+              Add Documents
             </Button>
           </div>
         </div>

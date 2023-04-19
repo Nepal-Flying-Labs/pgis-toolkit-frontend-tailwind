@@ -96,6 +96,7 @@ const getProjectThemeLayersSuccess = (state, action) => {
         ...defaultStyles,
         ...item.style,
         geometryType: item.geom_type,
+        labelField: item.style.showLabel ? 'label' : '',
         icon: item.icon
           ? {
               id: 1,
@@ -872,6 +873,14 @@ const getLabelFieldOptionsSuccess = (state, action) => {
   };
 };
 
+const updateLabelFieldSuccess = (state, action) => {
+  const { responseData, payload } = action.payload;
+  return {
+    ...state,
+    refreshLayerId: responseData.id,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -930,6 +939,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.TOGGLE_STYLE_EDIT]: toggleStyleEdit,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
   [Types.GET_LABEL_FIELD_OPTIONS_SUCCESS]: getLabelFieldOptionsSuccess,
+  [Types.UPDATE_LABEL_FIELD_SUCCESS]: updateLabelFieldSuccess,
 });
 
 export default projectMapReducer;

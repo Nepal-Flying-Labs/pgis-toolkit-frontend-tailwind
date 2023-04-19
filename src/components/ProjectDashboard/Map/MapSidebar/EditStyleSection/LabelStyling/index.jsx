@@ -11,7 +11,11 @@ import Toggle from '@Components/common/Toggle';
 import Input from '../../InputComponents/Input';
 import RangeSlider from '../../InputComponents/RangeSlider';
 
-const { handleStyleInput, getLabelFieldOptionsRequest } = ProjectMapCreators;
+const {
+  handleStyleInput,
+  getLabelFieldOptionsRequest,
+  updateLabelFieldRequest,
+} = ProjectMapCreators;
 
 export default function LabelStyling() {
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
@@ -35,7 +39,6 @@ export default function LabelStyling() {
     showLabel,
     labelField,
     lineColor,
-    fillColor,
     lineOpacity,
     fillOpacity,
     lineThickness,
@@ -50,6 +53,21 @@ export default function LabelStyling() {
     dispatch(getLabelFieldOptionsRequest({ layer: selectedLayer.id }));
   }, [dispatch, showLabel, selectedLayer, labelFields]);
 
+  const handleLabelFieldSelect = selectedItem => {
+    dispatch(
+      handleStyleInput({
+        name: 'labelField',
+        value: selectedItem.name,
+        // value: 'label',
+      }),
+    );
+    const data = {
+      style: selectedLayer.style,
+      show_label: true,
+      label_field: selectedItem.name,
+    };
+    dispatch(updateLabelFieldRequest(selectedLayer.id, data));
+  };
   const hasIcon = !!icon.id;
 
   if (hasIcon) {
@@ -59,8 +77,6 @@ export default function LabelStyling() {
       </p>
     );
   }
-
-  console.log(labelField, 'labelFieldx');
 
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-4">
@@ -91,14 +107,7 @@ export default function LabelStyling() {
           }
           labelKey="name"
           valueKey="id"
-          onChange={selectedItem => {
-            dispatch(
-              handleStyleInput({
-                name: 'labelField',
-                value: selectedItem.name,
-              }),
-            );
-          }}
+          onChange={handleLabelFieldSelect}
         />
       </div>
       <Input

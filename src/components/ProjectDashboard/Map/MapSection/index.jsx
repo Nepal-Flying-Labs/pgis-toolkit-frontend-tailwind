@@ -214,6 +214,7 @@ export default function MapSection() {
         stylex.lineOpacity = 0;
         stylex.icon = {};
       }
+      stylex.labelField = 'label';
       return getStyles({
         style: stylex,
         feature,

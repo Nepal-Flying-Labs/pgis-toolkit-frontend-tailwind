@@ -175,6 +175,10 @@ export const { Types, Creators } = createActions(
     getLabelFieldOptionsSuccess: ['payload'],
     getLabelFieldOptionsFailure: null,
 
+    updateLabelFieldRequest: ['id', 'payload'],
+    updateLabelFieldSuccess: ['payload'],
+    updateLabelFieldFailure: null,
+
     toggleStyleEdit: ['payload'],
   },
   { prefix: 'projectMap/' },

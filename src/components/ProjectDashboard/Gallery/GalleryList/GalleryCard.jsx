@@ -100,7 +100,6 @@ function GalleryCard({
     });
     setOpen(true);
   };
-  console.log(currentIndex);
 
   return (
     <div
@@ -175,6 +174,7 @@ function GalleryCard({
           className={`${
             status === id ? 'naxatw-text-[#00A699]' : ''
           } group-hover:naxatw-text-[#00A699] naxatw-my-[10px] naxatw-text-body-btn naxatw-line-clamp-2`}
+          title={label}
         >
           {label}
         </p>

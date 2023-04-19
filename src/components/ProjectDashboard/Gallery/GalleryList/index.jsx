@@ -64,7 +64,6 @@ function GalleryList() {
   const [resultList, setResultList] = useState([]);
   const corouselImages = []
   resultList?.map((rl) => corouselImages.push(rl?.image))
-  console.log(corouselImages)
 
   // useEffect(() => {
   //   if (!isEmpty(gallery)) {

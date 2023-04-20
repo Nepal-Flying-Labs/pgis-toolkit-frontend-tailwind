@@ -349,7 +349,7 @@ const Location = ({ page, setPage }) => {
         >
           Save
         </Button>
-        {tabname !== 'settings' && (
+        {tabname === 'project-setup' ? (
           <Button
             onClick={() => {
               dispatch(setIndividualProject({ key: 'stepTwo', value: values }));
@@ -359,6 +359,12 @@ const Location = ({ page, setPage }) => {
           >
             Save Draft
           </Button>
+        ) : (
+          <div
+            className={`${
+              tabname === 'project-edit' ? 'naxatw-w-[8.875rem]' : ''
+            }`}
+          />
         )}
       </div>
     </>

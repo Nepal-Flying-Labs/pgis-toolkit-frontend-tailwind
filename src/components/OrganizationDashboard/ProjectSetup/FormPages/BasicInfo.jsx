@@ -232,6 +232,7 @@ const BasicInfo = ({ setPage }) => {
       patchProjectRequest(projectId, {
         ...payloadData,
         page: tabname === 'settings',
+        tabName: tabname === 'project-edit' ? 'Edit a Project' : '',
       }),
     );
   };
@@ -490,17 +491,29 @@ const BasicInfo = ({ setPage }) => {
           </Button>
         )}
 
-        {tabname !== 'settings' && (
-          <Button
-            onClick={() => {
-              dispatch(setIndividualProject({ key: 'stepOne', value: values }));
-              dispatch(togglePromptDialog('save-as-draft'));
-            }}
-            className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
-          >
-            Save Draft
-          </Button>
-        )}
+        {tabname !== 'settings' &&
+          (tabname === 'project-setup' ? (
+            <Button
+              onClick={() => {
+                dispatch(
+                  setIndividualProject({ key: 'stepOne', value: values }),
+                );
+                dispatch(togglePromptDialog('save-as-draft'));
+              }}
+              className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
+            >
+              Save Draft
+            </Button>
+          ) : (
+            <Button
+              className="naxatw-btn-secondary naxatw-w-[4.75rem]"
+              onClick={handleSaveBasicInfo}
+              isLoading={loading}
+              loaderClassName="naxatw-fill-secondary-400"
+            >
+              Save
+            </Button>
+          ))}
       </div>
     </>
   );

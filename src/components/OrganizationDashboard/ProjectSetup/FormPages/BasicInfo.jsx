@@ -176,65 +176,75 @@ const BasicInfo = ({ setPage }) => {
   };
 
   const handleSaveBasicInfo = () => {
-    const {
-      contactName,
-      contactPosition,
-      contactEmail,
-      contactPhone,
-      ...basicInfo
-    } = values;
-    const contactPerson = {
-      name: contactName,
-      email: contactEmail,
-      contact: contactPhone,
-      position: contactPosition,
-    };
-    const finalObj = {
-      ...basicInfo,
-      organization: organizationId,
-    };
+    const error = validation(values);
+    if (Object.keys(error).length > 0) {
+      setErrors(error);
+      dispatch(
+        toastActions.error({
+          message: 'An error has occurred while filling the form',
+        }),
+      );
+    } else {
+      const {
+        contactName,
+        contactPosition,
+        contactEmail,
+        contactPhone,
+        ...basicInfo
+      } = values;
+      const contactPerson = {
+        name: contactName,
+        email: contactEmail,
+        contact: contactPhone,
+        position: contactPosition,
+      };
+      const finalObj = {
+        ...basicInfo,
+        organization: organizationId,
+      };
 
-    const diffObj = diffObject(project, finalObj);
-    const diffContact = diffObject(contactDetails, contactPerson);
+      const diffObj = diffObject(project, finalObj);
+      const diffContact = diffObject(contactDetails, contactPerson);
 
-    const payloadData = diffObj?.cover_image?.existedData
-      ? removeObjectKeys(diffObj, ['cover_image'])
-      : diffObj;
-    if (Object.keys(diffContact).length > 0) {
-      if (stepOne.contactId) {
-        validateContactPerson(diffContact)
-          ? dispatch(
-              patchContactPersonRequest(stepOne.contactId, {
-                ...diffContact,
-                type: 'project',
-              }),
-            )
-          : dispatch(
-              patchContactPersonRequest(stepOne.contactId, {
-                is_deleted: true,
-                type: 'project',
-              }),
-            );
-      } else {
-        dispatch(
-          postContactPersonRequest(
-            {
-              ...contactPerson,
-              project: projectId,
-              organization: organizationId,
-            },
-            { project: projectId, type: 'project' },
-          ),
-        );
+      const payloadData = diffObj?.cover_image?.existedData
+        ? removeObjectKeys(diffObj, ['cover_image'])
+        : diffObj;
+      if (Object.keys(diffContact).length > 0) {
+        if (stepOne.contactId) {
+          validateContactPerson(diffContact)
+            ? dispatch(
+                patchContactPersonRequest(stepOne.contactId, {
+                  ...diffContact,
+                  type: 'project',
+                }),
+              )
+            : dispatch(
+                patchContactPersonRequest(stepOne.contactId, {
+                  is_deleted: true,
+                  type: 'project',
+                }),
+              );
+        } else {
+          dispatch(
+            postContactPersonRequest(
+              {
+                ...contactPerson,
+                project: projectId,
+                organization: organizationId,
+              },
+              { project: projectId, type: 'project' },
+            ),
+          );
+        }
       }
+      dispatch(
+        patchProjectRequest(projectId, {
+          ...payloadData,
+          page: tabname === 'settings',
+          tabName: tabname === 'project-edit' ? 'Edit a Project' : '',
+        }),
+      );
     }
-    dispatch(
-      patchProjectRequest(projectId, {
-        ...payloadData,
-        page: tabname === 'settings',
-        tabName: tabname === 'project-edit' ? 'Edit a Project' : '',
-      }),
-    );
   };
 
   return (

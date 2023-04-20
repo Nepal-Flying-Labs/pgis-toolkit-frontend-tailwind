@@ -96,7 +96,7 @@ const getProjectThemeLayersSuccess = (state, action) => {
         ...defaultStyles,
         ...item.style,
         geometryType: item.geom_type,
-        labelField: item.style.showLabel ? 'label' : '',
+        labelField: item.label_field || '',
         icon: item.icon
           ? {
               id: 1,

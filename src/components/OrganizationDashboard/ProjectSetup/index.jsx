@@ -126,7 +126,14 @@ const ProjectSetup = () => {
             {pageStatus.map(pg => (
               <div
                 key={pg.id}
-                className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-relative naxatw-w-[6.25rem] naxatw-h-[4.375rem]"
+                className={`naxatw-flex naxatw-flex-col naxatw-items-center naxatw-relative naxatw-w-[6.25rem] naxatw-h-[4.375rem] ${
+                  tabname !== 'project-setup' ? 'naxatw-cursor-pointer' : ''
+                }`}
+                onClick={
+                  tabname !== 'project-setup'
+                    ? () => setPage(pg.value)
+                    : () => {}
+                }
               >
                 {pg.value < page ? (
                   <div

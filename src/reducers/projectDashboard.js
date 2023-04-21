@@ -52,6 +52,7 @@ const initialState = {
     ordering: null,
     pageTab: 'users',
   },
+  showPreviewDocument: false,
 };
 
 const getProjectDetailSuccess = (state, action) => ({
@@ -589,6 +590,11 @@ const setUploadImageStatusCheckingId = (state, action) => ({
   },
 });
 
+const setPreviewDocument = (state, action) => ({
+  ...state,
+  showPreviewDocument: action.payload,
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -643,6 +649,7 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.UPLOAD_FEATURE_IMAGE_SUCCESS]: uploadFeatureImageSuccess,
   [Types.SET_UPLOADING_IMAGE]: setUploadingImage,
   [Types.SET_UPLOAD_IMAGE_STATUS_CHECKING_ID]: setUploadImageStatusCheckingId,
+  [Types.SET_PREVIEW_DOCUMENT]: setPreviewDocument,
 });
 
 export default projectDashboardReducer;

@@ -142,7 +142,7 @@ export default function UploadGallery() {
           {uploadedFiles?.map(({ id, title, caption, file }) => (
             <div
               key={id}
-              className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-px-5 naxatw-py-3 naxatw-flex naxatw-items-center naxatw-gap-x-5"
+              className="naxatw-border naxatw-border-grey-300 naxatw-rounded-lg naxatw-px-5 naxatw-py-3 naxatw-flex naxatw-items-center naxatw-gap-x-5 naxatw-relative"
             >
               {/* <div className="naxatw-space-y-2">
                   <Input
@@ -205,7 +205,7 @@ export default function UploadGallery() {
                 <img
                   src={file ? getImageSource(file) : ''}
                   alt="file"
-                  className="naxatw-w-40 naxatw-h-32 naxatw-object-cover naxatw-rounded-lg"
+                  className="naxatw-w-40 naxatw-h-32 naxatw-object-cover naxatw-rounded-lg naxatw-border-2"
                 />
                 {/* <Button
                   className="naxatw-btn-primary naxatw-w-full"
@@ -213,16 +213,8 @@ export default function UploadGallery() {
                 >
                   Delete
                 </Button> */}
-                <a
-                  className="naxatw-flex naxatw-items-center naxatw-p-2 naxatw-justify-center"
-                  onClick={() => handleDelete(id)}
-                >
-                  <MaterialIcon
-                    className="naxatw-text-delete_btn"
-                    name="delete_outline"
-                  />
-                </a>
               </div>
+
               <div className="naxatw-w-full naxatw-space-y-2">
                 <Input
                   id={id}
@@ -254,6 +246,18 @@ export default function UploadGallery() {
                 {errorFields?.[id]?.includes('caption') && (
                   <FormErrorMessage message="Required" />
                 )}
+              </div>
+
+              <div className="naxatw-absolute naxatw-top-0 naxatw-right-2">
+                <a
+                  className="naxatw-flex naxatw-items-center naxatw-p-2 naxatw-justify-center"
+                  onClick={() => handleDelete(id)}
+                >
+                  <MaterialIcon
+                    className="naxatw-text-delete_btn"
+                    name="delete_outline"
+                  />
+                </a>
               </div>
             </div>
           ))}

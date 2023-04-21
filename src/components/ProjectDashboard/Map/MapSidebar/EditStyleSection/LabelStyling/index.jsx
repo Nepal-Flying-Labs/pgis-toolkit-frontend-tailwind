@@ -91,7 +91,7 @@ export default function LabelStyling() {
   return (
     <div className="naxatw-flex naxatw-flex-col naxatw-gap-4">
       <div className="naxatw-flex naxatw-justify-between">
-        <label className="naxatw-label">Show Legend</label>
+        <label className="naxatw-label">Show Label</label>
         <Toggle
           checked={showLabel}
           name="showLabel"
@@ -375,6 +375,7 @@ export default function LabelStyling() {
                 type="number"
                 name="labelLineHeight"
                 label="Line Height"
+                step={0.1}
                 value={labelLineHeight}
                 onChange={handleChange}
               />

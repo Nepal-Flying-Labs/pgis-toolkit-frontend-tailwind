@@ -27,6 +27,8 @@ const ProjectInfo = () => {
     }
   };
 
+  console.log(info?.thematic_areas);
+
   return (
     <div className="naxatw-w-full naxatw-bg-white naxatw-rounded-[20px] naxatw-h-full naxatw-overflow-y-auto scrollbar naxatw-border naxatw-border-grey-300 naxatw-mb-5 md:naxatw-mb-0">
       {/* Header */}
@@ -60,7 +62,9 @@ const ProjectInfo = () => {
             <p className="naxatw-text-body-btn naxatw-mb-1">
               Thematic focus areas
             </p>
-            <p className="naxatw-text-body-lg">{info?.thematic_areas || '-'}</p>
+            <p className="naxatw-text-body-lg">
+              {info?.thematic_areas?.map(area => <li>{area}</li>) || '-'}
+            </p>
           </div>
           <div className="">
             <p className="naxatw-text-body-btn naxatw-mb-1">Project partners</p>
@@ -131,7 +135,7 @@ const ProjectInfo = () => {
             </div>
           ))
         ) : (
-          <div className="naxatw-text-body-lg">No data</div>
+          <div className="naxatw-text-body-lg">N/A</div>
         )}
       </div>
     </div>

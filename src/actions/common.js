@@ -15,8 +15,6 @@ export const { Types, Creators } = createActions(
     setRightSidebarState: ['payload'],
 
     setImageModal: ['payload'],
-
-    setPreviewDocument: ['payload'],
   },
   { prefix: 'common/' },
 );

@@ -14,7 +14,6 @@ const initialState = {
     flag: '',
   },
   showImageModal: false,
-  showPreviewDocument: false,
 };
 
 const toggleModal = (state, action) => ({
@@ -65,11 +64,6 @@ const setImageModal = (state, action) => ({
   showImageModal: action.payload,
 });
 
-const setPreviewDocument = (state, action) => ({
-  ...state,
-  showPreviewDocument: action.payload,
-});
-
 const commonReducer = createReducer(initialState, {
   [Types.TOGGLE_MODAL]: toggleModal,
   [Types.SET_MODAL_CONTENT]: setModalContent,
@@ -80,7 +74,6 @@ const commonReducer = createReducer(initialState, {
   [Types.SET_PROJECT_HEADER_HEIGHT]: setProjectHeaderHeight,
   [Types.SET_RIGHT_SIDEBAR_STATE]: setRightSidebarState,
   [Types.SET_IMAGE_MODAL]: setImageModal,
-  [Types.SET_PREVIEW_DOCUMENT]: setPreviewDocument,
 });
 
 export default commonReducer;

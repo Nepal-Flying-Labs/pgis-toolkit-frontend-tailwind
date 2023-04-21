@@ -10,15 +10,15 @@ import DocumentList from './DocumentList/index';
 import NoDocumentYet from './NoDocumentYet/index';
 import PreviewDocument from './DocumentList/PreviewDocument';
 
-const { getDocumentItemRequest, downloadDocumentRequest, setDocumentState } =
-  ProjectDashboardCreators;
-
 const {
-  toggleModal,
-  togglePromptDialog,
-  setRightSidebarState,
+  getDocumentItemRequest,
+  downloadDocumentRequest,
+  setDocumentState,
   setPreviewDocument,
-} = CommonCreators;
+} = ProjectDashboardCreators;
+
+const { toggleModal, togglePromptDialog, setRightSidebarState } =
+  CommonCreators;
 
 export default function Document() {
   const { projectId } = useParams();
@@ -28,7 +28,7 @@ export default function Document() {
 
   const toggleRightBar = useSelector(state => state.common.rightSidebar.show);
   const togglePreviewDocument = useSelector(
-    state => state.common.showPreviewDocument,
+    state => state.projectDashboard.showPreviewDocument,
   );
 
   useEffect(() => {

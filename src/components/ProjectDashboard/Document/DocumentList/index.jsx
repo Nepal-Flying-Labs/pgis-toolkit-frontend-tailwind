@@ -26,13 +26,10 @@ const {
   downloadDocumentRequest,
   getDocumentItemRequest,
   getDocumentByIdRequest,
-} = Creators;
-const {
-  toggleModal,
-  togglePromptDialog,
-  setRightSidebarState,
   setPreviewDocument,
-} = CommonCreators;
+} = Creators;
+const { toggleModal, togglePromptDialog, setRightSidebarState } =
+  CommonCreators;
 
 function DocumentList() {
   const { projectId } = useParams();

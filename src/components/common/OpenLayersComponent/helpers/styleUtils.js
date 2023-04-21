@@ -201,7 +201,7 @@ function createTextStyle(style, feature, resolution) {
     textBaseline: labelBaseline,
     placement: labelPlacement,
     maxAngle: labelMaxAngleDegree,
-    rotation: parseFloat(labelRotationDegree) || 0,
+    rotation: parseFloat(labelRotationDegree * (Math.PI / 180)) || 0,
   });
 }
 

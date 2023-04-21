@@ -20,6 +20,7 @@ import { useParams } from 'react-router';
 import usePagination from '@Hooks/usePagination';
 import Pagination from '@Components/common/Pagination/index';
 import { getSelectedRange } from '@Components/common/Pagination/getSelectedItem';
+import Button from '@Components/common/Button';
 
 const { togglePromptDialog } = CommonCreators;
 
@@ -33,6 +34,7 @@ const {
   setSelectedData,
   handleUserTabChange,
   setUsersOrdering,
+  resetUserRole,
 } = Creators;
 
 const roles = [
@@ -240,6 +242,16 @@ const Users = () => {
             }}
             selected={roles.filter(role => role.value === userRole)[0]?.name}
           />
+        </div>
+        <div>
+          <Button
+            className="naxatw-btn-primary"
+            onClick={() => {
+              dispatch(resetUserRole(null));
+            }}
+          >
+            Reset
+          </Button>
         </div>
       </div>
       <div className="naxatw-mt-3 ">

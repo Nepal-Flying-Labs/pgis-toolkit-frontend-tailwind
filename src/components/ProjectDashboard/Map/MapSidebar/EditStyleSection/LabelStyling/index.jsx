@@ -107,267 +107,275 @@ export default function LabelStyling() {
         />
       </div>
 
-      <div className="naxatw-space-y-2">
-        <label className="naxatw-label">Label Field</label>
-        <Select
-          options={labelFields || []}
-          placeholder="Choose"
-          selectedValue={
-            labelFields?.find(item => item.name === labelField)?.id
-          }
-          labelKey="name"
-          valueKey="id"
-          onChange={handleLabelFieldSelect}
-        />
-      </div>
-
-      <RangeSlider
-        name="labelOpacity"
-        label="Opacity"
-        value={labelOpacity}
-        onChange={handleChange}
-      />
-
-      <div className="naxatw-space-y-2">
-        <label className="naxatw-label">Font</label>
-        <Select
-          options={fontOptions}
-          placeholder="Choose"
-          selectedValue={labelFont}
-          labelKey="label"
-          valueKey="value"
-          onChange={({ value }) => {
-            dispatch(
-              handleStyleInput({
-                name: 'labelFont',
-                value,
-              }),
-            );
-          }}
-        />
-      </div>
-
-      <Input
-        type="number"
-        name="labelFontSize"
-        label="Font Size"
-        value={labelFontSize}
-        onChange={handleChange}
-      />
-
-      <Input
-        name="labelColor"
-        className="color-select"
-        type="color"
-        label="Font Color"
-        value={labelColor}
-        onChange={handleChange}
-      />
-
-      <Input
-        type="number"
-        name="labelOutlineWidth"
-        label="Halo"
-        value={labelOutlineWidth}
-        onChange={handleChange}
-      />
-
-      <Input
-        type="color"
-        name="labelOutlineColor"
-        className="color-select"
-        label="Halo Color"
-        value={labelOutlineColor}
-        onChange={handleChange}
-      />
-
-      <Input
-        type="number"
-        name="labelOffsetX"
-        label="Offset X"
-        value={labelOffsetX}
-        onChange={handleChange}
-      />
-
-      <Input
-        type="number"
-        name="labelOffsetY"
-        label="Offset Y"
-        value={labelOffsetY}
-        onChange={handleChange}
-      />
-
-      <div className="naxatw-space-y-2">
-        <label className="naxatw-label">Text</label>
-        <Select
-          options={textOptions}
-          placeholder="Text"
-          selectedValue={labelText}
-          labelKey="label"
-          valueKey="value"
-          onChange={({ value }) => {
-            dispatch(
-              handleStyleInput({
-                name: 'labelText',
-                value,
-              }),
-            );
-          }}
-        />
-      </div>
-
-      <div className="naxatw-space-y-2">
-        <label className="naxatw-label">Max. Resolution</label>
-        <Select
-          options={maxResolutionOptions}
-          placeholder="Max.Reso"
-          selectedValue={labelMaxResolution}
-          labelKey="label"
-          valueKey="value"
-          onChange={({ value }) => {
-            dispatch(
-              handleStyleInput({
-                name: 'labelMaxResolution',
-                value,
-              }),
-            );
-          }}
-        />
-      </div>
-
-      <div className="naxatw-space-y-2">
-        <label className="naxatw-label">Align</label>
-        <Select
-          options={labelAlignOptions}
-          placeholder="Align"
-          labelKey="label"
-          valueKey="value"
-          selectedValue={labelAlign}
-          onChange={({ value }) => {
-            dispatch(
-              handleStyleInput({
-                name: 'labelAlign',
-                value,
-              }),
-            );
-          }}
-        />
-      </div>
-
-      <div className="naxatw-space-y-2">
-        <label className="naxatw-label">Baseline</label>
-        <Select
-          options={labelBaselineOptions}
-          placeholder="Baseline"
-          labelKey="label"
-          valueKey="value"
-          selectedValue={labelBaseline}
-          onChange={({ value }) => {
-            dispatch(
-              handleStyleInput({
-                name: 'labelBaseline',
-                value,
-              }),
-            );
-          }}
-        />
-      </div>
-
-      <Input
-        type="number"
-        name="labelRotationDegree"
-        label="Rotation"
-        value={labelRotationDegree}
-        onChange={handleChange}
-      />
-
-      <div className="naxatw-space-y-2">
-        <label className="naxatw-label">Font Weight</label>
-        <Select
-          options={labelFontWeightOptions}
-          placeholder="Font Weight"
-          labelKey="label"
-          valueKey="value"
-          selectedValue={labelFontWeight}
-          onChange={({ value }) => {
-            dispatch(
-              handleStyleInput({
-                name: 'labelFontWeight',
-                value,
-              }),
-            );
-          }}
-        />
-      </div>
-
-      {!pointTypes.includes(geometryType) && (
+      {showLabel && (
         <>
           <div className="naxatw-space-y-2">
-            <label className="naxatw-label">Placement</label>
+            <label className="naxatw-label">Label Field</label>
             <Select
-              options={labelPlacementOptions}
-              placeholder="Placement"
-              labelKey="label"
-              valueKey="value"
-              selectedValue={labelPlacement}
-              onChange={({ value }) => {
-                dispatch(
-                  handleStyleInput({
-                    name: 'labelPlacement',
-                    value,
-                  }),
-                );
-              }}
+              options={labelFields || []}
+              placeholder="Choose"
+              selectedValue={
+                labelFields?.find(item => item.name === labelField)?.id
+              }
+              labelKey="name"
+              valueKey="id"
+              onChange={handleLabelFieldSelect}
             />
           </div>
 
-          <div className="naxatw-space-y-2">
-            <label className="naxatw-label">Max. Angle</label>
-            <Select
-              options={labelMaxAngleDegreeOptions}
-              placeholder="Max. Angle"
-              labelKey="label"
-              valueKey="value"
-              selectedValue={labelMaxAngleDegree}
-              onChange={({ value }) => {
-                dispatch(
-                  handleStyleInput({
-                    name: 'labelMaxAngleDegree',
-                    value,
-                  }),
-                );
-              }}
-            />
-          </div>
+          {labelField && (
+            <>
+              <RangeSlider
+                name="labelOpacity"
+                label="Opacity"
+                value={labelOpacity}
+                onChange={handleChange}
+              />
 
-          <div className="naxatw-space-y-2">
-            <label className="naxatw-label">Exceed Length</label>
-            <Select
-              options={labelOverflowOptions}
-              placeholder="Exceed Length"
-              labelKey="label"
-              valueKey="value"
-              selectedValue={labelOverflow}
-              onChange={({ value }) => {
-                dispatch(
-                  handleStyleInput({
-                    name: 'labelOverflowOptions',
-                    value,
-                  }),
-                );
-              }}
-            />
-          </div>
+              <div className="naxatw-space-y-2">
+                <label className="naxatw-label">Font</label>
+                <Select
+                  options={fontOptions}
+                  placeholder="Choose"
+                  selectedValue={labelFont}
+                  labelKey="label"
+                  valueKey="value"
+                  onChange={({ value }) => {
+                    dispatch(
+                      handleStyleInput({
+                        name: 'labelFont',
+                        value,
+                      }),
+                    );
+                  }}
+                />
+              </div>
+
+              <Input
+                type="number"
+                name="labelFontSize"
+                label="Font Size"
+                value={labelFontSize}
+                onChange={handleChange}
+              />
+
+              <Input
+                name="labelColor"
+                className="color-select"
+                type="color"
+                label="Font Color"
+                value={labelColor}
+                onChange={handleChange}
+              />
+
+              <Input
+                type="number"
+                name="labelOutlineWidth"
+                label="Halo"
+                value={labelOutlineWidth}
+                onChange={handleChange}
+              />
+
+              <Input
+                type="color"
+                name="labelOutlineColor"
+                className="color-select"
+                label="Halo Color"
+                value={labelOutlineColor}
+                onChange={handleChange}
+              />
+
+              <Input
+                type="number"
+                name="labelOffsetX"
+                label="Offset X"
+                value={labelOffsetX}
+                onChange={handleChange}
+              />
+
+              <Input
+                type="number"
+                name="labelOffsetY"
+                label="Offset Y"
+                value={labelOffsetY}
+                onChange={handleChange}
+              />
+
+              <div className="naxatw-space-y-2">
+                <label className="naxatw-label">Text</label>
+                <Select
+                  options={textOptions}
+                  placeholder="Text"
+                  selectedValue={labelText}
+                  labelKey="label"
+                  valueKey="value"
+                  onChange={({ value }) => {
+                    dispatch(
+                      handleStyleInput({
+                        name: 'labelText',
+                        value,
+                      }),
+                    );
+                  }}
+                />
+              </div>
+
+              <div className="naxatw-space-y-2">
+                <label className="naxatw-label">Max. Resolution</label>
+                <Select
+                  options={maxResolutionOptions}
+                  placeholder="Max.Reso"
+                  selectedValue={labelMaxResolution}
+                  labelKey="label"
+                  valueKey="value"
+                  onChange={({ value }) => {
+                    dispatch(
+                      handleStyleInput({
+                        name: 'labelMaxResolution',
+                        value,
+                      }),
+                    );
+                  }}
+                />
+              </div>
+
+              <div className="naxatw-space-y-2">
+                <label className="naxatw-label">Align</label>
+                <Select
+                  options={labelAlignOptions}
+                  placeholder="Align"
+                  labelKey="label"
+                  valueKey="value"
+                  selectedValue={labelAlign}
+                  onChange={({ value }) => {
+                    dispatch(
+                      handleStyleInput({
+                        name: 'labelAlign',
+                        value,
+                      }),
+                    );
+                  }}
+                />
+              </div>
+
+              <div className="naxatw-space-y-2">
+                <label className="naxatw-label">Baseline</label>
+                <Select
+                  options={labelBaselineOptions}
+                  placeholder="Baseline"
+                  labelKey="label"
+                  valueKey="value"
+                  selectedValue={labelBaseline}
+                  onChange={({ value }) => {
+                    dispatch(
+                      handleStyleInput({
+                        name: 'labelBaseline',
+                        value,
+                      }),
+                    );
+                  }}
+                />
+              </div>
+
+              <Input
+                type="number"
+                name="labelRotationDegree"
+                label="Rotation"
+                value={labelRotationDegree}
+                onChange={handleChange}
+              />
+
+              <div className="naxatw-space-y-2">
+                <label className="naxatw-label">Font Weight</label>
+                <Select
+                  options={labelFontWeightOptions}
+                  placeholder="Font Weight"
+                  labelKey="label"
+                  valueKey="value"
+                  selectedValue={labelFontWeight}
+                  onChange={({ value }) => {
+                    dispatch(
+                      handleStyleInput({
+                        name: 'labelFontWeight',
+                        value,
+                      }),
+                    );
+                  }}
+                />
+              </div>
+
+              {!pointTypes.includes(geometryType) && (
+                <>
+                  <div className="naxatw-space-y-2">
+                    <label className="naxatw-label">Placement</label>
+                    <Select
+                      options={labelPlacementOptions}
+                      placeholder="Placement"
+                      labelKey="label"
+                      valueKey="value"
+                      selectedValue={labelPlacement}
+                      onChange={({ value }) => {
+                        dispatch(
+                          handleStyleInput({
+                            name: 'labelPlacement',
+                            value,
+                          }),
+                        );
+                      }}
+                    />
+                  </div>
+
+                  <div className="naxatw-space-y-2">
+                    <label className="naxatw-label">Max. Angle</label>
+                    <Select
+                      options={labelMaxAngleDegreeOptions}
+                      placeholder="Max. Angle"
+                      labelKey="label"
+                      valueKey="value"
+                      selectedValue={labelMaxAngleDegree}
+                      onChange={({ value }) => {
+                        dispatch(
+                          handleStyleInput({
+                            name: 'labelMaxAngleDegree',
+                            value,
+                          }),
+                        );
+                      }}
+                    />
+                  </div>
+
+                  <div className="naxatw-space-y-2">
+                    <label className="naxatw-label">Exceed Length</label>
+                    <Select
+                      options={labelOverflowOptions}
+                      placeholder="Exceed Length"
+                      labelKey="label"
+                      valueKey="value"
+                      selectedValue={labelOverflow}
+                      onChange={({ value }) => {
+                        dispatch(
+                          handleStyleInput({
+                            name: 'labelOverflowOptions',
+                            value,
+                          }),
+                        );
+                      }}
+                    />
+                  </div>
+                </>
+              )}
+
+              <Input
+                type="number"
+                name="labelLineHeight"
+                label="Line Height"
+                value={labelLineHeight}
+                onChange={handleChange}
+              />
+            </>
+          )}
         </>
       )}
-
-      <Input
-        type="number"
-        name="labelLineHeight"
-        label="Line Height"
-        value={labelLineHeight}
-        onChange={handleChange}
-      />
     </div>
   );
 }

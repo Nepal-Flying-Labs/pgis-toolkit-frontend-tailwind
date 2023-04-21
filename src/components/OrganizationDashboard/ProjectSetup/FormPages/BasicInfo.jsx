@@ -109,12 +109,12 @@ const validation = formValues => {
   }
 
   if (formValues.contactName && formValues.contactPhone) {
-    const pattern = /^[0-9\b]+$/;
+    const pattern = /^[+\-()# \d]+$/;
     const result = pattern.test(formValues.contactPhone);
     if (!result) {
       errors.contactPhone = 'Enter a valid contact number';
     } else {
-      formValues.contactPhone.length < 7 || formValues.contactPhone.length > 15
+      formValues.contactPhone.length < 7 || formValues.contactPhone.length > 20
         ? (errors.contactPhone = 'Enter a valid contact number')
         : '';
     }

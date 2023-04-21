@@ -236,12 +236,13 @@ const updateLayerSuccess = (state, action) => {
       item.id === responseData.id ? { ...item, style, name } : { ...item },
     ),
   };
-  const { selectedLayer, sidebarContent } = initialState;
+  const { selectedLayer, sidebarContent, labelFields } = initialState;
   return {
     ...state,
     layers,
     selectedLayer,
     sidebarContent,
+    labelFields,
   };
 };
 

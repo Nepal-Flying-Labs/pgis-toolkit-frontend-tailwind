@@ -115,7 +115,7 @@ export default function LabelStyling() {
               options={labelFields || []}
               placeholder="Choose"
               selectedValue={
-                labelFields?.find(item => item.name === labelField)?.id
+                labelFields?.find(item => item.name === labelField)?.id || ''
               }
               labelKey="name"
               valueKey="id"
@@ -285,8 +285,8 @@ export default function LabelStyling() {
                 type="number"
                 name="labelRotationDegree"
                 label="Rotation"
-                min={-50}
-                max={50}
+                min={-360}
+                max={360}
                 value={labelRotationDegree}
                 onChange={handleChange}
               />

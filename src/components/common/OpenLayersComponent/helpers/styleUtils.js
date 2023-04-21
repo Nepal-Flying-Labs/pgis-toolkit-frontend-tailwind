@@ -49,7 +49,7 @@ export const defaultStyles = {
   labelOutlineWidth: 3,
   labelOutlineColor: '#ffffff',
   labelOffsetX: 0,
-  labelOffsetY: 0,
+  labelOffsetY: -10,
   labelText: 'normal',
   labelMaxResolution: 1200,
   labelAlign: 'center',

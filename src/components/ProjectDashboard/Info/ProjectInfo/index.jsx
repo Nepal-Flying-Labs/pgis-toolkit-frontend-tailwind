@@ -27,8 +27,6 @@ const ProjectInfo = () => {
     }
   };
 
-  console.log(info?.thematic_areas);
-
   return (
     <div className="naxatw-w-full naxatw-bg-white naxatw-rounded-[20px] naxatw-h-full naxatw-overflow-y-auto scrollbar naxatw-border naxatw-border-grey-300 naxatw-mb-5 md:naxatw-mb-0">
       {/* Header */}

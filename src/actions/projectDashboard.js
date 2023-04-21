@@ -230,6 +230,7 @@ export const { Types, Creators } = createActions(
     setUploadImageStatusCheckingId: ['id'],
 
     setPreviewDocument: ['payload'],
+    resetUserRole: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

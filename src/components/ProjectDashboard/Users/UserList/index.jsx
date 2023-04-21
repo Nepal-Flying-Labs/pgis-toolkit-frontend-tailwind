@@ -18,12 +18,14 @@ import Select from '@Components/common/Select/index';
 import Pagination from '@Components/common/Pagination/index';
 import usePagination from '@Hooks/usePagination';
 import { getSelectedRange } from '@Components/common/Pagination/getSelectedItem';
+import Button from '@Components/common/Button';
 
 const {
   setUserState,
   updateUserStatusRequest,
   updateInvitedUserStatusRequest,
   resendInvitationRequest,
+  resetUserRole,
 } = Creators;
 const { togglePromptDialog } = CommonCreators;
 
@@ -242,12 +244,22 @@ const UserList = () => {
             options={roles}
             dataKey="name"
             placeholder="Role"
-            className="naxatw-select-md !naxatw-pl-3"
+            className="naxatw-select-md !naxatw-pl-3 naxatw-min-w-[180px]"
             onChange={data => {
               dispatch(setUserState({ userRole: data.name }));
             }}
             selected={roles.filter(role => role.name === userRole)[0]?.name}
           />
+        </div>
+        <div>
+          <Button
+            className="naxatw-btn-primary"
+            onClick={() => {
+              dispatch(resetUserRole(null));
+            }}
+          >
+            Reset
+          </Button>
         </div>
       </div>
       <div className="xl:naxatw-mt-3 ">

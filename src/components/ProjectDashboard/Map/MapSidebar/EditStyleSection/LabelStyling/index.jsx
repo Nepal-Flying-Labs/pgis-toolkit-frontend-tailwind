@@ -189,6 +189,8 @@ export default function LabelStyling() {
                 type="number"
                 name="labelOffsetX"
                 label="Offset X"
+                min={-50}
+                max={50}
                 value={labelOffsetX}
                 onChange={handleChange}
               />
@@ -197,6 +199,8 @@ export default function LabelStyling() {
                 type="number"
                 name="labelOffsetY"
                 label="Offset Y"
+                min={-50}
+                max={50}
                 value={labelOffsetY}
                 onChange={handleChange}
               />
@@ -281,6 +285,8 @@ export default function LabelStyling() {
                 type="number"
                 name="labelRotationDegree"
                 label="Rotation"
+                min={-50}
+                max={50}
                 value={labelRotationDegree}
                 onChange={handleChange}
               />

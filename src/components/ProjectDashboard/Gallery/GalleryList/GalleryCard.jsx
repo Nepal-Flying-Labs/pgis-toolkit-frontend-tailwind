@@ -1,15 +1,18 @@
 /* eslint-disable import/no-named-as-default */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import DropdownOptions from '@Components/common/DropdownOptions/index';
 import CustomCheckbox from '@Components/common/CustomCheckbox/index';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Creators from '@Actions/projectDashboard';
 import { Creators as CommonCreators } from '@Actions/common';
 import { useParams } from 'react-router';
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 
 const { togglePromptDialog, toggleModal } = CommonCreators;
-const { setGalleryState, getGalleryByIdRequest } = Creators;
+const { setGalleryState, getGalleryByIdRequest, downloadDocumentRequest } =
+  Creators;
 
 function GalleryCard({
   id,
@@ -19,9 +22,27 @@ function GalleryCard({
   checked,
   status,
   onCheckSelected,
+  corouselImages,
 }) {
+  const [open, setOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   const dispatch = useDispatch();
   const { projectId } = useParams();
+
+  // const featureImages = useSelector(state => state.projectMap.featureImage);
+
+  // const featureImage = featureImages.map(image => image.image || image.url);
+
+  // download image 
+  const handleDownloadImage = imgSrc => {
+    const fileNameArray = imgSrc?.split('/');
+    const fileName = fileNameArray
+      ? fileNameArray[fileNameArray.length - 1]
+      : '';
+    saveAs(imgSrc, fileName);
+  };
+
   const dropdownOptions = [
     {
       id: 1,
@@ -40,6 +61,18 @@ function GalleryCard({
     {
       id: 2,
       label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">file_download</i>
+          <p className="naxatw-text-body-lg">Download</p>
+        </span>
+      ),
+      onClick: () => {
+        handleDownloadImage(imgSrc);
+      },
+    },
+    {
+      id: 3,
+      label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-delete_btn">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
           <p className="naxatw-text-body-lg naxatw-text-delete_btn">Delete</p>
@@ -55,14 +88,25 @@ function GalleryCard({
         dispatch(togglePromptDialog('delete-gallery'));
       },
     },
+    
   ];
+
+
+  const handleCorousel = () => {
+    corouselImages.map((ci, i) => {
+      if (ci === imgSrc) {
+        setCurrentIndex(i);
+      }
+    });
+    setOpen(true);
+  };
 
   return (
     <div
       role="button"
       tabIndex="0"
       className="naxatw-min-h-[260px] naxatw-max-h-[260px] naxatw-min-w-[215px] naxatw-max-w-[215px] naxatw-group hover:naxatw-cursor-pointer"
-      onClick={() => {
+      onClick={() => { 
         onCardClick(id);
       }}
     >
@@ -76,7 +120,37 @@ function GalleryCard({
             className={`${
               status === id ? 'naxatw-border-2 naxatw-border-primary-400' : ''
             } naxatw-object-cover naxatw-h-full naxatw-w-full naxatw-rounded-lg naxatw-border-2`}
+            onClick={() => {
+              handleCorousel();
+            }}
           />
+
+          {open && (
+            <Lightbox
+              mainSrc={corouselImages[currentIndex]}
+              nextSrc={
+                corouselImages[(currentIndex + 1) % corouselImages.length]
+              }
+              prevSrc={
+                corouselImages[
+                  (currentIndex + corouselImages.length - 1) %
+                    corouselImages.length
+                ]
+              }
+              onMovePrevRequest={() =>
+                setCurrentIndex(
+                  (currentIndex + corouselImages.length - 1) %
+                    corouselImages.length,
+                )
+              }
+              onMoveNextRequest={() =>
+                setCurrentIndex((currentIndex + 1) % corouselImages.length)
+              }
+              enableZoom
+              onCloseRequest={() => setOpen(false)}
+              reactModalStyle={{ overlay: { zIndex: '999999999' } }}
+            />
+          )}
         </div>
         {/* <input
           type="checkbox"
@@ -95,11 +169,12 @@ function GalleryCard({
           status={checked}
         />
       </div>
-      <div className=" naxatw-flex naxatw-justify-between">
+      <div className="naxatw-flex naxatw-justify-between">
         <p
           className={`${
             status === id ? 'naxatw-text-[#00A699]' : ''
-          } group-hover:naxatw-text-[#00A699] naxatw-py-[10px] naxatw-text-body-btn`}
+          } group-hover:naxatw-text-[#00A699] naxatw-my-[10px] naxatw-text-body-btn naxatw-line-clamp-2`}
+          title={label}
         >
           {label}
         </p>

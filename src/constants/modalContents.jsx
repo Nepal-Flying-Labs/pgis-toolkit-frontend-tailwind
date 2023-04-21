@@ -183,7 +183,7 @@ export function getModalContent(content) {
       return {
         title: 'Upload your image',
         subtitle:
-          'You can add any sort of relevant photographs & images or maps, in file format JPEG, PNG, GIF or PDF.',
+          'You can add any sort of relevant photographs & images or maps, in file format JPEG, PNG, GIF or JPG.',
         content: <UploadGallery />,
       };
 
@@ -281,8 +281,8 @@ export function getModalContent(content) {
       return {
         title: 'Analysis Details',
         content: <ViewAnalysisDetails />,
-        className:
-          '!naxatw-min-w-[calc(100vw-70rem)] !naxatw-max-w-[calc(100vw-10rem)] !naxatw-w-fit naxatw-max-h-[calc(100vh-19rem)] ',
+        // className:
+        //   '!naxatw-min-w-[calc(100vw-70rem)] !naxatw-max-w-[calc(100vw-10rem)] !naxatw-w-fit naxatw-max-h-[calc(100vh-19rem)] ',
       };
     case 'view-buffer-chart':
       return {

@@ -108,12 +108,12 @@ function AdditionalSidebar({ onCloseClick, onDownload, onDelete, onEdit }) {
                 : sidebarData?.description || '-'}
             </div>
           </div>
-          <div className="naxatw-mb-5">
+          {/* <div className="naxatw-mb-5">
             <div className="naxatw-text-body-btn naxatw-mb-2">File Type</div>
             <div className="naxatw-text-body-lg">
               {sidebarData?.type || '-'}
             </div>
-          </div>
+          </div> */}
           {/* <div className="naxatw-mb-5">
         <div className="naxatw-text-body-btn naxatw-mb-2">Tags</div>
         <div className="naxatw-text-body-lg">{sidebarData?.tag || '-'}</div>

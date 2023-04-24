@@ -292,6 +292,11 @@ const AssignUsers = () => {
                 </i>
               </a>
             </div>
+            {email && (
+              <div>
+                <p>Press enter or click plus (+) button to add email</p>
+              </div>
+            )}
             {errors && <FormErrorMessage message={errors.email} />}
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-3 !naxatw-mt-3">
               {emailList.map(item => (

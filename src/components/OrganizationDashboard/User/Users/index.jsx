@@ -20,7 +20,7 @@ import { useParams } from 'react-router';
 import usePagination from '@Hooks/usePagination';
 import Pagination from '@Components/common/Pagination/index';
 import { getSelectedRange } from '@Components/common/Pagination/getSelectedItem';
-import Button from '@Components/common/Button';
+import IconButton from '@Components/common/IconButton';
 
 const { togglePromptDialog } = CommonCreators;
 
@@ -244,14 +244,14 @@ const Users = () => {
           />
         </div>
         <div>
-          <Button
-            className="naxatw-btn-primary"
+          <IconButton
+            className="material-symbols-outlined hover:naxatw-bg-grey-100 naxatw-rounded-full"
+            name="restart_alt"
+            title="Reset"
             onClick={() => {
               dispatch(resetUserRole(null));
             }}
-          >
-            Reset
-          </Button>
+          />
         </div>
       </div>
       <div className="naxatw-mt-3 ">

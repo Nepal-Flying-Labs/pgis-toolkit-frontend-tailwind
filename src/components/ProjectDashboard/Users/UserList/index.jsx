@@ -18,7 +18,7 @@ import Select from '@Components/common/Select/index';
 import Pagination from '@Components/common/Pagination/index';
 import usePagination from '@Hooks/usePagination';
 import { getSelectedRange } from '@Components/common/Pagination/getSelectedItem';
-import Button from '@Components/common/Button';
+import IconButton from '@Components/common/IconButton/index';
 
 const {
   setUserState,
@@ -252,14 +252,22 @@ const UserList = () => {
           />
         </div>
         <div>
-          <Button
+          {/* <Button
             className="naxatw-btn-primary"
             onClick={() => {
               dispatch(resetUserRole(null));
             }}
           >
             Reset
-          </Button>
+          </Button> */}
+          <IconButton
+            className="material-symbols-outlined hover:naxatw-bg-grey-100 naxatw-rounded-full"
+            name="restart_alt"
+            title="Reset"
+            onClick={() => {
+              dispatch(resetUserRole(null));
+            }}
+          />
         </div>
       </div>
       <div className="xl:naxatw-mt-3 ">

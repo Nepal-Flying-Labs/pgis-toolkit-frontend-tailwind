@@ -4,12 +4,32 @@ import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import MaterialIcon from '@Components/common/MaterialIcon';
 import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
+import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import AdvanceStyling from './AdvanceStyling';
 import StandardStyling from './StandardStyling';
+import LabelStyling from './LabelStyling';
 
 const { setProjectMapState, updateLayerRequest } = ProjectMapCreators;
 
-const tabData = [{ label: 'Standard' }, { label: 'Advance' }];
+const tabData = [
+  // { label: 'Standard' },
+  { label: 'Advance' },
+  { label: 'Label' },
+];
+
+function getStyleContent(tabname) {
+  switch (tabname) {
+    case ' Standard':
+      return <StandardStyling />;
+    case 'Advance':
+      return <AdvanceStyling />;
+    case 'Label':
+      return <LabelStyling />;
+
+    default:
+      return <StandardStyling />;
+  }
+}
 
 export default function EditStyleSection() {
   const selectedLayer = useSelector(state => state.projectMap.selectedLayer);
@@ -93,34 +113,49 @@ export default function EditStyleSection() {
               <div className="naxatw-w-full naxatw-space-y-2">
                 <label className="naxatw-label">Styling</label>
 
-                {selectedLayer?.style?.geometryType === 'Point' && (
-                  <div className="naxatw-flex naxatw-gap-2">
-                    {tabData.map(({ label }) => (
-                      <div
-                        key={label}
-                        className={`naxatw-w-fit naxatw-bg-white naxatw-border naxatw-rounded-2xl naxatw-px-3 naxatw-py-2 naxatw-cursor-pointer ${
+                <div className="naxatw-flex naxatw-gap-2">
+                  {pointTypes.includes(selectedLayer?.style?.geometryType) && (
+                    <div
+                      className={`naxatw-w-fit naxatw-bg-white naxatw-border naxatw-rounded-2xl
+                        naxatw-px-3 naxatw-py-2 naxatw-cursor-pointer ${
+                          styleTab === 'Standard'
+                            ? 'naxatw-border-grey-500'
+                            : 'naxatw-border-grey-100'
+                        }`}
+                      onClick={() => {
+                        setStyleTab('Standard');
+                      }}
+                    >
+                      Standard
+                    </div>
+                  )}
+
+                  {tabData.map(({ label }) => (
+                    <div
+                      key={label}
+                      className={`naxatw-w-fit naxatw-bg-white naxatw-border naxatw-rounded-2xl
+                        naxatw-px-3 naxatw-py-2 naxatw-cursor-pointer ${
                           styleTab === label
                             ? 'naxatw-border-grey-500'
                             : 'naxatw-border-grey-100'
                         }`}
-                        onClick={() => {
-                          setStyleTab(label);
-                        }}
-                      >
-                        {label}
-                      </div>
-                    ))}
-                  </div>
-                )}
+                      onClick={() => {
+                        setStyleTab(label);
+                      }}
+                    >
+                      {!pointTypes.includes(
+                        selectedLayer?.style?.geometryType,
+                      ) && label === 'Advance'
+                        ? 'Style'
+                        : label}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
             <div className="naxatw-flex naxatw-flex-col naxatw-gap-4">
-              {styleTab === 'Standard' ? (
-                <StandardStyling />
-              ) : (
-                <AdvanceStyling />
-              )}
+              {getStyleContent(styleTab)}
             </div>
           </>
         )}

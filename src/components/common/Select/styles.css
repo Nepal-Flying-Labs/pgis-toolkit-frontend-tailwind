@@ -1,5 +1,5 @@
 .naxatw-select {
-  @apply naxatw-inline-flex naxatw-w-full naxatw-items-center naxatw-justify-between  naxatw-rounded-md naxatw-border hover:naxatw-border-grey-800 naxatw-border-grey-300 naxatw-bg-white;
+  @apply naxatw-inline-flex naxatw-w-full naxatw-items-center naxatw-justify-between  naxatw-rounded-md naxatw-border hover:naxatw-border-grey-800 naxatw-border-grey-300 !naxatw-bg-white;
 }
 
 .naxatw-select-disabled {

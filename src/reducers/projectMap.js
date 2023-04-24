@@ -65,6 +65,7 @@ const initialState = {
   selectedDropdownOptionId: null,
   featureGeometry: null,
   resetMapExtent: false,
+  labelFields: null,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -95,6 +96,7 @@ const getProjectThemeLayersSuccess = (state, action) => {
         ...defaultStyles,
         ...item.style,
         geometryType: item.geom_type,
+        labelField: item.label_field || '',
         icon: item.icon
           ? {
               id: 1,
@@ -234,12 +236,13 @@ const updateLayerSuccess = (state, action) => {
       item.id === responseData.id ? { ...item, style, name } : { ...item },
     ),
   };
-  const { selectedLayer, sidebarContent } = initialState;
+  const { selectedLayer, sidebarContent, labelFields } = initialState;
   return {
     ...state,
     layers,
     selectedLayer,
     sidebarContent,
+    labelFields,
   };
 };
 
@@ -859,6 +862,26 @@ const resetProjectMapState = state => ({
   mapSettings: state.mapSettings,
 });
 
+const getLabelFieldOptionsSuccess = (state, action) => {
+  const labelFields = action.payload.map(item => ({
+    id: item.id,
+    name: item.name,
+    alias: item.alias,
+  }));
+  return {
+    ...state,
+    labelFields,
+  };
+};
+
+const updateLabelFieldSuccess = (state, action) => {
+  const { responseData, payload } = action.payload;
+  return {
+    ...state,
+    refreshLayerId: responseData.id,
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -916,6 +939,8 @@ const projectMapReducer = createReducer(initialState, {
 
   [Types.TOGGLE_STYLE_EDIT]: toggleStyleEdit,
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
+  [Types.GET_LABEL_FIELD_OPTIONS_SUCCESS]: getLabelFieldOptionsSuccess,
+  [Types.UPDATE_LABEL_FIELD_SUCCESS]: updateLabelFieldSuccess,
 });
 
 export default projectMapReducer;

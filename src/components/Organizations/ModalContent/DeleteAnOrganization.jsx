@@ -31,8 +31,15 @@ export default function DeleteAnOrganization() {
       <div className="naxatw-my-5 naxatw-px-4">
         <h4 className="naxatw-text-center">
           Are you sure you want to delete organization{' '}
-          <b>{selectedOrganization?.name}</b>?
+          <b className="naxatw-font-bold naxatw-italic">
+            &quot;{selectedOrganization?.name}&quot;
+          </b>{' '}
+          ?
         </h4>
+        <h5 className="naxatw-text-center naxatw-italic naxatw-pt-2">
+          &quot;All the threads associated with this organization will be
+          deleted.&quot;
+        </h5>
       </div>
       <div className="naxatw-flex naxatw-justify-center naxatw-items-center naxatw-mt-12 naxatw-gap-2">
         <Button

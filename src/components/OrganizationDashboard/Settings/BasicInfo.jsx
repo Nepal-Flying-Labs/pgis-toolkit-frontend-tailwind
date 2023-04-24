@@ -317,6 +317,7 @@ const BasicInfo = () => {
           {/* </div> */}
           <input
             type="file"
+            accept="image/png, image/gif, image/jpeg, image/jpg"
             ref={inputRef}
             style={{ display: 'none' }}
             onChange={e => onChangeFileUpload(e)}

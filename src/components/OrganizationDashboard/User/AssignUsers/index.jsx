@@ -287,7 +287,10 @@ const AssignUsers = () => {
                   }
                 }}
               >
-                <i className="material-icons naxatw-text-[#40B449] naxatw-absolute naxatw-right-4 naxatw-top-3">
+                <i
+                  className="material-icons naxatw-text-[#40B449] naxatw-absolute naxatw-right-4 naxatw-top-3"
+                  title="Add Email"
+                >
                   add
                 </i>
               </a>

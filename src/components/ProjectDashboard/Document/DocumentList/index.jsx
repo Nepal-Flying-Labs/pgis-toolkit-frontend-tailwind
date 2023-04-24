@@ -298,6 +298,7 @@ function DocumentList() {
                         wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
                         className="naxatw-text-icon-sm"
                         name="visibility"
+                        title="Preview"
                       />
                       <MaterialIcon
                         onIconClick={e => {
@@ -307,6 +308,7 @@ function DocumentList() {
                         wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
                         className="naxatw-text-icon-sm"
                         name="file_download"
+                        title="Download"
                       />
                       <MaterialIcon
                         onIconClick={e => {
@@ -317,6 +319,7 @@ function DocumentList() {
                         wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
                         className="naxatw-text-icon-sm"
                         name="edit"
+                        title="Edit"
                       />
                       <MaterialIcon
                         onIconClick={e => {
@@ -329,6 +332,7 @@ function DocumentList() {
                         wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
                         className="naxatw-text-icon-sm naxatw-text-delete_btn"
                         name="delete_outline"
+                        title="Delete"
                       />
                     </div>
                   )}

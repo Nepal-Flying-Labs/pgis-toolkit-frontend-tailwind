@@ -115,7 +115,11 @@ const ProjectInfo = () => {
               </p>
               <div className="xl:naxatw-gap-7 naxatw-gap-2 naxatw-flex naxatw-flex-col xl:naxatw-flex-row">
                 <div className="naxatw-gap-x-2 naxatw-flex">
-                  <MaterialIcon name="call" className="naxatw-text-[#FF5A5F]" />
+                  <MaterialIcon
+                    name="call"
+                    className="naxatw-text-[#FF5A5F]"
+                    title="Phone"
+                  />
                   <span className="naxatw-text-body-lg">
                     {item?.contact || '-'}
                   </span>
@@ -124,6 +128,7 @@ const ProjectInfo = () => {
                   <MaterialIcon
                     name="mail_outline"
                     className="naxatw-text-[#FF5A5F]"
+                    title="Email"
                   />
                   <span className="naxatw-text-body-lg">
                     {item?.email || '-'}

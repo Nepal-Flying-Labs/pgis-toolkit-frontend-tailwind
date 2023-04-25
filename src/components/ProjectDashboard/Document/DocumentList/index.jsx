@@ -165,7 +165,7 @@ function DocumentList() {
               height: `calc(100vh - 270px)`,
               transition: 'ease-in-out 300ms',
             }}
-            className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-w-full"
+            className="naxatw-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-w-full"
           >
             {!loading && documentList.length > 0 ? (
               <Table
@@ -304,7 +304,7 @@ function DocumentList() {
                           e.stopPropagation();
                           handleDownload(row.id);
                         }}
-                        wrapperClassName="naxatw-icon-btn naxaw-icon-btn-sm"
+                        wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
                         className="naxatw-text-icon-sm"
                         name="file_download"
                       />

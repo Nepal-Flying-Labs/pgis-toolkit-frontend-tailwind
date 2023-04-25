@@ -30,7 +30,7 @@ const validateContact = contact => {
   if (!result) {
     error = true;
   } else {
-    contact.toString().length < 8 || contact.toString().length > 15
+    contact.toString().length < 7 || contact.toString().length > 13
       ? (error = true)
       : (error = false);
   }

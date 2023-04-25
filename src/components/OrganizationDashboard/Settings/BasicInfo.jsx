@@ -167,15 +167,28 @@ const BasicInfo = () => {
       if (!result) errors.contactEmail = 'Enter a valid Email';
     }
 
-    if (formValues.contact_person.name && formValues.contact_person.contact) {
-      const pattern = /^[0-9\b]+$/;
-      const result = pattern.test(formValues.contact_person.contact);
+    // if (formValues.contact_person.name && formValues.contact_person.contact) {
+    //   const pattern = /^[0-9\b]+$/;
+    //   const result = pattern.test(formValues.contact_person.contact);
+    //   if (!result) {
+    //     errors.contactContact = 'Enter a valid contact number';
+    //   } else {
+    //     formValues.contact_person.contact.length < 7 ||
+    //     formValues.contact_person.contact.length > 15
+    //       ? (errors.contactContact = 'Enter a valid contact number')
+    //       : '';
+    //   }
+    // }
+
+    if (formValues.contactName && formValues.contactPhone) {
+      const pattern = /^[+\-()# \d]+$/;
+      const result = pattern.test(formValues.contactPhone);
       if (!result) {
-        errors.contactContact = 'Enter a valid contact number';
+        errors.contactPhone = 'Enter a valid contact number';
       } else {
-        formValues.contact_person.contact.length < 7 ||
-        formValues.contact_person.contact.length > 15
-          ? (errors.contactContact = 'Enter a valid contact number')
+        formValues.contactPhone.length < 7 ||
+        formValues.contactPhone.length > 20
+          ? (errors.contactPhone = 'Enter a valid contact number')
           : '';
       }
     }

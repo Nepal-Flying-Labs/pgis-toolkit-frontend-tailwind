@@ -34,6 +34,7 @@ const OrganizationInfo = () => {
             <div className="naxatw-mt-5 naxatw-flex naxatw-flex-wrap naxatw-gap-x-7 naxatw-gap-y-3">
               <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
                 <MaterialIcon
+                  title="Phone"
                   name="phone"
                   className="naxatw-text-icon-md naxatw-text-primary-400 "
                 />
@@ -43,6 +44,7 @@ const OrganizationInfo = () => {
               </div>
               <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
                 <MaterialIcon
+                  title="Email"
                   name="mail_outline"
                   className="naxatw-text-icon-md naxatw-text-primary-400"
                 />
@@ -52,6 +54,7 @@ const OrganizationInfo = () => {
               </div>
               <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
                 <MaterialIcon
+                  title="Language"
                   name="language"
                   className="naxatw-text-icon-md naxatw-text-primary-400"
                 />

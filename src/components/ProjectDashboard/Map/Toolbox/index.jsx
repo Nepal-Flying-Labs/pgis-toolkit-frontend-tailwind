@@ -44,7 +44,10 @@ export default function Toolbox({ map, onMeasureToggle }) {
       } naxatw-text-grey-800 naxatw-rounded-lg  naxatw-flex naxatw-items-center `}
     >
       <a className={btnClassname} onClick={() => setShowToolbox(!showToolbox)}>
-        <i className="material-icons">
+        <i
+          className="material-icons"
+          title={`${showToolbox ? 'Hide Toolbox' : 'Show Toolbox'}`}
+        >
           {showToolbox ? 'navigate_next' : 'navigate_before'}
         </i>
         {!showToolbox && (

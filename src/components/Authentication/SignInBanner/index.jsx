@@ -22,8 +22,8 @@ export default function SignInBanner() {
           </div>
           <div className="naxatw-mt-20">
             <h3 className="naxatw-text-white naxatw-mb-5 naxatw-font-bold">
-              Integrated Data Managment Mapping and Analysis tool for data
-              driven project planning
+              Integrated Data Managment, Mapping and Spatial Analysis tool to
+              assist data driven project planning
             </h3>
             <p className="naxatw-text-white naxatw-text-lg naxatw-mb-10">
               Piloting the tool for Transport Mobility Assessment

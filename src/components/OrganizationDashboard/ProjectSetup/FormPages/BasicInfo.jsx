@@ -369,6 +369,7 @@ const BasicInfo = ({ setPage }) => {
           <MaterialIcon
             name="add"
             className="naxatw-absolute naxatw-top-11 naxatw-right-2 naxatw-text-[#00A699] naxatw-cursor-pointer naxatw-text-icon-md"
+            title="Add Partner"
           />
         </a>
         <ul className="naxatw-mt-2">
@@ -386,7 +387,11 @@ const BasicInfo = ({ setPage }) => {
                   handleCustomChange('partners', updatedArray);
                 }}
               >
-                <MaterialIcon name="close" className="naxatw-cursor-pointer" />
+                <MaterialIcon
+                  name="close"
+                  className="naxatw-cursor-pointer"
+                  title="Remove Partner"
+                />
               </a>
             </li>
           ))}

@@ -23,6 +23,8 @@ import AvatarIcon from '@Assets/images/icons/avatar-icon.svg';
 import useCustomUpload from '@Hooks/useCustomUpload';
 import { isEmpty } from '@Utils/commonUtils';
 import TextArea from '@Components/common/TextArea/index';
+import CustomMultiSelect from '../ProjectSetup/CustomMultiSelect/index';
+
 // import ContactPerson from './ContactPerson';
 // import ContactPerson from './ContactPerson';
 
@@ -405,17 +407,22 @@ const BasicInfo = () => {
 
       <div className="naxatw-space-y-2">
         <label className="naxatw-label">Thematic Focus Area*</label>
-        <MultiSelect
+        <CustomMultiSelect
           options={thematicFocusArea}
           placeholder="Choose"
-          field="displayName"
+          field="name"
           onChange={data => {
-            const area = data.map(i => i.value);
+            const area = data.map(i => i.name);
             handleCustomChange('thematic_areas', area);
           }}
-          selected={thematicFocusArea.filter(item =>
-            values?.thematic_areas?.includes(item.value),
-          )}
+          onOthersChange={data => {
+            handleCustomChange('thematic_areas', [
+              data,
+              ...values.thematic_areas,
+            ]);
+          }}
+          selected={values?.thematic_areas || []}
+          othersOptions={values?.selectedThematic}
         />
         {errorFields?.thematic_areas && (
           <FormErrorMessage message={errorFields.thematic_areas} />

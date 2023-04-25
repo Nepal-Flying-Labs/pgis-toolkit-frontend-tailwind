@@ -10,6 +10,11 @@ import useCustomUpload from '@Hooks/useCustomUpload';
 import { convertSHPToGeoJSON, validateGeoJSON } from '@Utils/convertLayerUtils';
 import { Creators } from '@Actions/organizationDashboard';
 import { format } from 'date-fns';
+import flatten from '@turf/flatten';
+import {
+  getGeometryType,
+  polygonTypes,
+} from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import Button from '../../../common/Button/index';
 import MaterialIcon from '../../../common/MaterialIcon/index';
 import MapSection from '../MapSection/index';
@@ -33,6 +38,13 @@ function convertToGeoJSON(file) {
   }
   return null;
 }
+
+function validateFeatureType(geojson) {
+  const types = geojson.features.map(feature => feature.geometry.type);
+  // const type = getGeometryType(geojson);
+  return types.every(item => polygonTypes.includes(item));
+}
+
 function UploadPolygonBoundary({
   uploadedFile,
   setuploadedFile,
@@ -52,8 +64,14 @@ function UploadPolygonBoundary({
       convertToGeoJSON(files)
         .then(z => {
           if (typeof z === 'object' && !Array.isArray(z) && z !== null) {
-            dispatch(setFileUploadGeojson(z));
-            setError(false);
+            if (validateFeatureType(z)) {
+              const convertedGeojson = flatten(z);
+              dispatch(setFileUploadGeojson(convertedGeojson));
+              setError(false);
+            } else {
+              setError(true);
+              setuploadedFile('');
+            }
           } else {
             setError(true);
             setuploadedFile('');

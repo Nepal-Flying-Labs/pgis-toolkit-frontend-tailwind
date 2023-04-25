@@ -2,7 +2,7 @@ import { Fill, Stroke, Style, Icon, Circle, Text } from 'ol/style';
 
 export const pointTypes = ['Point', 'MultiPoint'];
 export const lineTypes = ['LineString', 'MultiLineString'];
-// const polygonTypes = ['Polygon', 'MultiPolygon'];
+export const polygonTypes = ['Polygon', 'MultiPolygon'];
 
 export const hoverEffectColor = '#7BCBC3';
 export const selectEffectColor = '#ffd808'; // '#fde047';

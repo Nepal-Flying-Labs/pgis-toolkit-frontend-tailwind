@@ -111,3 +111,14 @@
 
 ### DESIGN
 - [ ] layer order accordion border color
+- [ ] dropdown options in modal/table
+
+### Bheemdatta
+- [ ] logo alignment nepal govt
+- [ ] sign in button styling
+- [ ] remove sign in btn
+- [ ] second section title/typo
+- [ ] major features section interactive
+- [ ] copyright text bheemdatta municipality
+- [ ] remove social media icon
+- [ ] designed and developed by naxa

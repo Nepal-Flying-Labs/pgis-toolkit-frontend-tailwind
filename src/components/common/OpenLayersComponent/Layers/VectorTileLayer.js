@@ -30,7 +30,7 @@ const VectorTileLayer = ({
     () =>
       new VectorTile({
         renderMode: 'hybrid',
-        // declutter: true,
+        declutter: true,
       }),
     [],
   );

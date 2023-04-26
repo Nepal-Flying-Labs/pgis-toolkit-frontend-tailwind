@@ -89,6 +89,7 @@ export default function MapSection() {
     state => state.projectMap.featureGeometry,
   );
   const resetMapExtent = useSelector(state => state.projectMap.resetMapExtent);
+  const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,
@@ -394,7 +395,15 @@ export default function MapSection() {
             }}
           />
 
-          {!isMapDataLoading && <MaskedLayer geojson={projectGeojson} />}
+          {!isMapDataLoading && (
+            <MaskedLayer
+              enable={
+                sidebarContent !== 'edit-feature' &&
+                sidebarContent !== 'add-feature'
+              }
+              geojson={projectGeojson}
+            />
+          )}
 
           <CustomPopup
             fetchPopupData={properties => {

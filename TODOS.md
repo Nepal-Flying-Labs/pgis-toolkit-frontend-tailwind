@@ -111,3 +111,5 @@
 
 ### DESIGN
 - [ ] layer order accordion border color
+- [ ] dropdown options in modal/table
+

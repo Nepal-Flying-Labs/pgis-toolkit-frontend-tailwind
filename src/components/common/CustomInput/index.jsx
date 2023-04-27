@@ -26,9 +26,6 @@ const CustomInput = ({
         <label className="naxatw-w-full naxatw-flex naxatw-font-bold naxatw-text-grey-800 naxatw-tracking-wider naxatw-text-[15px]">
           Invite User by Email *
         </label>
-        <span className="naxatw-text-grey-600">
-          Press enter or click plus (+) button to add email
-        </span>
       </div>
       <div className="naxatw-relative">
         <input
@@ -58,7 +55,10 @@ const CustomInput = ({
             }
           }}
         />
-        <span className="material-icons naxatw-absolute naxatw-left-[13px] naxatw-top-3">
+        <span
+          className="material-icons naxatw-absolute naxatw-left-[13px] naxatw-top-3 naxatw-cursor-pointer"
+          title="Email"
+        >
           mail_outline
         </span>
         <a
@@ -85,11 +85,17 @@ const CustomInput = ({
           >
             <MaterialIcon
               name="add"
+              title="Add Email"
               className="naxatw-text-[#40B449]  naxatw-text-icon-md"
             />
           </div>
         </a>
       </div>
+      {email && (
+        <div>
+          <p>Press enter or click plus (+) button to add email</p>
+        </div>
+      )}
 
       {emailError && <FormErrorMessage message="Please add Email" />}
       <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-2 naxatw-mt-2  ">

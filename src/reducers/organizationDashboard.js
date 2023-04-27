@@ -493,6 +493,11 @@ const getProjectsCentroidGeojsonSuccess = (state, action) => ({
   centroidGeojson: action.payload,
 });
 
+const resetUserRole = (state, action) => ({
+  ...state,
+  usersFilter: { ...state.usersFilter, userRole: action.payload },
+});
+
 const organizationDashboardReducer = createReducer(initialState, {
   [Types.GET_ORGANIZATION_DETAIL_SUCCESS]: getOrganizationDetailSuccess,
   [Types.GET_PROJECTS_SUCCESS]: getProjectsSuccess,
@@ -533,6 +538,7 @@ const organizationDashboardReducer = createReducer(initialState, {
   [Types.SET_PROJECT_STATUS]: setProjectStatus,
   [Types.GET_PROJECTS_CENTROID_GEOJSON_SUCCESS]:
     getProjectsCentroidGeojsonSuccess,
+  [Types.RESET_USER_ROLE]: resetUserRole,
 });
 
 export default organizationDashboardReducer;

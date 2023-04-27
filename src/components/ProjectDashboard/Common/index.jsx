@@ -86,6 +86,7 @@ function AdditionalSidebar({ onCloseClick, onDownload, onDelete, onEdit }) {
               <MaterialIcon
                 className="naxatw-text-2xl naxatw-leading-6 naxatw-p-2"
                 name="close"
+                title="Close"
               />
             </div>
           </div>
@@ -142,6 +143,7 @@ function AdditionalSidebar({ onCloseClick, onDownload, onDelete, onEdit }) {
                 wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent naxatw-cursor-pointer hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
                 className="naxatw-text-[22px] naxatw-text-[#FF0F0F]"
                 name="delete_outline"
+                title="Delete"
               />
             </div>
             <div className="">
@@ -150,6 +152,7 @@ function AdditionalSidebar({ onCloseClick, onDownload, onDelete, onEdit }) {
                 wrapperClassName="naxatw-text-grey-800 naxatw-bg-transparent naxatw-cursor-pointer hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-center"
                 className="naxatw-text-[22px]"
                 name="edit"
+                title="Edit"
               />
             </div>
           </div>

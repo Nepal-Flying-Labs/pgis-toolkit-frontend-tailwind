@@ -60,7 +60,9 @@ const ProjectInfo = () => {
             <p className="naxatw-text-body-btn naxatw-mb-1">
               Thematic focus areas
             </p>
-            <p className="naxatw-text-body-lg">{info?.thematic_areas || '-'}</p>
+            <p className="naxatw-text-body-lg">
+              {info?.thematic_areas?.map(area => <li>{area}</li>) || '-'}
+            </p>
           </div>
           <div className="">
             <p className="naxatw-text-body-btn naxatw-mb-1">Project partners</p>
@@ -113,7 +115,11 @@ const ProjectInfo = () => {
               </p>
               <div className="xl:naxatw-gap-7 naxatw-gap-2 naxatw-flex naxatw-flex-col xl:naxatw-flex-row">
                 <div className="naxatw-gap-x-2 naxatw-flex">
-                  <MaterialIcon name="call" className="naxatw-text-[#FF5A5F]" />
+                  <MaterialIcon
+                    name="call"
+                    className="naxatw-text-[#FF5A5F]"
+                    title="Phone"
+                  />
                   <span className="naxatw-text-body-lg">
                     {item?.contact || '-'}
                   </span>
@@ -122,6 +128,7 @@ const ProjectInfo = () => {
                   <MaterialIcon
                     name="mail_outline"
                     className="naxatw-text-[#FF5A5F]"
+                    title="Email"
                   />
                   <span className="naxatw-text-body-lg">
                     {item?.email || '-'}
@@ -131,7 +138,7 @@ const ProjectInfo = () => {
             </div>
           ))
         ) : (
-          <div className="naxatw-text-body-lg">No data</div>
+          <div className="naxatw-text-body-lg">N/A</div>
         )}
       </div>
     </div>

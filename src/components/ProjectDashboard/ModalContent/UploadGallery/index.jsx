@@ -256,6 +256,7 @@ export default function UploadGallery() {
                   <MaterialIcon
                     className="naxatw-text-delete_btn"
                     name="delete_outline"
+                    title="Remove"
                   />
                 </a>
               </div>

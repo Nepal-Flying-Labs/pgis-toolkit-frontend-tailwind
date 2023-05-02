@@ -108,8 +108,15 @@
 ### PROJECT MAP
 - [ ] layer category sorting issue in map sidebar
 - [ ] project clustering bbox issue
+- [ ] download layer name issue
 
 ### DESIGN
 - [ ] layer order accordion border color
 - [ ] dropdown options in modal/table
+
+- [ ] update social media links
+- [ ] how usafiri works => heading bold => faq questions bold
+
+- [ ] test branch -> test/refactor-analysis-module
+
 

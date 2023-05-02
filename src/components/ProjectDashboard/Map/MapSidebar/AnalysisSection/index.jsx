@@ -1,10 +1,13 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
-import { Creators as ProjectMapCreators } from '@Actions/projectMap';
+import { Creators as ProjectMapCreators, Types } from '@Actions/projectMap';
 import Searchbar from '@Components/common/Searchbar';
 import Button from '@Components/common/Button';
+import LayerAccordion from '@Components/common/SkeletonLoader/LayerAccordion';
+import { checkIfLoading } from '@Utils/loaderSelector';
 import { analysisTypes } from '@src/constants/analysis';
 import NoAnalysisYet from './NoAnalysisYet';
 
@@ -15,6 +18,9 @@ export default function AnalysisSection() {
   const { projectId } = useParams();
   const searchText = useSelector(state => state.projectMap.searchText);
   const analysisList = useSelector(state => state.projectMap.analysisList);
+  const isLoading = useSelector(state =>
+    checkIfLoading(state, [Types.GET_ANALYSIS_TYPE_LIST_REQUEST]),
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,6 +31,15 @@ export default function AnalysisSection() {
       );
     });
   }, [dispatch, projectId, analysisList]);
+
+  if (isLoading)
+    return (
+      <div className="naxatw-flex naxatw-flex-col naxatw-gap-2">
+        {[...Array(3)].map((_, idx) => (
+          <LayerAccordion key={idx} />
+        ))}
+      </div>
+    );
 
   return !analysisList ? (
     <div

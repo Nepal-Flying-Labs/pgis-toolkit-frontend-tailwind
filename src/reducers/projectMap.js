@@ -2,6 +2,7 @@
 import { createReducer } from 'reduxsauce';
 import * as chroma from 'chroma-js';
 import { parse } from 'wkt';
+import { produce } from 'immer';
 import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { boundaryLayerName } from '@src/constants/map';
@@ -883,6 +884,12 @@ const updateLabelFieldSuccess = (state, action) => {
   };
 };
 
+const getAnalysisTypeListSuccess = (state, action) =>
+  produce(state, draft => {
+    const { counts } = action.payload;
+    if (!counts) return;
+  });
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -942,6 +949,7 @@ const projectMapReducer = createReducer(initialState, {
   [Types.RESET_PROJECT_MAP_STATE]: resetProjectMapState,
   [Types.GET_LABEL_FIELD_OPTIONS_SUCCESS]: getLabelFieldOptionsSuccess,
   [Types.UPDATE_LABEL_FIELD_SUCCESS]: updateLabelFieldSuccess,
+  [Types.GET_ANALYSIS_TYPE_LIST_SUCCESS]: getAnalysisTypeListSuccess,
 });
 
 export default projectMapReducer;

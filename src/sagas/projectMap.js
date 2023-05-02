@@ -38,6 +38,7 @@ import {
   deleteDropdownOption,
   getFeatureGeojson,
   deleteDataQuery,
+  getAnalysisTypeList,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -736,6 +737,16 @@ export function* updateLabelFieldRequest({ id, payload }) {
   }
 }
 
+export function* getAnalysisTypeListRequest({ params }) {
+  try {
+    const response = yield call(getAnalysisTypeList, params);
+    yield put(projectMapActions.getAnalysisTypeListSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getAnalysisTypeListFailure());
+    throw error;
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -880,6 +891,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.UPDATE_LABEL_FIELD_REQUEST,
     withLoader(withErrorHandler(updateLabelFieldRequest)),
+  );
+  yield takeEvery(
+    Types.GET_ANALYSIS_TYPE_LIST_REQUEST,
+    withLoader(withErrorHandler(getAnalysisTypeListRequest)),
   );
 }
 

@@ -1,18 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import Searchbar from '@Components/common/Searchbar';
 import Button from '@Components/common/Button';
+import { analysisTypes } from '@src/constants/analysis';
 import NoAnalysisYet from './NoAnalysisYet';
 
 const { toggleModal } = CommonCreators;
-const { setSearchText } = ProjectMapCreators;
+const { setSearchText, getAnalysisTypeListRequest } = ProjectMapCreators;
 
 export default function AnalysisSection() {
+  const { projectId } = useParams();
   const searchText = useSelector(state => state.projectMap.searchText);
   const analysisList = useSelector(state => state.projectMap.analysisList);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (analysisList) return;
+    analysisTypes.forEach(analysis => {
+      dispatch(
+        getAnalysisTypeListRequest({ project_id: projectId, type: analysis }),
+      );
+    });
+  }, [dispatch, projectId, analysisList]);
 
   return !analysisList ? (
     <div

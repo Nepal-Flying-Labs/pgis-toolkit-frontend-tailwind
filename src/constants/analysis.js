@@ -1,5 +1,7 @@
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
+export const analysisTypes = ['buffer', 'proximity', 'optimum_route'];
+
 export const checkErrorData = [
   {
     id: 'null',

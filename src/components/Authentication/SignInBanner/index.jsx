@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginImg from '@Assets/images/sign-in-img.jpg';
-import LoginLogo from '@Assets/images/login-logo.png';
+// import LoginLogo from '@Assets/images/login-logo.png';
+import LoginLogo from '@Assets/images/usafiri-beta-white-logo.svg';
 // import Button from '@Components/common/Button';
 
 export default function SignInBanner() {

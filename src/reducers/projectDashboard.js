@@ -52,6 +52,7 @@ const initialState = {
     ordering: null,
     pageTab: 'users',
   },
+  showPreviewDocument: false,
 };
 
 const getProjectDetailSuccess = (state, action) => ({
@@ -583,10 +584,20 @@ const setUploadingImage = (state, action) => {
 
 const setUploadImageStatusCheckingId = (state, action) => ({
   ...state,
-  data: {
+  user: {
     ...state.data,
     uploadImageStatusId: [...state.data.uploadImageStatusId, action.id],
   },
+});
+
+const setPreviewDocument = (state, action) => ({
+  ...state,
+  showPreviewDocument: action.payload,
+});
+
+const resetUserRole = (state, action) => ({
+  ...state,
+  user: { ...state.user, userRole: action.payload },
 });
 
 const projectDashboardReducer = createReducer(initialState, {
@@ -643,6 +654,8 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.UPLOAD_FEATURE_IMAGE_SUCCESS]: uploadFeatureImageSuccess,
   [Types.SET_UPLOADING_IMAGE]: setUploadingImage,
   [Types.SET_UPLOAD_IMAGE_STATUS_CHECKING_ID]: setUploadImageStatusCheckingId,
+  [Types.SET_PREVIEW_DOCUMENT]: setPreviewDocument,
+  [Types.RESET_USER_ROLE]: resetUserRole,
 });
 
 export default projectDashboardReducer;

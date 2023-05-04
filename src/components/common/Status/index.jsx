@@ -29,12 +29,21 @@ const getInvitationStatus = inviteStatus => {
 
 const Status = ({ status, invitationStatus, isLoading }) => {
   const stat = getColor(status);
+  let currStatus = '';
   const inviteStat = getInvitationStatus(invitationStatus?.toLowerCase());
+  if (status === true) {
+    currStatus = 'Active';
+  } else if (status === false) {
+    currStatus = 'Deactivated';
+  } else {
+    currStatus = 'Inactive';
+  }
   return (
     <div className=" naxatw-flex naxatw-items-center naxatw-gap-x-2">
       <div className={`naxatw-w-2 naxatw-h-2 ${stat.bg} naxatw-rounded-full`} />
       <span className={`naxatw-text-body-md ${stat.text}`}>
-        {status ? 'Active' : 'Inactive'}
+        {/* {status ? 'Active' : 'Inactive'} */}
+        {currStatus}
       </span>
       {inviteStat && (
         <>

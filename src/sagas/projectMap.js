@@ -710,6 +710,32 @@ export function* deleteAllDataQueryRequest({ payload }) {
   }
 }
 
+export function* getLabelFieldOptionsRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttributeFields, params);
+    yield put(projectMapActions.getLabelFieldOptionsSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getLabelFieldOptionsFailure());
+    throw error;
+  }
+}
+
+export function* updateLabelFieldRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateLayer, id, formdata);
+    yield put(
+      projectMapActions.updateLabelFieldSuccess({
+        responseData: response.data,
+        payload,
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.updateLabelFieldFailure());
+    throw error;
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -846,6 +872,14 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.DELETE_ALL_DATA_QUERY_REQUEST,
     withLoader(withErrorHandler(deleteAllDataQueryRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LABEL_FIELD_OPTIONS_REQUEST,
+    withLoader(withErrorHandler(getLabelFieldOptionsRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_LABEL_FIELD_REQUEST,
+    withLoader(withErrorHandler(updateLabelFieldRequest)),
   );
 }
 

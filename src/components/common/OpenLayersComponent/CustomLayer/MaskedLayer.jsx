@@ -13,8 +13,10 @@ import { MultiPolygon } from 'ol/geom';
 import LayerGroup from 'ol/layer/Group';
 import TileLayer from 'ol/layer/Tile';
 
-export default function MaskedLayer({ map, geojson }) {
+export default function MaskedLayer({ map, geojson, enable }) {
   const [tileLayers, setTileLayers] = useState([]);
+  const [maskedLayer, setMaskedLayer] = useState(null);
+  const [featureExtent, setFeatureExtent] = useState(null);
 
   useEffect(() => {
     if (!map || !geojson) return () => {};
@@ -51,44 +53,46 @@ export default function MaskedLayer({ map, geojson }) {
     const coords = feature.map(feat => feat.getGeometry().getCoordinates());
     // const coords = dep.geometry.coordinates;
     const f = new Feature(new MultiPolygon(coords));
-    const maskedLayer = new Mask({
+    const maskedLayerx = new Mask({
       feature: f,
       fill: new Fill({
-        // color: [58, 109, 255, 0.7],
-        // color: [255, 255, 255, 0.7],
         color: [0, 0, 0, 0.22],
-        // monochrome
-        // color: [197, 222, 246, 0.8],
-        // monochrome midnight
-        // color: [11, 27, 107, 0.6],
       }),
       inner: false,
     });
 
-    maskedLayer.set('active', true);
+    setMaskedLayer(maskedLayerx);
 
-    const featureExtent = f.getGeometry().getExtent();
-    map.getView().fit(featureExtent, {
+    const featureExtentx = f.getGeometry().getExtent();
+    map.getView().fit(featureExtentx, {
       padding: [50, 50, 50, 50],
       constrainResolution: true,
     });
-    const currentZoom = map.getView().getZoom();
-    map.setView(
-      new View({
-        center: map.getView().getCenter(),
-        extent: [
-          featureExtent[0] - 30000,
-          featureExtent[1] - 30000,
-          featureExtent[2] + 30000,
-          featureExtent[3] + 30000,
-        ],
-        zoom: currentZoom,
-        minZoom: currentZoom - 1,
-      }),
-    );
+    setFeatureExtent(featureExtentx);
+  }, [map, tileLayers, geojson]);
 
-    tileLayers.map(tiles => tiles.addFilter(maskedLayer));
-
+  useEffect(() => {
+    if (!map || !maskedLayer || !featureExtent) return;
+    if (enable) {
+      tileLayers.map(item => item.removeFilter(maskedLayer));
+      const currentZoom = map.getView().getZoom();
+      map.setView(
+        new View({
+          center: map.getView().getCenter(),
+          extent: [
+            featureExtent[0] - 30000,
+            featureExtent[1] - 30000,
+            featureExtent[2] + 30000,
+            featureExtent[3] + 30000,
+          ],
+          zoom: currentZoom,
+          minZoom: currentZoom - 1,
+        }),
+      );
+      tileLayers.map(tiles => tiles.addFilter(maskedLayer));
+    } else {
+      tileLayers.map(tiles => tiles.removeFilter(maskedLayer));
+    }
     return () => {
       if (!isEmpty(tileLayers)) {
         tileLayers.map(item => item.removeFilter(maskedLayer));
@@ -102,7 +106,7 @@ export default function MaskedLayer({ map, geojson }) {
         );
       }
     };
-  }, [map, tileLayers, geojson]);
+  }, [map, enable, maskedLayer, tileLayers, featureExtent]);
 
   return null;
 }

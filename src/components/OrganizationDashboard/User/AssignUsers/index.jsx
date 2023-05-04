@@ -287,11 +287,19 @@ const AssignUsers = () => {
                   }
                 }}
               >
-                <i className="material-icons naxatw-text-[#40B449] naxatw-absolute naxatw-right-4 naxatw-top-3">
+                <i
+                  className="material-icons naxatw-text-[#40B449] naxatw-absolute naxatw-right-4 naxatw-top-3"
+                  title="Add Email"
+                >
                   add
                 </i>
               </a>
             </div>
+            {email && (
+              <div>
+                <p>Press enter or click plus (+) button to add email</p>
+              </div>
+            )}
             {errors && <FormErrorMessage message={errors.email} />}
             <div className="naxatw-flex naxatw-gap-x-2 naxatw-flex-wrap naxatw-gap-y-3 !naxatw-mt-3">
               {emailList.map(item => (

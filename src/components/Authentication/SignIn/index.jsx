@@ -111,6 +111,7 @@ export default function SignIn() {
               <span
                 onClick={() => setIsVisible(!isVisible)}
                 className="material-icons naxatw-absolute naxatw-right-3 naxatw-top-10 naxatw-cursor-pointer"
+                title={` ${!isVisible ? 'Show Password' : 'Hide Password'}`}
               >
                 {!isVisible ? 'visibility' : 'visibility_off'}
               </span>

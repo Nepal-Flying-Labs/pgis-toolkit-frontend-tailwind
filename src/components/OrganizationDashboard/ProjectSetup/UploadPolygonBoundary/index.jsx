@@ -158,6 +158,7 @@ function UploadPolygonBoundary({
                 <MaterialIcon
                   name="download"
                   className="naxatw-text-[#484848] naxatw-cursor-pointer"
+                  title="Download"
                 />
               </a>
               <a
@@ -170,6 +171,7 @@ function UploadPolygonBoundary({
                 <MaterialIcon
                   name="delete_outline"
                   className="naxatw-text-red-500 naxatw-cursor-pointer"
+                  title="Remove"
                 />
               </a>
             </div>

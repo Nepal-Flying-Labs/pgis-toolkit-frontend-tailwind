@@ -134,6 +134,7 @@ export default function MapSidebar() {
                 <a onClick={() => setViewType('list')}>
                   <MaterialIcon
                     name="view_list"
+                    title="List View"
                     className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
                       viewType === 'list' ? 'naxatw-text-primary-500' : ''
                     }`}
@@ -145,6 +146,7 @@ export default function MapSidebar() {
                 <a onClick={() => setViewType('grid')}>
                   <MaterialIcon
                     name="grid_view"
+                    title="Grid View"
                     className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
                       viewType === 'grid' ? 'naxatw-text-primary-500' : ''
                     }`}
@@ -276,7 +278,10 @@ export default function MapSidebar() {
             naxatw-shadow-light hover:naxatw-bg-grey-100"
           onClick={() => dispatch(toggleSidebar())}
         >
-          <i className="material-icons ">
+          <i
+            className="material-icons "
+            title={`${hideSidebar ? 'Show Sidebar' : 'Hide Sidebar'}`}
+          >
             {hideSidebar ? 'navigate_next' : 'navigate_before'}
           </i>
         </a>

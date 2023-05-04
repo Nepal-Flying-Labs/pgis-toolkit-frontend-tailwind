@@ -1,9 +1,11 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
-import { Creators } from '@Actions/analysis';
+import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 
-const { copyLayerDataRequest } = Creators;
+const { toggleModal } = CommonCreators;
+const { setProjectMapState } = ProjectMapCreators;
 
 const analysisData = [
   // {
@@ -14,7 +16,7 @@ const analysisData = [
   //   disabled: true,
   // },
   {
-    title: 'Buffer analysis',
+    title: 'Buffer Analysis',
     description:
       'Creates a zone around a selected feature, distance or time-based, known as a buffer.',
     analysisType: 'buffer-analysis',
@@ -57,13 +59,19 @@ export default function Analysis() {
                 `}
             onClick={() => {
               if (disabled) return;
+              dispatch(toggleModal('create-analysis'));
               dispatch(
-                copyLayerDataRequest({
-                  analysisType,
-                  organizationId,
-                  projectId,
+                setProjectMapState({
+                  selectedAnalysis: { title, analysisType, description },
                 }),
               );
+              // dispatch(
+              //   copyLayerDataRequest({
+              //     analysisType,
+              //     organizationId,
+              //     projectId,
+              //   }),
+              // );
             }}
           >
             <h5 className="naxatw-text-grey-800 naxatw-font-semibold">

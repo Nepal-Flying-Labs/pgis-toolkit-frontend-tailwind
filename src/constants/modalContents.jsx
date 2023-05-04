@@ -30,14 +30,14 @@ import AccountSettings from '@Components/Authentication/ModalContent/AccountSett
 import ViewLayerAttribute from '@Components/ProjectDashboard/ModalContent/ViewLayerAttribute';
 import EditLayerAttribute from '@Components/ProjectDashboard/ModalContent/EditLayerAttribute';
 import DeleteLayerAttribute from '@Components/ProjectDashboard/ModalContent/DeleteLayerAttribute';
-import DeleteDocument from '@Components/ProjectDashboard/ModalContent/DeleteDocument/index';
+import DeleteDocument from '@Components/ProjectDashboard/ModalContent/DeleteDocument';
 import DataQueryHelp from '@Components/ProjectDashboard/ModalContent/HelpContents/DataQueryHelp';
-import DeleteGallery from '@Components/ProjectDashboard/ModalContent/DeleteGallery/index';
-import EditGallery from '@Components/ProjectDashboard/ModalContent/EditGallery/index';
-import UploadGallery from '@Components/ProjectDashboard/ModalContent/UploadGallery/index';
+import DeleteGallery from '@Components/ProjectDashboard/ModalContent/DeleteGallery';
+import EditGallery from '@Components/ProjectDashboard/ModalContent/EditGallery';
+import UploadGallery from '@Components/ProjectDashboard/ModalContent/UploadGallery';
 import DeleteOrganizationUser from '@Components/OrganizationDashboard/ModalContent/DeleteOrganizationUser';
 import DeleteUser from '@Components/Users/ModalContent/DeleteUser';
-import DeleteProjectUser from '@Components/ProjectDashboard/ModalContent/DeleteProjectUser/index';
+import DeleteProjectUser from '@Components/ProjectDashboard/ModalContent/DeleteProjectUser';
 import DeleteProject from '@Components/OrganizationDashboard/ModalContent/DeleteProject';
 import DeleteTemplateAttribute from '@Components/ProjectDashboard/ModalContent/DeleteTemplateAttribute';
 import DeleteError from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteError';
@@ -47,18 +47,19 @@ import DeleteAnOrganization from '@Components/Organizations/ModalContent/DeleteA
 import SaveRouteLayer from '@Components/ProjectDashboard/Analysis/ModalContent/SaveRouteLayer';
 import SaveBufferLayer from '@Components/ProjectDashboard/Analysis/ModalContent/SaveBufferLayer';
 import SelectLayerFeature from '@Components/ProjectDashboard/Analysis/ModalContent/SelectLayerFeature';
-import AddDatasetCategory from '@Components/ProjectDashboard/ModalContent/AddDatasetCategory/index';
-import DeleteBufferResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteBufferResult/index';
-import DeleteRouteResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteRouteResult/index';
+import AddDatasetCategory from '@Components/ProjectDashboard/ModalContent/AddDatasetCategory';
+import DeleteBufferResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteBufferResult';
+import DeleteRouteResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteRouteResult';
 import SaveManualFix from '@Components/ProjectDashboard/Analysis/ModalContent/SaveManualFix';
 import SignoutWarning from '@Components/OrganizationDashboard/ModalContent/SignoutWarning';
-import DownloadTemplate from '@Components/ProjectDashboard/ModalContent/DownloadTemplate/index';
-import UploadBulkImage from '@Components/ProjectDashboard/ModalContent/UploadBulkImage/index';
-import DeleteDropdownOption from '@Components/ProjectDashboard/ModalContent/DeleteDropdownOption/index';
-import DropdownEditWarning from '@Components/ProjectDashboard/ModalContent/DropdownEditWarning/index';
-import ViewAnalysisDetails from '@Components/ProjectDashboard/ModalContent/ViewAnalysisDetails/index';
-import ViewBufferChart from '@Components/ProjectDashboard/ModalContent/ViewBufferChart/index';
+import DownloadTemplate from '@Components/ProjectDashboard/ModalContent/DownloadTemplate';
+import UploadBulkImage from '@Components/ProjectDashboard/ModalContent/UploadBulkImage';
+import DeleteDropdownOption from '@Components/ProjectDashboard/ModalContent/DeleteDropdownOption';
+import DropdownEditWarning from '@Components/ProjectDashboard/ModalContent/DropdownEditWarning';
+import ViewAnalysisDetails from '@Components/ProjectDashboard/ModalContent/ViewAnalysisDetails';
+import ViewBufferChart from '@Components/ProjectDashboard/ModalContent/ViewBufferChart';
 import StartAnalysisPrompt from '@Components/ProjectDashboard/Analysis/ModalContent/StartAnalysisPrompt';
+import CreateAnalysis from '@Components/ProjectDashboard/Analysis/ModalContent/CreateAnalysis';
 
 export function getModalContent(content) {
   switch (content) {
@@ -231,6 +232,13 @@ export function getModalContent(content) {
         title: 'Add Attributes',
         content: <AddAttributes />,
         className: '!naxatw-w-[56.25rem]',
+      };
+
+    case 'create-analysis':
+      return {
+        title: 'Create Analysis',
+        content: <CreateAnalysis />,
+        className: '!naxatw-w-[41.875rem]',
       };
 
     // data cleaning

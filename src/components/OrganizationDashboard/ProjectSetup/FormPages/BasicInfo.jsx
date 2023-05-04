@@ -102,8 +102,7 @@ const validation = formValues => {
   }
 
   if (formValues.contactName && formValues.contactEmail) {
-    const pattern =
-      /[a-zA-Z0-9]+[.]?([a-zA-Z0-9]+)?[@][a-z]{3,9}[.][a-z]{2,5}/g;
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const result = pattern.test(formValues.contactEmail);
     if (!result) errors.contactEmail = 'Enter a valid Email';
   }

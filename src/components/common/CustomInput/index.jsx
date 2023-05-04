@@ -6,7 +6,7 @@ import MaterialIcon from '../MaterialIcon/index';
 import FormErrorMessage from '../FormErrorMessage/index';
 
 function validateEmail(email) {
-  const pattern = /[a-zA-Z0-9]+[.]?([a-zA-Z0-9]+)?[@][a-z]{3,9}[.][a-z]{2,5}/g;
+  const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const result = pattern.test(email);
   return result;
 }

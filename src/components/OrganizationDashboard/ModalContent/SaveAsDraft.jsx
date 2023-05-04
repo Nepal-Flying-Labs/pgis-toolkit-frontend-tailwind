@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import removeObjectKeys from '@Utils/removeObjectKeys';
+import { stringify } from 'wkt';
 
 import { Creators, Types } from '@Actions/organizationDashboard';
 
@@ -145,7 +146,7 @@ const SaveAsDraft = () => {
       newObject.location_type === 'Custom Draw' && drawnGeojsonData
         ? {
             ...finalPayloadData,
-            location_wkt: [drawnGeojsonData],
+            location_wkt: [stringify(drawnGeojsonData)],
             file: '',
             file_type: '',
           }

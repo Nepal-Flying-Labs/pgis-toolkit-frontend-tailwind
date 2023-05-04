@@ -7,6 +7,7 @@
 /* eslint-disable arrow-body-style */
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { stringify } from 'wkt';
 import { useParams } from 'react-router';
 import { Creators, Types } from '@Actions/organizationDashboard';
 import toastActions from '@Actions/toast';
@@ -22,7 +23,7 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import hasKey from '@Utils/hasKey';
 import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetup/UploadPolygonBoundary/index';
 import SearchSelect from '@Components/common/SearchSelect';
-import MapSection from '../MapSection/index';
+import MapSection from '../CustomDraw/MapSection';
 
 const { togglePromptDialog } = CommonCreators;
 const {
@@ -178,7 +179,7 @@ const Location = ({ page, setPage }) => {
         values.location_type === 'Custom Draw' && drawnGeojsonData
           ? {
               ...finalPayloadData,
-              location_wkt: [drawnGeojsonData],
+              location_wkt: [stringify(drawnGeojsonData)],
               file: '',
               file_type: '',
             }

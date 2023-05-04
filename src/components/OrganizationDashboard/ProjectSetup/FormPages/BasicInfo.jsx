@@ -60,6 +60,12 @@ const thematicFocusArea = [
   },
 ];
 
+function isStartDateGreaterThanEndDate(startDateStr, endDateStr) {
+  const startDate = new Date(startDateStr).getTime();
+  const endDate = new Date(endDateStr).getTime();
+  return startDate >= endDate; //
+}
+
 function diffObject(a, b) {
   const diffObj = Object.keys(b).reduce((diff, key) => {
     if (a[key] === b[key]) return diff;
@@ -99,6 +105,14 @@ const validation = formValues => {
 
   if (!formValues.contactEmail) {
     errors.contactEmail = 'Contact Email is Required';
+  }
+
+  if (formValues.start_date && formValues.end_date) {
+    if (
+      isStartDateGreaterThanEndDate(formValues.start_date, formValues.end_date)
+    ) {
+      errors.date = 'End date must be greator than start date';
+    }
   }
 
   if (formValues.contactName && formValues.contactEmail) {
@@ -353,6 +367,7 @@ const BasicInfo = ({ setPage }) => {
             }}
             selected={values?.end_date}
           />
+          {errors.date && <FormErrorMessage message={errors.date} />}
         </div>
       </div>
 

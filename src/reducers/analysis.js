@@ -31,6 +31,9 @@ const initialState = {
   },
   selectedInfo: null, // selected value for info content
   hideSidebar: false,
+  // analysisList: null, // []
+  selectedAnalysis: null, // selected analysis type for create analysis
+  analysisDetail: null, // selected analysis type for create analysis
 };
 
 const setAnalysisState = (state, action) => ({
@@ -282,8 +285,10 @@ const toggleSidebar = (state, action) => ({
   hideSidebar: !!action.payload || !state.hideSidebar,
 });
 
-const resetAnalysisState = () => ({
+const resetAnalysisState = state => ({
   ...initialState,
+  selectedAnalysis: state.selectedAnalysis, // selected analysis type for create analysis
+  analysisDetail: state.analysisDetail, // selected analysis type for create analysis
 });
 
 const analysisReducer = createReducer(initialState, {

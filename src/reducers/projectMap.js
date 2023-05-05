@@ -68,7 +68,6 @@ const initialState = {
   resetMapExtent: false,
   labelFields: null,
   analysisList: null, // []
-  selectedAnalysis: null, // selected analysis type for create analysis
 };
 
 const getProjectThemesSuccess = (state, action) => ({

@@ -16,7 +16,7 @@ import bufferAnalysisActions from '@Actions/bufferAnalysis';
 import routeAnalysisActions from '@Actions/routeAnalysis';
 import toastActions from '@Actions/toast';
 import {
-  getAnalysisLayer,
+  getAnalysisResultDetail,
   getAnalysisTaskResponse,
 } from '@Services/routeAnalysis';
 import {
@@ -33,7 +33,10 @@ import {
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import prepareFormData from '@Utils/prepareFormData';
 import { getProjectGeojson } from '@Services/organizationDashboard';
-import { analysisWithDataCleaning } from '@src/constants/analysis';
+import {
+  analysisWithDataCleaning,
+  getAnalysisType,
+} from '@src/constants/analysis';
 
 export function* copyLayerDataRequest({ payload }) {
   try {
@@ -98,9 +101,10 @@ export function* checkProcessingStatusRequest({ payload }) {
     if (responseData.status === 'success') {
       const params = {
         project: projectId,
-        analysis_id: responseData.analysis_id,
+        id: responseData.sub_analysis_id,
+        analysis_type: getAnalysisType(analysisType),
       };
-      const analysisResponse = yield call(getAnalysisLayer, params);
+      const analysisResponse = yield call(getAnalysisResultDetail, params);
       yield put(
         analysisActions.setAnalysisState({
           analysisTaskId: null,

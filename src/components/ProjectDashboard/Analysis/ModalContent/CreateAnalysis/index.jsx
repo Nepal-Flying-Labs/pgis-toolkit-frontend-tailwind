@@ -1,42 +1,72 @@
 import React from 'react';
-import Input from '@Components/common/Input';
+import { useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { Creators as AnalysisCreators } from '@Actions/analysis';
 import useForm from '@Hooks/useForm';
+import Input from '@Components/common/Input';
 import FormErrorMessage from '@Components/common/FormErrorMessage';
-import Button from '@Components/common/Button/index';
+import Button from '@Components/common/Button';
+import TextArea from '@Components/common/TextArea';
 
 const initialValues = {
   analysisName: '',
   description: '',
 };
 
-export default function CreateAnalysis() {
-  const { values, handleChange, errors } = useForm({
-    initialValues,
-  });
+const { copyLayerDataRequest, setAnalysisState } = AnalysisCreators;
 
-  console.log(errors, 'errorsx');
+export default function CreateAnalysis() {
+  const { organizationId, projectId } = useParams();
+  const selectedAnalysis = useSelector(
+    state => state.analysis.selectedAnalysis,
+  );
+  const dispatch = useDispatch();
+  const { values, meta, handleChange, handleSubmit } = useForm({
+    initialValues,
+    required: ['analysisName'],
+    onSubmit: data => {
+      const { analysisType } = selectedAnalysis;
+      dispatch(
+        setAnalysisState({
+          analysisDetail: data,
+        }),
+      );
+      dispatch(
+        copyLayerDataRequest({
+          analysisType,
+          organizationId,
+          projectId,
+        }),
+      );
+    },
+  });
 
   return (
     <div>
       <div className="naxatw-space-y-4">
-        <Input
-          label="Analysis Name"
-          placeholder="Enter Analysis Name"
-          name="analysisName"
-          value={values.analysisName}
-          onChange={handleChange}
-        />
-        {errors?.analysisName && (
-          <FormErrorMessage message="Analysis Name is required." />
-        )}
+        <div>
+          <Input
+            label="Analysis Name"
+            placeholder="Enter Analysis Name"
+            name="analysisName"
+            value={values.analysisName}
+            onChange={handleChange}
+          />
+          {meta?.analysisName?.touched && meta?.analysisName?.error && (
+            <FormErrorMessage message="Analysis Name is required." />
+          )}
+        </div>
 
-        <Input
-          label="Description"
-          placeholder="Enter Description"
-          name="description"
-          value={values.description}
-          onChange={handleChange}
-        />
+        <div>
+          <TextArea
+            label="Description"
+            placeholder="Enter Description"
+            className="!naxatw-min-h-[4.5rem]"
+            name="description"
+            value={values.description}
+            onChange={handleChange}
+          />
+        </div>
       </div>
 
       <div
@@ -45,7 +75,7 @@ export default function CreateAnalysis() {
       >
         <Button
           className="naxatw-btn-primary"
-          // onClick={handleAdd}
+          onClick={handleSubmit}
           // isLoading={loading}
           // loaderClassName="naxatw-fill-secondary-400"
         >

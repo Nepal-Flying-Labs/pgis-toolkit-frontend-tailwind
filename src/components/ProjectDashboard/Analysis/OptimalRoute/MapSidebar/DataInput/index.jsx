@@ -76,6 +76,7 @@ export default function DataInput() {
   const destinationPoint = useSelector(
     state => state.routeAnalysis.dataInput.destinationPoint,
   );
+  const analysisDetail = useSelector(state => state.analysis.analysisDetail);
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.APPLY_ROUTE_ANALYSIS_REQUEST]),
   );
@@ -109,7 +110,8 @@ export default function DataInput() {
       destination_lat: destinationLat,
       paths: alternativePaths,
       obstacles: JSON.stringify(selectedObstacles),
-      name: outputName,
+      name: analysisDetail.analysisName,
+      result_name: outputName,
       project: projectId,
       type: 'optimum_route',
     };

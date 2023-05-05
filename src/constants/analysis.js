@@ -2,6 +2,16 @@ import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/st
 
 export const analysisTypes = ['buffer', 'proximity', 'optimum_route'];
 
+// for backend api mapping
+export function getAnalysisType(type) {
+  switch (type) {
+    case 'optimal-route':
+      return 'optimum_route';
+    default:
+      return '';
+  }
+}
+
 export const checkErrorData = [
   {
     id: 'null',

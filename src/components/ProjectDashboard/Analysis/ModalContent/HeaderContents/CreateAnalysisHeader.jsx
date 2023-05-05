@@ -9,7 +9,7 @@ const { toggleModal } = CommonCreators;
 export default function CreateAnalysisHeader() {
   const dispatch = useDispatch();
   const selectedAnalysis = useSelector(
-    state => state.projectMap.selectedAnalysis,
+    state => state.analysis.selectedAnalysis,
   );
 
   return (

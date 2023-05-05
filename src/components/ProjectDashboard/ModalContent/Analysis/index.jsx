@@ -1,11 +1,10 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router';
 import { Creators as CommonCreators } from '@Actions/common';
-import { Creators as ProjectMapCreators } from '@Actions/projectMap';
+import { Creators as AnalysisCreators } from '@Actions/analysis';
 
 const { toggleModal } = CommonCreators;
-const { setProjectMapState } = ProjectMapCreators;
+const { setAnalysisState } = AnalysisCreators;
 
 const analysisData = [
   // {
@@ -45,7 +44,6 @@ const analysisData = [
 ];
 
 export default function Analysis() {
-  const { organizationId, projectId } = useParams();
   const dispatch = useDispatch();
 
   return (
@@ -61,7 +59,7 @@ export default function Analysis() {
               if (disabled) return;
               dispatch(toggleModal('create-analysis'));
               dispatch(
-                setProjectMapState({
+                setAnalysisState({
                   selectedAnalysis: { title, analysisType, description },
                 }),
               );

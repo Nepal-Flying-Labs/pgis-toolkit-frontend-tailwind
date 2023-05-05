@@ -66,6 +66,7 @@ const initialState = {
   featureGeometry: null,
   resetMapExtent: false,
   labelFields: null,
+  isFullScreen: false,
 };
 
 const getProjectThemesSuccess = (state, action) => ({

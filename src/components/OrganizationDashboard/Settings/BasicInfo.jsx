@@ -142,8 +142,7 @@ const BasicInfo = () => {
     }
 
     if (formValues.email) {
-      const pattern =
-        /[a-zA-Z0-9]+[.]?([a-zA-Z0-9]+)?[@][a-z]{3,9}[.][a-z]{2,5}/g;
+      const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const result = pattern.test(formValues.email);
       if (!result) errors.email = 'Enter a valid Email';
     }
@@ -161,8 +160,7 @@ const BasicInfo = () => {
       if (!result) errors.contact = 'Enter a valid Contact number';
     }
     if (formValues.contact_person.name && formValues.contact_person.email) {
-      const pattern =
-        /[a-zA-Z0-9]+[.]?([a-zA-Z0-9]+)?[@][a-z]{3,9}[.][a-z]{2,5}/g;
+      const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const result = pattern.test(formValues.contact_person.email);
       if (!result) errors.contactEmail = 'Enter a valid Email';
     }

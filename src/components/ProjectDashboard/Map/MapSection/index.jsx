@@ -225,6 +225,8 @@ export default function MapSection() {
     [editFeatureId],
   );
 
+  const isFullScreen = useSelector(state => state.projectMap.isFullScreen);
+
   return (
     <div
       className="naxatw-flex"
@@ -264,7 +266,7 @@ export default function MapSection() {
             height: `calc(100vh - ${projectHeaderHeight}px)`,
           }}
         >
-          {!isMapDataLoading && <SidebarToggle />}
+          {!isFullScreen && !isMapDataLoading && <SidebarToggle />}
 
           {!isMapDataLoading && (
             <Toolbox

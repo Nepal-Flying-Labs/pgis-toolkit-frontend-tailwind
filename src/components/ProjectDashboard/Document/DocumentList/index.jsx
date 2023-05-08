@@ -27,6 +27,7 @@ const {
   getDocumentItemRequest,
   getDocumentByIdRequest,
   setPreviewDocument,
+  setProjectDashboardState,
 } = Creators;
 const { toggleModal, togglePromptDialog, setRightSidebarState } =
   CommonCreators;
@@ -292,7 +293,9 @@ function DocumentList() {
                       <MaterialIcon
                         onIconClick={e => {
                           e.stopPropagation();
-                          dispatch(dispatch(getDocumentByIdRequest(row.id)));
+                          dispatch(
+                            setProjectDashboardState({ selectedDocument: row }),
+                          );
                           dispatch(setPreviewDocument(true));
                         }}
                         wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"

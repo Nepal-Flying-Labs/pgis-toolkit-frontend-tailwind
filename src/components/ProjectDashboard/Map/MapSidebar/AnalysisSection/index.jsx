@@ -10,6 +10,8 @@ import LayerAccordion from '@Components/common/SkeletonLoader/LayerAccordion';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { analysisTypes } from '@src/constants/analysis';
 import NoAnalysisYet from './NoAnalysisYet';
+import Accordion from './Accordion';
+import IndividualCard from './IndividualCard';
 
 const { toggleModal } = CommonCreators;
 const { setSearchText, getAnalysisTypeListRequest } = ProjectMapCreators;
@@ -49,25 +51,52 @@ export default function AnalysisSection() {
       <NoAnalysisYet />
     </div>
   ) : (
-    <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
-      <Searchbar
-        className="naxatw-bg-white"
-        isSmall
-        value={searchText}
-        onChange={e => {
-          dispatch(setSearchText(e.target.value));
-        }}
-        isFocus
-      />
-      <Button
-        className="naxatw-btn-primary naxatw-btn-sm"
-        iconLeft="add"
-        onClick={() => {
-          dispatch(toggleModal('analysis'));
-        }}
-      >
-        Analysis
-      </Button>
+    <div className="">
+      <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
+        <Searchbar
+          className="naxatw-bg-white"
+          isSmall
+          value={searchText}
+          onChange={e => {
+            dispatch(setSearchText(e.target.value));
+          }}
+          isFocus
+        />
+        <Button
+          className="naxatw-btn-primary naxatw-btn-sm"
+          iconLeft="add"
+          onClick={() => {
+            dispatch(toggleModal('analysis'));
+          }}
+        >
+          Analysis
+        </Button>
+      </div>
+
+      <div className="naxatw-mt-3">
+        {analysisList &&
+          Object.keys(analysisList).map(key => (
+            <Accordion
+              key={key}
+              header={
+                <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
+                  <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
+                    <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
+                      <h5 className="naxatw-text-grey-800">hello</h5>
+                    </div>
+                  </div>
+                </div>
+              }
+              body={
+                <div className="naxatw-space-y-1">
+                  <IndividualCard />
+                  <IndividualCard />
+                  <IndividualCard />
+                </div>
+              }
+            />
+          ))}
+      </div>
     </div>
   );
 }

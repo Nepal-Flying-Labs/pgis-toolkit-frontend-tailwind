@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+/* eslint-disable no-param-reassign */
 import { createReducer } from 'reduxsauce';
 import * as chroma from 'chroma-js';
 import { parse } from 'wkt';
@@ -7,6 +8,7 @@ import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { boundaryLayerName } from '@src/constants/map';
 import { isEmpty } from '@Utils/commonUtils';
+import { getAnalysisType } from '@src/constants/analysis';
 
 const initialState = {
   themes: null, // []
@@ -886,8 +888,11 @@ const updateLabelFieldSuccess = (state, action) => {
 
 const getAnalysisTypeListSuccess = (state, action) =>
   produce(state, draft => {
-    const { counts } = action.payload;
+    const { counts, analysisType } = action.payload;
     if (!counts) return;
+    // const analysisName = getAnalysisType(analysisType);
+    draft.analysisList = {};
+    draft.analysisList[analysisType] = action.payload;
   });
 
 const projectMapReducer = createReducer(initialState, {

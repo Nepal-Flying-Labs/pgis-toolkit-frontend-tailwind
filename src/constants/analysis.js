@@ -7,6 +7,8 @@ export function getAnalysisType(type) {
   switch (type) {
     case 'optimal-route':
       return 'optimum_route';
+    case 'optimum_route':
+      return 'optimal-route';
     default:
       return '';
   }

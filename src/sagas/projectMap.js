@@ -740,7 +740,12 @@ export function* updateLabelFieldRequest({ id, payload }) {
 export function* getAnalysisTypeListRequest({ params }) {
   try {
     const response = yield call(getAnalysisTypeList, params);
-    yield put(projectMapActions.getAnalysisTypeListSuccess(response.data));
+    yield put(
+      projectMapActions.getAnalysisTypeListSuccess({
+        ...response.data,
+        analysisType: params.type,
+      }),
+    );
   } catch (error) {
     yield put(projectMapActions.getAnalysisTypeListFailure());
     throw error;

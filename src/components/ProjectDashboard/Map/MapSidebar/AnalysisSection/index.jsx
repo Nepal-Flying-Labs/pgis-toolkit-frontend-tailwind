@@ -16,6 +16,15 @@ import IndividualCard from './IndividualCard';
 const { toggleModal } = CommonCreators;
 const { setSearchText, getAnalysisTypeListRequest } = ProjectMapCreators;
 
+function getAnalysisName(type) {
+  switch (type) {
+    case 'optimum_route':
+      return 'Optimal Route Analysis';
+    default:
+      return '';
+  }
+}
+
 export default function AnalysisSection() {
   const { projectId } = useParams();
   const searchText = useSelector(state => state.projectMap.searchText);
@@ -82,16 +91,18 @@ export default function AnalysisSection() {
                 <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
                   <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
                     <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
-                      <h5 className="naxatw-text-grey-800">hello</h5>
+                      <h5 className="naxatw-text-grey-800">
+                        {getAnalysisName(key)}
+                      </h5>
                     </div>
                   </div>
                 </div>
               }
               body={
-                <div className="naxatw-space-y-1">
-                  <IndividualCard />
-                  <IndividualCard />
-                  <IndividualCard />
+                <div className="naxatw-space-y-1 naxatw-max-h-[15.5rem] naxatw-overflow-y-auto scrollbar">
+                  {analysisList[key].results.map(item => (
+                    <IndividualCard key={item.id} data={item} />
+                  ))}
                 </div>
               }
             />

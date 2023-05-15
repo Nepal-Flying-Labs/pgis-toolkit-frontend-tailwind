@@ -32,7 +32,7 @@ const initialState = {
   selectedInfo: null, // selected value for info content
   hideSidebar: false,
   // analysisList: null, // []
-  selectedAnalysis: null, // selected analysis type for create analysis
+  selectedAnalysisType: null, // selected analysis type for create analysis
   analysisDetail: null, // selected analysis type for create analysis
 };
 
@@ -287,7 +287,7 @@ const toggleSidebar = (state, action) => ({
 
 const resetAnalysisState = state => ({
   ...initialState,
-  selectedAnalysis: state.selectedAnalysis, // selected analysis type for create analysis
+  selectedAnalysisType: state.selectedAnalysisType, // selected analysis type for create analysis
   analysisDetail: state.analysisDetail, // selected analysis type for create analysis
 });
 

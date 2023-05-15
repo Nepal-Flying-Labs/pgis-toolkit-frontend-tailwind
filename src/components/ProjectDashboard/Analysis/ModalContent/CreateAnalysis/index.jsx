@@ -17,15 +17,14 @@ const { copyLayerDataRequest, setAnalysisState } = AnalysisCreators;
 
 export default function CreateAnalysis() {
   const { organizationId, projectId } = useParams();
-  const selectedAnalysis = useSelector(
-    state => state.analysis.selectedAnalysis,
+  const selectedAnalysisType = useSelector(
+    state => state.analysis.selectedAnalysisType,
   );
   const dispatch = useDispatch();
   const { values, meta, handleChange, handleSubmit } = useForm({
     initialValues,
     required: ['analysisName'],
     onSubmit: data => {
-      const { analysisType } = selectedAnalysis;
       dispatch(
         setAnalysisState({
           analysisDetail: data,
@@ -33,7 +32,7 @@ export default function CreateAnalysis() {
       );
       dispatch(
         copyLayerDataRequest({
-          analysisType,
+          analysisType: selectedAnalysisType,
           organizationId,
           projectId,
         }),
@@ -79,7 +78,7 @@ export default function CreateAnalysis() {
           // isLoading={loading}
           // loaderClassName="naxatw-fill-secondary-400"
         >
-          Next
+          Create
         </Button>
       </div>
     </div>

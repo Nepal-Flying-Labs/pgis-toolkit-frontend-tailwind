@@ -114,9 +114,9 @@
 - [ ] layer order accordion border color
 - [ ] dropdown options in modal/table
 
-- [ ] update social media links
-- [ ] how usafiri works => heading bold => faq questions bold
-
 - [ ] test branch -> test/refactor-analysis-module
 
 
+## TASKS (MAY 11)
+- [ ] move create analysis modal after data cleaning for optimal route 
+- [ ] route for analysis page (id from params)

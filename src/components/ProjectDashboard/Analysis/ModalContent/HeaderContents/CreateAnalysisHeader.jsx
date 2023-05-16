@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
-import MaterialIcon from '@Components/common/MaterialIcon/index';
+import MaterialIcon from '@Components/common/MaterialIcon';
 import { analysisData } from '@src/constants/analysis';
 
 const { toggleModal } = CommonCreators;

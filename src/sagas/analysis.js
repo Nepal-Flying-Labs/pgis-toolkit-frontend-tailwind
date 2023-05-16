@@ -14,6 +14,7 @@ import commonActions from '@Actions/common';
 import analysisActions, { Types } from '@Actions/analysis';
 import bufferAnalysisActions from '@Actions/bufferAnalysis';
 import routeAnalysisActions from '@Actions/routeAnalysis';
+import dataCleaningActions from '@Actions/dataCleaning';
 import toastActions from '@Actions/toast';
 import {
   getAnalysisResultDetail,
@@ -37,6 +38,7 @@ import {
   analysisWithDataCleaning,
   getAnalysisType,
 } from '@src/constants/analysis';
+import { createAnalysis } from '@Services/analysis';
 
 export function* copyLayerDataRequest({ payload }) {
   try {
@@ -191,6 +193,28 @@ export function* getLayerAttributeRequest({ params }) {
   }
 }
 
+export function* createAnalysisRequest({ payload }) {
+  try {
+    const response = yield call(createAnalysis, payload);
+    yield put(analysisActions.createAnalysisSuccess(response.data));
+    const analysisId = response.data.id;
+    const { organization, project, type } = payload;
+    const analysisType = getAnalysisType(type);
+    yield put(commonActions.toggleModal());
+    yield put(
+      dataCleaningActions.startAnalysisRequest({
+        organizationId: organization,
+        projectId: project,
+        analysisType,
+        analysisId,
+      }),
+    );
+  } catch (error) {
+    yield put(analysisActions.createAnalysisFailure());
+    throw error;
+  }
+}
+
 function* analysisWatcher() {
   yield takeLatest(
     Types.COPY_LAYER_DATA_REQUEST,
@@ -215,6 +239,10 @@ function* analysisWatcher() {
   yield takeLatest(
     Types.GET_LAYER_ATTRIBUTE_REQUEST,
     withLoader(withErrorHandler(getLayerAttributeRequest)),
+  );
+  yield takeLatest(
+    Types.CREATE_ANALYSIS_REQUEST,
+    withLoader(withErrorHandler(createAnalysisRequest)),
   );
 }
 

@@ -7,13 +7,15 @@ import Input from '@Components/common/Input';
 import FormErrorMessage from '@Components/common/FormErrorMessage';
 import Button from '@Components/common/Button';
 import TextArea from '@Components/common/TextArea';
+import { getAnalysisType } from '@src/constants/analysis';
 
 const initialValues = {
   analysisName: '',
   description: '',
 };
 
-const { copyLayerDataRequest, setAnalysisState } = AnalysisCreators;
+const { copyLayerDataRequest, setAnalysisState, createAnalysisRequest } =
+  AnalysisCreators;
 
 export default function CreateAnalysis() {
   const { organizationId, projectId } = useParams();
@@ -25,11 +27,20 @@ export default function CreateAnalysis() {
     initialValues,
     required: ['analysisName'],
     onSubmit: data => {
-      dispatch(
-        setAnalysisState({
-          analysisDetail: data,
-        }),
-      );
+      const { analysisName, description } = data;
+      const payloadData = {
+        name: analysisName,
+        description,
+        project: projectId,
+        organization: organizationId,
+        type: getAnalysisType(selectedAnalysisType),
+      };
+      dispatch(createAnalysisRequest(payloadData));
+      // dispatch(
+      //   setAnalysisState({
+      //     analysisDetail: data,
+      //   }),
+      // );
       dispatch(
         copyLayerDataRequest({
           analysisType: selectedAnalysisType,

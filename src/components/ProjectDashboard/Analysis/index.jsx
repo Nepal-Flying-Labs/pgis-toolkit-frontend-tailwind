@@ -74,13 +74,13 @@ export default function Analysis() {
     });
   }, [dispatch, themes, layers]);
 
-  // reset analysis state
-  useEffect(
-    () => () => {
-      dispatch(resetAnalysisState());
-    },
-    [dispatch],
-  );
+  // // reset analysis state
+  // useEffect(
+  //   () => () => {
+  //     dispatch(resetAnalysisState());
+  //   },
+  //   [dispatch],
+  // );
 
   return (
     <div>

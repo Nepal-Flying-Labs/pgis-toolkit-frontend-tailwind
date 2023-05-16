@@ -56,9 +56,6 @@ const ModalWrapper = ({ component }) => {
   const modalContent = useSelector(state => state.common.modalContent);
   const showModalTwo = useSelector(state => state.common.showModalTwo);
   const modalTwoContent = useSelector(state => state.common.modalTwoContent);
-  const selectedAnalysisType = useSelector(
-    state => state.analysis.selectedAnalysisType,
-  );
 
   const promptDialogContent = useSelector(
     state => state.common.promptDialogContent,
@@ -104,11 +101,7 @@ const ModalWrapper = ({ component }) => {
         subtitle={getModalContent(modalContent)?.subtitle}
         onClose={handleModalClose}
         helpContent={getModalContent(modalContent)?.helpContent}
-        hideCloseButton={
-          !!getModalContent(modalContent).hideCloseButton ||
-          (modalContent === 'create-analysis' &&
-            selectedAnalysisType === 'optimal-route')
-        }
+        hideCloseButton={!!getModalContent(modalContent).hideCloseButton}
       >
         {getModalContent(modalContent)?.content}
       </Modal>

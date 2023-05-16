@@ -44,6 +44,10 @@ export const { Types, Creators } = createActions(
     toggleSidebar: ['payload'],
 
     resetAnalysisState: null,
+
+    createAnalysisRequest: ['payload'],
+    createAnalysisSuccess: ['payload'],
+    createAnalysisFailure: null,
   },
   { prefix: 'analysis/' },
 );

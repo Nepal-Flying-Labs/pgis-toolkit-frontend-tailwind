@@ -20,13 +20,13 @@ export default function OptimalRoute() {
     }
   }, [dispatch, analysisId]);
 
-  // reset route analysis state on unmount
-  useEffect(
-    () => () => {
-      dispatch(resetRouteAnalysisState());
-    },
-    [dispatch],
-  );
+  // // reset route analysis state on unmount
+  // useEffect(
+  //   () => () => {
+  //     dispatch(resetRouteAnalysisState());
+  //   },
+  //   [dispatch],
+  // );
 
   return (
     <div className="naxatw-flex naxatw-h-[calc(100vh-6.2rem)] naxatw-w-full">

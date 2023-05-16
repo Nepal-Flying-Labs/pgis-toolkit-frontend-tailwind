@@ -1,12 +1,9 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as RouteAnalysisCreators } from '@Actions/routeAnalysis';
 import MapSidebar from './MapSidebar';
 import MapSection from './MapSection';
-
-const { toggleModal } = CommonCreators;
 
 const { resetRouteAnalysisState } = RouteAnalysisCreators;
 
@@ -16,7 +13,7 @@ export default function OptimalRoute() {
 
   useEffect(() => {
     if (!analysisId) {
-      dispatch(toggleModal('create-analysis'));
+      // dispatch(toggleModal('create-analysis'));
     }
   }, [dispatch, analysisId]);
 

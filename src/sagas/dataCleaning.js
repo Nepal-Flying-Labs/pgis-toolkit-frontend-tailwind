@@ -225,6 +225,7 @@ export function* startAnalysisRequest({ params }) {
           },
         }),
       );
+      yield put(commonActions.toggleModal());
       yield put(
         push(
           `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}/${analysisId}`,

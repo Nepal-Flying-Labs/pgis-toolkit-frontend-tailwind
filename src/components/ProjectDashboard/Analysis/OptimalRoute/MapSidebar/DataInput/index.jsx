@@ -51,7 +51,7 @@ function Container({ children }) {
 }
 
 export default function DataInput() {
-  const { projectId } = useParams();
+  const { projectId, analysisId } = useParams();
   const roadNetworkLayer = useSelector(
     state => state.routeAnalysis.roadNetworkLayer,
   );
@@ -76,7 +76,7 @@ export default function DataInput() {
   const destinationPoint = useSelector(
     state => state.routeAnalysis.dataInput.destinationPoint,
   );
-  const analysisDetail = useSelector(state => state.analysis.analysisDetail);
+  // const analysisDetail = useSelector(state => state.analysis.analysisDetail);
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.APPLY_ROUTE_ANALYSIS_REQUEST]),
   );
@@ -110,8 +110,8 @@ export default function DataInput() {
       destination_lat: destinationLat,
       paths: alternativePaths,
       obstacles: JSON.stringify(selectedObstacles),
-      name: analysisDetail.analysisName,
-      result_name: outputName,
+      analysis_id: analysisId,
+      name: outputName,
       project: projectId,
       type: 'optimum_route',
     };

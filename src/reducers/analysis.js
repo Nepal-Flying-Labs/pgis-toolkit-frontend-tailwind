@@ -285,9 +285,14 @@ const toggleSidebar = (state, action) => ({
   hideSidebar: !!action.payload || !state.hideSidebar,
 });
 
-const createAnalysisSuccess = (state, action) => ({
-  ...state,
-});
+const createAnalysisSuccess = (state, action) => {
+  const { name, description } = action.payload;
+  const analysisDetail = { name, description };
+  return {
+    ...state,
+    analysisDetail,
+  };
+};
 
 const resetAnalysisState = state => ({
   ...initialState,

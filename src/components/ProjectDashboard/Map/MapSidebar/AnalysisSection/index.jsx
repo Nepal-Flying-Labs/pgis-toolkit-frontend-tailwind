@@ -101,7 +101,10 @@ export default function AnalysisSection() {
               body={
                 <div className="naxatw-space-y-1 naxatw-max-h-[15.5rem] naxatw-overflow-y-auto scrollbar">
                   {analysisList[key].results.map(item => (
-                    <IndividualCard key={item.id} data={item} />
+                    <IndividualCard
+                      key={item.id}
+                      data={{ ...item, analysisType: key }}
+                    />
                   ))}
                 </div>
               }

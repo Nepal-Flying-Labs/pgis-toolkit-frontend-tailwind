@@ -103,8 +103,6 @@
 - [x] organization map card design => fix height
 - [x] clear button on search
 
-## NEW ISSUES (APRIL 10)
-
 ### PROJECT MAP
 - [ ] layer category sorting issue in map sidebar
 - [ ] project clustering bbox issue
@@ -120,3 +118,6 @@
 ## TASKS (MAY 11)
 - [ ] move create analysis modal after data cleaning for optimal route 
 - [ ] route for analysis page (id from params)
+
+### NEW ISSUES
+- [ ] accordion options click toggle accordion

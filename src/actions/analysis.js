@@ -48,6 +48,10 @@ export const { Types, Creators } = createActions(
     createAnalysisRequest: ['payload'],
     createAnalysisSuccess: ['payload'],
     createAnalysisFailure: null,
+
+    getAnalysisDetailRequest: ['payload'],
+    getAnalysisDetailSuccess: ['payload'],
+    getAnalysisDetailFailure: null,
   },
   { prefix: 'analysis/' },
 );

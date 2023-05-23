@@ -38,7 +38,7 @@ import {
   analysisWithDataCleaning,
   getAnalysisType,
 } from '@src/constants/analysis';
-import { createAnalysis } from '@Services/analysis';
+import { createAnalysis, getAnalysisDetail } from '@Services/analysis';
 
 export function* copyLayerDataRequest({ payload }) {
   try {
@@ -215,6 +215,16 @@ export function* createAnalysisRequest({ payload }) {
   }
 }
 
+export function* getAnalysisDetailRequest({ payload }) {
+  try {
+    const response = yield call(getAnalysisDetail, payload);
+    yield put(analysisActions.getAnalysisDetailSuccess(response.data));
+  } catch (error) {
+    yield put(analysisActions.getAnalysisDetailFailure());
+    throw error;
+  }
+}
+
 function* analysisWatcher() {
   yield takeLatest(
     Types.COPY_LAYER_DATA_REQUEST,
@@ -243,6 +253,10 @@ function* analysisWatcher() {
   yield takeLatest(
     Types.CREATE_ANALYSIS_REQUEST,
     withLoader(withErrorHandler(createAnalysisRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ANALYSIS_DETAIL_REQUEST,
+    withLoader(withErrorHandler(getAnalysisDetailRequest)),
   );
 }
 

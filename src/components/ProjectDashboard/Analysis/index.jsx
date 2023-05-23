@@ -17,6 +17,7 @@ const {
   getProjectThemesRequest,
   getProjectThemeLayersRequest,
   getProjectGeojsonRequest,
+  getAnalysisDetailRequest,
   resetAnalysisState,
 } = AnalysisCreators;
 
@@ -35,7 +36,7 @@ function getAnalysisContent(type) {
 }
 
 export default function Analysis() {
-  const { tabname, analysisType, projectId } = useParams();
+  const { tabname, analysisType, projectId, analysisId } = useParams();
   const analysisTaskId = useSelector(state => state.analysis.analysisTaskId);
   const themes = useSelector(state => state.analysis.themes);
   const layers = useSelector(state => state.analysis.layers);
@@ -73,6 +74,11 @@ export default function Analysis() {
       dispatch(getProjectThemeLayersRequest({ theme: id }));
     });
   }, [dispatch, themes, layers]);
+
+  useEffect(() => {
+    if (!analysisId) return;
+    dispatch(getAnalysisDetailRequest(analysisId));
+  }, [dispatch, analysisId]);
 
   // // reset analysis state
   // useEffect(

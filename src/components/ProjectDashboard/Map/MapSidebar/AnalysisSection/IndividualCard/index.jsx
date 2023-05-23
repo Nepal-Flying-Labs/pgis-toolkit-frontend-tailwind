@@ -2,7 +2,7 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router';
 import { format } from 'date-fns';
-import DropdownOptions from '@Components/common/DropdownOptions/index';
+import DropdownOptions from '@Components/common/DropdownOptions';
 import { getAnalysisType } from '@src/constants/analysis';
 
 export default function IndividualCard({ data }) {

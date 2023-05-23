@@ -294,6 +294,15 @@ const createAnalysisSuccess = (state, action) => {
   };
 };
 
+const getAnalysisDetailSuccess = (state, action) => {
+  const { name, description } = action.payload;
+  const analysisDetail = { name, description };
+  return {
+    ...state,
+    analysisDetail,
+  };
+};
+
 const resetAnalysisState = state => ({
   ...initialState,
   selectedAnalysisType: state.selectedAnalysisType, // selected analysis type for create analysis
@@ -320,6 +329,7 @@ const analysisReducer = createReducer(initialState, {
   [Types.SET_SELECTED_INFO]: setSelectedInfo,
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
   [Types.CREATE_ANALYSIS_SUCCESS]: createAnalysisSuccess,
+  [Types.GET_ANALYSIS_DETAIL_SUCCESS]: getAnalysisDetailSuccess,
   [Types.RESET_ANALYSIS_STATE]: resetAnalysisState,
 });
 

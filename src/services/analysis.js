@@ -5,3 +5,6 @@ export const createAnalysis = data =>
 
 export const getAnalysisDetail = id =>
   authenticated(api).get(`/maps/analysis/${id}/`);
+
+export const getAnalysisResultList = params =>
+  authenticated(api).get(`/maps/analysis_result_list/`, { params });

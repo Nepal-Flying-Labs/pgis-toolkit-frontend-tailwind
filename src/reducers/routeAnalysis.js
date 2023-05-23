@@ -245,6 +245,11 @@ const deleteRouteResult = (state, action) =>
     }
   });
 
+const getAnalysisResultListSuccess = (state, action) =>
+  produce(state, draft => {
+    console.log(action.payload, 'payloadx');
+  });
+
 const routeAnalysisReducer = createReducer(initialState, {
   [Types.SET_ROUTE_ANALYSIS_STATE]: setRouteAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
@@ -259,6 +264,7 @@ const routeAnalysisReducer = createReducer(initialState, {
   [Types.SAVE_ROUTE_LAYER_SUCCESS]: saveRouteLayerSuccess,
   [Types.GET_SELECTED_LAYER_FEATURE_SUCCESS]: getSelectedLayerFeatureSuccess,
   [Types.DELETE_ROUTE_RESULT]: deleteRouteResult,
+  [Types.GET_ANALYSIS_RESULT_LIST_SUCCESS]: getAnalysisResultListSuccess,
 });
 
 export default routeAnalysisReducer;

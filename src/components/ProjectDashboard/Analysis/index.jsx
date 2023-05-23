@@ -11,6 +11,7 @@ import DataCleaning from './DataCleaning';
 import OptimalRoute from './OptimalRoute';
 import BufferAnalysis from './BufferAnalysis';
 import AnalysisLoader from './AnalysisLoader';
+import { getAnalysisType } from '@src/constants/analysis';
 
 const {
   checkProcessingStatusRequest,
@@ -18,6 +19,7 @@ const {
   getProjectThemeLayersRequest,
   getProjectGeojsonRequest,
   getAnalysisDetailRequest,
+  getAnalysisResultListRequest,
   resetAnalysisState,
 } = AnalysisCreators;
 
@@ -78,7 +80,14 @@ export default function Analysis() {
   useEffect(() => {
     if (!analysisId) return;
     dispatch(getAnalysisDetailRequest(analysisId));
-  }, [dispatch, analysisId]);
+    dispatch(
+      getAnalysisResultListRequest({
+        project: projectId,
+        analysis_id: analysisId,
+        analysis_type: getAnalysisType(analysisType),
+      }),
+    );
+  }, [dispatch, analysisId, projectId, analysisType]);
 
   // // reset analysis state
   // useEffect(

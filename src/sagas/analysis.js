@@ -38,7 +38,11 @@ import {
   analysisWithDataCleaning,
   getAnalysisType,
 } from '@src/constants/analysis';
-import { createAnalysis, getAnalysisDetail } from '@Services/analysis';
+import {
+  createAnalysis,
+  getAnalysisDetail,
+  getAnalysisResultList,
+} from '@Services/analysis';
 
 export function* copyLayerDataRequest({ payload }) {
   try {
@@ -225,6 +229,19 @@ export function* getAnalysisDetailRequest({ payload }) {
   }
 }
 
+export function* getAnalysisResultListRequest({ params }) {
+  const analysisType = getAnalysisType(params.analysis_type);
+  const action =
+    analysisType === 'optimal-route' ? routeAnalysisActions : analysisActions;
+  try {
+    const response = yield call(getAnalysisResultList, params);
+    yield put(action.getAnalysisResultListSuccess(response.data));
+  } catch (error) {
+    yield put(action.getAnalysisResultListFailure());
+    throw error;
+  }
+}
+
 function* analysisWatcher() {
   yield takeLatest(
     Types.COPY_LAYER_DATA_REQUEST,
@@ -257,6 +274,10 @@ function* analysisWatcher() {
   yield takeLatest(
     Types.GET_ANALYSIS_DETAIL_REQUEST,
     withLoader(withErrorHandler(getAnalysisDetailRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ANALYSIS_RESULT_LIST_REQUEST,
+    withLoader(withErrorHandler(getAnalysisResultListRequest)),
   );
 }
 

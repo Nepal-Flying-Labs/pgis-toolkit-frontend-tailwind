@@ -52,6 +52,8 @@ export const { Types, Creators } = createActions(
     getAnalysisDetailRequest: ['payload'],
     getAnalysisDetailSuccess: ['payload'],
     getAnalysisDetailFailure: null,
+
+    getAnalysisResultListRequest: ['params'],
   },
   { prefix: 'analysis/' },
 );

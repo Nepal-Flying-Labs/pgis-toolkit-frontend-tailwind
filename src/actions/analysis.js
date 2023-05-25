@@ -54,6 +54,8 @@ export const { Types, Creators } = createActions(
     getAnalysisDetailFailure: null,
 
     getAnalysisResultListRequest: ['params'],
+
+    toggleRoadLayer: ['payload'],
   },
   { prefix: 'analysis/' },
 );

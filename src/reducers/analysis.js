@@ -1,4 +1,5 @@
 import { createReducer } from 'reduxsauce';
+import produce from 'immer';
 import { Types } from '@Actions/analysis';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { boundaryLayerName } from '@src/constants/map';
@@ -303,6 +304,16 @@ const getAnalysisDetailSuccess = (state, action) => {
   };
 };
 
+const toggleRoadLayer = (state, action) =>
+  produce(state, draft => {
+    const roadNetworkId = action.payload;
+    const allLayers = Object.values(draft.layers).flat();
+    const selectedRoadNetwork = allLayers.find(
+      item => item.id === roadNetworkId,
+    );
+    selectedRoadNetwork.checked = true;
+  });
+
 const resetAnalysisState = state => ({
   ...initialState,
   selectedAnalysisType: state.selectedAnalysisType, // selected analysis type for create analysis
@@ -330,6 +341,7 @@ const analysisReducer = createReducer(initialState, {
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
   [Types.CREATE_ANALYSIS_SUCCESS]: createAnalysisSuccess,
   [Types.GET_ANALYSIS_DETAIL_SUCCESS]: getAnalysisDetailSuccess,
+  [Types.TOGGLE_ROAD_LAYER]: toggleRoadLayer,
   [Types.RESET_ANALYSIS_STATE]: resetAnalysisState,
 });
 

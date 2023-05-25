@@ -44,6 +44,7 @@ import {
   getAnalysisResultList,
   getIndividualAnalysisDetail,
 } from '@Services/analysis';
+import { roadLayersThemeIdSelector } from '@Selectors/projectMap';
 
 export function* copyLayerDataRequest({ payload }) {
   try {
@@ -256,6 +257,9 @@ export function* getAnalysisResultListRequest({ params }) {
         roadNetworkId,
       }),
     );
+    if (analysisType === 'optimal-route') {
+      yield put(analysisActions.toggleRoadLayer(roadNetworkId));
+    }
   } catch (error) {
     yield put(action.getAnalysisResultListFailure());
     throw error;

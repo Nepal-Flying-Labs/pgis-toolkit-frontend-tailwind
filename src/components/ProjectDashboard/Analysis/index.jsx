@@ -78,7 +78,7 @@ export default function Analysis() {
   }, [dispatch, themes, layers]);
 
   useEffect(() => {
-    if (!analysisId) return;
+    if (!analysisId || !layers) return;
     dispatch(getAnalysisDetailRequest(analysisId));
     dispatch(
       getAnalysisResultListRequest({
@@ -87,7 +87,7 @@ export default function Analysis() {
         analysis_type: getAnalysisType(analysisType),
       }),
     );
-  }, [dispatch, analysisId, projectId, analysisType]);
+  }, [dispatch, analysisId, projectId, analysisType, layers]);
 
   // // reset analysis state
   // useEffect(

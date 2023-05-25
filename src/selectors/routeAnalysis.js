@@ -5,6 +5,9 @@ export const analysisResultsSelector = state =>
   state.routeAnalysis.results.analysisResults;
 export const routePopupDataSelector = state =>
   state.routeAnalysis.routePopupData;
+export const selectedRoadNetworkIdSelector = state =>
+  state.routeAnalysis.selectedRoadNetworkId;
+export const layersSelector = state => state.analysis.layers;
 
 export const obstacleLayersSelector = createSelector(
   [analysisResultsSelector, routePopupDataSelector],
@@ -49,7 +52,18 @@ export const obstacleLayersSelector = createSelector(
         });
       });
     });
-    // console.log(checkedObstacles, 'checkedObstaclesx');
     return checkedObstacles;
+  },
+);
+
+export const roadNetworkLayerSelector = createSelector(
+  [selectedRoadNetworkIdSelector, layersSelector],
+  (selectedRoadNetworkId, layers) => {
+    if (!layers) return null;
+    const allLayers = Object.values(layers).flat();
+    const roadNetworkLayer = allLayers.find(
+      item => item.id === selectedRoadNetworkId,
+    );
+    return roadNetworkLayer;
   },
 );

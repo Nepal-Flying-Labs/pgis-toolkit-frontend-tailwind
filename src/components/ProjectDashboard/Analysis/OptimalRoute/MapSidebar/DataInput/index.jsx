@@ -52,8 +52,8 @@ function Container({ children }) {
 
 export default function DataInput() {
   const { projectId, analysisId } = useParams();
-  const roadNetworkLayer = useSelector(
-    state => state.routeAnalysis.roadNetworkLayer,
+  const selectedRoadNetworkId = useSelector(
+    state => state.routeAnalysis.selectedRoadNetworkId,
   );
   const obstacleLayers = useSelector(
     state => state.routeAnalysis.obstacleLayers,
@@ -102,7 +102,7 @@ export default function DataInput() {
       .map(item => item.id);
     const payloadData = {
       source: 'system',
-      road_network: roadNetworkLayer?.id,
+      road_network: selectedRoadNetworkId,
       mode: selectedModeOfTransport,
       origin_long: originLong,
       origin_lat: originLat,

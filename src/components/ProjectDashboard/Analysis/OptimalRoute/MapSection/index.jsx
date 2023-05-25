@@ -27,7 +27,10 @@ import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
-import { obstacleLayersSelector } from '@Selectors/routeAnalysis';
+import {
+  obstacleLayersSelector,
+  roadNetworkLayerSelector,
+} from '@Selectors/routeAnalysis';
 import {
   startPointStyles,
   destinationPointStyles,
@@ -55,9 +58,7 @@ export default function MapSection() {
     zoom: 2,
     maxZoom: 25,
   });
-  const roadNetworkLayer = useSelector(
-    state => state.routeAnalysis.roadNetworkLayer,
-  );
+  const roadNetworkLayer = useSelector(roadNetworkLayerSelector);
   const activeTab = useSelector(state => state.routeAnalysis.activeTab);
   const drawPointType = useSelector(
     state => state.routeAnalysis.dataInput.drawPointType,

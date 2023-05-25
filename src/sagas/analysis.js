@@ -239,6 +239,7 @@ export function* getAnalysisResultListRequest({ params }) {
     const responseData = response.data;
     const firstItem = responseData.results[0];
     if (!firstItem) return;
+    const roadNetworkId = firstItem.road_network;
     const detailParams = {
       project: params.project,
       id: firstItem.id,
@@ -252,6 +253,7 @@ export function* getAnalysisResultListRequest({ params }) {
       action.getAnalysisResultListSuccess({
         listData: responseData,
         individualDetail: individualDetailResponse.data,
+        roadNetworkId,
       }),
     );
   } catch (error) {

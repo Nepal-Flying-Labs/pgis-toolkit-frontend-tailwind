@@ -29,7 +29,7 @@ const initialState = {
     selectedAnalysis: null,
     individualAnalysisData: null,
   },
-  roadNetworkLayer: null,
+  selectedRoadNetworkId: null,
   obstacleLayers: [],
   analysisId: null,
   selectedRouteId: null, // route id for fetching route popup data
@@ -298,7 +298,7 @@ function prepareResultsData(data, state) {
 
 const getAnalysisResultListSuccess = (state, action) =>
   produce(state, draft => {
-    const { listData, individualDetail } = action.payload;
+    const { listData, individualDetail, roadNetworkId } = action.payload;
     const listDatax = produce(listData, listDraft => {
       listDraft.results[0] = prepareResultsData(
         {
@@ -309,6 +309,7 @@ const getAnalysisResultListSuccess = (state, action) =>
       );
     });
     draft.results.analysisResults = listDatax;
+    draft.selectedRoadNetworkId = roadNetworkId;
   });
 
 const routeAnalysisReducer = createReducer(initialState, {

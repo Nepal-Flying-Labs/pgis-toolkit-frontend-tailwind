@@ -10,7 +10,7 @@ export const obstacleLayersSelector = createSelector(
   [analysisResultsSelector, routePopupDataSelector],
   (analysisResults, routePopupData) => {
     let checkedObstacles = [];
-    analysisResults.forEach(result => {
+    analysisResults?.results?.forEach(result => {
       if (!result.checked) return;
       result.routes.forEach(route => {
         if (!route.checked) return;

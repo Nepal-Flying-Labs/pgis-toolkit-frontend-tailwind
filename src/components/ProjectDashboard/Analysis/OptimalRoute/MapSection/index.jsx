@@ -114,8 +114,10 @@ export default function MapSection() {
 
   // zoom to road network layer
   useEffect(() => {
-    if (!map || !zoomToRouteId) return;
-    const bbox = analysisResults.find(item => item.id === zoomToRouteId)?.bbox;
+    if (!map || !zoomToRouteId || !analysisResults) return;
+    const bbox = analysisResults.results.find(
+      item => item.id === zoomToRouteId,
+    )?.bbox;
     if (!bbox) return;
     const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
     if (isExtentValid(zoomExtent)) {
@@ -284,7 +286,7 @@ export default function MapSection() {
           />
         ))}
 
-        {analysisResults.map(result =>
+        {analysisResults?.results?.map(result =>
           result.routes.map(route =>
             route.data.map(item => (
               <VectorTileLayer
@@ -316,7 +318,7 @@ export default function MapSection() {
           />
         ))}
 
-        {analysisResults.map(result => (
+        {analysisResults?.results?.map(result => (
           <React.Fragment key={result.id}>
             <CircleMarker
               coordinates={[result.origin_lat, result.origin_long]}

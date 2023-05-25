@@ -8,3 +8,6 @@ export const getAnalysisDetail = id =>
 
 export const getAnalysisResultList = params =>
   authenticated(api).get(`/maps/analysis_result_list/`, { params });
+
+export const getIndividualAnalysisDetail = params =>
+  authenticated(api).get(`/maps/analysis_result_detail/`, { params });

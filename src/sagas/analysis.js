@@ -42,6 +42,7 @@ import {
   createAnalysis,
   getAnalysisDetail,
   getAnalysisResultList,
+  getIndividualAnalysisDetail,
 } from '@Services/analysis';
 
 export function* copyLayerDataRequest({ payload }) {
@@ -235,7 +236,24 @@ export function* getAnalysisResultListRequest({ params }) {
     analysisType === 'optimal-route' ? routeAnalysisActions : analysisActions;
   try {
     const response = yield call(getAnalysisResultList, params);
-    yield put(action.getAnalysisResultListSuccess(response.data));
+    const responseData = response.data;
+    const firstItem = responseData.results[0];
+    if (!firstItem) return;
+    const detailParams = {
+      project: params.project,
+      id: firstItem.id,
+      analysis_type: getAnalysisType(analysisType),
+    };
+    const individualDetailResponse = yield call(
+      getIndividualAnalysisDetail,
+      detailParams,
+    );
+    yield put(
+      action.getAnalysisResultListSuccess({
+        listData: responseData,
+        individualDetail: individualDetailResponse.data,
+      }),
+    );
   } catch (error) {
     yield put(action.getAnalysisResultListFailure());
     throw error;

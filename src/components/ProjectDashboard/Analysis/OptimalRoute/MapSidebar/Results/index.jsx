@@ -70,9 +70,9 @@ export default function Results() {
     {
       id: 'delete-layer',
       label: (
-        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+        <span className="naxatw-flex naxatw-items-center naxatw-text-delete_btn">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
-          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">
+          <p className="naxatw-text-body-lg naxatw-text-delete_btn">
             Discard Layer
           </p>
         </span>
@@ -96,10 +96,11 @@ export default function Results() {
           height: `calc(100vh - ${analysisHeaderHeight} - 3.5rem)`,
         }}
       >
-        {analysisResults.map(result => (
+        {analysisResults?.results?.map(result => (
           <Accordion
             key={result.id}
             className="!naxatw-py-2 !naxatw-px-4"
+            disableHeaderClickToggle
             header={
               <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
                 <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">

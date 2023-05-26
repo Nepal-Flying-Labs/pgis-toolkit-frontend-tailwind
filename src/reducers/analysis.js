@@ -35,6 +35,7 @@ const initialState = {
   // analysisList: null, // []
   selectedAnalysisType: null, // selected analysis type for create analysis
   analysisDetail: null, // selected analysis type for create analysis
+  isLayersFetched: false, // selected analysis type for create analysis
 };
 
 const setAnalysisState = (state, action) => ({
@@ -80,6 +81,7 @@ const getProjectThemeLayersSuccess = (state, action) => {
       },
     })),
   };
+  const isLayersFetched = state.themes.length === Object.keys(layers).length;
   return {
     ...state,
     layers,
@@ -88,6 +90,7 @@ const getProjectThemeLayersSuccess = (state, action) => {
       layerOrder,
     },
     projectAreaLayerId,
+    isLayersFetched,
   };
 };
 

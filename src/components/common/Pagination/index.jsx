@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import toastActions from '@Actions/toast';
 import PropTypes from 'prop-types';
-import { checkIfLoading } from '@Utils/loaderSelector';
 import DropdownSelect from './DropdownSelect';
 import MaterialIcon from '../MaterialIcon/index';
 

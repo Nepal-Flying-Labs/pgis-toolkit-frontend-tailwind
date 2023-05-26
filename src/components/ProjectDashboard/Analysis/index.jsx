@@ -5,13 +5,13 @@ import { Creators as AnalysisCreators, Types } from '@Actions/analysis';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
 import FeatureImages from '@Components/ProjectDashboard/ModalContent/FeatureImages/index';
+import { getAnalysisType } from '@src/constants/analysis';
 import Header from './Header';
 import HelpContent from './HelpContent';
 import DataCleaning from './DataCleaning';
 import OptimalRoute from './OptimalRoute';
 import BufferAnalysis from './BufferAnalysis';
 import AnalysisLoader from './AnalysisLoader';
-import { getAnalysisType } from '@src/constants/analysis';
 
 const {
   checkProcessingStatusRequest,
@@ -46,6 +46,7 @@ export default function Analysis() {
     state => state.projectDashboard.projectDetail,
   );
   const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
+  const isLayersFetched = useSelector(state => state.analysis.isLayersFetched);
   const isProcessing = useSelector(state =>
     checkIfLoading(state, [Types.CHECK_PROCESSING_STATUS_REQUEST]),
   );
@@ -78,7 +79,7 @@ export default function Analysis() {
   }, [dispatch, themes, layers]);
 
   useEffect(() => {
-    if (!analysisId || !layers) return;
+    if (!analysisId || !isLayersFetched) return;
     dispatch(getAnalysisDetailRequest(analysisId));
     dispatch(
       getAnalysisResultListRequest({
@@ -87,7 +88,7 @@ export default function Analysis() {
         analysis_type: getAnalysisType(analysisType),
       }),
     );
-  }, [dispatch, analysisId, projectId, analysisType, layers]);
+  }, [dispatch, analysisId, projectId, analysisType, isLayersFetched]);
 
   // // reset analysis state
   // useEffect(

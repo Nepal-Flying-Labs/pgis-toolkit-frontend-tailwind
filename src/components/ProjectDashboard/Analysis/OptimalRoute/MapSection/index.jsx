@@ -288,8 +288,8 @@ export default function MapSection() {
         ))}
 
         {analysisResults?.results?.map(result =>
-          result.routes.map(route =>
-            route.data.map(item => (
+          result?.routes?.map(route =>
+            route?.data?.map(item => (
               <VectorTileLayer
                 key={`${result.id}-${route.id}-${item.id}`}
                 url={`${apiURL}maps/optimum_route_vectortile/{z}/{x}/{y}/?route=${item.id}`}

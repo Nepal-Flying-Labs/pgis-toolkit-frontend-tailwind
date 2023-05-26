@@ -129,7 +129,7 @@ export default function Results() {
             }
             body={
               <div className="naxatw-pl-2">
-                {result.routes.map(route => (
+                {result?.routes?.map(route => (
                   <div key={route.id}>
                     <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                       <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-10">
@@ -161,7 +161,7 @@ export default function Results() {
                     </div>
 
                     <div className="naxatw-pl-3">
-                      {route.data.map(item => (
+                      {route?.data?.map(item => (
                         <div
                           key={item.id}
                           className="naxatw-flex naxatw-justify-between naxatw-items-center"

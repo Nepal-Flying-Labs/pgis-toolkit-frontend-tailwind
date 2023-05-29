@@ -38,7 +38,7 @@ export default function Header() {
     >
       <div>
         <div className="naxatw-flex">
-          <h3>{analysisDetail?.name || ''}</h3>
+          <h3>{analysisDetail?.name || headerData[analysisType].title}</h3>
           {tabname === 'analysis' && (
             <div
               onMouseOver={() => dispatch(setSelectedInfo('default'))}
@@ -57,7 +57,9 @@ export default function Header() {
         </div>
 
         <span className="naxatw-text-body-lg naxatw-mt-1">
-          {analysisDetail?.description || ''}
+          {analysisDetail?.name
+            ? analysisDetail.description || ''
+            : headerData[analysisType].description}
         </span>
       </div>
       <button

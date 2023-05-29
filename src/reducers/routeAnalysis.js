@@ -24,7 +24,13 @@ const initialState = {
     outputName: '',
   },
   results: {
-    analysisResults: null, // {}
+    // analysisResults: null, // {}
+    analysisResults: {
+      next: null,
+      previous: null,
+      counts: 0,
+      results: [],
+    },
     zoomToRouteId: null,
     selectedAnalysis: null,
     individualAnalysisData: null,

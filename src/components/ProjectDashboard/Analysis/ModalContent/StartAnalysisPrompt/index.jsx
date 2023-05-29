@@ -13,6 +13,7 @@ export default function StartAnalysisPrompt() {
   const selectedAnalysisType = useSelector(
     state => state.analysis.selectedAnalysisType,
   );
+  const analysisDetail = useSelector(state => state.analysis.analysisDetail);
   const dispatch = useDispatch();
 
   return (
@@ -24,10 +25,15 @@ export default function StartAnalysisPrompt() {
         <Button
           className="naxatw-btn-primary"
           onClick={() => {
-            if (selectedAnalysisType === 'optimal-route') {
+            if (selectedAnalysisType === 'optimal-route' && !analysisDetail) {
               dispatch(toggleModal('create-analysis'));
             } else {
-              dispatch(startAnalysisRequest(params));
+              dispatch(
+                startAnalysisRequest({
+                  ...params,
+                  analysisId: analysisDetail.id,
+                }),
+              );
             }
             dispatch(togglePromptDialog());
           }}

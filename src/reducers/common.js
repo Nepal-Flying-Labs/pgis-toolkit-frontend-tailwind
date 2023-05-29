@@ -18,7 +18,8 @@ const initialState = {
 
 const toggleModal = (state, action) => ({
   ...state,
-  showModal: !!action.payload || !state.showModal,
+  // showModal: !!action.payload || !state.showModal,
+  showModal: !!action.payload,
   modalContent: action.payload || state.modalContent,
 });
 

@@ -290,8 +290,8 @@ const toggleSidebar = (state, action) => ({
 });
 
 const createAnalysisSuccess = (state, action) => {
-  const { name, description } = action.payload;
-  const analysisDetail = { name, description };
+  const { id, name, description } = action.payload;
+  const analysisDetail = { id, name, description };
   return {
     ...state,
     analysisDetail,
@@ -299,8 +299,8 @@ const createAnalysisSuccess = (state, action) => {
 };
 
 const getAnalysisDetailSuccess = (state, action) => {
-  const { name, description } = action.payload;
-  const analysisDetail = { name, description };
+  const { id, name, description } = action.payload;
+  const analysisDetail = { id, name, description };
   return {
     ...state,
     analysisDetail,

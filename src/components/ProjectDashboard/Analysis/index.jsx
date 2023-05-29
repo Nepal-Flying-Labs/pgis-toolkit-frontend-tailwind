@@ -48,6 +48,9 @@ export default function Analysis() {
   );
   const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
   const isLayersFetched = useSelector(state => state.analysis.isLayersFetched);
+  const selectedRoadNetworkId = useSelector(
+    state => state.routeAnalysis.selectedRoadNetworkId,
+  );
   const isProcessing = useSelector(state =>
     checkIfLoading(state, [Types.CHECK_PROCESSING_STATUS_REQUEST]),
   );
@@ -80,7 +83,7 @@ export default function Analysis() {
   }, [dispatch, themes, layers]);
 
   useEffect(() => {
-    if (!analysisId || !isLayersFetched) return;
+    if (!analysisId || !isLayersFetched || selectedRoadNetworkId) return;
     dispatch(getAnalysisDetailRequest(analysisId));
     dispatch(
       getAnalysisResultListRequest({
@@ -97,6 +100,7 @@ export default function Analysis() {
     organizationId,
     analysisType,
     isLayersFetched,
+    selectedRoadNetworkId,
   ]);
 
   // // reset analysis state

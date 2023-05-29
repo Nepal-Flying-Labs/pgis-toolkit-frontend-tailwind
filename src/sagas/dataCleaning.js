@@ -205,6 +205,7 @@ export function* startAnalysisRequest({ params }) {
       yield put(
         routeAnalysisActions.setRouteAnalysisState({
           roadNetworkLayer: selectedRoadLayer,
+          selectedRoadNetworkId: selectedRoadLayer.id,
           obstacleLayers: selectedObstacleLayers.map(item => ({
             ...item,
             checked: false,

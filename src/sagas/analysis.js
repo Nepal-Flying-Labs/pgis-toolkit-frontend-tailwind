@@ -45,6 +45,7 @@ import {
   getIndividualAnalysisDetail,
 } from '@Services/analysis';
 import { roadLayersThemeIdSelector } from '@Selectors/projectMap';
+import removeObjectKeys from '@Utils/removeObjectKeys';
 
 export function* copyLayerDataRequest({ payload }) {
   try {
@@ -236,7 +237,8 @@ export function* getAnalysisResultListRequest({ params }) {
   const action =
     analysisType === 'optimal-route' ? routeAnalysisActions : analysisActions;
   try {
-    const response = yield call(getAnalysisResultList, params);
+    const paramsx = removeObjectKeys(params, ['organizationId']);
+    const response = yield call(getAnalysisResultList, paramsx);
     const responseData = response.data;
     const firstItem = responseData.results[0];
     if (!firstItem) return;
@@ -261,8 +263,17 @@ export function* getAnalysisResultListRequest({ params }) {
       yield put(analysisActions.toggleRoadLayer(roadNetworkId));
     }
   } catch (error) {
+    const statusCode = error.response.status;
+    if (statusCode === 404) {
+      yield put(
+        push(
+          `/organizations/${params.organizationId}/projects/${
+            params.project
+          }/data-cleaning/${getAnalysisType(params.analysis_type)}`,
+        ),
+      );
+    }
     yield put(action.getAnalysisResultListFailure());
-    throw error;
   }
 }
 
@@ -301,7 +312,7 @@ function* analysisWatcher() {
   );
   yield takeLatest(
     Types.GET_ANALYSIS_RESULT_LIST_REQUEST,
-    withLoader(withErrorHandler(getAnalysisResultListRequest)),
+    withLoader(getAnalysisResultListRequest),
   );
 }
 

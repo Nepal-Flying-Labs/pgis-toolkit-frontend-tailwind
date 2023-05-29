@@ -38,7 +38,8 @@ function getAnalysisContent(type) {
 }
 
 export default function Analysis() {
-  const { tabname, analysisType, projectId, analysisId } = useParams();
+  const { tabname, analysisType, projectId, analysisId, organizationId } =
+    useParams();
   const analysisTaskId = useSelector(state => state.analysis.analysisTaskId);
   const themes = useSelector(state => state.analysis.themes);
   const layers = useSelector(state => state.analysis.layers);
@@ -86,9 +87,17 @@ export default function Analysis() {
         project: projectId,
         analysis_id: analysisId,
         analysis_type: getAnalysisType(analysisType),
+        organizationId,
       }),
     );
-  }, [dispatch, analysisId, projectId, analysisType, isLayersFetched]);
+  }, [
+    dispatch,
+    analysisId,
+    projectId,
+    organizationId,
+    analysisType,
+    isLayersFetched,
+  ]);
 
   // // reset analysis state
   // useEffect(

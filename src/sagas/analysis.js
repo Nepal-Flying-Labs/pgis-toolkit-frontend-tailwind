@@ -272,7 +272,7 @@ export function* getAnalysisResultListRequest({ params }) {
     }
   } catch (error) {
     const statusCode = error.response.status;
-    if (statusCode === 404) {
+    if (statusCode === 404 && analysisType === 'optimal-route') {
       yield put(
         push(
           `/organizations/${params.organizationId}/projects/${

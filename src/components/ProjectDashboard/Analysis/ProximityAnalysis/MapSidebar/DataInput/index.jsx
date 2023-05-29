@@ -58,6 +58,7 @@ function Container({ children }) {
 }
 
 export default function DataInput() {
+  const { analysisId } = useParams();
   const [error, setError] = useState([]);
   // const [radiusUnit, setRadiusUnit] = useState('meter');
   const dispatch = useDispatch();
@@ -142,7 +143,7 @@ export default function DataInput() {
       name: outputName,
       project: projectId,
       pois: selectedPOI,
-      type: 'buffer',
+      analysis_id: analysisId,
     };
     const poiLayersIds = poiLayers
       .filter(layer => layer.checked)

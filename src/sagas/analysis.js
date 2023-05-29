@@ -208,14 +208,22 @@ export function* createAnalysisRequest({ payload }) {
     const { organization, project, type } = payload;
     const analysisType = getAnalysisType(type);
     yield put(commonActions.toggleModal());
-    yield put(
-      dataCleaningActions.startAnalysisRequest({
-        organizationId: organization,
-        projectId: project,
-        analysisType,
-        analysisId,
-      }),
-    );
+    if (analysisType === 'optimal-route') {
+      yield put(
+        dataCleaningActions.startAnalysisRequest({
+          organizationId: organization,
+          projectId: project,
+          analysisType,
+          analysisId,
+        }),
+      );
+    } else {
+      yield put(
+        push(
+          `/organizations/${organization}/projects/${project}/analysis/${analysisType}/${analysisId}`,
+        ),
+      );
+    }
   } catch (error) {
     yield put(analysisActions.createAnalysisFailure());
     throw error;

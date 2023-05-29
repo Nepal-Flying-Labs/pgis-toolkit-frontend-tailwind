@@ -28,6 +28,15 @@ export function getAnalysisType(type) {
       return 'optimum_route';
     case 'optimum_route':
       return 'optimal-route';
+    case 'buffer-analysis':
+      return 'buffer';
+    case 'proximity-analysis':
+      return 'proximity';
+    case 'buffer':
+      return 'buffer-analysis';
+    case 'proximity':
+      return 'proximity-analysis';
+
     default:
       return '';
   }

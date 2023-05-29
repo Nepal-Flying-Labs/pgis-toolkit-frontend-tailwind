@@ -11,6 +11,7 @@ import HelpContent from './HelpContent';
 import DataCleaning from './DataCleaning';
 import OptimalRoute from './OptimalRoute';
 import BufferAnalysis from './BufferAnalysis';
+import ProximityAnalysis from './ProximityAnalysis';
 import AnalysisLoader from './AnalysisLoader';
 
 const {
@@ -30,7 +31,7 @@ function getAnalysisContent(type) {
     case 'buffer-analysis':
       return <BufferAnalysis />;
     case 'proximity-analysis':
-      return <BufferAnalysis />;
+      return <ProximityAnalysis />;
 
     default:
       return '';

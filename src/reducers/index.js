@@ -14,6 +14,7 @@ import dataCleaning from './dataCleaning';
 import analysis from './analysis';
 import routeAnalysis from './routeAnalysis';
 import bufferAnalysis from './bufferAnalysis';
+import proximityAnalysis from './proximityAnalysis';
 
 export default combineReducers({
   router: connectRouter(history),
@@ -30,4 +31,5 @@ export default combineReducers({
   analysis,
   routeAnalysis,
   bufferAnalysis,
+  proximityAnalysis,
 });

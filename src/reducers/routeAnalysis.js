@@ -86,10 +86,11 @@ const checkProcessingStatusSuccess = (state, action) =>
                 name: `Route ${item.route_no}`,
                 checked: true,
                 style: {
-                  ...draft.roadNetworkLayer.style,
-                  lineColor: routeColors[item.route_no],
-                  lineThickness:
-                    +draft.roadNetworkLayer.style.lineThickness + 2,
+                  ...defaultStyles,
+                  // ...draft.roadNetworkLayer.style,
+                  // lineColor: routeColors[item.route_no],
+                  // lineThickness:
+                  // +draft.roadNetworkLayer.style.lineThickness + 2,
                 },
               };
             }),
@@ -105,9 +106,10 @@ const checkProcessingStatusSuccess = (state, action) =>
               name: `Route ${item.route_no}`,
               checked: true,
               style: {
-                ...draft.roadNetworkLayer.style,
-                lineColor: routeColors[item.route_no],
-                lineThickness: +draft.roadNetworkLayer.style.lineThickness + 2,
+                ...defaultStyles,
+                // ...draft.roadNetworkLayer.style,
+                // lineColor: routeColors[item.route_no],
+                // lineThickness: +draft.roadNetworkLayer.style.lineThickness + 2,
               },
             })),
           checked: true,
@@ -115,10 +117,7 @@ const checkProcessingStatusSuccess = (state, action) =>
       ],
     };
     // draft.dataInput = initialState.dataInput;
-    draft.results.analysisResults = [
-      analysisResult,
-      ...draft.results.analysisResults,
-    ];
+    draft.results.analysisResults.results.unshift(analysisResult);
     draft.results.zoomToRouteId = analysisResult.id;
     draft.activeTab = 'results';
     draft.selectedRouteId = optimalRouteId;

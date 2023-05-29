@@ -39,7 +39,8 @@ function getAnalysisContent(type) {
 }
 
 export default function Analysis() {
-  const { tabname, analysisType, projectId, analysisId } = useParams();
+  const { tabname, analysisType, projectId, analysisId, organizationId } =
+    useParams();
   const analysisTaskId = useSelector(state => state.analysis.analysisTaskId);
   const themes = useSelector(state => state.analysis.themes);
   const layers = useSelector(state => state.analysis.layers);
@@ -48,6 +49,9 @@ export default function Analysis() {
   );
   const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
   const isLayersFetched = useSelector(state => state.analysis.isLayersFetched);
+  const selectedRoadNetworkId = useSelector(
+    state => state.routeAnalysis.selectedRoadNetworkId,
+  );
   const isProcessing = useSelector(state =>
     checkIfLoading(state, [Types.CHECK_PROCESSING_STATUS_REQUEST]),
   );
@@ -80,16 +84,25 @@ export default function Analysis() {
   }, [dispatch, themes, layers]);
 
   useEffect(() => {
-    if (!analysisId || !isLayersFetched) return;
+    if (!analysisId || !isLayersFetched || selectedRoadNetworkId) return;
     dispatch(getAnalysisDetailRequest(analysisId));
     dispatch(
       getAnalysisResultListRequest({
         project: projectId,
         analysis_id: analysisId,
         analysis_type: getAnalysisType(analysisType),
+        organizationId,
       }),
     );
-  }, [dispatch, analysisId, projectId, analysisType, isLayersFetched]);
+  }, [
+    dispatch,
+    analysisId,
+    projectId,
+    organizationId,
+    analysisType,
+    isLayersFetched,
+    selectedRoadNetworkId,
+  ]);
 
   // // reset analysis state
   // useEffect(

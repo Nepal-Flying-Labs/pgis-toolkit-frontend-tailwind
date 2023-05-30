@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators as BufferAnalysisCreators } from '@Actions/proximityAnalysis';
+import { Creators as ProximityAnalysisCreators } from '@Actions/proximityAnalysis';
 import { Creators as CommonCreators } from '@Actions/common';
 import { analysisHeaderHeight } from '@src/constants';
 import Accordion from '@Components/common/Accordion';
@@ -9,8 +9,8 @@ import DropdownOptions from '@Components/common/DropdownOptions';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 
-const { handleRouteCheckbox, setResultsState, setBufferAnalysisState } =
-  BufferAnalysisCreators;
+const { handleRouteCheckbox, setResultsState, setProximityAnalysisState } =
+  ProximityAnalysisCreators;
 const { toggleModal, togglePromptDialog } = CommonCreators;
 
 export default function Results() {
@@ -63,6 +63,7 @@ export default function Results() {
         </span>
       ),
       onClick: data => {
+        if (!data.proximity_areas) return;
         dispatch(
           setResultsState({
             showResultsPopup: true,
@@ -70,7 +71,7 @@ export default function Results() {
           }),
         );
         dispatch(
-          setBufferAnalysisState({
+          setProximityAnalysisState({
             popupActiveTab: 'Summary',
             detailsCategory: [],
             detailsChartData: {},
@@ -174,7 +175,7 @@ export default function Results() {
             }
             body={
               <div className="naxatw-pl-2">
-                {result.buffer_areas.map(area => (
+                {result.proximity_areas?.map(area => (
                   <div key={area.id}>
                     <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                       <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-10">

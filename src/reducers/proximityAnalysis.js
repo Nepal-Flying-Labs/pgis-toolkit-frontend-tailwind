@@ -25,7 +25,12 @@ const initialState = {
     outputName: '',
   },
   results: {
-    analysisResults: [],
+    analysisResults: {
+      next: null,
+      previous: null,
+      counts: 0,
+      results: [],
+    },
     // analysisResults: [analysisResultData],
     zoomToProximity: null,
     showResultsPopup: false,
@@ -92,36 +97,39 @@ const handleCheckbox = (state, action) =>
     selectedData.checked = checked;
   });
 
+function getTotalPoiChartData(data) {
+  const totalPoiCountChartData = [];
+  data.proximity_areas.forEach(proxarea => {
+    proxarea.poi.forEach(poiArea => {
+      const existingLayerCheck = totalPoiCountChartData.findIndex(
+        layer => layer.name === poiArea.layer_name,
+      );
+      if (existingLayerCheck !== -1) {
+        totalPoiCountChartData[existingLayerCheck].count +=
+          poiArea.feature_mirror_ids.length;
+      } else {
+        totalPoiCountChartData.push({
+          name: poiArea.layer_name,
+          count: poiArea.feature_mirror_ids.length,
+        });
+      }
+    });
+  });
+  return totalPoiCountChartData;
+}
+
 const checkProcessingStatusSuccess = (state, action) =>
   produce(state, draft => {
-    const totalPoiCountChartData = [];
     const data = action.payload;
-    data.buffer_areas.forEach(bufarea => {
-      bufarea.poi.forEach(poiArea => {
-        const existingLayerCheck = totalPoiCountChartData.findIndex(
-          layer => layer.name === poiArea.layer_name,
-        );
-        if (existingLayerCheck !== -1) {
-          totalPoiCountChartData[existingLayerCheck].count +=
-            poiArea.feature_mirror_ids.length;
-        } else {
-          totalPoiCountChartData.push({
-            name: poiArea.layer_name,
-            count: poiArea.feature_mirror_ids.length,
-          });
-        }
-      });
-    });
+    const totalPoiCountChartData = getTotalPoiChartData(data);
     const { analysisType } = draft.inputQuery;
     const analysisResult = {
       ...data,
       checked: true,
       poiChartData: totalPoiCountChartData,
-      buffer_areas: data.buffer_areas.map((areas, index) => ({
+      proximity_areas: data.proximity_areas.map((areas, index) => ({
         ...areas,
-        name: `${analysisType === 'buffer-analysis' ? 'Buffer ' : ''}Area ${
-          index + 1
-        }`,
+        name: 'Area',
         checked: true,
         style: { ...proximityPolygonStyles },
         originStyle: {
@@ -136,11 +144,8 @@ const checkProcessingStatusSuccess = (state, action) =>
     draft.dataInput = { ...draft.dataInput, outputName: '' };
 
     draft.inputQuery = initialState.inputQuery;
-    draft.results.analysisResults = [
-      analysisResult,
-      ...draft.results.analysisResults,
-    ];
-    const analysisResultStyle = draft.results.analysisResults.map(
+    draft.results.analysisResults.results.unshift(analysisResult);
+    const analysisResultStyle = draft.results.analysisResults.results.map(
       (result, i) => ({
         ...result,
         style: {
@@ -150,7 +155,7 @@ const checkProcessingStatusSuccess = (state, action) =>
         },
       }),
     );
-    draft.results.analysisResults = analysisResultStyle;
+    draft.results.analysisResults.results = analysisResultStyle;
     draft.activeTab = 'results';
     draft.results.selectedResultId = analysisResult.id;
     draft.results.showResultsPopup = true;
@@ -164,12 +169,12 @@ const checkProcessingStatusSuccess = (state, action) =>
 const handleRouteCheckbox = (state, action) =>
   produce(state, draft => {
     const { resultId, areaId, checked, name } = action.payload;
-    const result = draft.results.analysisResults.find(
+    const result = draft.results.analysisResults.results.find(
       item => item.id === resultId,
     );
     if (name === 'result') {
       result.checked = checked;
-      result.buffer_areas.forEach(area => {
+      result.proximity_areas.forEach(area => {
         area.checked = checked;
       });
       if (!checked) {
@@ -178,11 +183,11 @@ const handleRouteCheckbox = (state, action) =>
       }
       return;
     }
-    const area = result.buffer_areas.find(item => item.id === areaId);
+    const area = result.proximity_areas.find(item => item.id === areaId);
 
     if (name === 'area') {
       area.checked = checked;
-      const checkedAreas = result.buffer_areas.filter(item => item.checked);
+      const checkedAreas = result.proximity_areas.filter(item => item.checked);
       if (isEmpty(checkedAreas)) {
         result.checked = false;
       } else {
@@ -288,6 +293,46 @@ const getFeatureCollectionSuccess = (state, action) => {
   };
 };
 
+function prepareResultsData(data, state) {
+  const result = {
+    ...data,
+    checked: true,
+    poiChartData: getTotalPoiChartData(data),
+    proximity_areas: data.proximity_areas.map((areas, index) => ({
+      ...areas,
+      name: 'Area',
+      checked: true,
+      style: { ...proximityPolygonStyles },
+      originStyle: {
+        ...proximityPointStyles,
+        fillColor: chroma.random().hex(),
+      },
+    })),
+    style: {
+      ...proximityPolygonStyles,
+      fillColor: proximityColors[1] || chroma.random().hex(),
+      fillOpacity: '50',
+    },
+  };
+  return result;
+}
+
+const getAnalysisResultListSuccess = (state, action) =>
+  produce(state, draft => {
+    const { listData, individualDetail } = action.payload;
+    const listDatax = produce(listData, listDraft => {
+      listDraft.results[0] = prepareResultsData(
+        {
+          ...listDraft[0],
+          ...individualDetail,
+        },
+        state,
+      );
+    });
+    draft.results.analysisResults = listDatax;
+    // draft.selectedRoadNetworkId = roadNetworkId;
+  });
+
 const proximityAnalysisReducer = createReducer(initialState, {
   [Types.SET_PROXIMITY_ANALYSIS_STATE]: setProximityAnalysisState,
   [Types.SET_FILTER_STATE]: setFilterState,
@@ -306,6 +351,7 @@ const proximityAnalysisReducer = createReducer(initialState, {
   [Types.SAVE_PROXIMITY_LAYER_SUCCESS]: saveProximityLayerSuccess,
   [Types.DELETE_PROXIMITY_RESULT]: deleteProximityResult,
   [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
+  [Types.GET_ANALYSIS_RESULT_LIST_SUCCESS]: getAnalysisResultListSuccess,
 });
 
 export default proximityAnalysisReducer;

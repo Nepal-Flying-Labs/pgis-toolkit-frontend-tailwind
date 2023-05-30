@@ -163,7 +163,6 @@ export function* getFeatureCollectionRequest({ params }) {
       proximityAnalysisActions.getFeatureCollectionSuccess(response.data),
     );
   } catch (error) {
-    console.log(error, 'error');
     yield put(proximityAnalysisActions.getFeatureCollectionFailure());
     throw error;
   }

@@ -10,10 +10,10 @@ export const chartDataSelector = createSelector(
   [analysisResultDataSelector, selectedResultIdSelector],
   (analysisResults, selectedResultId) => {
     const totalPoiCountChartData = [];
-    const selectedResult = analysisResults.find(
+    const selectedResult = analysisResults.results.find(
       result => result.id === selectedResultId,
     );
-    const selectedAreas = selectedResult.buffer_areas.filter(
+    const selectedAreas = selectedResult.proximity_areas.filter(
       area => area.checked,
     );
 
@@ -22,8 +22,8 @@ export const chartDataSelector = createSelector(
       0,
     );
 
-    selectedAreas.forEach(bufarea => {
-      bufarea.poi.forEach(poiArea => {
+    selectedAreas.forEach(proxarea => {
+      proxarea.poi.forEach(poiArea => {
         const existingLayerCheck = totalPoiCountChartData.findIndex(
           layer => layer.name === poiArea.layer_name,
         );

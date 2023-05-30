@@ -51,6 +51,9 @@ export const { Types, Creators } = createActions(
     getFeatureCollectionRequest: ['params'],
     getFeatureCollectionSuccess: ['payload'],
     getFeatureCollectionFailure: null,
+
+    getAnalysisResultListSuccess: ['payload'],
+    getAnalysisResultListFailure: [null],
   },
   { prefix: 'proximityAnalysis/' },
 );

@@ -13,6 +13,7 @@ import chroma from 'chroma-js';
 import commonActions from '@Actions/common';
 import analysisActions, { Types } from '@Actions/analysis';
 import bufferAnalysisActions from '@Actions/bufferAnalysis';
+import proximityAnalysisActions from '@Actions/proximityAnalysis';
 import routeAnalysisActions from '@Actions/routeAnalysis';
 import dataCleaningActions from '@Actions/dataCleaning';
 import toastActions from '@Actions/toast';
@@ -46,6 +47,19 @@ import {
 } from '@Services/analysis';
 import { roadLayersThemeIdSelector } from '@Selectors/projectMap';
 import removeObjectKeys from '@Utils/removeObjectKeys';
+
+function getActionType(type) {
+  switch (type) {
+    case 'optimal-route':
+      return routeAnalysisActions;
+    case 'buffer-analysis':
+      return bufferAnalysisActions;
+    case 'proximity-analysis':
+      return proximityAnalysisActions;
+    default:
+      return analysisActions;
+  }
+}
 
 export function* copyLayerDataRequest({ payload }) {
   try {
@@ -89,12 +103,7 @@ export function* copyLayerDataRequest({ payload }) {
 
 export function* checkProcessingStatusRequest({ payload }) {
   const { projectId, taskId, analysisType } = payload;
-  const action =
-    analysisType === 'buffer-analysis' || analysisType === 'proximity-analysis'
-      ? bufferAnalysisActions
-      : analysisType === 'optimal-route'
-      ? routeAnalysisActions
-      : analysisActions;
+  const action = getActionType(analysisType);
 
   try {
     let responseData = { status: 'processing' };
@@ -242,8 +251,7 @@ export function* getAnalysisDetailRequest({ payload }) {
 
 export function* getAnalysisResultListRequest({ params }) {
   const analysisType = getAnalysisType(params.analysis_type);
-  const action =
-    analysisType === 'optimal-route' ? routeAnalysisActions : analysisActions;
+  const action = getActionType(analysisType);
   try {
     const paramsx = removeObjectKeys(params, ['organizationId']);
     const response = yield call(getAnalysisResultList, paramsx);

@@ -350,7 +350,7 @@ export default function MapSection() {
         )}
 
         {analysisResults.results.map(result =>
-          result.buffer_areas.map(area =>
+          result.proximity_areas?.map(area =>
             area.origin.map((areaOrigin, index) => (
               <CircleMarker
                 key={index}
@@ -365,10 +365,10 @@ export default function MapSection() {
         )}
 
         {analysisResults.results.map(result =>
-          result.buffer_areas.map(area => (
+          result.proximity_areas?.map(area => (
             <VectorTileLayer
               key={area.id}
-              url={`${apiURL}maps/buffer_area_vectortile/{z}/{x}/{y}/?area=${area.id}`}
+              url={`${apiURL}maps/proximity_area_vectortile/{z}/{x}/{y}/?area=${area.id}`}
               authToken={localStorage.getItem('userToken')}
               visibleOnMap={area.checked}
               style={result.style}
@@ -378,7 +378,7 @@ export default function MapSection() {
           )),
         )}
         {analysisResults.results.map(result =>
-          result.buffer_areas.map(area =>
+          result.proximity_areas?.map(area =>
             area.poi.map(poi =>
               poi.feature_mirror_ids.length > 0 ? (
                 <VectorTileLayer

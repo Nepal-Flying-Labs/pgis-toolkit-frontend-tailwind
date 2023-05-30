@@ -63,7 +63,7 @@ export default function ProximityPopup() {
     state => state.proximityAnalysis.results.selectedResultId,
   );
 
-  const selectedResultData = analysisResults.find(
+  const selectedResultData = analysisResults.results.find(
     result => result.id === selectedResultsId,
   );
   const selectedLayer = useSelector(
@@ -80,8 +80,8 @@ export default function ProximityPopup() {
   const verticalChartData = useSelector(chartDataSelector);
 
   // const originPoints = selectedResultData?.inputQuery.origins;
-  const proximityRadius = selectedResultData?.inputQuery.radius;
-  const selectedPOI = selectedResultData?.inputQuery.selectedPOIName;
+  const proximityRadius = selectedResultData?.inputQuery?.radius;
+  const selectedPOI = selectedResultData?.inputQuery?.selectedPOIName;
 
   const poiLayersDataOptions = poiLayersData.filter(data =>
     selectedResultData?.poiChartData.map(itm => itm.name).includes(data.name),
@@ -98,7 +98,7 @@ export default function ProximityPopup() {
     if (popupActiveTab === 'Details' && isEmpty(detailsListData)) {
       dispatch(
         getDetailsChartRequest({
-          analysis: selectedResultsId,
+          proximity_analysis_id: selectedResultsId,
           view: 'list',
         }),
       );
@@ -121,7 +121,7 @@ export default function ProximityPopup() {
     if (selectedCategory !== null) {
       dispatch(
         getDetailsChartRequest({
-          analysis: selectedResultsId,
+          proximity_analysis_id: selectedResultsId,
           layer: selectedLayer,
           view: 'chart',
           field: selectedCategory,
@@ -270,13 +270,13 @@ export default function ProximityPopup() {
                         Proximity Radius
                       </p>
                       <p className="naxatw-text-body-lg naxatw-font-bold naxatw-basis-1/2">
-                        {meterToKM(proximityRadius) || '-'}
+                        {/* {meterToKM(proximityRadius) || '-'} */}
                       </p>
                     </div>
                     <div className="naxatw">
                       <p className="naxatw-text-body-lg ">Selected POI</p>
                       <p className="naxatw-text-body-lg naxatw-font-bold">
-                        {displayArrayList(selectedPOI) || '-'}
+                        {/* {displayArrayList(selectedPOI) || '-'} */}
                       </p>
                     </div>
                   </div>

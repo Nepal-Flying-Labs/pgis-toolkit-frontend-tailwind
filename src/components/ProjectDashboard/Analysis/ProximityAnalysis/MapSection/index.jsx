@@ -349,7 +349,7 @@ export default function MapSection() {
           ),
         )}
 
-        {analysisResults.map(result =>
+        {analysisResults.results.map(result =>
           result.buffer_areas.map(area =>
             area.origin.map((areaOrigin, index) => (
               <CircleMarker
@@ -364,7 +364,7 @@ export default function MapSection() {
           ),
         )}
 
-        {analysisResults.map(result =>
+        {analysisResults.results.map(result =>
           result.buffer_areas.map(area => (
             <VectorTileLayer
               key={area.id}
@@ -377,7 +377,7 @@ export default function MapSection() {
             />
           )),
         )}
-        {analysisResults.map(result =>
+        {analysisResults.results.map(result =>
           result.buffer_areas.map(area =>
             area.poi.map(poi =>
               poi.feature_mirror_ids.length > 0 ? (

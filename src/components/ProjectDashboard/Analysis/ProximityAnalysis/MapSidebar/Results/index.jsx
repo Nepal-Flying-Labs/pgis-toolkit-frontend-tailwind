@@ -123,7 +123,7 @@ export default function Results() {
           height: `calc(100vh - ${analysisHeaderHeight} - 3.5rem)`,
         }}
       >
-        {analysisResults.map(result => (
+        {analysisResults.results.map(result => (
           <Accordion
             key={result.id}
             className="!naxatw-py-2 !naxatw-px-4"

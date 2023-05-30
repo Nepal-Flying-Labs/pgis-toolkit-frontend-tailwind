@@ -36,6 +36,7 @@ const initialState = {
   selectedAnalysisType: null, // selected analysis type for create analysis
   analysisDetail: null, // selected analysis type for create analysis
   isLayersFetched: false, // selected analysis type for create analysis
+  isAnalysisDetailFetched: false,
 };
 
 const setAnalysisState = (state, action) => ({

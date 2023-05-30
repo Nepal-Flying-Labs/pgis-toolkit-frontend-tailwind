@@ -891,7 +891,7 @@ const getAnalysisTypeListSuccess = (state, action) =>
     const { counts, analysisType } = action.payload;
     if (!counts) return;
     // const analysisName = getAnalysisType(analysisType);
-    draft.analysisList = {};
+    draft.analysisList = { ...draft.analysisList };
     draft.analysisList[analysisType] = action.payload;
   });
 

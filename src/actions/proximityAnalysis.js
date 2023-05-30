@@ -18,7 +18,7 @@ export const { Types, Creators } = createActions(
 
     handleCheckbox: ['payload'],
 
-    handleRouteCheckbox: ['payload'],
+    handleProximityCheckbox: ['payload'],
 
     setPopupActiveTab: ['payload'],
 

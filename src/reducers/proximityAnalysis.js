@@ -166,7 +166,7 @@ const checkProcessingStatusSuccess = (state, action) =>
     // }));
   });
 
-const handleRouteCheckbox = (state, action) =>
+const handleProximityCheckbox = (state, action) =>
   produce(state, draft => {
     const { resultId, areaId, checked, name } = action.payload;
     const result = draft.results.analysisResults.results.find(
@@ -264,10 +264,10 @@ const deleteProximityResult = (state, action) =>
       draft.results.showResultsPopup = false;
       draft.results.selectedResultId = null;
     }
-    const newData = draft.results.analysisResults.filter(
+    const newData = draft.results.analysisResults.results.filter(
       item => item.id !== action.payload,
     );
-    draft.results.analysisResults = newData;
+    draft.results.analysisResults.results = newData;
     if (newData.length < 1) {
       draft.activeTab = 'dataInput';
     }
@@ -342,7 +342,7 @@ const proximityAnalysisReducer = createReducer(initialState, {
   [Types.APPLY_PROXIMITY_ANALYSIS_SUCCESS]: applyProximityAnalysisSuccess,
   [Types.HANDLE_CHECKBOX]: handleCheckbox,
   [Types.CHECK_PROCESSING_STATUS_SUCCESS]: checkProcessingStatusSuccess,
-  [Types.HANDLE_ROUTE_CHECKBOX]: handleRouteCheckbox,
+  [Types.HANDLE_PROXIMITY_CHECKBOX]: handleProximityCheckbox,
   [Types.SET_POPUP_ACTIVE_TAB]: setPopupActiveTab,
   [Types.GET_DETAILS_CATEGORY_SUCCESS]: getDetailsCategorySuccess,
   [Types.GET_DETAILS_CHART_SUCCESS]: getDetailsChartSuccess,

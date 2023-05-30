@@ -49,6 +49,8 @@ import SaveBufferLayer from '@Components/ProjectDashboard/Analysis/ModalContent/
 import SelectLayerFeature from '@Components/ProjectDashboard/Analysis/ModalContent/SelectLayerFeature';
 import AddDatasetCategory from '@Components/ProjectDashboard/ModalContent/AddDatasetCategory';
 import DeleteBufferResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteBufferResult';
+import DeleteProximityResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteProximityResult';
+
 import DeleteRouteResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteRouteResult';
 import SaveManualFix from '@Components/ProjectDashboard/Analysis/ModalContent/SaveManualFix';
 import SignoutWarning from '@Components/OrganizationDashboard/ModalContent/SignoutWarning';
@@ -425,6 +427,11 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <DeleteBufferResult />,
+      };
+    case 'delete-proximity-result':
+      return {
+        title: '',
+        content: <DeleteProximityResult />,
       };
 
     case 'delete-route-result':

@@ -9,7 +9,7 @@ import DropdownOptions from '@Components/common/DropdownOptions';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 
-const { handleRouteCheckbox, setResultsState, setProximityAnalysisState } =
+const { handleProximityCheckbox, setResultsState, setProximityAnalysisState } =
   ProximityAnalysisCreators;
 const { toggleModal, togglePromptDialog } = CommonCreators;
 
@@ -111,7 +111,7 @@ export default function Results() {
             selectedAnalysis: data,
           }),
         );
-        dispatch(togglePromptDialog('delete-buffer-result'));
+        dispatch(togglePromptDialog('delete-proximity-result'));
       },
     },
   ];
@@ -140,7 +140,7 @@ export default function Results() {
                       onChange={e => {
                         const { id, checked } = e.target;
                         dispatch(
-                          handleRouteCheckbox({
+                          handleProximityCheckbox({
                             resultId: +id,
                             checked,
                             name: 'result',
@@ -187,7 +187,7 @@ export default function Results() {
                           onChange={e => {
                             const { id, checked } = e.target;
                             dispatch(
-                              handleRouteCheckbox({
+                              handleProximityCheckbox({
                                 resultId: result.id,
                                 areaId: +id,
                                 checked,

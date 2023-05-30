@@ -231,6 +231,7 @@ export const { Types, Creators } = createActions(
 
     setPreviewDocument: ['payload'],
     resetUserRole: ['payload'],
+    setProjectDashboardState: ['payload'],
   },
   { prefix: 'projectDashboard/' },
 );

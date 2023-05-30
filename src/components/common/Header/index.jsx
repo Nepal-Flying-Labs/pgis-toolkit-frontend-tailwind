@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
-import LoginLogo from '@Assets/images/logo.png';
+// import LoginLogo from '@Assets/images/logo.png';
+import LoginLogo from '@Assets/images/usafiri-beta-logo.svg';
 import { useSelector } from 'react-redux';
 import { isEmpty } from '@Utils/commonUtils';
 import HeaderProfile from './HeaderProfile';

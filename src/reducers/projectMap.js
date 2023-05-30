@@ -70,6 +70,7 @@ const initialState = {
   resetMapExtent: false,
   labelFields: null,
   analysisList: null, // []
+  isFullScreen: false,
 };
 
 const getProjectThemesSuccess = (state, action) => ({
@@ -879,7 +880,7 @@ const getLabelFieldOptionsSuccess = (state, action) => {
 };
 
 const updateLabelFieldSuccess = (state, action) => {
-  const { responseData, payload } = action.payload;
+  const { responseData } = action.payload;
   return {
     ...state,
     refreshLayerId: responseData.id,

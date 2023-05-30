@@ -1,4 +1,5 @@
 import { createReducer } from 'reduxsauce';
+import produce from 'immer';
 import { Types } from '@Actions/analysis';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { boundaryLayerName } from '@src/constants/map';
@@ -31,6 +32,10 @@ const initialState = {
   },
   selectedInfo: null, // selected value for info content
   hideSidebar: false,
+  // analysisList: null, // []
+  selectedAnalysisType: null, // selected analysis type for create analysis
+  analysisDetail: null, // selected analysis type for create analysis
+  isLayersFetched: false, // selected analysis type for create analysis
 };
 
 const setAnalysisState = (state, action) => ({
@@ -76,6 +81,7 @@ const getProjectThemeLayersSuccess = (state, action) => {
       },
     })),
   };
+  const isLayersFetched = state.themes.length === Object.keys(layers).length;
   return {
     ...state,
     layers,
@@ -84,6 +90,7 @@ const getProjectThemeLayersSuccess = (state, action) => {
       layerOrder,
     },
     projectAreaLayerId,
+    isLayersFetched,
   };
 };
 
@@ -282,8 +289,38 @@ const toggleSidebar = (state, action) => ({
   hideSidebar: !!action.payload || !state.hideSidebar,
 });
 
-const resetAnalysisState = () => ({
+const createAnalysisSuccess = (state, action) => {
+  const { id, name, description } = action.payload;
+  const analysisDetail = { id, name, description };
+  return {
+    ...state,
+    analysisDetail,
+  };
+};
+
+const getAnalysisDetailSuccess = (state, action) => {
+  const { id, name, description } = action.payload;
+  const analysisDetail = { id, name, description };
+  return {
+    ...state,
+    analysisDetail,
+  };
+};
+
+const toggleRoadLayer = (state, action) =>
+  produce(state, draft => {
+    const roadNetworkId = action.payload;
+    const allLayers = Object.values(draft.layers).flat();
+    const selectedRoadNetwork = allLayers.find(
+      item => item.id === roadNetworkId,
+    );
+    selectedRoadNetwork.checked = true;
+  });
+
+const resetAnalysisState = state => ({
   ...initialState,
+  selectedAnalysisType: state.selectedAnalysisType, // selected analysis type for create analysis
+  analysisDetail: state.analysisDetail, // selected analysis type for create analysis
 });
 
 const analysisReducer = createReducer(initialState, {
@@ -305,6 +342,9 @@ const analysisReducer = createReducer(initialState, {
   [Types.HANDLE_SELECT_ALL_CHECKBOX]: handleSelectAllCheckbox,
   [Types.SET_SELECTED_INFO]: setSelectedInfo,
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
+  [Types.CREATE_ANALYSIS_SUCCESS]: createAnalysisSuccess,
+  [Types.GET_ANALYSIS_DETAIL_SUCCESS]: getAnalysisDetailSuccess,
+  [Types.TOGGLE_ROAD_LAYER]: toggleRoadLayer,
   [Types.RESET_ANALYSIS_STATE]: resetAnalysisState,
 });
 

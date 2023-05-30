@@ -4,6 +4,7 @@ import { useHistory, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as OrganizationDashboardCreators } from '@Actions/organizationDashboard';
 import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
+import { Types as AnalysisTypes } from '@Actions/analysis';
 import ManageDataCollection from '@Components/ProjectDashboard/ManageDataCollection/index';
 import ProjectHeader from '@Components/common/ProjectHeader';
 import Map from '@Components/ProjectDashboard/Map';
@@ -16,6 +17,7 @@ import Settings from '@Components/ProjectDashboard/Settings';
 import AppLoader from '@Components/common/AppLoader';
 import Analysis from '@Components/ProjectDashboard/Analysis';
 import FeatureImages from '@Components/ProjectDashboard/ModalContent/FeatureImages/index';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const { getOrganizationDetailRequest } = OrganizationDashboardCreators;
 const {
@@ -54,6 +56,15 @@ export default function ProjectDashboard() {
   const layers = useSelector(state => state.projectDashboard.data.layers);
   const pushedToManageDataPage = useRef(false);
   const dispatch = useDispatch();
+  const loading = useSelector(state =>
+    checkIfLoading(state, [
+      AnalysisTypes.GET_PROJECT_THEMES_REQUEST,
+      AnalysisTypes.GET_PROJECT_THEME_LAYERS_REQUEST,
+      AnalysisTypes.GET_ANALYSIS_RESULT_LIST_REQUEST,
+      AnalysisTypes.GET_ANALYSIS_DETAIL_REQUEST,
+      AnalysisTypes.GET_PROJECT_GEOJSON_REQUEST,
+    ]),
+  );
   const showImageModal = useSelector(state => state.common.showImageModal);
 
   useEffect(
@@ -65,11 +76,12 @@ export default function ProjectDashboard() {
 
   useEffect(() => {
     dispatch(getOrganizationDetailRequest(organizationId));
-    dispatch(getProjectDetailRequest({ project: projectId }));
-    dispatch(getProjectLayersRequest({ project: projectId }));
+    const params = { project: projectId };
+    dispatch(getProjectDetailRequest(params));
+    dispatch(getProjectLayersRequest(params));
   }, [dispatch, projectId, organizationId]);
 
-  if (!layers) {
+  if (!layers || loading) {
     return <AppLoader />;
   }
 

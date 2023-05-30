@@ -103,13 +103,21 @@
 - [x] organization map card design => fix height
 - [x] clear button on search
 
-## NEW ISSUES (APRIL 10)
-
 ### PROJECT MAP
 - [ ] layer category sorting issue in map sidebar
 - [ ] project clustering bbox issue
+- [ ] download layer name issue
 
 ### DESIGN
 - [ ] layer order accordion border color
 - [ ] dropdown options in modal/table
 
+- [ ] test branch -> test/refactor-analysis-module
+
+
+## TASKS (MAY 11)
+- [ ] move create analysis modal after data cleaning for optimal route 
+- [ ] route for analysis page (id from params)
+
+### NEW ISSUES
+- [ ] accordion options click toggle accordion

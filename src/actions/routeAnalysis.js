@@ -34,6 +34,9 @@ export const { Types, Creators } = createActions(
     getSelectedLayerFeatureFailure: ['payload'],
 
     deleteRouteResult: ['payload'],
+
+    getAnalysisResultListSuccess: ['payload'],
+    getAnalysisResultListFailure: [null],
   },
   { prefix: 'routeAnalysis/' },
 );

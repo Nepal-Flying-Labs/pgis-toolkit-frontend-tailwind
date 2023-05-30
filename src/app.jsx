@@ -14,6 +14,7 @@ import ManageAttributeHeader from '@Components/ProjectDashboard/ModalContent/Hea
 import AddAttributeHeader from '@Components/ProjectDashboard/ModalContent/HeaderContents/AddAttributesHeader';
 import ViewLayerAttributeHeader from '@Components/ProjectDashboard/ModalContent/HeaderContents/ViewLayerAttributeHeader';
 import ViewRouteAttributeHeader from '@Components/ProjectDashboard/Analysis/ModalContent/HeaderContents/ViewRouteAttributeHeader';
+import CreateAnalysisHeader from '@Components/ProjectDashboard/Analysis/ModalContent/HeaderContents/CreateAnalysisHeader';
 import indexRoutes from './routes';
 import {
   getModalContent,
@@ -41,6 +42,8 @@ function getHeaderContent(modalContents) {
       return <ViewLayerAttributeHeader />;
     case 'view-route-attribute':
       return <ViewRouteAttributeHeader />;
+    case 'create-analysis':
+      return <CreateAnalysisHeader />;
     default:
       return null;
   }

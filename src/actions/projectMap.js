@@ -180,6 +180,10 @@ export const { Types, Creators } = createActions(
     updateLabelFieldFailure: null,
 
     toggleStyleEdit: ['payload'],
+
+    getAnalysisTypeListRequest: ['params'],
+    getAnalysisTypeListSuccess: ['payload'],
+    getAnalysisTypeListFailure: null,
   },
   { prefix: 'projectMap/' },
 );

@@ -14,9 +14,10 @@ import commonActions from '@Actions/common';
 import analysisActions, { Types } from '@Actions/analysis';
 import bufferAnalysisActions from '@Actions/bufferAnalysis';
 import routeAnalysisActions from '@Actions/routeAnalysis';
+import dataCleaningActions from '@Actions/dataCleaning';
 import toastActions from '@Actions/toast';
 import {
-  getAnalysisLayer,
+  getAnalysisResultDetail,
   getAnalysisTaskResponse,
 } from '@Services/routeAnalysis';
 import {
@@ -33,7 +34,18 @@ import {
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import prepareFormData from '@Utils/prepareFormData';
 import { getProjectGeojson } from '@Services/organizationDashboard';
-import { analysisWithDataCleaning } from '@src/constants/analysis';
+import {
+  analysisWithDataCleaning,
+  getAnalysisType,
+} from '@src/constants/analysis';
+import {
+  createAnalysis,
+  getAnalysisDetail,
+  getAnalysisResultList,
+  getIndividualAnalysisDetail,
+} from '@Services/analysis';
+import { roadLayersThemeIdSelector } from '@Selectors/projectMap';
+import removeObjectKeys from '@Utils/removeObjectKeys';
 
 export function* copyLayerDataRequest({ payload }) {
   try {
@@ -98,9 +110,10 @@ export function* checkProcessingStatusRequest({ payload }) {
     if (responseData.status === 'success') {
       const params = {
         project: projectId,
-        analysis_id: responseData.analysis_id,
+        id: responseData.sub_analysis_id,
+        analysis_type: getAnalysisType(analysisType),
       };
-      const analysisResponse = yield call(getAnalysisLayer, params);
+      const analysisResponse = yield call(getAnalysisResultDetail, params);
       yield put(
         analysisActions.setAnalysisState({
           analysisTaskId: null,
@@ -187,6 +200,83 @@ export function* getLayerAttributeRequest({ params }) {
   }
 }
 
+export function* createAnalysisRequest({ payload }) {
+  try {
+    const response = yield call(createAnalysis, payload);
+    yield put(analysisActions.createAnalysisSuccess(response.data));
+    const analysisId = response.data.id;
+    const { organization, project, type } = payload;
+    const analysisType = getAnalysisType(type);
+    yield put(commonActions.toggleModal());
+    yield put(
+      dataCleaningActions.startAnalysisRequest({
+        organizationId: organization,
+        projectId: project,
+        analysisType,
+        analysisId,
+      }),
+    );
+  } catch (error) {
+    yield put(analysisActions.createAnalysisFailure());
+    throw error;
+  }
+}
+
+export function* getAnalysisDetailRequest({ payload }) {
+  try {
+    const response = yield call(getAnalysisDetail, payload);
+    yield put(analysisActions.getAnalysisDetailSuccess(response.data));
+  } catch (error) {
+    yield put(analysisActions.getAnalysisDetailFailure());
+    throw error;
+  }
+}
+
+export function* getAnalysisResultListRequest({ params }) {
+  const analysisType = getAnalysisType(params.analysis_type);
+  const action =
+    analysisType === 'optimal-route' ? routeAnalysisActions : analysisActions;
+  try {
+    const paramsx = removeObjectKeys(params, ['organizationId']);
+    const response = yield call(getAnalysisResultList, paramsx);
+    const responseData = response.data;
+    const firstItem = responseData.results[0];
+    if (!firstItem) return;
+    const roadNetworkId = firstItem.road_network;
+    const detailParams = {
+      project: params.project,
+      id: firstItem.id,
+      analysis_type: getAnalysisType(analysisType),
+    };
+    const individualDetailResponse = yield call(
+      getIndividualAnalysisDetail,
+      detailParams,
+    );
+    yield put(
+      action.getAnalysisResultListSuccess({
+        listData: responseData,
+        individualDetail: individualDetailResponse.data,
+        roadNetworkId,
+      }),
+    );
+    if (analysisType === 'optimal-route') {
+      yield put(analysisActions.toggleRoadLayer(roadNetworkId));
+    }
+  } catch (error) {
+    const statusCode = error.response.status;
+    if (statusCode === 404) {
+      yield put(
+        push(
+          `/organizations/${params.organizationId}/projects/${
+            params.project
+          }/data-cleaning/${getAnalysisType(params.analysis_type)}`,
+        ),
+      );
+    }
+    yield put(action.getAnalysisResultListFailure());
+  }
+}
+
 function* analysisWatcher() {
   yield takeLatest(
     Types.COPY_LAYER_DATA_REQUEST,
@@ -211,6 +301,18 @@ function* analysisWatcher() {
   yield takeLatest(
     Types.GET_LAYER_ATTRIBUTE_REQUEST,
     withLoader(withErrorHandler(getLayerAttributeRequest)),
+  );
+  yield takeLatest(
+    Types.CREATE_ANALYSIS_REQUEST,
+    withLoader(withErrorHandler(createAnalysisRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ANALYSIS_DETAIL_REQUEST,
+    withLoader(withErrorHandler(getAnalysisDetailRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ANALYSIS_RESULT_LIST_REQUEST,
+    withLoader(getAnalysisResultListRequest),
   );
 }
 

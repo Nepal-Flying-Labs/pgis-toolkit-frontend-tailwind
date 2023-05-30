@@ -197,7 +197,7 @@ export function* getFeaturesGeojsonRequest({ payload }) {
 
 export function* startAnalysisRequest({ params }) {
   try {
-    const { organizationId, projectId, analysisType } = params;
+    const { organizationId, projectId, analysisType, analysisId } = params;
     const { selectedRoadLayer, selectedObstacleLayers } = yield select(
       state => state.dataCleaning.optimalRoute,
     );
@@ -205,6 +205,7 @@ export function* startAnalysisRequest({ params }) {
       yield put(
         routeAnalysisActions.setRouteAnalysisState({
           roadNetworkLayer: selectedRoadLayer,
+          selectedRoadNetworkId: selectedRoadLayer.id,
           obstacleLayers: selectedObstacleLayers.map(item => ({
             ...item,
             checked: false,
@@ -225,9 +226,10 @@ export function* startAnalysisRequest({ params }) {
           },
         }),
       );
+      yield put(commonActions.toggleModal());
       yield put(
         push(
-          `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}`,
+          `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}/${analysisId}`,
         ),
       );
     }

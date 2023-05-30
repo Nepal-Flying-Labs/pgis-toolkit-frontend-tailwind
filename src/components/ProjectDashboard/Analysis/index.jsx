@@ -5,6 +5,7 @@ import { Creators as AnalysisCreators, Types } from '@Actions/analysis';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
 import FeatureImages from '@Components/ProjectDashboard/ModalContent/FeatureImages/index';
+import { getAnalysisType } from '@src/constants/analysis';
 import Header from './Header';
 import HelpContent from './HelpContent';
 import DataCleaning from './DataCleaning';
@@ -17,6 +18,8 @@ const {
   getProjectThemesRequest,
   getProjectThemeLayersRequest,
   getProjectGeojsonRequest,
+  getAnalysisDetailRequest,
+  getAnalysisResultListRequest,
   resetAnalysisState,
 } = AnalysisCreators;
 
@@ -35,7 +38,8 @@ function getAnalysisContent(type) {
 }
 
 export default function Analysis() {
-  const { tabname, analysisType, projectId } = useParams();
+  const { tabname, analysisType, projectId, analysisId, organizationId } =
+    useParams();
   const analysisTaskId = useSelector(state => state.analysis.analysisTaskId);
   const themes = useSelector(state => state.analysis.themes);
   const layers = useSelector(state => state.analysis.layers);
@@ -43,6 +47,10 @@ export default function Analysis() {
     state => state.projectDashboard.projectDetail,
   );
   const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
+  const isLayersFetched = useSelector(state => state.analysis.isLayersFetched);
+  const selectedRoadNetworkId = useSelector(
+    state => state.routeAnalysis.selectedRoadNetworkId,
+  );
   const isProcessing = useSelector(state =>
     checkIfLoading(state, [Types.CHECK_PROCESSING_STATUS_REQUEST]),
   );
@@ -74,13 +82,34 @@ export default function Analysis() {
     });
   }, [dispatch, themes, layers]);
 
-  // reset analysis state
-  useEffect(
-    () => () => {
-      dispatch(resetAnalysisState());
-    },
-    [dispatch],
-  );
+  useEffect(() => {
+    if (!analysisId || !isLayersFetched || selectedRoadNetworkId) return;
+    dispatch(getAnalysisDetailRequest(analysisId));
+    dispatch(
+      getAnalysisResultListRequest({
+        project: projectId,
+        analysis_id: analysisId,
+        analysis_type: getAnalysisType(analysisType),
+        organizationId,
+      }),
+    );
+  }, [
+    dispatch,
+    analysisId,
+    projectId,
+    organizationId,
+    analysisType,
+    isLayersFetched,
+    selectedRoadNetworkId,
+  ]);
+
+  // // reset analysis state
+  // useEffect(
+  //   () => () => {
+  //     dispatch(resetAnalysisState());
+  //   },
+  //   [dispatch],
+  // );
 
   return (
     <div>

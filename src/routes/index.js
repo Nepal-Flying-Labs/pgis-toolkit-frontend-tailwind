@@ -15,6 +15,12 @@ const indexRoutes = [
     authenticated: true,
   },
   {
+    path: '/organizations/:organizationId/projects/:projectId/:tabname/:analysisType/:analysisId',
+    name: 'Project Dashboard',
+    component: ProjectDashboard,
+    authenticated: true,
+  },
+  {
     path: '/organizations/:organizationId/projects/:projectId/:tabname/:analysisType',
     name: 'Project Dashboard',
     component: ProjectDashboard,

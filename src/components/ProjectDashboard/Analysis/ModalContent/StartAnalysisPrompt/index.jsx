@@ -1,15 +1,19 @@
 import React from 'react';
 import { useParams } from 'react-router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
 import { Creators as CommonCreators } from '@Actions/common';
 import Button from '@Components/common/Button';
 
 const { startAnalysisRequest } = DataCleaningCreators;
-const { togglePromptDialog } = CommonCreators;
+const { togglePromptDialog, toggleModal } = CommonCreators;
 
 export default function StartAnalysisPrompt() {
   const params = useParams();
+  const selectedAnalysisType = useSelector(
+    state => state.analysis.selectedAnalysisType,
+  );
+  const analysisDetail = useSelector(state => state.analysis.analysisDetail);
   const dispatch = useDispatch();
 
   return (
@@ -21,7 +25,16 @@ export default function StartAnalysisPrompt() {
         <Button
           className="naxatw-btn-primary"
           onClick={() => {
-            dispatch(startAnalysisRequest(params));
+            if (selectedAnalysisType === 'optimal-route' && !analysisDetail) {
+              dispatch(toggleModal('create-analysis'));
+            } else {
+              dispatch(
+                startAnalysisRequest({
+                  ...params,
+                  analysisId: analysisDetail.id,
+                }),
+              );
+            }
             dispatch(togglePromptDialog());
           }}
         >

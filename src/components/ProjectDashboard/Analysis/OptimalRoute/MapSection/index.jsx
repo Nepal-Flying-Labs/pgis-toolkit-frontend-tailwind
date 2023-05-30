@@ -27,7 +27,10 @@ import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
-import { obstacleLayersSelector } from '@Selectors/routeAnalysis';
+import {
+  obstacleLayersSelector,
+  roadNetworkLayerSelector,
+} from '@Selectors/routeAnalysis';
 import {
   startPointStyles,
   destinationPointStyles,
@@ -55,9 +58,7 @@ export default function MapSection() {
     zoom: 2,
     maxZoom: 25,
   });
-  const roadNetworkLayer = useSelector(
-    state => state.routeAnalysis.roadNetworkLayer,
-  );
+  const roadNetworkLayer = useSelector(roadNetworkLayerSelector);
   const activeTab = useSelector(state => state.routeAnalysis.activeTab);
   const drawPointType = useSelector(
     state => state.routeAnalysis.dataInput.drawPointType,
@@ -114,8 +115,10 @@ export default function MapSection() {
 
   // zoom to road network layer
   useEffect(() => {
-    if (!map || !zoomToRouteId) return;
-    const bbox = analysisResults.find(item => item.id === zoomToRouteId)?.bbox;
+    if (!map || !zoomToRouteId || !analysisResults) return;
+    const bbox = analysisResults.results.find(
+      item => item.id === zoomToRouteId,
+    )?.bbox;
     if (!bbox) return;
     const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
     if (isExtentValid(zoomExtent)) {
@@ -284,9 +287,9 @@ export default function MapSection() {
           />
         ))}
 
-        {analysisResults.map(result =>
-          result.routes.map(route =>
-            route.data.map(item => (
+        {analysisResults?.results?.map(result =>
+          result?.routes?.map(route =>
+            route?.data?.map(item => (
               <VectorTileLayer
                 key={`${result.id}-${route.id}-${item.id}`}
                 url={`${apiURL}maps/optimum_route_vectortile/{z}/{x}/{y}/?route=${item.id}`}
@@ -316,7 +319,7 @@ export default function MapSection() {
           />
         ))}
 
-        {analysisResults.map(result => (
+        {analysisResults?.results?.map(result => (
           <React.Fragment key={result.id}>
             <CircleMarker
               coordinates={[result.origin_lat, result.origin_long]}

@@ -11,8 +11,12 @@ import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
 import Searchbar from '@Components/common/Searchbar';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
+import NoDataYet from '@Components/ProjectDashboard/Data/NoDataYet/index';
+import { isEmpty } from '@Utils/commonUtils';
 import LayerOrder from './LayerOrder';
 import LayerList from './LayerList';
+import EditFeatureSection from '../EditFeatureSection';
+import EditStyleSection from '../EditStyleSection';
 
 const {
   setSidebarContent,
@@ -34,6 +38,7 @@ export default function LayerSection() {
     state => state.projectMap.projectAreaLayerId,
   );
   const searchText = useSelector(state => state.projectMap.searchText);
+  const themes = useSelector(state => state.projectMap.themes);
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -146,7 +151,27 @@ export default function LayerSection() {
     },
   ];
 
-  return (
+  return themes !== null && isEmpty(themes) ? (
+    <div
+      className="naxatw-h-full naxatw-flex naxatw-flex-col
+            naxatw-justify-center naxatw-items-center naxatw-pb-8"
+    >
+      <NoDataYet />
+      <Button
+        className="naxatw-btn-primary"
+        iconLeft="add"
+        onClick={() => {
+          history.push('data');
+        }}
+      >
+        Data
+      </Button>
+    </div>
+  ) : sidebarContent === 'edit-feature' || sidebarContent === 'add-feature' ? (
+    <EditFeatureSection />
+  ) : sidebarContent === 'edit-style' ? (
+    <EditStyleSection />
+  ) : (
     <>
       {isSearchActive ? (
         <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
@@ -202,7 +227,7 @@ export default function LayerSection() {
       <div
         className="naxatw-mt-3 naxatw-flex naxatw-flex-col naxatw-gap-2 naxatw-overflow-y-auto scrollbar"
         style={{
-          height: `calc(100vh - ${projectHeaderHeight}px - 4.7rem)`,
+          height: `calc(100vh - ${projectHeaderHeight}px - 6.8rem)`,
           marginRight: '-0.7125rem',
           paddingRight: '0.25rem',
         }}

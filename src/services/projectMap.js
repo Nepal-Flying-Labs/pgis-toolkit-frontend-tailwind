@@ -86,3 +86,6 @@ export const postCreateToUrl = data =>
 
 export const deleteDataQuery = data =>
   authenticated(api).delete(`/maps/advance_query/`, { data });
+
+export const getAnalysisTypeList = params =>
+  authenticated(api).get(`/maps/analysis_type_list/`, { params });

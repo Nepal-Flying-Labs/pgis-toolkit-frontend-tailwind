@@ -23,6 +23,7 @@ const initialState = {
     radiusUnit: 'meter',
     dissolveOutput: false,
     outputName: '',
+    selectedLayer: null,
   },
   results: {
     analysisResults: [],

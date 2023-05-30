@@ -21,6 +21,7 @@ const {
   getProjectGeojsonRequest,
   getAnalysisDetailRequest,
   getAnalysisResultListRequest,
+  setAnalysisState,
   resetAnalysisState,
 } = AnalysisCreators;
 
@@ -49,14 +50,14 @@ export default function Analysis() {
   );
   const selectedLayer = useSelector(state => state.dataCleaning.selectedLayer);
   const isLayersFetched = useSelector(state => state.analysis.isLayersFetched);
-  const selectedRoadNetworkId = useSelector(
-    state => state.routeAnalysis.selectedRoadNetworkId,
-  );
   const isProcessing = useSelector(state =>
     checkIfLoading(state, [Types.CHECK_PROCESSING_STATUS_REQUEST]),
   );
   const dispatch = useDispatch();
   const showImageModal = useSelector(state => state.common.showImageModal);
+  const isAnalysisDetailFetched = useSelector(
+    state => state.analysis.isAnalysisDetailFetched,
+  );
 
   useEffect(() => {
     if (!analysisTaskId) return;
@@ -84,7 +85,8 @@ export default function Analysis() {
   }, [dispatch, themes, layers]);
 
   useEffect(() => {
-    if (!analysisId || !isLayersFetched || selectedRoadNetworkId) return;
+    if (!analysisId || !isLayersFetched || isAnalysisDetailFetched) return;
+
     dispatch(getAnalysisDetailRequest(analysisId));
     dispatch(
       getAnalysisResultListRequest({
@@ -94,6 +96,7 @@ export default function Analysis() {
         organizationId,
       }),
     );
+    dispatch(setAnalysisState({ isAnalysisDetailFetched: true }));
   }, [
     dispatch,
     analysisId,
@@ -101,10 +104,10 @@ export default function Analysis() {
     organizationId,
     analysisType,
     isLayersFetched,
-    selectedRoadNetworkId,
+    isAnalysisDetailFetched,
   ]);
 
-  // // reset analysis state
+  // reset analysis state
   // useEffect(
   //   () => () => {
   //     dispatch(resetAnalysisState());

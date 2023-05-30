@@ -335,7 +335,7 @@ export default function ProximityPopup() {
                       <Button
                         className="naxatw-btn-secondary naxatw-btn-noborder"
                         onClick={() =>
-                          dispatch(toggleModal('view-buffer-chart'))
+                          dispatch(toggleModal('view-proximity-chart'))
                         }
                       >
                         View Chart

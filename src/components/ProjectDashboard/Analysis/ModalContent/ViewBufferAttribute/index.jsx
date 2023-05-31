@@ -25,7 +25,9 @@ export default function ViewBufferAttribute() {
 
   useEffect(() => {
     if (!selectedAnalysis) return;
-    dispatch(getAnalysisDataRequest({ analysis: selectedAnalysis.id }));
+    dispatch(
+      getAnalysisDataRequest({ buffer_analysis_id: selectedAnalysis.id }),
+    );
   }, [dispatch, selectedAnalysis]);
 
   return (
@@ -38,7 +40,7 @@ export default function ViewBufferAttribute() {
           <TableSkeleton itemNumber={5} />
         ) : (
           <Table
-            data={individualAnalysisData || []}
+            data={individualAnalysisData?.results || []}
             className="naxatw-w-full naxatw-text-left naxatw-text-grey-500 naxatw-text-sm"
             headerClassName="naxatw-py-[0.8125rem] naxatw-px-3"
             headerWidths={['100px', '200px', '200px']}

@@ -18,7 +18,7 @@ export const { Types, Creators } = createActions(
 
     handleCheckbox: ['payload'],
 
-    handleRouteCheckbox: ['payload'],
+    handleBufferCheckbox: ['payload'],
 
     setPopupActiveTab: ['payload'],
 
@@ -51,6 +51,12 @@ export const { Types, Creators } = createActions(
     getFeatureCollectionRequest: ['params'],
     getFeatureCollectionSuccess: ['payload'],
     getFeatureCollectionFailure: null,
+
+    getAnalysisResultListSuccess: ['payload'],
+    getAnalysisResultListFailure: [null],
+
+    getAnalysisResultDetailSuccess: ['payload'],
+    getAnalysisResultDetailFailure: null,
   },
   { prefix: 'bufferAnalysis/' },
 );

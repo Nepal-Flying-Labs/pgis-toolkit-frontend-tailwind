@@ -295,12 +295,13 @@ export function* getAnalysisResultListRequest({ params }) {
 
 export function* getAnalysisResultDetailRequest({ params }) {
   const analysisType = getAnalysisType(params.analysis_type);
-  const action =
-    analysisType === 'optimal-route' ? routeAnalysisActions : analysisActions;
+  const action = getActionType(analysisType);
+
   try {
     const response = yield call(getAnalysisResultDetail, params);
     yield put(action.getAnalysisResultDetailSuccess(response.data));
   } catch (error) {
+    console.log(error, 'error');
     yield put(action.getAnalysisResultDetailFailure());
   }
 }

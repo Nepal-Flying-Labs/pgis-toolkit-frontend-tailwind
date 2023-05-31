@@ -2,19 +2,22 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProximityAnalysisCreators } from '@Actions/proximityAnalysis';
+import { Creators as AnalysisCreators } from '@Actions/analysis';
 import { Creators as CommonCreators } from '@Actions/common';
 import { analysisHeaderHeight } from '@src/constants';
 import Accordion from '@Components/common/Accordion';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
+import { getAnalysisType } from '@src/constants/analysis';
 
 const { handleProximityCheckbox, setResultsState, setProximityAnalysisState } =
   ProximityAnalysisCreators;
 const { toggleModal, togglePromptDialog } = CommonCreators;
+const { getAnalysisResultDetailRequest } = AnalysisCreators;
 
 export default function Results() {
-  const { analysisType } = useParams();
+  const { analysisType, projectId } = useParams();
   const analysisResults = useSelector(
     state => state.proximityAnalysis.results.analysisResults,
   );
@@ -128,6 +131,17 @@ export default function Results() {
           <Accordion
             key={result.id}
             className="!naxatw-py-2 !naxatw-px-4"
+            disableHeaderClickToggle
+            onToggle={() => {
+              if (result.proximity_areas) return;
+              dispatch(
+                getAnalysisResultDetailRequest({
+                  project: projectId,
+                  id: result.id,
+                  analysis_type: getAnalysisType(analysisType),
+                }),
+              );
+            }}
             header={
               <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
                 <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">

@@ -333,6 +333,16 @@ const getAnalysisResultListSuccess = (state, action) =>
     // draft.selectedRoadNetworkId = roadNetworkId;
   });
 
+const getAnalysisResultDetailSuccess = (state, action) =>
+  produce(state, draft => {
+    const data = action.payload;
+    const analysisResult = draft.results.analysisResults.results.find(
+      item => item.id === data.id,
+    );
+    const resultsData = prepareResultsData(data);
+    Object.assign(analysisResult, resultsData);
+  });
+
 const proximityAnalysisReducer = createReducer(initialState, {
   [Types.SET_PROXIMITY_ANALYSIS_STATE]: setProximityAnalysisState,
   [Types.SET_FILTER_STATE]: setFilterState,
@@ -352,6 +362,7 @@ const proximityAnalysisReducer = createReducer(initialState, {
   [Types.DELETE_PROXIMITY_RESULT]: deleteProximityResult,
   [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
   [Types.GET_ANALYSIS_RESULT_LIST_SUCCESS]: getAnalysisResultListSuccess,
+  [Types.GET_ANALYSIS_RESULT_DETAIL_SUCCESS]: getAnalysisResultDetailSuccess,
 });
 
 export default proximityAnalysisReducer;

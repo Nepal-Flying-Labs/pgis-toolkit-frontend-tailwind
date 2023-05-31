@@ -25,7 +25,9 @@ export default function ViewBufferAttribute() {
 
   useEffect(() => {
     if (!selectedAnalysis) return;
-    dispatch(getAnalysisDataRequest({ analysis: selectedAnalysis.id }));
+    dispatch(
+      getAnalysisDataRequest({ buffer_analysis_id: selectedAnalysis.id }),
+    );
   }, [dispatch, selectedAnalysis]);
 
   return (

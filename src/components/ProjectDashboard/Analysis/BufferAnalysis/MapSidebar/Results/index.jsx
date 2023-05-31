@@ -9,7 +9,7 @@ import DropdownOptions from '@Components/common/DropdownOptions';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 
-const { handleRouteCheckbox, setResultsState, setBufferAnalysisState } =
+const { handleBufferCheckbox, setResultsState, setBufferAnalysisState } =
   BufferAnalysisCreators;
 const { toggleModal, togglePromptDialog } = CommonCreators;
 
@@ -123,7 +123,7 @@ export default function Results() {
           height: `calc(100vh - ${analysisHeaderHeight} - 3.5rem)`,
         }}
       >
-        {analysisResults.map(result => (
+        {analysisResults.results.map(result => (
           <Accordion
             key={result.id}
             className="!naxatw-py-2 !naxatw-px-4"
@@ -139,7 +139,7 @@ export default function Results() {
                       onChange={e => {
                         const { id, checked } = e.target;
                         dispatch(
-                          handleRouteCheckbox({
+                          handleBufferCheckbox({
                             resultId: +id,
                             checked,
                             name: 'result',
@@ -174,7 +174,7 @@ export default function Results() {
             }
             body={
               <div className="naxatw-pl-2">
-                {result.buffer_areas.map(area => (
+                {result.buffer_areas?.map(area => (
                   <div key={area.id}>
                     <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
                       <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-10">
@@ -186,7 +186,7 @@ export default function Results() {
                           onChange={e => {
                             const { id, checked } = e.target;
                             dispatch(
-                              handleRouteCheckbox({
+                              handleBufferCheckbox({
                                 resultId: result.id,
                                 areaId: +id,
                                 checked,

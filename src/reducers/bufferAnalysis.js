@@ -26,7 +26,12 @@ const initialState = {
     selectedLayer: null,
   },
   results: {
-    analysisResults: [],
+    analysisResults: {
+      next: null,
+      previous: null,
+      counts: 0,
+      results: [],
+    },
     // analysisResults: [analysisResultData],
     zoomToBuffer: null,
     showResultsPopup: false,

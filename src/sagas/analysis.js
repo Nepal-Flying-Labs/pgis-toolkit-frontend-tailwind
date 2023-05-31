@@ -293,6 +293,18 @@ export function* getAnalysisResultListRequest({ params }) {
   }
 }
 
+export function* getAnalysisResultDetailRequest({ params }) {
+  const analysisType = getAnalysisType(params.analysis_type);
+  const action =
+    analysisType === 'optimal-route' ? routeAnalysisActions : analysisActions;
+  try {
+    const response = yield call(getAnalysisResultDetail, params);
+    yield put(action.getAnalysisResultDetailSuccess(response.data));
+  } catch (error) {
+    yield put(action.getAnalysisResultDetailFailure());
+  }
+}
+
 function* analysisWatcher() {
   yield takeLatest(
     Types.COPY_LAYER_DATA_REQUEST,
@@ -329,6 +341,10 @@ function* analysisWatcher() {
   yield takeLatest(
     Types.GET_ANALYSIS_RESULT_LIST_REQUEST,
     withLoader(getAnalysisResultListRequest),
+  );
+  yield takeLatest(
+    Types.GET_ANALYSIS_RESULT_DETAIL_REQUEST,
+    withLoader(getAnalysisResultDetailRequest),
   );
 }
 

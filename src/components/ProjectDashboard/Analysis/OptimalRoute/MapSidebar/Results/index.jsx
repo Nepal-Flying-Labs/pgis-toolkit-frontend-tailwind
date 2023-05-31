@@ -1,19 +1,24 @@
 import React from 'react';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as RouteAnalysisCreators } from '@Actions/routeAnalysis';
+import { Creators as AnalysisCreators } from '@Actions/analysis';
 import { Creators as CommonCreators } from '@Actions/common';
 import { analysisHeaderHeight } from '@src/constants';
 import Accordion from '@Components/common/Accordion';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
+import { getAnalysisType } from '@src/constants/analysis';
 
 const { setResultsState, handleRouteCheckbox } = RouteAnalysisCreators;
+const { getAnalysisResultDetailRequest } = AnalysisCreators;
 const { toggleModal, togglePromptDialog } = CommonCreators;
 
 export default function Results() {
   const analysisResults = useSelector(
     state => state.routeAnalysis.results.analysisResults,
   );
+  const { projectId, analysisType } = useParams();
   const dispatch = useDispatch();
 
   const dropdownOptions = [
@@ -101,6 +106,16 @@ export default function Results() {
             key={result.id}
             className="!naxatw-py-2 !naxatw-px-4"
             disableHeaderClickToggle
+            onToggle={() => {
+              if (result.routes) return;
+              dispatch(
+                getAnalysisResultDetailRequest({
+                  project: projectId,
+                  id: result.id,
+                  analysis_type: getAnalysisType(analysisType),
+                }),
+              );
+            }}
             header={
               <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
                 <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">

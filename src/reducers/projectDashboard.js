@@ -53,6 +53,7 @@ const initialState = {
     pageTab: 'users',
   },
   showPreviewDocument: false,
+  selectedDocument: null,
 };
 
 const getProjectDetailSuccess = (state, action) => ({
@@ -600,6 +601,11 @@ const resetUserRole = (state, action) => ({
   user: { ...state.user, userRole: action.payload },
 });
 
+const setProjectDashboardState = (state, action) => ({
+  ...state,
+  ...action.payload,
+});
+
 const projectDashboardReducer = createReducer(initialState, {
   [Types.GET_PROJECT_DETAIL_SUCCESS]: getProjectDetailSuccess,
   [Types.GET_PROJECT_LAYERS_SUCCESS]: getProjectLayersSuccess,
@@ -656,6 +662,7 @@ const projectDashboardReducer = createReducer(initialState, {
   [Types.SET_UPLOAD_IMAGE_STATUS_CHECKING_ID]: setUploadImageStatusCheckingId,
   [Types.SET_PREVIEW_DOCUMENT]: setPreviewDocument,
   [Types.RESET_USER_ROLE]: resetUserRole,
+  [Types.SET_PROJECT_DASHBOARD_STATE]: setProjectDashboardState,
 });
 
 export default projectDashboardReducer;

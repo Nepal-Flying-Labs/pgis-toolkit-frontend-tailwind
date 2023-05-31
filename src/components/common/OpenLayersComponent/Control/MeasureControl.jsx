@@ -17,6 +17,16 @@ import { Polygon, LineString } from 'ol/geom';
 import { unByKey } from 'ol/Observable';
 import useOutsideClick from '@Hooks/useOutsideClick';
 
+function getOutputLayout(data, unit) {
+  return `<div class="naxatw-bg-white naxatw-h-10 naxatw-rounded-md naxatw-shadow-3xl naxatw-flex naxatw-items-center">
+        <span class="naxatw-px-2 naxatw-pt-3 naxatw-align-middle naxatw-h-full">${data} ${unit} 
+        </span>
+        <span class="close-icons naxatw-rounded-r-md hover:naxatw-bg-red-500 naxatw-cursor-pointer hover:naxatw-text-grey-200 naxatw-h-full">
+        <i class=' material-icons naxatw-text-[1rem] naxatw-pt-3 naxatw-px-3 naxatw-block' style="cursor:pointer;">close</i>
+        </span>
+        </div>`;
+}
+
 function MeasureControl({
   map,
   style,
@@ -108,13 +118,12 @@ function MeasureControl({
       const length = getLength(line);
       let output;
       if (length > 100) {
-        output = `${
-          Math.round((length / 1000) * 100) / 100
-        } km <i class='close-icons material-icons' style="cursor:pointer;">close</i>`;
+        const data = Math.round((length / 1000) * 100) / 100;
+
+        output = getOutputLayout(data, 'km');
       } else {
-        output = `${
-          Math.round(length * 100) / 100
-        } m <i class='close-icons material-icons' style="cursor:pointer;">close</i>`;
+        const data = Math.round(length * 100) / 100;
+        output = getOutputLayout(data, 'm');
       }
       return output;
     };
@@ -122,13 +131,11 @@ function MeasureControl({
       const area = getArea(polygon);
       let output;
       if (area > 10000) {
-        output = `${
-          Math.round((area / 1000000) * 100) / 100
-        } km<sup>2 </sup><i class='close-icons material-icons' style="cursor:pointer;">close</i>`;
+        const data = Math.round((area / 1000000) * 100) / 100;
+        output = getOutputLayout(data, 'km<sup>2 </sup>');
       } else {
-        output = `${
-          Math.round(area * 100) / 100
-        } m<sup>2 </sup><i class='close-icons material-icons' style="cursor:pointer;">close</i>`;
+        const data = Math.round(area * 100) / 100;
+        output = getOutputLayout(data, 'm<sup>2 </sup>');
       }
       return output;
     };

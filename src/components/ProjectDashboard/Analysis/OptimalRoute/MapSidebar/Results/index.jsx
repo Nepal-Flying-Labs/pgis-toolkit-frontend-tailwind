@@ -106,6 +106,7 @@ export default function Results() {
             key={result.id}
             className="!naxatw-py-2 !naxatw-px-4"
             disableHeaderClickToggle
+            collapsed={!result.routes}
             onToggle={() => {
               if (result.routes) return;
               dispatch(

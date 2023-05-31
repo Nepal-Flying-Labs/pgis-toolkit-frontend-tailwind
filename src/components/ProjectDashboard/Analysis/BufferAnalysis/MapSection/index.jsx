@@ -354,7 +354,7 @@ export default function MapSection() {
             key={result.id}
             url={`${apiURL}maps/buffer_area_vectortile/{z}/{x}/{y}/?buffer_analysis_id=${result.id}`}
             authToken={localStorage.getItem('userToken')}
-            visibleOnMap={result.checked}
+            visibleOnMap={!!result.checked}
             style={result.style}
             zIndex={4}
             // properties={{ layerId: selectedLayer.id }}
@@ -366,7 +366,7 @@ export default function MapSection() {
               key={result.id}
               url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${result.layer}`}
               authToken={localStorage.getItem('userToken')}
-              visibleOnMap={result.checked}
+              visibleOnMap={!!result.checked}
               style={getLayerStyles(result.layer)}
               zIndex={40}
               // properties={{ layerId: selectedLayer.id }}

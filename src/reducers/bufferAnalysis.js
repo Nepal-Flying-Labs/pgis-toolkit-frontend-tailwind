@@ -272,7 +272,6 @@ const getFeatureCollectionSuccess = (state, action) => {
 };
 
 function prepareResultsData(data, state) {
-  console.log(data, 'data');
   const result = {
     ...data,
     checked: true,
@@ -312,6 +311,16 @@ const getAnalysisResultListSuccess = (state, action) =>
     // draft.selectedRoadNetworkId = roadNetworkId;
   });
 
+const getAnalysisResultDetailSuccess = (state, action) =>
+  produce(state, draft => {
+    const data = action.payload;
+    const analysisResult = draft.results.analysisResults.results.find(
+      item => item.id === data.id,
+    );
+    const resultsData = prepareResultsData(data);
+    Object.assign(analysisResult, resultsData);
+  });
+
 const bufferAnalysisReducer = createReducer(initialState, {
   [Types.SET_BUFFER_ANALYSIS_STATE]: setBufferAnalysisState,
   [Types.SET_FILTER_STATE]: setFilterState,
@@ -331,6 +340,7 @@ const bufferAnalysisReducer = createReducer(initialState, {
   [Types.DELETE_BUFFER_RESULT]: deleteBufferResult,
   [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
   [Types.GET_ANALYSIS_RESULT_LIST_SUCCESS]: getAnalysisResultListSuccess,
+  [Types.GET_ANALYSIS_RESULT_DETAIL_SUCCESS]: getAnalysisResultDetailSuccess,
 });
 
 export default bufferAnalysisReducer;

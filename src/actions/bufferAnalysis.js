@@ -54,6 +54,9 @@ export const { Types, Creators } = createActions(
 
     getAnalysisResultListSuccess: ['payload'],
     getAnalysisResultListFailure: [null],
+
+    getAnalysisResultDetailSuccess: ['payload'],
+    getAnalysisResultDetailFailure: null,
   },
   { prefix: 'bufferAnalysis/' },
 );

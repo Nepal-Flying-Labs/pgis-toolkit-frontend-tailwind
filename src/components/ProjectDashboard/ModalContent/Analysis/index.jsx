@@ -34,7 +34,7 @@ export default function Analysis() {
                     }),
                   );
                 } else {
-                  // dispatch(toggleModal('create-analysis'));
+                  dispatch(toggleModal('create-analysis'));
                 }
                 dispatch(
                   setAnalysisState({

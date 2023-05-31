@@ -28,6 +28,15 @@ export function getAnalysisType(type) {
       return 'optimum_route';
     case 'optimum_route':
       return 'optimal-route';
+    case 'buffer-analysis':
+      return 'buffer';
+    case 'proximity-analysis':
+      return 'proximity';
+    case 'buffer':
+      return 'buffer-analysis';
+    case 'proximity':
+      return 'proximity-analysis';
+
     default:
       return '';
   }
@@ -132,3 +141,19 @@ export const featureSelectColor = '#ffdf65';
 export const errorFeatureColor = '#FF0F0F';
 
 export const analysisWithDataCleaning = ['optimal-route'];
+
+export const proximityColors = {
+  1: '#FF5A5F',
+  2: '#DFF2F1',
+};
+
+export const proximityPointStyles = {
+  ...drawPointStyles,
+  fillColor: destinationPointColor,
+};
+
+export const proximityPolygonStyles = {
+  ...drawPointStyles,
+  fillColor: '#FF5A5F',
+  fillOpacity: 33,
+};

@@ -23,9 +23,15 @@ const initialState = {
     radiusUnit: 'meter',
     dissolveOutput: false,
     outputName: '',
+    selectedLayer: null,
   },
   results: {
-    analysisResults: [],
+    analysisResults: {
+      next: null,
+      previous: null,
+      counts: 0,
+      results: [],
+    },
     // analysisResults: [analysisResultData],
     zoomToBuffer: null,
     showResultsPopup: false,

@@ -20,6 +20,10 @@ function getAnalysisName(type) {
   switch (type) {
     case 'optimum_route':
       return 'Optimal Route Analysis';
+    case 'proximity':
+      return 'Proximity Analysis';
+    case 'buffer':
+      return 'Buffer Analysis';
     default:
       return '';
   }

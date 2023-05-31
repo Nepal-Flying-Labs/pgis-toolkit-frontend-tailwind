@@ -49,6 +49,8 @@ import SaveBufferLayer from '@Components/ProjectDashboard/Analysis/ModalContent/
 import SelectLayerFeature from '@Components/ProjectDashboard/Analysis/ModalContent/SelectLayerFeature';
 import AddDatasetCategory from '@Components/ProjectDashboard/ModalContent/AddDatasetCategory';
 import DeleteBufferResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteBufferResult';
+import DeleteProximityResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteProximityResult';
+
 import DeleteRouteResult from '@Components/ProjectDashboard/Analysis/ModalContent/DeleteRouteResult';
 import SaveManualFix from '@Components/ProjectDashboard/Analysis/ModalContent/SaveManualFix';
 import SignoutWarning from '@Components/OrganizationDashboard/ModalContent/SignoutWarning';
@@ -58,6 +60,7 @@ import DeleteDropdownOption from '@Components/ProjectDashboard/ModalContent/Dele
 import DropdownEditWarning from '@Components/ProjectDashboard/ModalContent/DropdownEditWarning';
 import ViewAnalysisDetails from '@Components/ProjectDashboard/ModalContent/ViewAnalysisDetails';
 import ViewBufferChart from '@Components/ProjectDashboard/ModalContent/ViewBufferChart';
+import ViewProximityChart from '@Components/ProjectDashboard/ModalContent/ViewProximityChart';
 import StartAnalysisPrompt from '@Components/ProjectDashboard/Analysis/ModalContent/StartAnalysisPrompt';
 import CreateAnalysis from '@Components/ProjectDashboard/Analysis/ModalContent/CreateAnalysis';
 
@@ -299,6 +302,13 @@ export function getModalContent(content) {
         className:
           '!naxatw-min-w-[calc(100vw-70rem)] !naxatw-max-w-[calc(100vw-10rem)] !naxatw-w-fit naxatw-max-h-[calc(100vh-19rem)] ',
       };
+    case 'view-proximity-chart':
+      return {
+        title: 'Chart',
+        content: <ViewProximityChart />,
+        className:
+          '!naxatw-min-w-[calc(100vw-70rem)] !naxatw-max-w-[calc(100vw-10rem)] !naxatw-w-fit naxatw-max-h-[calc(100vh-19rem)] ',
+      };
     default:
       return {
         title: '',
@@ -425,6 +435,11 @@ export function getPromptDialogContent(content) {
       return {
         title: '',
         content: <DeleteBufferResult />,
+      };
+    case 'delete-proximity-result':
+      return {
+        title: '',
+        content: <DeleteProximityResult />,
       };
 
     case 'delete-route-result':

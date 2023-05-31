@@ -3,7 +3,8 @@ import Select from '@Components/common/Select/index';
 import Searchbar from '@Components/common/Searchbar/index';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Creators, Types } from '@Actions/bufferAnalysis';
+// import { Creators, Types } from '@Actions/bufferAnalysis';
+import { Creators, Types } from '@Actions/proximityAnalysis';
 import Table, { TableHeader } from '@Components/common/CustomTable';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import SortingContainer from '@Components/common/SortingContainer/index';
@@ -17,9 +18,9 @@ const { getFeatureCollectionRequest, setFilterState } = Creators;
 const ViewAnalysisDetails = () => {
   const dispatch = useDispatch();
   const detailsListData = useSelector(
-    state => state.bufferAnalysis.detailsListData.data,
+    state => state.proximityAnalysis.detailsListData.data,
   );
-  const poiLayersData = useSelector(state => state.bufferAnalysis.poiLayers);
+  const poiLayersData = useSelector(state => state.proximityAnalysis.poiLayers);
   const poiLayersDataOptions = poiLayersData.filter(data =>
     detailsListData.map(itm => itm.layer_id).includes(data.id),
   );
@@ -35,7 +36,7 @@ const ViewAnalysisDetails = () => {
   );
 
   const featureList = useSelector(
-    state => state.bufferAnalysis.featureCollectionList,
+    state => state.proximityAnalysis.featureCollectionList,
   );
 
   const headerKeys = useMemo(
@@ -43,9 +44,11 @@ const ViewAnalysisDetails = () => {
     [featureList],
   );
   const searchText = useSelector(
-    state => state.bufferAnalysis.filter.searchText,
+    state => state.proximityAnalysis.filter.searchText,
   );
-  const ordering = useSelector(state => state.bufferAnalysis.filter.ordering);
+  const ordering = useSelector(
+    state => state.proximityAnalysis.filter.ordering,
+  );
 
   const headerWidths = [...headerKeys.map(() => '150px')];
 

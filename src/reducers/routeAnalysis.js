@@ -317,6 +317,16 @@ const getAnalysisResultListSuccess = (state, action) =>
     draft.selectedRoadNetworkId = roadNetworkId;
   });
 
+const getAnalysisResultDetailSuccess = (state, action) =>
+  produce(state, draft => {
+    const data = action.payload;
+    const analysisResult = draft.results.analysisResults.results.find(
+      item => item.id === data.id,
+    );
+    const resultsData = prepareResultsData(data);
+    Object.assign(analysisResult, resultsData);
+  });
+
 const routeAnalysisReducer = createReducer(initialState, {
   [Types.SET_ROUTE_ANALYSIS_STATE]: setRouteAnalysisState,
   [Types.SET_DATA_INPUT_STATE]: setDataInputState,
@@ -332,6 +342,7 @@ const routeAnalysisReducer = createReducer(initialState, {
   [Types.GET_SELECTED_LAYER_FEATURE_SUCCESS]: getSelectedLayerFeatureSuccess,
   [Types.DELETE_ROUTE_RESULT]: deleteRouteResult,
   [Types.GET_ANALYSIS_RESULT_LIST_SUCCESS]: getAnalysisResultListSuccess,
+  [Types.GET_ANALYSIS_RESULT_DETAIL_SUCCESS]: getAnalysisResultDetailSuccess,
 });
 
 export default routeAnalysisReducer;

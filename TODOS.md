@@ -119,5 +119,6 @@
 - [ ] move create analysis modal after data cleaning for optimal route 
 - [ ] route for analysis page (id from params)
 
-### NEW ISSUES
-- [ ] accordion options click toggle accordion
+### NEW TASKS
+- [x] accordion options click toggle accordion
+- [x] analysis list dropdown options edit/delete functionality

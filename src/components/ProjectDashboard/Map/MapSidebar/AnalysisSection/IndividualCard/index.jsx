@@ -11,6 +11,29 @@ export default function IndividualCard({ data }) {
 
   const analysisType = getAnalysisType(data.analysisType);
 
+  const dropdownOptions = [
+    {
+      id: 1,
+      label: (
+        <span className="naxatw-flex naxatw-items-center">
+          <i className="material-icons naxatw-mr-2">edit</i>
+          <p className="naxatw-text-body-lg">Edit</p>
+        </span>
+      ),
+      onClick: selectedData => {},
+    },
+    {
+      id: 2,
+      label: (
+        <span className="naxatw-flex naxatw-items-center naxatw-text-delete_btn">
+          <i className="material-icons naxatw-mr-2">delete_outline</i>
+          <p className="naxatw-text-body-lg naxatw-text-delete_btn">Delete</p>
+        </span>
+      ),
+      onClick: selectedData => {},
+    },
+  ];
+
   return (
     <div
       className="naxatw-bg-white naxatw-p-3 naxatw-rounded-lg naxatw-border 
@@ -23,7 +46,7 @@ export default function IndividualCard({ data }) {
     >
       <div className="naxatw-flex naxatw-justify-between">
         <p className="naxatw-text-body-btn">{data.name}</p>
-        <DropdownOptions options={[]} />
+        <DropdownOptions options={dropdownOptions} stopPropagation />
       </div>
       <p className="naxatw-text-body-md">
         {format(new Date(data.uploaded_date), 'MMM dd, yyyy')}

@@ -127,134 +127,139 @@ export default function Results() {
           height: `calc(100vh - ${analysisHeaderHeight} - 3.5rem)`,
         }}
       >
-        {analysisResults.results.map(result => (
-          <Accordion
-            key={result.id}
-            className="!naxatw-py-2 !naxatw-px-4"
-            disableHeaderClickToggle
-            collapsed={!result.proximity_areas}
-            onToggle={() => {
-              if (result.proximity_areas) return;
-              dispatch(
-                getAnalysisResultDetailRequest({
-                  project: projectId,
-                  id: result.id,
-                  analysis_type: getAnalysisType(analysisType),
-                }),
-              );
-            }}
-            header={
-              <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
-                <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
-                  <div className="naxatw-flex naxatw-items-center ">
-                    <input
-                      id={result.id}
-                      type="checkbox"
-                      className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                      checked={result.checked}
-                      onChange={e => {
-                        const { id, checked } = e.target;
-                        if (!result.proximity_areas) {
-                          dispatch(
-                            getAnalysisResultDetailRequest({
-                              project: projectId,
-                              id: result.id,
-                              analysis_type: getAnalysisType(analysisType),
-                            }),
-                          );
-                        } else {
-                          dispatch(
-                            handleProximityCheckbox({
-                              resultId: +id,
-                              checked,
-                              name: 'result',
-                            }),
-                          );
-                        }
-                      }}
-                    />
-                    <LegendItem
-                      styles={{ ...result.style, geometryType: 'Point' }}
-                      className="naxatw-mr-2"
-                    />
-                    <label
-                      htmlFor={result.id}
-                      className="naxatw-text-grey-800 naxatw-text-body-lg"
-                    >
-                      {result.name}
-                    </label>
-                  </div>
-                  <DropdownOptions
-                    options={
-                      analysisType === 'proximity-analysis'
-                        ? dropdownOptions.filter(
-                            option =>
-                              !proximityAnalysisException.includes(option.id),
-                          )
-                        : dropdownOptions
-                    }
-                    data={result}
-                  />
-                </div>
-              </div>
-            }
-            body={
-              <div className="naxatw-pl-2">
-                {result.proximity_areas?.map(area => (
-                  <div key={area.id}>
-                    <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-                      <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-10">
-                        <input
-                          id={area.id}
-                          type="checkbox"
-                          className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                          checked={area.checked}
-                          onChange={e => {
-                            const { id, checked } = e.target;
+        {analysisResults.results.map(result => {
+          const hasData = !!result.proximity_areas;
+          return (
+            <Accordion
+              key={result.id}
+              className="!naxatw-py-2 !naxatw-px-4"
+              disableHeaderClickToggle
+              collapsed={!hasData}
+              onToggle={() => {
+                if (hasData) return;
+                dispatch(
+                  getAnalysisResultDetailRequest({
+                    project: projectId,
+                    id: result.id,
+                    analysis_type: getAnalysisType(analysisType),
+                  }),
+                );
+              }}
+              header={
+                <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
+                  <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
+                    <div className="naxatw-flex naxatw-items-center">
+                      <input
+                        id={result.id}
+                        type="checkbox"
+                        className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
+                        checked={result.checked}
+                        onChange={e => {
+                          const { id, checked } = e.target;
+                          if (!hasData) {
                             dispatch(
-                              handleProximityCheckbox({
-                                resultId: result.id,
-                                areaId: +id,
-                                checked,
-                                name: 'area',
+                              getAnalysisResultDetailRequest({
+                                project: projectId,
+                                id: result.id,
+                                analysis_type: getAnalysisType(analysisType),
                               }),
                             );
-                          }}
-                        />
-                        <LegendItem
-                          styles={{
-                            ...area.originStyle,
-                            geometryType: 'Point',
-                          }}
-                          className="naxatw-mr-2 !naxatw-rounded-full"
-                          size="20px"
-                        />
-
-                        <label
-                          className="naxatw-text-body-lg naxatw-text-grey-800"
-                          htmlFor={area.id}
-                        >
-                          {area.name || '-'}
-                        </label>
-                      </div>
-                      <MaterialIcon
-                        name="zoom_in"
-                        className="naxatw-cursor-pointer"
-                        onIconClick={() =>
-                          dispatch(
-                            setResultsState({
-                              zoomToBuffer: { id: area.id, bbox: area.bbox },
-                            }),
-                          )
-                        }
+                          } else {
+                            dispatch(
+                              handleProximityCheckbox({
+                                resultId: +id,
+                                checked,
+                                name: 'result',
+                              }),
+                            );
+                          }
+                        }}
                       />
+                      {hasData && (
+                        <LegendItem
+                          styles={{ ...result.style, geometryType: 'Point' }}
+                          className="naxatw-mr-2"
+                        />
+                      )}
+                      <label
+                        htmlFor={result.id}
+                        className="naxatw-text-grey-800 naxatw-text-body-lg"
+                      >
+                        {result.name}
+                      </label>
                     </div>
+                    <DropdownOptions
+                      options={
+                        analysisType === 'proximity-analysis'
+                          ? dropdownOptions.filter(
+                              option =>
+                                !proximityAnalysisException.includes(option.id),
+                            )
+                          : dropdownOptions
+                      }
+                      data={result}
+                    />
                   </div>
-                ))}
-              </div>
-            }
-          />
-        ))}
+                </div>
+              }
+              body={
+                <div className="naxatw-pl-2">
+                  {result.proximity_areas?.map(area => (
+                    <div key={area.id}>
+                      <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+                        <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-10">
+                          <input
+                            id={area.id}
+                            type="checkbox"
+                            className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
+                            checked={area.checked}
+                            onChange={e => {
+                              const { id, checked } = e.target;
+                              dispatch(
+                                handleProximityCheckbox({
+                                  resultId: result.id,
+                                  areaId: +id,
+                                  checked,
+                                  name: 'area',
+                                }),
+                              );
+                            }}
+                          />
+                          <LegendItem
+                            styles={{
+                              ...area.originStyle,
+                              geometryType: 'Point',
+                            }}
+                            className="naxatw-mr-2 !naxatw-rounded-full"
+                            size="20px"
+                          />
+
+                          <label
+                            className="naxatw-text-body-lg naxatw-text-grey-800"
+                            htmlFor={area.id}
+                          >
+                            {area.name || '-'}
+                          </label>
+                        </div>
+                        <MaterialIcon
+                          name="zoom_in"
+                          className="naxatw-cursor-pointer"
+                          onIconClick={() =>
+                            dispatch(
+                              setResultsState({
+                                zoomToBuffer: { id: area.id, bbox: area.bbox },
+                              }),
+                            )
+                          }
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              }
+            />
+          );
+        })}
       </div>
     </div>
   );

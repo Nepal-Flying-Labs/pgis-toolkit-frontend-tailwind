@@ -132,6 +132,7 @@ export default function Results() {
             key={result.id}
             className="!naxatw-py-2 !naxatw-px-4"
             disableHeaderClickToggle
+            collapsed={!result.proximity_areas}
             onToggle={() => {
               if (result.proximity_areas) return;
               dispatch(

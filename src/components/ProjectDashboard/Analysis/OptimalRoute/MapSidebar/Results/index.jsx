@@ -106,6 +106,7 @@ export default function Results() {
             key={result.id}
             className="!naxatw-py-2 !naxatw-px-4"
             disableHeaderClickToggle
+            collapsed={!result.routes}
             onToggle={() => {
               if (result.routes) return;
               dispatch(
@@ -126,14 +127,24 @@ export default function Results() {
                       className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
                       checked={result.checked}
                       onChange={e => {
-                        const { id, checked } = e.target;
-                        dispatch(
-                          handleRouteCheckbox({
-                            resultId: +id,
-                            checked,
-                            name: 'result',
-                          }),
-                        );
+                        if (!result.routes) {
+                          dispatch(
+                            getAnalysisResultDetailRequest({
+                              project: projectId,
+                              id: result.id,
+                              analysis_type: getAnalysisType(analysisType),
+                            }),
+                          );
+                        } else {
+                          const { id, checked } = e.target;
+                          dispatch(
+                            handleRouteCheckbox({
+                              resultId: +id,
+                              checked,
+                              name: 'result',
+                            }),
+                          );
+                        }
                       }}
                     />
                     <h5 className="naxatw-text-grey-800">{result.name}</h5>

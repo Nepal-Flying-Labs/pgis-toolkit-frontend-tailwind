@@ -101,7 +101,7 @@ export default function Results() {
           height: `calc(100vh - ${analysisHeaderHeight} - 3.5rem)`,
         }}
       >
-        {analysisResults?.results?.map(result => {
+        {analysisResults.results.map(result => {
           const hasData = !!result.routes;
           return (
             <Accordion

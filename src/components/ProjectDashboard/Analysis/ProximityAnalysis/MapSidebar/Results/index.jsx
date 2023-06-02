@@ -154,13 +154,23 @@ export default function Results() {
                       checked={result.checked}
                       onChange={e => {
                         const { id, checked } = e.target;
-                        dispatch(
-                          handleProximityCheckbox({
-                            resultId: +id,
-                            checked,
-                            name: 'result',
-                          }),
-                        );
+                        if (!result.proximity_areas) {
+                          dispatch(
+                            getAnalysisResultDetailRequest({
+                              project: projectId,
+                              id: result.id,
+                              analysis_type: getAnalysisType(analysisType),
+                            }),
+                          );
+                        } else {
+                          dispatch(
+                            handleProximityCheckbox({
+                              resultId: +id,
+                              checked,
+                              name: 'result',
+                            }),
+                          );
+                        }
                       }}
                     />
                     <LegendItem

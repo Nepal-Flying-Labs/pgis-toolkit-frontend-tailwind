@@ -6,8 +6,13 @@ import DropdownOptions from '@Components/common/DropdownOptions';
 import { getAnalysisType } from '@src/constants/analysis';
 import { useDispatch } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
+import {
+  Creators as MapProjectCreators,
+  // Types,
+} from '@Actions/projectMap';
 
 const { togglePromptDialog, toggleModal } = CommonCreators;
+const { setSelectedAnalysis } = MapProjectCreators;
 
 export default function IndividualCard({ data }) {
   const { organizationId, projectId } = useParams();
@@ -15,6 +20,8 @@ export default function IndividualCard({ data }) {
 
   const analysisType = getAnalysisType(data.analysisType);
   const dispatch = useDispatch();
+
+  // console.log(data);
 
   const dropdownOptions = [
     {
@@ -26,6 +33,8 @@ export default function IndividualCard({ data }) {
         </span>
       ),
       onClick: selectedData => {
+        // console.log(data);
+        dispatch(setSelectedAnalysis(data));
         dispatch(toggleModal('edit-analysis'));
       },
     },
@@ -55,7 +64,11 @@ export default function IndividualCard({ data }) {
     >
       <div className="naxatw-flex naxatw-justify-between ">
         <p className="naxatw-text-body-btn">{data.name}</p>
-        <DropdownOptions options={dropdownOptions} stopPropagation />
+        <DropdownOptions
+          options={dropdownOptions}
+          stopPropagation
+          data={data}
+        />
       </div>
       <p className="naxatw-text-body-md">
         {format(new Date(data.uploaded_date), 'MMM dd, yyyy')}

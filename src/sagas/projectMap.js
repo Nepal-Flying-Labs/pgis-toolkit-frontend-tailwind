@@ -39,6 +39,7 @@ import {
   getFeatureGeojson,
   deleteDataQuery,
   getAnalysisTypeList,
+  updateAnalysis,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -752,6 +753,44 @@ export function* getAnalysisTypeListRequest({ params }) {
   }
 }
 
+export function* updateAnalysisRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(updateAnalysis, id, formData);
+    yield put(projectMapActions.updateAnalysisDataSuccess(response.data));
+    yield put(commonActions.toggleModal());
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
+    yield put(
+      toastActions.success({
+        message: 'Document updated successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.updateAnalysisDataFailure());
+  }
+}
+
+export function* deleteAnalysisRequest({ id, payload }) {
+  // const filteredData = removeObjectKeys(payload, ['projectId']);
+  // const pId = payload.projectId;
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(updateAnalysis, id, formData);
+    yield put(projectMapActions.deleteAnalysisSuccess(response.data));
+
+    yield put(commonActions.togglePromptDialog());
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
+
+    yield put(
+      toastActions.success({
+        message: 'Analysis deleted successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.deleteAnalysisFailure());
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -900,6 +939,14 @@ function* projectMapWatcher() {
   yield takeEvery(
     Types.GET_ANALYSIS_TYPE_LIST_REQUEST,
     withLoader(withErrorHandler(getAnalysisTypeListRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_ANALYSIS_REQUEST,
+    withLoader(withErrorHandler(updateAnalysisRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_ANALYSIS_REQUEST,
+    withLoader(withErrorHandler(deleteAnalysisRequest)),
   );
 }
 

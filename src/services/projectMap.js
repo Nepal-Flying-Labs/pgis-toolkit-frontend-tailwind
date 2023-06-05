@@ -89,3 +89,7 @@ export const deleteDataQuery = data =>
 
 export const getAnalysisTypeList = params =>
   authenticated(api).get(`/maps/analysis_type_list/`, { params });
+
+// update-analysis-item
+export const updateAnalysis = (id, payload) =>
+  authenticated(api).patch(`/maps/analysis/${id}/`, payload);

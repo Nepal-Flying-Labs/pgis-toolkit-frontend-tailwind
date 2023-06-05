@@ -306,6 +306,16 @@ export function* getAnalysisResultDetailRequest({ params }) {
   }
 }
 
+export function* getAnalysisById({ params }) {
+  try {
+    const response = yield call(getAnalysisDetail, params);
+    yield put(analysisActions.getAnalysisByIdSuccess(response.data));
+  } catch (error) {
+    yield put(analysisActions.getAnalysisByIdFailure());
+    throw error;
+  }
+}
+
 function* analysisWatcher() {
   yield takeLatest(
     Types.COPY_LAYER_DATA_REQUEST,
@@ -347,6 +357,7 @@ function* analysisWatcher() {
     Types.GET_ANALYSIS_RESULT_DETAIL_REQUEST,
     withLoader(getAnalysisResultDetailRequest),
   );
+  yield takeLatest(Types.GET_ANALYSIS_BY_ID, withLoader(getAnalysisById));
 }
 
 export default analysisWatcher;

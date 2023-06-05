@@ -70,6 +70,7 @@ const initialState = {
   resetMapExtent: false,
   labelFields: null,
   analysisList: null, // []
+  selectedAnalysis: null,
   isFullScreen: false,
 };
 
@@ -896,6 +897,36 @@ const getAnalysisTypeListSuccess = (state, action) =>
     draft.analysisList[analysisType] = action.payload;
   });
 
+const setSelectedAnalysis = (state, action) => ({
+  ...state,
+  selectedAnalysis: action.payload || null,
+});
+
+const deleteAnalysisSuccess = (state, action) => {
+  const { theme, id: layerId } = action.payload;
+  const layers = {
+    ...state.layers,
+    [theme]: state.layers[theme].filter(item => item.id !== layerId),
+  };
+  return {
+    ...state,
+    layers,
+    deleteLayer: null,
+  };
+};
+
+const updateAnalysisSuccess = (state, action) => {
+  const { responseData, payload } = action.payload;
+  const { theme } = responseData;
+  const { style, name } = payload;
+  const layers = {
+    ...state.layers,
+    [theme]: state.layers[theme].map(item =>
+      item.id === responseData.id ? { ...item, style, name } : { ...item },
+    ),
+  };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -956,6 +987,10 @@ const projectMapReducer = createReducer(initialState, {
   [Types.GET_LABEL_FIELD_OPTIONS_SUCCESS]: getLabelFieldOptionsSuccess,
   [Types.UPDATE_LABEL_FIELD_SUCCESS]: updateLabelFieldSuccess,
   [Types.GET_ANALYSIS_TYPE_LIST_SUCCESS]: getAnalysisTypeListSuccess,
+
+  [Types.SET_SELECTED_ANALYSIS]: setSelectedAnalysis,
+  [Types.UPDATE_ANALYSIS_SUCCESS]: updateAnalysisSuccess,
+  [Types.DELETE_ANALYSIS_SUCCESS]: deleteAnalysisSuccess,
 });
 
 export default projectMapReducer;

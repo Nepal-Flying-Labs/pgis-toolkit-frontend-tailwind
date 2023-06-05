@@ -127,7 +127,7 @@ export default function Results() {
                         id={result.id}
                         type="checkbox"
                         className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                        checked={result.checked}
+                        checked={!!result.checked}
                         onChange={e => {
                           if (!hasData) {
                             dispatch(

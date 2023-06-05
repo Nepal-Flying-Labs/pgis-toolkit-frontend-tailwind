@@ -10,6 +10,7 @@ import CreateProjectSuccess from '@Components/OrganizationDashboard/ModalContent
 import CreateNewUser from '@Components/OrganizationDashboard/ModalContent/CreateNewUser';
 import AddLayer from '@Components/ProjectDashboard/ModalContent/AddLayer';
 import EditLayer from '@Components/ProjectDashboard/ModalContent/EditLayer';
+import EditAnalysis from '@Components/ProjectDashboard/ModalContent/EditAnalysis';
 import DeleteLayer from '@Components/ProjectDashboard/ModalContent/DeleteLayer';
 import SaveAsDraft from '@Components/OrganizationDashboard/ModalContent/SaveAsDraft';
 import UploadDataset from '@Components/ProjectDashboard/ModalContent/UploadDataset';
@@ -31,6 +32,7 @@ import ViewLayerAttribute from '@Components/ProjectDashboard/ModalContent/ViewLa
 import EditLayerAttribute from '@Components/ProjectDashboard/ModalContent/EditLayerAttribute';
 import DeleteLayerAttribute from '@Components/ProjectDashboard/ModalContent/DeleteLayerAttribute';
 import DeleteDocument from '@Components/ProjectDashboard/ModalContent/DeleteDocument';
+import DeleteAnalysis from '@Components/ProjectDashboard/ModalContent/DeleteAnalysis';
 import DataQueryHelp from '@Components/ProjectDashboard/ModalContent/HelpContents/DataQueryHelp';
 import DeleteGallery from '@Components/ProjectDashboard/ModalContent/DeleteGallery';
 import EditGallery from '@Components/ProjectDashboard/ModalContent/EditGallery';
@@ -123,6 +125,12 @@ export function getModalContent(content) {
       return {
         title: 'Edit Layer',
         content: <EditLayer />,
+        // className: '!naxatw-h-[calc(100vh-30rem)]',
+      };
+    case 'edit-analysis':
+      return {
+        title: 'Edit Analysis',
+        content: <EditAnalysis />,
         // className: '!naxatw-h-[calc(100vh-30rem)]',
       };
     case 'upload-dataset':
@@ -343,6 +351,11 @@ export function getPromptDialogContent(content) {
       return {
         title: 'Delete',
         content: <DeleteGallery />,
+      };
+    case 'delete-analysis':
+      return {
+        title: 'Delete',
+        content: <DeleteAnalysis />,
       };
     case 'save-data-query':
       return {

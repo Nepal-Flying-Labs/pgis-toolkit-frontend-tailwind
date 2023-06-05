@@ -108,12 +108,12 @@ export default function Analysis() {
   ]);
 
   // reset analysis state
-  // useEffect(
-  //   () => () => {
-  //     dispatch(resetAnalysisState());
-  //   },
-  //   [dispatch],
-  // );
+  useEffect(
+    () => () => {
+      dispatch(resetAnalysisState());
+    },
+    [dispatch],
+  );
 
   return (
     <div>

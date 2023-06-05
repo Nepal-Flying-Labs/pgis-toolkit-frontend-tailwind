@@ -320,6 +320,8 @@ const toggleRoadLayer = (state, action) =>
 
 const resetAnalysisState = state => ({
   ...initialState,
+  themes: state.themes,
+  layers: state.layers,
   selectedAnalysisType: state.selectedAnalysisType, // selected analysis type for create analysis
   analysisDetail: state.analysisDetail, // selected analysis type for create analysis
 });

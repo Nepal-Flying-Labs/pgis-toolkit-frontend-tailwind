@@ -1,5 +1,8 @@
+/* eslint-disable no-param-reassign */
 import { createSelector } from 'reselect';
+import produce from 'immer';
 import { isEmpty } from '@Utils/commonUtils';
+import { routeColors } from '@src/constants/analysis';
 
 export const analysisResultsSelector = state =>
   state.routeAnalysis.results.analysisResults;
@@ -66,4 +69,23 @@ export const roadNetworkLayerSelector = createSelector(
     );
     return roadNetworkLayer;
   },
+);
+
+export const analysisResultsStateSelector = createSelector(
+  [analysisResultsSelector, roadNetworkLayerSelector],
+  (analysisResults, roadNetworkLayer) =>
+    produce(analysisResults, draft => {
+      draft.results.forEach(result => {
+        if (!result.routes) return;
+        result.routes.forEach(route => {
+          route.data.forEach(item => {
+            item.style = {
+              ...roadNetworkLayer.style,
+              lineColor: routeColors[item.route_no],
+              lineThickness: +roadNetworkLayer.style.lineThickness + 2,
+            };
+          });
+        });
+      });
+    }),
 );

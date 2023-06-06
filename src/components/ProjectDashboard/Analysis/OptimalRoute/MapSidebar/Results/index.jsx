@@ -9,15 +9,14 @@ import Accordion from '@Components/common/Accordion';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 import { getAnalysisType } from '@src/constants/analysis';
+import { analysisResultsStateSelector } from '@Selectors/routeAnalysis';
 
 const { setResultsState, handleRouteCheckbox } = RouteAnalysisCreators;
 const { getAnalysisResultDetailRequest } = AnalysisCreators;
 const { toggleModal, togglePromptDialog } = CommonCreators;
 
 export default function Results() {
-  const analysisResults = useSelector(
-    state => state.routeAnalysis.results.analysisResults,
-  );
+  const analysisResults = useSelector(analysisResultsStateSelector);
   const { projectId, analysisType } = useParams();
   const dispatch = useDispatch();
 

@@ -281,7 +281,7 @@ export default function MapSection() {
             authToken={localStorage.getItem('userToken')}
             visibleOnMap={item.checked}
             style={item.style}
-            zIndex={4}
+            zIndex={40}
             properties={{ layerId: item.id }}
           />
         ))}
@@ -295,7 +295,7 @@ export default function MapSection() {
                 authToken={localStorage.getItem('userToken')}
                 visibleOnMap={item.checked}
                 style={item.style}
-                zIndex={item.is_optimum ? 3 : 2}
+                zIndex={item.is_optimum ? 30 : 20}
                 // properties={{ layerId: selectedLayer.id }}
               />
             )),
@@ -313,7 +313,7 @@ export default function MapSection() {
             authToken={localStorage.getItem('userToken')}
             visibleOnMap
             style={getLayerStyles(item.layer_id)}
-            zIndex={4}
+            zIndex={40}
             // properties={{ layerId: selectedLayer.id }}
           />
         ))}
@@ -323,14 +323,14 @@ export default function MapSection() {
             <CircleMarker
               coordinates={[result.origin_lat, result.origin_long]}
               visibleOnMap={result.checked}
-              zIndex={10}
+              zIndex={100}
               style={{ ...startPointStyles }}
               map={map}
             />
             <CircleMarker
               coordinates={[result.destination_lat, result.destination_long]}
               visibleOnMap={result.checked}
-              zIndex={10}
+              zIndex={100}
               style={{ ...destinationPointStyles }}
               map={map}
             />
@@ -342,7 +342,7 @@ export default function MapSection() {
           // geojson={featureGeojson}
           geometryType="Point"
           selectedDrawType="add-feature"
-          zIndex={50}
+          zIndex={101}
           style={
             drawPointType === 'start'
               ? { ...startPointStyles }
@@ -374,7 +374,7 @@ export default function MapSection() {
           <VectorLayer
             geojson={startingPoint.geojson}
             visibleOnMap
-            zIndex={50}
+            zIndex={101}
             style={{ ...startPointStyles }}
           />
         )}
@@ -382,7 +382,7 @@ export default function MapSection() {
           <VectorLayer
             geojson={destinationPoint.geojson}
             visibleOnMap
-            zIndex={50}
+            zIndex={101}
             style={{ ...destinationPointStyles }}
           />
         )}

@@ -124,73 +124,78 @@ export default function Results() {
           height: `calc(100vh - ${analysisHeaderHeight} - 3.5rem)`,
         }}
       >
-        {analysisResults.results.map(result => (
-          <div
-            key={result.id}
-            className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-bg-white naxatw-px-2 naxatw-py-3 naxatw-rounded-sm"
-          >
-            <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-              <div
-                className="naxatw-w-6 naxatw-h-6 naxatw-flex naxatw-mr-1
+        {analysisResults.results.map(result => {
+          const hasData = !!result.layer;
+          return (
+            <div
+              key={result.id}
+              className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-bg-white naxatw-px-2 naxatw-py-3 naxatw-rounded-sm"
+            >
+              <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+                <div
+                  className="naxatw-w-6 naxatw-h-6 naxatw-flex naxatw-mr-1
                           naxatw-items-center naxatw-justify-center naxatw-p-4"
-              >
-                <input
-                  id={result.id}
-                  type="checkbox"
-                  className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                  checked={result.checked}
-                  onChange={e => {
-                    const { id, checked } = e.target;
-                    if (!result.layer) {
+                >
+                  <input
+                    id={result.id}
+                    type="checkbox"
+                    className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
+                    checked={result.checked}
+                    onChange={e => {
+                      const { id, checked } = e.target;
+                      if (!hasData) {
+                        dispatch(
+                          getAnalysisResultDetailRequest({
+                            project: projectId,
+                            id: result.id,
+                            analysis_type: getAnalysisType(analysisType),
+                          }),
+                        );
+                      }
                       dispatch(
-                        getAnalysisResultDetailRequest({
-                          project: projectId,
-                          id: result.id,
-                          analysis_type: getAnalysisType(analysisType),
+                        handleBufferCheckbox({
+                          resultId: +id,
+                          checked,
+                          name: 'result',
                         }),
                       );
-                    }
-                    dispatch(
-                      handleBufferCheckbox({
-                        resultId: +id,
-                        checked,
-                        name: 'result',
-                      }),
-                    );
-                  }}
-                />
+                    }}
+                  />
+                </div>
+
+                {hasData && (
+                  <LegendItem
+                    styles={{ ...result.style, geometryType: 'Point' }}
+                    className="naxatw-mr-2"
+                  />
+                )}
+
+                <label
+                  title={result.name}
+                  className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-w-[9rem]
+                          naxatw-truncate"
+                  htmlFor={result.id}
+                >
+                  {result.name}
+                </label>
               </div>
 
-              <LegendItem
-                styles={{ ...result.style, geometryType: 'Point' }}
-                className="naxatw-mr-2"
-              />
-
-              <label
-                title={result.name}
-                className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-w-[9rem]
-                          naxatw-truncate"
-                htmlFor={result.id}
-              >
-                {result.name}
-              </label>
+              <div className="naxatw-flex">
+                <DropdownOptions
+                  options={
+                    analysisType === 'proximity-analysis'
+                      ? dropdownOptions.filter(
+                          option =>
+                            !proximityAnalysisException.includes(option.id),
+                        )
+                      : dropdownOptions
+                  }
+                  data={result}
+                />
+              </div>
             </div>
-
-            <div className="naxatw-flex">
-              <DropdownOptions
-                options={
-                  analysisType === 'proximity-analysis'
-                    ? dropdownOptions.filter(
-                        option =>
-                          !proximityAnalysisException.includes(option.id),
-                      )
-                    : dropdownOptions
-                }
-                data={result}
-              />
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

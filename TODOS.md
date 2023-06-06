@@ -121,4 +121,16 @@
 
 ### NEW TASKS
 - [x] accordion options click toggle accordion
-- [x] analysis list dropdown options edit/delete functionality
+- [ ] obstacles not fetching in analysis preview
+- [ ] reset analysis state on unmount
+- [ ] done button in analysis header
+- [ ] starting/end point z-index
+- [ ] loader while fetching individual analysis result
+
+- [ ] analysis list dropdown options edit/delete functionality
+- [ ] download analysis
+- [ ] delete analysis
+- [ ] implement api search in analysis list (raj)
+- [ ] implement pagination in analysis list
+
+- [ ] dropdown option hide issue

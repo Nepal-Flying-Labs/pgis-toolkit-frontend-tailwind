@@ -45,7 +45,6 @@ import {
   getAnalysisResultList,
   getIndividualAnalysisDetail,
 } from '@Services/analysis';
-import { roadLayersThemeIdSelector } from '@Selectors/projectMap';
 import removeObjectKeys from '@Utils/removeObjectKeys';
 
 function getActionType(type) {

@@ -86,7 +86,6 @@ export default function Analysis() {
 
   useEffect(() => {
     if (!analysisId || !isLayersFetched || isAnalysisDetailFetched) return;
-
     dispatch(getAnalysisDetailRequest(analysisId));
     dispatch(
       getAnalysisResultListRequest({
@@ -107,13 +106,13 @@ export default function Analysis() {
     isAnalysisDetailFetched,
   ]);
 
-  // reset analysis state
-  useEffect(
-    () => () => {
-      dispatch(resetAnalysisState());
-    },
-    [dispatch],
-  );
+  // // reset analysis state
+  // useEffect(
+  //   () => () => {
+  //     dispatch(resetAnalysisState());
+  //   },
+  //   [dispatch],
+  // );
 
   return (
     <div>

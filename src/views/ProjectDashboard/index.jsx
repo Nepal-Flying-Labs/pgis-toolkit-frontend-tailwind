@@ -4,7 +4,10 @@ import { useHistory, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as OrganizationDashboardCreators } from '@Actions/organizationDashboard';
 import { Creators as ProjectDashboardCreators } from '@Actions/projectDashboard';
-import { Types as AnalysisTypes } from '@Actions/analysis';
+import {
+  Creators as AnalysisCreators,
+  Types as AnalysisTypes,
+} from '@Actions/analysis';
 import ManageDataCollection from '@Components/ProjectDashboard/ManageDataCollection/index';
 import ProjectHeader from '@Components/common/ProjectHeader';
 import Map from '@Components/ProjectDashboard/Map';
@@ -25,6 +28,7 @@ const {
   getProjectDetailRequest,
   resetProjectDashboardState,
 } = ProjectDashboardCreators;
+const { resetAnalysisState } = AnalysisCreators;
 
 function getTabContent(tabname) {
   switch (tabname) {
@@ -69,6 +73,7 @@ export default function ProjectDashboard() {
 
   useEffect(
     () => () => {
+      dispatch(resetAnalysisState());
       dispatch(resetProjectDashboardState());
     },
     [dispatch],

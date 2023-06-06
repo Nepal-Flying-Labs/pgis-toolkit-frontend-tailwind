@@ -73,8 +73,9 @@ export const roadNetworkLayerSelector = createSelector(
 
 export const analysisResultsStateSelector = createSelector(
   [analysisResultsSelector, roadNetworkLayerSelector],
-  (analysisResults, roadNetworkLayer) =>
-    produce(analysisResults, draft => {
+  (analysisResults, roadNetworkLayer) => {
+    if (!roadNetworkLayer) return analysisResults;
+    return produce(analysisResults, draft => {
       draft.results.forEach(result => {
         if (!result.routes) return;
         result.routes.forEach(route => {
@@ -87,5 +88,6 @@ export const analysisResultsStateSelector = createSelector(
           });
         });
       });
-    }),
+    });
+  },
 );

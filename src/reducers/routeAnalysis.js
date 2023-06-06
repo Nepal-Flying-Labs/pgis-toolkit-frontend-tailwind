@@ -3,11 +3,7 @@ import { createReducer } from 'reduxsauce';
 import produce from 'immer';
 import { parse } from 'wkt';
 import { Types } from '@Actions/routeAnalysis';
-import {
-  startPointStyles,
-  obstaclePointColor,
-  routeColors,
-} from '@src/constants/analysis';
+import { startPointStyles, obstaclePointColor } from '@src/constants/analysis';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
 const initialState = {

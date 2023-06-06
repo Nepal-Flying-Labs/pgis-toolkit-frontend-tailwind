@@ -21,8 +21,6 @@ export default function IndividualCard({ data }) {
   const analysisType = getAnalysisType(data.analysisType);
   const dispatch = useDispatch();
 
-  // console.log(data);
-
   const dropdownOptions = [
     {
       id: 'edit-analysis',
@@ -33,7 +31,6 @@ export default function IndividualCard({ data }) {
         </span>
       ),
       onClick: selectedData => {
-        // console.log(data);
         dispatch(setSelectedAnalysis(data));
         dispatch(toggleModal('edit-analysis'));
       },
@@ -47,6 +44,7 @@ export default function IndividualCard({ data }) {
         </span>
       ),
       onClick: selectedData => {
+        dispatch(setSelectedAnalysis(data));
         dispatch(togglePromptDialog('delete-analysis'));
       },
     },

@@ -33,7 +33,7 @@ export default function EditDocument() {
   );
 
   const isUploading = useSelector(state =>
-    checkIfLoading(state, [Types.UPDATE_DOCUMENT_DATA_REQUEST]),
+    checkIfLoading(state, [Types.UPDATE_ANALYSIS_REQUEST]),
   );
   const { height } = useWindowDimensions();
   const dispatch = useDispatch();

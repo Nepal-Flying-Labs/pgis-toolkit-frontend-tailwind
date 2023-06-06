@@ -757,9 +757,8 @@ export function* updateAnalysisRequest({ id, payload }) {
   const formData = prepareFormData(payload);
   try {
     const response = yield call(updateAnalysis, id, formData);
-    yield put(projectMapActions.updateAnalysisDataSuccess(response.data));
+    yield put(projectMapActions.updateAnalysisSuccess(response.data));
     yield put(commonActions.toggleModal());
-    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
     yield put(
       toastActions.success({
         message: 'Document updated successfully.',
@@ -771,8 +770,6 @@ export function* updateAnalysisRequest({ id, payload }) {
 }
 
 export function* deleteAnalysisRequest({ id, payload }) {
-  // const filteredData = removeObjectKeys(payload, ['projectId']);
-  // const pId = payload.projectId;
   const formData = prepareFormData(payload);
   try {
     const response = yield call(updateAnalysis, id, formData);

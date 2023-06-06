@@ -8,7 +8,7 @@ import { Types } from '@Actions/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { boundaryLayerName } from '@src/constants/map';
 import { isEmpty } from '@Utils/commonUtils';
-import { getAnalysisType } from '@src/constants/analysis';
+// import { getAnalysisType } from '@src/constants/analysis';
 
 const initialState = {
   themes: null, // []
@@ -903,27 +903,46 @@ const setSelectedAnalysis = (state, action) => ({
 });
 
 const deleteAnalysisSuccess = (state, action) => {
-  const { theme, id: layerId } = action.payload;
-  const layers = {
-    ...state.layers,
-    [theme]: state.layers[theme].filter(item => item.id !== layerId),
-  };
+  const { id } = action.payload;
+
+  const newPayload = state.analysisList[action.payload.type].results.filter(
+    item => item.id !== id,
+  );
+
   return {
     ...state,
-    layers,
-    deleteLayer: null,
+    analysisList: {
+      ...state.analysisList,
+      [action.payload.type]: {
+        ...state.analysisList[action.payload.type],
+        results: newPayload,
+      },
+    },
   };
 };
 
 const updateAnalysisSuccess = (state, action) => {
-  const { responseData, payload } = action.payload;
-  const { theme } = responseData;
-  const { style, name } = payload;
-  const layers = {
-    ...state.layers,
-    [theme]: state.layers[theme].map(item =>
-      item.id === responseData.id ? { ...item, style, name } : { ...item },
-    ),
+  const { id, name, uploaded_date } = action.payload;
+  const responseData = { id, name, uploaded_date };
+
+  const newPayload = state.analysisList[action.payload.type].results.map(
+    item => {
+      if (item.id === id) {
+        return responseData;
+      }
+      return item;
+    },
+  );
+
+  return {
+    ...state,
+    analysisList: {
+      ...state.analysisList,
+      [action.payload.type]: {
+        ...state.analysisList[action.payload.type],
+        results: newPayload,
+      },
+    },
   };
 };
 

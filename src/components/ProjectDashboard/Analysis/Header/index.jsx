@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
-import IconButton from '@Components/common/IconButton/index';
 import { Creators } from '@Actions/analysis';
+import IconButton from '@Components/common/IconButton/index';
 
-const { setSelectedInfo } = Creators;
+const { setSelectedInfo, resetAnalysisState } = Creators;
 
 const headerData = {
   'optimal-route': {
@@ -65,6 +65,7 @@ export default function Header() {
       <button
         type="button"
         onClick={() => {
+          dispatch(resetAnalysisState());
           history.push(
             `/organizations/${organizationId}/projects/${projectId}/map`,
           );

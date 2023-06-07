@@ -326,9 +326,9 @@ const resetAnalysisState = state => ({
   ...initialState,
   // themes: state.themes,
   // layers: state.layers,
-  selectedAnalysisType: state.selectedAnalysisType, // selected analysis type for create analysis
-  analysisDetail: state.analysisDetail, // selected analysis type for create analysis
-  isAnalysisDetailFetched: state.isAnalysisDetailFetched, // selected analysis type for create analysis
+  // selectedAnalysisType: state.selectedAnalysisType, // selected analysis type for create analysis
+  // analysisDetail: state.analysisDetail, // selected analysis type for create analysis
+  // isAnalysisDetailFetched: state.isAnalysisDetailFetched, // selected analysis type for create analysis
 });
 
 const analysisReducer = createReducer(initialState, {

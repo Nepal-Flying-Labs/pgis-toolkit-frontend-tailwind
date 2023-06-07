@@ -300,7 +300,6 @@ export function* getAnalysisResultDetailRequest({ params }) {
     const response = yield call(getAnalysisResultDetail, params);
     yield put(action.getAnalysisResultDetailSuccess(response.data));
   } catch (error) {
-    console.log(error, 'error');
     yield put(action.getAnalysisResultDetailFailure());
   }
 }

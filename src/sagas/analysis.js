@@ -45,7 +45,6 @@ import {
   getAnalysisResultList,
   getIndividualAnalysisDetail,
 } from '@Services/analysis';
-import { roadLayersThemeIdSelector } from '@Selectors/projectMap';
 import removeObjectKeys from '@Utils/removeObjectKeys';
 
 function getActionType(type) {
@@ -301,7 +300,6 @@ export function* getAnalysisResultDetailRequest({ params }) {
     const response = yield call(getAnalysisResultDetail, params);
     yield put(action.getAnalysisResultDetailSuccess(response.data));
   } catch (error) {
-    console.log(error, 'error');
     yield put(action.getAnalysisResultDetailFailure());
   }
 }

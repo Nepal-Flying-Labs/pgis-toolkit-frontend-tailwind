@@ -259,8 +259,12 @@ export default function DataInput() {
         </Container>
 
         <Container>
-          <label className="naxatw-label">Preferred alternative path</label>
-          <p className="naxatw-text-body-sm">(Values between 1 and 5)</p>
+          <div>
+            <label className="naxatw-label">Preferred alternative path</label>
+            <p className="naxatw-text-body-sm naxatw-mt-0.5">
+              (Values between 1 and 5)
+            </p>
+          </div>
           {/* <input
             type="number"
             className="naxatw-input"

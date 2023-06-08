@@ -133,4 +133,6 @@
 - [ ] implement api search in analysis list (raj)
 - [ ] implement pagination in analysis list
 
+### ISSUES
+- [ ] zoom to selected road on initial load not working
 - [ ] dropdown option hide issue

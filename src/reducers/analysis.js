@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createReducer } from 'reduxsauce';
 import produce from 'immer';
 import { Types } from '@Actions/analysis';
@@ -297,6 +298,7 @@ const createAnalysisSuccess = (state, action) => {
   return {
     ...state,
     analysisDetail,
+    isAnalysisDetailFetched: true,
   };
 };
 
@@ -306,6 +308,7 @@ const getAnalysisDetailSuccess = (state, action) => {
   return {
     ...state,
     analysisDetail,
+    isAnalysisDetailFetched: true,
   };
 };
 
@@ -317,12 +320,16 @@ const toggleRoadLayer = (state, action) =>
       item => item.id === roadNetworkId,
     );
     selectedRoadNetwork.checked = true;
+    draft.zoomToLayerId = roadNetworkId;
   });
 
 const resetAnalysisState = state => ({
   ...initialState,
-  selectedAnalysisType: state.selectedAnalysisType, // selected analysis type for create analysis
-  analysisDetail: state.analysisDetail, // selected analysis type for create analysis
+  // themes: state.themes,
+  // layers: state.layers,
+  // selectedAnalysisType: state.selectedAnalysisType, // selected analysis type for create analysis
+  // analysisDetail: state.analysisDetail, // selected analysis type for create analysis
+  // isAnalysisDetailFetched: state.isAnalysisDetailFetched, // selected analysis type for create analysis
 });
 
 const getAnalysisByIdSuccess = (state, action) => {

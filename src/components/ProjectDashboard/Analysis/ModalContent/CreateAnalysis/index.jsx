@@ -18,10 +18,9 @@ const { copyLayerDataRequest, setAnalysisState, createAnalysisRequest } =
   AnalysisCreators;
 
 export default function CreateAnalysis() {
-  const { organizationId, projectId } = useParams();
-  const selectedAnalysisType = useSelector(
-    state => state.analysis.selectedAnalysisType,
-  );
+  const { organizationId, projectId, analysisType } = useParams();
+  const selectedAnalysisType =
+    useSelector(state => state.analysis.selectedAnalysisType) || analysisType;
   const dispatch = useDispatch();
   const { values, meta, handleChange, handleSubmit } = useForm({
     initialValues,

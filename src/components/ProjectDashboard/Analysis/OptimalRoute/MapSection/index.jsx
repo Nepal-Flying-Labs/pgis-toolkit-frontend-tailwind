@@ -28,6 +28,7 @@ import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
 import {
+  analysisResultsStateSelector,
   obstacleLayersSelector,
   roadNetworkLayerSelector,
 } from '@Selectors/routeAnalysis';
@@ -69,9 +70,7 @@ export default function MapSection() {
   const destinationPoint = useSelector(
     state => state.routeAnalysis.dataInput.destinationPoint,
   );
-  const analysisResults = useSelector(
-    state => state.routeAnalysis.results.analysisResults,
-  );
+  const analysisResults = useSelector(analysisResultsStateSelector);
   const zoomToRouteId = useSelector(
     state => state.routeAnalysis.results.zoomToRouteId,
   );
@@ -282,12 +281,12 @@ export default function MapSection() {
             authToken={localStorage.getItem('userToken')}
             visibleOnMap={item.checked}
             style={item.style}
-            zIndex={4}
+            zIndex={40}
             properties={{ layerId: item.id }}
           />
         ))}
 
-        {analysisResults?.results?.map(result =>
+        {analysisResults.results.map(result =>
           result?.routes?.map(route =>
             route?.data?.map(item => (
               <VectorTileLayer
@@ -296,7 +295,7 @@ export default function MapSection() {
                 authToken={localStorage.getItem('userToken')}
                 visibleOnMap={item.checked}
                 style={item.style}
-                zIndex={item.is_optimum ? 3 : 2}
+                zIndex={item.is_optimum ? 30 : 20}
                 // properties={{ layerId: selectedLayer.id }}
               />
             )),
@@ -314,7 +313,7 @@ export default function MapSection() {
             authToken={localStorage.getItem('userToken')}
             visibleOnMap
             style={getLayerStyles(item.layer_id)}
-            zIndex={4}
+            zIndex={40}
             // properties={{ layerId: selectedLayer.id }}
           />
         ))}
@@ -324,14 +323,14 @@ export default function MapSection() {
             <CircleMarker
               coordinates={[result.origin_lat, result.origin_long]}
               visibleOnMap={result.checked}
-              zIndex={10}
+              zIndex={100}
               style={{ ...startPointStyles }}
               map={map}
             />
             <CircleMarker
               coordinates={[result.destination_lat, result.destination_long]}
               visibleOnMap={result.checked}
-              zIndex={10}
+              zIndex={100}
               style={{ ...destinationPointStyles }}
               map={map}
             />
@@ -343,7 +342,7 @@ export default function MapSection() {
           // geojson={featureGeojson}
           geometryType="Point"
           selectedDrawType="add-feature"
-          zIndex={50}
+          zIndex={101}
           style={
             drawPointType === 'start'
               ? { ...startPointStyles }
@@ -375,7 +374,7 @@ export default function MapSection() {
           <VectorLayer
             geojson={startingPoint.geojson}
             visibleOnMap
-            zIndex={50}
+            zIndex={101}
             style={{ ...startPointStyles }}
           />
         )}
@@ -383,7 +382,7 @@ export default function MapSection() {
           <VectorLayer
             geojson={destinationPoint.geojson}
             visibleOnMap
-            zIndex={50}
+            zIndex={101}
             style={{ ...destinationPointStyles }}
           />
         )}

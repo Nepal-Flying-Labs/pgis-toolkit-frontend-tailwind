@@ -16,7 +16,7 @@ const {
   setDataCleaningState,
 } = DataCleaningCreators;
 
-const { togglePromptDialog } = CommonCreators;
+const { togglePromptDialog, toggleModal } = CommonCreators;
 
 function getStatusIcon(status) {
   switch (status) {
@@ -268,7 +268,8 @@ export default function StepTwo() {
             if (isErrorLeft) {
               dispatch(togglePromptDialog('start-analysis-prompt'));
             } else {
-              dispatch(startAnalysisRequest(params));
+              // dispatch(startAnalysisRequest(params));
+              dispatch(toggleModal('create-analysis'));
             }
           }}
           disabled={!isAllChecked}

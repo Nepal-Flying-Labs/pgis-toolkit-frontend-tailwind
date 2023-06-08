@@ -15,6 +15,7 @@ import {
   bulkDeleteNullGeometry,
   checkError,
   copyFeatures,
+  dataCleanTaskResponse,
   getErrorFeatures,
   getFeatureCollectionMirror,
   getFeatureMirrorGeojson,
@@ -30,6 +31,19 @@ import { getLayerAttributeFields } from '@Services/projectMap';
 import { isEmpty } from '@Utils/commonUtils';
 import { roadLayersThemeIdSelector } from '@Selectors/projectMap';
 import { checkErrorData } from '@src/constants/analysis';
+
+function* checkDataCleanTaskResponse(taskId) {
+  let taskResponse = {};
+  // loop while api gives data
+  while (!('total_data' in taskResponse)) {
+    yield delay(3000); // add delay to api call
+    const response = yield call(dataCleanTaskResponse, {
+      task_id: taskId,
+    });
+    taskResponse = response.data;
+  }
+  return taskResponse;
+}
 
 export function* checkErrorRequest({ payload }) {
   try {
@@ -49,9 +63,11 @@ export function* checkErrorRequest({ payload }) {
       );
       const params = { layer: layerId };
       const response = yield call(checkError, checkAPI, params);
+      const { task_id: taskId } = response.data;
+      const taskResponse = yield call(checkDataCleanTaskResponse, taskId);
       yield put(
         dataCleaningActions.checkErrorSuccess({
-          ...response.data,
+          ...taskResponse,
           id,
           layerId,
         }),

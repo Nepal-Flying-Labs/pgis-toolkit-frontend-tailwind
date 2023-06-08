@@ -36,7 +36,20 @@ function* checkDataCleanTaskResponse(taskId) {
   let taskResponse = {};
   // loop while api gives data
   while (!('total_data' in taskResponse)) {
-    yield delay(3000); // add delay to api call
+    yield delay(3 * 1000); // add delay to api call
+    const response = yield call(dataCleanTaskResponse, {
+      task_id: taskId,
+    });
+    taskResponse = response.data;
+  }
+  return taskResponse;
+}
+
+function* checkDataFixTaskResponse(taskId) {
+  let taskResponse = {};
+  // loop while api gives data
+  while (!('new_error' in taskResponse)) {
+    yield delay(5 * 1000); // add delay to api call
     const response = yield call(dataCleanTaskResponse, {
       task_id: taskId,
     });
@@ -94,9 +107,11 @@ export function* autoFixErrorRequest({ params }) {
         }),
       );
       const response = yield call(autoFixError, fixAPI, params);
+      const { task_id: taskId } = response.data;
+      const taskResponse = yield call(checkDataFixTaskResponse, taskId);
       yield put(
         dataCleaningActions.autoFixErrorSuccess({
-          ...response.data,
+          ...taskResponse,
           id,
           layerId,
         }),

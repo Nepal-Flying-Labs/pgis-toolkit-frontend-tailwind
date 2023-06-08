@@ -4,33 +4,46 @@ import { useHistory, useParams } from 'react-router';
 import { format } from 'date-fns';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import { getAnalysisType } from '@src/constants/analysis';
+import { useDispatch } from 'react-redux';
+import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as ProjectMapCreators } from '@Actions/projectMap';
+
+const { togglePromptDialog, toggleModal } = CommonCreators;
+const { setSelectedAnalysis } = ProjectMapCreators;
 
 export default function IndividualCard({ data }) {
   const { organizationId, projectId } = useParams();
   const history = useHistory();
 
   const analysisType = getAnalysisType(data.analysisType);
+  const dispatch = useDispatch();
 
   const dropdownOptions = [
     {
-      id: 1,
+      id: 'edit-analysis',
       label: (
         <span className="naxatw-flex naxatw-items-center">
           <i className="material-icons naxatw-mr-2">edit</i>
           <p className="naxatw-text-body-lg">Edit</p>
         </span>
       ),
-      onClick: selectedData => {},
+      onClick: selectedData => {
+        dispatch(setSelectedAnalysis(selectedData));
+        dispatch(toggleModal('edit-analysis'));
+      },
     },
     {
-      id: 2,
+      id: 'delete-analysis',
       label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-delete_btn">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
           <p className="naxatw-text-body-lg naxatw-text-delete_btn">Delete</p>
         </span>
       ),
-      onClick: selectedData => {},
+      onClick: selectedData => {
+        dispatch(setSelectedAnalysis(selectedData));
+        dispatch(togglePromptDialog('delete-analysis'));
+      },
     },
   ];
 
@@ -44,9 +57,13 @@ export default function IndividualCard({ data }) {
         );
       }}
     >
-      <div className="naxatw-flex naxatw-justify-between">
+      <div className="naxatw-flex naxatw-justify-between ">
         <p className="naxatw-text-body-btn">{data.name}</p>
-        <DropdownOptions options={dropdownOptions} stopPropagation />
+        <DropdownOptions
+          options={dropdownOptions}
+          stopPropagation
+          data={data}
+        />
       </div>
       <p className="naxatw-text-body-md">
         {format(new Date(data.uploaded_date), 'MMM dd, yyyy')}

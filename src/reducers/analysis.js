@@ -38,6 +38,7 @@ const initialState = {
   analysisDetail: null, // selected analysis type for create analysis
   isLayersFetched: false, // selected analysis type for create analysis
   isAnalysisDetailFetched: false,
+  selectedAnalysisById: null,
 };
 
 const setAnalysisState = (state, action) => ({
@@ -331,6 +332,15 @@ const resetAnalysisState = state => ({
   // isAnalysisDetailFetched: state.isAnalysisDetailFetched, // selected analysis type for create analysis
 });
 
+const getAnalysisByIdSuccess = (state, action) => {
+  const { id, name, description } = action.payload;
+  const selectedAnalysisById = { id, name, description };
+  return {
+    ...state,
+    selectedAnalysisById,
+  };
+};
+
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
@@ -354,6 +364,7 @@ const analysisReducer = createReducer(initialState, {
   [Types.GET_ANALYSIS_DETAIL_SUCCESS]: getAnalysisDetailSuccess,
   [Types.TOGGLE_ROAD_LAYER]: toggleRoadLayer,
   [Types.RESET_ANALYSIS_STATE]: resetAnalysisState,
+  [Types.GET_ANALYSIS_BY_ID_SUCCESS]: getAnalysisByIdSuccess,
 });
 
 export default analysisReducer;

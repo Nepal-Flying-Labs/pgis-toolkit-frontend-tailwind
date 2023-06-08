@@ -58,6 +58,10 @@ export const { Types, Creators } = createActions(
     toggleRoadLayer: ['payload'],
 
     getAnalysisResultDetailRequest: ['params'],
+
+    getAnalysisByIdRequest: ['params'],
+    getAnalysisByIdSuccess: ['payload'],
+    getAnalysisByIdFailure: null,
   },
   { prefix: 'analysis/' },
 );

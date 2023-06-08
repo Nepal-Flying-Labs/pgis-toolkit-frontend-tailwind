@@ -15,9 +15,9 @@ import FormErrorMessage from '@Components/common/FormErrorMessage/index';
 import useForm from '@Hooks/useForm';
 
 const { updateAnalysisRequest } = ProjectDashboardCreators;
-const { getAnalysisById } = AnalysisCreators;
+const { getAnalysisByIdRequest } = AnalysisCreators;
 
-export default function EditDocument() {
+export default function EditAnalysis() {
   const [errorFields, setErrorFields] = useState({});
   const analysis = useSelector(state => state.projectMap.selectedAnalysis);
   const analysisById = useSelector(
@@ -56,11 +56,10 @@ export default function EditDocument() {
     }
   };
 
-  const { values, handleChange, handleCustomChange, handleSubmit, setValues } =
-    useForm({
-      initialValues: analysisWithDesc,
-      onSubmit: formSubmit,
-    });
+  const { values, handleChange, handleSubmit, setValues } = useForm({
+    initialValues: analysisWithDesc,
+    onSubmit: formSubmit,
+  });
 
   useEffect(() => {
     if (isEmpty(analysisWithDesc)) return null;
@@ -68,7 +67,7 @@ export default function EditDocument() {
   }, [analysisWithDesc, setValues]);
 
   useEffect(() => {
-    dispatch(getAnalysisById(analysisWithDesc.id));
+    dispatch(getAnalysisByIdRequest(analysisWithDesc.id));
   }, [analysisWithDesc.id, dispatch]);
 
   return (

@@ -59,7 +59,7 @@ export const { Types, Creators } = createActions(
 
     getAnalysisResultDetailRequest: ['params'],
 
-    getAnalysisById: ['params'],
+    getAnalysisByIdRequest: ['params'],
     getAnalysisByIdSuccess: ['payload'],
     getAnalysisByIdFailure: null,
   },

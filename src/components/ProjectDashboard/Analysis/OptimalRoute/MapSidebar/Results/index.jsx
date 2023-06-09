@@ -83,7 +83,7 @@ export default function Results() {
         <span className="naxatw-flex naxatw-items-center naxatw-text-delete_btn">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
           <p className="naxatw-text-body-lg naxatw-text-delete_btn">
-            Discard Layer
+            Delete Layer
           </p>
         </span>
       ),

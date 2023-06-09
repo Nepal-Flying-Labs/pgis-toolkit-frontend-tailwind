@@ -178,7 +178,7 @@ export function* downloadProximityAnalysisRequest({ params }) {
     });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = 'Document.zip';
+    link.download = 'ProximityAnalysis.zip';
     link.click();
     yield put(toastActions.success({ message: 'Export Completed.' }));
   } catch (error) {

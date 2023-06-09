@@ -110,7 +110,7 @@ export function* downloadOptimumRouteAnalysisRequest({ params }) {
     });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = 'Document.zip';
+    link.download = 'OptimumRouteAnalysis.zip';
     link.click();
     yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
     yield put(toastActions.success({ message: 'Export Completed.' }));

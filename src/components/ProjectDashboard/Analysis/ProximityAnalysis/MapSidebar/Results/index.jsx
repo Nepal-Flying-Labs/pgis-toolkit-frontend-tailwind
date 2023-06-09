@@ -113,7 +113,9 @@ export default function Results() {
       label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
-          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Discard</p>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">
+            Delete Layer
+          </p>
         </span>
       ),
       onClick: data => {

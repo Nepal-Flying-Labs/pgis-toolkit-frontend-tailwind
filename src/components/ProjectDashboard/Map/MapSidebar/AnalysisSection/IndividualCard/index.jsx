@@ -6,13 +6,10 @@ import DropdownOptions from '@Components/common/DropdownOptions';
 import { getAnalysisType } from '@src/constants/analysis';
 import { useDispatch } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
-import {
-  Creators as MapProjectCreators,
-  // Types,
-} from '@Actions/projectMap';
+import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 
 const { togglePromptDialog, toggleModal } = CommonCreators;
-const { setSelectedAnalysis } = MapProjectCreators;
+const { setSelectedAnalysis } = ProjectMapCreators;
 
 export default function IndividualCard({ data }) {
   const { organizationId, projectId } = useParams();
@@ -31,7 +28,7 @@ export default function IndividualCard({ data }) {
         </span>
       ),
       onClick: selectedData => {
-        dispatch(setSelectedAnalysis(data));
+        dispatch(setSelectedAnalysis(selectedData));
         dispatch(toggleModal('edit-analysis'));
       },
     },
@@ -44,7 +41,7 @@ export default function IndividualCard({ data }) {
         </span>
       ),
       onClick: selectedData => {
-        dispatch(setSelectedAnalysis(data));
+        dispatch(setSelectedAnalysis(selectedData));
         dispatch(togglePromptDialog('delete-analysis'));
       },
     },

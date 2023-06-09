@@ -304,7 +304,7 @@ export function* getAnalysisResultDetailRequest({ params }) {
   }
 }
 
-export function* getAnalysisById({ params }) {
+export function* getAnalysisByIdRequest({ params }) {
   try {
     const response = yield call(getAnalysisDetail, params);
     yield put(analysisActions.getAnalysisByIdSuccess(response.data));
@@ -355,7 +355,10 @@ function* analysisWatcher() {
     Types.GET_ANALYSIS_RESULT_DETAIL_REQUEST,
     withLoader(getAnalysisResultDetailRequest),
   );
-  yield takeLatest(Types.GET_ANALYSIS_BY_ID, withLoader(getAnalysisById));
+  yield takeLatest(
+    Types.GET_ANALYSIS_BY_ID_REQUEST,
+    withLoader(getAnalysisByIdRequest),
+  );
 }
 
 export default analysisWatcher;

@@ -9,6 +9,7 @@ import {
 import bufferAnalysisActions, { Types } from '@Actions/bufferAnalysis';
 import commonActions from '@Actions/common';
 import { getFeatureCollection, updateLayer } from '@Services/projectMap';
+import toastActions from '@Actions/toast';
 
 import analysisActions from '@Actions/analysis';
 import prepareFormData from '@Utils/prepareFormData';
@@ -19,6 +20,7 @@ import {
   getBufferAreaCollection,
   saveBufferLayer,
   getFeatureCollectionMirror,
+  downloadBufferAnalysis,
 } from '@Services/bufferAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { copyFeatures } from '@Services/dataCleaning';
@@ -167,6 +169,24 @@ export function* getFeatureCollectionRequest({ params }) {
   }
 }
 
+export function* downloadBufferAnalysisRequest({ params }) {
+  try {
+    console.log(params);
+    const response = yield call(downloadBufferAnalysis, params);
+    const blob = new Blob([response.data], {
+      type: 'application/octet-stream',
+    });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Document.zip';
+    link.click();
+    yield put(toastActions.success({ message: 'Export Completed.' }));
+  } catch (error) {
+    yield put(bufferAnalysisActions.downloadBufferAnalysisFailure());
+    throw error;
+  }
+}
+
 function* bufferAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_BUFFER_ANALYSIS_REQUEST,
@@ -199,6 +219,10 @@ function* bufferAnalysisWatcher() {
   yield takeLatest(
     Types.GET_FEATURE_COLLECTION_REQUEST,
     withLoader(withErrorHandler(getFeatureCollectionRequest)),
+  );
+  yield takeLatest(
+    Types.DOWNLOAD_BUFFER_ANALYSIS_REQUEST,
+    withLoader(withErrorHandler(downloadBufferAnalysisRequest)),
   );
 }
 

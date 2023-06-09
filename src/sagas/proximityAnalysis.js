@@ -9,6 +9,7 @@ import {
 import proximityAnalysisActions, { Types } from '@Actions/proximityAnalysis';
 import commonActions from '@Actions/common';
 import { getFeatureCollection, updateLayer } from '@Services/projectMap';
+import toastActions from '@Actions/toast';
 
 import analysisActions from '@Actions/analysis';
 import prepareFormData from '@Utils/prepareFormData';
@@ -19,6 +20,7 @@ import {
   getProximityAreaCollection,
   saveProximityLayer,
   getFeatureCollectionMirror,
+  downloadProximityAnalysis,
 } from '@Services/proximityAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { copyFeatures } from '@Services/dataCleaning';
@@ -168,6 +170,23 @@ export function* getFeatureCollectionRequest({ params }) {
   }
 }
 
+export function* downloadProximityAnalysisRequest({ params }) {
+  try {
+    const response = yield call(downloadProximityAnalysis, params);
+    const blob = new Blob([response.data], {
+      type: 'application/octet-stream',
+    });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Document.zip';
+    link.click();
+    yield put(toastActions.success({ message: 'Export Completed.' }));
+  } catch (error) {
+    yield put(proximityAnalysisActions.downloadProximityAnalysisFailure());
+    throw error;
+  }
+}
+
 function* proximityAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_PROXIMITY_ANALYSIS_REQUEST,
@@ -200,6 +219,10 @@ function* proximityAnalysisWatcher() {
   yield takeLatest(
     Types.GET_FEATURE_COLLECTION_REQUEST,
     withLoader(withErrorHandler(getFeatureCollectionRequest)),
+  );
+  yield takeLatest(
+    Types.DOWNLOAD_PROXIMITY_ANALYSIS_REQUEST,
+    withLoader(withErrorHandler(downloadProximityAnalysisRequest)),
   );
 }
 

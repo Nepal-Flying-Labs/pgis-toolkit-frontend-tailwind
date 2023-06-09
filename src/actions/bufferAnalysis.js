@@ -57,6 +57,11 @@ export const { Types, Creators } = createActions(
 
     getAnalysisResultDetailSuccess: ['payload'],
     getAnalysisResultDetailFailure: null,
+
+    // buffer-analysis-download
+    downloadBufferAnalysisRequest: ['params'],
+    downloadBufferAnalysisSuccess: ['payload'],
+    downloadBufferAnalysisFailure: ['payload'],
   },
   { prefix: 'bufferAnalysis/' },
 );

@@ -7,7 +7,9 @@ import {
   getNetworkRouteCollection,
   optimumRouteAnalysis,
   saveRouteLayer,
+  downloadOptimumRouteAnalysis,
 } from '@Services/routeAnalysis';
+import toastActions from '@Actions/toast';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { getFeatureCollection } from '@Services/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
@@ -100,6 +102,24 @@ export function* getSelectedLayerFeatureRequest() {
   }
 }
 
+export function* downloadOptimumRouteAnalysisRequest({ params }) {
+  try {
+    const response = yield call(downloadOptimumRouteAnalysis, params);
+    const blob = new Blob([response.data], {
+      type: 'application/octet-stream',
+    });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Document.zip';
+    link.click();
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
+    yield put(toastActions.success({ message: 'Export Completed.' }));
+  } catch (error) {
+    yield put(routeAnalysisActions.downloadDocumentFailure());
+    throw error;
+  }
+}
+
 function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_ROUTE_ANALYSIS_REQUEST,
@@ -120,6 +140,10 @@ function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.GET_SELECTED_LAYER_FEATURE_REQUEST,
     withLoader(withErrorHandler(getSelectedLayerFeatureRequest)),
+  );
+  yield takeLatest(
+    Types.DOWNLOAD_OPTIMUM_ROUTE_ANALYSIS_REQUEST,
+    withLoader(withErrorHandler(downloadOptimumRouteAnalysisRequest)),
   );
 }
 

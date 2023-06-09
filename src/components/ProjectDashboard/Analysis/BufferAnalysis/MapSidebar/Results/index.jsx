@@ -9,8 +9,12 @@ import DropdownOptions from '@Components/common/DropdownOptions';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 import { getAnalysisType } from '@src/constants/analysis';
 
-const { handleBufferCheckbox, setResultsState, setBufferAnalysisState } =
-  BufferAnalysisCreators;
+const {
+  handleBufferCheckbox,
+  setResultsState,
+  setBufferAnalysisState,
+  downloadBufferAnalysisRequest,
+} = BufferAnalysisCreators;
 const { toggleModal, togglePromptDialog } = CommonCreators;
 const { getAnalysisResultDetailRequest } = AnalysisCreators;
 
@@ -84,18 +88,21 @@ export default function Results() {
       id: 'save-layer',
       label: (
         <span className="naxatw-flex naxatw-items-center">
-          <i className="material-symbols-outlined naxatw-mr-2">save</i>
-          <p className="naxatw-text-body-lg">Download</p>
+          <i className="material-symbols-outlined naxatw-mr-2">download</i>
+          <p className="naxatw-text-body-lg">Download Layer</p>
         </span>
       ),
-      // onClick: data => {
-      //   dispatch(
-      //     setResultsState({
-      //       selectedAnalysis: data,
-      //     }),
-      //   );
-      //   dispatch(togglePromptDialog('save-buffer-layer'));
-      // },
+      onClick: data => {
+        dispatch(
+          setResultsState({
+            selectedAnalysis: data,
+          }),
+        );
+        dispatch(
+          downloadBufferAnalysisRequest({ buffer_analysis_id: data.id }),
+        );
+        // dispatch(togglePromptDialog('save-buffer-layer'));
+      },
     },
     {
       id: 'discard',

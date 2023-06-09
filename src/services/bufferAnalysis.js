@@ -1,4 +1,4 @@
-import { api, authenticated } from '.';
+import { api, authenticated, downloadApi } from '.';
 
 // eslint-disable-next-line import/prefer-default-export
 export const applyBufferAnalysis = data =>
@@ -15,3 +15,7 @@ export const saveBufferLayer = data =>
 
 export const getFeatureCollectionMirror = params =>
   authenticated(api).get(`/maps/feature_collection_mirror/`, { params });
+
+// buffer-analysis-download
+export const downloadBufferAnalysis = params =>
+  authenticated(downloadApi).get(`/maps/export_buffer_analysis/`, { params });

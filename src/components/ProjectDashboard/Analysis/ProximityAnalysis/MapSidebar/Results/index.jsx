@@ -11,8 +11,12 @@ import MaterialIcon from '@Components/common/MaterialIcon/index';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 import { getAnalysisType } from '@src/constants/analysis';
 
-const { handleProximityCheckbox, setResultsState, setProximityAnalysisState } =
-  ProximityAnalysisCreators;
+const {
+  handleProximityCheckbox,
+  setResultsState,
+  setProximityAnalysisState,
+  downloadProximityAnalysisRequest,
+} = ProximityAnalysisCreators;
 const { toggleModal, togglePromptDialog } = CommonCreators;
 const { getAnalysisResultDetailRequest } = AnalysisCreators;
 
@@ -87,8 +91,8 @@ export default function Results() {
       id: 'save-layer',
       label: (
         <span className="naxatw-flex naxatw-items-center">
-          <i className="material-symbols-outlined naxatw-mr-2">save</i>
-          <p className="naxatw-text-body-lg">Save Layer</p>
+          <i className="material-symbols-outlined naxatw-mr-2">download</i>
+          <p className="naxatw-text-body-lg">Download Layer</p>
         </span>
       ),
       onClick: data => {
@@ -97,7 +101,11 @@ export default function Results() {
             selectedAnalysis: data,
           }),
         );
-        dispatch(togglePromptDialog('save-buffer-layer'));
+        console.log(data);
+        dispatch(
+          downloadProximityAnalysisRequest({ proximity_analysis_id: data.id }),
+        );
+        // dispatch(togglePromptDialog('save-buffer-layer'));
       },
     },
     {

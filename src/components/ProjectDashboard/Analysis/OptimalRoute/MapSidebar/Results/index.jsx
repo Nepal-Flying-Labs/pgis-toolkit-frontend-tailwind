@@ -11,7 +11,11 @@ import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem
 import { getAnalysisType } from '@src/constants/analysis';
 import { analysisResultsStateSelector } from '@Selectors/routeAnalysis';
 
-const { setResultsState, handleRouteCheckbox } = RouteAnalysisCreators;
+const {
+  setResultsState,
+  handleRouteCheckbox,
+  downloadOptimumRouteAnalysisRequest,
+} = RouteAnalysisCreators;
 const { getAnalysisResultDetailRequest } = AnalysisCreators;
 const { toggleModal, togglePromptDialog } = CommonCreators;
 
@@ -58,8 +62,8 @@ export default function Results() {
       id: 'save-layer',
       label: (
         <span className="naxatw-flex naxatw-items-center">
-          <i className="material-symbols-outlined naxatw-mr-2">save</i>
-          <p className="naxatw-text-body-lg">Save Layer</p>
+          <i className="material-symbols-outlined naxatw-mr-2">download</i>
+          <p className="naxatw-text-body-lg">Download Layer</p>
         </span>
       ),
       onClick: data => {
@@ -68,7 +72,9 @@ export default function Results() {
             selectedAnalysis: data,
           }),
         );
-        dispatch(togglePromptDialog('save-route-layer'));
+        dispatch(
+          downloadOptimumRouteAnalysisRequest({ optimum_route_id: data.id }),
+        );
       },
     },
     {

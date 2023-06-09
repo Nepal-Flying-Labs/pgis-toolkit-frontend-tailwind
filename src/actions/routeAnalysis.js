@@ -40,6 +40,11 @@ export const { Types, Creators } = createActions(
 
     getAnalysisResultDetailSuccess: ['payload'],
     getAnalysisResultDetailFailure: null,
+
+    // optimum-route-analysis-download
+    downloadOptimumRouteAnalysisRequest: ['params'],
+    downloadOptimumRouteAnalysisSuccess: ['payload'],
+    downloadOptimumRouteAnalysisFailure: ['payload'],
   },
   { prefix: 'routeAnalysis/' },
 );

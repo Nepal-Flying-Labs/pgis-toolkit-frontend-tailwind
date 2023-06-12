@@ -36,7 +36,7 @@ function* checkDataCleanTaskResponse(taskId) {
   let taskResponse = {};
   // loop while api gives data
   while (!('total_data' in taskResponse)) {
-    yield delay(3 * 1000); // add delay to api call
+    if (isEmpty(taskResponse)) yield delay(3 * 1000); // add delay to api call
     const response = yield call(dataCleanTaskResponse, {
       task_id: taskId,
     });
@@ -49,7 +49,7 @@ function* checkDataFixTaskResponse(taskId) {
   let taskResponse = {};
   // loop while api gives data
   while (!('new_error' in taskResponse)) {
-    yield delay(5 * 1000); // add delay to api call
+    if (isEmpty(taskResponse)) yield delay(5 * 1000); // add delay to api call
     const response = yield call(dataCleanTaskResponse, {
       task_id: taskId,
     });

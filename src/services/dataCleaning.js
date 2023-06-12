@@ -26,3 +26,6 @@ export const bulkDeleteNullGeometry = data =>
 
 export const getFeatureMirrorGeojson = params =>
   authenticated(api).get(`/maps/feature_mirror_geojson/`, { params });
+
+export const dataCleanTaskResponse = params =>
+  authenticated(api).get(`/maps/data_clean_task_response/`, { params });

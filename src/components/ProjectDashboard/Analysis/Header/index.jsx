@@ -72,7 +72,7 @@ export default function Header() {
         }}
         className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 
           hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5
-          naxatw-ml-auto naxatw-inline-flex naxatw-items-center naxatw-"
+          naxatw-ml-auto naxatw-inline-flex naxatw-items-center naxatw-h-10"
       >
         <i className="material-icons">close</i>
         <span className="naxatw-sr-only">Close modal</span>

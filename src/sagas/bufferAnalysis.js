@@ -164,7 +164,6 @@ export function* getFeatureCollectionRequest({ params }) {
     const response = yield call(getFeatureCollectionMirror, params);
     yield put(bufferAnalysisActions.getFeatureCollectionSuccess(response.data));
   } catch (error) {
-    console.log(error, 'error');
     yield put(bufferAnalysisActions.getFeatureCollectionFailure());
     throw error;
   }
@@ -172,7 +171,6 @@ export function* getFeatureCollectionRequest({ params }) {
 
 export function* downloadBufferAnalysisRequest({ params }) {
   try {
-    console.log(params);
     const response = yield call(downloadBufferAnalysis, params);
     const blob = new Blob([response.data], {
       type: 'application/octet-stream',

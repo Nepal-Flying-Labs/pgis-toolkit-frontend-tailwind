@@ -235,21 +235,37 @@ const saveBufferLayerSuccess = (state, action) =>
     draft.results.showResultsPopup = false;
   });
 
-const deleteBufferResult = (state, action) =>
-  produce(state, draft => {
-    const selectedId = draft.results.selectedResultId;
-    if (selectedId === action.payload) {
-      draft.results.showResultsPopup = false;
-      draft.results.selectedResultId = null;
-    }
-    const newData = draft.results.analysisResults.filter(
-      item => item.id !== action.payload,
-    );
-    draft.results.analysisResults = newData;
-    if (newData.length < 1) {
-      draft.activeTab = 'dataInput';
-    }
-  });
+// const deleteBufferResult = (state, action) =>
+//   produce(state, draft => {
+//     const selectedId = draft.results.selectedResultId;
+//     if (selectedId === action.payload) {
+//       draft.results.showResultsPopup = false;
+//       draft.results.selectedResultId = null;
+//     }
+//     const newData = draft.results.analysisResults.filter(
+//       item => item.id !== action.payload,
+//     );
+//     draft.results.analysisResults = newData;
+//     if (newData.length < 1) {
+//       draft.activeTab = 'dataInput';
+//     }
+//   });
+
+const deleteBufferResultSuccess = (state, action) => {
+  const newData = state.results.analysisResults.results.filter(
+    item => item.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    results: {
+      ...state.results,
+      analysisResults: {
+        ...state.results.analysisResults,
+        results: newData,
+      },
+    },
+  };
+};
 
 const getFeatureCollectionSuccess = (state, action) => {
   const featureList = action.payload;
@@ -337,10 +353,11 @@ const bufferAnalysisReducer = createReducer(initialState, {
   [Types.GET_ANALYSIS_DATA_SUCCESS]: getAnalysisDataSuccess,
   [Types.GET_SELECTED_LAYER_FEATURE_SUCCESS]: getSelectedLayerFeatureSuccess,
   [Types.SAVE_BUFFER_LAYER_SUCCESS]: saveBufferLayerSuccess,
-  [Types.DELETE_BUFFER_RESULT]: deleteBufferResult,
+  // [Types.DELETE_BUFFER_RESULT]: deleteBufferResult,
   [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
   [Types.GET_ANALYSIS_RESULT_LIST_SUCCESS]: getAnalysisResultListSuccess,
   [Types.GET_ANALYSIS_RESULT_DETAIL_SUCCESS]: getAnalysisResultDetailSuccess,
+  [Types.DELETE_BUFFER_RESULT_SUCCESS]: deleteBufferResultSuccess,
 });
 
 export default bufferAnalysisReducer;

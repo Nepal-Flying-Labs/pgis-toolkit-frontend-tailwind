@@ -257,21 +257,37 @@ const saveProximityLayerSuccess = (state, action) =>
     draft.results.showResultsPopup = false;
   });
 
-const deleteProximityResult = (state, action) =>
-  produce(state, draft => {
-    const selectedId = draft.results.selectedResultId;
-    if (selectedId === action.payload) {
-      draft.results.showResultsPopup = false;
-      draft.results.selectedResultId = null;
-    }
-    const newData = draft.results.analysisResults.results.filter(
-      item => item.id !== action.payload,
-    );
-    draft.results.analysisResults.results = newData;
-    if (newData.length < 1) {
-      draft.activeTab = 'dataInput';
-    }
-  });
+// const deleteProximityResult = (state, action) =>
+//   produce(state, draft => {
+//     const selectedId = draft.results.selectedResultId;
+//     if (selectedId === action.payload) {
+//       draft.results.showResultsPopup = false;
+//       draft.results.selectedResultId = null;
+//     }
+//     const newData = draft.results.analysisResults.results.filter(
+//       item => item.id !== action.payload,
+//     );
+//     draft.results.analysisResults.results = newData;
+//     if (newData.length < 1) {
+//       draft.activeTab = 'dataInput';
+//     }
+//   });
+
+const deleteProximityResultSuccess = (state, action) => {
+  const newData = state.results.analysisResults.results.filter(
+    item => item.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    results: {
+      ...state.results,
+      analysisResults: {
+        ...state.results.analysisResults,
+        results: newData,
+      },
+    },
+  };
+};
 
 const getFeatureCollectionSuccess = (state, action) => {
   const featureList = action.payload;
@@ -359,7 +375,7 @@ const proximityAnalysisReducer = createReducer(initialState, {
   [Types.GET_ANALYSIS_DATA_SUCCESS]: getAnalysisDataSuccess,
   [Types.GET_SELECTED_LAYER_FEATURE_SUCCESS]: getSelectedLayerFeatureSuccess,
   [Types.SAVE_PROXIMITY_LAYER_SUCCESS]: saveProximityLayerSuccess,
-  [Types.DELETE_PROXIMITY_RESULT]: deleteProximityResult,
+  [Types.DELETE_PROXIMITY_RESULT_SUCCESS]: deleteProximityResultSuccess,
   [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
   [Types.GET_ANALYSIS_RESULT_LIST_SUCCESS]: getAnalysisResultListSuccess,
   [Types.GET_ANALYSIS_RESULT_DETAIL_SUCCESS]: getAnalysisResultDetailSuccess,

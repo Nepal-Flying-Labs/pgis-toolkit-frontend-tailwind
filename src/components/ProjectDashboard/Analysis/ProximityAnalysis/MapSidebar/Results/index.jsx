@@ -11,8 +11,12 @@ import MaterialIcon from '@Components/common/MaterialIcon/index';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 import { getAnalysisType } from '@src/constants/analysis';
 
-const { handleProximityCheckbox, setResultsState, setProximityAnalysisState } =
-  ProximityAnalysisCreators;
+const {
+  handleProximityCheckbox,
+  setResultsState,
+  setProximityAnalysisState,
+  downloadProximityAnalysisRequest,
+} = ProximityAnalysisCreators;
 const { toggleModal, togglePromptDialog } = CommonCreators;
 const { getAnalysisResultDetailRequest } = AnalysisCreators;
 
@@ -31,7 +35,7 @@ export default function Results() {
       label: (
         <span className="naxatw-flex naxatw-items-center">
           <i className="material-icons naxatw-mr-2">zoom_in</i>
-          <p className="naxatw-text-body-lg">Zoom To Layer</p>
+          <p className="naxatw-text-body-lg">Zoom To Result</p>
         </span>
       ),
       onClick: data => {
@@ -87,8 +91,8 @@ export default function Results() {
       id: 'save-layer',
       label: (
         <span className="naxatw-flex naxatw-items-center">
-          <i className="material-symbols-outlined naxatw-mr-2">save</i>
-          <p className="naxatw-text-body-lg">Save Layer</p>
+          <i className="material-symbols-outlined naxatw-mr-2">download</i>
+          <p className="naxatw-text-body-lg">Download Result</p>
         </span>
       ),
       onClick: data => {
@@ -97,7 +101,10 @@ export default function Results() {
             selectedAnalysis: data,
           }),
         );
-        dispatch(togglePromptDialog('save-buffer-layer'));
+        dispatch(
+          downloadProximityAnalysisRequest({ proximity_analysis_id: data.id }),
+        );
+        // dispatch(togglePromptDialog('save-buffer-layer'));
       },
     },
     {
@@ -105,7 +112,9 @@ export default function Results() {
       label: (
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
-          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">Discard</p>
+          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">
+            Delete Result
+          </p>
         </span>
       ),
       onClick: data => {

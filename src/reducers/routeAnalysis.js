@@ -230,22 +230,38 @@ const getSelectedLayerFeatureSuccess = (state, action) =>
     draft.dataInput.selectedOriginPointType = 'layer';
   });
 
-const deleteRouteResult = (state, action) =>
-  produce(state, draft => {
-    const { selectedAnalysis } = draft.results;
-    if (selectedAnalysis.id === action.payload) {
-      draft.routePopupData = null;
-      draft.selectedRouteId = null;
-      draft.results.selectedAnalysis = null;
-    }
-    const newData = draft.results.analysisResults.filter(
-      item => item.id !== action.payload,
-    );
-    draft.results.analysisResults = newData;
-    if (newData.length < 1) {
-      draft.activeTab = 'dataInput';
-    }
-  });
+// const deleteRouteResult = (state, action) =>
+//   produce(state, draft => {
+//     const { selectedAnalysis } = draft.results;
+//     if (selectedAnalysis.id === action.payload) {
+//       draft.routePopupData = null;
+//       draft.selectedRouteId = null;
+//       draft.results.selectedAnalysis = null;
+//     }
+//     const newData = draft.results.analysisResults.filter(
+//       item => item.id !== action.payload,
+//     );
+//     draft.results.analysisResults = newData;
+//     if (newData.length < 1) {
+//       draft.activeTab = 'dataInput';
+//     }
+//   });
+
+const deleteOptimumRouteResultSuccess = (state, action) => {
+  const newData = state.results.analysisResults.results.filter(
+    item => item.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    results: {
+      ...state.results,
+      analysisResults: {
+        ...state.results.analysisResults,
+        results: newData,
+      },
+    },
+  };
+};
 
 function prepareResultsData(data, state) {
   let optimalRouteId = null;
@@ -336,7 +352,7 @@ const routeAnalysisReducer = createReducer(initialState, {
   [Types.GET_ANALYSIS_DATA_SUCCESS]: getAnalysisDataSuccess,
   [Types.SAVE_ROUTE_LAYER_SUCCESS]: saveRouteLayerSuccess,
   [Types.GET_SELECTED_LAYER_FEATURE_SUCCESS]: getSelectedLayerFeatureSuccess,
-  [Types.DELETE_ROUTE_RESULT]: deleteRouteResult,
+  [Types.DELETE_OPTIMUM_ROUTE_RESULT_SUCCESS]: deleteOptimumRouteResultSuccess,
   [Types.GET_ANALYSIS_RESULT_LIST_SUCCESS]: getAnalysisResultListSuccess,
   [Types.GET_ANALYSIS_RESULT_DETAIL_SUCCESS]: getAnalysisResultDetailSuccess,
 });

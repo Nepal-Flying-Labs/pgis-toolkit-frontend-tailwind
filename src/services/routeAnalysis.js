@@ -22,3 +22,6 @@ export const downloadOptimumRouteAnalysis = params =>
   authenticated(downloadApi).get(`/maps/export_optimum_route_analysis/`, {
     params,
   });
+
+export const deleteOptimumRouteResult = (id, payload) =>
+  authenticated(api).patch(`/maps/optimum_route_analysis/${id}/`, payload);

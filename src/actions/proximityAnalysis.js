@@ -62,6 +62,10 @@ export const { Types, Creators } = createActions(
     downloadProximityAnalysisRequest: ['params'],
     downloadProximityAnalysisSuccess: ['payload'],
     downloadProximityAnalysisFailure: ['payload'],
+
+    deleteProximityResultRequest: ['id', 'payload'],
+    deleteProximityResultSuccess: ['payload'],
+    deleteProximityResultFailure: null,
   },
   { prefix: 'proximityAnalysis/' },
 );

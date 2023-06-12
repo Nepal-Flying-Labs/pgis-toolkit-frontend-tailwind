@@ -35,7 +35,7 @@ export default function Results() {
       label: (
         <span className="naxatw-flex naxatw-items-center">
           <i className="material-icons naxatw-mr-2">zoom_in</i>
-          <p className="naxatw-text-body-lg">Zoom To Layer</p>
+          <p className="naxatw-text-body-lg">Zoom To Result</p>
         </span>
       ),
       onClick: data => {
@@ -92,7 +92,7 @@ export default function Results() {
       label: (
         <span className="naxatw-flex naxatw-items-center">
           <i className="material-symbols-outlined naxatw-mr-2">download</i>
-          <p className="naxatw-text-body-lg">Download Layer</p>
+          <p className="naxatw-text-body-lg">Download Result</p>
         </span>
       ),
       onClick: data => {
@@ -114,7 +114,7 @@ export default function Results() {
         <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
           <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">
-            Delete Layer
+            Delete Result
           </p>
         </span>
       ),

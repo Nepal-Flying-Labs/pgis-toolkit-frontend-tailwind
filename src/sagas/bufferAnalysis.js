@@ -21,6 +21,7 @@ import {
   saveBufferLayer,
   getFeatureCollectionMirror,
   downloadBufferAnalysis,
+  deleteBufferResult,
 } from '@Services/bufferAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { copyFeatures } from '@Services/dataCleaning';
@@ -187,6 +188,22 @@ export function* downloadBufferAnalysisRequest({ params }) {
   }
 }
 
+export function* deleteBufferResultRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(deleteBufferResult, id, formData);
+    yield put(bufferAnalysisActions.deleteBufferResultSuccess(response.data));
+    yield put(commonActions.togglePromptDialog());
+    yield put(
+      toastActions.success({
+        message: 'Result deleted successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(bufferAnalysisActions.deleteBufferResultFailure());
+  }
+}
+
 function* bufferAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_BUFFER_ANALYSIS_REQUEST,
@@ -223,6 +240,10 @@ function* bufferAnalysisWatcher() {
   yield takeLatest(
     Types.DOWNLOAD_BUFFER_ANALYSIS_REQUEST,
     withLoader(withErrorHandler(downloadBufferAnalysisRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_BUFFER_RESULT_REQUEST,
+    withLoader(withErrorHandler(deleteBufferResultRequest)),
   );
 }
 

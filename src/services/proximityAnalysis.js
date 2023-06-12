@@ -21,3 +21,6 @@ export const downloadProximityAnalysis = params =>
   authenticated(downloadApi).get(`/maps/export_proximity_analysis/`, {
     params,
   });
+
+export const deleteProximityResult = (id, payload) =>
+  authenticated(api).patch(`/maps/proximity_analysis/${id}/`, payload);

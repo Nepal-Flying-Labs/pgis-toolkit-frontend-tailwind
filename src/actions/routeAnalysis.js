@@ -45,6 +45,10 @@ export const { Types, Creators } = createActions(
     downloadOptimumRouteAnalysisRequest: ['params'],
     downloadOptimumRouteAnalysisSuccess: ['payload'],
     downloadOptimumRouteAnalysisFailure: ['payload'],
+
+    deleteOptimumRouteResultRequest: ['id', 'payload'],
+    deleteOptimumRouteResultSuccess: ['payload'],
+    deleteOptimumRouteResultFailure: null,
   },
   { prefix: 'routeAnalysis/' },
 );

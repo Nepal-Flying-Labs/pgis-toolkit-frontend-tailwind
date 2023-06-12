@@ -5,7 +5,7 @@ import { Creators } from '@Actions/proximityAnalysis';
 import Button from '@Components/common/Button';
 
 const { togglePromptDialog } = CommonCreators;
-const { deleteProximityResult } = Creators;
+const { deleteProximityResultRequest } = Creators;
 
 export default function DeleteProximityResult() {
   const selectedAnalysis = useSelector(
@@ -14,8 +14,10 @@ export default function DeleteProximityResult() {
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    dispatch(deleteProximityResult(selectedAnalysis.id));
-    dispatch(togglePromptDialog());
+    const formdata = {
+      is_deleted: true,
+    };
+    dispatch(deleteProximityResultRequest(selectedAnalysis.id, formdata));
   };
 
   return (

@@ -5,7 +5,7 @@ import { Creators } from '@Actions/bufferAnalysis';
 import Button from '@Components/common/Button';
 
 const { togglePromptDialog } = CommonCreators;
-const { deleteBufferResult } = Creators;
+const { deleteBufferResultRequest } = Creators;
 
 export default function DeleteBufferResult() {
   const selectedAnalysis = useSelector(
@@ -14,8 +14,10 @@ export default function DeleteBufferResult() {
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    dispatch(deleteBufferResult(selectedAnalysis.id));
-    dispatch(togglePromptDialog());
+    const formdata = {
+      is_deleted: true,
+    };
+    dispatch(deleteBufferResultRequest(selectedAnalysis.id, formdata));
   };
 
   return (

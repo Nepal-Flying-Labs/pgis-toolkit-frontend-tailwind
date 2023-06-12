@@ -8,11 +8,13 @@ import {
   optimumRouteAnalysis,
   saveRouteLayer,
   downloadOptimumRouteAnalysis,
+  deleteOptimumRouteResult,
 } from '@Services/routeAnalysis';
 import toastActions from '@Actions/toast';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { getFeatureCollection } from '@Services/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import prepareFormData from '@Utils/prepareFormData';
 
 export function* applyRouteAnalysisRequest({ payload }) {
   try {
@@ -120,6 +122,26 @@ export function* downloadOptimumRouteAnalysisRequest({ params }) {
   }
 }
 
+export function* deleteOptimumRouteResultRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(deleteOptimumRouteResult, id, formData);
+    yield put(
+      routeAnalysisActions.deleteOptimumRouteResultSuccess(response.data),
+    );
+
+    yield put(commonActions.togglePromptDialog());
+
+    yield put(
+      toastActions.success({
+        message: 'Result deleted successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(routeAnalysisActions.deleteOptimumRouteResultFailure());
+  }
+}
+
 function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_ROUTE_ANALYSIS_REQUEST,
@@ -144,6 +166,10 @@ function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.DOWNLOAD_OPTIMUM_ROUTE_ANALYSIS_REQUEST,
     withLoader(withErrorHandler(downloadOptimumRouteAnalysisRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_OPTIMUM_ROUTE_RESULT_REQUEST,
+    withLoader(withErrorHandler(deleteOptimumRouteResultRequest)),
   );
 }
 

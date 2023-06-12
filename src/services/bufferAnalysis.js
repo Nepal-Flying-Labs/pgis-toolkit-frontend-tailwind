@@ -19,3 +19,6 @@ export const getFeatureCollectionMirror = params =>
 // buffer-analysis-download
 export const downloadBufferAnalysis = params =>
   authenticated(downloadApi).get(`/maps/export_buffer_analysis/`, { params });
+
+export const deleteBufferResult = (id, payload) =>
+  authenticated(api).patch(`/maps/buffer_analysis/${id}/`, payload);

@@ -62,6 +62,10 @@ export const { Types, Creators } = createActions(
     downloadBufferAnalysisRequest: ['params'],
     downloadBufferAnalysisSuccess: ['payload'],
     downloadBufferAnalysisFailure: ['payload'],
+
+    deleteBufferResultRequest: ['id', 'payload'],
+    deleteBufferResultSuccess: ['payload'],
+    deleteBufferResultFailure: null,
   },
   { prefix: 'bufferAnalysis/' },
 );

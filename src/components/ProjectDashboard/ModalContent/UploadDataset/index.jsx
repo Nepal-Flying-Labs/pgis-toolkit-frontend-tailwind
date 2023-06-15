@@ -204,7 +204,7 @@ export default function UploadDataset() {
       >
         <Dropzone
           label="Please upload your datasets here. It supports multiple data uploads at a time."
-          accept=".zip, .geojson, .csv, .gpkg"
+          accept=".zip, .geojson, .csv, .gpkg .GEOJSON"
           multiple
           onChange={handleUpload}
         />

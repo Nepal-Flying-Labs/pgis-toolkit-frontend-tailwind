@@ -171,7 +171,29 @@ export const { Types, Creators } = createActions(
     getFeatureGeometrySuccess: ['payload'],
     getFeatureGeometryFailure: null,
 
+    getLabelFieldOptionsRequest: ['params'],
+    getLabelFieldOptionsSuccess: ['payload'],
+    getLabelFieldOptionsFailure: null,
+
+    updateLabelFieldRequest: ['id', 'payload'],
+    updateLabelFieldSuccess: ['payload'],
+    updateLabelFieldFailure: null,
+
     toggleStyleEdit: ['payload'],
+
+    getAnalysisTypeListRequest: ['params'],
+    getAnalysisTypeListSuccess: ['payload'],
+    getAnalysisTypeListFailure: null,
+
+    updateAnalysisRequest: ['id', 'payload'],
+    updateAnalysisSuccess: ['payload'],
+    updateAnalysisDelete: null,
+
+    deleteAnalysisRequest: ['id', 'payload'],
+    deleteAnalysisSuccess: ['payload'],
+    deleteAnalysisFailure: null,
+
+    setSelectedAnalysis: ['payload'],
   },
   { prefix: 'projectMap/' },
 );

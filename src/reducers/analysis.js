@@ -1,4 +1,6 @@
+/* eslint-disable no-param-reassign */
 import { createReducer } from 'reduxsauce';
+import produce from 'immer';
 import { Types } from '@Actions/analysis';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { boundaryLayerName } from '@src/constants/map';
@@ -31,6 +33,12 @@ const initialState = {
   },
   selectedInfo: null, // selected value for info content
   hideSidebar: false,
+  // analysisList: null, // []
+  selectedAnalysisType: null, // selected analysis type for create analysis
+  analysisDetail: null, // selected analysis type for create analysis
+  isLayersFetched: false, // selected analysis type for create analysis
+  isAnalysisDetailFetched: false,
+  selectedAnalysisById: null,
 };
 
 const setAnalysisState = (state, action) => ({
@@ -76,6 +84,7 @@ const getProjectThemeLayersSuccess = (state, action) => {
       },
     })),
   };
+  const isLayersFetched = state.themes.length === Object.keys(layers).length;
   return {
     ...state,
     layers,
@@ -84,6 +93,7 @@ const getProjectThemeLayersSuccess = (state, action) => {
       layerOrder,
     },
     projectAreaLayerId,
+    isLayersFetched,
   };
 };
 
@@ -282,9 +292,54 @@ const toggleSidebar = (state, action) => ({
   hideSidebar: !!action.payload || !state.hideSidebar,
 });
 
-const resetAnalysisState = () => ({
+const createAnalysisSuccess = (state, action) => {
+  const { id, name, description } = action.payload;
+  const analysisDetail = { id, name, description };
+  return {
+    ...state,
+    analysisDetail,
+    isAnalysisDetailFetched: true,
+  };
+};
+
+const getAnalysisDetailSuccess = (state, action) => {
+  const { id, name, description } = action.payload;
+  const analysisDetail = { id, name, description };
+  return {
+    ...state,
+    analysisDetail,
+    isAnalysisDetailFetched: true,
+  };
+};
+
+const toggleRoadLayer = (state, action) =>
+  produce(state, draft => {
+    const roadNetworkId = action.payload;
+    const allLayers = Object.values(draft.layers).flat();
+    const selectedRoadNetwork = allLayers.find(
+      item => item.id === roadNetworkId,
+    );
+    selectedRoadNetwork.checked = true;
+    draft.zoomToLayerId = roadNetworkId;
+  });
+
+const resetAnalysisState = state => ({
   ...initialState,
+  // themes: state.themes,
+  // layers: state.layers,
+  // selectedAnalysisType: state.selectedAnalysisType, // selected analysis type for create analysis
+  // analysisDetail: state.analysisDetail, // selected analysis type for create analysis
+  // isAnalysisDetailFetched: state.isAnalysisDetailFetched, // selected analysis type for create analysis
 });
+
+const getAnalysisByIdSuccess = (state, action) => {
+  const { id, name, description } = action.payload;
+  const selectedAnalysisById = { id, name, description };
+  return {
+    ...state,
+    selectedAnalysisById,
+  };
+};
 
 const analysisReducer = createReducer(initialState, {
   [Types.SET_ANALYSIS_STATE]: setAnalysisState,
@@ -305,7 +360,11 @@ const analysisReducer = createReducer(initialState, {
   [Types.HANDLE_SELECT_ALL_CHECKBOX]: handleSelectAllCheckbox,
   [Types.SET_SELECTED_INFO]: setSelectedInfo,
   [Types.TOGGLE_SIDEBAR]: toggleSidebar,
+  [Types.CREATE_ANALYSIS_SUCCESS]: createAnalysisSuccess,
+  [Types.GET_ANALYSIS_DETAIL_SUCCESS]: getAnalysisDetailSuccess,
+  [Types.TOGGLE_ROAD_LAYER]: toggleRoadLayer,
   [Types.RESET_ANALYSIS_STATE]: resetAnalysisState,
+  [Types.GET_ANALYSIS_BY_ID_SUCCESS]: getAnalysisByIdSuccess,
 });
 
 export default analysisReducer;

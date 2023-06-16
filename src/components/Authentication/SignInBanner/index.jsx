@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginImg from '@Assets/images/sign-in-img.jpg';
-import LoginLogo from '@Assets/images/login-logo.png';
+// import LoginLogo from '@Assets/images/login-logo.png';
+import LoginLogo from '@Assets/images/usafiri-beta-white-logo.svg';
 // import Button from '@Components/common/Button';
 
 export default function SignInBanner() {
@@ -22,11 +23,18 @@ export default function SignInBanner() {
           </div>
           <div className="naxatw-mt-20">
             <h3 className="naxatw-text-white naxatw-mb-5 naxatw-font-bold">
-              Integrated Data Managment Mapping and Analysis tool for data
-              driven project planning
+              Integrated Data Management, Mapping and Spatial Analysis tool to
+              assist data driven project planning
             </h3>
+            {/* 
+              <p className="naxatw-text-white naxatw-text-lg naxatw-mb-10">
+                Piloting the tool for Transport Mobility Assessment
+              </p>
+             */}
             <p className="naxatw-text-white naxatw-text-lg naxatw-mb-10">
-              Piloting the tool for Transport Mobility Assessment
+              Creating an open-source, participatory GIS mapping toolkit for
+              last mile communities to engage in the identification of
+              transportation needs and barriers in their regions.
             </p>
             {/* <Button className="naxatw-px-5 naxatw-py-3 naxatw-bg-white naxatw-rounded-lg naxatw-text-primary-400 naxatw-font-bold hover:naxatw-text-white hover:naxatw-bg-primary-700">
               Request for Demo

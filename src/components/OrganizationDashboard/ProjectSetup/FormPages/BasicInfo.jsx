@@ -60,6 +60,12 @@ const thematicFocusArea = [
   },
 ];
 
+function isStartDateGreaterThanEndDate(startDateStr, endDateStr) {
+  const startDate = new Date(startDateStr).getTime();
+  const endDate = new Date(endDateStr).getTime();
+  return startDate >= endDate; //
+}
+
 function diffObject(a, b) {
   const diffObj = Object.keys(b).reduce((diff, key) => {
     if (a[key] === b[key]) return diff;
@@ -101,20 +107,27 @@ const validation = formValues => {
     errors.contactEmail = 'Contact Email is Required';
   }
 
+  if (formValues.start_date && formValues.end_date) {
+    if (
+      isStartDateGreaterThanEndDate(formValues.start_date, formValues.end_date)
+    ) {
+      errors.date = 'End date must be greator than start date';
+    }
+  }
+
   if (formValues.contactName && formValues.contactEmail) {
-    const pattern =
-      /[a-zA-Z0-9]+[.]?([a-zA-Z0-9]+)?[@][a-z]{3,9}[.][a-z]{2,5}/g;
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const result = pattern.test(formValues.contactEmail);
     if (!result) errors.contactEmail = 'Enter a valid Email';
   }
 
   if (formValues.contactName && formValues.contactPhone) {
-    const pattern = /^[0-9\b]+$/;
+    const pattern = /^[+\-()# \d]+$/;
     const result = pattern.test(formValues.contactPhone);
     if (!result) {
       errors.contactPhone = 'Enter a valid contact number';
     } else {
-      formValues.contactPhone.length < 7 || formValues.contactPhone.length > 15
+      formValues.contactPhone.length < 7 || formValues.contactPhone.length > 20
         ? (errors.contactPhone = 'Enter a valid contact number')
         : '';
     }
@@ -176,64 +189,75 @@ const BasicInfo = ({ setPage }) => {
   };
 
   const handleSaveBasicInfo = () => {
-    const {
-      contactName,
-      contactPosition,
-      contactEmail,
-      contactPhone,
-      ...basicInfo
-    } = values;
-    const contactPerson = {
-      name: contactName,
-      email: contactEmail,
-      contact: contactPhone,
-      position: contactPosition,
-    };
-    const finalObj = {
-      ...basicInfo,
-      organization: organizationId,
-    };
+    const error = validation(values);
+    if (Object.keys(error).length > 0) {
+      setErrors(error);
+      dispatch(
+        toastActions.error({
+          message: 'An error has occurred while filling the form',
+        }),
+      );
+    } else {
+      const {
+        contactName,
+        contactPosition,
+        contactEmail,
+        contactPhone,
+        ...basicInfo
+      } = values;
+      const contactPerson = {
+        name: contactName,
+        email: contactEmail,
+        contact: contactPhone,
+        position: contactPosition,
+      };
+      const finalObj = {
+        ...basicInfo,
+        organization: organizationId,
+      };
 
-    const diffObj = diffObject(project, finalObj);
-    const diffContact = diffObject(contactDetails, contactPerson);
+      const diffObj = diffObject(project, finalObj);
+      const diffContact = diffObject(contactDetails, contactPerson);
 
-    const payloadData = diffObj?.cover_image?.existedData
-      ? removeObjectKeys(diffObj, ['cover_image'])
-      : diffObj;
-    if (Object.keys(diffContact).length > 0) {
-      if (stepOne.contactId) {
-        validateContactPerson(diffContact)
-          ? dispatch(
-              patchContactPersonRequest(stepOne.contactId, {
-                ...diffContact,
-                type: 'project',
-              }),
-            )
-          : dispatch(
-              patchContactPersonRequest(stepOne.contactId, {
-                is_deleted: true,
-                type: 'project',
-              }),
-            );
-      } else {
-        dispatch(
-          postContactPersonRequest(
-            {
-              ...contactPerson,
-              project: projectId,
-              organization: organizationId,
-            },
-            { project: projectId, type: 'project' },
-          ),
-        );
+      const payloadData = diffObj?.cover_image?.existedData
+        ? removeObjectKeys(diffObj, ['cover_image'])
+        : diffObj;
+      if (Object.keys(diffContact).length > 0) {
+        if (stepOne.contactId) {
+          validateContactPerson(diffContact)
+            ? dispatch(
+                patchContactPersonRequest(stepOne.contactId, {
+                  ...diffContact,
+                  type: 'project',
+                }),
+              )
+            : dispatch(
+                patchContactPersonRequest(stepOne.contactId, {
+                  is_deleted: true,
+                  type: 'project',
+                }),
+              );
+        } else {
+          dispatch(
+            postContactPersonRequest(
+              {
+                ...contactPerson,
+                project: projectId,
+                organization: organizationId,
+              },
+              { project: projectId, type: 'project' },
+            ),
+          );
+        }
       }
+      dispatch(
+        patchProjectRequest(projectId, {
+          ...payloadData,
+          page: tabname === 'settings',
+          tabName: tabname === 'project-edit' ? 'Edit a Project' : '',
+        }),
+      );
     }
-    dispatch(
-      patchProjectRequest(projectId, {
-        ...payloadData,
-        page: tabname === 'settings',
-      }),
-    );
   };
 
   return (
@@ -343,6 +367,7 @@ const BasicInfo = ({ setPage }) => {
             }}
             selected={values?.end_date}
           />
+          {errors.date && <FormErrorMessage message={errors.date} />}
         </div>
       </div>
 
@@ -369,6 +394,7 @@ const BasicInfo = ({ setPage }) => {
           <MaterialIcon
             name="add"
             className="naxatw-absolute naxatw-top-11 naxatw-right-2 naxatw-text-[#00A699] naxatw-cursor-pointer naxatw-text-icon-md"
+            title="Add Partner"
           />
         </a>
         <ul className="naxatw-mt-2">
@@ -386,7 +412,11 @@ const BasicInfo = ({ setPage }) => {
                   handleCustomChange('partners', updatedArray);
                 }}
               >
-                <MaterialIcon name="close" className="naxatw-cursor-pointer" />
+                <MaterialIcon
+                  name="close"
+                  className="naxatw-cursor-pointer"
+                  title="Remove Partner"
+                />
               </a>
             </li>
           ))}
@@ -490,17 +520,29 @@ const BasicInfo = ({ setPage }) => {
           </Button>
         )}
 
-        {tabname !== 'settings' && (
-          <Button
-            onClick={() => {
-              dispatch(setIndividualProject({ key: 'stepOne', value: values }));
-              dispatch(togglePromptDialog('save-as-draft'));
-            }}
-            className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
-          >
-            Save Draft
-          </Button>
-        )}
+        {tabname !== 'settings' &&
+          (tabname === 'project-setup' ? (
+            <Button
+              onClick={() => {
+                dispatch(
+                  setIndividualProject({ key: 'stepOne', value: values }),
+                );
+                dispatch(togglePromptDialog('save-as-draft'));
+              }}
+              className=" naxatw-w-[8.875rem]  naxatw-text-[#00A699] naxatw-border-[1px] hover:naxatw-underline hover:naxatw-bg-grey-200"
+            >
+              Save Draft
+            </Button>
+          ) : (
+            <Button
+              className="naxatw-btn-secondary naxatw-w-[4.75rem]"
+              onClick={handleSaveBasicInfo}
+              isLoading={loading}
+              loaderClassName="naxatw-fill-secondary-400"
+            >
+              Save
+            </Button>
+          ))}
       </div>
     </>
   );

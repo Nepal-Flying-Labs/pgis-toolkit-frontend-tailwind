@@ -349,50 +349,29 @@ export default function MapSection() {
           ),
         )}
 
-        {analysisResults.map(result =>
-          result.buffer_areas.map(area =>
-            area.origin.map((areaOrigin, index) => (
-              <CircleMarker
-                key={index}
-                coordinates={[areaOrigin[1], areaOrigin[0]]}
-                visibleOnMap={area.checked}
-                zIndex={10}
-                style={area.originStyle}
-                map={map}
-              />
-            )),
-          ),
-        )}
-
-        {analysisResults.map(result =>
-          result.buffer_areas.map(area => (
+        {analysisResults.results.map(result => (
+          <VectorTileLayer
+            key={result.id}
+            url={`${apiURL}maps/buffer_area_vectortile/{z}/{x}/{y}/?buffer_analysis_id=${result.id}`}
+            authToken={localStorage.getItem('userToken')}
+            visibleOnMap={!!result.checked}
+            style={result.style}
+            zIndex={4}
+            // properties={{ layerId: selectedLayer.id }}
+          />
+        ))}
+        {analysisResults.results.map(result =>
+          result.layer ? (
             <VectorTileLayer
-              key={area.id}
-              url={`${apiURL}maps/buffer_area_vectortile/{z}/{x}/{y}/?area=${area.id}`}
+              key={result.id}
+              url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${result.layer}`}
               authToken={localStorage.getItem('userToken')}
-              visibleOnMap={area.checked}
-              style={result.style}
-              zIndex={4}
+              visibleOnMap={!!result.checked}
+              style={getLayerStyles(result.layer)}
+              zIndex={40}
               // properties={{ layerId: selectedLayer.id }}
             />
-          )),
-        )}
-        {analysisResults.map(result =>
-          result.buffer_areas.map(area =>
-            area.poi.map(poi =>
-              poi.feature_mirror_ids.length > 0 ? (
-                <VectorTileLayer
-                  key={poi.layer_id}
-                  url={`${apiURL}maps/feature_mirror_vectortile/{z}/{x}/{y}/?layer=${poi.layer_id}&sub_layer=&ids=${poi.feature_mirror_ids}`}
-                  authToken={localStorage.getItem('userToken')}
-                  visibleOnMap={area.checked}
-                  style={getLayerStyles(poi.layer_id)}
-                  zIndex={40}
-                  // properties={{ layerId: selectedLayer.id }}
-                />
-              ) : null,
-            ),
-          ),
+          ) : null,
         )}
 
         {originGeojson &&
@@ -406,7 +385,7 @@ export default function MapSection() {
             />
           ))}
         <MaskedLayer geojson={projectGeojson} />
-        {activeTab === 'results' && showResultsPopup && <BufferPopup />}
+        {/* {activeTab === 'results' && showResultsPopup && <BufferPopup />} */}
 
         <MapFooter loading={isMapLoading} />
       </MapComponent>

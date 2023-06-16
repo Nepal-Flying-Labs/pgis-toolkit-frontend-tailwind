@@ -1,10 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
-import IconButton from '@Components/common/IconButton/index';
 import { Creators } from '@Actions/analysis';
+import IconButton from '@Components/common/IconButton/index';
 
-const { setSelectedInfo } = Creators;
+const { setSelectedInfo, resetAnalysisState } = Creators;
 
 const headerData = {
   'optimal-route': {
@@ -27,16 +27,18 @@ const headerData = {
 export default function Header() {
   const dispatch = useDispatch();
   const { organizationId, projectId, tabname, analysisType } = useParams();
+  const analysisDetail = useSelector(state => state.analysis.analysisDetail);
   const history = useHistory();
 
   return (
     <div
-      className="naxatw-w-full naxatw-px-10 naxatw-py-5 naxatw-sticky naxatw-z-20 naxatw-bg-white naxatw-top-0
-        naxatw-flex naxatw-justify-between naxatw-border-b naxatw-border-b-grey-300"
+      className="naxatw-w-full naxatw-px-10 naxatw-py-5 naxatw-sticky naxatw-z-20
+        naxatw-bg-white naxatw-top-0 naxatw-flex naxatw-justify-between
+        naxatw-border-b naxatw-border-b-grey-300"
     >
       <div>
         <div className="naxatw-flex">
-          <h3>{headerData[analysisType]?.title || ''}</h3>
+          <h3>{analysisDetail?.name || headerData[analysisType].title}</h3>
           {tabname === 'analysis' && (
             <div
               onMouseOver={() => dispatch(setSelectedInfo('default'))}
@@ -55,19 +57,22 @@ export default function Header() {
         </div>
 
         <span className="naxatw-text-body-lg naxatw-mt-1">
-          {headerData[analysisType]?.description || ''}
+          {analysisDetail?.name
+            ? analysisDetail.description || ''
+            : headerData[analysisType].description}
         </span>
       </div>
       <button
         type="button"
         onClick={() => {
+          dispatch(resetAnalysisState());
           history.push(
             `/organizations/${organizationId}/projects/${projectId}/map`,
           );
         }}
         className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 
           hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5
-          naxatw-ml-auto naxatw-inline-flex naxatw-items-center naxatw-"
+          naxatw-ml-auto naxatw-inline-flex naxatw-items-center naxatw-h-10"
       >
         <i className="material-icons">close</i>
         <span className="naxatw-sr-only">Close modal</span>

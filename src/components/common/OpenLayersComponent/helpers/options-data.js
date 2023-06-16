@@ -19,9 +19,9 @@ export const layoutOptions = [
 
 export const fontOptions = [
   { id: 1, label: 'Arial', value: 'Arial' },
-  { id: 2, label: "'Courier New'", value: "'Courier New'" },
+  { id: 2, label: 'Courier New', value: 'Courier New' },
   { id: 3, label: 'Calibri', value: 'Calibri' },
-  { id: 4, label: "'Open Sans'", value: "'Open Sans'" },
+  { id: 4, label: 'Open Sans', value: 'Open Sans' },
   { id: 5, label: 'Verdana', value: 'Verdana' },
 ];
 

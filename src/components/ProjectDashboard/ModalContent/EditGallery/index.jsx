@@ -2,6 +2,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { format } from 'date-fns';
 import {
   Creators as ProjectDashboardCreators,
   Types,
@@ -10,9 +11,8 @@ import Button from '@Components/common/Button';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { isEmpty } from '@Utils/commonUtils';
 import useWindowDimensions from '@Hooks/useWindowDimentions';
-import CustomCalendar from '@Components/common/CustomCalendar/index';
-import { format } from 'date-fns';
-import FormErrorMessage from '@Components/common/FormErrorMessage/index';
+import CustomCalendar from '@Components/common/CustomCalendar';
+import FormErrorMessage from '@Components/common/FormErrorMessage';
 import useForm from '@Hooks/useForm';
 
 const { updateGalleryRequest } = ProjectDashboardCreators;

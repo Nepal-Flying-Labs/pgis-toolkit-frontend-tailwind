@@ -30,6 +30,7 @@ export default function CustomDropdownOptions({
         }}
       >
         <MaterialIcon
+          title="Options"
           className="naxatw-text-icon-md"
           name="more_vert"
           wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"

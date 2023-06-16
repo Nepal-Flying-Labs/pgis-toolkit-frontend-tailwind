@@ -44,6 +44,24 @@ export const { Types, Creators } = createActions(
     toggleSidebar: ['payload'],
 
     resetAnalysisState: null,
+
+    createAnalysisRequest: ['payload'],
+    createAnalysisSuccess: ['payload'],
+    createAnalysisFailure: null,
+
+    getAnalysisDetailRequest: ['payload'],
+    getAnalysisDetailSuccess: ['payload'],
+    getAnalysisDetailFailure: null,
+
+    getAnalysisResultListRequest: ['params'],
+
+    toggleRoadLayer: ['payload'],
+
+    getAnalysisResultDetailRequest: ['params'],
+
+    getAnalysisByIdRequest: ['params'],
+    getAnalysisByIdSuccess: ['payload'],
+    getAnalysisByIdFailure: null,
   },
   { prefix: 'analysis/' },
 );

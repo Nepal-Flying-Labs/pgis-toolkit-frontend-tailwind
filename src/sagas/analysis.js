@@ -13,10 +13,12 @@ import chroma from 'chroma-js';
 import commonActions from '@Actions/common';
 import analysisActions, { Types } from '@Actions/analysis';
 import bufferAnalysisActions from '@Actions/bufferAnalysis';
+import proximityAnalysisActions from '@Actions/proximityAnalysis';
 import routeAnalysisActions from '@Actions/routeAnalysis';
+import dataCleaningActions from '@Actions/dataCleaning';
 import toastActions from '@Actions/toast';
 import {
-  getAnalysisLayer,
+  getAnalysisResultDetail,
   getAnalysisTaskResponse,
 } from '@Services/routeAnalysis';
 import {
@@ -33,7 +35,30 @@ import {
 } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import prepareFormData from '@Utils/prepareFormData';
 import { getProjectGeojson } from '@Services/organizationDashboard';
-import { analysisWithDataCleaning } from '@src/constants/analysis';
+import {
+  analysisWithDataCleaning,
+  getAnalysisType,
+} from '@src/constants/analysis';
+import {
+  createAnalysis,
+  getAnalysisDetail,
+  getAnalysisResultList,
+  getIndividualAnalysisDetail,
+} from '@Services/analysis';
+import removeObjectKeys from '@Utils/removeObjectKeys';
+
+function getActionType(type) {
+  switch (type) {
+    case 'optimal-route':
+      return routeAnalysisActions;
+    case 'buffer-analysis':
+      return bufferAnalysisActions;
+    case 'proximity-analysis':
+      return proximityAnalysisActions;
+    default:
+      return analysisActions;
+  }
+}
 
 export function* copyLayerDataRequest({ payload }) {
   try {
@@ -77,12 +102,7 @@ export function* copyLayerDataRequest({ payload }) {
 
 export function* checkProcessingStatusRequest({ payload }) {
   const { projectId, taskId, analysisType } = payload;
-  const action =
-    analysisType === 'buffer-analysis' || analysisType === 'proximity-analysis'
-      ? bufferAnalysisActions
-      : analysisType === 'optimal-route'
-      ? routeAnalysisActions
-      : analysisActions;
+  const action = getActionType(analysisType);
 
   try {
     let responseData = { status: 'processing' };
@@ -98,9 +118,10 @@ export function* checkProcessingStatusRequest({ payload }) {
     if (responseData.status === 'success') {
       const params = {
         project: projectId,
-        analysis_id: responseData.analysis_id,
+        id: responseData.sub_analysis_id,
+        analysis_type: getAnalysisType(analysisType),
       };
-      const analysisResponse = yield call(getAnalysisLayer, params);
+      const analysisResponse = yield call(getAnalysisResultDetail, params);
       yield put(
         analysisActions.setAnalysisState({
           analysisTaskId: null,
@@ -187,6 +208,112 @@ export function* getLayerAttributeRequest({ params }) {
   }
 }
 
+export function* createAnalysisRequest({ payload }) {
+  try {
+    const response = yield call(createAnalysis, payload);
+    yield put(analysisActions.createAnalysisSuccess(response.data));
+    const analysisId = response.data.id;
+    const { organization, project, type } = payload;
+    const analysisType = getAnalysisType(type);
+    yield put(commonActions.toggleModal());
+    if (analysisType === 'optimal-route') {
+      yield put(
+        dataCleaningActions.startAnalysisRequest({
+          organizationId: organization,
+          projectId: project,
+          analysisType,
+          analysisId,
+        }),
+      );
+    } else {
+      yield put(
+        push(
+          `/organizations/${organization}/projects/${project}/analysis/${analysisType}/${analysisId}`,
+        ),
+      );
+    }
+  } catch (error) {
+    yield put(analysisActions.createAnalysisFailure());
+    throw error;
+  }
+}
+
+export function* getAnalysisDetailRequest({ payload }) {
+  try {
+    const response = yield call(getAnalysisDetail, payload);
+    yield put(analysisActions.getAnalysisDetailSuccess(response.data));
+  } catch (error) {
+    yield put(analysisActions.getAnalysisDetailFailure());
+    throw error;
+  }
+}
+
+export function* getAnalysisResultListRequest({ params }) {
+  const analysisType = getAnalysisType(params.analysis_type);
+  const action = getActionType(analysisType);
+  try {
+    const paramsx = removeObjectKeys(params, ['organizationId']);
+    const response = yield call(getAnalysisResultList, paramsx);
+    const responseData = response.data;
+    const firstItem = responseData.results[0];
+    if (!firstItem) return;
+    const roadNetworkId = firstItem.road_network;
+    const detailParams = {
+      project: params.project,
+      id: firstItem.id,
+      analysis_type: getAnalysisType(analysisType),
+    };
+    const individualDetailResponse = yield call(
+      getIndividualAnalysisDetail,
+      detailParams,
+    );
+    yield put(
+      action.getAnalysisResultListSuccess({
+        listData: responseData,
+        individualDetail: individualDetailResponse.data,
+        roadNetworkId,
+      }),
+    );
+    if (analysisType === 'optimal-route') {
+      yield put(analysisActions.toggleRoadLayer(roadNetworkId));
+    }
+  } catch (error) {
+    const statusCode = error.response.status;
+    if (statusCode === 404 && analysisType === 'optimal-route') {
+      yield put(
+        push(
+          `/organizations/${params.organizationId}/projects/${
+            params.project
+          }/data-cleaning/${getAnalysisType(params.analysis_type)}`,
+        ),
+      );
+    }
+    yield put(action.getAnalysisResultListFailure());
+  }
+}
+
+export function* getAnalysisResultDetailRequest({ params }) {
+  const analysisType = getAnalysisType(params.analysis_type);
+  const action = getActionType(analysisType);
+
+  try {
+    const response = yield call(getAnalysisResultDetail, params);
+    yield put(action.getAnalysisResultDetailSuccess(response.data));
+  } catch (error) {
+    yield put(action.getAnalysisResultDetailFailure());
+  }
+}
+
+export function* getAnalysisByIdRequest({ params }) {
+  try {
+    const response = yield call(getAnalysisDetail, params);
+    yield put(analysisActions.getAnalysisByIdSuccess(response.data));
+  } catch (error) {
+    yield put(analysisActions.getAnalysisByIdFailure());
+    throw error;
+  }
+}
+
 function* analysisWatcher() {
   yield takeLatest(
     Types.COPY_LAYER_DATA_REQUEST,
@@ -211,6 +338,26 @@ function* analysisWatcher() {
   yield takeLatest(
     Types.GET_LAYER_ATTRIBUTE_REQUEST,
     withLoader(withErrorHandler(getLayerAttributeRequest)),
+  );
+  yield takeLatest(
+    Types.CREATE_ANALYSIS_REQUEST,
+    withLoader(withErrorHandler(createAnalysisRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ANALYSIS_DETAIL_REQUEST,
+    withLoader(withErrorHandler(getAnalysisDetailRequest)),
+  );
+  yield takeLatest(
+    Types.GET_ANALYSIS_RESULT_LIST_REQUEST,
+    withLoader(getAnalysisResultListRequest),
+  );
+  yield takeLatest(
+    Types.GET_ANALYSIS_RESULT_DETAIL_REQUEST,
+    withLoader(getAnalysisResultDetailRequest),
+  );
+  yield takeLatest(
+    Types.GET_ANALYSIS_BY_ID_REQUEST,
+    withLoader(getAnalysisByIdRequest),
   );
 }
 

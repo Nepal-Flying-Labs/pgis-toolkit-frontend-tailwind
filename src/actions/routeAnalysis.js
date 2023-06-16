@@ -34,6 +34,21 @@ export const { Types, Creators } = createActions(
     getSelectedLayerFeatureFailure: ['payload'],
 
     deleteRouteResult: ['payload'],
+
+    getAnalysisResultListSuccess: ['payload'],
+    getAnalysisResultListFailure: [null],
+
+    getAnalysisResultDetailSuccess: ['payload'],
+    getAnalysisResultDetailFailure: null,
+
+    // optimum-route-analysis-download
+    downloadOptimumRouteAnalysisRequest: ['params'],
+    downloadOptimumRouteAnalysisSuccess: ['payload'],
+    downloadOptimumRouteAnalysisFailure: ['payload'],
+
+    deleteOptimumRouteResultRequest: ['id', 'payload'],
+    deleteOptimumRouteResultSuccess: ['payload'],
+    deleteOptimumRouteResultFailure: null,
   },
   { prefix: 'routeAnalysis/' },
 );

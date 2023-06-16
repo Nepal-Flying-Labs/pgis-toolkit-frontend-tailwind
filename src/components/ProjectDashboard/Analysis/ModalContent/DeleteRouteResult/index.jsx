@@ -5,7 +5,7 @@ import { Creators } from '@Actions/routeAnalysis';
 import Button from '@Components/common/Button';
 
 const { togglePromptDialog } = CommonCreators;
-const { deleteRouteResult } = Creators;
+const { deleteOptimumRouteResultRequest } = Creators;
 
 export default function DeleteRouteResult() {
   const selectedAnalysis = useSelector(
@@ -14,8 +14,10 @@ export default function DeleteRouteResult() {
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    dispatch(deleteRouteResult(selectedAnalysis.id));
-    dispatch(togglePromptDialog());
+    const formdata = {
+      is_deleted: true,
+    };
+    dispatch(deleteOptimumRouteResultRequest(selectedAnalysis?.id, formdata));
   };
 
   return (

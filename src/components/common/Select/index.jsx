@@ -173,7 +173,11 @@ Select.propTypes = {
   dataKey: PropTypes.string,
   labelKey: PropTypes.string,
   valueKey: PropTypes.string,
-  selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  selectedValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.bool,
+  ]),
   style: PropTypes.object,
   direction: PropTypes.string,
 };

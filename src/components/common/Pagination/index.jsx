@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import toastActions from '@Actions/toast';
 import PropTypes from 'prop-types';
-import { checkIfLoading } from '@Utils/loaderSelector';
 import DropdownSelect from './DropdownSelect';
 import MaterialIcon from '../MaterialIcon/index';
 
@@ -57,6 +56,7 @@ export default function Pagination({
         <p className="naxatw-flex naxatw-gap-x-2 naxatw-items-start">
           <span
             className="prev"
+            title="Previous"
             tabIndex={0}
             style={{ outline: 0 }}
             role="button"
@@ -73,6 +73,7 @@ export default function Pagination({
           </span>
           <span
             className="next"
+            title="Next"
             tabIndex={0}
             role="button"
             onKeyPress={() => nextPage()}

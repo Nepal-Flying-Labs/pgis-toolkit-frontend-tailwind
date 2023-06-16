@@ -1,7 +1,8 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/require-default-props */
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import { Creators as ProjectMapCreators } from '@Actions/projectMap';
 import Button from '@Components/common/Button';
@@ -33,8 +34,21 @@ export default function Toolbox({ map, onMeasureToggle }) {
     if (!map) return;
     const control = fullScreenControl();
     map.addControl(control);
+    document.addEventListener('fullscreenchange', () => {
+      if (document.fullscreenElement) {
+        dispatch(setProjectMapState({ isFullScreen: true }));
+      } else if (document.exitFullscreen) {
+        dispatch(setProjectMapState({ isFullScreen: false }));
+      }
+    });
+
+    return () => {
+      document.removeEventListener();
+    };
     // }
-  }, [map]);
+  }, [dispatch, map]);
+
+  const isFullScreen = useSelector(state => state.projectMap.isFullScreen);
 
   return (
     <div
@@ -43,58 +57,70 @@ export default function Toolbox({ map, onMeasureToggle }) {
           
       } naxatw-text-grey-800 naxatw-rounded-lg  naxatw-flex naxatw-items-center `}
     >
-      <a className={btnClassname} onClick={() => setShowToolbox(!showToolbox)}>
-        <i className="material-icons">
-          {showToolbox ? 'navigate_next' : 'navigate_before'}
-        </i>
-        {!showToolbox && (
-          <p className="naxatw-text-body-sm naxatw-font-bold">TOOLBOX</p>
-        )}
-      </a>
+      {!isFullScreen && (
+        <a
+          className={btnClassname}
+          onClick={() => setShowToolbox(!showToolbox)}
+        >
+          <i
+            className="material-icons"
+            title={`${showToolbox ? 'Hide Toolbox' : 'Show Toolbox'}`}
+          >
+            {showToolbox ? 'navigate_next' : 'navigate_before'}
+          </i>
+          {!showToolbox && (
+            <p className="naxatw-text-body-sm naxatw-font-bold">TOOLBOX</p>
+          )}
+        </a>
+      )}
 
       <div
         className={`naxatw-flex naxatw-items-center ${
           showToolbox ? '' : 'naxatw-hidden'
         }`}
       >
-        <Button
-          className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
-          iconLeft="search"
-          onClick={() => {
-            dispatch(toggleModal('data-query'));
-          }}
-        >
-          Data Query
-        </Button>
+        {!isFullScreen && (
+          <>
+            <Button
+              className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
+              iconLeft="search"
+              onClick={() => {
+                dispatch(toggleModal('data-query'));
+              }}
+            >
+              Data Query
+            </Button>
 
-        <Button
-          className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
-          iconLeft="travel_explore"
-          onClick={() => {
-            dispatch(toggleModal('analysis'));
-          }}
-        >
-          Analysis
-        </Button>
+            <Button
+              className="naxatw-btn-secondary naxatw-btn-sm naxatw-btn-noborder"
+              iconLeft="travel_explore"
+              onClick={() => {
+                dispatch(toggleModal('analysis'));
+              }}
+            >
+              Analysis
+            </Button>
 
-        <a
-          className={btnClassname}
-          title="Export"
-          onClick={() =>
-            dispatch(setProjectMapState({ toggleMapExport: true }))
-          }
-        >
-          <i className="material-symbols-outlined">download</i>
-        </a>
+            <a
+              className={btnClassname}
+              title="Export"
+              onClick={() =>
+                dispatch(setProjectMapState({ toggleMapExport: true }))
+              }
+            >
+              <i className="material-symbols-outlined">download</i>
+            </a>
 
-        <div className={`naxatw-relative ${btnClassname} naxatw-pt-3`}>
-          <MeasureControl
-            map={map}
-            buttonText={<i className="material-icons">straighten</i>}
-            measureBoth
-            onMeasureToggle={onMeasureToggle}
-          />
-        </div>
+            <div className={`naxatw-relative ${btnClassname} naxatw-pt-3`}>
+              <MeasureControl
+                map={map}
+                buttonText={<i className="material-icons">straighten</i>}
+                measureBoth
+                onMeasureToggle={onMeasureToggle}
+              />
+            </div>
+          </>
+        )}
 
         {/* <a className={btnClassname} onClick={() => {}}>
           <i className="material-icons">straighten</i>

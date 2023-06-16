@@ -1,5 +1,47 @@
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
+export const analysisTypes = ['buffer', 'proximity', 'optimum_route'];
+
+export const analysisData = {
+  'buffer-analysis': {
+    title: 'Buffer Analysis',
+    description:
+      'Creates a zone around a selected feature, distance or time-based, known as a buffer.',
+  },
+  'proximity-analysis': {
+    title: 'Proximity Analysis',
+    description:
+      'Creates a zone around a selected feature, distance or time-based, known as a proximity, to find features that are within a certain distance of another feature.',
+  },
+  'optimal-route': {
+    title: 'Optimal route analysis',
+    description:
+      'Finds the most efficient path between multiple locations based on factors such as distance, time, and road conditions.',
+    analysisType: 'optimal-route',
+  },
+};
+
+// for backend api mapping
+export function getAnalysisType(type) {
+  switch (type) {
+    case 'optimal-route':
+      return 'optimum_route';
+    case 'optimum_route':
+      return 'optimal-route';
+    case 'buffer-analysis':
+      return 'buffer';
+    case 'proximity-analysis':
+      return 'proximity';
+    case 'buffer':
+      return 'buffer-analysis';
+    case 'proximity':
+      return 'proximity-analysis';
+
+    default:
+      return '';
+  }
+}
+
 export const checkErrorData = [
   {
     id: 'null',
@@ -99,3 +141,19 @@ export const featureSelectColor = '#ffdf65';
 export const errorFeatureColor = '#FF0F0F';
 
 export const analysisWithDataCleaning = ['optimal-route'];
+
+export const proximityColors = {
+  1: '#FF5A5F',
+  2: '#DFF2F1',
+};
+
+export const proximityPointStyles = {
+  ...drawPointStyles,
+  fillColor: destinationPointColor,
+};
+
+export const proximityPolygonStyles = {
+  ...drawPointStyles,
+  fillColor: '#FF5A5F',
+  fillOpacity: 33,
+};

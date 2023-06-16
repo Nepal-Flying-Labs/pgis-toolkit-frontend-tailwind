@@ -114,6 +114,7 @@ const ProjectSetup = () => {
                     history.push(`/organizations/${organizationId}/projects`)
             }
             className="naxatw-text-grey-800 naxatw-bg-transparent hover:naxatw-bg-grey-200 hover:naxatw-text-grey-900 naxatw-rounded-lg naxatw-text-sm naxatw-p-1.5 naxatw-ml-auto naxatw-inline-flex naxatw-items-start "
+            title="Close"
           >
             <i className="material-icons">close</i>
             <span className="naxatw-sr-only">Close modal</span>
@@ -126,7 +127,14 @@ const ProjectSetup = () => {
             {pageStatus.map(pg => (
               <div
                 key={pg.id}
-                className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-relative naxatw-w-[6.25rem] naxatw-h-[4.375rem]"
+                className={`naxatw-flex naxatw-flex-col naxatw-items-center naxatw-relative naxatw-w-[6.25rem] naxatw-h-[4.375rem] ${
+                  tabname !== 'project-setup' ? 'naxatw-cursor-pointer' : ''
+                }`}
+                onClick={
+                  tabname !== 'project-setup'
+                    ? () => setPage(pg.value)
+                    : () => {}
+                }
               >
                 {pg.value < page ? (
                   <div

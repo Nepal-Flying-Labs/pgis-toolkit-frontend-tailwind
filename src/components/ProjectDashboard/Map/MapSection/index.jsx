@@ -89,13 +89,14 @@ export default function MapSection() {
     state => state.projectMap.featureGeometry,
   );
   const resetMapExtent = useSelector(state => state.projectMap.resetMapExtent);
+  const sidebarContent = useSelector(state => state.projectMap.sidebarContent);
   const isMapDataLoading = useSelector(state =>
     checkIfLoading(state, [
       Types.GET_PROJECT_THEMES_REQUEST,
       Types.GET_PROJECT_THEME_LAYERS_REQUEST,
       Types.GET_PROJECT_GEOJSON_REQUEST,
-      Types.GET_FEATURE_COLLECTION_REQUEST,
-      Types.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+      // Types.GET_FEATURE_COLLECTION_REQUEST,
+      // Types.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
     ]),
   );
   const isPopupDataFetching = useSelector(state =>
@@ -214,6 +215,7 @@ export default function MapSection() {
         stylex.lineOpacity = 0;
         stylex.icon = {};
       }
+      stylex.labelField = 'label';
       return getStyles({
         style: stylex,
         feature,
@@ -222,6 +224,8 @@ export default function MapSection() {
     },
     [editFeatureId],
   );
+
+  const isFullScreen = useSelector(state => state.projectMap.isFullScreen);
 
   return (
     <div
@@ -262,7 +266,7 @@ export default function MapSection() {
             height: `calc(100vh - ${projectHeaderHeight}px)`,
           }}
         >
-          {!isMapDataLoading && <SidebarToggle />}
+          {!isFullScreen && !isMapDataLoading && <SidebarToggle />}
 
           {!isMapDataLoading && (
             <Toolbox
@@ -393,7 +397,15 @@ export default function MapSection() {
             }}
           />
 
-          {!isMapDataLoading && <MaskedLayer geojson={projectGeojson} />}
+          {!isMapDataLoading && (
+            <MaskedLayer
+              enable={
+                sidebarContent !== 'edit-feature' &&
+                sidebarContent !== 'add-feature'
+              }
+              geojson={projectGeojson}
+            />
+          )}
 
           <CustomPopup
             fetchPopupData={properties => {

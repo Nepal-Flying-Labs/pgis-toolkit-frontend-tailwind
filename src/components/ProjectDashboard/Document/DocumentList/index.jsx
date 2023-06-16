@@ -26,6 +26,8 @@ const {
   downloadDocumentRequest,
   getDocumentItemRequest,
   getDocumentByIdRequest,
+  setPreviewDocument,
+  setProjectDashboardState,
 } = Creators;
 const { toggleModal, togglePromptDialog, setRightSidebarState } =
   CommonCreators;
@@ -126,7 +128,7 @@ function DocumentList() {
   };
 
   return (
-    <div className="">
+    <div className="naxatw-relative naxatw-overflow-x-hidden">
       <div className="naxatw-py-1 naxatw-flex naxatw-items-center naxatw-justify-between">
         <div className="naxatw-flex naxatw-items-center naxatw-w-60">
           <Searchbar
@@ -164,7 +166,7 @@ function DocumentList() {
               height: `calc(100vh - 270px)`,
               transition: 'ease-in-out 300ms',
             }}
-            className="naxa-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-w-full"
+            className="naxatw-table naxatw-overflow-x-auto  scrollbar naxatw-relative naxatw-w-full"
           >
             {!loading && documentList.length > 0 ? (
               <Table
@@ -229,7 +231,8 @@ function DocumentList() {
                         ordering === 'name'
                           ? 'naxatw-text-body-btn'
                           : 'naxatw-text-body-lg'
-                      } naxatw-overflow-ellipsis naxatw-w-[200px] naxatw-whitespace-nowrap naxatw-overflow-hidden`}
+                      } naxatw-overflow-ellipsis naxatw-w-[200px]  naxatw-overflow-hidden naxatw-line-clamp-1`}
+                      title={row.name}
                     >
                       {row.name || '-'}
                     </span>
@@ -241,7 +244,7 @@ function DocumentList() {
                   // rowcolSpan="rowSpan_2"
                   // dataHeader={<SortingContainer name="description" />}
                   dataFormat={row => (
-                    <span className="naxatw-text-body-lg naxatw-overflow-ellipsis naxatw-w-[200px] naxatw-whitespace-nowrap naxatw-overflow-hidden">
+                    <span className="naxatw-text-body-lg naxatw-overflow-ellipsis naxatw-w-[200px] naxatw-line-clamp-1 naxatw-overflow-hidden">
                       {row.description || '-'}
                     </span>
                   )}
@@ -290,12 +293,36 @@ function DocumentList() {
                       <MaterialIcon
                         onIconClick={e => {
                           e.stopPropagation();
+                          dispatch(
+                            setProjectDashboardState({ selectedDocument: row }),
+                          );
+                          dispatch(setPreviewDocument(true));
+                        }}
+                        wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
+                        className="naxatw-text-icon-sm"
+                        name="visibility"
+                        title="Preview"
+                      />
+                      <MaterialIcon
+                        onIconClick={e => {
+                          e.stopPropagation();
+                          handleDownload(row.id);
+                        }}
+                        wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
+                        className="naxatw-text-icon-sm"
+                        name="file_download"
+                        title="Download"
+                      />
+                      <MaterialIcon
+                        onIconClick={e => {
+                          e.stopPropagation();
                           dispatch(dispatch(getDocumentByIdRequest(row.id)));
                           dispatch(toggleModal('edit-document'));
                         }}
                         wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
                         className="naxatw-text-icon-sm"
                         name="edit"
+                        title="Edit"
                       />
                       <MaterialIcon
                         onIconClick={e => {
@@ -308,15 +335,7 @@ function DocumentList() {
                         wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
                         className="naxatw-text-icon-sm naxatw-text-delete_btn"
                         name="delete_outline"
-                      />
-                      <MaterialIcon
-                        onIconClick={e => {
-                          e.stopPropagation();
-                          handleDownload(row.id);
-                        }}
-                        wrapperClassName="naxatw-icon-btn naxatw-icon-btn-sm"
-                        className="naxatw-text-icon-sm"
-                        name="file_download"
+                        title="Delete"
                       />
                     </div>
                   )}

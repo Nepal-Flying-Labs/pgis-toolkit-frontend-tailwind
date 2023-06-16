@@ -134,6 +134,7 @@ export default function MapSidebar() {
                 <a onClick={() => setViewType('list')}>
                   <MaterialIcon
                     name="view_list"
+                    title="List View"
                     className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
                       viewType === 'list' ? 'naxatw-text-primary-500' : ''
                     }`}
@@ -145,6 +146,7 @@ export default function MapSidebar() {
                 <a onClick={() => setViewType('grid')}>
                   <MaterialIcon
                     name="grid_view"
+                    title="Grid View"
                     className={`naxatw-text-icon-md group-hover:naxatw-text-primary-500 ${
                       viewType === 'grid' ? 'naxatw-text-primary-500' : ''
                     }`}
@@ -159,6 +161,10 @@ export default function MapSidebar() {
         </>
       )}
 
+      {projects?.results.length > 0 ? (
+        <h6 className="naxatw-mt-4 naxatw-pl-1">List of projects</h6>
+      ) : null}
+
       <div
         className={`naxatw-mt-5 naxatw-overflow-y-auto naxatw-pr-4 scrollbar ${
           viewType === 'list'
@@ -166,7 +172,9 @@ export default function MapSidebar() {
             : 'naxatw-grid naxatw-grid-cols-2 naxatw-gap-5 naxatw-overflow-x-hidden'
         }`}
         style={{
-          height: `calc(100vh - ${projectHeaderHeight}px - 9rem)`,
+          height: `calc(100vh - ${projectHeaderHeight}px - 9rem ${
+            projects?.results.length > 0 ? '- 1.25rem' : ''
+          })`,
         }}
       >
         {!loading ? (
@@ -276,7 +284,10 @@ export default function MapSidebar() {
             naxatw-shadow-light hover:naxatw-bg-grey-100"
           onClick={() => dispatch(toggleSidebar())}
         >
-          <i className="material-icons ">
+          <i
+            className="material-icons "
+            title={`${hideSidebar ? 'Show Sidebar' : 'Hide Sidebar'}`}
+          >
             {hideSidebar ? 'navigate_next' : 'navigate_before'}
           </i>
         </a>

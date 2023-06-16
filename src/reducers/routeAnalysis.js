@@ -3,11 +3,8 @@ import { createReducer } from 'reduxsauce';
 import produce from 'immer';
 import { parse } from 'wkt';
 import { Types } from '@Actions/routeAnalysis';
-import {
-  startPointStyles,
-  obstaclePointColor,
-  routeColors,
-} from '@src/constants/analysis';
+import { startPointStyles, obstaclePointColor } from '@src/constants/analysis';
+import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 
 const initialState = {
   activeTab: 'dataInput', // 'dataInput', 'results', 'layers'
@@ -23,12 +20,18 @@ const initialState = {
     outputName: '',
   },
   results: {
-    analysisResults: [],
+    // analysisResults: null, // {}
+    analysisResults: {
+      next: null,
+      previous: null,
+      counts: 0,
+      results: [],
+    },
     zoomToRouteId: null,
     selectedAnalysis: null,
     individualAnalysisData: null,
   },
-  roadNetworkLayer: null,
+  selectedRoadNetworkId: null,
   obstacleLayers: [],
   analysisId: null,
   selectedRouteId: null, // route id for fetching route popup data
@@ -85,10 +88,11 @@ const checkProcessingStatusSuccess = (state, action) =>
                 name: `Route ${item.route_no}`,
                 checked: true,
                 style: {
-                  ...draft.roadNetworkLayer.style,
-                  lineColor: routeColors[item.route_no],
-                  lineThickness:
-                    +draft.roadNetworkLayer.style.lineThickness + 2,
+                  ...defaultStyles,
+                  // ...draft.roadNetworkLayer.style,
+                  // lineColor: routeColors[item.route_no],
+                  // lineThickness:
+                  // +draft.roadNetworkLayer.style.lineThickness + 2,
                 },
               };
             }),
@@ -104,9 +108,10 @@ const checkProcessingStatusSuccess = (state, action) =>
               name: `Route ${item.route_no}`,
               checked: true,
               style: {
-                ...draft.roadNetworkLayer.style,
-                lineColor: routeColors[item.route_no],
-                lineThickness: +draft.roadNetworkLayer.style.lineThickness + 2,
+                ...defaultStyles,
+                // ...draft.roadNetworkLayer.style,
+                // lineColor: routeColors[item.route_no],
+                // lineThickness: +draft.roadNetworkLayer.style.lineThickness + 2,
               },
             })),
           checked: true,
@@ -114,10 +119,7 @@ const checkProcessingStatusSuccess = (state, action) =>
       ],
     };
     // draft.dataInput = initialState.dataInput;
-    draft.results.analysisResults = [
-      analysisResult,
-      ...draft.results.analysisResults,
-    ];
+    draft.results.analysisResults.results.unshift(analysisResult);
     draft.results.zoomToRouteId = analysisResult.id;
     draft.activeTab = 'results';
     draft.selectedRouteId = optimalRouteId;
@@ -131,7 +133,7 @@ const handleRouteCheckbox = (state, action) =>
   produce(state, draft => {
     const { resultId, routeId, dataId, obstacleId, checked, name } =
       action.payload;
-    const result = draft.results.analysisResults.find(
+    const result = draft.results.analysisResults.results.find(
       item => item.id === resultId,
     );
     if (name === 'result') {
@@ -228,21 +230,113 @@ const getSelectedLayerFeatureSuccess = (state, action) =>
     draft.dataInput.selectedOriginPointType = 'layer';
   });
 
-const deleteRouteResult = (state, action) =>
+// const deleteRouteResult = (state, action) =>
+//   produce(state, draft => {
+//     const { selectedAnalysis } = draft.results;
+//     if (selectedAnalysis.id === action.payload) {
+//       draft.routePopupData = null;
+//       draft.selectedRouteId = null;
+//       draft.results.selectedAnalysis = null;
+//     }
+//     const newData = draft.results.analysisResults.filter(
+//       item => item.id !== action.payload,
+//     );
+//     draft.results.analysisResults = newData;
+//     if (newData.length < 1) {
+//       draft.activeTab = 'dataInput';
+//     }
+//   });
+
+const deleteOptimumRouteResultSuccess = (state, action) => {
+  const newData = state.results.analysisResults.results.filter(
+    item => item.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    results: {
+      ...state.results,
+      analysisResults: {
+        ...state.results.analysisResults,
+        results: newData,
+      },
+    },
+  };
+};
+
+function prepareResultsData(data, state) {
+  let optimalRouteId = null;
+  const result = {
+    ...data,
+    checked: true,
+    routes: [
+      {
+        id: 1,
+        name: 'Optimal Route',
+        data: data.routes
+          .filter(item => item.is_optimum)
+          .map(item => {
+            optimalRouteId = item.id;
+            return {
+              ...item,
+              name: `Route ${item.route_no}`,
+              checked: true,
+              style: {
+                ...defaultStyles,
+                // ...state.roadNetworkLayer.style,
+                // lineColor: routeColors[item.route_no],
+                // lineThickness: +state.roadNetworkLayer.style.lineThickness + 2,
+              },
+            };
+          }),
+        checked: true,
+      },
+      {
+        id: 2,
+        name: 'Alternate Route',
+        data: data.routes
+          .filter(item => !item.is_optimum)
+          .map(item => ({
+            ...item,
+            name: `Route ${item.route_no}`,
+            checked: true,
+            style: {
+              ...defaultStyles,
+              // ...state.roadNetworkLayer.style,
+              // lineColor: routeColors[item.route_no],
+              // lineThickness: +state.roadNetworkLayer.style.lineThickness + 2,
+            },
+          })),
+        checked: true,
+      },
+    ],
+  };
+  return result;
+}
+
+const getAnalysisResultListSuccess = (state, action) =>
   produce(state, draft => {
-    const { selectedAnalysis } = draft.results;
-    if (selectedAnalysis.id === action.payload) {
-      draft.routePopupData = null;
-      draft.selectedRouteId = null;
-      draft.results.selectedAnalysis = null;
-    }
-    const newData = draft.results.analysisResults.filter(
-      item => item.id !== action.payload,
+    const { listData, individualDetail, roadNetworkId } = action.payload;
+    const listDatax = produce(listData, listDraft => {
+      listDraft.results[0] = prepareResultsData(
+        {
+          ...listDraft[0],
+          ...individualDetail,
+        },
+        state,
+      );
+    });
+    draft.results.analysisResults = listDatax;
+    draft.selectedRoadNetworkId = roadNetworkId;
+  });
+
+const getAnalysisResultDetailSuccess = (state, action) =>
+  produce(state, draft => {
+    const data = action.payload;
+    const analysisResult = draft.results.analysisResults.results.find(
+      item => item.id === data.id,
     );
-    draft.results.analysisResults = newData;
-    if (newData.length < 1) {
-      draft.activeTab = 'dataInput';
-    }
+    const resultsData = prepareResultsData(data);
+    Object.assign(analysisResult, resultsData);
   });
 
 const routeAnalysisReducer = createReducer(initialState, {
@@ -258,7 +352,9 @@ const routeAnalysisReducer = createReducer(initialState, {
   [Types.GET_ANALYSIS_DATA_SUCCESS]: getAnalysisDataSuccess,
   [Types.SAVE_ROUTE_LAYER_SUCCESS]: saveRouteLayerSuccess,
   [Types.GET_SELECTED_LAYER_FEATURE_SUCCESS]: getSelectedLayerFeatureSuccess,
-  [Types.DELETE_ROUTE_RESULT]: deleteRouteResult,
+  [Types.DELETE_OPTIMUM_ROUTE_RESULT_SUCCESS]: deleteOptimumRouteResultSuccess,
+  [Types.GET_ANALYSIS_RESULT_LIST_SUCCESS]: getAnalysisResultListSuccess,
+  [Types.GET_ANALYSIS_RESULT_DETAIL_SUCCESS]: getAnalysisResultDetailSuccess,
 });
 
 export default routeAnalysisReducer;

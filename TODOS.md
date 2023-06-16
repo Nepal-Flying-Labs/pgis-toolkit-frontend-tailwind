@@ -103,11 +103,39 @@
 - [x] organization map card design => fix height
 - [x] clear button on search
 
-## NEW ISSUES (APRIL 10)
-
 ### PROJECT MAP
 - [ ] layer category sorting issue in map sidebar
 - [ ] project clustering bbox issue
+- [ ] download layer name issue
 
 ### DESIGN
 - [ ] layer order accordion border color
+- [ ] dropdown options in modal/table
+
+- [ ] test branch -> test/refactor-analysis-module
+
+
+## TASKS (MAY 11)
+- [ ] move create analysis modal after data cleaning for optimal route 
+- [ ] route for analysis page (id from params)
+
+### NEW TASKS
+- [x] accordion options click toggle accordion
+- [ ] obstacles not fetching in analysis preview
+- [ ] reset analysis state on unmount
+- [ ] done button in analysis header
+- [ ] starting/end point z-index
+- [ ] loader while fetching individual analysis result
+
+- [ ] analysis list dropdown options edit/delete functionality
+- [ ] download analysis
+- [ ] delete analysis
+- [ ] implement api search in analysis list (raj)
+- [ ] implement pagination in analysis list
+
+### ISSUES
+- [ ] zoom to selected road on initial load not working
+- [ ] dropdown option hide issue
+
+- [x] user upload GEOJSON
+- [ ] optimal route analysis message

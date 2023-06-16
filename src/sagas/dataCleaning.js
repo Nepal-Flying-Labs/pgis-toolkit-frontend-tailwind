@@ -15,6 +15,7 @@ import {
   bulkDeleteNullGeometry,
   checkError,
   copyFeatures,
+  dataCleanTaskResponse,
   getErrorFeatures,
   getFeatureCollectionMirror,
   getFeatureMirrorGeojson,
@@ -30,6 +31,32 @@ import { getLayerAttributeFields } from '@Services/projectMap';
 import { isEmpty } from '@Utils/commonUtils';
 import { roadLayersThemeIdSelector } from '@Selectors/projectMap';
 import { checkErrorData } from '@src/constants/analysis';
+
+function* checkDataCleanTaskResponse(taskId) {
+  let taskResponse = {};
+  // loop while api gives data
+  while (!('total_data' in taskResponse)) {
+    if (isEmpty(taskResponse)) yield delay(3 * 1000); // add delay to api call
+    const response = yield call(dataCleanTaskResponse, {
+      task_id: taskId,
+    });
+    taskResponse = response.data;
+  }
+  return taskResponse;
+}
+
+function* checkDataFixTaskResponse(taskId) {
+  let taskResponse = {};
+  // loop while api gives data
+  while (!('new_error' in taskResponse)) {
+    if (isEmpty(taskResponse)) yield delay(5 * 1000); // add delay to api call
+    const response = yield call(dataCleanTaskResponse, {
+      task_id: taskId,
+    });
+    taskResponse = response.data;
+  }
+  return taskResponse;
+}
 
 export function* checkErrorRequest({ payload }) {
   try {
@@ -49,9 +76,11 @@ export function* checkErrorRequest({ payload }) {
       );
       const params = { layer: layerId };
       const response = yield call(checkError, checkAPI, params);
+      const { task_id: taskId } = response.data;
+      const taskResponse = yield call(checkDataCleanTaskResponse, taskId);
       yield put(
         dataCleaningActions.checkErrorSuccess({
-          ...response.data,
+          ...taskResponse,
           id,
           layerId,
         }),
@@ -78,9 +107,11 @@ export function* autoFixErrorRequest({ params }) {
         }),
       );
       const response = yield call(autoFixError, fixAPI, params);
+      const { task_id: taskId } = response.data;
+      const taskResponse = yield call(checkDataFixTaskResponse, taskId);
       yield put(
         dataCleaningActions.autoFixErrorSuccess({
-          ...response.data,
+          ...taskResponse,
           id,
           layerId,
         }),
@@ -197,7 +228,7 @@ export function* getFeaturesGeojsonRequest({ payload }) {
 
 export function* startAnalysisRequest({ params }) {
   try {
-    const { organizationId, projectId, analysisType } = params;
+    const { organizationId, projectId, analysisType, analysisId } = params;
     const { selectedRoadLayer, selectedObstacleLayers } = yield select(
       state => state.dataCleaning.optimalRoute,
     );
@@ -205,6 +236,7 @@ export function* startAnalysisRequest({ params }) {
       yield put(
         routeAnalysisActions.setRouteAnalysisState({
           roadNetworkLayer: selectedRoadLayer,
+          selectedRoadNetworkId: selectedRoadLayer.id,
           obstacleLayers: selectedObstacleLayers.map(item => ({
             ...item,
             checked: false,
@@ -225,9 +257,10 @@ export function* startAnalysisRequest({ params }) {
           },
         }),
       );
+      yield put(commonActions.toggleModal());
       yield put(
         push(
-          `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}`,
+          `/organizations/${organizationId}/projects/${projectId}/analysis/${analysisType}/${analysisId}`,
         ),
       );
     }

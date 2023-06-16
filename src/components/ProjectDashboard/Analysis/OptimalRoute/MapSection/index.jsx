@@ -27,7 +27,11 @@ import 'ol/ol.css';
 import '@Components/common/OpenLayersComponent/map.css';
 import MapFooter from '@Components/common/OpenLayersComponent/MapFooter';
 import DrawTool from '@Components/common/OpenLayersComponent/DrawTool';
-import { obstacleLayersSelector } from '@Selectors/routeAnalysis';
+import {
+  analysisResultsStateSelector,
+  obstacleLayersSelector,
+  roadNetworkLayerSelector,
+} from '@Selectors/routeAnalysis';
 import {
   startPointStyles,
   destinationPointStyles,
@@ -55,9 +59,7 @@ export default function MapSection() {
     zoom: 2,
     maxZoom: 25,
   });
-  const roadNetworkLayer = useSelector(
-    state => state.routeAnalysis.roadNetworkLayer,
-  );
+  const roadNetworkLayer = useSelector(roadNetworkLayerSelector);
   const activeTab = useSelector(state => state.routeAnalysis.activeTab);
   const drawPointType = useSelector(
     state => state.routeAnalysis.dataInput.drawPointType,
@@ -68,9 +70,7 @@ export default function MapSection() {
   const destinationPoint = useSelector(
     state => state.routeAnalysis.dataInput.destinationPoint,
   );
-  const analysisResults = useSelector(
-    state => state.routeAnalysis.results.analysisResults,
-  );
+  const analysisResults = useSelector(analysisResultsStateSelector);
   const zoomToRouteId = useSelector(
     state => state.routeAnalysis.results.zoomToRouteId,
   );
@@ -114,8 +114,10 @@ export default function MapSection() {
 
   // zoom to road network layer
   useEffect(() => {
-    if (!map || !zoomToRouteId) return;
-    const bbox = analysisResults.find(item => item.id === zoomToRouteId)?.bbox;
+    if (!map || !zoomToRouteId || !analysisResults) return;
+    const bbox = analysisResults.results.find(
+      item => item.id === zoomToRouteId,
+    )?.bbox;
     if (!bbox) return;
     const zoomExtent = transformExtent(bbox, 'EPSG:4326', 'EPSG:3857');
     if (isExtentValid(zoomExtent)) {
@@ -279,21 +281,21 @@ export default function MapSection() {
             authToken={localStorage.getItem('userToken')}
             visibleOnMap={item.checked}
             style={item.style}
-            zIndex={4}
+            zIndex={40}
             properties={{ layerId: item.id }}
           />
         ))}
 
-        {analysisResults.map(result =>
-          result.routes.map(route =>
-            route.data.map(item => (
+        {analysisResults.results.map(result =>
+          result?.routes?.map(route =>
+            route?.data?.map(item => (
               <VectorTileLayer
                 key={`${result.id}-${route.id}-${item.id}`}
                 url={`${apiURL}maps/optimum_route_vectortile/{z}/{x}/{y}/?route=${item.id}`}
                 authToken={localStorage.getItem('userToken')}
                 visibleOnMap={item.checked}
                 style={item.style}
-                zIndex={item.is_optimum ? 3 : 2}
+                zIndex={item.is_optimum ? 30 : 20}
                 // properties={{ layerId: selectedLayer.id }}
               />
             )),
@@ -311,24 +313,24 @@ export default function MapSection() {
             authToken={localStorage.getItem('userToken')}
             visibleOnMap
             style={getLayerStyles(item.layer_id)}
-            zIndex={4}
+            zIndex={40}
             // properties={{ layerId: selectedLayer.id }}
           />
         ))}
 
-        {analysisResults.map(result => (
+        {analysisResults?.results?.map(result => (
           <React.Fragment key={result.id}>
             <CircleMarker
               coordinates={[result.origin_lat, result.origin_long]}
               visibleOnMap={result.checked}
-              zIndex={10}
+              zIndex={100}
               style={{ ...startPointStyles }}
               map={map}
             />
             <CircleMarker
               coordinates={[result.destination_lat, result.destination_long]}
               visibleOnMap={result.checked}
-              zIndex={10}
+              zIndex={100}
               style={{ ...destinationPointStyles }}
               map={map}
             />
@@ -340,7 +342,7 @@ export default function MapSection() {
           // geojson={featureGeojson}
           geometryType="Point"
           selectedDrawType="add-feature"
-          zIndex={50}
+          zIndex={101}
           style={
             drawPointType === 'start'
               ? { ...startPointStyles }
@@ -372,7 +374,7 @@ export default function MapSection() {
           <VectorLayer
             geojson={startingPoint.geojson}
             visibleOnMap
-            zIndex={50}
+            zIndex={101}
             style={{ ...startPointStyles }}
           />
         )}
@@ -380,7 +382,7 @@ export default function MapSection() {
           <VectorLayer
             geojson={destinationPoint.geojson}
             visibleOnMap
-            zIndex={50}
+            zIndex={101}
             style={{ ...destinationPointStyles }}
           />
         )}

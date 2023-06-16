@@ -9,6 +9,7 @@ import {
 import bufferAnalysisActions, { Types } from '@Actions/bufferAnalysis';
 import commonActions from '@Actions/common';
 import { getFeatureCollection, updateLayer } from '@Services/projectMap';
+import toastActions from '@Actions/toast';
 
 import analysisActions from '@Actions/analysis';
 import prepareFormData from '@Utils/prepareFormData';
@@ -19,6 +20,8 @@ import {
   getBufferAreaCollection,
   saveBufferLayer,
   getFeatureCollectionMirror,
+  downloadBufferAnalysis,
+  deleteBufferResult,
 } from '@Services/bufferAnalysis';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { copyFeatures } from '@Services/dataCleaning';
@@ -161,9 +164,41 @@ export function* getFeatureCollectionRequest({ params }) {
     const response = yield call(getFeatureCollectionMirror, params);
     yield put(bufferAnalysisActions.getFeatureCollectionSuccess(response.data));
   } catch (error) {
-    console.log(error, 'error');
     yield put(bufferAnalysisActions.getFeatureCollectionFailure());
     throw error;
+  }
+}
+
+export function* downloadBufferAnalysisRequest({ params }) {
+  try {
+    const response = yield call(downloadBufferAnalysis, params);
+    const blob = new Blob([response.data], {
+      type: 'application/octet-stream',
+    });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'BufferAnalysis.zip';
+    link.click();
+    yield put(toastActions.success({ message: 'Export Completed.' }));
+  } catch (error) {
+    yield put(bufferAnalysisActions.downloadBufferAnalysisFailure());
+    throw error;
+  }
+}
+
+export function* deleteBufferResultRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(deleteBufferResult, id, formData);
+    yield put(bufferAnalysisActions.deleteBufferResultSuccess(response.data));
+    yield put(commonActions.togglePromptDialog());
+    yield put(
+      toastActions.success({
+        message: 'Result deleted successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(bufferAnalysisActions.deleteBufferResultFailure());
   }
 }
 
@@ -199,6 +234,14 @@ function* bufferAnalysisWatcher() {
   yield takeLatest(
     Types.GET_FEATURE_COLLECTION_REQUEST,
     withLoader(withErrorHandler(getFeatureCollectionRequest)),
+  );
+  yield takeLatest(
+    Types.DOWNLOAD_BUFFER_ANALYSIS_REQUEST,
+    withLoader(withErrorHandler(downloadBufferAnalysisRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_BUFFER_RESULT_REQUEST,
+    withLoader(withErrorHandler(deleteBufferResultRequest)),
   );
 }
 

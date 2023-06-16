@@ -125,6 +125,7 @@ export const { Types, Creators } = createActions(
     setProjectStatus: ['payload'],
 
     setThematicAreas: ['payload'],
+    resetUserRole: ['payload'],
   },
   { prefix: 'organizationDashboard/' },
 );

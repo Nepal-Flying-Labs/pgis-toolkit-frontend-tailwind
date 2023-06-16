@@ -1,9 +1,11 @@
 /* eslint-disable arrow-body-style */
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import MaterialIcon from '@Components/common/MaterialIcon/index';
 import AvatarImage from '@Assets/images/user-avatar.png';
 import ProjectIcon from '@Assets/images/project-icon.png';
+import Button from '@Components/common/Button/index';
 
 const getWidth = (value, totalProject) => {
   return Math.floor((value / totalProject) * 100);
@@ -13,7 +15,16 @@ const OrganizationInfo = () => {
   const organizationDetails = useSelector(
     state => state.organizationDashboard.organizationDetail,
   );
-  // console.log('org details ', organizationDetails);
+
+  const ongoingWidth = getWidth(
+    organizationDetails?.ongoing,
+    organizationDetails?.projects,
+  );
+
+  const completedWidth = getWidth(
+    organizationDetails?.completed,
+    organizationDetails?.projects,
+  );
   return (
     <div className="naxatw-w-full naxatw-bg-white naxatw-rounded-xl naxatw-h-[calc(100vh-5rem)] naxatw-border naxatw-border-[#D7D7D7] naxatw-mb-5 md:naxatw-mb-0">
       <div className="naxatw-h-[calc(100vh-5.35rem)] naxatw-overflow-y-auto naxatw-overflow-hidden scrollbar">
@@ -34,6 +45,7 @@ const OrganizationInfo = () => {
             <div className="naxatw-mt-5 naxatw-flex naxatw-flex-wrap naxatw-gap-x-7 naxatw-gap-y-3">
               <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
                 <MaterialIcon
+                  title="Phone"
                   name="phone"
                   className="naxatw-text-icon-md naxatw-text-primary-400 "
                 />
@@ -43,6 +55,7 @@ const OrganizationInfo = () => {
               </div>
               <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
                 <MaterialIcon
+                  title="Email"
                   name="mail_outline"
                   className="naxatw-text-icon-md naxatw-text-primary-400"
                 />
@@ -52,6 +65,7 @@ const OrganizationInfo = () => {
               </div>
               <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
                 <MaterialIcon
+                  title="Language"
                   name="language"
                   className="naxatw-text-icon-md naxatw-text-primary-400"
                 />
@@ -79,7 +93,15 @@ const OrganizationInfo = () => {
               src={ProjectIcon}
             />
             <div>
-              <h5>Projects</h5>
+              <div className="naxatw-flex naxatw-gap-x-1 naxatw-items-center ">
+                <h5>Projects</h5>
+                <Link to="projects">
+                  <Button className="naxatw-btn-secondary naxatw-btn-noborder">
+                    View
+                  </Button>
+                </Link>
+              </div>
+
               <h3>{organizationDetails?.projects}</h3>
             </div>
           </div>
@@ -106,21 +128,23 @@ const OrganizationInfo = () => {
           <div className="naxatw-flex naxatw-w-full md:naxatw-w-[calc(100vw-51rem)] md:naxatw-max-w-[450px]">
             <div
               style={{
-                width: `${getWidth(
-                  organizationDetails?.ongoing,
-                  organizationDetails?.projects,
-                )}%`,
+                width: `${ongoingWidth}%`,
               }}
-              className="naxatw-h-[20px] naxatw-bg-[#0076FF] naxatw-rounded-l-md naxatw-rounded-r-md"
+              className={`naxatw-h-[20px] naxatw-bg-[#0076FF]  ${
+                ongoingWidth === 100
+                  ? 'naxatw-rounded-md'
+                  : 'naxatw-rounded-l-md'
+              }`}
             />
             <div
               style={{
-                width: `${getWidth(
-                  organizationDetails?.completed,
-                  organizationDetails?.projects,
-                )}%`,
+                width: `${completedWidth}%`,
               }}
-              className="naxatw-h-[20px] naxatw-bg-[#40B449] naxatw-rounded-r-md"
+              className={`naxatw-h-[20px] naxatw-bg-[#40B449]  ${
+                completedWidth === 100
+                  ? 'naxatw-rounded-md'
+                  : 'naxatw-rounded-r-md'
+              }`}
             />
           </div>
         </div>

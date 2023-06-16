@@ -38,6 +38,8 @@ import {
   deleteDropdownOption,
   getFeatureGeojson,
   deleteDataQuery,
+  getAnalysisTypeList,
+  updateAnalysis,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -710,6 +712,82 @@ export function* deleteAllDataQueryRequest({ payload }) {
   }
 }
 
+export function* getLabelFieldOptionsRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttributeFields, params);
+    yield put(projectMapActions.getLabelFieldOptionsSuccess(response.data));
+  } catch (error) {
+    yield put(projectMapActions.getLabelFieldOptionsFailure());
+    throw error;
+  }
+}
+
+export function* updateLabelFieldRequest({ id, payload }) {
+  try {
+    const formdata = prepareFormData(payload);
+    const response = yield call(updateLayer, id, formdata);
+    yield put(
+      projectMapActions.updateLabelFieldSuccess({
+        responseData: response.data,
+        payload,
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.updateLabelFieldFailure());
+    throw error;
+  }
+}
+
+export function* getAnalysisTypeListRequest({ params }) {
+  try {
+    const response = yield call(getAnalysisTypeList, params);
+    yield put(
+      projectMapActions.getAnalysisTypeListSuccess({
+        ...response.data,
+        analysisType: params.type,
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.getAnalysisTypeListFailure());
+    throw error;
+  }
+}
+
+export function* updateAnalysisRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(updateAnalysis, id, formData);
+    yield put(projectMapActions.updateAnalysisSuccess(response.data));
+    yield put(commonActions.toggleModal());
+    yield put(
+      toastActions.success({
+        message: 'Document updated successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.updateAnalysisDataFailure());
+  }
+}
+
+export function* deleteAnalysisRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(updateAnalysis, id, formData);
+    yield put(projectMapActions.deleteAnalysisSuccess(response.data));
+
+    yield put(commonActions.togglePromptDialog());
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
+
+    yield put(
+      toastActions.success({
+        message: 'Analysis deleted successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.deleteAnalysisFailure());
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -846,6 +924,26 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.DELETE_ALL_DATA_QUERY_REQUEST,
     withLoader(withErrorHandler(deleteAllDataQueryRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LABEL_FIELD_OPTIONS_REQUEST,
+    withLoader(withErrorHandler(getLabelFieldOptionsRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_LABEL_FIELD_REQUEST,
+    withLoader(withErrorHandler(updateLabelFieldRequest)),
+  );
+  yield takeEvery(
+    Types.GET_ANALYSIS_TYPE_LIST_REQUEST,
+    withLoader(withErrorHandler(getAnalysisTypeListRequest)),
+  );
+  yield takeLatest(
+    Types.UPDATE_ANALYSIS_REQUEST,
+    withLoader(withErrorHandler(updateAnalysisRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_ANALYSIS_REQUEST,
+    withLoader(withErrorHandler(deleteAnalysisRequest)),
   );
 }
 

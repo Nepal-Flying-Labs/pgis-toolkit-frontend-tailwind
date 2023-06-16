@@ -20,6 +20,7 @@ import { useParams } from 'react-router';
 import usePagination from '@Hooks/usePagination';
 import Pagination from '@Components/common/Pagination/index';
 import { getSelectedRange } from '@Components/common/Pagination/getSelectedItem';
+import IconButton from '@Components/common/IconButton';
 
 const { togglePromptDialog } = CommonCreators;
 
@@ -33,6 +34,7 @@ const {
   setSelectedData,
   handleUserTabChange,
   setUsersOrdering,
+  resetUserRole,
 } = Creators;
 
 const roles = [
@@ -239,6 +241,16 @@ const Users = () => {
               dispatch(setUserRole(data.value));
             }}
             selected={roles.filter(role => role.value === userRole)[0]?.name}
+          />
+        </div>
+        <div>
+          <IconButton
+            className="material-symbols-outlined hover:naxatw-bg-grey-100 naxatw-rounded-full"
+            name="restart_alt"
+            title="Reset"
+            onClick={() => {
+              dispatch(resetUserRole(null));
+            }}
           />
         </div>
       </div>

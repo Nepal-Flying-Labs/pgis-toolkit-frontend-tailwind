@@ -8,6 +8,7 @@ export default function Accordion({
   className,
   onToggle,
   description,
+  disableHeaderClickToggle,
 }) {
   const [collapsed, setCollapsed] = useState(isCollapsed);
 
@@ -25,6 +26,7 @@ export default function Accordion({
           className="naxatw-flex naxatw-items-center naxatw-justify-between
             naxatw-w-full naxatw-font-medium naxatw-gap-3 naxatw-cursor-pointer"
           onClick={() => {
+            if (disableHeaderClickToggle) return;
             setCollapsed(!collapsed);
             onToggle(collapsed);
           }}
@@ -64,6 +66,7 @@ Accordion.defaultProps = {
   className: '',
   onToggle: () => {},
   description: '',
+  disableHeaderClickToggle: false,
 };
 
 Accordion.propTypes = {
@@ -73,4 +76,5 @@ Accordion.propTypes = {
   body: PropTypes.node,
   onToggle: PropTypes.func,
   description: PropTypes.node,
+  disableHeaderClickToggle: PropTypes.bool,
 };

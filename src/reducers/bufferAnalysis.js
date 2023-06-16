@@ -23,9 +23,15 @@ const initialState = {
     radiusUnit: 'meter',
     dissolveOutput: false,
     outputName: '',
+    selectedLayer: null,
   },
   results: {
-    analysisResults: [],
+    analysisResults: {
+      next: null,
+      previous: null,
+      counts: 0,
+      results: [],
+    },
     // analysisResults: [analysisResultData],
     zoomToBuffer: null,
     showResultsPopup: false,
@@ -94,34 +100,14 @@ const handleCheckbox = (state, action) =>
 
 const checkProcessingStatusSuccess = (state, action) =>
   produce(state, draft => {
-    const totalPoiCountChartData = [];
     const data = action.payload;
-    data.buffer_areas.forEach(bufarea => {
-      bufarea.poi.forEach(poiArea => {
-        const existingLayerCheck = totalPoiCountChartData.findIndex(
-          layer => layer.name === poiArea.layer_name,
-        );
-        if (existingLayerCheck !== -1) {
-          totalPoiCountChartData[existingLayerCheck].count +=
-            poiArea.feature_mirror_ids.length;
-        } else {
-          totalPoiCountChartData.push({
-            name: poiArea.layer_name,
-            count: poiArea.feature_mirror_ids.length,
-          });
-        }
-      });
-    });
-    const { analysisType } = draft.inputQuery;
+
     const analysisResult = {
       ...data,
       checked: true,
-      poiChartData: totalPoiCountChartData,
-      buffer_areas: data.buffer_areas.map((areas, index) => ({
+      buffer_areas: data.buffer_areas?.map((areas, index) => ({
         ...areas,
-        name: `${analysisType === 'buffer-analysis' ? 'Buffer ' : ''}Area ${
-          index + 1
-        }`,
+        name: `$Buffer Area ${index + 1}`,
         checked: true,
         style: { ...bufferPolygonStyles },
         originStyle: { ...bufferPointStyles, fillColor: chroma.random().hex() },
@@ -133,11 +119,11 @@ const checkProcessingStatusSuccess = (state, action) =>
     draft.dataInput = { ...draft.dataInput, outputName: '' };
 
     draft.inputQuery = initialState.inputQuery;
-    draft.results.analysisResults = [
+    draft.results.analysisResults.results = [
       analysisResult,
-      ...draft.results.analysisResults,
+      ...draft.results.analysisResults.results,
     ];
-    const analysisResultStyle = draft.results.analysisResults.map(
+    const analysisResultStyle = draft.results.analysisResults.results.map(
       (result, i) => ({
         ...result,
         style: {
@@ -147,7 +133,7 @@ const checkProcessingStatusSuccess = (state, action) =>
         },
       }),
     );
-    draft.results.analysisResults = analysisResultStyle;
+    draft.results.analysisResults.results = analysisResultStyle;
     draft.activeTab = 'results';
     draft.results.selectedResultId = analysisResult.id;
     draft.results.showResultsPopup = true;
@@ -158,15 +144,15 @@ const checkProcessingStatusSuccess = (state, action) =>
     // }));
   });
 
-const handleRouteCheckbox = (state, action) =>
+const handleBufferCheckbox = (state, action) =>
   produce(state, draft => {
     const { resultId, areaId, checked, name } = action.payload;
-    const result = draft.results.analysisResults.find(
+    const result = draft.results.analysisResults.results.find(
       item => item.id === resultId,
     );
     if (name === 'result') {
       result.checked = checked;
-      result.buffer_areas.forEach(area => {
+      result.buffer_areas?.forEach(area => {
         area.checked = checked;
       });
       if (!checked) {
@@ -175,7 +161,7 @@ const handleRouteCheckbox = (state, action) =>
       }
       return;
     }
-    const area = result.buffer_areas.find(item => item.id === areaId);
+    const area = result.buffer_areas?.find(item => item.id === areaId);
 
     if (name === 'area') {
       area.checked = checked;
@@ -249,21 +235,37 @@ const saveBufferLayerSuccess = (state, action) =>
     draft.results.showResultsPopup = false;
   });
 
-const deleteBufferResult = (state, action) =>
-  produce(state, draft => {
-    const selectedId = draft.results.selectedResultId;
-    if (selectedId === action.payload) {
-      draft.results.showResultsPopup = false;
-      draft.results.selectedResultId = null;
-    }
-    const newData = draft.results.analysisResults.filter(
-      item => item.id !== action.payload,
-    );
-    draft.results.analysisResults = newData;
-    if (newData.length < 1) {
-      draft.activeTab = 'dataInput';
-    }
-  });
+// const deleteBufferResult = (state, action) =>
+//   produce(state, draft => {
+//     const selectedId = draft.results.selectedResultId;
+//     if (selectedId === action.payload) {
+//       draft.results.showResultsPopup = false;
+//       draft.results.selectedResultId = null;
+//     }
+//     const newData = draft.results.analysisResults.filter(
+//       item => item.id !== action.payload,
+//     );
+//     draft.results.analysisResults = newData;
+//     if (newData.length < 1) {
+//       draft.activeTab = 'dataInput';
+//     }
+//   });
+
+const deleteBufferResultSuccess = (state, action) => {
+  const newData = state.results.analysisResults.results.filter(
+    item => item.id !== action.payload.id,
+  );
+  return {
+    ...state,
+    results: {
+      ...state.results,
+      analysisResults: {
+        ...state.results.analysisResults,
+        results: newData,
+      },
+    },
+  };
+};
 
 const getFeatureCollectionSuccess = (state, action) => {
   const featureList = action.payload;
@@ -285,6 +287,56 @@ const getFeatureCollectionSuccess = (state, action) => {
   };
 };
 
+function prepareResultsData(data, state) {
+  const result = {
+    ...data,
+    checked: true,
+    // poiChartData: getTotalPoiChartData(data),
+    proximity_areas: data.proximity_areas?.map((areas, index) => ({
+      ...areas,
+      name: 'Buffer Area',
+      checked: true,
+      style: { ...bufferPolygonStyles },
+      originStyle: {
+        ...bufferPointStyles,
+        fillColor: chroma.random().hex(),
+      },
+    })),
+    style: {
+      ...bufferPolygonStyles,
+      fillColor: bufferColors[1] || chroma.random().hex(),
+      fillOpacity: '50',
+    },
+  };
+  return result;
+}
+
+const getAnalysisResultListSuccess = (state, action) =>
+  produce(state, draft => {
+    const { listData, individualDetail } = action.payload;
+    const listDatax = produce(listData, listDraft => {
+      listDraft.results[0] = prepareResultsData(
+        {
+          ...listDraft[0],
+          ...individualDetail,
+        },
+        state,
+      );
+    });
+    draft.results.analysisResults = listDatax;
+    // draft.selectedRoadNetworkId = roadNetworkId;
+  });
+
+const getAnalysisResultDetailSuccess = (state, action) =>
+  produce(state, draft => {
+    const data = action.payload;
+    const analysisResult = draft.results.analysisResults.results.find(
+      item => item.id === data.id,
+    );
+    const resultsData = prepareResultsData(data);
+    Object.assign(analysisResult, resultsData);
+  });
+
 const bufferAnalysisReducer = createReducer(initialState, {
   [Types.SET_BUFFER_ANALYSIS_STATE]: setBufferAnalysisState,
   [Types.SET_FILTER_STATE]: setFilterState,
@@ -294,15 +346,18 @@ const bufferAnalysisReducer = createReducer(initialState, {
   [Types.APPLY_BUFFER_ANALYSIS_SUCCESS]: applyBufferAnalysisSuccess,
   [Types.HANDLE_CHECKBOX]: handleCheckbox,
   [Types.CHECK_PROCESSING_STATUS_SUCCESS]: checkProcessingStatusSuccess,
-  [Types.HANDLE_ROUTE_CHECKBOX]: handleRouteCheckbox,
+  [Types.HANDLE_BUFFER_CHECKBOX]: handleBufferCheckbox,
   [Types.SET_POPUP_ACTIVE_TAB]: setPopupActiveTab,
   [Types.GET_DETAILS_CATEGORY_SUCCESS]: getDetailsCategorySuccess,
   [Types.GET_DETAILS_CHART_SUCCESS]: getDetailsChartSuccess,
   [Types.GET_ANALYSIS_DATA_SUCCESS]: getAnalysisDataSuccess,
   [Types.GET_SELECTED_LAYER_FEATURE_SUCCESS]: getSelectedLayerFeatureSuccess,
   [Types.SAVE_BUFFER_LAYER_SUCCESS]: saveBufferLayerSuccess,
-  [Types.DELETE_BUFFER_RESULT]: deleteBufferResult,
+  // [Types.DELETE_BUFFER_RESULT]: deleteBufferResult,
   [Types.GET_FEATURE_COLLECTION_SUCCESS]: getFeatureCollectionSuccess,
+  [Types.GET_ANALYSIS_RESULT_LIST_SUCCESS]: getAnalysisResultListSuccess,
+  [Types.GET_ANALYSIS_RESULT_DETAIL_SUCCESS]: getAnalysisResultDetailSuccess,
+  [Types.DELETE_BUFFER_RESULT_SUCCESS]: deleteBufferResultSuccess,
 });
 
 export default bufferAnalysisReducer;

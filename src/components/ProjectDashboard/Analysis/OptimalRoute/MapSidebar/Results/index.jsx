@@ -1,19 +1,27 @@
 import React from 'react';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as RouteAnalysisCreators } from '@Actions/routeAnalysis';
+import { Creators as AnalysisCreators } from '@Actions/analysis';
 import { Creators as CommonCreators } from '@Actions/common';
 import { analysisHeaderHeight } from '@src/constants';
 import Accordion from '@Components/common/Accordion';
 import DropdownOptions from '@Components/common/DropdownOptions';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
+import { getAnalysisType } from '@src/constants/analysis';
+import { analysisResultsStateSelector } from '@Selectors/routeAnalysis';
 
-const { setResultsState, handleRouteCheckbox } = RouteAnalysisCreators;
+const {
+  setResultsState,
+  handleRouteCheckbox,
+  downloadOptimumRouteAnalysisRequest,
+} = RouteAnalysisCreators;
+const { getAnalysisResultDetailRequest } = AnalysisCreators;
 const { toggleModal, togglePromptDialog } = CommonCreators;
 
 export default function Results() {
-  const analysisResults = useSelector(
-    state => state.routeAnalysis.results.analysisResults,
-  );
+  const analysisResults = useSelector(analysisResultsStateSelector);
+  const { projectId, analysisType } = useParams();
   const dispatch = useDispatch();
 
   const dropdownOptions = [
@@ -22,7 +30,7 @@ export default function Results() {
       label: (
         <span className="naxatw-flex naxatw-items-center">
           <i className="material-icons naxatw-mr-2">zoom_in</i>
-          <p className="naxatw-text-body-lg">Zoom To Layer</p>
+          <p className="naxatw-text-body-lg">Zoom To Result</p>
         </span>
       ),
       onClick: data => {
@@ -54,8 +62,8 @@ export default function Results() {
       id: 'save-layer',
       label: (
         <span className="naxatw-flex naxatw-items-center">
-          <i className="material-symbols-outlined naxatw-mr-2">save</i>
-          <p className="naxatw-text-body-lg">Save Layer</p>
+          <i className="material-symbols-outlined naxatw-mr-2">download</i>
+          <p className="naxatw-text-body-lg">Download Result</p>
         </span>
       ),
       onClick: data => {
@@ -64,16 +72,18 @@ export default function Results() {
             selectedAnalysis: data,
           }),
         );
-        dispatch(togglePromptDialog('save-route-layer'));
+        dispatch(
+          downloadOptimumRouteAnalysisRequest({ optimum_route_id: data.id }),
+        );
       },
     },
     {
       id: 'delete-layer',
       label: (
-        <span className="naxatw-flex naxatw-items-center naxatw-text-[#FF0F0F]">
+        <span className="naxatw-flex naxatw-items-center naxatw-text-delete_btn">
           <i className="material-icons naxatw-mr-2">delete_outline</i>
-          <p className="naxatw-text-body-lg naxatw-text-[#FF0F0F]">
-            Discard Layer
+          <p className="naxatw-text-body-lg naxatw-text-delete_btn">
+            Delete Result
           </p>
         </span>
       ),
@@ -96,115 +106,140 @@ export default function Results() {
           height: `calc(100vh - ${analysisHeaderHeight} - 3.5rem)`,
         }}
       >
-        {analysisResults.map(result => (
-          <Accordion
-            key={result.id}
-            className="!naxatw-py-2 !naxatw-px-4"
-            header={
-              <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
-                <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
-                  <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
-                    <input
-                      id={result.id}
-                      type="checkbox"
-                      className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                      checked={result.checked}
-                      onChange={e => {
-                        const { id, checked } = e.target;
-                        dispatch(
-                          handleRouteCheckbox({
-                            resultId: +id,
-                            checked,
-                            name: 'result',
-                          }),
-                        );
-                      }}
-                    />
-                    <h5 className="naxatw-text-grey-800">{result.name}</h5>
-                  </div>
-                  <DropdownOptions options={dropdownOptions} data={result} />
-                </div>
-              </div>
-            }
-            body={
-              <div className="naxatw-pl-2">
-                {result.routes.map(route => (
-                  <div key={route.id}>
-                    <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
-                      <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-10">
-                        <input
-                          id={route.id}
-                          type="checkbox"
-                          className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                          checked={route.checked}
-                          onChange={e => {
+        {analysisResults.results.map(result => {
+          const hasData = !!result.routes;
+          return (
+            <Accordion
+              key={result.id}
+              className="!naxatw-py-2 !naxatw-px-4"
+              disableHeaderClickToggle
+              collapsed={!hasData}
+              onToggle={() => {
+                if (hasData) return;
+                dispatch(
+                  getAnalysisResultDetailRequest({
+                    project: projectId,
+                    id: result.id,
+                    analysis_type: getAnalysisType(analysisType),
+                  }),
+                );
+              }}
+              header={
+                <div className="naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
+                  <div className="naxatw-flex naxatw-items-center naxatw-justify-between naxatw-w-full">
+                    <div className="naxatw-flex naxatw-items-center naxatw-gap-2">
+                      <input
+                        id={result.id}
+                        type="checkbox"
+                        className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
+                        checked={!!result.checked}
+                        onChange={e => {
+                          if (!hasData) {
+                            dispatch(
+                              getAnalysisResultDetailRequest({
+                                project: projectId,
+                                id: result.id,
+                                analysis_type: getAnalysisType(analysisType),
+                              }),
+                            );
+                          } else {
                             const { id, checked } = e.target;
                             dispatch(
                               handleRouteCheckbox({
-                                resultId: result.id,
-                                routeId: +id,
+                                resultId: +id,
                                 checked,
-                                name: 'route',
+                                name: 'result',
                               }),
                             );
-                          }}
-                        />
+                          }
+                        }}
+                      />
+                      <h5 className="naxatw-text-grey-800">{result.name}</h5>
+                    </div>
+                    <DropdownOptions options={dropdownOptions} data={result} />
+                  </div>
+                </div>
+              }
+              body={
+                <div className="naxatw-pl-2">
+                  {result?.routes?.map(route => (
+                    <div key={route.id}>
+                      <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+                        <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-10">
+                          <input
+                            id={route.id}
+                            type="checkbox"
+                            className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
+                            checked={route.checked}
+                            onChange={e => {
+                              const { id, checked } = e.target;
+                              dispatch(
+                                handleRouteCheckbox({
+                                  resultId: result.id,
+                                  routeId: +id,
+                                  checked,
+                                  name: 'route',
+                                }),
+                              );
+                            }}
+                          />
 
-                        <label
-                          className="naxatw-text-body-lg naxatw-text-grey-800"
-                          // htmlFor={route.id}
-                        >
-                          {route.name}
-                        </label>
+                          <label
+                            className="naxatw-text-body-lg naxatw-text-grey-800"
+                            // htmlFor={route.id}
+                          >
+                            {route.name}
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="naxatw-pl-3">
+                        {route?.data?.map(item => (
+                          <div
+                            key={item.id}
+                            className="naxatw-flex naxatw-justify-between naxatw-items-center"
+                          >
+                            <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-10">
+                              <input
+                                id={item.id}
+                                type="checkbox"
+                                className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
+                                checked={item.checked}
+                                onChange={e => {
+                                  const { id, checked } = e.target;
+                                  dispatch(
+                                    handleRouteCheckbox({
+                                      resultId: result.id,
+                                      routeId: route.id,
+                                      dataId: +id,
+                                      checked,
+                                      name: 'data',
+                                    }),
+                                  );
+                                }}
+                              />
+
+                              <LegendItem
+                                styles={item.style}
+                                className="naxatw-mr-2"
+                              />
+                              <label
+                                className="naxatw-text-body-lg naxatw-text-grey-800"
+                                // htmlFor={item.id}
+                              >
+                                {item.name}
+                              </label>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
-
-                    <div className="naxatw-pl-3">
-                      {route.data.map(item => (
-                        <div
-                          key={item.id}
-                          className="naxatw-flex naxatw-justify-between naxatw-items-center"
-                        >
-                          <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-10">
-                            <input
-                              id={item.id}
-                              type="checkbox"
-                              className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
-                              checked={item.checked}
-                              onChange={e => {
-                                const { id, checked } = e.target;
-                                dispatch(
-                                  handleRouteCheckbox({
-                                    resultId: result.id,
-                                    routeId: route.id,
-                                    dataId: +id,
-                                    checked,
-                                    name: 'data',
-                                  }),
-                                );
-                              }}
-                            />
-
-                            <LegendItem
-                              styles={item.style}
-                              className="naxatw-mr-2"
-                            />
-                            <label
-                              className="naxatw-text-body-lg naxatw-text-grey-800"
-                              // htmlFor={item.id}
-                            >
-                              {item.name}
-                            </label>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            }
-          />
-        ))}
+                  ))}
+                </div>
+              }
+            />
+          );
+        })}
       </div>
     </div>
   );

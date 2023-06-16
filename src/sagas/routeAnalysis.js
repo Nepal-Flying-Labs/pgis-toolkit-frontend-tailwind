@@ -7,10 +7,14 @@ import {
   getNetworkRouteCollection,
   optimumRouteAnalysis,
   saveRouteLayer,
+  downloadOptimumRouteAnalysis,
+  deleteOptimumRouteResult,
 } from '@Services/routeAnalysis';
+import toastActions from '@Actions/toast';
 import { withErrorHandler, withLoader } from '@Utils/sagaUtils';
 import { getFeatureCollection } from '@Services/projectMap';
 import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import prepareFormData from '@Utils/prepareFormData';
 
 export function* applyRouteAnalysisRequest({ payload }) {
   try {
@@ -100,6 +104,44 @@ export function* getSelectedLayerFeatureRequest() {
   }
 }
 
+export function* downloadOptimumRouteAnalysisRequest({ params }) {
+  try {
+    const response = yield call(downloadOptimumRouteAnalysis, params);
+    const blob = new Blob([response.data], {
+      type: 'application/octet-stream',
+    });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'OptimumRouteAnalysis.zip';
+    link.click();
+    yield put(commonActions.setRightSidebarState({ show: false, flag: '' }));
+    yield put(toastActions.success({ message: 'Export Completed.' }));
+  } catch (error) {
+    yield put(routeAnalysisActions.downloadDocumentFailure());
+    throw error;
+  }
+}
+
+export function* deleteOptimumRouteResultRequest({ id, payload }) {
+  const formData = prepareFormData(payload);
+  try {
+    const response = yield call(deleteOptimumRouteResult, id, formData);
+    yield put(
+      routeAnalysisActions.deleteOptimumRouteResultSuccess(response.data),
+    );
+
+    yield put(commonActions.togglePromptDialog());
+
+    yield put(
+      toastActions.success({
+        message: 'Result deleted successfully.',
+      }),
+    );
+  } catch (error) {
+    yield put(routeAnalysisActions.deleteOptimumRouteResultFailure());
+  }
+}
+
 function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_ROUTE_ANALYSIS_REQUEST,
@@ -120,6 +162,14 @@ function* routeAnalysisWatcher() {
   yield takeLatest(
     Types.GET_SELECTED_LAYER_FEATURE_REQUEST,
     withLoader(withErrorHandler(getSelectedLayerFeatureRequest)),
+  );
+  yield takeLatest(
+    Types.DOWNLOAD_OPTIMUM_ROUTE_ANALYSIS_REQUEST,
+    withLoader(withErrorHandler(downloadOptimumRouteAnalysisRequest)),
+  );
+  yield takeLatest(
+    Types.DELETE_OPTIMUM_ROUTE_RESULT_REQUEST,
+    withLoader(withErrorHandler(deleteOptimumRouteResultRequest)),
   );
 }
 

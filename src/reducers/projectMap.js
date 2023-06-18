@@ -946,6 +946,22 @@ const updateAnalysisSuccess = (state, action) => {
   };
 };
 
+const getPaginatedAnalysisForAnalysisSuccess = (state, action) => {
+  const { data } = action.payload;
+
+  const paramsArray = action.payload.url.split('&');
+  const paramType = paramsArray.filter(param => param.includes('type'));
+  const type = paramType[0].split('=')[1];
+
+  const newData = {
+    ...state.analysisList[type],
+    next: data.next,
+    results: [...state.analysisList[type].results, ...data.results],
+  };
+
+  return { ...state, analysisList: { ...state.analysisList, [type]: newData } };
+};
+
 const projectMapReducer = createReducer(initialState, {
   [Types.GET_PROJECT_THEMES_SUCCESS]: getProjectThemesSuccess,
   [Types.GET_PROJECT_THEME_LAYERS_SUCCESS]: getProjectThemeLayersSuccess,
@@ -1010,6 +1026,8 @@ const projectMapReducer = createReducer(initialState, {
   [Types.SET_SELECTED_ANALYSIS]: setSelectedAnalysis,
   [Types.UPDATE_ANALYSIS_SUCCESS]: updateAnalysisSuccess,
   [Types.DELETE_ANALYSIS_SUCCESS]: deleteAnalysisSuccess,
+  [Types.GET_PAGINATED_ANALYSIS_FOR_ANALYSIS_SUCCESS]:
+    getPaginatedAnalysisForAnalysisSuccess,
 });
 
 export default projectMapReducer;

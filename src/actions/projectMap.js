@@ -194,6 +194,10 @@ export const { Types, Creators } = createActions(
     deleteAnalysisFailure: null,
 
     setSelectedAnalysis: ['payload'],
+
+    getPaginatedAnalysisForAnalysisRequest: ['params'],
+    getPaginatedAnalysisForAnalysisSuccess: ['payload'],
+    getPaginatedAnalysisForAnalysisFailure: ['payload'],
   },
   { prefix: 'projectMap/' },
 );

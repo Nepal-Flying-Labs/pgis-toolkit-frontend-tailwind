@@ -101,7 +101,6 @@ export default function Results() {
             selectedAnalysis: data,
           }),
         );
-        console.log(data);
         dispatch(
           downloadProximityAnalysisRequest({ proximity_analysis_id: data.id }),
         );

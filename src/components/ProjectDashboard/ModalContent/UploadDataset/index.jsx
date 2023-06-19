@@ -88,6 +88,14 @@ export default function UploadDataset() {
         latlngOptions: [],
         source: '',
       };
+      if (extension === 'shp') {
+        dispatch(
+          toastActions.error({
+            message: 'Shapefiles can only be uploaded in zip file format',
+          }),
+        );
+        return;
+      }
       if (extension === 'csv') {
         getCSVHeaders(file).then(headers => {
           const latlngOptions = headers.map((item, idx) => ({
@@ -204,7 +212,7 @@ export default function UploadDataset() {
       >
         <Dropzone
           label="Please upload your datasets here. It supports multiple data uploads at a time."
-          accept=".zip, .geojson, .csv, .gpkg"
+          accept=".zip, .ZIP, .geojson, .csv, .gpkg .GEOJSON, .shp"
           multiple
           onChange={handleUpload}
         />

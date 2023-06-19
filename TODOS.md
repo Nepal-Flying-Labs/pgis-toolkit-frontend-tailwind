@@ -136,3 +136,6 @@
 ### ISSUES
 - [ ] zoom to selected road on initial load not working
 - [ ] dropdown option hide issue
+
+- [x] user upload GEOJSON
+- [ ] optimal route analysis message

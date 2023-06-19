@@ -40,6 +40,7 @@ import {
   deleteDataQuery,
   getAnalysisTypeList,
   updateAnalysis,
+  getPaginatedAnalysis,
 } from '@Services/projectMap';
 import projectMapActions, { Types } from '@Actions/projectMap';
 import commonActions from '@Actions/common';
@@ -788,6 +789,20 @@ export function* deleteAnalysisRequest({ id, payload }) {
   }
 }
 
+export function* getPaginatedAnalysisForAnalysisRequest({ params }) {
+  try {
+    const response = yield call(getPaginatedAnalysis, params);
+    yield put(
+      projectMapActions.getPaginatedAnalysisForAnalysisSuccess({
+        data: response.data,
+        url: params,
+      }),
+    );
+  } catch (error) {
+    yield put(projectMapActions.getPaginatedAnalysisForAnalysisFailure());
+  }
+}
+
 function* projectMapWatcher() {
   yield takeLatest(
     Types.GET_PROJECT_THEMES_REQUEST,
@@ -944,6 +959,10 @@ function* projectMapWatcher() {
   yield takeLatest(
     Types.DELETE_ANALYSIS_REQUEST,
     withLoader(withErrorHandler(deleteAnalysisRequest)),
+  );
+  yield takeLatest(
+    Types.GET_PAGINATED_ANALYSIS_FOR_ANALYSIS_REQUEST,
+    withLoader(withErrorHandler(getPaginatedAnalysisForAnalysisRequest)),
   );
 }
 

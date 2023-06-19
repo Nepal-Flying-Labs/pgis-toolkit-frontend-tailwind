@@ -1,3 +1,4 @@
+/* eslint-disable react/self-closing-comp */
 /* eslint-disable react/no-array-index-key */
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
@@ -9,6 +10,8 @@ import Button from '@Components/common/Button';
 import LayerAccordion from '@Components/common/SkeletonLoader/LayerAccordion';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { analysisTypes } from '@src/constants/analysis';
+import useInfiniteLoading from '@Components/common/ScrollPagination/index';
+import AnalysisSkeleton from '@Components/common/SkeletonLoader/AnalysisSkeleton';
 import NoAnalysisYet from './NoAnalysisYet';
 import Accordion from './Accordion';
 import IndividualCard from './IndividualCard';
@@ -42,10 +45,62 @@ export default function AnalysisSection() {
     if (analysisList) return;
     analysisTypes.forEach(analysis => {
       dispatch(
-        getAnalysisTypeListRequest({ project_id: projectId, type: analysis }),
+        getAnalysisTypeListRequest({
+          project_id: projectId,
+          type: analysis,
+          page: 1,
+          limit: 4,
+        }),
       );
     });
   }, [dispatch, projectId, analysisList]);
+
+  const onScrollEndInteractBuffer = () => {
+    if (analysisList?.buffer.next !== null) {
+      const url =
+        analysisList?.buffer?.next && new URL(analysisList?.buffer?.next);
+      dispatch(
+        ProjectMapCreators.getPaginatedAnalysisForAnalysisRequest(url?.search),
+      );
+    }
+  };
+
+  const onScrollEndInteractProximity = () => {
+    if (analysisList?.proximity.next !== null) {
+      const url =
+        analysisList?.proximity?.next && new URL(analysisList?.proximity?.next);
+      dispatch(
+        ProjectMapCreators.getPaginatedAnalysisForAnalysisRequest(url?.search),
+      );
+    }
+  };
+
+  const onScrollEndInteractOptimum = () => {
+    if (analysisList?.optimum_route.next !== null) {
+      const url =
+        analysisList?.optimum_route?.next &&
+        new URL(analysisList?.optimum_route?.next);
+      dispatch(
+        ProjectMapCreators.getPaginatedAnalysisForAnalysisRequest(url?.search),
+      );
+    }
+  };
+
+  const { lastLogElementRef: proximity } = useInfiniteLoading(
+    onScrollEndInteractProximity,
+  );
+  const { lastLogElementRef: buffer } = useInfiniteLoading(
+    onScrollEndInteractBuffer,
+  );
+  const { lastLogElementRef: optimum } = useInfiniteLoading(
+    onScrollEndInteractOptimum,
+  );
+
+  const ref = {
+    buffer,
+    proximity,
+    optimum_route: optimum,
+  };
 
   if (isLoading)
     return (
@@ -110,6 +165,12 @@ export default function AnalysisSection() {
                       data={{ ...item, analysisType: key }}
                     />
                   ))}
+                  <div className="infinite-loader-red" ref={ref[key]}>
+                    {' '}
+                  </div>
+                  {analysisList[key].next !== null && (
+                    <AnalysisSkeleton itemNumber={4} />
+                  )}
                 </div>
               }
             />

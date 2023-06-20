@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { analysisHeaderHeight } from '@src/constants';
@@ -9,14 +9,18 @@ import Select from '@Components/common/Select/index';
 import { Creators, Types } from '@Actions/bufferAnalysis';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import { Creators as AnalysisCreators } from '@Actions/analysis';
-// import Chip from '@Components/common/Chip';
-// import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 import IconButton from '@Components/common/IconButton/index';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
+import { selectedRadiusColumnSelector } from '@Selectors/bufferAnalysis';
 import LayerContent from './OriginPointContents/LayerContent';
 
-const { setDataInputState, applyBufferAnalysisRequest, copyFeaturesRequest } =
-  Creators;
+const {
+  setDataInputState,
+  applyBufferAnalysisRequest,
+  copyFeaturesRequest,
+  getLayerAttributeFieldsRequest,
+  handleRadiusColumnSelect,
+} = Creators;
 
 const { setSelectedInfo } = AnalysisCreators;
 
@@ -56,19 +60,35 @@ export default function DataInput() {
   const poiLayers = useSelector(state => state.bufferAnalysis.poiLayers);
 
   const selectedInfo = useSelector(state => state.analysis.selectedInfo);
+  const selectedLayerAttributeFields = useSelector(
+    state => state.bufferAnalysis.selectedLayerAttributeFields,
+  );
+  const selectedRadiusColumn = useSelector(selectedRadiusColumnSelector);
 
   const loading = useSelector(state =>
     checkIfLoading(state, [Types.APPLY_BUFFER_ANALYSIS_REQUEST]),
   );
 
+  useEffect(() => {
+    if (!selectedLayer) return;
+    dispatch(getLayerAttributeFieldsRequest({ layer: selectedLayer.id }));
+  }, [dispatch, selectedLayer]);
+
   const handleApply = () => {
-    if (!selectedLayer || !bufferRadius || !outputName) {
+    if (
+      !selectedLayer ||
+      !outputName ||
+      (!bufferRadius && !selectedRadiusColumn)
+    ) {
       const errors = [];
       if (!selectedLayer) {
         errors.push('selectedLayer');
       }
       if (!bufferRadius) {
         errors.push('bufferRadius');
+      }
+      if (!selectedRadiusColumn) {
+        errors.push('selectedRadiusColumn');
       }
       if (!outputName) {
         errors.push('outputName');
@@ -172,6 +192,8 @@ export default function DataInput() {
                           bufferRadius: value,
                         }),
                       );
+                      // reset radius column input on radius input
+                      dispatch(handleRadiusColumnSelect(null));
                     }}
                     placeholder="Buffer Radius"
                   />
@@ -190,16 +212,39 @@ export default function DataInput() {
                     />
                   </div>
                 </div>
-                {error.includes('bufferRadius') && (
-                  <FormErrorMessage message="Required Field" />
-                )}
               </div>
-              <hr />
+
+              <div className="naxatw-my-[28px] naxatw-flex naxatw-items-center">
+                <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
+                <p className="naxatw-mx-3 naxatw-text-sm">or</p>
+                <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
+              </div>
+
               <div className="naxatw-space-y-2">
                 <label className="naxatw-label">Radius Column</label>
-                <Select placeholder="Select column" />
+                <Select
+                  placeholder="Select column"
+                  options={selectedLayerAttributeFields}
+                  labelKey="name"
+                  valueKey="id"
+                  selected={selectedRadiusColumn?.name}
+                  onChange={selectedItem => {
+                    dispatch(handleRadiusColumnSelect(selectedItem.id));
+                    // reset radius input on radius column select
+                    dispatch(
+                      setDataInputState({
+                        bufferRadius: '',
+                      }),
+                    );
+                  }}
+                />
               </div>
             </div>
+
+            {(error.includes('bufferRadius') ||
+              error.includes('selectedRadiusColumn')) && (
+              <FormErrorMessage message="Required Field" />
+            )}
 
             <div className="naxatw-flex naxatw-items-center naxatw-gap-x-4 naxatw-mt-5 naxatw-p-2">
               <input

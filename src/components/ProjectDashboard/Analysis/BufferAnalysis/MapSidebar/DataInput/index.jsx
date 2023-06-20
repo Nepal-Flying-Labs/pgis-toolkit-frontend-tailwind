@@ -106,11 +106,17 @@ export default function DataInput() {
     const payloadData = {
       layer: selectedLayer.id,
       dissolve_output: dissolveOutput,
-      radius: radiusUnit === 'kilometer' ? bufferRadius * 1000 : bufferRadius,
       name: outputName,
       project: projectId,
       analysis_id: analysisId,
     };
+    if (bufferRadius) {
+      payloadData.radius =
+        radiusUnit === 'kilometer' ? bufferRadius * 1000 : bufferRadius;
+    }
+    if (selectedRadiusColumn) {
+      payloadData.radius_col = selectedRadiusColumn.name;
+    }
     const poiLayersIds = poiLayers
       .filter(layer => layer.checked)
       .map(layer => layer.id);

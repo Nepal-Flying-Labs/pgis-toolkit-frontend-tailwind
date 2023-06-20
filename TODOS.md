@@ -141,6 +141,6 @@
 - [ ] optimal route analysis message
 
 - [x] radius column
+- [x] show manage attribute on layer add
 - [ ] arrow scroll to bottom in analysis sidebar 
-- [ ] show manage attribute on layer add
 - [ ] scale select option in map export section 

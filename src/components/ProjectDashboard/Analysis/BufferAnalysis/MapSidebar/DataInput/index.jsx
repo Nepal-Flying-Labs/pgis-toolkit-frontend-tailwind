@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { analysisHeaderHeight } from '@src/constants';
+import useScrollToBottom from '@Hooks/useScrollToBottom';
 import toastActions from '@Actions/toast';
 import Button from '@Components/common/Button';
 import Select from '@Components/common/Select/index';
@@ -34,7 +35,11 @@ function Container({ children }) {
   return <div className="naxatw-space-y-2">{children}</div>;
 }
 
+const scrollElementId = 'scroll-container';
+
 export default function DataInput() {
+  const { scrollContainerRef, scrollContentRef, showButton } =
+    useScrollToBottom({ elementId: scrollElementId });
   const [error, setError] = useState([]);
   // const [radiusUnit, setRadiusUnit] = useState('meter');
   const dispatch = useDispatch();
@@ -127,154 +132,42 @@ export default function DataInput() {
   return (
     <div className=" naxatw-h-full">
       <div
-        className="naxatw-flex naxatw-flex-col naxatw-gap-y-5 naxatw-overflow-y-auto scrollbar -naxatw-mr-[0.7125rem] naxatw-pr-[0.25rem]"
+        className="naxatw-overflow-y-auto scrollbar -naxatw-mr-[0.7125rem]
+          naxatw-pr-[0.25rem] naxatw-relative"
         style={{
           height: `calc(100vh - ${analysisHeaderHeight} - 7.5rem)`,
         }}
+        id={scrollElementId}
+        ref={scrollContainerRef}
       >
-        <Container>
-          <label className="naxatw-label naxatw-flex naxatw-items-center">
-            Origin
+        <div
+          ref={scrollContentRef}
+          className="naxatw-flex naxatw-flex-col naxatw-gap-y-5"
+        >
+          {showButton && (
             <div
-              onMouseOver={() => dispatch(setSelectedInfo('origin'))}
-              // onMouseOut={() => dispatch(setSelectedInfo(null))}
-              onBlur={() => {}}
-              onFocus={() => {}}
+              className="naxatw-fixed naxatw-bottom-[6.2rem] naxatw-left-[18.5rem] naxatw-bg-white
+            naxatw-p-1.5 naxatw-rounded-full naxatw-shadow-3xl naxatw-border naxatw-border-grey-300
+            hover:naxatw-bg-grey-100 naxatw-z-50"
             >
               <IconButton
-                className="material-symbols-outlined naxatw-text-[1.2rem]"
-                name="info"
-                title="Info"
-                // onClick={() => dispatch(setSelectedInfo('result'))}
+                className="material-symbols-outlined naxatw-text-[1.2rem] naxatw-text-secondary-500"
+                name="arrow_downward"
+                title="Scroll to Bottom"
+                onClick={() =>
+                  scrollContainerRef.current.scrollTo({
+                    behavior: 'smooth',
+                    top: 9999,
+                  })
+                }
               />
             </div>
-          </label>
-
-          <Container>
-            <LayerContent />
-          </Container>
-
-          {error.includes('originGeojson') && (
-            <FormErrorMessage message="Required Field" />
           )}
-        </Container>
-
-        <Container>
-          <div>
-            <div className="naxatw-space-y-6 naxatw-p-3 naxatw-border naxatw-rounded-md naxatw-border-[#D7D7D7]">
-              <div className="naxatw-space-y-2 ">
-                <label className="naxatw-label naxatw-flex naxatw-items-center">
-                  Buffer Radius
-                  <div
-                    onMouseOver={() => {
-                      if (selectedInfo === 'bufferRadius') return;
-                      dispatch(setSelectedInfo('bufferRadius'));
-                    }}
-                    // onMouseOut={() => dispatch(setSelectedInfo(null))}
-                    onBlur={() => {}}
-                    onFocus={() => {}}
-                  >
-                    <IconButton
-                      className="material-symbols-outlined naxatw-text-[1.2rem]"
-                      name="info"
-                      title="Info"
-                      // onClick={() => dispatch(setSelectedInfo('result'))}
-                    />
-                  </div>
-                </label>
-                <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2 ">
-                  <input
-                    type="number"
-                    className="naxatw-input naxatw-basis-2/4"
-                    min="1.0"
-                    max="5000.0"
-                    step={0.1}
-                    value={bufferRadius || ''}
-                    onChange={e => {
-                      const { value } = e.target;
-                      if (value < 1 && value > 5000) return;
-                      dispatch(
-                        setDataInputState({
-                          bufferRadius: value,
-                        }),
-                      );
-                      // reset radius column input on radius input
-                      dispatch(handleRadiusColumnSelect(null));
-                    }}
-                    placeholder="Buffer Radius"
-                  />
-                  <div className="naxatw-basis-2/4">
-                    <Select
-                      className="naxatw-bg-white naxatw-h-[48px] naxatw-px-2"
-                      options={radiusOptions}
-                      dataKey="label"
-                      selected={
-                        radiusOptions.filter(opt => opt.value === radiusUnit)[0]
-                          .label
-                      }
-                      onChange={item =>
-                        dispatch(setDataInputState({ radiusUnit: item.value }))
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="naxatw-my-[28px] naxatw-flex naxatw-items-center">
-                <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
-                <p className="naxatw-mx-3 naxatw-text-sm">or</p>
-                <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
-              </div>
-
-              <div className="naxatw-space-y-2">
-                <label className="naxatw-label">Radius Column</label>
-                <Select
-                  placeholder="Select column"
-                  options={selectedLayerAttributeFields}
-                  labelKey="name"
-                  valueKey="id"
-                  selected={selectedRadiusColumn?.name}
-                  onChange={selectedItem => {
-                    dispatch(handleRadiusColumnSelect(selectedItem.id));
-                    // reset radius input on radius column select
-                    dispatch(
-                      setDataInputState({
-                        bufferRadius: '',
-                      }),
-                    );
-                  }}
-                />
-              </div>
-            </div>
-
-            {(error.includes('bufferRadius') ||
-              error.includes('selectedRadiusColumn')) && (
-              <FormErrorMessage message="Required Field" />
-            )}
-
-            <div className="naxatw-flex naxatw-items-center naxatw-gap-x-4 naxatw-mt-5 naxatw-p-2">
-              <input
-                id="dissolve-output"
-                type="checkbox"
-                className="naxatw-h-4 naxatw-w-4 naxatw-accent-grey-800"
-                checked={dissolveOutput}
-                onChange={() => {
-                  dispatch(
-                    setDataInputState({
-                      dissolveOutput: !dissolveOutput,
-                    }),
-                  );
-                }}
-              />
-
-              <label
-                htmlFor="dissolve-output"
-                className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-flex naxatw-items-center"
-              >
-                Dissolve Output (optional)
-              </label>
+          <Container>
+            <label className="naxatw-label naxatw-flex naxatw-items-center">
+              Origin
               <div
-                onMouseOver={() => dispatch(setSelectedInfo('dissolveOutput'))}
+                onMouseOver={() => dispatch(setSelectedInfo('origin'))}
                 // onMouseOut={() => dispatch(setSelectedInfo(null))}
                 onBlur={() => {}}
                 onFocus={() => {}}
@@ -286,44 +179,188 @@ export default function DataInput() {
                   // onClick={() => dispatch(setSelectedInfo('result'))}
                 />
               </div>
-            </div>
-          </div>
-        </Container>
+            </label>
 
-        <Container>
-          <label className="naxatw-label naxatw-flex naxatw-items-center">
-            Output Name{' '}
-            <div
-              onMouseOver={() => dispatch(setSelectedInfo('result'))}
-              // onMouseOut={() => dispatch(setSelectedInfo(null))}
-              onBlur={() => {}}
-              onFocus={() => {}}
-            >
-              <IconButton
-                className="material-symbols-outlined naxatw-text-[1.2rem]"
-                name="info"
-                title="Info"
-                // onClick={() => dispatch(setSelectedInfo('result'))}
-              />
+            <Container>
+              <LayerContent />
+            </Container>
+
+            {error.includes('originGeojson') && (
+              <FormErrorMessage message="Required Field" />
+            )}
+          </Container>
+
+          <Container>
+            <div>
+              <div className="naxatw-space-y-6 naxatw-p-3 naxatw-border naxatw-rounded-md naxatw-border-[#D7D7D7]">
+                <div className="naxatw-space-y-2 ">
+                  <label className="naxatw-label naxatw-flex naxatw-items-center">
+                    Buffer Radius
+                    <div
+                      onMouseOver={() => {
+                        if (selectedInfo === 'bufferRadius') return;
+                        dispatch(setSelectedInfo('bufferRadius'));
+                      }}
+                      // onMouseOut={() => dispatch(setSelectedInfo(null))}
+                      onBlur={() => {}}
+                      onFocus={() => {}}
+                    >
+                      <IconButton
+                        className="material-symbols-outlined naxatw-text-[1.2rem]"
+                        name="info"
+                        title="Info"
+                        // onClick={() => dispatch(setSelectedInfo('result'))}
+                      />
+                    </div>
+                  </label>
+                  <div className="naxatw-flex naxatw-items-center naxatw-gap-x-2 ">
+                    <input
+                      type="number"
+                      className="naxatw-input naxatw-basis-2/4"
+                      min="1.0"
+                      max="5000.0"
+                      step={0.1}
+                      value={bufferRadius || ''}
+                      onChange={e => {
+                        const { value } = e.target;
+                        if (value < 1 && value > 5000) return;
+                        dispatch(
+                          setDataInputState({
+                            bufferRadius: value,
+                          }),
+                        );
+                        // reset radius column input on radius input
+                        dispatch(handleRadiusColumnSelect(null));
+                      }}
+                      placeholder="Buffer Radius"
+                    />
+                    <div className="naxatw-basis-2/4">
+                      <Select
+                        className="naxatw-bg-white naxatw-h-[48px] naxatw-px-2"
+                        options={radiusOptions}
+                        dataKey="label"
+                        selected={
+                          radiusOptions.filter(
+                            opt => opt.value === radiusUnit,
+                          )[0].label
+                        }
+                        onChange={item =>
+                          dispatch(
+                            setDataInputState({ radiusUnit: item.value }),
+                          )
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="naxatw-my-[28px] naxatw-flex naxatw-items-center">
+                  <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
+                  <p className="naxatw-mx-3 naxatw-text-sm">or</p>
+                  <hr className="naxatw-h-px naxatw-w-full naxatw-bg-grey-300 naxatw-border-0" />
+                </div>
+
+                <div className="naxatw-space-y-2">
+                  <label className="naxatw-label">Radius Column</label>
+                  <Select
+                    placeholder="Select column"
+                    options={selectedLayerAttributeFields}
+                    labelKey="name"
+                    valueKey="id"
+                    selected={selectedRadiusColumn?.name}
+                    onChange={selectedItem => {
+                      dispatch(handleRadiusColumnSelect(selectedItem.id));
+                      // reset radius input on radius column select
+                      dispatch(
+                        setDataInputState({
+                          bufferRadius: '',
+                        }),
+                      );
+                    }}
+                  />
+                </div>
+              </div>
+
+              {(error.includes('bufferRadius') ||
+                error.includes('selectedRadiusColumn')) && (
+                <FormErrorMessage message="Required Field" />
+              )}
+
+              <div className="naxatw-flex naxatw-items-center naxatw-gap-x-4 naxatw-mt-5 naxatw-p-2">
+                <input
+                  id="dissolve-output"
+                  type="checkbox"
+                  className="naxatw-h-4 naxatw-w-4 naxatw-accent-grey-800"
+                  checked={dissolveOutput}
+                  onChange={() => {
+                    dispatch(
+                      setDataInputState({
+                        dissolveOutput: !dissolveOutput,
+                      }),
+                    );
+                  }}
+                />
+
+                <label
+                  htmlFor="dissolve-output"
+                  className="naxatw-text-body-lg naxatw-text-grey-800 naxatw-flex naxatw-items-center"
+                >
+                  Dissolve Output (optional)
+                </label>
+                <div
+                  onMouseOver={() =>
+                    dispatch(setSelectedInfo('dissolveOutput'))
+                  }
+                  // onMouseOut={() => dispatch(setSelectedInfo(null))}
+                  onBlur={() => {}}
+                  onFocus={() => {}}
+                >
+                  <IconButton
+                    className="material-symbols-outlined naxatw-text-[1.2rem]"
+                    name="info"
+                    title="Info"
+                    // onClick={() => dispatch(setSelectedInfo('result'))}
+                  />
+                </div>
+              </div>
             </div>
-          </label>
-          <input
-            type="text"
-            className="naxatw-input"
-            placeholder="Enter Output Name"
-            value={outputName}
-            onChange={e => {
-              dispatch(
-                setDataInputState({
-                  outputName: e.target.value,
-                }),
-              );
-            }}
-          />
-          {error.includes('outputName') && (
-            <FormErrorMessage message="Required Field" />
-          )}
-        </Container>
+          </Container>
+
+          <Container>
+            <label className="naxatw-label naxatw-flex naxatw-items-center">
+              Output Name{' '}
+              <div
+                onMouseOver={() => dispatch(setSelectedInfo('result'))}
+                // onMouseOut={() => dispatch(setSelectedInfo(null))}
+                onBlur={() => {}}
+                onFocus={() => {}}
+              >
+                <IconButton
+                  className="material-symbols-outlined naxatw-text-[1.2rem]"
+                  name="info"
+                  title="Info"
+                  // onClick={() => dispatch(setSelectedInfo('result'))}
+                />
+              </div>
+            </label>
+            <input
+              type="text"
+              className="naxatw-input"
+              placeholder="Enter Output Name"
+              value={outputName}
+              onChange={e => {
+                dispatch(
+                  setDataInputState({
+                    outputName: e.target.value,
+                  }),
+                );
+              }}
+            />
+            {error.includes('outputName') && (
+              <FormErrorMessage message="Required Field" />
+            )}
+          </Container>
+        </div>
       </div>
 
       <div

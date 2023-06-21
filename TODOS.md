@@ -139,3 +139,8 @@
 
 - [x] user upload GEOJSON
 - [ ] optimal route analysis message
+
+- [x] radius column
+- [x] show manage attribute on layer add
+- [x] arrow scroll to bottom in analysis sidebar 
+- [ ] scale select option in map export section 

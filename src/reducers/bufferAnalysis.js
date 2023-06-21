@@ -53,6 +53,7 @@ const initialState = {
   },
   selectedLayer: null,
   selectedCategory: null,
+  selectedLayerAttributeFields: [],
 };
 
 const setBufferAnalysisState = (state, action) => ({
@@ -337,6 +338,25 @@ const getAnalysisResultDetailSuccess = (state, action) =>
     Object.assign(analysisResult, resultsData);
   });
 
+const getLayerAttributeFieldsSuccess = (state, action) => {
+  const selectedLayerAttributeFields = action.payload;
+  return {
+    ...state,
+    selectedLayerAttributeFields,
+  };
+};
+
+const handleRadiusColumnSelect = (state, action) => {
+  const id = action.payload;
+  const selectedLayerAttributeFields = state.selectedLayerAttributeFields.map(
+    item => ({ ...item, checked: item.id === id }),
+  );
+  return {
+    ...state,
+    selectedLayerAttributeFields,
+  };
+};
+
 const bufferAnalysisReducer = createReducer(initialState, {
   [Types.SET_BUFFER_ANALYSIS_STATE]: setBufferAnalysisState,
   [Types.SET_FILTER_STATE]: setFilterState,
@@ -358,6 +378,8 @@ const bufferAnalysisReducer = createReducer(initialState, {
   [Types.GET_ANALYSIS_RESULT_LIST_SUCCESS]: getAnalysisResultListSuccess,
   [Types.GET_ANALYSIS_RESULT_DETAIL_SUCCESS]: getAnalysisResultDetailSuccess,
   [Types.DELETE_BUFFER_RESULT_SUCCESS]: deleteBufferResultSuccess,
+  [Types.GET_LAYER_ATTRIBUTE_FIELDS_SUCCESS]: getLayerAttributeFieldsSuccess,
+  [Types.HANDLE_RADIUS_COLUMN_SELECT]: handleRadiusColumnSelect,
 });
 
 export default bufferAnalysisReducer;

@@ -11,6 +11,8 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import Chip from '@Components/common/Chip';
 import IconButton from '@Components/common/IconButton/index';
 import CustomNumberInput from '@Components/common/CustomNumberInput/index';
+import useScrollToBottom from '@Hooks/useScrollToBottom';
+import ScrollToBottom from '@Components/common/ScrollToBottom';
 import MapContent from './OriginPointContents/MapContent';
 import SearchContent from './OriginPointContents/SearchContent';
 import LayerContent from './OriginPointContents/LayerContent';
@@ -50,7 +52,15 @@ function Container({ children }) {
   return <div className="naxatw-space-y-2">{children}</div>;
 }
 
+const scrollElementId = 'scroll-container';
+
 export default function DataInput() {
+  const {
+    scrollContainerRef,
+    scrollContentRef,
+    showButton,
+    handleButtonClick,
+  } = useScrollToBottom({ elementId: scrollElementId });
   const { projectId, analysisId } = useParams();
   const selectedRoadNetworkId = useSelector(
     state => state.routeAnalysis.selectedRoadNetworkId,
@@ -121,151 +131,159 @@ export default function DataInput() {
   return (
     <div className=" naxatw-h-full">
       <div
-        className="naxatw-flex naxatw-flex-col naxatw-gap-y-5 naxatw-overflow-y-auto scrollbar"
+        className="naxatw-overflow-y-auto scrollbar -naxatw-mr-[0.7125rem]
+          naxatw-pr-[0.25rem] naxatw-relative"
         style={{
           height: `calc(100vh - ${analysisHeaderHeight} - 7.5rem)`,
         }}
+        id={scrollElementId}
+        ref={scrollContainerRef}
       >
-        <Container>
-          <label className="naxatw-label naxatw-flex naxatw-items-center">
-            Mode of Transport{' '}
-            <div
-              onMouseOver={() => dispatch(setSelectedInfo('modeOfTransport'))}
-              // onMouseOut={() => dispatch(setSelectedInfo(null))}
-              onBlur={() => {}}
-              onFocus={() => {}}
-            >
-              <IconButton
-                className="material-symbols-outlined naxatw-text-[1.2rem]"
-                name="info"
-                title="Info"
-                // onClick={() => dispatch(setSelectedInfo('result'))}
-              />
-            </div>
-          </label>
-          <div className="naxatw-flex naxatw-space-x-2">
-            {modeOfTransportData.map(({ label, value, icon }) => (
-              <Chip
-                key={value}
-                active={selectedModeOfTransport === value}
-                label={label}
-                iconClassName="material-symbols-outlined"
-                iconLeft={icon}
-                onClick={() => {
-                  dispatch(
-                    setDataInputState({
-                      selectedModeOfTransport: value,
-                    }),
-                  );
-                }}
-              />
-            ))}
-          </div>
-        </Container>
-
-        <Container>
-          <label className="naxatw-label naxatw-flex naxatw-items-center">
-            Origin & Destination Point
-            <div
-              onMouseOver={() => dispatch(setSelectedInfo('origin'))}
-              // onMouseOut={() => dispatch(setSelectedInfo(null))}
-              onBlur={() => {}}
-              onFocus={() => {}}
-            >
-              <IconButton
-                className="material-symbols-outlined naxatw-text-[1.2rem]"
-                name="info"
-                title="Info"
-                // onClick={() => dispatch(setSelectedInfo('result'))}
-              />
-            </div>
-          </label>
-          <div className="naxatw-flex naxatw-space-x-2">
-            {originPointData.map(({ label, value, icon }) => (
-              <Chip
-                key={value}
-                active={originPointType === value}
-                label={label}
-                iconClassName="material-symbols-outlined"
-                iconLeft={icon}
-                onClick={() => {
-                  dispatch(
-                    setDataInputState({
-                      originPointType: value,
-                    }),
-                  );
-                }}
-              />
-            ))}
-          </div>
-
-          <Container>{getOriginPointsContent(originPointType)}</Container>
-        </Container>
-
-        <Container>
-          <label className="naxatw-label naxatw-flex naxatw-items-center">
-            Obstacles
-            <div
-              onMouseOver={() => dispatch(setSelectedInfo('obstacle'))}
-              // onMouseOut={() => dispatch(setSelectedInfo(null))}
-              onBlur={() => {}}
-              onFocus={() => {}}
-            >
-              <IconButton
-                className="material-symbols-outlined naxatw-text-[1.2rem]"
-                name="info"
-                title="Info"
-                // onClick={() => dispatch(setSelectedInfo('result'))}
-              />
-            </div>
-          </label>
-          <div
-            className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg
-              naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem] naxatw-bg-white"
-          >
-            <ul>
-              {obstacleLayers.map(item => (
-                <li
-                  key={item.id}
-                  role="presentation"
-                  className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
-                      hover:naxatw-bg-grey-100 naxatw-flex naxatw-items-center"
-                  onClick={() => {}}
-                >
-                  <input
-                    id={item.id}
-                    type="checkbox"
-                    className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
-                        naxatw-accent-grey-800 naxatw-cursor-pointer"
-                    checked={item.checked}
-                    onChange={e => {
-                      const { id, checked } = e.target;
-                      dispatch(
-                        handleCheckbox({
-                          stateName: 'obstacleLayers',
-                          id,
-                          checked,
-                        }),
-                      );
-                    }}
-                  />
-                  <label htmlFor={item.id} className="naxatw-cursor-pointer">
-                    {item.name}
-                  </label>
-                </li>
+        <div
+          ref={scrollContentRef}
+          className="naxatw-flex naxatw-flex-col naxatw-gap-y-5"
+        >
+          {showButton && <ScrollToBottom handleClick={handleButtonClick} />}
+          <Container>
+            <label className="naxatw-label naxatw-flex naxatw-items-center">
+              Mode of Transport{' '}
+              <div
+                onMouseOver={() => dispatch(setSelectedInfo('modeOfTransport'))}
+                // onMouseOut={() => dispatch(setSelectedInfo(null))}
+                onBlur={() => {}}
+                onFocus={() => {}}
+              >
+                <IconButton
+                  className="material-symbols-outlined naxatw-text-[1.2rem]"
+                  name="info"
+                  title="Info"
+                  // onClick={() => dispatch(setSelectedInfo('result'))}
+                />
+              </div>
+            </label>
+            <div className="naxatw-flex naxatw-space-x-2">
+              {modeOfTransportData.map(({ label, value, icon }) => (
+                <Chip
+                  key={value}
+                  active={selectedModeOfTransport === value}
+                  label={label}
+                  iconClassName="material-symbols-outlined"
+                  iconLeft={icon}
+                  onClick={() => {
+                    dispatch(
+                      setDataInputState({
+                        selectedModeOfTransport: value,
+                      }),
+                    );
+                  }}
+                />
               ))}
-            </ul>
-          </div>
-        </Container>
+            </div>
+          </Container>
 
-        <Container>
-          <div>
-            <label className="naxatw-label">Preferred alternative path</label>
-            <p className="naxatw-text-body-sm naxatw-mt-0.5">
-              (Values between 1 and 5)
-            </p>
-          </div>
-          {/* <input
+          <Container>
+            <label className="naxatw-label naxatw-flex naxatw-items-center">
+              Origin & Destination Point
+              <div
+                onMouseOver={() => dispatch(setSelectedInfo('origin'))}
+                // onMouseOut={() => dispatch(setSelectedInfo(null))}
+                onBlur={() => {}}
+                onFocus={() => {}}
+              >
+                <IconButton
+                  className="material-symbols-outlined naxatw-text-[1.2rem]"
+                  name="info"
+                  title="Info"
+                  // onClick={() => dispatch(setSelectedInfo('result'))}
+                />
+              </div>
+            </label>
+            <div className="naxatw-flex naxatw-space-x-2">
+              {originPointData.map(({ label, value, icon }) => (
+                <Chip
+                  key={value}
+                  active={originPointType === value}
+                  label={label}
+                  iconClassName="material-symbols-outlined"
+                  iconLeft={icon}
+                  onClick={() => {
+                    dispatch(
+                      setDataInputState({
+                        originPointType: value,
+                      }),
+                    );
+                  }}
+                />
+              ))}
+            </div>
+
+            <Container>{getOriginPointsContent(originPointType)}</Container>
+          </Container>
+
+          <Container>
+            <label className="naxatw-label naxatw-flex naxatw-items-center">
+              Obstacles
+              <div
+                onMouseOver={() => dispatch(setSelectedInfo('obstacle'))}
+                // onMouseOut={() => dispatch(setSelectedInfo(null))}
+                onBlur={() => {}}
+                onFocus={() => {}}
+              >
+                <IconButton
+                  className="material-symbols-outlined naxatw-text-[1.2rem]"
+                  name="info"
+                  title="Info"
+                  // onClick={() => dispatch(setSelectedInfo('result'))}
+                />
+              </div>
+            </label>
+            <div
+              className="naxatw-w-full naxatw-border naxatw-border-grey-400 naxatw-rounded-lg
+              naxatw-overflow-y-auto scrollbar naxatw-h-[11.25rem] naxatw-bg-white"
+            >
+              <ul>
+                {obstacleLayers.map(item => (
+                  <li
+                    key={item.id}
+                    role="presentation"
+                    className="naxatw-px-3 naxatw-py-2 naxatw-text-[15px] naxatw-text-grey-800 
+                      hover:naxatw-bg-grey-100 naxatw-flex naxatw-items-center"
+                    onClick={() => {}}
+                  >
+                    <input
+                      id={item.id}
+                      type="checkbox"
+                      className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4
+                        naxatw-accent-grey-800 naxatw-cursor-pointer"
+                      checked={item.checked}
+                      onChange={e => {
+                        const { id, checked } = e.target;
+                        dispatch(
+                          handleCheckbox({
+                            stateName: 'obstacleLayers',
+                            id,
+                            checked,
+                          }),
+                        );
+                      }}
+                    />
+                    <label htmlFor={item.id} className="naxatw-cursor-pointer">
+                      {item.name}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Container>
+
+          <Container>
+            <div>
+              <label className="naxatw-label">Preferred alternative path</label>
+              <p className="naxatw-text-body-sm naxatw-mt-0.5">
+                (Values between 1 and 5)
+              </p>
+            </div>
+            {/* <input
             type="number"
             className="naxatw-input"
             min="1"
@@ -281,35 +299,36 @@ export default function DataInput() {
               );
             }}
           /> */}
-          <CustomNumberInput
-            min={1}
-            max={5}
-            onChange={value => {
-              if (value < 1 || value > 5) return;
-              dispatch(
-                setDataInputState({
-                  alternativePaths: value,
-                }),
-              );
-            }}
-          />
-        </Container>
+            <CustomNumberInput
+              min={1}
+              max={5}
+              onChange={value => {
+                if (value < 1 || value > 5) return;
+                dispatch(
+                  setDataInputState({
+                    alternativePaths: value,
+                  }),
+                );
+              }}
+            />
+          </Container>
 
-        <Container>
-          <label className="naxatw-label">Output Name</label>
-          <input
-            type="text"
-            className="naxatw-input"
-            value={outputName}
-            onChange={e => {
-              dispatch(
-                setDataInputState({
-                  outputName: e.target.value,
-                }),
-              );
-            }}
-          />
-        </Container>
+          <Container>
+            <label className="naxatw-label">Output Name</label>
+            <input
+              type="text"
+              className="naxatw-input"
+              value={outputName}
+              onChange={e => {
+                dispatch(
+                  setDataInputState({
+                    outputName: e.target.value,
+                  }),
+                );
+              }}
+            />
+          </Container>
+        </div>
       </div>
 
       <div

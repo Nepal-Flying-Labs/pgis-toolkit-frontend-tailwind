@@ -12,6 +12,7 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import { Creators as AnalysisCreators } from '@Actions/analysis';
 import IconButton from '@Components/common/IconButton/index';
 import FormErrorMessage from '@Components/common/FormErrorMessage/index';
+import ScrollToBottom from '@Components/common/ScrollToBottom';
 import { selectedRadiusColumnSelector } from '@Selectors/bufferAnalysis';
 import LayerContent from './OriginPointContents/LayerContent';
 
@@ -38,8 +39,12 @@ function Container({ children }) {
 const scrollElementId = 'scroll-container';
 
 export default function DataInput() {
-  const { scrollContainerRef, scrollContentRef, showButton } =
-    useScrollToBottom({ elementId: scrollElementId });
+  const {
+    scrollContainerRef,
+    scrollContentRef,
+    showButton,
+    handleButtonClick,
+  } = useScrollToBottom({ elementId: scrollElementId });
   const [error, setError] = useState([]);
   // const [radiusUnit, setRadiusUnit] = useState('meter');
   const dispatch = useDispatch();
@@ -144,25 +149,7 @@ export default function DataInput() {
           ref={scrollContentRef}
           className="naxatw-flex naxatw-flex-col naxatw-gap-y-5"
         >
-          {showButton && (
-            <div
-              className="naxatw-fixed naxatw-bottom-[6.2rem] naxatw-left-[18.5rem] naxatw-bg-white
-            naxatw-p-1.5 naxatw-rounded-full naxatw-shadow-3xl naxatw-border naxatw-border-grey-300
-            hover:naxatw-bg-grey-100 naxatw-z-50"
-            >
-              <IconButton
-                className="material-symbols-outlined naxatw-text-[1.2rem] naxatw-text-secondary-500"
-                name="arrow_downward"
-                title="Scroll to Bottom"
-                onClick={() =>
-                  scrollContainerRef.current.scrollTo({
-                    behavior: 'smooth',
-                    top: 9999,
-                  })
-                }
-              />
-            </div>
-          )}
+          {showButton && <ScrollToBottom handleClick={handleButtonClick} />}
           <Container>
             <label className="naxatw-label naxatw-flex naxatw-items-center">
               Origin

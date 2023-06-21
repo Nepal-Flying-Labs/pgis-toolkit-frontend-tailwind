@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 function debounce(func, timeout = 300) {
   let timer;
@@ -32,9 +32,17 @@ export default function useScrollToBottom({ elementId = 'scroll-container' }) {
     };
   }, [elementId]);
 
+  const handleButtonClick = useCallback(() => {
+    scrollContainerRef.current.scrollTo({
+      behavior: 'smooth',
+      top: 9999,
+    });
+  }, []);
+
   return {
     scrollContainerRef,
     scrollContentRef,
     showButton: scrollContainerHeight < scrollContentHeight && !bottomTouched,
+    handleButtonClick,
   };
 }

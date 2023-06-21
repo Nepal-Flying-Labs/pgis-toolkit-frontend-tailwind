@@ -34,7 +34,7 @@ function GalleryCard({
 
   // const featureImage = featureImages.map(image => image.image || image.url);
 
-  // download image 
+  // download image
   const handleDownloadImage = imgSrc => {
     const fileNameArray = imgSrc?.split('/');
     const fileName = fileNameArray
@@ -88,9 +88,7 @@ function GalleryCard({
         dispatch(togglePromptDialog('delete-gallery'));
       },
     },
-    
   ];
-
 
   const handleCorousel = () => {
     corouselImages.map((ci, i) => {
@@ -106,7 +104,7 @@ function GalleryCard({
       role="button"
       tabIndex="0"
       className="naxatw-min-h-[260px] naxatw-max-h-[260px] naxatw-min-w-[215px] naxatw-max-w-[215px] naxatw-group hover:naxatw-cursor-pointer"
-      onClick={() => { 
+      onClick={() => {
         onCardClick(id);
       }}
     >

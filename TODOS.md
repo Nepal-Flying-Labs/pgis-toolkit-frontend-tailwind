@@ -144,3 +144,5 @@
 - [x] show manage attribute on layer add
 - [x] arrow scroll to bottom in analysis sidebar 
 - [ ] scale select option in map export section 
+
+- [ ] Plus button bounce issue

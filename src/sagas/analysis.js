@@ -46,6 +46,7 @@ import {
   getIndividualAnalysisDetail,
 } from '@Services/analysis';
 import removeObjectKeys from '@Utils/removeObjectKeys';
+import { boundaryLayerName } from '@src/constants/map';
 
 function getActionType(type) {
   switch (type) {
@@ -73,7 +74,13 @@ export function* copyLayerDataRequest({ payload }) {
         layers: Object.entries(layers).reduce(
           (obj, [key, val]) => ({
             ...obj,
-            [key]: val.map(item => ({ ...item, checked: false })),
+            [key]: val.map(item => ({
+              ...item,
+              // check boundary layer for buffer/proximity analysis
+              checked:
+                !analysisWithDataCleaning.includes(analysisType) &&
+                item.name === boundaryLayerName,
+            })),
           }),
           {},
         ),

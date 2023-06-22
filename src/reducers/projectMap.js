@@ -5,7 +5,10 @@ import * as chroma from 'chroma-js';
 import { parse } from 'wkt';
 import { produce } from 'immer';
 import { Types } from '@Actions/projectMap';
-import { defaultStyles } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import {
+  defaultStyles,
+  selectEffectColor,
+} from '@Components/common/OpenLayersComponent/helpers/styleUtils';
 import { boundaryLayerName } from '@src/constants/map';
 import { isEmpty } from '@Utils/commonUtils';
 // import { getAnalysisType } from '@src/constants/analysis';
@@ -468,10 +471,12 @@ const postAdvanceQuerySuccess = (state, action) => {
       checked: true,
       layerName,
       style: {
-        // ...defaultStyles,
         ...style,
         fillColor: randomColor,
-        lineColor: randomColor,
+        lineColor: selectEffectColor,
+        lineThickness: 8,
+        lineOpacity: 50,
+        fillOpacity: 100,
       },
       theme,
       layer,

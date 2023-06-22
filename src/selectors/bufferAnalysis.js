@@ -1,10 +1,11 @@
 import { createSelector } from 'reselect';
 
-export const analysisResultDataSelector = state =>
+const analysisResultDataSelector = state =>
   state.bufferAnalysis.results.analysisResults;
-
-export const selectedResultIdSelector = state =>
+const selectedResultIdSelector = state =>
   state.bufferAnalysis.results.selectedResultId;
+const selectedLayerAttributeFieldsSelector = state =>
+  state.bufferAnalysis.selectedLayerAttributeFields;
 
 export const chartDataSelector = createSelector(
   [analysisResultDataSelector, selectedResultIdSelector],
@@ -41,4 +42,10 @@ export const chartDataSelector = createSelector(
 
     return { poiChartData: totalPoiCountChartData, originCount };
   },
+);
+
+export const selectedRadiusColumnSelector = createSelector(
+  selectedLayerAttributeFieldsSelector,
+  selectedLayerAttributeFields =>
+    selectedLayerAttributeFields.find(item => item.checked),
 );

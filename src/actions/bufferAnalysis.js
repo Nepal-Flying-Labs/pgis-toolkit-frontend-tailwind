@@ -66,6 +66,12 @@ export const { Types, Creators } = createActions(
     deleteBufferResultRequest: ['id', 'payload'],
     deleteBufferResultSuccess: ['payload'],
     deleteBufferResultFailure: null,
+
+    getLayerAttributeFieldsRequest: ['params'],
+    getLayerAttributeFieldsSuccess: ['payload'],
+    getLayerAttributeFieldsFailure: null,
+
+    handleRadiusColumnSelect: ['payload'],
   },
   { prefix: 'bufferAnalysis/' },
 );

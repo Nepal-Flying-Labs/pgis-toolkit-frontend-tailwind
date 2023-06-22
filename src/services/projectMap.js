@@ -93,3 +93,7 @@ export const getAnalysisTypeList = params =>
 // update-analysis-item
 export const updateAnalysis = (id, payload) =>
   authenticated(api).patch(`/maps/analysis/${id}/`, payload);
+
+// getPaginatedAnalysis
+export const getPaginatedAnalysis = params =>
+  authenticated(api).get(`/maps/analysis_type_list/${params}`);

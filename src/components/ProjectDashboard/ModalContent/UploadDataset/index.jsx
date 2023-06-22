@@ -306,7 +306,7 @@ export default function UploadDataset() {
 
                   <div className="naxatw-space-y-2">
                     <div className="naxatw-space-y-2">
-                      <label className="naxatw-label">Category</label>
+                      <label className="naxatw-label">Category*</label>
                       <div className="naxatw-flex naxatw-gap-x-2 naxatw-items-center">
                         <Select
                           options={themes || []}

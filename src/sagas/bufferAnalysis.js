@@ -8,7 +8,11 @@ import {
 } from 'redux-saga/effects';
 import bufferAnalysisActions, { Types } from '@Actions/bufferAnalysis';
 import commonActions from '@Actions/common';
-import { getFeatureCollection, updateLayer } from '@Services/projectMap';
+import {
+  getFeatureCollection,
+  getLayerAttributeFields,
+  updateLayer,
+} from '@Services/projectMap';
 import toastActions from '@Actions/toast';
 
 import analysisActions from '@Actions/analysis';
@@ -202,6 +206,18 @@ export function* deleteBufferResultRequest({ id, payload }) {
   }
 }
 
+export function* getLayerAttributeFieldsRequest({ params }) {
+  try {
+    const response = yield call(getLayerAttributeFields, params);
+    yield put(
+      bufferAnalysisActions.getLayerAttributeFieldsSuccess(response.data),
+    );
+  } catch (error) {
+    yield put(bufferAnalysisActions.getLayerAttributeFieldsFailure());
+    throw error;
+  }
+}
+
 function* bufferAnalysisWatcher() {
   yield takeLatest(
     Types.APPLY_BUFFER_ANALYSIS_REQUEST,
@@ -242,6 +258,10 @@ function* bufferAnalysisWatcher() {
   yield takeLatest(
     Types.DELETE_BUFFER_RESULT_REQUEST,
     withLoader(withErrorHandler(deleteBufferResultRequest)),
+  );
+  yield takeLatest(
+    Types.GET_LAYER_ATTRIBUTE_FIELDS_REQUEST,
+    withLoader(withErrorHandler(getLayerAttributeFieldsRequest)),
   );
 }
 

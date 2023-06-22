@@ -201,6 +201,15 @@ export function* checkUploadStatusRequest({ id }) {
           message: `${responseData.name} was successfully uploaded.`,
         }),
       );
+      // for opening manage-attributes modal
+      const { modalContent } = yield select(state => state.common);
+      if (modalContent) return;
+      yield put(
+        projectMapActions.setProjectMapState({
+          selectedLayer: responseData,
+        }),
+      );
+      yield put(commonActions.toggleModal('manage-attributes'));
     } else {
       yield put(
         toastActions.error({

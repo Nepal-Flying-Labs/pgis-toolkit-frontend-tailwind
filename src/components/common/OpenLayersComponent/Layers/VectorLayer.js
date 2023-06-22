@@ -63,8 +63,8 @@ const VectorLayer = ({
 
   useEffect(() => {
     if (!vectorLayer || !style) return;
-    vectorLayer.setStyle((feature, resolution) => {
-      return getStyles({ style, feature, resolution });
+    vectorLayer.setStyle(
+      (feature, resolution) => getStyles({ style, feature, resolution }),
       // const styles = [getStyles({ style, feature, resolution })];
       // const geometry = feature.getGeometry();
       // geometry.forEachSegment((start, end) => {
@@ -81,7 +81,7 @@ const VectorLayer = ({
       //   );
       // });
       // return styles;
-    });
+    );
   }, [vectorLayer, style]);
 
   useEffect(() => {

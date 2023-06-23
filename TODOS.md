@@ -147,10 +147,12 @@
 
 - [x] highlight query result layer (increase border with opacity low)
 - [ ] buffer analysis showing only poi layers in origin layer selection
+- [ ] delete proximity error on first run
 - [ ] scroll to error field in sidebar analysis
 - [ ] buffer analysis result zooming to ocean in production
 - [ ] toggle data input selected layer for toggle 
 - [ ] osm search working/not working
+- [ ] obstacles not showing in route analysis
 
 ### URGENT
 - [ ] data cleaning state (raj)

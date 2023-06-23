@@ -66,7 +66,7 @@ export default function Results() {
       label: (
         <span className="naxatw-flex naxatw-items-center">
           <i className="material-symbols-outlined naxatw-mr-2">monitoring</i>
-          <p className="naxatw-text-body-lg">Summary</p>
+          <p className="naxatw-text-body-lg">View Summary</p>
         </span>
       ),
       onClick: data => {

@@ -81,6 +81,7 @@ export default function MapExportSection({
       }),
       showLabels: true,
       wrapX: false,
+      latLabelPosition: 0.06,
     }),
   };
 

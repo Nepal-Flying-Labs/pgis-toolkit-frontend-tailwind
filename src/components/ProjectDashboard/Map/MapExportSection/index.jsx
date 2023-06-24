@@ -56,6 +56,7 @@ export default function MapExportSection({
   const [legendChecked, setLegendChecked] = useState(true);
   const [coordinateChecked, setCoordinateChecked] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
+  const [scaleValue, setScaleValue] = useState(0);
 
   const paperRef = useRef(null);
   const exportMapRef = useRef(null);
@@ -148,6 +149,7 @@ export default function MapExportSection({
     const dpi = 96 / 25.4;
     const mpu = METERS_PER_UNIT[units];
     const scale = resolution * mpu * 39.37 * dpi;
+    setScaleValue(scale.toFixed(0));
     const scaleNumeric = document.getElementById('scale-numeric');
     if (scaleNumeric != null)
       scaleNumeric.innerHTML = `Map Scale &nbsp; <strong>1:${scale.toFixed(
@@ -270,6 +272,16 @@ export default function MapExportSection({
         'map-description',
       ).innerHTML = `<h6 class='naxatw-text-primary-400 naxatw-font-bold'>DESCRIPTION</h6>${e.target.value}`;
     }
+  };
+
+  const handleScaleChange = e => {
+    setScaleValue(e.target.value);
+    const view = exportMap.getView();
+    const units = view.getProjection().getUnits();
+    const dpi = 96 / 25.4;
+    const mpu = METERS_PER_UNIT[units];
+    const resolution = e.target.value / (mpu * 39.37 * dpi);
+    exportMap.getView().setResolution(resolution);
   };
 
   const handleNorthArrow = useCallback(e => {
@@ -528,18 +540,36 @@ export default function MapExportSection({
               />
             </div>
           </div>
-
-          <div className="naxatw-space-y-2 naxatw-w-full">
-            <label className="naxatw-label">Output Format</label>
-            <Select
-              placeholder="Choose"
-              options={outputFormatOptions}
-              labelKey="label"
-              className="naxatw-bg-white naxatw-px-2 naxatw-py-[14px] naxatw-h-[48px]"
-              valueKey="value"
-              onChange={selectedItem => setCurrentFormat(selectedItem.value)}
-              selectedValue={currentFormat}
-            />
+          <div className="naxatw-flex naxatw-gap-3">
+            <div className="naxatw-space-y-2 naxatw-w-full">
+              <label className="naxatw-label">Scale</label>
+              <input
+                type="number"
+                min="0"
+                onKeyDown={event => {
+                  if (event.key === '.') {
+                    event.preventDefault();
+                  }
+                }}
+                className="naxatw-input"
+                name="mapScale"
+                placeholder="Enter Map Scale"
+                value={scaleValue}
+                onChange={handleScaleChange}
+              />
+            </div>
+            <div className="naxatw-space-y-2 naxatw-w-full">
+              <label className="naxatw-label">Output Format</label>
+              <Select
+                placeholder="Choose"
+                options={outputFormatOptions}
+                labelKey="label"
+                className="naxatw-bg-white naxatw-px-2 naxatw-py-[14px] naxatw-h-[48px]"
+                valueKey="value"
+                onChange={selectedItem => setCurrentFormat(selectedItem.value)}
+                selectedValue={currentFormat}
+              />
+            </div>
           </div>
         </div>
 

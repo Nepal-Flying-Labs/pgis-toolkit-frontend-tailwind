@@ -74,14 +74,25 @@ export default function MapExportSection({
       units: 'metric',
       target: exportMapRef.current,
     }),
-    graticule: new Graticule({
+    portraitGraticule: new Graticule({
       strokeStyle: new Stroke({
         color: 'rgba(255,120,0,0.4)',
         width: 0.5,
       }),
       showLabels: true,
       wrapX: false,
-      latLabelPosition: 0.06,
+      lonLabelPosition: 0.4,
+      latLabelPosition: 1,
+    }),
+    landscapeGraticule: new Graticule({
+      strokeStyle: new Stroke({
+        color: 'rgba(255,120,0,0.4)',
+        width: 0.5,
+      }),
+      showLabels: true,
+      wrapX: false,
+      lonLabelPosition: 0,
+      latLabelPosition: 0.7,
     }),
   };
 
@@ -311,15 +322,19 @@ export default function MapExportSection({
     }
   }, []);
 
-  const handleGraticule = useCallback(e => {
+  const removeGraticule = () => {
+    customControls.portraitGraticule.setMap(null);
+    customControls.landscapeGraticule.setMap(null);
+  };
+
+  const handleGraticule = e => {
     if (e.target.checked) {
       setGraticuleChecked(true);
-      customControls.graticule.setMap(exportMap);
     } else {
+      removeGraticule();
       setGraticuleChecked(false);
-      customControls.graticule.setMap(null);
     }
-  }, []);
+  };
 
   const handleLegend = useCallback(e => {
     if (e.target.checked) {
@@ -381,6 +396,7 @@ export default function MapExportSection({
 
   const closeExport = () => {
     closeFunction();
+    removeGraticule();
     exportMap.setTarget(mapInfo.target);
     exportMap.getViewport().style.width = '100%';
     exportMap.getViewport().style.height = '100%';
@@ -408,6 +424,15 @@ export default function MapExportSection({
   useEffect(() => {
     handleSize(currentPaperSize, currentOrientation, currentMargin);
   }, [currentPaperSize, currentOrientation, currentMargin]);
+
+  useEffect(() => {
+    if (currentOrientation === 'landscape' && graticuleChecked) {
+      customControls.landscapeGraticule.setMap(exportMap);
+    }
+    if (currentOrientation === 'portrait' && graticuleChecked) {
+      customControls.portraitGraticule.setMap(exportMap);
+    }
+  }, [graticuleChecked]);
 
   useEffect(() => {
     if (coordinateChecked === false && currentOrientation === 'portrait') {

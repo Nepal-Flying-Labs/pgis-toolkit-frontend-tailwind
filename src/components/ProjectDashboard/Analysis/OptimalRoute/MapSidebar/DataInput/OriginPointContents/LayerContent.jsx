@@ -6,7 +6,7 @@ import { Creators as RouteAnalysisCreators } from '@Actions/routeAnalysis';
 import { Creators as CommonCreators } from '@Actions/common';
 import IconButton from '@Components/common/IconButton';
 import Select from '@Components/common/Select';
-import { poiLayersSelector } from '@Selectors/analysis';
+import { pointLayersSelector } from '@Selectors/analysis';
 import {
   startingPointColor,
   destinationPointColor,
@@ -18,7 +18,7 @@ const { setDataInputState } = RouteAnalysisCreators;
 const { toggleModal } = CommonCreators;
 
 export default function LayerContent() {
-  const poiLayers = useSelector(poiLayersSelector);
+  const pointLayers = useSelector(pointLayersSelector);
   const startingPoint = useSelector(
     state => state.routeAnalysis.dataInput.startingPoint,
   );
@@ -78,7 +78,7 @@ export default function LayerContent() {
           <Select
             placeholder="Select Origin Layer"
             style={{ height: '40px' }}
-            options={poiLayers}
+            options={pointLayers}
             labelKey="name"
             valueKey="id"
             onChange={selectedItem =>

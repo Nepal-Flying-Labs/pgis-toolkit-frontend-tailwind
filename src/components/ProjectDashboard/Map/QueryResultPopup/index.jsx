@@ -78,6 +78,7 @@ export default function QueryResultPopup() {
                 <span className="naxatw-flex naxatw-items-center naxatw-space-x-2">
                   <p className="naxatw-btn-text">{item.layerName}</p>
                   <IconButton
+                    title="View Attributes"
                     name="table_chart"
                     className="material-symbols-outlined naxatw-text-[1rem]"
                     onClick={() => {

@@ -87,7 +87,7 @@ export default function RoutePopup() {
               {routePopupData?.obstacles?.map(item => (
                 <React.Fragment key={item.layer_id}>
                   <p>{item.layer_name}</p>
-                  <p>{item.count}</p>
+                  <p className="naxatw-text-center">{item.count}</p>
                   <Toggle
                     isSm
                     className="naxatw-ml-auto"

@@ -353,8 +353,11 @@ export default function ProximityPopup() {
                     ) : (
                       detailsListData?.data
                         ?.sort((a, b) => a.buffer_distance - b.buffer_distance)
-                        .map(itm => (
-                          <div className="naxatw-py-2 naxatw-border-b-2">
+                        ?.map(itm => (
+                          <div
+                            key={itm.id}
+                            className="naxatw-py-2 naxatw-border-b-2"
+                          >
                             <div className="naxatw-flex naxatw-gap-x-3 naxatw-items-center">
                               <p className="naxatw-text-body-btn naxatw-basis-1/2">
                                 {itm?.name || itm?.id}

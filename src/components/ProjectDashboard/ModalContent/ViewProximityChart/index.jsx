@@ -165,7 +165,7 @@ const ViewBufferChart = () => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" interval={0} tick={<CustomXAxisTick />}>
             <Label
-              value="Category"
+              value={selectedCategory}
               offset={10}
               position="bottom"
               style={{
@@ -177,7 +177,7 @@ const ViewBufferChart = () => {
           </XAxis>
           <YAxis allowDecimals={false}>
             <Label
-              value={`No of ${selectedPOIName}`}
+              value={`No. of ${selectedPOIName}`}
               angle={-90}
               position="insideLeft"
               style={{

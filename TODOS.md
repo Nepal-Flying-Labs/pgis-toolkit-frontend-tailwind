@@ -156,3 +156,5 @@
 
 ### URGENT
 - [ ] data cleaning state (raj)
+- [ ] check log for the first time
+- [ ] reset = true button

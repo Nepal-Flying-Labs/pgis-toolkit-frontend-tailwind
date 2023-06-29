@@ -23,7 +23,7 @@ export default function ViewRouteAttribute() {
 
   useEffect(() => {
     if (!selectedAnalysis) return;
-    dispatch(getAnalysisDataRequest({ analysis: selectedAnalysis.id }));
+    dispatch(getAnalysisDataRequest({ optimum_id: selectedAnalysis.id }));
   }, [dispatch, selectedAnalysis]);
 
   return (

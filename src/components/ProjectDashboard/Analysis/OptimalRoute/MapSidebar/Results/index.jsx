@@ -10,11 +10,13 @@ import DropdownOptions from '@Components/common/DropdownOptions';
 import LegendItem from '@Components/common/OpenLayersComponent/Legend/LegendItem';
 import { getAnalysisType } from '@src/constants/analysis';
 import { analysisResultsStateSelector } from '@Selectors/routeAnalysis';
+import IconButton from '@Components/common/IconButton/index';
 
 const {
   setResultsState,
   handleRouteCheckbox,
   downloadOptimumRouteAnalysisRequest,
+  setRouteAnalysisState,
 } = RouteAnalysisCreators;
 const { getAnalysisResultDetailRequest } = AnalysisCreators;
 const { toggleModal, togglePromptDialog } = CommonCreators;
@@ -199,7 +201,7 @@ export default function Results() {
                             key={item.id}
                             className="naxatw-flex naxatw-justify-between naxatw-items-center"
                           >
-                            <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-10">
+                            <div className="naxatw-flex naxatw-justify-between naxatw-items-center naxatw-h-10 naxatw-w-full">
                               <input
                                 id={item.id}
                                 type="checkbox"
@@ -229,6 +231,21 @@ export default function Results() {
                               >
                                 {item.name}
                               </label>
+
+                              <IconButton
+                                title="View Detail"
+                                className="material-symbols-outlined"
+                                wrapperClassName="naxatw-ml-auto"
+                                name="data_table"
+                                style={{ fontSize: '22px' }}
+                                onClick={() => {
+                                  dispatch(
+                                    setRouteAnalysisState({
+                                      selectedRouteId: item.id,
+                                    }),
+                                  );
+                                }}
+                              />
                             </div>
                           </div>
                         ))}

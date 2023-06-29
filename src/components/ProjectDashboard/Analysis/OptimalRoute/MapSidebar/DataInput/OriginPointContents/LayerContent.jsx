@@ -110,7 +110,7 @@ export default function LayerContent() {
           <Select
             placeholder="Select Destination Layer"
             style={{ height: '40px' }}
-            options={poiLayers}
+            options={pointLayers}
             labelKey="name"
             valueKey="id"
             onChange={selectedItem =>

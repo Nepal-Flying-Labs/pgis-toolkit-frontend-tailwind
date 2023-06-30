@@ -439,6 +439,28 @@ const splitFeatureSuccess = (state, action) =>
     };
   });
 
+const checkLayerLogsSuccess = (state, action) => {
+  const data = action.payload;
+  const layerId = data.layer_id;
+  const errorStates = {
+    ...state.errorStates,
+    [layerId]: checkErrorData.map(item => {
+      const error = data[item.id] || data[item.alternativeId];
+      return {
+        ...item,
+        errorData: error.error_data,
+        totalData: error.total_data,
+        checked: false,
+        status: !error.error_data ? 'success' : 'error',
+      };
+    }),
+  };
+  return {
+    ...state,
+    errorStates,
+  };
+};
+
 const dataCleaningReducer = createReducer(initialState, {
   [Types.SET_DATA_CLEANING_STATE]: setDataCleaningState,
   [Types.SET_OPTIMAL_ROUTE_STATE]: setOptimalRouteState,
@@ -465,6 +487,7 @@ const dataCleaningReducer = createReducer(initialState, {
   [Types.RESET_MANUAL_FIX_STATE]: resetManualFixState,
   [Types.GET_FEATURE_GEOJSON_SUCCESS]: getFeatureGeojsonSuccess,
   [Types.SPLIT_FEATURE_SUCCESS]: splitFeatureSuccess,
+  [Types.CHECK_LAYER_LOGS_SUCCESS]: checkLayerLogsSuccess,
 });
 
 export default dataCleaningReducer;

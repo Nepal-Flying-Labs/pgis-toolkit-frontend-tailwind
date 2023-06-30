@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useMemo, useState } from 'react';
-import { useParams } from 'react-router';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
 import { Creators as CommonCreators } from '@Actions/common';
@@ -12,8 +11,8 @@ const {
   checkErrorRequest,
   handleAutofixCheckbox,
   autoFixErrorRequest,
-  startAnalysisRequest,
   setDataCleaningState,
+  checkLayerLogsRequest,
 } = DataCleaningCreators;
 
 const { togglePromptDialog, toggleModal } = CommonCreators;
@@ -36,7 +35,6 @@ function getStatusIcon(status) {
 }
 
 export default function StepTwo() {
-  const params = useParams();
   const selectedRoadLayer = useSelector(
     state => state.dataCleaning.optimalRoute.selectedRoadLayer,
   );
@@ -52,6 +50,12 @@ export default function StepTwo() {
     () => [selectedRoadLayer, ...selectedObstacleLayers],
     [selectedRoadLayer, selectedObstacleLayers],
   );
+
+  useEffect(() => {
+    data.forEach(item => {
+      dispatch(checkLayerLogsRequest({ layer: item.id }));
+    });
+  }, [dispatch, data]);
 
   const isAllChecked = Object.keys(errorStates).length === data.length;
 
@@ -268,7 +272,6 @@ export default function StepTwo() {
             if (isErrorLeft) {
               dispatch(togglePromptDialog('start-analysis-prompt'));
             } else {
-              // dispatch(startAnalysisRequest(params));
               dispatch(toggleModal('create-analysis'));
             }
           }}

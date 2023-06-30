@@ -23,6 +23,7 @@ import { checkIfLoading } from '@Utils/loaderSelector';
 import hasKey from '@Utils/hasKey';
 import UploadPolygonBoundary from '@Components/OrganizationDashboard/ProjectSetup/UploadPolygonBoundary/index';
 import SearchSelect from '@Components/common/SearchSelect';
+import { getFileExtension } from '@Utils/commonUtils';
 import MapSection from '../CustomDraw/MapSection';
 
 const { togglePromptDialog } = CommonCreators;
@@ -123,13 +124,12 @@ const Location = ({ page, setPage }) => {
   };
 
   const getFileType = file => {
+    const fileExtension = getFileExtension(file.name);
     if (file) {
-      switch (file.type) {
-        case 'application/geo+json':
+      switch (fileExtension.toLowerCase()) {
+        case 'geojson':
           return 'GeoJSON';
-        case 'application/zip':
-          return 'Shapefile';
-        case 'application/x-zip-compressed':
+        case 'zip':
           return 'Shapefile';
         default:
           return 'Shapefile';
@@ -138,7 +138,6 @@ const Location = ({ page, setPage }) => {
       return '';
     }
   };
-
   const { values, handleChange, handleCustomChange, handleSubmit } = useForm({
     initialValues: stepTwo,
     onSubmit: data => {

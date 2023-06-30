@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import removeObjectKeys from '@Utils/removeObjectKeys';
+import { getFileExtension } from '@Utils/commonUtils';
+
 import { stringify } from 'wkt';
 
 import { Creators, Types } from '@Actions/organizationDashboard';
@@ -31,13 +33,13 @@ function diffObject(a, b) {
 }
 
 const getFileType = file => {
+  const fileExtension = getFileExtension(file.name);
+
   if (file) {
-    switch (file.type) {
-      case 'application/geo+json':
+    switch (fileExtension.toLowerCase()) {
+      case 'geojson':
         return 'GeoJSON';
-      case 'application/zip':
-        return 'Shapefile';
-      case 'application/x-zip-compressed':
+      case 'zip':
         return 'Shapefile';
       default:
         return 'Shapefile';

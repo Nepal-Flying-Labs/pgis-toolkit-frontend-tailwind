@@ -10,9 +10,9 @@ const { togglePromptDialog, toggleModal } = CommonCreators;
 
 export default function StartAnalysisPrompt() {
   const params = useParams();
-  const selectedAnalysisType = useSelector(
-    state => state.analysis.selectedAnalysisType,
-  );
+  const selectedAnalysisType =
+    useSelector(state => state.analysis.selectedAnalysisType) ||
+    params.analysisType;
   const analysisDetail = useSelector(state => state.analysis.analysisDetail);
   const dispatch = useDispatch();
 

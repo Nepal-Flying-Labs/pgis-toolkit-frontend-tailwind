@@ -8,11 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import removeObjectKeys from '@Utils/removeObjectKeys';
-import { getFileExtension } from '@Utils/commonUtils';
-
 import { stringify } from 'wkt';
-
 import { Creators, Types } from '@Actions/organizationDashboard';
+import { getFileType } from '../ProjectSetup/FormPages/Location';
 
 const {
   patchProjectRequest,
@@ -31,23 +29,6 @@ function diffObject(a, b) {
   }, {});
   return diffObj;
 }
-
-const getFileType = file => {
-  const fileExtension = getFileExtension(file.name);
-
-  if (file) {
-    switch (fileExtension.toLowerCase()) {
-      case 'geojson':
-        return 'GeoJSON';
-      case 'zip':
-        return 'Shapefile';
-      default:
-        return 'Shapefile';
-    }
-  } else {
-    return '';
-  }
-};
 
 const validateContactPerson = contact => {
   if (

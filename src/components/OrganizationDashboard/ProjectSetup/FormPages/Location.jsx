@@ -26,6 +26,22 @@ import SearchSelect from '@Components/common/SearchSelect';
 import { getFileExtension } from '@Utils/commonUtils';
 import MapSection from '../CustomDraw/MapSection';
 
+export function getFileType(file) {
+  const fileExtension = getFileExtension(file.name);
+  if (file) {
+    switch (fileExtension?.toLowerCase()) {
+      case 'geojson':
+        return 'GeoJSON';
+      case 'zip':
+        return 'Shapefile';
+      default:
+        return '';
+    }
+  } else {
+    return '';
+  }
+}
+
 const { togglePromptDialog } = CommonCreators;
 const {
   setIndividualProject,
@@ -123,21 +139,6 @@ const Location = ({ page, setPage }) => {
     return error;
   };
 
-  const getFileType = file => {
-    const fileExtension = getFileExtension(file.name);
-    if (file) {
-      switch (fileExtension.toLowerCase()) {
-        case 'geojson':
-          return 'GeoJSON';
-        case 'zip':
-          return 'Shapefile';
-        default:
-          return 'Shapefile';
-      }
-    } else {
-      return '';
-    }
-  };
   const { values, handleChange, handleCustomChange, handleSubmit } = useForm({
     initialValues: stepTwo,
     onSubmit: data => {

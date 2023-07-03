@@ -31,6 +31,7 @@ const initialState = {
     selectedObstacleLayers: [], // []
   },
   errorStates: {},
+  toggledAccordionIds: [],
 };
 
 const setDataCleaningState = (state, action) => ({
@@ -455,9 +456,11 @@ const checkLayerLogsSuccess = (state, action) => {
       };
     }),
   };
+  const toggledAccordionIds = [...state.toggledAccordionIds, layerId];
   return {
     ...state,
     errorStates,
+    toggledAccordionIds,
   };
 };
 

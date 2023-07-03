@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
 import { Creators as CommonCreators } from '@Actions/common';
@@ -41,9 +41,11 @@ export default function StepTwo() {
   const selectedObstacleLayers = useSelector(
     state => state.dataCleaning.optimalRoute.selectedObstacleLayers,
   );
-  const [toggledStates, setToggledStates] = useState({});
   const errorStates = useSelector(state => state.dataCleaning.errorStates);
   const isErrorLeft = useSelector(isErrorLeftSelector);
+  const toggledAccordionIds = useSelector(
+    state => state.dataCleaning.toggledAccordionIds,
+  );
   const dispatch = useDispatch();
 
   const data = useMemo(
@@ -73,18 +75,24 @@ export default function StepTwo() {
           const isLayerCheckingError =
             errorState && errorState.some(item => item.status === 'checking');
           const hasError = errorState?.some(item => item.errorData);
+          const isAccordionToggled = toggledAccordionIds.includes(layer.id);
           return (
             <Accordion
               key={layer.id}
-              collapsed={!toggledStates[layer.id]}
+              collapsed={!isAccordionToggled}
               onToggle={toggleState => {
-                setToggledStates(prev => ({
-                  ...prev,
-                  [layer.id]: toggleState,
-                }));
+                dispatch(
+                  setDataCleaningState({
+                    toggledAccordionIds: toggleState
+                      ? [...toggledAccordionIds, layer.id]
+                      : toggledAccordionIds.filter(
+                          accordionId => accordionId !== layer.id,
+                        ),
+                  }),
+                );
               }}
               className={`!naxatw-p-2 ${
-                toggledStates[layer.id] ? 'naxatw-bg-grey-50' : ''
+                isAccordionToggled ? 'naxatw-bg-grey-50' : ''
               }`}
               header={
                 <div className="naxatw-pl-2 naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
@@ -120,10 +128,14 @@ export default function StepTwo() {
                                 geometryType: layer.geom_type,
                               }),
                             );
-                          setToggledStates(prev => ({
-                            ...prev,
-                            [layer.id]: true,
-                          }));
+                          dispatch(
+                            setDataCleaningState({
+                              toggledAccordionIds: [
+                                ...toggledAccordionIds,
+                                layer.id,
+                              ],
+                            }),
+                          );
                         }}
                       >
                         Check Error

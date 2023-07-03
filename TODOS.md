@@ -158,3 +158,5 @@
 - [ ] data cleaning state (raj)
 - [ ] check log for the first time
 - [ ] reset = true button
+
+- [ ] road attribute has value => classify using values => change symbology

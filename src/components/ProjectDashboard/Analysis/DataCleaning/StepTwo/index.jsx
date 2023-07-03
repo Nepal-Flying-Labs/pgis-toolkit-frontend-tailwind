@@ -1,11 +1,12 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
+import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
 import { Creators as CommonCreators } from '@Actions/common';
 import Button from '@Components/common/Button';
 import Accordion from '@Components/common/Accordion';
 import { isErrorLeftSelector } from '@Selectors/dataCleaning';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const {
   checkErrorRequest,
@@ -76,6 +77,7 @@ export default function StepTwo() {
             errorState && errorState.some(item => item.status === 'checking');
           const hasError = errorState?.some(item => item.errorData);
           const isAccordionToggled = toggledAccordionIds.includes(layer.id);
+          const isErrorsChecked = !!errorState?.some(item => item.checked);
           return (
             <Accordion
               key={layer.id}
@@ -241,7 +243,7 @@ export default function StepTwo() {
                     <div className="naxatw-mt-4 naxatw-flex naxatw-justify-end naxatw-gap-2">
                       <Button
                         className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
-                        disabled={isLayerCheckingError}
+                        disabled={isLayerCheckingError || !isErrorsChecked}
                         onClick={() =>
                           dispatch(
                             autoFixErrorRequest({

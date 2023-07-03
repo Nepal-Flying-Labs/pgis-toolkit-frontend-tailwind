@@ -1,12 +1,13 @@
 import { createSelector } from 'reselect';
 import { isEmpty } from '@Utils/commonUtils';
 import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
-import { poiThemeName } from '@src/constants/map';
+import { poiThemeName, obstacleThemeName } from '@src/constants/map';
 
 const themesSelector = state => state.analysis.themes;
 const layersSelector = state => state.analysis.layers;
 const layerOrderSelector = state => state.analysis.mapSettings.layerOrder;
 const searchTextSelector = state => state.analysis.searchText;
+const isLayersFetchedSelector = state => state.analysis.isLayersFetched;
 
 export const mapStateSelector = createSelector(
   [themesSelector, layersSelector, layerOrderSelector],
@@ -68,5 +69,13 @@ export const poiLayersSelector = createSelector(
   (themes, layers) => {
     const poiThemeId = themes?.find(theme => theme.name === poiThemeName)?.id;
     return layers?.[poiThemeId] || [];
+  },
+);
+
+export const obstacleLayersThemeIdSelector = createSelector(
+  [themesSelector, isLayersFetchedSelector],
+  (themes, isLayersFetched) => {
+    if (!themes || !isLayersFetched) return null;
+    return themes.find(theme => theme.name === obstacleThemeName)?.id;
   },
 );

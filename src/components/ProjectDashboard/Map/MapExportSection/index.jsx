@@ -56,6 +56,7 @@ export default function MapExportSection({
   const [legendChecked, setLegendChecked] = useState(true);
   const [coordinateChecked, setCoordinateChecked] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
+  const [scaleValue, setScaleValue] = useState(0);
 
   const paperRef = useRef(null);
   const exportMapRef = useRef(null);
@@ -73,13 +74,25 @@ export default function MapExportSection({
       units: 'metric',
       target: exportMapRef.current,
     }),
-    graticule: new Graticule({
+    portraitGraticule: new Graticule({
       strokeStyle: new Stroke({
         color: 'rgba(255,120,0,0.4)',
         width: 0.5,
       }),
       showLabels: true,
       wrapX: false,
+      lonLabelPosition: 0.4,
+      latLabelPosition: 1,
+    }),
+    landscapeGraticule: new Graticule({
+      strokeStyle: new Stroke({
+        color: 'rgba(255,120,0,0.4)',
+        width: 0.5,
+      }),
+      showLabels: true,
+      wrapX: false,
+      lonLabelPosition: 0,
+      latLabelPosition: 0.7,
     }),
   };
 
@@ -148,6 +161,7 @@ export default function MapExportSection({
     const dpi = 96 / 25.4;
     const mpu = METERS_PER_UNIT[units];
     const scale = resolution * mpu * 39.37 * dpi;
+    setScaleValue(scale.toFixed(0));
     const scaleNumeric = document.getElementById('scale-numeric');
     if (scaleNumeric != null)
       scaleNumeric.innerHTML = `Map Scale &nbsp; <strong>1:${scale.toFixed(
@@ -272,6 +286,16 @@ export default function MapExportSection({
     }
   };
 
+  const handleScaleChange = e => {
+    setScaleValue(e.target.value);
+    const view = exportMap.getView();
+    const units = view.getProjection().getUnits();
+    const dpi = 96 / 25.4;
+    const mpu = METERS_PER_UNIT[units];
+    const resolution = e.target.value / (mpu * 39.37 * dpi);
+    exportMap.getView().setResolution(resolution);
+  };
+
   const handleNorthArrow = useCallback(e => {
     if (e.target.checked) {
       setNorthArrowChecked(true);
@@ -298,15 +322,19 @@ export default function MapExportSection({
     }
   }, []);
 
-  const handleGraticule = useCallback(e => {
+  const removeGraticule = () => {
+    customControls.portraitGraticule.setMap(null);
+    customControls.landscapeGraticule.setMap(null);
+  };
+
+  const handleGraticule = e => {
     if (e.target.checked) {
       setGraticuleChecked(true);
-      customControls.graticule.setMap(exportMap);
     } else {
+      removeGraticule();
       setGraticuleChecked(false);
-      customControls.graticule.setMap(null);
     }
-  }, []);
+  };
 
   const handleLegend = useCallback(e => {
     if (e.target.checked) {
@@ -368,6 +396,7 @@ export default function MapExportSection({
 
   const closeExport = () => {
     closeFunction();
+    removeGraticule();
     exportMap.setTarget(mapInfo.target);
     exportMap.getViewport().style.width = '100%';
     exportMap.getViewport().style.height = '100%';
@@ -395,6 +424,15 @@ export default function MapExportSection({
   useEffect(() => {
     handleSize(currentPaperSize, currentOrientation, currentMargin);
   }, [currentPaperSize, currentOrientation, currentMargin]);
+
+  useEffect(() => {
+    if (currentOrientation === 'landscape' && graticuleChecked) {
+      customControls.landscapeGraticule.setMap(exportMap);
+    }
+    if (currentOrientation === 'portrait' && graticuleChecked) {
+      customControls.portraitGraticule.setMap(exportMap);
+    }
+  }, [graticuleChecked]);
 
   useEffect(() => {
     if (coordinateChecked === false && currentOrientation === 'portrait') {
@@ -528,18 +566,36 @@ export default function MapExportSection({
               />
             </div>
           </div>
-
-          <div className="naxatw-space-y-2 naxatw-w-full">
-            <label className="naxatw-label">Output Format</label>
-            <Select
-              placeholder="Choose"
-              options={outputFormatOptions}
-              labelKey="label"
-              className="naxatw-bg-white naxatw-px-2 naxatw-py-[14px] naxatw-h-[48px]"
-              valueKey="value"
-              onChange={selectedItem => setCurrentFormat(selectedItem.value)}
-              selectedValue={currentFormat}
-            />
+          <div className="naxatw-flex naxatw-gap-3">
+            <div className="naxatw-space-y-2 naxatw-w-full">
+              <label className="naxatw-label">Scale</label>
+              <input
+                type="number"
+                min="0"
+                onKeyDown={event => {
+                  if (event.key === '.') {
+                    event.preventDefault();
+                  }
+                }}
+                className="naxatw-input"
+                name="mapScale"
+                placeholder="Enter Map Scale"
+                value={scaleValue}
+                onChange={handleScaleChange}
+              />
+            </div>
+            <div className="naxatw-space-y-2 naxatw-w-full">
+              <label className="naxatw-label">Output Format</label>
+              <Select
+                placeholder="Choose"
+                options={outputFormatOptions}
+                labelKey="label"
+                className="naxatw-bg-white naxatw-px-2 naxatw-py-[14px] naxatw-h-[48px]"
+                valueKey="value"
+                onChange={selectedItem => setCurrentFormat(selectedItem.value)}
+                selectedValue={currentFormat}
+              />
+            </div>
           </div>
         </div>
 

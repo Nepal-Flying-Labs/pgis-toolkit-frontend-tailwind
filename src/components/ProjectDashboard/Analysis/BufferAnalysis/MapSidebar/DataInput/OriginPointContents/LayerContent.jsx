@@ -3,12 +3,12 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as BufferAnalysisCreators } from '@Actions/bufferAnalysis';
 import Select from '@Components/common/Select';
-import { poiLayersSelector } from '@Selectors/analysis';
+import { pointLayersSelector } from '@Selectors/analysis';
 
 const { setDataInputState } = BufferAnalysisCreators;
 
 export default function LayerContent() {
-  const poiLayers = useSelector(poiLayersSelector);
+  const pointLayers = useSelector(pointLayersSelector);
   const selectedLayer = useSelector(
     state => state.bufferAnalysis.dataInput.selectedLayer,
   );
@@ -36,7 +36,7 @@ export default function LayerContent() {
           className="naxatw-bg-white naxatw-px-2"
           placeholder="Select Origin Layer"
           style={{ height: '40px' }}
-          options={poiLayers}
+          options={pointLayers}
           labelKey="name"
           valueKey="id"
           onChange={selectedItem => handleSelect(selectedItem)}

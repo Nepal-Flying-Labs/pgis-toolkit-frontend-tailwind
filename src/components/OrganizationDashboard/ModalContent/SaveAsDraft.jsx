@@ -9,8 +9,8 @@ import { useParams } from 'react-router';
 import { checkIfLoading } from '@Utils/loaderSelector';
 import removeObjectKeys from '@Utils/removeObjectKeys';
 import { stringify } from 'wkt';
-
 import { Creators, Types } from '@Actions/organizationDashboard';
+import { getFileType } from '../ProjectSetup/FormPages/Location';
 
 const {
   patchProjectRequest,
@@ -29,23 +29,6 @@ function diffObject(a, b) {
   }, {});
   return diffObj;
 }
-
-const getFileType = file => {
-  if (file) {
-    switch (file.type) {
-      case 'application/geo+json':
-        return 'GeoJSON';
-      case 'application/zip':
-        return 'Shapefile';
-      case 'application/x-zip-compressed':
-        return 'Shapefile';
-      default:
-        return 'Shapefile';
-    }
-  } else {
-    return '';
-  }
-};
 
 const validateContactPerson = contact => {
   if (

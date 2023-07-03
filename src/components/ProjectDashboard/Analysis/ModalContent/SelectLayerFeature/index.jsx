@@ -11,6 +11,7 @@ import {
   Creators as RouteAnalysisCreators,
   Types as RouteAnalysisTypes,
 } from '@Actions/routeAnalysis';
+import { Creators as ProximityAnalysisCreators } from '@Actions/proximityAnalysis';
 
 import {
   Creators as BufferAnalysisCreators,
@@ -42,7 +43,11 @@ const {
   handleSelectAllCheckbox,
 } = AnalysisCreators;
 
-const { getSelectedLayerFeatureRequest } = RouteAnalysisCreators;
+const { getSelectedLayerFeatureRequest: getRouteSelectedLayerFeatureRequest } =
+  RouteAnalysisCreators;
+const {
+  getSelectedLayerFeatureRequest: getProximitySelectedLayerFeatureRequest,
+} = ProximityAnalysisCreators;
 const { getSelectedLayerFeatureRequest: getBufferSelectedLayerFeatureRequest } =
   BufferAnalysisCreators;
 
@@ -139,8 +144,10 @@ export default function SelectLayerFeature() {
   const handleSave = () => {
     if (analysisType === 'bufferAnalysis') {
       dispatch(getBufferSelectedLayerFeatureRequest());
+    } else if (analysisType === 'proximityAnalysis') {
+      dispatch(getProximitySelectedLayerFeatureRequest());
     } else {
-      dispatch(getSelectedLayerFeatureRequest());
+      dispatch(getRouteSelectedLayerFeatureRequest());
     }
   };
 

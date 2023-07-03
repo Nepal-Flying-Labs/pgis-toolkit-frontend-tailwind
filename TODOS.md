@@ -145,4 +145,16 @@
 - [x] arrow scroll to bottom in analysis sidebar 
 - [ ] scale select option in map export section 
 
-- [ ] Plus button bounce issue
+- [x] highlight query result layer (increase border with opacity low)
+- [x] buffer analysis showing only poi layers in origin layer selection
+- [x] scroll to error field in sidebar analysis
+- [x] obstacles not showing in route analysis
+- [ ] delete proximity error on first run
+- [ ] buffer analysis result zooming to ocean in production
+- [ ] toggle data input selected layer for toggle 
+- [ ] osm search working/not working
+
+### URGENT
+- [ ] data cleaning state (raj)
+- [ ] check log for the first time
+- [ ] reset = true button

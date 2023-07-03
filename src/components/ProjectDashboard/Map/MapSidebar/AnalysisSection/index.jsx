@@ -39,6 +39,9 @@ export default function AnalysisSection() {
   const isLoading = useSelector(state =>
     checkIfLoading(state, [Types.GET_ANALYSIS_TYPE_LIST_REQUEST]),
   );
+  const isPaginatedAnalysisLoading = useSelector(state =>
+    checkIfLoading(state, [Types.GET_PAGINATED_ANALYSIS_FOR_ANALYSIS_REQUEST]),
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -56,6 +59,8 @@ export default function AnalysisSection() {
   }, [dispatch, projectId, analysisList]);
 
   const onScrollEndInteractBuffer = () => {
+    if (isLoading || isPaginatedAnalysisLoading) return;
+
     if (analysisList?.buffer.next !== null) {
       const url =
         analysisList?.buffer?.next && new URL(analysisList?.buffer?.next);
@@ -66,6 +71,8 @@ export default function AnalysisSection() {
   };
 
   const onScrollEndInteractProximity = () => {
+    if (isLoading || isPaginatedAnalysisLoading) return;
+
     if (analysisList?.proximity.next !== null) {
       const url =
         analysisList?.proximity?.next && new URL(analysisList?.proximity?.next);
@@ -76,6 +83,8 @@ export default function AnalysisSection() {
   };
 
   const onScrollEndInteractOptimum = () => {
+    if (isLoading || isPaginatedAnalysisLoading) return;
+
     if (analysisList?.optimum_route.next !== null) {
       const url =
         analysisList?.optimum_route?.next &&
@@ -168,9 +177,10 @@ export default function AnalysisSection() {
                   <div className="infinite-loader-red" ref={ref[key]}>
                     {' '}
                   </div>
-                  {analysisList[key].next !== null && (
-                    <AnalysisSkeleton itemNumber={4} />
-                  )}
+                  {isPaginatedAnalysisLoading &&
+                    analysisList[key].next !== null && (
+                      <AnalysisSkeleton itemNumber={4} />
+                    )}
                 </div>
               }
             />

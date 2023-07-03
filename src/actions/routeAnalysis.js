@@ -49,6 +49,8 @@ export const { Types, Creators } = createActions(
     deleteOptimumRouteResultRequest: ['id', 'payload'],
     deleteOptimumRouteResultSuccess: ['payload'],
     deleteOptimumRouteResultFailure: null,
+
+    setObstacleLayers: ['payload'],
   },
   { prefix: 'routeAnalysis/' },
 );

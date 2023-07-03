@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Creators as AnalysisCreators } from '@Actions/analysis';
 import { Creators as ProximityAnalysisCreators } from '@Actions/proximityAnalysis';
 import { Creators as CommonCreators } from '@Actions/common';
+import { pointLayersSelector } from '@Selectors/analysis';
 import Select from '@Components/common/Select';
-import { poiLayersSelector } from '@Selectors/analysis';
 import Chip from '@Components/common/Chip';
 
 const { setAnalysisState } = AnalysisCreators;
@@ -13,7 +13,7 @@ const { setDataInputState } = ProximityAnalysisCreators;
 const { toggleModal } = CommonCreators;
 
 export default function LayerContent() {
-  const poiLayers = useSelector(poiLayersSelector);
+  const pointLayers = useSelector(pointLayersSelector);
   const originGeojson = useSelector(
     state => state.proximityAnalysis.dataInput.originGeojson,
   );
@@ -42,7 +42,7 @@ export default function LayerContent() {
           className="naxatw-bg-white naxatw-px-2"
           placeholder="Select Origin Layer"
           style={{ height: '40px' }}
-          options={poiLayers}
+          options={pointLayers}
           labelKey="name"
           valueKey="id"
           onChange={selectedItem => handleSelect(selectedItem)}

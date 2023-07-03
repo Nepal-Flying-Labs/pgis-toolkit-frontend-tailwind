@@ -5,6 +5,7 @@ import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
 import { Creators as CommonCreators } from '@Actions/common';
 import Button from '@Components/common/Button';
 import Accordion from '@Components/common/Accordion';
+import Spinner from '@Components/common/Spinner';
 import { isErrorLeftSelector } from '@Selectors/dataCleaning';
 import { checkIfLoading } from '@Utils/loaderSelector';
 
@@ -47,6 +48,9 @@ export default function StepTwo() {
   const toggledAccordionIds = useSelector(
     state => state.dataCleaning.toggledAccordionIds,
   );
+  const checkLogsLoading = useSelector(state =>
+    checkIfLoading(state, [Types.CHECK_LAYER_LOGS_REQUEST]),
+  );
   const dispatch = useDispatch();
 
   const data = useMemo(
@@ -61,6 +65,15 @@ export default function StepTwo() {
   }, [dispatch, data]);
 
   const isAllChecked = Object.keys(errorStates).length === data.length;
+
+  // loader while checking logs
+  if (checkLogsLoading) {
+    return (
+      <div className="naxatw-h-full naxatw-flex naxatw-items-center naxatw-justify-center">
+        <Spinner className="!naxatw-h-10 !naxatw-w-10 naxatw-fill-grey-500" />
+      </div>
+    );
+  }
 
   return (
     <div>

@@ -363,7 +363,7 @@ export function* checkLayerLogsRequest({ params }) {
     yield put(dataCleaningActions.checkLayerLogsSuccess(response.data));
   } catch (error) {
     yield put(dataCleaningActions.checkLayerLogsFailure());
-    throw error;
+    // throw error;
   }
 }
 

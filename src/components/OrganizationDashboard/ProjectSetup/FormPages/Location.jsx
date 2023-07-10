@@ -27,8 +27,9 @@ import { getFileExtension } from '@Utils/commonUtils';
 import MapSection from '../CustomDraw/MapSection';
 
 export function getFileType(file) {
-  const fileExtension = getFileExtension(file.name);
   if (file) {
+    const fileExtension = getFileExtension(file.name);
+
     switch (fileExtension?.toLowerCase()) {
       case 'geojson':
         return 'GeoJSON';

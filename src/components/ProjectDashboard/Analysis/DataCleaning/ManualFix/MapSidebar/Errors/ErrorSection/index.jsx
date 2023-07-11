@@ -143,7 +143,7 @@ export default function ErrorSection() {
                       <input
                         id={`${type}-${feature.id}`}
                         type="checkbox"
-                        className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-accent-grey-800"
+                        className="naxatw-min-w-[1rem] naxatw-min-h-[1rem] naxatw-mr-4 naxatw-ml-2 naxatw-accent-grey-800"
                         checked={feature.checked}
                         onChange={e =>
                           dispatch(

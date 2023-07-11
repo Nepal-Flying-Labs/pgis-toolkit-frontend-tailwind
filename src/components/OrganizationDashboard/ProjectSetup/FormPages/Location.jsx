@@ -103,6 +103,9 @@ const Location = ({ page, setPage }) => {
 
   const validation = formValues => {
     let error = {};
+    if (!hasKey(formValues, 'location_type')) {
+      error.location = 'Please upload a file or draw area on map';
+    }
     if (
       hasKey(formValues, 'location_type') &&
       formValues.location_type === 'File Upload' &&

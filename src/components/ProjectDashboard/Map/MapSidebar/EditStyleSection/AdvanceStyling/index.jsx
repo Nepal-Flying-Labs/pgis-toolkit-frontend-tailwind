@@ -56,7 +56,7 @@ export default function AdvanceStyling() {
         <Input
           type="color"
           name="fillColor"
-          label="Fill Color"
+          label="Fill Colour"
           value={fillColor}
           onChange={handleChange}
         />
@@ -65,7 +65,7 @@ export default function AdvanceStyling() {
       <Input
         type="color"
         name="lineColor"
-        label="Line Color"
+        label="Line Colour"
         value={lineColor}
         onChange={handleChange}
       />

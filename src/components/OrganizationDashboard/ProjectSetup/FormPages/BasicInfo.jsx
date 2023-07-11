@@ -280,11 +280,11 @@ const BasicInfo = ({ setPage }) => {
       <div>
         <Input
           type="text"
-          label="Name of project*"
+          label="Name of Project*"
           name="name"
           value={values?.name}
           onChange={handleChange}
-          placeholder="Enter name of project"
+          placeholder="Enter name of Project"
         />
         {errors.name && <FormErrorMessage message={errors.name} />}
       </div>

@@ -139,7 +139,7 @@ export default function Data() {
               )
             }
           >
-            View on map
+            View on Map
           </Button>
           <Button
             className="naxatw-btn-primary"

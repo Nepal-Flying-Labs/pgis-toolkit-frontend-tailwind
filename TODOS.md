@@ -161,3 +161,6 @@
 
 - [ ] road attribute has value => classify using values => change symbology
 - [ ] throw error on no analysis id => proximity
+
+- [x] show all layers in buffer origin layer selection
+- [ ] toggle and zoom to layer on origin layer select

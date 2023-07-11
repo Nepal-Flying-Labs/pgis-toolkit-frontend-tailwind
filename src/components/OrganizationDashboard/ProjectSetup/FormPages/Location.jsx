@@ -165,7 +165,7 @@ const Location = ({ page, setPage }) => {
       const diffContact = diffObject(contactDetails, contactPerson);
       const tabName =
         tabname === 'project-setup'
-          ? 'Complete your project profile'
+          ? 'Complete your Project Profile'
           : 'Edit a Project';
 
       const payloadData = diffObj?.file?.existedData
@@ -280,7 +280,7 @@ const Location = ({ page, setPage }) => {
         <label className="naxatw-label">Define the geographic boundary*</label>
         <div className="naxatw-flex naxatw-gap-x-2">
           <Chip
-            label="Upload project area"
+            label="Upload Project Area"
             className="!naxatw-px-4 !naxatw-py-2"
             active={values.location_type === 'File Upload'}
             onClick={() => {

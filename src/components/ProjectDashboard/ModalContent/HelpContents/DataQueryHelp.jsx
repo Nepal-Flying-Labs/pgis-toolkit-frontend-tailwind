@@ -4,8 +4,12 @@ import HelpImg1 from '@Assets/images/help-img-1.png';
 import HelpImg2 from '@Assets/images/help-img-2.png';
 
 const helpData = [
-  { id: 'Q1', title: 'What are road with cycleway?', image: HelpImg1 },
-  { id: 'Q2', title: 'How many primary schools in the area?', image: HelpImg2 },
+  { id: 'Q1', title: 'Which roads have bicycle lanes?', image: HelpImg1 },
+  {
+    id: 'Q2',
+    title: 'How many primary schools are in this area?',
+    image: HelpImg2,
+  },
 ];
 
 export default function DataQueryHelp() {

@@ -44,7 +44,7 @@ jobs:
             BIPAD_API_URL=https://bipadportal.gov.np/api/v1
             #######NEW######
             TITLE="USAFIRI"
-            TOKEN=8c68c24276aa43d25e9fc2b16b237040d73b4196
+            TOKEN=${{ secrets.ENV_SECRET }}
             BASE_URL=https://pgis.naxa.com.np
             API_URL=https://pgis.naxa.com.np/api/
           EOF

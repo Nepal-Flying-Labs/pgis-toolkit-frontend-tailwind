@@ -206,7 +206,7 @@ export default function MapSidebar() {
                     bbox={bbox}
                     onClick={
                       status !== 'draft'
-                        ? () => history.push(`${url}/${id}/map`)
+                        ? () => history.push(`${url}/${id}/info`)
                         : () =>
                             history.push(
                               `/organizations/${organizationId}/project-setup/${id}`,
@@ -229,7 +229,7 @@ export default function MapSidebar() {
                       bbox={bbox}
                       onClick={
                         status !== 'draft'
-                          ? () => history.push(`${url}/${id}/map`)
+                          ? () => history.push(`${url}/${id}/info`)
                           : () =>
                               history.push(
                                 `/organizations/${organizationId}/project-setup/${id}`,

@@ -19,12 +19,12 @@ const organizationHeaderData = [
 ];
 
 const projectHeaderData = [
+  { label: 'Project Info', route: 'info', disabled: false },
   { label: 'Map', route: 'map', disabled: false },
   { label: 'Data', route: 'data', disabled: false },
   { label: 'Documents', route: 'document', disabled: false },
   { label: 'Gallery', route: 'gallery', disabled: false },
   { label: 'Users', route: 'users', disabled: false },
-  { label: 'Project Info', route: 'info', disabled: false },
   { label: 'Settings', route: 'settings', disabled: false },
 ];
 

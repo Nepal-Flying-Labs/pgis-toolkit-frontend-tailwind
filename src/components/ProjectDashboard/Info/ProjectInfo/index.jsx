@@ -40,10 +40,10 @@ const ProjectInfo = () => {
   return (
     <div
       className="naxatw-w-full naxatw-bg-white naxatw-rounded-[20px] naxatw-h-full naxatw-overflow-y-auto
-        scrollbar naxatw-border naxatw-border-grey-300 naxatw-mb-5 md:naxatw-mb-0 naxatw-flex"
+        scrollbar naxatw-border naxatw-border-grey-300 naxatw-mb-5 md:naxatw-mb-0 naxatw-flex naxatw-justify-between"
     >
       {/* Header */}
-      <div className="naxatw-p-7 naxatw-rounded-t-lg xl:naxatw-flex">
+      <div className="naxatw-p-7 naxatw-rounded-t-lg xl:naxatw-flex naxatw-w-full">
         <div className="naxatw-w-full xl:naxatw-w-3/4 naxatw-pr-5">
           <h3 className="naxatw-mb-2">{info?.name || '-'}</h3>
           <div className="naxatw-flex naxatw-mb-5">

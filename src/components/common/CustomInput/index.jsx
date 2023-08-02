@@ -32,7 +32,7 @@ const CustomInput = ({
           type="text"
           label="Email Invite"
           className="naxatw-block naxatw-w-full naxatw-h-12 naxatw-pr-3 naxatw-pl-[50px] naxatw-py-[0.8125rem] naxatw-font-normal naxatw-text-grey-700 naxatw-bg-white naxatw-bg-clip-padding naxatw-border naxatw-border-solid naxatw-border-grey-300 naxatw-rounded naxatw-transition naxatw-ease-in-out naxatw-m-0 naxatw-focus:text-gregrey-700 naxatw-focus:bg-white focus:naxatw-border-gray-600 focus:naxatw-outline-none"
-          placeholder="Enter email address of the project manager"
+          placeholder="Enter email address of the Project Manager"
           name="email"
           value={email}
           onChange={e => setEmail(e.target.value)}

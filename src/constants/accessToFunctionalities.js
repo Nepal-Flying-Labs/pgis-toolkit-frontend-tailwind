@@ -20,7 +20,7 @@ export const organizationAdmin = [
   },
   {
     id: 2,
-    name: ' Invite project managers by email',
+    name: ' Invite Project Managers by email',
   },
   {
     id: 3,

@@ -155,6 +155,12 @@
 - [ ] osm search working/not working
 
 ### URGENT
-- [ ] data cleaning state (raj)
-- [ ] check log for the first time
+- [x] data cleaning state (raj)
+- [x] check log for the first time
 - [ ] reset = true button
+
+- [ ] road attribute has value => classify using values => change symbology
+- [ ] throw error on no analysis id => proximity
+
+- [x] show all layers in buffer origin layer selection
+- [ ] toggle and zoom to layer on origin layer select

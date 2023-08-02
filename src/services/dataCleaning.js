@@ -29,3 +29,6 @@ export const getFeatureMirrorGeojson = params =>
 
 export const dataCleanTaskResponse = params =>
   authenticated(api).get(`/maps/data_clean_task_response/`, { params });
+
+export const checkLayerLogs = params =>
+  authenticated(api).get(`/maps/check_layer_logs/`, { params });

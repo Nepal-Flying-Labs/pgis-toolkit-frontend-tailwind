@@ -14,6 +14,7 @@ import {
   autoFixError,
   bulkDeleteNullGeometry,
   checkError,
+  checkLayerLogs,
   copyFeatures,
   dataCleanTaskResponse,
   getErrorFeatures,
@@ -356,6 +357,16 @@ export function* getFeatureGeojsonRequest({ payload }) {
   }
 }
 
+export function* checkLayerLogsRequest({ params }) {
+  try {
+    const response = yield call(checkLayerLogs, params);
+    yield put(dataCleaningActions.checkLayerLogsSuccess(response.data));
+  } catch (error) {
+    yield put(dataCleaningActions.checkLayerLogsFailure());
+    // throw error;
+  }
+}
+
 function* dataCleaningWatcher() {
   yield takeEvery(
     Types.CHECK_ERROR_REQUEST,
@@ -412,6 +423,10 @@ function* dataCleaningWatcher() {
   yield takeLatest(
     Types.GET_FEATURE_GEOJSON_REQUEST,
     withLoader(withErrorHandler(getFeatureGeojsonRequest)),
+  );
+  yield takeEvery(
+    Types.CHECK_LAYER_LOGS_REQUEST,
+    withLoader(withErrorHandler(checkLayerLogsRequest)),
   );
 }
 

@@ -78,6 +78,10 @@ export const { Types, Creators } = createActions(
     checkDataCleanTaskResponseRequest: ['payload'],
     checkDataCleanTaskResponseSuccess: ['payload'],
     checkDataCleanTaskResponseFailure: null,
+
+    checkLayerLogsRequest: ['params'],
+    checkLayerLogsSuccess: ['payload'],
+    checkLayerLogsFailure: null,
   },
   { prefix: 'dataCleaning/' },
 );

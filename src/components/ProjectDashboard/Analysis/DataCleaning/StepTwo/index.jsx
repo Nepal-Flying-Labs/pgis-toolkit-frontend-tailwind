@@ -1,19 +1,20 @@
 /* eslint-disable no-nested-ternary */
-import React, { useMemo, useState } from 'react';
-import { useParams } from 'react-router';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Creators as DataCleaningCreators } from '@Actions/dataCleaning';
+import { Creators as DataCleaningCreators, Types } from '@Actions/dataCleaning';
 import { Creators as CommonCreators } from '@Actions/common';
 import Button from '@Components/common/Button';
 import Accordion from '@Components/common/Accordion';
+import Spinner from '@Components/common/Spinner';
 import { isErrorLeftSelector } from '@Selectors/dataCleaning';
+import { checkIfLoading } from '@Utils/loaderSelector';
 
 const {
   checkErrorRequest,
   handleAutofixCheckbox,
   autoFixErrorRequest,
-  startAnalysisRequest,
   setDataCleaningState,
+  checkLayerLogsRequest,
 } = DataCleaningCreators;
 
 const { togglePromptDialog, toggleModal } = CommonCreators;
@@ -36,16 +37,20 @@ function getStatusIcon(status) {
 }
 
 export default function StepTwo() {
-  const params = useParams();
   const selectedRoadLayer = useSelector(
     state => state.dataCleaning.optimalRoute.selectedRoadLayer,
   );
   const selectedObstacleLayers = useSelector(
     state => state.dataCleaning.optimalRoute.selectedObstacleLayers,
   );
-  const [toggledStates, setToggledStates] = useState({});
   const errorStates = useSelector(state => state.dataCleaning.errorStates);
   const isErrorLeft = useSelector(isErrorLeftSelector);
+  const toggledAccordionIds = useSelector(
+    state => state.dataCleaning.toggledAccordionIds,
+  );
+  const checkLogsLoading = useSelector(state =>
+    checkIfLoading(state, [Types.CHECK_LAYER_LOGS_REQUEST]),
+  );
   const dispatch = useDispatch();
 
   const data = useMemo(
@@ -53,7 +58,22 @@ export default function StepTwo() {
     [selectedRoadLayer, selectedObstacleLayers],
   );
 
+  useEffect(() => {
+    data.forEach(item => {
+      dispatch(checkLayerLogsRequest({ layer: item.id }));
+    });
+  }, [dispatch, data]);
+
   const isAllChecked = Object.keys(errorStates).length === data.length;
+
+  // loader while checking logs
+  if (checkLogsLoading) {
+    return (
+      <div className="naxatw-h-full naxatw-flex naxatw-items-center naxatw-justify-center">
+        <Spinner className="!naxatw-h-10 !naxatw-w-10 naxatw-fill-grey-500" />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -69,18 +89,25 @@ export default function StepTwo() {
           const isLayerCheckingError =
             errorState && errorState.some(item => item.status === 'checking');
           const hasError = errorState?.some(item => item.errorData);
+          const isAccordionToggled = toggledAccordionIds.includes(layer.id);
+          const isErrorsChecked = !!errorState?.some(item => item.checked);
           return (
             <Accordion
               key={layer.id}
-              collapsed={!toggledStates[layer.id]}
+              collapsed={!isAccordionToggled}
               onToggle={toggleState => {
-                setToggledStates(prev => ({
-                  ...prev,
-                  [layer.id]: toggleState,
-                }));
+                dispatch(
+                  setDataCleaningState({
+                    toggledAccordionIds: toggleState
+                      ? [...toggledAccordionIds, layer.id]
+                      : toggledAccordionIds.filter(
+                          accordionId => accordionId !== layer.id,
+                        ),
+                  }),
+                );
               }}
               className={`!naxatw-p-2 ${
-                toggledStates[layer.id] ? 'naxatw-bg-grey-50' : ''
+                isAccordionToggled ? 'naxatw-bg-grey-50' : ''
               }`}
               header={
                 <div className="naxatw-pl-2 naxatw-flex naxatw-flex-col naxatw-gap-1 naxatw-w-full">
@@ -116,10 +143,14 @@ export default function StepTwo() {
                                 geometryType: layer.geom_type,
                               }),
                             );
-                          setToggledStates(prev => ({
-                            ...prev,
-                            [layer.id]: true,
-                          }));
+                          dispatch(
+                            setDataCleaningState({
+                              toggledAccordionIds: [
+                                ...toggledAccordionIds,
+                                layer.id,
+                              ],
+                            }),
+                          );
                         }}
                       >
                         Check Error
@@ -225,7 +256,7 @@ export default function StepTwo() {
                     <div className="naxatw-mt-4 naxatw-flex naxatw-justify-end naxatw-gap-2">
                       <Button
                         className="naxatw-btn-secondary naxatw-btn-noborder !naxatw-px-2"
-                        disabled={isLayerCheckingError}
+                        disabled={isLayerCheckingError || !isErrorsChecked}
                         onClick={() =>
                           dispatch(
                             autoFixErrorRequest({
@@ -268,7 +299,6 @@ export default function StepTwo() {
             if (isErrorLeft) {
               dispatch(togglePromptDialog('start-analysis-prompt'));
             } else {
-              // dispatch(startAnalysisRequest(params));
               dispatch(toggleModal('create-analysis'));
             }
           }}

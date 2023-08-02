@@ -163,7 +163,7 @@ export default function LabelStyling() {
                 name="labelColor"
                 className="color-select"
                 type="color"
-                label="Font Color"
+                label="Font Colour"
                 value={labelColor}
                 onChange={handleChange}
               />
@@ -180,7 +180,7 @@ export default function LabelStyling() {
                 type="color"
                 name="labelOutlineColor"
                 className="color-select"
-                label="Halo Color"
+                label="Halo Colour"
                 value={labelOutlineColor}
                 onChange={handleChange}
               />

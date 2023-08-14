@@ -28,7 +28,7 @@ export default function Iframe() {
           src={`https://www.youtube.com/embed/${tutorial?.tutorialId}?rel=0&showinfo=0&autoplay=0&controls=1&modestbranding=1`}
           title="YouTube video player"
           allow=""
-          allowfullscreen
+          allowFullScreen
         />
       </div>
     </div>

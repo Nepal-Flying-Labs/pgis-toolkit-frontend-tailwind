@@ -6,7 +6,7 @@ import { Creators as AnalysisCreators } from '@Actions/analysis';
 import { analysisData } from '@src/constants/analysis';
 
 const { toggleModal } = CommonCreators;
-const { copyLayerDataRequest, setAnalysisState, setCurrentTutorialId } =
+const { copyLayerDataRequest, setAnalysisState, setCurrentTutorial } =
   AnalysisCreators;
 
 export default function Analysis() {
@@ -50,11 +50,13 @@ export default function Analysis() {
                   {title}
                 </h5>
                 <i
-                  className="material-icons naxatw-font-normal naxatw-mr-2 naxatw-text-secondary-500"
+                  className="material-icons naxatw-font-normal naxatw-mr-2 naxatw-text-secondary-500 hover:naxatw-bg-[#f0f0f0] naxatw-p-1 naxatw-rounded-md"
                   title="Watch Tutorial"
                   onClick={e => {
                     e.stopPropagation();
-                    dispatch(setCurrentTutorialId({ tutorialId }));
+                    dispatch(
+                      setCurrentTutorial({ tutorialId, returnTo: 'analysis' }),
+                    );
                     dispatch(toggleModal('iframe-modal'));
                   }}
                 >

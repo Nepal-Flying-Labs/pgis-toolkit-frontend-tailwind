@@ -39,7 +39,10 @@ const initialState = {
   isLayersFetched: false, // selected analysis type for create analysis
   isAnalysisDetailFetched: false,
   selectedAnalysisById: null,
-  currentTutorialId: '',
+  currentTutorial: {
+    tutorialId: '',
+    returnTo: '',
+  },
 };
 
 const setAnalysisState = (state, action) => ({
@@ -342,17 +345,21 @@ const getAnalysisByIdSuccess = (state, action) => {
   };
 };
 
-const setCurrentTutorialId = (state, action) => {
-  const { tutorialId } = action.payload;
+const setCurrentTutorial = (state, action) => {
+  // const { tutorialId } = action.payload;
+  const { payload } = action;
   return {
     ...state,
-    currentTutorialId: tutorialId,
+    currentTutorial: payload,
   };
 };
 
-const clearCurrentTutorialId = state => ({
+const clearCurrentTutorial = state => ({
   ...state,
-  currentTutorialId: '',
+  currentTutorial: {
+    tutorialId: '',
+    returnTo: '',
+  },
 });
 
 const analysisReducer = createReducer(initialState, {
@@ -379,8 +386,8 @@ const analysisReducer = createReducer(initialState, {
   [Types.TOGGLE_ROAD_LAYER]: toggleRoadLayer,
   [Types.RESET_ANALYSIS_STATE]: resetAnalysisState,
   [Types.GET_ANALYSIS_BY_ID_SUCCESS]: getAnalysisByIdSuccess,
-  [Types.SET_CURRENT_TUTORIAL_ID]: setCurrentTutorialId,
-  [Types.CLEAR_CURRENT_TUTORIAL_ID]: clearCurrentTutorialId,
+  [Types.SET_CURRENT_TUTORIAL]: setCurrentTutorial,
+  [Types.CLEAR_CURRENT_TUTORIAL]: clearCurrentTutorial,
 });
 
 export default analysisReducer;

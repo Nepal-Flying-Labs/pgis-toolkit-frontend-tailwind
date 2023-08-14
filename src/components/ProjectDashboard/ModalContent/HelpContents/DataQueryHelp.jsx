@@ -2,6 +2,12 @@ import React from 'react';
 import QuestionMark from '@Assets/images/question-mark.png';
 import HelpImg1 from '@Assets/images/help-img-1.png';
 import HelpImg2 from '@Assets/images/help-img-2.png';
+import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as AnalysisCreators } from '@Actions/analysis';
+import { useDispatch } from 'react-redux';
+
+const { toggleModal } = CommonCreators;
+const { setCurrentTutorial } = AnalysisCreators;
 
 const helpData = [
   { id: 'Q1', title: 'Which roads have bicycle lanes?', image: HelpImg1 },
@@ -13,15 +19,37 @@ const helpData = [
 ];
 
 export default function DataQueryHelp() {
+  const dispatch = useDispatch();
+
   return (
     <div>
-      <div className="naxatw-flex naxatw-items-center naxatw-space-x-3">
-        <img
-          className="naxatw-w-12 naxatw-h-12"
-          src={QuestionMark}
-          alt="question-mark"
-        />
-        <h4>Help</h4>
+      <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+        <div className="naxatw-flex naxatw-items-center naxatw-space-x-3">
+          <img
+            className="naxatw-w-12 naxatw-h-12"
+            src={QuestionMark}
+            alt="question-mark"
+          />
+          <h4>Help</h4>
+        </div>
+        <div>
+          <i
+            className="material-icons naxatw-font-normal naxatw-cursor-pointer naxatw-text-secondary-500 hover:naxatw-bg-gray-50 naxatw-p-1 naxatw-rounded-md naxatw-text-[40px] naxatw-mr-4"
+            title="Watch Tutorial"
+            onClick={e => {
+              e.stopPropagation();
+              dispatch(
+                setCurrentTutorial({
+                  tutorialId: '-FUqGk-Waek',
+                  returnTo: 'analysis',
+                }),
+              );
+              dispatch(toggleModal('iframe-modal'));
+            }}
+          >
+            movie_filter
+          </i>
+        </div>
       </div>
 
       <p className="naxatw-mt-2 naxatw-text-body-md">

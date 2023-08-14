@@ -62,6 +62,9 @@ export const { Types, Creators } = createActions(
     getAnalysisByIdRequest: ['params'],
     getAnalysisByIdSuccess: ['payload'],
     getAnalysisByIdFailure: null,
+
+    setCurrentTutorialId: ['payload'],
+    clearCurrentTutorialId: [],
   },
   { prefix: 'analysis/' },
 );

@@ -6,7 +6,8 @@ import { Creators as AnalysisCreators } from '@Actions/analysis';
 import { analysisData } from '@src/constants/analysis';
 
 const { toggleModal } = CommonCreators;
-const { copyLayerDataRequest, setAnalysisState } = AnalysisCreators;
+const { copyLayerDataRequest, setAnalysisState, setCurrentTutorialId } =
+  AnalysisCreators;
 
 export default function Analysis() {
   const { organizationId, projectId } = useParams();
@@ -16,7 +17,8 @@ export default function Analysis() {
     <div>
       <div className="naxatw-grid naxatw-grid-cols-2 naxatw-gap-3">
         {Object.keys(analysisData).map(analysisType => {
-          const { title, description, disabled } = analysisData[analysisType];
+          const { title, description, disabled, tutorialId } =
+            analysisData[analysisType];
           return (
             <div
               key={analysisType}
@@ -43,9 +45,22 @@ export default function Analysis() {
                 );
               }}
             >
-              <h5 className="naxatw-text-grey-800 naxatw-font-semibold">
-                {title}
-              </h5>
+              <div className="naxatw-flex naxatw-justify-between naxatw-items-center">
+                <h5 className="naxatw-text-grey-800 naxatw-font-semibold">
+                  {title}
+                </h5>
+                <i
+                  className="material-icons naxatw-font-normal naxatw-mr-2 naxatw-text-secondary-500"
+                  title="Watch Tutorial"
+                  onClick={e => {
+                    e.stopPropagation();
+                    dispatch(setCurrentTutorialId({ tutorialId }));
+                    dispatch(toggleModal('iframe-modal'));
+                  }}
+                >
+                  movie_filter
+                </i>
+              </div>
               <p className="naxatw-text-body-md naxatw-mt-1">{description}</p>
             </div>
           );

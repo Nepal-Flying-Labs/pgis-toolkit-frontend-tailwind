@@ -7,17 +7,20 @@ export const analysisData = {
     title: 'Buffer Analysis',
     description:
       'Creates a zone around a selected feature, distance or time-based, known as a buffer.',
+    tutorialId: 'KLP-OfmuFXg',
   },
   'proximity-analysis': {
     title: 'Proximity Analysis',
     description:
       'Creates a zone around a selected feature, distance or time-based, known as a proximity, to find features that are within a certain distance of another feature.',
+    tutorialId: 'Xd-AAtkwNSI',
   },
   'optimal-route': {
     title: 'Optimal route analysis',
     description:
       'Finds the most efficient path between multiple locations based on factors such as distance, time, and road conditions.',
     analysisType: 'optimal-route',
+    tutorialId: '5U24o-Rl8G8',
   },
 };
 

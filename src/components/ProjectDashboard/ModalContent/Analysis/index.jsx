@@ -80,7 +80,7 @@ export default function Analysis() {
                   </i>
                   <p
                     ref={tutorialRefs[`tutorialRef${i}`]}
-                    className="heartbeat scale-out-center naxatw-absolute naxatw-top-0 -naxatw-left-14 naxatw-z-10 naxatw-text-ellipsis naxatw-whitespace-nowrap naxatw-bg-yellow-500 naxatw-text-[10px] naxatw-px-1 naxatw-rounded-md naxatw-text-[#F5F5F5]"
+                    className="heartbeat scale-out-center naxatw-absolute -naxatw-top-1 -naxatw-left-[3.8rem] naxatw-z-10 naxatw-text-ellipsis naxatw-whitespace-nowrap naxatw-bg-yellow-500 naxatw-text-[10px] naxatw-px-1 naxatw-rounded-md naxatw-text-[#F5F5F5]"
                   >
                     Watch Tutorial!
                   </p>

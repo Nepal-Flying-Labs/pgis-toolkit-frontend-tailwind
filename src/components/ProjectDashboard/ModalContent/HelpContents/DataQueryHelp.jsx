@@ -57,7 +57,7 @@ export default function DataQueryHelp() {
           </i>
           <p
             ref={tutorialRef}
-            className="heartbeat scale-out-center naxatw-absolute naxatw-top-0 -naxatw-left-16 naxatw-z-10 naxatw-text-ellipsis naxatw-whitespace-nowrap naxatw-bg-yellow-500 naxatw-text-[12px] naxatw-px-1 naxatw-rounded-md naxatw-text-[#F5F5F5]"
+            className="heartbeat scale-out-center naxatw-absolute -naxatw-top-1 -naxatw-left-[4.4rem] naxatw-z-10 naxatw-text-ellipsis naxatw-whitespace-nowrap naxatw-bg-yellow-500 naxatw-text-[12px] naxatw-px-1 naxatw-rounded-md naxatw-text-[#F5F5F5]"
           >
             Watch Tutorial!
           </p>

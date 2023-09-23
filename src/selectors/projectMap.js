@@ -68,7 +68,9 @@ export const roadLayersThemeIdSelector = createSelector(
 
 export const obstacleLayersThemeIdSelector = createSelector(
   [themesSelector],
-  themes => themes?.find(theme => theme.name === obstacleThemeName)?.id,
+  themes =>
+    themes?.find(theme => theme.name.toLowerCase().includes(obstacleThemeName))
+      ?.id,
 );
 
 export const poiLayersThemeIdSelector = createSelector(

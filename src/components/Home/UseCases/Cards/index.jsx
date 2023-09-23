@@ -1,0 +1,30 @@
+/* eslint-disable react/prop-types */
+import CommonBtn from '@Components/common/CommButton/index';
+import Flex from '@Components/common/Layout/Flex/index';
+import FlexColumn from '@Components/common/Layout/FlexColumn/index';
+import React from 'react';
+
+export default function UseCaseCard({ ele }) {
+  return (
+    <Flex
+      className={`${
+        ele.id % 2 === 0 ? 'naxatw-flex-row-reverse' : ''
+      } naxatw-bg-white naxatw-max-h-[360px]`}
+    >
+      <img src={ele.img} alt={ele.title} width={519} />
+
+      <FlexColumn className="naxatw-py-10 naxatw-pr-5 naxatw-pl-[57px] naxatw-gap-5">
+        <p className=" naxatw-text-[12px] naxatw-text-[#347769]">
+          {ele.toptitle.toUpperCase()}
+        </p>
+        <h2 className=" naxatw-text-xl naxatw-leading-[26px]">{ele.title}</h2>
+        <p className=" naxatw-text-sm naxatw-pr-12 naxatw-leading-[22px]">
+          {ele.desc}
+        </p>
+        <CommonBtn className=" naxatw-border-[1px] naxatw-text-[#FF5A5F]">
+          Read More
+        </CommonBtn>
+      </FlexColumn>
+    </Flex>
+  );
+}

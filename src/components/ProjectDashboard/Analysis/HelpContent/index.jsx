@@ -1,11 +1,17 @@
 /* eslint-disable react/no-danger */
-import React from 'react';
+import React, { useRef } from 'react';
 import InfoLogo from '@Assets/images/info.png';
 import SelfIntersection from '@Assets/images/self-intersection.png';
 import Multipart from '@Assets/images/multipart-geometry.png';
 import Overlapping from '@Assets/images/overlapping-geometry.png';
 import Overshoot from '@Assets/images/overshoot-geometry.png';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Creators as CommonCreators } from '@Actions/common';
+import { Creators as AnalysisCreators } from '@Actions/analysis';
+import '@Assets/css/tailwind.css';
+
+const { toggleModal } = CommonCreators;
+const { setCurrentTutorial } = AnalysisCreators;
 
 const stepOneInfoData = [
   {
@@ -74,6 +80,12 @@ export default function HelpContent() {
   const stepIndex = useSelector(state => state.dataCleaning.stepIndex);
 
   const infoData = stepIndex === 1 ? stepOneInfoData : stepTwoInfoData;
+  const dispatch = useDispatch();
+  const tutorialRef = useRef(null);
+
+  setTimeout(() => {
+    tutorialRef.current.style.display = 'none';
+  }, 8000);
 
   return (
     <div
@@ -81,13 +93,40 @@ export default function HelpContent() {
         naxatw-overflow-y-auto scrollbar"
     >
       <div>
-        <div className="naxatw-flex naxatw-items-center naxatw-space-x-3">
-          <img
-            className="naxatw-w-12 naxatw-h-12"
-            src={InfoLogo}
-            alt="info-logo"
-          />
-          <h4>Info</h4>
+        <div className="naxatw-flex naxatw-justify-between">
+          <div className="naxatw-flex naxatw-items-center naxatw-space-x-3">
+            <img
+              className="naxatw-w-12 naxatw-h-12"
+              src={InfoLogo}
+              alt="info-logo"
+            />
+            <h4>Info</h4>
+          </div>
+          {stepIndex !== 1 && (
+            <div className="naxatw-relative">
+              <i
+                className="material-icons naxatw-font-normal naxatw-cursor-pointer naxatw-text-secondary-500 hover:naxatw-bg-gray-50 naxatw-p-1 naxatw-rounded-md naxatw-text-[40px] naxatw-mr-4 naxatw-z-20"
+                title="Watch Tutorial"
+                onClick={e => {
+                  e.stopPropagation();
+                  dispatch(
+                    setCurrentTutorial({
+                      tutorialId: 'OJO0ww7F0eQ',
+                    }),
+                  );
+                  dispatch(toggleModal('iframe-modal'));
+                }}
+              >
+                movie_filter
+              </i>
+              <p
+                ref={tutorialRef}
+                className="heartbeat scale-out-center naxatw-absolute -naxatw-top-1 -naxatw-left-[4.4rem] naxatw-z-10 naxatw-text-ellipsis naxatw-whitespace-nowrap naxatw-bg-yellow-500 naxatw-text-[12px] naxatw-px-1 naxatw-rounded-md naxatw-text-[#F5F5F5]"
+              >
+                Watch Tutorial!
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="naxatw-mt-2 naxatw-space-y-5">

@@ -134,6 +134,20 @@ const ProjectInfo = () => {
               <div className="naxatw-text-body-lg">N/A</div>
             )}
           </div>
+          <div>
+            <h4 className="naxatw-mb-1">Navigation</h4>
+            <div className="naxatw-flex naxatw-gap-14">
+              {tabsData.map(({ label, route }) => (
+                <Link
+                  className="naxatw-flex naxatw-justify-end hover:naxatw-text-secondary-400 naxatw-cursor-pointer 
+                  naxatw-text-body-lg naxatw-font-[600] naxatw-py-1.5 naxatw-text-[#787878]"
+                  to={route}
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
         <div
           className="naxatw-pt-2.5 naxatw-flex naxatw-justify-center xl:naxatw-mt-0 xl:naxatw-block naxatw-cursor-default"
@@ -157,7 +171,7 @@ const ProjectInfo = () => {
             />
           )}
 
-          <div
+          {/* <div
             className="naxatw-flex naxatw-flex-col naxatw-justify-end xl:naxatw-mt-14 naxatw-text-grey-800 
              naxatw-bg-grey-100 naxatw-rounded-md naxatw-w-fit naxatw-ml-auto naxatw-pr-6 naxatw-pl-5 naxatw-py-3"
           >
@@ -171,7 +185,7 @@ const ProjectInfo = () => {
                 {label}
               </Link>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

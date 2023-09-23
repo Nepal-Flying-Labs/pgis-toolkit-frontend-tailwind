@@ -65,6 +65,7 @@ import ViewBufferChart from '@Components/ProjectDashboard/ModalContent/ViewBuffe
 import ViewProximityChart from '@Components/ProjectDashboard/ModalContent/ViewProximityChart';
 import StartAnalysisPrompt from '@Components/ProjectDashboard/Analysis/ModalContent/StartAnalysisPrompt';
 import CreateAnalysis from '@Components/ProjectDashboard/Analysis/ModalContent/CreateAnalysis';
+import Iframe from '@Components/ProjectDashboard/ModalContent/Iframe/index';
 
 export function getModalContent(content) {
   switch (content) {
@@ -316,6 +317,12 @@ export function getModalContent(content) {
         content: <ViewProximityChart />,
         className:
           '!naxatw-min-w-[calc(100vw-70rem)] !naxatw-max-w-[calc(100vw-10rem)] !naxatw-w-fit naxatw-max-h-[calc(100vh-19rem)] ',
+      };
+
+    case 'iframe-modal':
+      return {
+        title: '',
+        content: <Iframe />,
       };
     default:
       return {

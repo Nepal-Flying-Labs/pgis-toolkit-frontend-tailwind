@@ -188,7 +188,7 @@ export default function ViewLayerAttribute() {
 
   const dropdownOptions = [
     {
-      id: 3,
+      id: 'zoom_to_feature',
       label: (
         <span className="naxatw-flex naxatw-items-center">
           <i className="material-icons naxatw-mr-2">zoom_in</i>
@@ -340,7 +340,7 @@ export default function ViewLayerAttribute() {
               />
             )}
 
-            {isBoundaryLayer && (
+            {isBoundaryLayer && modalContent !== 'view-query-attribute' && (
               <TableHeader
                 dataField=""
                 headerClassName=""

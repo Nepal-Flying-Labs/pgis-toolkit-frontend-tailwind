@@ -50,7 +50,7 @@ function NavSection() {
               <img
                 src={getImageSource(userProfile.image)}
                 alt="profile"
-                className=" naxatw-object-fill naxatw-w-10 naxatw-h-10 naxatw-rounded-full"
+                className=" naxatw-object-fill naxatw-w-10 naxatw-h-10 naxatw-rounded-full naxatw-cursor-pointer"
               />
             </>
           ) : (

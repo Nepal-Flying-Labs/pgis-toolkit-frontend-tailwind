@@ -78,7 +78,6 @@ const indexRoutes = [
     path: '/landing',
     name: 'Home',
     component: Home,
-    authenticated: true,
   },
   {
     path: '/use-cases/:id',

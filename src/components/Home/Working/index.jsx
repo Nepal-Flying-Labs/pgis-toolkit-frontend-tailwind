@@ -45,7 +45,7 @@ export default function Working() {
                 <p
                   className={`${
                     Number(currentWork) === Number(ele.id)
-                      ? 'naxatw-text-base naxatw-font-semibold'
+                      ? 'naxatw-text-base naxatw-font-semibold naxatw-text-[#212121]'
                       : 'naxatw-text-sm'
                   }`}
                 >

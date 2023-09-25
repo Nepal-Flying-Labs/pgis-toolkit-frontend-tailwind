@@ -9,6 +9,7 @@ import DataUnderstanding from '@Components/Home/Understanding/index';
 import SupportSection from '@Components/Home/Supports/index';
 import UseCaseSection from '@Components/Home/UseCases/index';
 import PartnerSection from '@Components/Home/Partners/index';
+import FaqSection from '@Components/Home/Faqs/index';
 
 export default function Home() {
   // const dispatch = useDispatch();
@@ -48,6 +49,9 @@ export default function Home() {
       </div>
       <div className="naxatw-py-[112px] naxatw-px-[40px]">
         <PartnerSection />
+      </div>
+      <div className="naxatw-py-[186px] naxatw-px-[155px] naxatw-bg-[#F5F5F5]">
+        <FaqSection />
       </div>
     </FlexColumn>
   );

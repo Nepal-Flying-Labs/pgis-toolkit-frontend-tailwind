@@ -88,6 +88,7 @@ const indexRoutes = [
     path: '/',
     name: 'Home',
     component: Home,
+    authenticated: false,
   },
 ];
 

@@ -10,6 +10,7 @@ import SupportSection from '@Components/Home/Supports/index';
 import UseCaseSection from '@Components/Home/UseCases/index';
 import PartnerSection from '@Components/Home/Partners/index';
 import FaqSection from '@Components/Home/Faqs/index';
+import ContactFormSection from '@Components/Home/ContactForm/index';
 
 export default function Home() {
   // const dispatch = useDispatch();
@@ -52,6 +53,9 @@ export default function Home() {
       </div>
       <div className="naxatw-py-[186px] naxatw-px-[155px] naxatw-bg-[#F5F5F5]">
         <FaqSection />
+      </div>
+      <div className="naxatw-py-[80px] naxatw-pl-[155px] naxatw-pr-[90px]">
+        <ContactFormSection />
       </div>
     </FlexColumn>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import LoginImg from '@Assets/images/sign-in-img.jpg';
 // import LoginLogo from '@Assets/images/login-logo.png';
-import LoginLogo from '@Assets/images/usafiri-beta-white-logo.svg';
+import LoginLogo from '@Assets/images/logo.png';
 // import Button from '@Components/common/Button';
 
 export default function SignInBanner() {
@@ -18,7 +18,11 @@ export default function SignInBanner() {
         <div className="">
           <div>
             <a>
-              <img className="naxatw-h-10" src={LoginLogo} alt="logo" />
+              <img
+                className="naxatw-h-10 naxatw-w-[120px]"
+                src={LoginLogo}
+                alt="logo"
+              />
             </a>
           </div>
           <div className="naxatw-mt-20">

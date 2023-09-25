@@ -75,11 +75,6 @@ const indexRoutes = [
     component: ResetPassword,
   },
   {
-    path: '/landing',
-    name: 'Home',
-    component: Home,
-  },
-  {
     path: '/use-cases/:id',
     name: 'Use Cases',
     component: UseCases,
@@ -88,6 +83,11 @@ const indexRoutes = [
     path: '/use-cases',
     name: 'Use Cases',
     component: UseCasesPage,
+  },
+  {
+    path: '/',
+    name: 'Home',
+    component: Home,
   },
 ];
 

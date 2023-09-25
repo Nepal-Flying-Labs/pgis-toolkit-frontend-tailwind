@@ -1,8 +1,7 @@
 import Flex from '@Components/common/Layout/Flex/index';
 import FlexColumn from '@Components/common/Layout/FlexColumn/index';
 import React, { useEffect, useState } from 'react';
-// eslint-disable-next-line import/no-unresolved
-import Select from '@Assets/images/Select.svg';
+import Select from '@Assets/images/select.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
 import { data } from './data';

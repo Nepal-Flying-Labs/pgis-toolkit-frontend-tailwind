@@ -11,18 +11,15 @@ const { getUserProfileRequest } = Creators;
 function NavSection() {
   const userProfile = useSelector(state => state.authentication.userProfile);
   const dispatch = useDispatch();
-  const getUser = async () => {
-    dispatch(getUserProfileRequest());
-  };
 
   useEffect(() => {
-    getUser();
-  }, []);
+    dispatch(getUserProfileRequest());
+  }, [dispatch]);
 
   return (
     <nav className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-w-full naxatw-bg-[#FF5A5F] naxatw-py-4 naxatw-px-[156px]">
       <FlexBetween className="naxatw-w-full">
-        <Links to="/landing">
+        <Links to="/">
           <img
             src={LOGO}
             alt="logo"

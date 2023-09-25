@@ -85,7 +85,7 @@ export default function EditStyleSection() {
       <div
         className="naxatw-overflow-auto scrollbar naxatw-flex naxatw-flex-col naxatw-gap-5"
         style={{
-          height: `calc(100vh - ${projectHeaderHeight}px - 10rem)`,
+          height: `calc(100vh - ${projectHeaderHeight}px - 12rem)`,
         }}
       >
         <div className="naxatw-flex naxatw-items-center">

@@ -15,6 +15,7 @@ export const { Types, Creators } = createActions(
     setRightSidebarState: ['payload'],
 
     setImageModal: ['payload'],
+    toggleCurrentWork: ['payload'],
   },
   { prefix: 'common/' },
 );

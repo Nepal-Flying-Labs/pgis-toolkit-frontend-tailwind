@@ -6,7 +6,8 @@ import Home from '../views/Home';
 import Organizations from '../views/Organizations';
 import OrganizationDashboard from '../views/OrganizationDashboard';
 import ProjectDashboard from '../views/ProjectDashboard';
-import UseCases from '../views/UseCases';
+import UseCasesPage from '../views/UseCases/index';
+import UseCases from '../views/UseCases/SingleCase/index';
 
 const indexRoutes = [
   {
@@ -83,6 +84,11 @@ const indexRoutes = [
     path: '/use-cases/:id',
     name: 'Use Cases',
     component: UseCases,
+  },
+  {
+    path: '/use-cases',
+    name: 'Use Cases',
+    component: UseCasesPage,
   },
 ];
 

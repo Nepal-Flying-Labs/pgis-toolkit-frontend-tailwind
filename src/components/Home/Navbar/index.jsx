@@ -5,15 +5,20 @@ import Links from '@Components/common/Link/index';
 
 function NavSection() {
   return (
-    <nav className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-w-full naxatw-bg-[#FF5A5F] naxatw-py-8 naxatw-px-[156px]">
+    <nav className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-w-full naxatw-bg-[#FF5A5F] naxatw-py-4 naxatw-px-[156px]">
       <FlexBetween className="naxatw-w-full">
-        <img
-          src={LOGO}
-          alt="logo"
-          className="naxatw-w-[128px] naxatw-h-[24px]"
-        />
+        <Links to="/landing">
+          <img
+            src={LOGO}
+            alt="logo"
+            className="naxatw-w-[128px] naxatw-h-[24px]"
+          />
+        </Links>
         <FlexBetween className="naxatw-gap-3 naxatw-items-center">
-          <Links className="naxatw-font-bold naxatw-text-[14px] naxatw-text-white naxatw-px-3 naxatw-py-2">
+          <Links
+            className="naxatw-font-bold naxatw-text-[14px] naxatw-text-white naxatw-px-3 naxatw-py-2"
+            to="/use-cases/"
+          >
             USE CASES
           </Links>
           <Links className="naxatw-font-bold naxatw-text-[14px] naxatw-text-white naxatw-px-3 naxatw-py-2">

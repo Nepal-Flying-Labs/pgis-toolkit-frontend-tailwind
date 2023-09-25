@@ -21,7 +21,10 @@ export default function UseCaseCard({ ele }) {
         <p className=" naxatw-text-sm naxatw-pr-12 naxatw-leading-[22px]">
           {ele.desc}
         </p>
-        <CommonBtn className=" naxatw-border-[1px] naxatw-text-[#FF5A5F]">
+        <CommonBtn
+          className=" naxatw-w-fit naxatw-border-[1px] naxatw-text-[#FF5A5F]"
+          to={`/use-cases/${ele.id}`}
+        >
           Read More
         </CommonBtn>
       </FlexColumn>

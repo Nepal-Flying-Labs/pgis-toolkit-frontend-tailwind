@@ -5,7 +5,7 @@ import Links from '@Components/common/Link/index';
 
 function NavSection() {
   return (
-    <nav className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-w-full">
+    <nav className="naxatw-flex naxatw-flex-col naxatw-items-center naxatw-w-full naxatw-bg-[#FF5A5F] naxatw-py-8 naxatw-px-[156px]">
       <FlexBetween className="naxatw-w-full">
         <img
           src={LOGO}

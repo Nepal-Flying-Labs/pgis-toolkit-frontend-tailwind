@@ -11,6 +11,8 @@ import UseCaseSection from '@Components/Home/UseCases/index';
 import PartnerSection from '@Components/Home/Partners/index';
 import FaqSection from '@Components/Home/Faqs/index';
 import ContactFormSection from '@Components/Home/ContactForm/index';
+import FooterSection from '@Components/Home/Footer/index';
+import TopNav from '@Components/Home/Navbar/TopNav/index';
 
 export default function Home() {
   // const dispatch = useDispatch();
@@ -21,13 +23,9 @@ export default function Home() {
 
   return (
     <FlexColumn>
-      <div className="naxatw-w-full naxatw-flex naxatw-items-center naxatw-justify-end naxatw-bg-[#212121] naxatw-py-1 naxatw-px-[156px] naxatw-gap-3">
-        <p className="naxatw-text-white">EN</p>
-        <p className="naxatw-text-white">|</p>
-        <p className="naxatw-text-white">ने</p>
-      </div>
-      <FlexColumn className="naxatw-w-full naxatw-bg-gradient-to-t naxatw-to-[#FF5A5F] naxatw-from-[#A41D55]  naxatw-py-8 naxatw-px-[156px]">
-        <Navbar />
+      <TopNav />
+      <Navbar />
+      <FlexColumn className="naxatw-w-full naxatw-bg-gradient-to-t naxatw-to-[#FF5A5F] naxatw-from-[#A41D55] naxatw-px-[156px]">
         <HomeBanner />
       </FlexColumn>
       <div className="naxatw-py-[193px] naxatw-px-[196.5px]">
@@ -56,6 +54,9 @@ export default function Home() {
       </div>
       <div className="naxatw-py-[80px] naxatw-pl-[155px] naxatw-pr-[90px]">
         <ContactFormSection />
+      </div>
+      <div className="naxatw-py-[80px] naxatw-px-[155px] naxatw-border-t-[1px]">
+        <FooterSection />
       </div>
     </FlexColumn>
   );

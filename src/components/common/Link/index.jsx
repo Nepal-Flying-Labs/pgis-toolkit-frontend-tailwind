@@ -7,7 +7,7 @@ export default function Links({ children, className, to, onClick }) {
     <Link
       to={to}
       onClick={onClick}
-      className={`naxatw-btn-link naxatw-flex naxatw-w-fit naxatw-text-sm naxatw-px-5 naxatw-py-3 naxatw-rounded-lg ${className}`}
+      className={`naxatw-flex naxatw-w-fit naxatw-text-sm naxatw-px-5 naxatw-py-3 naxatw-rounded-lg ${className}`}
     >
       {children}
     </Link>

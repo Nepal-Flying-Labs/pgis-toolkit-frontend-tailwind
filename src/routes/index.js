@@ -6,6 +6,8 @@ import Home from '../views/Home';
 import Organizations from '../views/Organizations';
 import OrganizationDashboard from '../views/OrganizationDashboard';
 import ProjectDashboard from '../views/ProjectDashboard';
+import UseCasesPage from '../views/UseCases/index';
+import UseCases from '../views/UseCases/SingleCase/index';
 
 const indexRoutes = [
   {
@@ -73,10 +75,20 @@ const indexRoutes = [
     component: ResetPassword,
   },
   {
+    path: '/use-cases/:id',
+    name: 'Use Cases',
+    component: UseCases,
+  },
+  {
+    path: '/use-cases',
+    name: 'Use Cases',
+    component: UseCasesPage,
+  },
+  {
     path: '/',
     name: 'Home',
     component: Home,
-    authenticated: true,
+    authenticated: false,
   },
 ];
 

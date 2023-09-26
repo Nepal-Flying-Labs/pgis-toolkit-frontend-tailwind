@@ -14,6 +14,7 @@ const initialState = {
     flag: '',
   },
   showImageModal: false,
+  currentWork: 1,
 };
 
 const toggleModal = (state, action) => ({
@@ -65,6 +66,11 @@ const setImageModal = (state, action) => ({
   showImageModal: action.payload,
 });
 
+const setCurrentWork = (state, action) => ({
+  ...state,
+  currentWork: action.payload,
+});
+
 const commonReducer = createReducer(initialState, {
   [Types.TOGGLE_MODAL]: toggleModal,
   [Types.SET_MODAL_CONTENT]: setModalContent,
@@ -75,6 +81,7 @@ const commonReducer = createReducer(initialState, {
   [Types.SET_PROJECT_HEADER_HEIGHT]: setProjectHeaderHeight,
   [Types.SET_RIGHT_SIDEBAR_STATE]: setRightSidebarState,
   [Types.SET_IMAGE_MODAL]: setImageModal,
+  [Types.TOGGLE_CURRENT_WORK]: setCurrentWork,
 });
 
 export default commonReducer;

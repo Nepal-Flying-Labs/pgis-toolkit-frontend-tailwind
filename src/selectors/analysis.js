@@ -76,6 +76,8 @@ export const obstacleLayersThemeIdSelector = createSelector(
   [themesSelector, isLayersFetchedSelector],
   (themes, isLayersFetched) => {
     if (!themes || !isLayersFetched) return null;
-    return themes.find(theme => theme.name === obstacleThemeName)?.id;
+    return themes.find(theme =>
+      theme.name.toLowerCase().includes(obstacleThemeName),
+    )?.id;
   },
 );

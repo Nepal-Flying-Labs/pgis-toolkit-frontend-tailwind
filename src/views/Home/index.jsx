@@ -11,7 +11,6 @@ import PartnerSection from '@Components/Home/Partners/index';
 import FaqSection from '@Components/Home/Faqs/index';
 import ContactFormSection from '@Components/Home/ContactForm/index';
 import FooterSection from '@Components/Home/Footer/index';
-import TopNav from '@Components/Home/Navbar/TopNav/index';
 import NavSection from '@Components/Home/Navbar/index';
 
 export default function Home() {
@@ -23,7 +22,6 @@ export default function Home() {
 
   return (
     <FlexColumn>
-      <TopNav />
       <NavSection />
       <FlexColumn className="naxatw-w-full naxatw-bg-gradient-to-t naxatw-to-[#FF5A5F] naxatw-from-[#A41D55] naxatw-px-[156px]">
         <HomeBanner />

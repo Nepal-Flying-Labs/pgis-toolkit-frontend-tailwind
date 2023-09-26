@@ -13,6 +13,7 @@ function NavSection() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!localStorage.getItem('userToken')) return;
     dispatch(getUserProfileRequest());
   }, [dispatch]);
 

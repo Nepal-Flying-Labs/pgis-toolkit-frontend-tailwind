@@ -41,9 +41,9 @@ export default function ContactForm() {
         {' '}
         Send Message{' '}
       </CommonBtn>
-      <p className=" naxatw-text-[17px] naxatw-text-[#484848]">
+      <p className=" naxatw-text-base naxatw-text-[#484848]">
         Or for general queries directly mail us at{' '}
-        <span className=" naxatw-text-[17px] naxatw-text-[#FF5A5F]">
+        <span className="naxatw-text-base naxatw-text-[#FF5A5F]">
           hello@usafiri.io
         </span>
       </p>

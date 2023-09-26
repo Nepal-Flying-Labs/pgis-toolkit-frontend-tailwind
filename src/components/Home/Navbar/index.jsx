@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
-import LOGO from '@Assets/images/logo.png';
+import LOGO from '@Assets/images/logo.svg';
 import FlexBetween from '@Components/common/Layout/FlexBetween/index';
 import Links from '@Components/common/Link/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators } from '@Actions/authentication';
 import getImageSource from '@Utils/getImageSource';
+import { useHistory } from 'react-router-dom';
 
 const { getUserProfileRequest } = Creators;
 
 function NavSection() {
   const userProfile = useSelector(state => state.authentication.userProfile);
   const dispatch = useDispatch();
+  const navigate = useHistory();
 
   useEffect(() => {
     if (!localStorage.getItem('userToken')) return;
@@ -34,16 +36,27 @@ function NavSection() {
           >
             USE CASES
           </Links>
-          <Links className="naxatw-font-bold naxatw-text-[14px] naxatw-text-white naxatw-px-3 naxatw-py-2">
+          <Links
+            className="naxatw-font-bold naxatw-text-[14px] naxatw-text-white naxatw-px-3 naxatw-py-2"
+            onClick={async () => {
+              if (window.location.pathname !== '/') {
+                await navigate.push('/');
+              }
+              document
+                .getElementById('about-section')
+                .scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
             ABOUT
           </Links>
+
           {userProfile?.image ? (
             <>
               <Links
                 className="naxatw-font-bold naxatw-text-[14px] naxatw-text-white naxatw-px-3 naxatw-py-2"
                 to="/organizations"
               >
-                ORGANIZATIONS
+                My ORGANIZATIONS
               </Links>
               <img
                 src={getImageSource(userProfile.image)}
@@ -53,7 +66,17 @@ function NavSection() {
             </>
           ) : (
             <>
-              <Links className="naxatw-font-bold naxatw-text-[14px] naxatw-text-white naxatw-px-3 naxatw-py-2">
+              <Links
+                className="naxatw-font-bold naxatw-text-[14px] naxatw-text-white naxatw-px-3 naxatw-py-2"
+                onClick={async () => {
+                  if (window.location.pathname !== '/') {
+                    await navigate.push('/');
+                  }
+                  document
+                    .getElementById('request-form')
+                    .scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 REQUEST ACCESS
               </Links>
               <Links

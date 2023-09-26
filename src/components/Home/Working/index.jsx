@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Select from '@Assets/images/select.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
-import { data } from './data';
+import { data } from './data/data';
 
 const { toggleCurrentWork } = CommonCreators;
 
@@ -39,13 +39,13 @@ export default function Working() {
                 {ele.id === currentWork ? (
                   <img src={Select} alt="select" />
                 ) : (
-                  <div className="naxatw-rounded-full naxatw-border-[1px] naxatw-w-5 naxatw-h-5" />
+                  <div className="naxatw-rounded-full naxatw-border-[1px] naxatw-w-5 naxatw-h-5 naxatw-text-base" />
                 )}
                 <p
                   className={`${
                     Number(currentWork) === Number(ele.id)
                       ? 'naxatw-text-base naxatw-font-semibold naxatw-text-[#212121]'
-                      : 'naxatw-text-sm'
+                      : 'naxatw-text-base'
                   }`}
                 >
                   {ele.name}
@@ -55,7 +55,7 @@ export default function Working() {
         </FlexColumn>
       </FlexColumn>
       <FlexColumn className="naxatw-gap-[43px]">
-        <p className="naxatw-w-[393px] naxatw-text-sm">
+        <p className="naxatw-w-[393px] naxatw-text-base">
           We offer a range of participatory mapping services to voluntary and
           community groups, business organisations and government bodies.
         </p>

@@ -1,6 +1,6 @@
 import FlexColumn from '@Components/common/Layout/FlexColumn/index';
 import React from 'react';
-import { majorfeatures } from './data';
+import { majorfeatures } from './data/data';
 import FeatureCard from './Card/index';
 
 function Features() {

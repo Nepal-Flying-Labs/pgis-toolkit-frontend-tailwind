@@ -18,7 +18,7 @@ export default function UseCaseCard({ ele }) {
           {ele.toptitle.toUpperCase()}
         </p>
         <h2 className=" naxatw-text-xl naxatw-leading-[26px]">{ele.title}</h2>
-        <p className=" naxatw-text-sm naxatw-pr-12 naxatw-leading-[22px]">
+        <p className=" naxatw-text-base naxatw-pr-12 naxatw-leading-[22px]">
           {ele.desc}
         </p>
         <CommonBtn

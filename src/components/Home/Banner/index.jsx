@@ -6,8 +6,8 @@ import FlexColumn from '@Components/common/Layout/FlexColumn/index';
 export default function HomeBanner() {
   return (
     <div className="naxatw-grid naxatw-grid-cols-2 naxatw-gap-[95px] naxatw-items-center naxatw-my-[84px]">
-      <FlexColumn>
-        <p className="naxatw-text-[36px] naxatw-font-[400] naxatw-text-white">
+      <FlexColumn className=" naxatw-w-3/4">
+        <p className="naxatw-text-[38px] naxatw-font-[400] naxatw-text-white naxatw-leading-[44px]">
           Transitioning from Paper-Based Community Mapping to Digital
           Participation
         </p>
@@ -15,7 +15,7 @@ export default function HomeBanner() {
           LEARN MORE
         </Links>
       </FlexColumn>
-      <img src={BannerLogo} alt="banner" />
+      <img src={BannerLogo} alt="banner" className=" naxatw-w-[584px]" />
     </div>
   );
 }

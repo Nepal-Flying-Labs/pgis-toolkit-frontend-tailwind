@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import LOGO from '@Assets/images/logo.png';
+import LOGO from '@Assets/images/logo.svg';
 import FlexBetween from '@Components/common/Layout/FlexBetween/index';
 import Links from '@Components/common/Link/index';
 import { useDispatch, useSelector } from 'react-redux';

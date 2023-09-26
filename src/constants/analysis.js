@@ -77,13 +77,13 @@ export const checkErrorData = [
     checkAPI: 'check_self_intersecting_geometry',
     fixAPI: 'fix_self_intersecting_geometry',
   },
-  {
-    id: 'isolated',
-    alternativeId: 'snapping',
-    label: 'Isolated Geometry',
-    checkAPI: 'check_isolated_geometry',
-    fixAPI: 'fix_isolated_geometry',
-  },
+  // {
+  //   id: 'isolated',
+  //   alternativeId: 'snapping',
+  //   label: 'Isolated Geometry',
+  //   checkAPI: 'check_isolated_geometry',
+  //   fixAPI: 'fix_isolated_geometry',
+  // },
 ];
 
 export const pointCheckExceptions = [

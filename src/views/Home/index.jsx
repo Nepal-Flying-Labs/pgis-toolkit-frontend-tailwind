@@ -26,7 +26,7 @@ export default function Home() {
       <FlexColumn className="naxatw-w-full naxatw-bg-gradient-to-t naxatw-to-[#FF5A5F] naxatw-from-[#A41D55] naxatw-px-[156px]">
         <HomeBanner />
       </FlexColumn>
-      <div className="naxatw-py-[193px] naxatw-px-[196.5px]">
+      <div className="naxatw-py-[193px] naxatw-px-[196.5px]" id="about-section">
         <About />
       </div>
       <div className="naxatw-bg-[#F5F5F5] naxatw-px-[96px] naxatw-pt-[107px] naxatw-pb-[76px] naxatw-w-full">
@@ -50,7 +50,10 @@ export default function Home() {
       <div className="naxatw-py-[186px] naxatw-px-[155px] naxatw-bg-[#F5F5F5]">
         <FaqSection />
       </div>
-      <div className="naxatw-py-[80px] naxatw-pl-[155px] naxatw-pr-[90px]">
+      <div
+        className="naxatw-py-[80px] naxatw-pl-[155px] naxatw-pr-[90px]"
+        id="request-form"
+      >
         <ContactFormSection />
       </div>
       <div className="naxatw-py-[80px] naxatw-px-[155px] naxatw-border-t-[1px]">

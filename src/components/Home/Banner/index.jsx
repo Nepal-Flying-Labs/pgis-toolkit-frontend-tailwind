@@ -11,7 +11,7 @@ export default function HomeBanner() {
           Transitioning from Paper- Based Community Mapping to Digital
           Participation
         </p>
-        <p className=" naxatw-text-white naxatw-mt-6">
+        <p className=" naxatw-text-white naxatw-mt-6 naxatw-text-xl">
           Store, Map and Analyse mobility related spatial datasets with
           communities
         </p>

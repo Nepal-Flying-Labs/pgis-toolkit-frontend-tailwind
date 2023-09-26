@@ -6,6 +6,7 @@ import bbox from '@turf/bbox';
 import { Types } from '@Actions/dataCleaning';
 import { checkErrorData, pointCheckExceptions } from '@src/constants/analysis';
 import { pointTypes } from '@Components/common/OpenLayersComponent/helpers/styleUtils';
+import removeObjectKeys from '@Utils/removeObjectKeys';
 
 const initialState = {
   stepIndex: 1,
@@ -161,7 +162,7 @@ const getErrorFeaturesSuccess = (state, action) => {
   );
   return {
     ...state,
-    errorFeaturesData: data,
+    errorFeaturesData: removeObjectKeys(data, ['snapping']),
   };
 };
 
@@ -441,7 +442,7 @@ const splitFeatureSuccess = (state, action) =>
   });
 
 const checkLayerLogsSuccess = (state, action) => {
-  const data = action.payload;
+  const data = removeObjectKeys(action.payload, ['snapping']);
   const layerId = data.layer_id;
   const errorStates = {
     ...state.errorStates,

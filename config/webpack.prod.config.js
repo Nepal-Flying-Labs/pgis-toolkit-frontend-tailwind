@@ -38,7 +38,7 @@ const prodConfiguration = () =>
           chunks: 'all',
         },
         runtimeChunk: {
-          name: (entrypoint) => `runtimechunk~${entrypoint.name}`,
+          name: entrypoint => `runtimechunk~${entrypoint.name}`,
         },
       },
 
@@ -55,8 +55,8 @@ const prodConfiguration = () =>
           minRatio: 0,
         }),
       ],
-      // devtool: '',
+      devtool: false,
     },
   ]);
 
-module.exports = (env) => merge(baseConfig(env), prodConfiguration(env));
+module.exports = env => merge(baseConfig(env), prodConfiguration(env));

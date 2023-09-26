@@ -12,7 +12,7 @@ export default function FeatureCard({ ele }) {
       <h1 className="naxatw-text-xl naxatw-pt-6 naxatw-pb-4 naxatw-text-[#212121]">
         {ele.title}
       </h1>
-      <p className="naxatw-text-start naxatw-text-[background: #484848] naxatw-text-sm">
+      <p className="naxatw-text-start naxatw-text-[background: #484848]">
         {ele.desc}
       </p>
     </FlexColumn>

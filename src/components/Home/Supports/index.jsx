@@ -29,7 +29,7 @@ export default function SupportSection() {
         <img src={datreq} alt="datarequirement" />
         <FlexColumn className="naxatw-gap-6 naxatw-justify-start naxatw--mt-6">
           <h2 className=" naxatw-text-xl">Data Requirement</h2>
-          <p className="naxatw-text-sm">
+          <p className="naxatw-text-base">
             USAFIRI allows for data import from multiple sources and use them
             for different mapping purpose, but it is important to review the
             Data Requirement document before beginning the data management

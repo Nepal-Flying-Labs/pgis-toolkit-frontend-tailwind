@@ -24,7 +24,7 @@ export default function FaqAccordion({
       <div className="naxatw-pl-2">
         <div
           className="naxatw-flex naxatw-items-center naxatw-justify-between
-            naxatw-w-full naxatw-font-medium naxatw-gap-3 naxatw-cursor-pointer"
+            naxatw-w-full naxatw-font-bold naxatw-gap-3 naxatw-cursor-pointer"
           onClick={() => {
             if (disableHeaderClickToggle) return;
             setCollapsed(!collapsed);
@@ -56,7 +56,7 @@ export default function FaqAccordion({
         className={`${
           collapsed
             ? 'naxatw-hidden'
-            : ' naxatw-px-2 naxatw-text-[16px] naxatw-leading-[22px] naxatw-font-normal naxatw-text-[#484848] naxatw-mt-2'
+            : ' naxatw-px-2 naxatw-leading-[22px] naxatw-font-normal naxatw-text-[#484848] naxatw-mt-2'
         }`}
       >
         {body}

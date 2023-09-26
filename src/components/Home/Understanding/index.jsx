@@ -12,7 +12,7 @@ export default function DataUnderstanding() {
           Data Requirements.
         </span>
       </h1>
-      <p className=" naxatw-text-sm naxatw-w-[501px]">
+      <p className=" naxatw-w-[501px]">
         If you are utilizing USAFIRI for transportation needs assessment, the
         required standardized list of datasets that need to be collected
         includes:

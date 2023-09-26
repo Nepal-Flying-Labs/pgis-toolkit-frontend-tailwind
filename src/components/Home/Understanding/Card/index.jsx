@@ -14,7 +14,7 @@ export default function RequirementsCard({ ele }) {
         className="naxatw-h-[60px] naxatw-w-[60px]"
       />
       <h3>{ele.title}</h3>
-      <p>{ele.desc}</p>
+      <p className=" naxatw-text-base">{ele.desc}</p>
       <Flex className="naxatw-gap-2">
         <CommonBtn className="naxatw-text-[#FF5A5F] naxatw-border-[1px]">
           Read Document

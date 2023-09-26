@@ -4,17 +4,27 @@ import React, { useEffect, useState } from 'react';
 import Select from '@Assets/images/select.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { Creators as CommonCreators } from '@Actions/common';
-import { data } from './data/data';
+import { howUsaFiriWorksdata } from './data/data';
 
 const { toggleCurrentWork } = CommonCreators;
 
 export default function Working() {
-  const [image, setImage] = useState([]);
-  const dispatch = useDispatch();
   const { currentWork } = useSelector(state => state.common);
+  const [image, setImage] = useState(
+    howUsaFiriWorksdata.filter(
+      ele => ele.id.toString() === currentWork.toString(),
+    ),
+  );
+  const dispatch = useDispatch();
+
+  console.log(currentWork);
   useEffect(() => {
     if (currentWork) {
-      setImage(data.filter(ele => ele.id === currentWork));
+      setImage(
+        howUsaFiriWorksdata.filter(
+          ele => ele.id.toString() === currentWork.toString(),
+        ),
+      );
     }
   }, [dispatch, currentWork]);
 
@@ -29,26 +39,26 @@ export default function Working() {
           Works?
         </h1>
         <FlexColumn className="naxatw-gap-6 naxatw-w-[360px]">
-          {data &&
-            data.map(ele => (
+          {howUsaFiriWorksdata &&
+            howUsaFiriWorksdata.map(ele => (
               <div
                 className="naxatw-flex naxatw-gap-5 naxatw-cursor-pointer"
                 key={ele.id}
                 onClick={() => dispatch(toggleCurrentWork(ele.id))}
               >
-                {ele.id === currentWork ? (
+                {ele.id.toString() === currentWork.toString() ? (
                   <img src={Select} alt="select" />
                 ) : (
                   <div className="naxatw-rounded-full naxatw-border-[1px] naxatw-w-5 naxatw-h-5 naxatw-text-base" />
                 )}
                 <p
                   className={`${
-                    Number(currentWork) === Number(ele.id)
+                    currentWork.toString() === ele.id.toString()
                       ? 'naxatw-text-base naxatw-font-semibold naxatw-text-[#212121]'
                       : 'naxatw-text-base'
                   }`}
                 >
-                  {ele.name}
+                  {ele.heading}
                 </p>
               </div>
             ))}
@@ -56,14 +66,13 @@ export default function Working() {
       </FlexColumn>
       <FlexColumn className="naxatw-gap-[43px]">
         <p className="naxatw-w-[393px] naxatw-text-base">
-          We offer a range of participatory mapping services to voluntary and
-          community groups, business organisations and government bodies.
+          {image[0]?.description}
         </p>
         <Flex className="naxatw-gap-[83px]">
           <img
-            src={image[0]?.image}
+            src={image[0]?.img}
             alt={image}
-            className="naxatw-w-[785px] naxatw-h-[436px]"
+            className="naxatw-w-[785px] naxatw-h-[436px] naxatw-object-contain"
           />
         </Flex>
       </FlexColumn>

@@ -11,6 +11,7 @@ export default function FaqAccordion({
   disableHeaderClickToggle,
 }) {
   const [collapsed, setCollapsed] = useState(isCollapsed);
+  console.log(body);
 
   useEffect(() => {
     setCollapsed(isCollapsed);

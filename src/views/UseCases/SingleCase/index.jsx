@@ -6,11 +6,13 @@ import React from 'react';
 
 export default function UseCases() {
   const id = window.location.pathname.split('/')[2];
+  const catid = window.location.pathname.split('/')[3];
+
   return (
     <FlexColumn>
       <NavSection />
       <Flex className="naxatw-w-full">
-        <SingleUseCaseSection id={id} />
+        <SingleUseCaseSection id={id} catid={catid} />
       </Flex>
     </FlexColumn>
   );

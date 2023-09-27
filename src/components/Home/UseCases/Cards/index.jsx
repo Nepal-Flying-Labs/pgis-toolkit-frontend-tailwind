@@ -15,11 +15,11 @@ export default function UseCaseCard({ ele }) {
 
       <FlexColumn className="naxatw-py-10 naxatw-pr-5 naxatw-pl-[57px] naxatw-gap-5">
         <p className=" naxatw-text-[12px] naxatw-text-[#347769]">
-          {ele.toptitle.toUpperCase()}
+          {ele.heading.toUpperCase()}
         </p>
         <h2 className=" naxatw-text-xl naxatw-leading-[26px]">{ele.title}</h2>
         <p className=" naxatw-text-base naxatw-pr-12 naxatw-leading-[22px]">
-          {ele.desc}
+          {ele.description}
         </p>
         <CommonBtn
           className=" naxatw-w-fit naxatw-border-[1px] naxatw-text-[#FF5A5F]"

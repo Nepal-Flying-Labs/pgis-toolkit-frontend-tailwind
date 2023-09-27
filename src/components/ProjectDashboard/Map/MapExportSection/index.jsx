@@ -11,7 +11,7 @@ import Toggle from '@Components/common/Toggle';
 import Button from '@Components/common/Button/index';
 import Spinner from '@src/components/common/Spinner';
 // import Logo from '@src/assets/images/logo.png';
-import Logo from '@Assets/images/usafiri-beta-logo.svg';
+import Logo from '@Assets/images/home/footer/FooterLogo.svg';
 import ScaleLine from 'ol/control/ScaleLine';
 import Graticule from 'ol/layer/Graticule';
 import { Stroke } from 'ol/style';

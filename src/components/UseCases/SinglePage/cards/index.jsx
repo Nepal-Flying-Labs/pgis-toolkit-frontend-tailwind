@@ -15,8 +15,8 @@ export default function UseCaseBigCard({ usecase }) {
           </h1>
         </FlexColumn>
         <FlexColumn className=" naxatw-mt-8">
-          <p>kenya</p>
-          <p>time</p>
+          <p>{usecase?.place ? usecase.place : 'Kenya'}</p>
+          <p>{usecase.date}</p>
         </FlexColumn>
       </FlexColumn>
       <img

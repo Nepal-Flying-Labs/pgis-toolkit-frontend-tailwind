@@ -6,15 +6,20 @@ import UseCaseBigCard from './cards/index';
 import { useCases } from '../../Home/UseCases/Data/data';
 
 // eslint-disable-next-line react/prop-types
-export default function SingleUseCaseSection({ id }) {
+export default function SingleUseCaseSection({ id, catid }) {
   const [usecase, setUseCase] = useState({});
   useEffect(() => {
-    if (id) {
-      setUseCase(
-        useCases.filter(ele => ele.id.toString() === id.toString())[0],
-      );
+    if (id && catid) {
+      const category = useCases.filter(ele => ele.id === id)[0];
+      if (category) {
+        setUseCase(
+          category.content.filter(
+            ele => ele.id.toString() === catid.toString(),
+          )[0],
+        );
+      }
     }
-  }, [id]);
+  }, [id, catid]);
 
   return (
     <FlexColumn className="naxatw-w-full">
@@ -30,7 +35,7 @@ export default function SingleUseCaseSection({ id }) {
             <p>Title 1</p>
             <p>Title 2</p>
           </Flex>
-          <p>{usecase.desc}</p>
+          <p>{usecase.description}</p>
           <FlexColumn className=" naxatw-gap-4">
             <p className=" naxatw-text-[17px]">Project Objectives</p>
             {usecase?.objectives &&

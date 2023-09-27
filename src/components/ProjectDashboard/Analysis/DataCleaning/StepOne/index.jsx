@@ -41,7 +41,8 @@ export default function StepOne() {
       selectedRoadLayer,
       selectedObstacleLayers,
     },
-    required: ['selectedRoadLayer', 'selectedObstacleLayers'],
+    // required: ['selectedRoadLayer', 'selectedObstacleLayers'],
+    required: ['selectedRoadLayer'],
     onSubmit: data => {
       dispatch(
         setOptimalRouteState({
@@ -155,10 +156,10 @@ export default function StepOne() {
                 ))}
             </ul>
           </div>
-          {meta.selectedObstacleLayers.error &&
+          {/* {meta.selectedObstacleLayers.error &&
             meta.selectedObstacleLayers.touched && (
               <FormErrorMessage message="Please select obstacles layer." />
-            )}
+            )} */}
         </div>
       </div>
 

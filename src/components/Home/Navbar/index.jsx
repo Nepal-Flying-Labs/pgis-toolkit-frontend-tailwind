@@ -61,7 +61,7 @@ function NavSection() {
                 className="naxatw-font-bold naxatw-text-[14px] naxatw-text-white naxatw-px-3 naxatw-py-2"
                 to="/organizations"
               >
-                My ORGANIZATIONS
+                MY ORGANIZATIONS
               </Links>
               <div onClick={() => handleToggle(!toggle)} ref={ref}>
                 <img

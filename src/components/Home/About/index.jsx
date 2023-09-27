@@ -26,7 +26,7 @@ export default function About() {
           Enhances
         </span>{' '}
         data through community participation.
-        <p className=" naxatw-text-[20px]">
+        <p className=" naxatw-text-[18px]">
           The tool is co-designed with practitioners in the field of
           transportation need
           <br /> assessments, climate technology and geospatial applications

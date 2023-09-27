@@ -75,7 +75,7 @@ const indexRoutes = [
     component: ResetPassword,
   },
   {
-    path: '/use-cases/:id',
+    path: '/use-cases/:type/:id',
     name: 'Use Cases',
     component: UseCases,
   },

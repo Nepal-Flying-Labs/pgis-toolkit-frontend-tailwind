@@ -127,10 +127,7 @@ export default function DataInput() {
     if (selectedRadiusColumn) {
       payloadData.radius_col = selectedRadiusColumn.name;
     }
-    const poiLayersIds = poiLayers
-      .filter(layer => layer.checked)
-      .map(layer => layer.id);
-    dispatch(copyFeaturesRequest(poiLayersIds));
+    dispatch(copyFeaturesRequest(selectedLayer.id));
     dispatch(applyBufferAnalysisRequest(payloadData));
   };
 

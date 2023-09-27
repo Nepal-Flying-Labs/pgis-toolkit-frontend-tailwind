@@ -4,7 +4,7 @@ import Flex from '@Components/common/Layout/Flex/index';
 import FlexColumn from '@Components/common/Layout/FlexColumn/index';
 import React from 'react';
 
-export default function UseCaseCard({ ele }) {
+export default function UseCaseCard({ ele, catid }) {
   return (
     <Flex
       className={`${
@@ -23,7 +23,7 @@ export default function UseCaseCard({ ele }) {
         </p>
         <CommonBtn
           className=" naxatw-w-fit naxatw-border-[1px] naxatw-text-[#FF5A5F]"
-          to={`/use-cases/${ele.id}`}
+          to={`/use-cases/${catid}/${ele.id}`}
         >
           Read More
         </CommonBtn>

@@ -35,7 +35,9 @@ export default function UseCaseSection() {
       </FlexColumn>
       <FlexColumn className="naxatw-gap-10 naxatw-mt-12">
         {cardData[0]?.content ? (
-          cardData[0]?.content?.map(ele => <UseCaseCard ele={ele} />)
+          cardData[0]?.content?.map(ele => (
+            <UseCaseCard ele={ele} catid={cardData[0].id} />
+          ))
         ) : (
           <p>Sorry! we do not have data.</p>
         )}

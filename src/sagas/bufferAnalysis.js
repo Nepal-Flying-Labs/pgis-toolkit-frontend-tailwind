@@ -47,12 +47,15 @@ export function* applyBufferAnalysisRequest({ payload }) {
 export function* copyFeaturesRequest({ payload }) {
   // const formData = prepareFormData(payload);
   try {
-    const response = yield all(
-      payload.map(item =>
-        call(copyFeatures, { layer: item, reset_data: true }),
-      ),
-    );
-    // const response = yield call(copyFeatures, payload);
+    // const response = yield all(
+    //   payload.map(item =>
+    //     call(copyFeatures, { layer: item, reset_data: true }),
+    //   ),
+    // );
+    const response = yield call(copyFeatures, {
+      layer: payload,
+      reset_data: true,
+    });
     yield put(
       bufferAnalysisActions.copyFeaturesSuccess({
         data: response.data,

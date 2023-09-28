@@ -36,7 +36,7 @@ export default function ContactForm() {
           required
         />
       </Flex>
-      <TextArea placeholder="Describe to us how you would use Usafiri" />
+      <TextArea placeholder="Describe to us how you would use uSAFIRI" />
       <CommonBtn className=" naxatw-w-fit naxatw-text-white naxatw-bg-[#FF5A5F] hover:naxatw-bg-[#e05257] hover:naxatw-underline">
         {' '}
         Send Message{' '}

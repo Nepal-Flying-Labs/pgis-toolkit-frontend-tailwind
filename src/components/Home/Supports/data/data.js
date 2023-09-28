@@ -31,6 +31,6 @@ export const supportsdata = [
     image: routeAnalysisImg,
     title: 'Optimal Route Analysis',
     content:
-      'This method is used to find the most efficient path between multiple locations based on factors such as distance, time, and road conditions. USAFIRI supports data cleaning phase before performing analysis.',
+      'This method is used to find the most efficient path between multiple locations based on factors such as distance, time, and road conditions. uSAFIRI supports data cleaning phase before performing analysis.',
   },
 ];

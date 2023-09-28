@@ -13,7 +13,7 @@ export default function DataUnderstanding() {
         </span>
       </h1>
       <p className=" naxatw-w-[501px]">
-        If you are utilizing USAFIRI for transportation needs assessment, the
+        If you are utilizing uSAFIRI for transportation needs assessment, the
         required standardized list of datasets that need to be collected
         includes:
       </p>

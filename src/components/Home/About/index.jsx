@@ -5,7 +5,7 @@ export default function About() {
   return (
     <FlexColumn className="naxatw-items-center naxatw-justify-center">
       <p className="naxatw-text-[#FF5A5F] naxatw-leading-5 naxatw-text-base naxatw-font-bold">
-        ABOUT USAFIRI
+        ABOUT uSAFIRI
       </p>
       <p className=" naxatw-text-[#212121] naxatw-mt-10 naxatw-text-center naxatw-leading-[42px] naxatw-text-[24px] naxatw-font-normal naxatw-tracking-tight">
         An open-source, web gis based participatory tool that

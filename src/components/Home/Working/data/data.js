@@ -25,14 +25,14 @@ export const howUsaFiriWorksdata = [
     id: '3',
     heading: '3. Do data collection planning',
     description:
-      'Provides standard USAFIRI data template for field data collection and mapping exercise.',
+      'Provides standard uSAFIRI data template for field data collection and mapping exercise.',
     img: working3,
   },
   {
     id: '4',
-    heading: '4. Upload collected data into USAFIRI',
+    heading: '4. Upload collected data into uSAFIRI',
     description:
-      'Supports multiple spatial data uploads into USAFIRI to visualize the data collection.',
+      'Supports multiple spatial data uploads into uSAFIRI to visualize the data collection.',
     img: working4,
   },
   {
@@ -53,7 +53,7 @@ export const howUsaFiriWorksdata = [
     id: '7',
     heading: '7. Map design and export',
     description:
-      'Publish a customized map based on standard USAFIRI map layout and existing data layers.',
+      'Publish a customized map based on standard uSAFIRI map layout and existing data layers.',
     img: working7,
   },
 ];

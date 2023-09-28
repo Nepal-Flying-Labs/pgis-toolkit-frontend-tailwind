@@ -139,7 +139,7 @@ export function getModalContent(content) {
         title: 'Upload your datasets',
         content: <UploadDataset />,
         subtitle:
-          'USAFIRI allows you to import data in different formats( .zip, .geojson, .csv, .kml or .gpx). Please upload your datasets below.',
+          'uSAFIRI allows you to import data in different formats( .zip, .geojson, .csv, .kml or .gpx). Please upload your datasets below.',
       };
     case 'view-layer-attribute':
       return {
@@ -168,7 +168,7 @@ export function getModalContent(content) {
         title: 'Analysis',
         content: <Analysis />,
         subtitle:
-          'USAFIRI allows you to do different sorts of spatial analysis with the existing datasets in the project. Below are some of the analysis functions we have in the tool at the moment.',
+          'uSAFIRI allows you to do different sorts of spatial analysis with the existing datasets in the project. Below are some of the analysis functions we have in the tool at the moment.',
       };
     case 'buffer-analysis':
       return {
@@ -188,7 +188,7 @@ export function getModalContent(content) {
         title: 'Import from OSM',
         content: <ImportOSM />,
         subtitle:
-          'USAFIRI allows you to do different sorts of analysis with your map datasets. Below are some of the analysis functions we have in the tool at the moment.',
+          'uSAFIRI allows you to do different sorts of analysis with your map datasets. Below are some of the analysis functions we have in the tool at the moment.',
       };
 
     // project gallery
@@ -294,7 +294,7 @@ export function getModalContent(content) {
         title: 'Upload Images',
         content: <UploadBulkImage />,
         subtitle:
-          'USAFIRI allows you to bulk upload images for a layer in zip file format.',
+          'uSAFIRI allows you to bulk upload images for a layer in zip file format.',
       };
 
     case 'view-analysis-details':

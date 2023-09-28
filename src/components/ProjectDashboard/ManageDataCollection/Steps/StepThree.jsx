@@ -33,13 +33,13 @@ const StepThree = () => {
         <div className="naxatw-px-4 naxatw-py-3 naxatw-mt-6 naxatw-border naxatw-border-grey-300 naxatw-rounded-xl">
           <h5>
             Download selected templates in standard format as provided by
-            USAFIRI.
+            uSAFIRI.
           </h5>
           {/* <span className="naxatw-text-[12px] naxatw-font-bold naxatw-leading-[16px]">
             (shp, csv, geojson or gpkg)
           </span> */}
           <p className="naxatw-text-body-md naxatw-mt-2">
-            These templates will assist you in collecting data in USAFIRI
+            These templates will assist you in collecting data in uSAFIRI
             pre-defined format which further eases the data analysis operation
             in the next phase.
           </p>
@@ -67,7 +67,7 @@ const StepThree = () => {
             The data downloaded will open directly in QField Mobile Application.
             You may download the app and start collecting/ updating data. watch
             this video to understand how to use this QField project file,
-            collect data and re-upload back to the USAFIRI project.
+            collect data and re-upload back to the uSAFIRI project.
           </p>
           <div className="naxatw-mt-2 naxatw-flex naxatw-items-center naxatw-gap-x-3 ">
             <Button

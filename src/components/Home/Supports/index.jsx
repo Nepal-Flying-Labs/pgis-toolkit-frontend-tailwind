@@ -14,7 +14,7 @@ export default function SupportSection() {
   return (
     <FlexColumn className="naxatw-gap-16">
       <FlexColumn className="naxatw-items-center naxatw-justify-center">
-        <p className="naxatw-text-[34px] naxatw-text-[#FF5A5F]">USAFIRI</p>
+        <p className="naxatw-text-[34px] naxatw-text-[#FF5A5F]">uSAFIRI</p>
         <p className="naxatw-text-[34px]">supports various Spatial Analysis</p>
         <FlexBetween className="naxatw-gap-5 naxatw-mt-8">
           {supportsdata.map(ele => (

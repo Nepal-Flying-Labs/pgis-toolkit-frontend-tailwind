@@ -15,7 +15,7 @@ const StepOne = ({ option, setOption }) => {
       <div className="md:naxatw-w-[800px] md:naxatw-mx-auto">
         <h4 className="naxatw-mb-2 naxatw-font-semibold">Data Import</h4>
         <p className="naxatw-text-body-lg">
-          USAFIRI allows for data import from multiple sources, but it is
+          uSAFIRI allows for data import from multiple sources, but it is
           important to review the Data Requirement document before beginning the
           data management process.
         </p>
@@ -24,7 +24,7 @@ const StepOne = ({ option, setOption }) => {
             <p className="naxatw-text-body-btn">Data Requirement </p>
             <span className="naxatw-text-body-md">
               The Data Requirement document is a critical tool for ensuring that
-              the data imported into USAFIRI meets the necessary specifications
+              the data imported into uSAFIRI meets the necessary specifications
               and requirements. It is important to review this document before
               beginning the data management process.
             </span>

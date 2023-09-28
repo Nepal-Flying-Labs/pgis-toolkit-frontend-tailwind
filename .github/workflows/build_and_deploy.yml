@@ -43,7 +43,7 @@ jobs:
             LOGIN_API_URL=https://pgis.naxa.com.np/api
             BIPAD_API_URL=https://bipadportal.gov.np/api/v1
             #######NEW######
-            TITLE="USAFIRI"
+            TITLE="uSAFIRI"
             TOKEN= echo ${{ secrets.ENV_SECRET }}
             BASE_URL=https://pgis.naxa.com.np
             API_URL=https://pgis.naxa.com.np/api/

@@ -34,7 +34,7 @@ export default function Working() {
         <h1 className="naxatw-flex naxatw-text-[34px] naxatw-text-[#212121] naxatw-items-center">
           How{' '}
           <span className="naxatw-flex naxatw-text-[34px] naxatw-text-[#FF5A5F] naxatw-mx-2">
-            USAFIRI
+            uSAFIRI
           </span>
           Works?
         </h1>

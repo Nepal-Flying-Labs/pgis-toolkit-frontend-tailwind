@@ -12,7 +12,7 @@ export default function UseCaseSection() {
   console.log(cardData[0].content);
   return (
     <FlexColumn className="naxatw-gap-3 naxatw-items-center naxatw-justify-center">
-      <h1 className="naxatw-text-[34px] naxatw-text-[#212121]">Use cases</h1>
+      <h1 className="naxatw-text-[34px] naxatw-text-[#212121]">Use Cases</h1>
       <p className=" naxatw-text-base naxatw-w-[494px]">
         A GIS-based toolkit ti assest, in a participatory way, the unmet
         transportation needs & mobility barriers of rural communities.

@@ -78,7 +78,7 @@ export default function StepOne() {
         Data preparation & cleaning for analysis
       </h4>
       <p className="naxatw-mt-2 naxatw-text-body-lg">
-        USAFIRI supports data cleaning phase before performing any sort of
+        uSAFIRI supports data cleaning phase before performing any sort of
         analysis. You may select the layers under the various themes listed
         below for analysis and get the better results.
       </p>

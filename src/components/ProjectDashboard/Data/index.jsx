@@ -156,7 +156,7 @@ export default function Data() {
 
       <div className="naxatw-space-y-2">
         <p className="naxatw-text-grey-800 naxatw-text-body-lg">
-          USAFIRI supports data upload from multiple external sources. You may
+          uSAFIRI supports data upload from multiple external sources. You may
           add data collected from field, extract data from OSM and simply add
           WMS layer in the data catalog.
         </p>

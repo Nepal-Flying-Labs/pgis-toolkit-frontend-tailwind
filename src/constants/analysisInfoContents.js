@@ -97,7 +97,7 @@ export default {
     origin: `<h5 class="naxatw-font-semibold">Origin & Destination Point</h5>
               <div class="naxatw-y-1"><p class=" naxatw-font-semibold">Origin Point</p><p>The point from where you want to start the route is the origin point.</p></div>
               <div class="naxatw-y-1"><p class=" naxatw-font-semibold">Destination Point</p> <p>The point where the route ends is the destination point.</p></div>
-              <div class="naxatw-y-1"><p class=" "> <p> USAFIRI allows you to search, select and map the origin and destination points.</p></p></div>
+              <div class="naxatw-y-1"><p class=" "> <p> uSAFIRI allows you to search, select and map the origin and destination points.</p></p></div>
               <div class="naxatw-y-1"><p class=" naxatw-font-semibold">Search</p><p>Search the point feature within the project area for input of origin and destination point. It inputs only a single origin and destination point.</p></div>
               <div class="naxatw-y-1"><p class=" naxatw-font-semibold">Map</p><p>Draw the destination point feature on map within the project area for input. It inputs only a single destination point.</p></div>
               <div class="naxatw-y-1"><p class=" naxatw-font-semibold">Layer</p><p>Select a feature from layers uploaded under the POI theme in the data catalog for input. It inputs only a single origin point.</p></div>

@@ -40,7 +40,9 @@ export default function Results() {
       ),
       onClick: data => {
         dispatch(
-          setResultsState({ zoomToBuffer: { id: data.id, bbox: data.bbox } }),
+          setResultsState({
+            zoomToProximity: { id: data.id, bbox: data.bbox },
+          }),
         );
       },
     },

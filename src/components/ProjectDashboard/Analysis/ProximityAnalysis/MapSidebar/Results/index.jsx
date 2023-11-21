@@ -256,7 +256,10 @@ export default function Results() {
                           onIconClick={() =>
                             dispatch(
                               setResultsState({
-                                zoomToBuffer: { id: area.id, bbox: area.bbox },
+                                zoomToProximity: {
+                                  id: area.id,
+                                  bbox: area.bbox,
+                                },
                               }),
                             )
                           }

@@ -88,7 +88,6 @@ function UploadPolygonBoundary({
     }
   };
 
-  console.log(uploadedFile);
   return (
     <div className="naxatw-space-y-2">
       <label className="naxatw-label">Upload Polygon Boundary</label>

@@ -49,10 +49,33 @@ export default function MaskedLayer({ map, geojson, enable }) {
     const feature = new GeoJSON().readFeatures(geojson, {
       featureProjection: get('EPSG:3857'),
     });
-    if (isEmpty(feature));
-    const coords = feature.map(feat => feat.getGeometry().getCoordinates());
-    // const coords = dep.geometry.coordinates;
-    const f = new Feature(new MultiPolygon(coords));
+    if (isEmpty(feature)) return;
+    let coordinatesX;
+    let featureExtentx;
+    // if length of feature is more than one extent is calclulated using different appraoch
+    if (feature.length === 1) {
+      const coords = feature.map(feat => feat.getGeometry().getCoordinates());
+      coordinatesX = coords;
+    } else {
+      const coordinates = feature.map(feat => feat.getGeometry().getExtent());
+      const reducedExtent = coordinates.reduce((acc, curr) => [
+        Math.min(acc[0], curr[0]),
+        Math.min(acc[1], curr[1]),
+        Math.max(acc[2], curr[2]),
+        Math.max(acc[3], curr[3]),
+      ]);
+
+      const coords = feature.map(feat => feat.getGeometry().getCoordinates());
+      // const coords = dep.geometry.coordinates;
+      const coordsX = [];
+      coords.map(cord => {
+        coordsX.push(...cord);
+        return null;
+      });
+      coordinatesX = coordsX;
+      featureExtentx = reducedExtent;
+    }
+    const f = new Feature(new MultiPolygon(coordinatesX));
     const maskedLayerx = new Mask({
       feature: f,
       fill: new Fill({
@@ -61,14 +84,15 @@ export default function MaskedLayer({ map, geojson, enable }) {
       inner: false,
     });
 
-    setMaskedLayer(maskedLayerx);
+    featureExtentx =
+      feature.length === 1 ? f.getGeometry().getExtent() : featureExtentx;
 
-    const featureExtentx = f.getGeometry().getExtent();
+    setMaskedLayer(maskedLayerx);
+    setFeatureExtent(featureExtentx);
     map.getView().fit(featureExtentx, {
       padding: [50, 50, 50, 50],
       constrainResolution: true,
     });
-    setFeatureExtent(featureExtentx);
   }, [map, tileLayers, geojson]);
 
   useEffect(() => {

@@ -143,10 +143,8 @@ function UploadPolygonBoundary({
                 </p>
                 <span className="naxatw-text-body-md naxatw-text-[#757575]">
                   Uploaded on{' '}
-                  {format(
-                    new Date(uploadedFile.lastModifiedDate),
-                    'MM/dd/yyyy',
-                  ) || '-'}
+                  {format(new Date(uploadedFile.lastModified), 'MM/dd/yyyy') ||
+                    '-'}
                 </span>
               </div>
             </div>

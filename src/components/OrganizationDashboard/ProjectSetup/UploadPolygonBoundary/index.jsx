@@ -88,6 +88,8 @@ function UploadPolygonBoundary({
     }
   };
 
+  console.log(uploadedFile);
+
   return (
     <div className="naxatw-space-y-2">
       <label className="naxatw-label">Upload Polygon Boundary</label>
@@ -143,10 +145,8 @@ function UploadPolygonBoundary({
                 </p>
                 <span className="naxatw-text-body-md naxatw-text-[#757575]">
                   Uploaded on{' '}
-                  {format(
-                    new Date(uploadedFile.lastModifiedDate),
-                    'MM/dd/yyyy',
-                  ) || '-'}
+                  {format(new Date(uploadedFile.lastModified), 'MM/dd/yyyy') ||
+                    '-'}
                 </span>
               </div>
             </div>

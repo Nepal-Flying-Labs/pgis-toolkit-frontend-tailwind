@@ -23,6 +23,7 @@ function UploadPhotos({
   const onChangeFileUpload = e => {
     const { files } = e.target;
     const file = files[0];
+    console.log(file);
     const uploadedFileObject = {
       name: file.name,
       size: file.size,

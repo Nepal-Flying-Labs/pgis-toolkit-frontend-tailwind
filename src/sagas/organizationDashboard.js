@@ -142,8 +142,12 @@ export function* patchProjectRequest({ id, payload }) {
       );
     }
   } catch (error) {
-    yield put(organizationDashboardActions.patchProjectFailure());
-    throw error;
+    yield put(
+      toastActions.error({
+        message: 'Please upload a valid file.',
+      }),
+    );
+    // throw error;
   }
 }
 

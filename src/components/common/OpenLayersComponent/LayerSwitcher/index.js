@@ -16,7 +16,7 @@ import { XYZ, BingMaps } from 'ol/source';
 //   accessToken: 'pk.eyJ1IjoiZ2VvdmF0aW9uIiwiYSI6ImNrcGljOXBwbTBoc3oyb3BjMGsxYW9wZ2EifQ.euYtUXb6HJGLHkj4Wi3gjA',
 // });
 
-const mapboxOutdoors = (visible = true) =>
+const mapboxOutdoors = (visible = false) =>
   new LayerTile({
     title: 'Mapbox Outdoors',
     type: 'base',
@@ -91,7 +91,7 @@ const watercolor = new LayerTile({
   }),
 });
 
-const LayerSwitcherControl = ({ map, visible = 'mapbox' }) => {
+const LayerSwitcherControl = ({ map, visible = 'osm' }) => {
   useEffect(() => {
     if (!map) return;
 

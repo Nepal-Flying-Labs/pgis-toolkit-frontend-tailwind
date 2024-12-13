@@ -20,16 +20,6 @@ export default function MaskedLayer({ map, geojson, enable }) {
 
   useEffect(() => {
     if (!map || !geojson) return () => {};
-    // map.once('rendercomplete', () => {
-    //   const data = map
-    //     .getLayers()
-    //     .getArray()
-    //     .filter(item => item instanceof LayerGroup)[0]
-    //     .getLayers()
-    //     .getArray()
-    //     .filter(tiles => tiles instanceof TileLayer);
-    //   setTileLayers(data);
-    // });
     const data = map
       .getLayers()
       .getArray()
@@ -110,7 +100,7 @@ export default function MaskedLayer({ map, geojson, enable }) {
             featureExtent[3] + 30000,
           ],
           zoom: currentZoom,
-          minZoom: currentZoom - 1,
+          // minZoom: currentZoom - 1,
         }),
       );
       tileLayers.map(tiles => tiles.addFilter(maskedLayer));
@@ -134,53 +124,3 @@ export default function MaskedLayer({ map, geojson, enable }) {
 
   return null;
 }
-
-// /* eslint-disable react/prop-types */
-// import { useEffect } from 'react';
-// import LayerGroup from 'ol/layer/Group';
-// import GeoJSON from 'ol/format/GeoJSON';
-// import { get } from 'ol/proj';
-// import { Fill, Style } from 'ol/style';
-// import { OSM, Stamen, Vector as VectorSource } from 'ol/source';
-// import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
-// import { fromLonLat } from 'ol/proj';
-// import { getVectorContext } from 'ol/render';
-//
-// export default function MaskedLayer({ map, geojson }) {
-//   useEffect(() => {
-//     if (!map || !geojson) return;
-//     const clipLayer = new VectorLayer({
-//       style: null,
-//       source: new VectorSource({
-//         features: new GeoJSON().readFeatures(geojson, {
-//           featureProjection: get('EPSG:3857'),
-//         }),
-//       }),
-//     });
-//
-//     const layers = map.getLayers().getArray();
-//     const layerGroup = layers.find(layer => layer instanceof LayerGroup);
-//     const layersx = layerGroup.getLayersArray();
-//     const base = layersx.find(layer => layer.getProperties().visible);
-//
-//     clipLayer.getSource().on('addfeature', () => {
-//       base.setExtent(clipLayer.getSource().getExtent());
-//     });
-//     const style = new Style({
-//       fill: new Fill({
-//         color: 'black',
-//       }),
-//     });
-//
-//     base.on('postrender', e => {
-//       const vectorContext = getVectorContext(e);
-//       e.context.globalCompositeOperation = 'destination-in';
-//       clipLayer.getSource().forEachFeature(feature => {
-//         vectorContext.drawFeature(feature, style);
-//       });
-//       e.context.globalCompositeOperation = 'source-over';
-//     });
-//   }, [map, geojson]);
-//
-//   return null;
-// }

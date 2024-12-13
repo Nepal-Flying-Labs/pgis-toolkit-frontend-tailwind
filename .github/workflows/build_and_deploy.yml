@@ -2,7 +2,7 @@ name: PGIS Toolkit Frontend Tailwind
 on:
   push:
     branches:
-      - '*'
+      - 'staging'
   workflow_dispatch:
 
 jobs:

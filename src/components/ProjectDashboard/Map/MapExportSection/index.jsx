@@ -200,11 +200,11 @@ export default function MapExportSection({
     const height = Math.round((pSize[1] * dpi) / 25.4);
     // Set print size
     const printSize = [width, height];
-    const scaling = Math.min(width / size[0], height / size[1]);
+    // const scaling = Math.min(width / size[0], height / size[1]);
     exportMapRef.current.style.position = 'absolute';
     exportMapRef.current.style.width = `${width}px`;
     exportMapRef.current.style.height = `${height}px`;
-    exportMapRef.current.style.transform = `scale(${scaling})`;
+    // exportMapRef.current.style.transform = `scale(${scaling})`;
     exportMap.setSize(printSize);
     exportMap.updateSize();
     exportMap.getView().fit(extent, { size: printSize });
@@ -258,9 +258,9 @@ export default function MapExportSection({
           handlePrint();
         }
         // Reset original map size
-        exportMapRef.current.style.width = size[1];
-        exportMapRef.current.style.height = size[0];
-        exportMapRef.current.style.transform = `scale(${1 / scaling})`;
+        exportMapRef.current.style.width = `${size[0]}px`;
+        exportMapRef.current.style.height = `${size[1]}px`;
+        // exportMapRef.current.style.transform = `scale(${1 / scaling})`;
         exportMap.setSize(size);
         exportMap.updateSize();
         exportMap.getView().fit(extent, { size });

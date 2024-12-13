@@ -18,7 +18,7 @@ const baseLayerData = [
 ];
 
 export default function CustomLayerSwitcher({ map }) {
-  const [activeLayer, setActiveLayer] = useState('');
+  const [activeLayer, setActiveLayer] = useState('osm');
 
   const toggleBaseLayer = baseLayerTitle => {
     if (!map) return;
